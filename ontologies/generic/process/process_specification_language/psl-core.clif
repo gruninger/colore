@@ -1,0 +1,184 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-module psl-core
+
+(cl-comment "The before relation only holds between timepoints.")
+
+(forall (t1 t2)
+	(if	(before t1 t2)
+		(and 	(timepoint t1) 
+			(timepoint t2))))
+
+(cl-comment "The before relation is a total ordering.")
+
+(forall (t1 t2)
+	(if	(and 	(timepoint t1) 
+			(timepoint t2))
+		(or 	(= t1 t2) 
+			(before t1 t2) 
+			(before t2 t1))))
+
+(cl-comment "The before relation is irreflexive.")
+
+(forall (t1)
+	(not (before t1 t1)))
+
+(cl-comment "The before relation is transitive.")
+
+(forall (t1 t2 t3)
+	(if	(and 	(before t1 t2) 
+			(before t2 t3))
+		(before t1 t3)))
+
+(cl-comment "The timepoint inf- is before all other timepoints.")
+
+(forall (t)
+        (if	(and 	(timepoint t) 
+			(not (= t inf-)))
+		(before inf- t)))
+
+(cl-comment "Every other timepoint is before inf+.")
+
+(forall (t)
+        (if	(and 	(timepoint t) 
+			(not (= t inf+)))
+		(before t inf+)))
+
+(cl-comment "Given any timepoint t other than inf-, there is a timepoint between
+inf- and t.")
+
+(forall (t)
+	(if	(and 	(timepoint t) 
+			(not (= t inf-)))
+		(exists (u) 
+			(between inf- u t))))
+
+(cl-comment "Given any timepoint t other than inf+, there is a timepoint between
+t and inf+.")
+
+(forall (t)
+	(if	(and 	(timepoint t) 
+			(not (= t inf+)))
+		(exists (u) 
+			(between t u inf+))))
+
+(cl-comment "Everything is either an activity, activity occurrence, timepoint,
+or object.")
+
+(forall (x)
+	(or 	(activity x) 
+		(activity_occurrence x) 
+		(timepoint x) 
+		(object x)))
+
+
+(cl-comment "Objects, activities, activity occurrences, and timepoints are all 
+distinct kinds of things.")
+
+(forall (x)
+(and (if (activity x)
+         (not (or (activity_occurrence x) (object x) (timepoint x))))
+     (if (activity_occurrence x)
+         (not (or (object x) (timepoint x))))
+     (if (object x)
+         (not (timepoint x)))))
+
+(cl-comment "The occurrence relation only holds between activities and 
+activity occurrences.")
+
+(forall (a occ)
+	(if	(occurrence_of occ a)
+		(and	(activity a)
+			(activity_occurrence occ))))
+
+(cl-comment "Every activity occurrence is the occurrence of some activity.")
+
+(forall (occ)
+	(if	(activity_occurrence occ)
+		(exists (a)
+			(and	(activity a)
+				(occurrence_of occ a)))))
+
+(cl-comment "An activity occurrence is associated with a unique activity.")
+
+(forall (occ a1 a2)
+        (if	(and	(occurrence_of occ a1)
+                        (occurrence_of occ a2))
+		(= a1 a2)))
+
+(cl-comment "The begin and end of an activity occurrence or object are timepoints.")
+
+(forall (a x)
+	(if	(or	(occurrence_of x a)
+			(object x))
+		(and 	(timepoint (beginof x))
+         		(timepoint (endof x)))))
+
+(cl-comment "The begin point of every activity occurrence or object is 
+before or equal to its end point.")
+
+(forall (x)
+	(if	(or	(activity_occurrence x)
+			(object x))
+		(beforeEq (beginof x) (endof x))))
+
+(cl-comment "The participates_in relation only holds between objects,
+activity occurrences, and timepoints, respectively.")
+
+(forall (x occ t)
+	(if	(participates_in x occ t)
+		(and 	(object x) 
+			(activity_occurrence occ) 
+			(timepoint t))))
+
+(cl-comment "An object can participate in an activity
+occurrence only at those timepoints at which both the object exists and
+the activity is occurring.")
+
+(forall (x occ t)
+	(if	(participates_in x occ t)
+		(and 	(exists_at x t)
+         		(is_occurring_at occ t))))
+
+(cl-comment "Timepoint t2 is between timepoints t1 and t3 if and only if t1 is before 
+t2 and t2 is before t3.")
+
+(forall (t1 t2 t3) (iff (between t1 t2 t3)
+  (and (before t1 t2) (before t2 t3))))
+
+(cl-comment "Timepoint t1 is beforeEq timepoint t2 if and only if t1 is before or equal
+to t2.")
+
+(forall (t1 t2) (iff (beforeEq t1 t2)
+  (and (timepoint t1) (timepoint t2)
+       (or (before t1 t2) (= t1 t2)))))
+
+(cl-comment "Timepoint t2 is betweenEq timepoints t1 and t3 if and only if 
+t1 is before or equal to t2, and t2 is before or equal to t3.")
+
+(forall (t1 t2 t3) (iff (betweenEq t1 t2 t3)
+  (and (beforeEq t1 t2)
+       (beforeEq t2 t3))))
+
+(cl-comment "An object exists at a timepoint t if and only if t is betweenEq its begin
+and end points.")
+
+(forall (x t) (iff (exists_at x t)
+  (and (object x)
+       (betweenEq (beginof x) t (endof x)))))
+
+(cl-comment "An activity is occurring at a timepoint t if and only if t 
+is betweenEq the begin and end points of the activity occurrence.")
+
+(forall (occ t) (iff (is_occurring_at occ t)
+	(betweenEq (beginof occ) t (endof occ))))
+
+)

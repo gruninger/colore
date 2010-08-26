@@ -1,0 +1,141 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-module discrete-ec.clif
+
+(forall (t1 f t2)
+	(iff 
+		(Stopped t1 f t2)
+		(exists (e t)
+			(and
+				(Happens e t)
+				(before t1 t)
+				(before t t2)
+				(Terminates e f t)))))
+				
+
+(forall (t1 f t2)
+	(iff 
+		(Starteded t1 f t2)
+		(exists (e t)
+			(and
+				(Happens e t)
+				(before t1 t)
+				(before t t2)
+				(Initiates e f t)))))
+
+
+(forall (e f1 f2 t1 t2)
+	(if   
+		(and
+            (Happens e t1)
+            (Initiates e f1 t1) 
+            (before 0 t2)
+            (Trajectory f1 t1 f2 t2)
+            (not (StoppedIn t1 f1 (plus t1 t2))))         
+         (HoldsAt f2 (plus t1 t2))))
+
+
+(forall (e f1 f2 t1 t2)
+	(if   
+		(and
+            (Happens e t1)
+            (Terminates e f1 t1) 
+            (before 0 t2)
+            (AntiTrajectory f1 t1 f2 t2)
+            (not (StartedIn t1 f1 (plus t1 t2))))
+         (HoldsAt f2 (plus t1 t2))))
+         
+
+(forall (f t)
+	(if
+		(and
+			(HoldsAt f t)
+			(not (ReleasedAt f (plus t 1)))
+         	(not
+            	(exists (e)
+               		(and
+                  		(Happens e t)
+                  		(Terminates e f t)))))
+		(HoldsAt f (plus t 1))))
+		
+
+(forall (f t)
+	(if
+      	(and
+         	(not (HoldsAt f t))
+         	(not (ReleasedAt f (plus t 1)))
+         	(not
+            	(exists (e)
+               		(and
+                  		(Happens e t)
+                  		(Initiates e f t)))))
+		(not (HoldsAt f (plus t 1)))))
+		
+
+(forall (f t)
+   	(if
+      	(and
+         	(Released f t)
+         	(not 
+         		(exists (e)
+                  	(and 
+                  		(Happens e t)
+                       	(or 
+                          	(Initiates e f t)
+                          	(Terminates e f t))))))
+		(ReleasedAt f (plus t 1))))
+		
+
+(forall (f t)
+	(if
+		(and
+        	(not (ReleasedAt f t))
+         	(not 
+         		(exists (e)
+            		(and
+                    	(Happens e t)
+                    	(Releases e f t)))))
+		(not (ReleasedAt f (plus t 1)))))
+		
+
+(forall (e t)
+	(if
+      	(and
+         	(Happens e t)
+         	(Initiates e f t))
+		(HoldsAt f (plus t 1))))
+		
+
+(forall (e t)
+	(if
+      	(and
+         	(Happens e t)
+         	(Terminates e f t))
+		(not (HoldsAt f (plus t 1)))))
+		
+
+(forall (e t)
+	(if
+      	(and
+         	(Happens e t)
+         	(Releases e f t))
+		(ReleasedAt f (plus t 1))))
+
+(forall (e t)
+	(if
+      	(and
+         	(Happens e t)
+         	(or 
+             	(Initiates e f t)
+             	(Terminates e f t)))
+		(not (ReleasedAt f (plus t 1)))))
+
+)

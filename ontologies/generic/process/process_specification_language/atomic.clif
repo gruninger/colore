@@ -1,0 +1,95 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-module atomic.clif
+
+(cl-imports occtree.clif)
+(cl-imports subactivity.clif)
+
+(cl-comment "Primitive activities are atomic.")
+
+(forall (a)
+	(if	(primitive a)
+		(atomic a)))
+
+(cl-comment "The function conc is idempotent.")
+
+(forall (a)
+	(= a (conc a a)))
+
+(cl-comment "The function conc is commutative.")
+
+(forall (a1 a2)
+	(= (conc a1 a2) (conc a2 a1)))
+
+(cl-comment "The function conc is associative.")
+
+(forall (a1 a2 a3)
+	(= (conc a1 (conc a2 a3)) (conc (conc a1 a2) a3)))
+
+(cl-comment "The concurrent aggregation of atomic action is an atomic action.")
+
+(forall (a1 a2)
+	(iff	(atomic (conc a1 a2))
+		(and	(atomic a1)
+			(atomic a2))))
+
+(cl-comment "An atomic activity a1 is a subactivity of an atomic activity a2 if and only if
+a2 is an idempotent for a1.")
+
+(forall (a1 a2)
+	(if	(and	(atomic a1)
+			(atomic a2))
+		(iff	(subactivity a1 a2)
+			(= a2 (conc a1 a2)))))
+
+(cl-comment "An atomic action has a proper subactivity if and only if there exists another atomic 
+activity which can be concurrently aggregated.")
+
+(forall (a1 a2)
+	(if	(and	(atomic a2)
+		  	(subactivity a1 a2)
+			(not (= a1 a2)))
+		(exists (a3)
+			(and	(atomic a3)
+				(= a2 (conc a1 a3))
+				(not (exists (a4)
+					(and	(atomic a4)
+						(subactivity a4 a1)
+						(subactivity a4 a3))))))))
+
+(cl-comment "The semilattice of atomic activities is distributive.")
+
+(forall (a b0 b1)
+	(if	(and	(atomic a)
+			(atomic b0)
+			(atomic b1)
+			(subactivity a (conc b0 b1))
+			(not (primitive a)))
+		(exists (a0 a1)
+			(and	(subactivity a0 a)
+				(subactivity a1 a)
+				(= a (conc a0 a1))))))
+
+(cl-comment "Only atomic activities can be generator activities.
+Equivalently, only occurrences of atomic activities can be
+elements of an occurrence tree.")
+
+(forall (a)
+	(if	(generator a)
+		(atomic a)))
+
+(cl-comment "Atomic activities are activities.")
+
+(forall (a)
+	(if	(atomic a)
+		(activity a)))
+
+)

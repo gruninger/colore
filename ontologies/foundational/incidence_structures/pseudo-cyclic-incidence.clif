@@ -1,0 +1,64 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-module pseudo-cyclic-incidence
+
+(cl-imports tripartite-incidence)
+
+(forall (x)
+	(if	(line x)
+		(exists (y z)
+			(and	(point y)
+				(point z)
+				(not (= y z))
+				(in y x)
+				(in z x)))))
+
+(forall (x)
+	(if	(point x)
+		(exists (y z)
+			(and	(line y)
+				(line z)
+				(not (= y z))
+				(in x y)
+				(in x z)))))
+
+(forall (x y z w)
+	(if	(and	(point x)
+			(line y)
+			(line z)
+			(line w)
+			(in x y)
+			(in x z)
+			(in x w))
+		(or	(= w z)
+			(= w y))))
+
+(forall (x y z w)
+	(if	(and	(line x)
+			(point y)
+			(point z)
+			(point w)
+			(in y x)
+			(in z x)
+			(in w x))
+		(or	(= w z)
+			(= w y))))
+
+
+(forall (x y z)
+	(if	(and	(line x)
+			(plane y)
+			(plane z)
+			(in x y)
+			(in x z))
+		(= y z)))
+
+)

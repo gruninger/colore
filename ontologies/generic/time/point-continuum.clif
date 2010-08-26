@@ -1,0 +1,104 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-module point-continuum.clif
+
+(cl-imports linear-point.clif)
+
+(forall (x y)
+	(if	(in x y) 
+		(and	(timepoint x) 
+			(timeinterval y))))
+
+(forall (i)
+	(if	(timeinterval i)  
+		(or	(and	(open i) 
+				(not (closed i)) 
+                 		(forall (p)
+					(iff	(in p i) 
+						(and	(before (beginof i) p)
+							(before p (endof i))))))
+            
+			(and	(closed i) 
+				(not (open i)) 
+				(forall (p)
+					(iff	(in p i) 
+						(and	(bbefore (beginof i) p)
+							(bbefore p (endof i))))))))) 
+
+(forall (p q)
+	(if	(and	(timepoint p) 
+			(timepoint q))
+		(or	(before q p) 
+			(exists (i) 
+				(and	(timeinterval i) 
+					(closed i) 
+					(= (beginof i) p) 
+					(= (endof i) q))))))
+
+(forall (p q)
+	(if	(and	(timepoint p) 
+			(timepoint q))
+		(iff	(before p q) 
+			(exists (i) 
+				(and	(timeinterval i) 
+					(open i) 
+					(= (beginof i) p) 
+					(= (endof i) q))))))
+
+(forall (p q)
+	(if	(and	(timepoint p) 
+			(timepoint q))
+        	(iff	(bbefore p q) 
+			(and	(timeinterval (between p q)) 
+				(= p (beginof (between p q)))
+				(= q (endof (between p q))))))) 
+
+(forall (i)
+	(if	(timeinterval i) 
+		(and	(timeinterval (closure i)) 
+			(closed (closure i)) 
+			(= (beginof i) (beginof (closure i))) 
+			(= (endof i) (endof (closure i))))))
+
+(forall (i j)
+	(iff	(acoao i j)
+		(if	(and	(timeinterval i) 
+				(timeinterval j))
+			(or	(and	(open i) 
+					(open j)) 
+                  		(and 	(closed i)
+					(closed j))))))
+
+(forall (i j)
+	(iff	(meets i j)
+		(if	(and	(timeinterval i) 
+				(timeinterval j))
+			(and	(not (acoao i j)) 
+				(= (endof i) (beginof j)))))) 
+ 
+(forall (i j)
+	(iff	(starts i j) 
+		(if	(and	(timeinterval i)  
+				(timeinterval j))
+			(and	(acoao i j) 
+				(= (beginof i) (beginof j)) 
+				(before (endof i) (endof j))))))
+ 
+(forall (i j)
+	(iff	(finishes i j) 
+		(if	(and	(timeinterval i) 
+				(timeinterval j))
+			(and	(acoao i j) 
+				(before (beginof j) (beginof i)) 
+				(= (endof i) (endof j)))))) 
+
+)
+

@@ -1,0 +1,130 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-module duration.clif
+
+(cl-imports lp-infinite-end.clif)
+
+(cl-imports field.clif)
+
+(timeduration zero)
+
+(forall (d1 d2)
+(if  (and	(timeduration d1)
+		(timeduration d2))
+	  (timeduration (add d1 d2))))
+
+(forall (d1 d2 d3)
+(if  (and	(timeduration d1)
+		(timeduration d2)
+		(timeduration d3))
+          (= (add (add d1 d2) d3) (add d1 (add d2 d3)))))
+
+(forall (d)
+(if  (timeduration d)
+          (= (add d zero) d)))
+
+(forall (d1)
+(if  (timeduration d1)
+          (exists (d2)
+		(and 	(timeduration d2)
+                	(= (add d1 d2) zero)))))
+
+(forall (d1 d2)
+(if  (and	(timeduration d1)
+		(timeduration d2))
+          (= (add d1 d2) (add d2 d1))))
+
+(forall (d r)
+(if	(and	(timeduration d)
+		(field r))
+	(timeduration (mult r d))))
+
+(forall (d1 d2 r)
+(if	(and	(timeduration d1)
+		(timeduration d2)
+		(field r))
+        (= (mult r (add d1 d2)) (add (mult r d1) (mult r d2)))))
+
+(forall (d r s)
+(if	(and	(timeduration d)
+		(field r)
+		(field s))
+        (= (mult (add r s) d) (add (mult r d) (mult s d)))))
+
+(forall (d r s)
+(if	(and	(timeduration d)
+		(field r)
+		(field s))
+        (= (mult (mult r s) d) (mult r (mult s d)))))
+
+(forall (?d)
+(if	(timeduration d)
+        (= d (mult one d))))
+
+(forall (d1 d2 d3)
+	(iff
+		(and    
+			(lesser d1 d2)
+			(lesser (add d1 d3) (add d2 d3)))
+		(and	
+			(timeduration d1)
+			(timeduration d2)
+			(timeduration d3))))
+		
+		
+(forall (d1 d2 d3)
+	(iff
+		(and
+			(= d1 d2)
+        	(= (add d1 d3) (add d2 d3)))
+		(and	
+			(timeduration d1)
+			(timeduration d2)
+			(timeduration d3))))
+								
+(forall (t1 t2)
+	(if  (and	(timepoint t1)
+			(timepoint t2))
+		  (timeduration (duration t1 t2))))
+
+(forall (t1 t2)
+(if  (and	(timepoint t1)
+		(timepoint t2))
+	  (iff	(= zero (duration t1 t2))
+		(= t1 t2))))
+
+(forall (t1 t2)
+(if  (and	(timepoint t1)
+		(timepoint t2))
+	  (= zero (add (duration t1 t2) (duration t2 t1)))))
+
+(forall (t1 t2 t3)
+(if	(and	(timepoint t1)
+		(timepoint t2)
+		(timepoint t3))
+	(= (add (duration t1 t2) (duration t2 t3)) (duration t1 t3))))
+
+(forall (t1 t2)
+(if	(and	(timepoint t1)
+		(timepoint t2))
+	(iff	(lesser zero (duration t1 t2))
+		(before t1 t2))))
+
+(forall (t1 t2 t3)
+(if	(and	(timepoint t1)
+		(timepoint t2)
+		(timepoint t3))
+	(exists (t4)
+		(and	(timepoint t4)
+			(= (duration t1 t2) (duration t3 t4))))))
+
+)
+
