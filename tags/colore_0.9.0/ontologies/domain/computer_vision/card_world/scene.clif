@@ -1,0 +1,144 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-module scene
+
+(cl-comment "All scene objects are either points, edges or surfaces.")
+(forall (x) 
+	(iff 	(scene_object x) 
+		(or 	(point x) 
+			(edge x) 
+			(surface x))))
+
+(cl-comment "The sets of points, edges, and surfaces are disjoint.")
+(forall (x) 
+	(not (and 	(point x) 
+			(edge x)))) 
+
+(forall (x) 
+	(not (and 	(point x) 
+			(surface x))))
+
+(forall (x) 
+	(not (and 	(edge x) 
+			(surface x))))
+
+(cl-comment "The part relation is restricted to scene objects.")
+(forall (x y) 
+	(if 	(part x y) 
+		(and 	(scene_object x) 
+			(scene_object y))))
+
+(cl-comment "A surface cannot be part of another surface.")
+(forall (x s) 
+	(if 	(and 	(part x s) 
+			(surface s)) 
+		(not (surface x))))
+
+(cl-comment "A surface or an edge cannot be part of an edge.")
+(forall (x e) 
+	(if 	(and 	(part x e) 
+			(edge e)) 
+		(and 	(not (surface x)) 
+			(not (edge x)))))
+
+(cl-comment "Nothing can be a part of a point.")
+(forall (x p) 
+	(if 	(and 	(part x p) 
+			(point p)) 
+		(and 	(not (surface x)) 
+			(not (edge x)) 
+			(not (point x)))))
+
+(cl-comment "A surface cannot be part of any other scene object.")
+(forall (x s) 
+	(if 	(and 	(part s x) 
+			(surface s)) 
+		(and 	(not (surface x)) 
+			(not (edge x)) 
+			(not (point x)))))
+
+(cl-comment "An edge cannot be part of an edge or a point.")
+(forall (x e) 
+	(if 	(and 	(part e x) 
+			(edge e)) 
+		(and 	(not (edge x)) 
+			(not (point x)))))
+
+(cl-comment "A point cannot be part of a point.")
+(forall (x p) 
+	(if 	(and 	(part p x) 
+			(point p)) 
+		(not (point x))))
+
+(cl-comment "The part relation is transitive.")
+(forall (e s v) 
+	(if 	(and 	(edge e) 
+			(surface s) 
+			(part e s) 
+			(part v e)) 
+		(part v s)))
+
+(cl-comment "Every edge is part of a surface.")
+(forall (x) 
+	(if 	(edge x) 
+		(exists (s) 
+			(and 	(surface s) 
+				(part x s)))))
+
+(cl-comment "Every point is part of an edge.")
+(forall (x) 
+	(if 	(point x) 
+		(exists (e) 
+			(and 	(edge e) 
+				(part x e)))))
+
+(cl-comment "A point is a part of a unique surface.")
+(forall (v s t) 
+	(if 	(and 	(part v s) 
+			(part v t) 
+			(point v) 
+			(surface s) 
+			(surface t)) 
+		(= s t)))
+
+(cl-comment "An edge is part of a unique surface.")
+(forall (e s t) 
+	(if 	(and 	(part e s) 
+			(part e t) 
+			(edge e) 
+			(surface s) 
+			(surface t)) 
+		(= s t)))
+
+(cl-comment "Every surface contains at least three edges.")
+(forall (s) 
+	(if 	(surface s) 
+		(exists (e1 e2 e3) 
+			(and 	(edge e1) 
+				(edge e2) 
+				(not (= e1 e2)) 
+				(not (= e1 e3)) 
+				(not (= e2 e3)) 
+				(part e1 s) 
+				(part e2 s) 
+				(part e3 s)))))
+
+(cl-comment "Every edge contains at least two points.")
+(forall (e) 
+	(if 	(edge e) 
+		(exists (p1 p2) 
+			(and 	(point p1) 
+				(point p2) 
+				(not (= p1 p2)) 
+				(part p1 e) 
+				(part p2 e)))))
+
+)

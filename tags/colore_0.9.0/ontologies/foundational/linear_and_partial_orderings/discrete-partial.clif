@@ -1,0 +1,36 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-module discrete-partial
+
+(cl-imports partial-ordering)
+
+(cl-comment "Downwards discreteness")
+(forall (x y)
+	(if	(lt x y)
+		(exists (z)
+			(and	(covers y z)
+				(leq x z)))))
+
+(cl-comment "Upwards discreteness")
+(forall (x y)
+	(if	(lt x y)
+		(exists (z)
+			(and	(covers z x)
+				(leq z y)))))
+
+(forall (x y)
+(iff	(covers y x)
+	(and	(lt x y)
+		(not (exists (z)
+			(and	(lt x z)
+				(lt z y)))))))
+
+)

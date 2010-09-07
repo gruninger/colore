@@ -1,0 +1,239 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-module actocc.clif
+
+(cl-imports complex.clif)
+
+(forall (o1 o2) 
+	(if	(subactivity_occurrence o1 o2)
+		(and  	(activity_occurrence o1)
+			(activity_occurrence o2))))
+
+(cl-comment "There exists an occurrence of an activity a for every branch of an activity
+tree for a. All atomic subactivity occurrences on the branch are subactivity
+occurrences of the occurrence of a.")
+
+(forall (a s1 s2)
+	(if	(min_precedes s1 s2 a)
+		(exists (occ)
+			(and	(occurrence_of occ a)
+				(subactivity_occurrence s1 occ)
+				(subactivity_occurrence s2 occ)))))
+
+(cl-comment "There exists an occurrence of an activity a for every branch of an activity
+tree for a. All root subactivity occurrences on the branch are subactivity
+occurrences of the occurrence of a.")
+
+(forall (a s)
+	(if	(and	(root s a)
+			(not (atomic a)))
+		(exists (occ)
+			(and	(occurrence_of occ a)
+				(subactivity_occurrence s occ)))))
+
+
+(cl-comment "Every occurrence of a complex activity a contains an atomic subactivity 
+occurrence that is the root of an activity tree for a.")
+
+(forall (occ a)
+	(if	(and   (occurrence_of occ a)
+                       (not (atomic a)))
+		(exists (s)
+			(and	(root s a)
+				(subactivity_occurrence s occ)))))
+
+
+(cl-comment "Distinct occurrences of an activity correspond to distinct branches of an activity tree.")
+
+(forall (a s1 occ1 occ2)
+	(if	(and	(occurrence_of occ1 a)
+			(occurrence_of occ2 a)
+			(not (= occ1 occ2)))
+		(exists (s)
+			(and	(arboreal s)
+				(subactivity_occurrence s occ1)
+				(not (subactivity_occurrence s occ2))))))
+
+(cl-comment "All atomic subactivity occurrences of a complex activity occurrence
+are elements of the same branch of the activity tree.")
+
+(forall (a occ s1 s2)
+	(if	(and	(occurrence_of occ a)
+			(arboreal s1)
+			(arboreal s2)
+			(subactivity_occurrence s1 occ)
+		  	(subactivity_occurrence s2 occ))
+		(or	(min_precedes s1 s2 a)
+		  	(min_precedes s2 s1 a)
+			(= s1 s2))))
+
+(cl-comment "All elements of the same branch of an activity tree are atomic
+subactivity occurrences of the same activity occurrences.")
+
+(forall (a s1 s2 occ)
+	(if	(and	(min_precedes s1 s2 a)
+			(occurrence_of o a)
+			(subactivity_occurrence s2 occ))
+		(subactivity_occurrence s1 occ)))
+
+(cl-comment "The subactivity_occurrence relation preserves the subactivity relation.")
+
+(forall (a1 a2 occ1 occ2)
+	(if	(and	(occurrence_of occ1 a1)
+			(occurrence_of occ2 a2)
+			(not (atomic a1))
+			(subactivity_occurrence occ1 occ2))
+		(subactivity a1 a2)))
+
+(cl-comment "The subactivity_occurrence relation is transitive.")
+
+(forall (occ1 occ2 occ3)
+        (if	(and  (subactivity_occurrence occ1 occ2)
+                  	(subactivity_occurrence occ2 occ3))
+		(subactivity_occurrence occ1 occ3)))
+
+(cl-comment "Occurrences of subactivities are subactivity occurrences if the
+occurrences satisfy branch containment.")
+
+(forall (a1 a2 occ1 occ2)
+        (if	(and	(occurrence_of occ1 a1)
+			(occurrence_of occ2 a2)
+			(subactivity a1 a2)
+			(not (subactivity_occurrence occ1 occ2)))
+		(exists (s)
+			(and	(subactivity_occurrence s occ1)
+				(not (subactivity_occurrence s occ2))))))
+
+(cl-comment "The beginof timepoint for a complex activity occurrence is
+equal to the beginof timepoint of its root occurrence.")
+
+(forall (s occ)
+	(if	(root_occ s occ)
+		(= (beginof occ) (beginof s))))
+
+(cl-comment "The endof timepoint for a complex activity occurrence is
+equal to the endof timepoint of its leaf occurrence.")
+
+(forall (s occ)
+	(if	(leaf_occ s occ)
+		(= (endof occ) (endof s))))
+
+(cl-comment "The mono relation is a branch homomorphism.")
+
+(forall (s1 s2 a)
+        (if	(mono s1 s2 a)
+		(hom s1 s2 a)))
+
+(cl-comment "If an atomic subactivity occurrence is mapped in a branch homomorphism,
+then there exists another atomic subactivity occurrence that is mono with it.")
+
+(forall (s1 s2 a)
+        (if	(and	(hom s1 s2 a)
+			(not (mono s1 s2 a)))
+		(exists (s3)
+			(or	(and	(min_precedes s3 s2 a)
+					(mono s1 s3 a))
+				(and	(min_precedes s3 s1 a)
+					(mono s2 s3 a))))))
+
+(cl-comment "The mono relation is restricted to one-to-one homomorphisms between different
+branches of the activity tree.")
+
+(forall (s1 s2 s3 a)
+        (if	(and	(mono s1 s2 a)
+			(mono s3 s2 a))
+		(not 	(or	(min_precedes s1 s3 a)
+				(min_precedes s3 s1 a)))))
+
+(cl-comment "The mono relation is symmetric on activity occurrences.")
+
+(forall (s1 s2 a)
+    (if   (mono s1 s2 a)
+          (mono s2 s1 a)))
+
+(cl-comment "The mono relation is transitive on activity occurrences.")
+
+(forall (s1 s2 s3 a)
+    (if   (and   (mono s1 s2 a)
+                 (mono s2 s3 a))
+          (mono s1 s3 a)))
+
+(cl-comment "Two activity occurrences are occurrence isomorphic iff they are occurrences of
+atomic activities that have a common subactivity with the complex activity a.")
+
+(forall (s1 s2 a) (iff (iso_occ s1 s2 a)
+(exists (a1 a2 a3)
+        (and    (atomic a1)
+		(atomic a2)
+		(atomic a3)
+		(subactivity a3 a)
+		(occurrence_of s1 (conc a1 a3))
+                (occurrence_of s2 (conc a2 a3))
+		(forall (a4)
+			(if	(and	(subactivity a4 (conc a3 a1))
+					(subactivity a4 (conc a3 a2))
+					(subactivity a4 a))
+				(or	(subactivity a3 a4)
+					(= a3 a4))))))))
+
+(cl-comment "For every two occurrences of the same activity on different branches of an
+activity tree, there exist homomorphic occurrences on those branches.")
+
+(forall (s1 s2 a) (iff (hom s1 s2 a)
+(exists (occ1 occ2)
+	(and    (iso_occ s1 s2 a)
+		(not (min_precedes s1 s2 a))
+		(not (min_precedes s2 s1 a))
+		(subactivity_occurrence s1 occ1)
+		(subactivity_occurrence s2 occ2)
+		(occurrence_of occ1 a)
+		(occurrence_of occ2 a)))))
+
+(cl-comment "An occurrence occ1 is the root occurrence of an occurrence of a if and only if
+it is a subactivity occurrence and it is the root of an activity tree for a.")
+
+(forall (s occ)
+(iff (root_occ s occ)
+(exists (a)
+    (and    (occurrence_of occ a)
+            (subactivity_occurrence s occ)
+            (root s a)))))
+
+(cl-comment "An occurrence occ1 is the leaf occurrence of an occurrence of a if and only if
+it is a subactivity occurrence and it is the leaf of an activity tree for a.")
+
+(forall (s occ) 
+(iff (leaf_occ s occ)
+(exists (a)
+	(and	(occurrence_of occ a)
+		(subactivity_occurrence s occ)
+		(leaf s a)))))
+
+(cl-comment "Two complex activity occurrences are in the same grove
+iff they are occurrences of the same activity and their
+root occurrences are siblings.")
+
+(forall (occ1 occ2) 
+(iff (same_grove occ1 occ2)
+(exists (a s1 s2)
+	(and	(occurrence_of occ1 a)
+		(occurrence_of occ2 a)
+		(root_occ s1 o1)
+		(root_occ s2 o2)
+                (or     (and    (initial s1)
+                                (initial s2))
+                        (exists (s4 a1 a2)
+                                (and    (= s1 (successor a1 s4))
+                                        (= s2 (successor a2 s4)))))))))
+
+
+
+)

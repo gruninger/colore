@@ -1,0 +1,127 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-module RCC
+
+(cl-comment "Axioms of the Region Connection Calculus")
+
+(cl-comment "P: Parthood")
+
+(forall (x y)
+	(iff 	(P x y)
+		(forall (z) 
+				(if 	(C z x)
+					(C z y) )))
+)
+
+
+(cl-comment "PP: Proper Parthood")
+
+(forall (x y)
+	(iff 	(PP x y)
+			(and	(P x y)
+					(P y x))))
+
+
+(cl-comment "O: Overlap")
+
+(forall (x y)
+	(iff 	(O x y)
+		(exists (z)
+				(and 	(P z x)
+					(P z y) )))
+)
+
+
+(cl-comment "EC: External connection")
+
+(forall (x y)
+	(iff 	(EC x y)
+		(and 	(C x y)
+			(not (O x y)) ))
+)
+
+
+(cl-comment "NTPP: Non-tangential parthood")
+
+(forall (x y)
+	(iff 	(NTP x y)
+		(and 	(P x y)
+			(not (exists (z) 
+					(and 	(EC z x)
+						(EC z y))
+			)) ))
+)
+
+
+(cl-comment "R1: Reflexivity")
+
+(forall (x) 
+		(C x x))
+
+(cl-comment "R2: Symmetry")
+
+(forall (x y)
+	(if 	(C x y)
+		(C y x)))
+
+(cl-comment "R3: Universal element")
+
+(exists (u)
+	(forall (x)
+		(C x u)))	
+
+(cl-comment "R4")
+
+(forall (x)
+	(exists (y)
+		(and	(not (= x u))		
+					(iff	(C x (- y))
+							(not (NTPP x y))
+)	)	)			)
+
+(cl-comment "R5")
+
+(forall (x)
+	(exists (y)
+		(and	(not (= x u))		
+					(iff	(O x (- y))
+							(not (P x y))
+)	)	)			)
+
+
+(cl-comment "R5: Sum")
+
+(forall (x y z) 	
+	(iff 	(C x (sum y z)) 
+		(or 	(C x y)
+				(C x z))
+)	) 	
+
+
+(cl-comment "R6: Product")
+
+(forall (x y z) 	
+	(if 	(O y z)
+			(iff 	(C x (prod y z)) 
+					(exists (w)
+						(and 	(P w y)
+									(P w z)
+									(C x w)
+)	) 		)		)	)
+
+(cl-comment "R8: Existence of non-tangential parts")
+
+(forall (x)
+	(exists (y)
+		(NTPP y x)))
+
+
+)
