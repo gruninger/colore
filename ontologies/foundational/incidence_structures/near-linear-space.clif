@@ -9,37 +9,29 @@
  *	Torsten Hahmann - correction
  *******************************************************************************/
 
-(cl-module linear-space
+(cl-module near-linear-space
 
-(cl-imports near-linear-space)
+(cl-imports bipartite-incidence)
 
-(cl-comment "Any two distinct points are contained in exactly one line.")
-(forall (x y)
-	(if	(and	
-			(point x)
-			(point y)
-			(not (= x y))
-		)
-		(exists (z)
+(cl-comment "Any line contains at least two distinct points.")
+(forall (l)
+	(if	(line l)
+		(exists (p1 p2)
 			(and	
-				(line z)
-				(in x z)
-				(in y z)
-				(forall (v)
-					(if
-						(and
-							(line v)
-							(in x v)
-							(in y v)
-						)
-						(= v z)
-					)
-				)
-			)
-		)
-	)
-)
+				(point p1)
+				(point p2)
+				(not (= p1 p2))
+				(in p1 l)
+				(in p2 l)))))
 
-
+(cl-comment "Two points are in at most one line.")
+(forall (p1 p2 l1 l2)
+	(if	(and	
+			(in p1 l1)
+			(in p1 l2)
+			(not (= p1 p2))
+			(in p2 l1)
+			(in p2 l2))
+		(= l1 l2)))
 
 )

@@ -6,11 +6,12 @@
  *
  * Contributors:
  *    Michael Gruninger - initial implementation
+ *	Torsten Hahmann - correction
  *******************************************************************************/
 
-(cl-module affine-plane.clif
+(cl-module affine-plane
 
-(cl-imports linear-space.clif)
+(cl-imports linear-space)
 
 (cl-comment "Any point p not contained in a line l1 is contained in precisely one line parallel to l1.")
 (forall (p l1)
@@ -35,28 +36,41 @@
 		(= l2 l3)))
 
 
-(cl-comment "There exists a set of three non-collinear points.")
+(cl-comment "There exists a set of three non-colinear points.")
 
-(exists (p1 p2 p3 p4)
-	(and	(point p1)
+(exists (p1 p2 p3)
+	(and	
+		(point p1)
 		(point p2)
 		(point p3)
-		(point p4)
 		(not (exists (l)
-			(and	(line l)
+			(and	
+				(line l)
 				(in p1 l)
 				(in p2 l)
 				(in p3 l))))))
 
+
 (cl-comment "Two distinct lines are parallel iff they do not have any points in common.")
 (forall (l1 l2)
-(iff	(parallel l1 l2)
-	(and	(line l1)
-		(line l2)
-		(forall (p)
-			(if	(and	(point p)
-					(in p l1)
-					(in p l2))
-				(= l1 l2))))))
+	(iff	
+		(parallel l1 l2)
+		(and	
+			(line l1)
+			(line l2)
+			(forall (p)
+				(if	
+					(and
+						(point p)
+						(in p l1)
+						(in p l2)
+					)
+					(= l1 l2)
+				)
+			)
+		)
+	)
+)
+
 
 )
