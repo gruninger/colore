@@ -8,28 +8,51 @@
  *    Torsten Hahmann - initial implementation
  *******************************************************************************/
 
-(cl-module ontologies/generic/mereotopologies/rt
+(cl-module ontologies/generic/mereotopologies/rtminus_stonian_portholattice
 
-(cl-comment "axioms of the mereotopology RT")
+(cl-comment "mapping axioms between the mereotopology RT- and Stonian p-ortholattices")
 
-(cl-imports ontologies/generic/mereotopologies/rt_minus_ec)
-
-(cl-comment "D11: Weak contact")
 
 (forall (x y)
-	(iff	(WCont x y)
-		(and 	(not (C (c x) (c y)))
-			(forall (z)
-				(if 	(and	(P x z)
-						(OP z) )
-					(C (c x) y)
-)	)	)	)	)
+	(iff (P x y)
+		(leq x y)
+)	)
 
 
-(cl-comment "A12: Existence of a weak contact")
+(forall (x y)
+	(iff
+		(C x y)
+		(and (not (= x (oc y)))
+			(leq x (oc y)))
+)	)
 
-(exists (x y)
-	(WCont x y)
-)
+
+(forall (x y)
+	(iff
+		(O x y)
+		(not (= (meet x y) 0))
+)	)
+
+
+(forall (x y)
+	(iff
+		(= x (- y))
+		(= x (oc y))
+)	)
+
+
+(forall (x y)
+	(iff
+		(= y (c x))
+		(= y (pc (pc x)))
+)	)
+
+
+(forall (x y)
+	(iff
+		(= y	(i x))	
+		(= y (oc (pc x)))
+)	)
+
 
 )
