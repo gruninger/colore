@@ -1,0 +1,261 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *	Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-module ontologies/generic/mereotopologies/inch_calculus
+
+(cl-comment 'The INCH calculus (Gotts, 1994)')
+
+
+(cl-comment 'D1: CS (constituent)')
+
+(forall (x y)
+	(iff
+		(CS x y)
+		(forall (z)
+			(if 	
+				(INCH x z)
+				(INCH y z)
+			)
+		)
+	)
+)
+
+(cl-comment 'D2: OV (equi-dimensional overlap)')
+
+(forall (x y)
+	(iff
+		(OV x y)
+		(and (INCH x y) (INCH y x))
+	)
+)
+
+
+(cl-comment 'D3: CO (connected to)')
+
+(forall (x y)
+	(iff
+		(CO x y)
+		(exists (z)
+			(and (not (ZEX z)) (CS z x) (CS z y))
+		)
+	)
+)
+
+(cl-comment 'D4: CH (chunk)')
+
+(forall (x y)
+	(iff
+		(CH x y)
+		(and 
+			(INCH x y)
+			(forall (z)
+				(if
+					(OV x z)
+					(OV y z)
+				)
+			)
+		)
+	)
+)
+
+
+(cl-comment 'D5: EL (lower-dimensional part)')
+
+(forall (x y)
+	(iff
+		(EL x y)
+		(and (CS x y) (not (INCH x y)))
+	)
+)
+
+
+(cl-comment 'D6')
+(forall (x)
+	(iff	
+		(ZEX x)
+		(not (INCH x x))
+	)
+)
+
+
+(cl-comment 'D7')
+
+(forall (x y)
+	(iff	
+		(GED x)
+		(or
+			(ZEX x)
+			(exists (z)
+				(and (INCH x z) (INCH z,y))
+			)
+		)
+	)
+)
+
+
+(cl-comment 'D8')
+
+(forall (x y)
+	(iff	
+		(ED x y)
+		(and (GED x y) (GED y x))
+	)
+)
+
+
+(cl-comment 'D9')
+
+(forall (x y)
+	(iff	
+		(GD x y)
+		(and (GED x y) (not (GED y x)))
+	)
+)
+
+
+
+
+(cl-comment 'PA1: extensionality of INCH')
+
+(forall (x y)
+	(iff
+		(= x y)
+		(forall (z)
+			(iff
+				(INCH x z)
+				(INCH y z)
+			)
+		)
+	)
+)
+
+(cl-comment 'PA2: extensionality of INCH)
+
+(forall (x y)
+	(iff
+		(= x y)
+		(forall (z)
+			(iff
+				(INCH z x)
+				(INCH z y)
+			)
+		)
+	)
+)
+
+
+(cl-comment 'PA3: reflexivity of INCH')
+
+(forall (x y)
+	(if	
+		(INCH x y)
+		(INCH x x)
+	)
+)
+
+
+(cl-comment 'PA4: extents are dimensionally comparable')
+
+(forall (x y)
+	(or (GED x y) (GED y x))
+)
+
+
+(cl-comment 'PA5: GED transitive')
+
+(forall (x y z)
+	(if
+		(and (GED x y) (GED y z))
+		(GED x z)
+	)
+)
+
+
+(cl-comment 'PA6')
+
+(forall (x y z)
+	(if 
+		(and (INCH x y) (INCH y z) (INCH z x))
+		(INCH y x)
+	)
+)
+
+
+
+(cl-comment 'PA7')
+
+(forall (x y)
+	(if
+		(INCH x y)
+		(exists (z)
+			(and (CS z x) (OV z y))
+		)
+	)
+)
+
+
+(cl-comment 'PA8')
+
+(forall (x y)
+	(if
+		(CH x y)
+		(CS x y)
+	)
+)
+
+
+(cl-comment 'PA9: z = sum(x,y)')
+
+(forall (x y)
+	(if
+		(EqDim x y)
+		(exists (z)
+			(forall (w)
+				(iff
+					(INCH z w)
+					(or (INCH x w) (INCH y w))
+				)
+			)
+		)
+	)
+)
+
+(cl-comment 'PA10: z = diff(x,y)')
+
+(forall (x y)
+	(if
+		(EqDim x y)
+		(exists (z)
+			(forall (w)
+				(iff
+					(INCH z w)
+					(exists (v)
+						(and 
+							(INCH v w)
+							(INCH v x)
+							(forall (u)
+								(if
+									(PO v u)
+									(PO x u)
+								)
+							)
+							(not (PO v y))
+						)
+					)
+				)
+			)
+		)
+	)
+)
+
+
+
+)
+
