@@ -8,7 +8,7 @@
  *    Torsten Hahmann - initial implementation
  *******************************************************************************/
 
-(cl-module ontologies/generic/mereotopologies/rt_minus
+(cl-module http://stl.mie.utoronto.ca/colore/generic/space/mereotopologies/rt_minus
 
 (cl-comment "axioms of the generalized mereotopology RT-")
 
@@ -16,101 +16,101 @@
 (cl-comment "D1: Parthood")
 
 (forall (x y)
-	(iff 	(P x y)
+	(iff 	(p x y)
 		(forall (z) 
-				(if 	(C z x)
-					(C z y) )))
+				(if 	(c z x)
+					(c z y) )))
 )
 
 
-(cl-comment "PP: Proper Parthood")
+(cl-comment "pp: Proper Parthood")
 
 (forall (x y)
-	(iff 	(PP x y)
-			(and	(P x y)
-					(P y x))))
+	(iff 	(pp x y)
+			(and	(p x y)
+					(p y x))))
 					
 
 (cl-comment "D3: Overlap")
 
 (forall (x y)
-	(iff 	(O x y)
+	(iff 	(o x y)
 		(exists (z)
-				(and 	(P z x)
-					(P z y) )))
+				(and 	(p z x)
+					(p z y) )))
 )
 
 
 (cl-comment "D4: External connection")
 
 (forall (x y)
-	(iff 	(EC x y)
-		(and 	(C x y)
-			(not (O x y)) ))
+	(iff 	(ec x y)
+		(and 	(c x y)
+			(not (o x y)) ))
 )
 
 
 (cl-comment "D6: Non-tangential parthood")
 
 (forall (x y)
-	(iff 	(NTP x y)
-		(and 	(P x y)
+	(iff 	(ntp x y)
+		(and 	(p x y)
 			(not (exists (z) 
-					(and 	(EC z x)
-						(EC z y))
+					(and 	(ec z x)
+						(ec z y))
 			)) ))
 )
 
 
-(cl-comment "D7: Closure function c(x) as -i(-x)")
+(cl-comment "D7: Closure function cl(x) as -int(-x)")
 
 (forall (x)
-	(= (c x) (- (i (- x))))
+	(= (cl x) (compl (int (compl x))))
 )
 
 
 (cl-comment "D8: Open")
 
 (forall (x)
-	(iff 	(OP x)
-		(= x (i x)))
+	(iff 	(open x)
+		(= x (int x)))
 )
 
 
 (cl-comment "D9: Closed")
 
 (forall (x)
-	(iff 	(CL x)
-		(= x (c x)))
+	(iff 	(closed x)
+		(= x (cl x)))
 )
 
 
 (cl-comment "A1: C reflexive")
 
 (forall (x) 
-	(C x x)
+	(c x x)
 )
 
 
 (cl-comment "A2: C symmetric")
 
 (forall (x y) 
-	(if (C x y) (C y x))
+	(if (c x y) (c y x))
 )
 
 
 (cl-comment "A3: C extensional")
 
 (forall (x y) 
-	(if 	(forall (z) (iff (C z x) (C z y)))
+	(if 	(forall (z) (iff (c z x) (c z y)))
 		(= x y))
 )
 
 
-(cl-comment "A4: Universally connected region 1")
+(cl-comment "A4: Universally connected region universe")
 
 (forall (y) 
-	(C 1 y)
+	(c universe y)
 )
 
 
@@ -119,24 +119,24 @@
 (forall (x y) 
 	(exists (z) 
 		(forall (u) 
-			(iff 	(C u z) 
-				(or (C u x) (C u y)))
+			(iff 	(c u z) 
+				(or (c u x) (c u y)))
 )))
 
 
 
-(cl-comment "A6: Unique intersections (MEET)")
+(cl-comment "A6: Unique intersections (meet)")
 
 (forall (x y) 
-	(if 	(O x y)
+	(if 	(o x y)
 		(exists (z)
-			(and 	(= z (MEET x y))
+			(and 	(= z (meet x y))
 				(forall (u) 
-					(iff 	(C u z)
+					(iff 	(c u z)
 						(exists (v)
-							(and 	(P v x)
-								(P v y)
-								(C v u)
+							(and 	(p v x)
+								(p v y)
+								(c v u)
 )	)	)	)	)	)	)	)
 
 
@@ -144,14 +144,14 @@
 (cl-comment "A7: Unique complements")
 
 (forall (x)
-	(if	(exists (y) (not (C y x)))
+	(if	(exists (y) (not (c y x)))
 		(exists (z) 
-			(and	(= (- x) z)
+			(and	(= (compl x) z)
 					(forall (u)
-						(iff 	(C u z)
+						(iff 	(c u z)
 							(exists (v)
-								(and 	(not (C v x))
-									(C v u)
+								(and 	(not (c v x))
+									(c v u)
 )	)	)	)		)	)	)	)
 
 
@@ -159,28 +159,28 @@
 
 (forall (x)
 	(exists (z)
-		(and	(= (i x) z)
+		(and	(= (int x) z)
 				(forall (u)
-					(iff 	(C u z)
+					(iff 	(c u z)
 						(exists (v)
-							(and 	(NTP v x)
-								(C v u)
+							(and 	(ntp v x)
+								(c v u)
 )	)	)		)	)	)	)
 
 
 (cl-comment "A9: closure of the universal region")
 
-(= (c 1) 1)
+(= (cl universe) universe)
 
 
 (cl-comment "A10: Open intersection of open elements")
 
 (forall (x y)
 	(if 
-		(and 	(OP x)
-			(OP y)
-			(O x y))
-		(OP (MEET x y))
+		(and 	(open x)
+			(open y)
+			(o x y))
+		(open (meet x y))
 )	)
 
 
