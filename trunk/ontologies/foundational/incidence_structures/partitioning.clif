@@ -1,0 +1,46 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-module http://www.stl.mie.utoronto.ca/colore/foundational/incidence_structures/partitioning
+
+(cl-imports http://www.stl.mie.utoronto.ca/colore/foundational/incidence_structures/weak_tripartite)
+
+(cl-comment "A line is incident with a unique plane.")
+
+(forall (x y z)
+	(if	(and	(line x)
+			(plane y)
+			(plane z)
+			(in x y)
+			(in x z))
+		(= y z)))
+
+(cl-comment "A line is incident with at most two points.")
+
+(forall (x y z w)
+	(if	(and	(line x)
+			(point y)
+			(point z)
+			(point w)
+			(in y x)
+			(in z x)
+			(in w x))
+		(or	(= w z)
+			(= w y))))
+
+(forall (x)
+	(if	(line x)
+		(exists (y z)
+			(and	(point y)
+				(point z)
+				(in y x)
+				(in z x)))))
+
+)
