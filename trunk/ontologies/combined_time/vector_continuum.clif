@@ -1,0 +1,76 @@
+
+(cl-text vector_continuum
+
+(cl-imports linear_point)
+
+(forall (x)
+	(iff	(timepoint x)
+		(not (timeinterval x))))
+
+(forall (i p)
+	(if	(and	(= p (beginof i))
+			(= q (endof i)))
+		(= i (between p q))))
+
+(forall (i)
+	(if	(timeinterval i) 
+		(and	(timepoint (beginof i))
+			(timepoint (endof i)))))
+
+(forall (p q)
+        (if     (and    (timepoint p)
+                        (timepoint q))
+                (and    (= p (beginof (between p q)))
+                        (= q (endof (between p q)))))
+
+(forall (i j)
+(iff	(meets i j)
+	(and	(timeinterval i)
+		(timeinterval j)
+		(= (endof i) (beginof j)))))
+
+(forall (x y z)
+	(if	(meets-at x y z) 
+		(and 	(timeinterval x) 
+			(timeinterval z) 
+			(timepoint y))))
+ 
+(forall (i p j)
+	(iff	(meets-at i p j) 
+		(and	(= p (endof i))
+			(= p (beginof j))))) 
+
+(forall (p q)
+	(iff	(before p q) 
+		(exists (i j k) 
+			(and	(meets-at i p j)
+				(meets-at j q k)))))
+
+(forall (i j)
+	(iff	(meets i j)
+		(and	(timeinterval i)
+			(timeinterval j)
+			(= (endof i) (beginof j)))))
+
+(forall (i j)
+	(if	(meets i j)
+		(= (plus i j) (between (beginof i) (endof j)))))
+
+(forall (x) 
+	(iff	(moment x) 
+		(= (beginof x) (endof x))))
+
+(forall (i)
+	(iff	(forwards i)
+		(before (beginof i) (endof i)))) 
+
+(forall (i)
+	(= (back i) (between (endof i)(beginof i))))
+
+(forall (x) 
+	(iff	(moment x) 
+		(and	(timepoint x) 
+			(timeinterval x)))) 
+
+
+)

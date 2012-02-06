@@ -1,0 +1,41 @@
+
+(cl-text owltime_inside
+
+(cl-imports owltime_interval)
+
+(forall (t x)
+	(if	(inside t x)
+		(and	(Instant t)
+			(Interval x))))
+
+(forall (t x)
+	(iff	(beginsOrIn t x)
+		(or	(begins t x)
+			(inside t x))))
+
+(forall (t t1 t2 x)
+	(if	(and	(inside t x)
+			(begins t1 x)
+			(ends t2 x)
+			(ProperInterval x))
+		(and	(before t1 t)
+			(before t t2))))
+
+(forall (t1 t2 i)
+	(if	(and	(inside t1 i)
+			(inside t2 i))
+		(or	(before t1 t2)
+			(before t2 t1)
+			(= t1 t2))))
+
+(forall (i t1 t2)
+	(if	(and	(inside t1 i)
+			(begins t2 i))
+		(before t2 t1)))
+
+(forall (i t1 t2)
+	(if	(and	(inside t1 i)
+			(begins t2 i))
+		(before t1 t2)))
+
+)
