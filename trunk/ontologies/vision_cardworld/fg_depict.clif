@@ -1,0 +1,106 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-text fg_depict
+
+(cl-imports fg)
+
+(cl-imports kernel)
+
+(forall (e e1 s l l1 a) 
+	(if 	(and 	(depicts l e) 
+			(depicts l1 e1) 
+			(part e s) 
+			(part e1 s) 
+			(not (indet e e1)))
+		(iff 	(theta a e e1) 
+			(theta a l l1))))
+
+(forall (e e1 s l l1 a) 
+	(if 	(and 	(depicts l e) 
+			(depicts l1 e1) 
+			(part e s) 
+			(part e1 s) 
+			(indet e e1)) 
+		(iff 	(theta a e e1) 
+			(or	(theta a l l1)
+				(theta (complement a) l l1)))))
+
+(forall (e e1 s l l1) 
+	(if 	(and 	(depicts l e) 
+			(depicts l1 e1) 
+			(part e s) 
+			(part e1 s)) 
+		(iff 	(parallel e e1) 
+			(parallel l l1))))
+
+(forall (l1 l2 e)
+	(if	(and	(depicts l1 e)
+			(depicts l2 e)
+			(not (= l1 l2)))
+		(collinear l1 l2)))
+
+(forall (e e1 s l l1 r) 
+	(if 	(and 	(part e s) 
+			(part e1 s) 
+			(depicts l e) 
+			(depicts l1 e1) 
+			(in l r) 
+			(not (indet e e1)) 
+			(not (e=e1))) 
+		(iff 	(inside e e1) 
+			(iff 	(depicts r s) 
+				(between l l1 r)))))
+
+(forall (e e1 s l l1 r) 
+	(if 	(and 	(part e s) 
+			(part e1 s) 
+			(indet e e1)
+			(depicts l e) 
+			(depicts l1 e1) 
+			(theta a l l1)
+			(acute a)
+			(in l r) 
+			(not (e=e1))) 
+		(iff 	(convex e e1) 
+			(iff 	(depicts r s) 
+				(between l l1 r)))))
+
+(forall (e e1 s l l1 r) 
+	(if 	(and 	(part e s) 
+			(part e1 s) 
+			(indet e e1)
+			(depicts l e) 
+			(depicts l1 e1) 
+			(theta a l l1)
+			(obtuse a)
+			(in l r) 
+			(not (e=e1))) 
+		(iff 	(convex e e1) 
+			(iff 	(depicts r s) 
+				(not (between l l1 r))))))
+
+(forall (l l1 r r1 e s) 
+	(if 	(and 	(in l r)
+			(in l1 r1) 
+			(depicts l e) 
+			(depicts l1 e) 
+			(part e s) 
+			(line l) 
+			(line l1) 
+			(edge e) 
+			(region r) 
+			(region r1)) 
+		(iff 	(iff 	(depicts r s) 
+				(depicts r1 s)) 
+			(iff 	(between l l1 r) 
+				(between l1 l r1)))))
+
+)

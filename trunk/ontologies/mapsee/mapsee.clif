@@ -1,0 +1,221 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-text mapsee
+
+(forall (x)
+	(iff	(image_object x)
+		(or	(chain x)
+			(region x))))
+
+(forall (x)
+	(not (and	(chain x)
+			(region x))))
+
+(forall (x y)
+	(if	(tee x y)
+		(and	(chain x)
+			(chain y))))
+
+(forall (x y)
+	(if	(chi x y)
+		(and	(chain x)
+			(chain y))))
+
+(forall (x y)
+	(if	(bounds x y)
+		(and	(chain x)
+			(region y))))
+
+(forall (x)
+	(if	(closed x)
+		(chain x)))
+
+(forall (x y)
+	(if	(interior x y)
+		(and	(closed x)
+			(region y))))
+
+(forall (x y)
+	(if	(exterior x y)
+		(and	(closed x)
+			(region y))))
+
+(forall (x)
+	(iff	(scene_object x)
+		(or	(linear_scene_object x)
+			(area x))))
+
+(forall (x)
+	(not	(and	(linear_scene_object x)
+			(area x))))
+
+(forall (x)
+	(iff	(linear_scene_object x)
+		(or	(road x)
+			(river x)
+			(shore x))))
+
+(forall (x)
+	(not	(and	(road x)
+			(river x))))
+
+(forall (x)
+	(not	(and	(road x)
+			(shore x))))
+
+(forall (x)
+	(not	(and	(river x)
+			(shore x))))
+
+(forall (x)
+	(iff	(area x)
+		(or	(land x)
+			(water x))))
+
+(forall (x y)
+	(if	(and	(river x)
+			(river x))
+		(not (cross x y))))
+
+(forall (x y)
+	(if	(shore x)
+		(loop x)))
+
+(forall (x y)
+	(if	(river x)
+		(not (loop x))))
+
+(forall (x  y z)
+	(if	(and	(shore x)
+			(inside x y)
+			(outside x z))
+		(and	(iff	(land y)
+				(water z))
+			(iff	(water y)
+				(land z)))))
+
+(forall (x y)
+	(if	(and	(beside x y)
+			(or	(road x)
+				(river x)))
+		(land y)))
+
+(forall (x)
+	(if	(river x)
+		(or	(exists (y)
+				(and	(river y)
+					(joins x y)))
+			(exists (z)
+				(and	(shore z)
+					(joins x z))))))
+
+(forall (x y)
+	(if	(cross x y)
+		(and	(scene_object x)
+			(scene_object y))))
+
+(forall (x)
+	(if	(loop x)
+		(scene_object x)))
+
+(forall (x y)
+	(if	(inside x y)
+		(and	(scene_object x)
+			(scene_object y))))
+
+(forall (x y)
+	(if	(outside x y)
+		(and	(scene_object x)
+			(scene_object y))))
+
+(forall (x y)
+	(if	(beside x y)
+		(and	(scene_object x)
+			(scene_object y))))
+
+(forall (x y)
+	(if	(joins x y)
+		(and	(scene_object x)
+			(scene_object y))))
+
+(forall (x)
+	(iff	(image_object x)
+		(not (scene_object x))))
+
+(forall (i s)
+	(if	(depicts i s)
+		(and	(image_object i)
+			(scene_object s))))
+
+(forall (i s)
+	(if	(and	(depicts i s)
+			(region i))
+		(area s)))
+
+(forall (i s)
+	(if	(and	(depicts i s)
+			(chain i))
+		(linear_scene_object s)))
+
+(forall (i1 i2 s1 s2)
+	(if	(and	(depicts i1 s1)
+			(depicts i2 s2))
+		(iff	(tee i1 i2)
+			(joins s1 s2))))
+
+(forall (i1 i2 s1 s2)
+	(if	(and	(depicts i1 s1)
+			(depicts i2 s2))
+		(iff	(chi i1 i2)
+			(cross s1 s2))))
+
+(forall (i1 i2 s1 s2)
+	(if	(and	(depicts i1 s1)
+			(depicts i2 s2))
+		(iff	(bounds i1 i2)
+			(beside s1 s2))))
+
+(forall (i s)
+	(if	(and	(depicts i s)
+		(iff	(closed i)
+			(loop s))))
+
+(forall (i1 i2 s1 s2)
+	(if	(and	(depicts i1 s1)
+			(depicts i2 s2))
+		(iff	(interior i1 i2)
+			(inside s1 s2))))
+
+(forall (i1 i2 s1 s2)
+	(if	(and	(depicts i1 s1)
+			(depicts i2 s2))
+		(iff	(exterior i1 i2)
+			(outside s1 s2))))
+
+(forall (i)
+	(if	(image_object i)
+		(exists (s)
+			(and	(scene_object s)
+				(depicts i s)
+				(forall (sp)
+					(if	(depicts i sp)
+						(= s sp)))))))
+
+(forall (s)
+	(if	(scene_object s)
+		(exists (i)
+			(and	(image_object s)
+				(depicts i s)
+				(forall (ip)
+					(if	(depicts ip s)
+						(= i ip)))))))
+
+)
