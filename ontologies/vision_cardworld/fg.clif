@@ -1,0 +1,139 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-text fg
+
+(cl-imports scene)
+
+(forall (e t v) 
+	(iff 	(meet e t v) 
+		(and 	(edge e) 
+			(edge t) 
+			(point v) 
+			(part v e) 
+			(part v t) 
+			(not (= e t)))))
+
+(forall (e)
+	(if 	(edge e) 
+		(exists (e1 e2 v v1) 
+			(and 	(meet e e1 v) 
+				(meet e2 e v1) 
+				(not (= e1 e2))))))
+
+(forall (e e1 v v1) 
+	(if 	(and 	(meet e e1 v) 
+			(meet e e1 v1)) 
+		(= v v1)))
+
+(forall (x y) 
+	(iff 	(connected x y) 
+		(exists (z w) 
+			(and 	(meet z y w)
+				(connected x z)))))
+
+(forall (x) 
+	(if 	(edge x) 
+		(connected x x)))
+
+(forall (x y z) 
+	(if 	(and 	(connected x y) 
+			(connected y z)) 
+		(connected x z)))
+
+(forall (e e1) 
+	(if 	(outer e) 
+		(iff 	(outer e1) 
+			(connected e e1))))
+
+(forall (e e1) 
+	(if 	(and 	(edge e) 
+			(edge e1)) 
+		(exists (s) 
+			(iff 	(and 	(part e s) 
+					(part e1 s))
+					(or 	(parallel e e1) 
+						(exists (a) 
+							(theta a e e1)))))))
+
+(forall (e1 e2 e3) 
+	(iff 	(or 	(sameside e1 e2 e3) 
+			(opposite e1 e2 e3)) 
+		(exists (s) 
+			(and 	(edge e1) 
+				(edge e2) 
+				(edge e3) 
+				(part e1 s) 
+				(part e2 s) 
+				(part e3 s)))))
+
+(forall (e1 e2) 
+	(if 	(inside e1 e2) 
+		(exists (s) 
+			(and 	(edge e1) 
+				(edge e2)
+				(part e1 s) 
+				(part e2 s)))))
+
+(forall (e1 e2) 
+	(if 	(outside e1 e2) 
+		(exists (s) 
+			(and 	(edge e1) 
+				(edge e2) 
+				(part e1 s) 
+				(part e2 s)))))
+
+(forall (e e1 v) 
+	(if 	(meet e e1 v) 
+		(iff 	(inside e e1) 
+			(not (inside e1 e)))))
+
+(forall (e e1 e2 s) 
+	(if 	(sameside e1 e2 e) 
+		(iff 	(inside e e1) 
+			(inside e e2))))
+
+(forall (e e1 e2 s) 
+	(if 	(opposite e1 e2 e) 
+		(iff 	(inside e e1) 
+			(not (inside e e2)))))
+
+(forall (e e1) 
+	(iff 	(indet e e1) 
+		(iff 	(inside e e1) 
+			(outside e e1))))
+
+(forall (e s) 
+	(if 	(and 	(edge e) 
+			(part e s)) 
+		(exists (e1) 
+			(and 	(part e1 s) 
+				(contiguous e e1) 
+				(outer e1) 
+				(convex e e1)))))
+
+(forall (e s) 
+	(if 	(and 	(not (outer e)) 
+			(part e s)) 
+		(exists (e1) 
+			(and 	(part e1 s) 
+				(contiguous e e1) 
+				(connected e e1) 
+				(not (convex e e1))))))
+
+(forall (e1 e2)
+(iff	(convex e1 e2)
+	(iff	(inside e1 e2)
+		(or	(parallel e1 e2)
+			(exists (a)
+				(and	(theta a e1 e2)
+					(acute a)))))))
+
+)
