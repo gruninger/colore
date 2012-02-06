@@ -1,0 +1,89 @@
+
+(cl-text owltime_interval
+
+(cl-imports owltime_instants)
+
+(forall (t)
+	(if	(Instant t)
+		(TemporalEntity t)))
+
+(forall (t)
+	(if	(Interval t)
+		(TemporalEntity t)))
+
+(forall (t)
+	(if	(TemporalEntity t)
+		(or	(Interval t)
+			(Instant t))))
+
+(forall (t x)
+	(if	(begins t x)
+		(and	(Instant t)
+			(TemporalEntity x))))
+
+(forall (t x)
+	(if	(ends t x)
+		(and	(Instant t)
+			(TemporalEntity x))))
+
+(forall (t)
+	(iff	(Instant t)
+		(begins t t)))
+
+(forall (t)
+	(iff	(Instant t)
+		(ends t t)))
+
+(forall (x t1 t2)
+	(if	(and	(TemporalEntity x)
+			(begins t1 x)
+			(begins t2 x))
+		(= t1 t2)))
+
+(forall (x t1 t2)
+	(if	(and	(TemporalEntity x)
+			(ends t1 x)
+			(ends t2 x))
+		(= t1 t2)))
+
+(forall (x t1 t2)
+	(if	(timeBetween x t1 t2)
+		(and	(TemporalEntity x)
+			(Instant t1)
+			(Instant t2))))
+
+(forall (t1 t2)
+	(if	(not (= t1 t2))
+		(forall (x)
+			(iff	(timeBetween x t1 t2)
+				(and	(begins t1 x)
+					(ends t2 x))))))
+
+(forall (x t1 t2)
+	(if	(and	(Interval x)
+			(begins t1 x)
+			(ends t2 x))
+		(not (before t2 t1))))
+
+(forall (x t1 t2)
+	(if	(and	(ProperInterval x)
+			(begins t1 x)
+			(ends t2 x))
+		(before t1 t2)))
+
+(forall (t1 t2)
+	(if	(and	(Instant t1)
+			(Instant t2)
+			(before t1 t2))
+		(exists (x)
+			(timeBetween x t1 t2))))
+
+(forall (x)
+	(iff	(ProperInterval x)
+		(and	(Interval x)
+			(forall (t1 t2)
+				(if	(and	(begins t1 x)
+						(ends t2 x))
+					(not (= t1 t2)))))))
+
+)

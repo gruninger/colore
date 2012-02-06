@@ -1,0 +1,89 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text stonian_p_ortho_lattice_meet
+
+(cl-comment "Defining the p-ortholattices satisfying the Stone identity using only meet")
+
+
+(cl-comment "L2: Commutativity")
+
+(forall (x y)
+	(= 	(meet x y) 
+		(meet y x)))
+				
+(cl-comment "L3: Associativity")
+
+(forall (x y z)
+	(= 	(meet x	(meet y z))
+		(meet z (meet x y))))
+
+(cl-comment "L4: Absorption Laws with Orthocomplement")
+
+(forall (x y)
+	(= 	x (meet x (oc (meet (oc x) (oc y)))))
+)
+
+(cl-comment "L5: Upper Boundedness")
+
+(forall (x)
+	(= 	1 (meet 1 x)))
+
+
+(cl-comment "PC1'")
+
+(forall (x y)
+	(= 	(meet x (pc (meet x y)))
+		(meet x (pc y)))	
+)
+
+
+(cl-comment "PC2'")
+
+(forall (x)
+	(= 	1 (pc 0))
+)
+
+(cl-comment "PC2''")
+
+(forall (x)
+	(= 	0 (pc 1))
+)
+
+
+(cl-comment "OC1: Orthocomplement is a complement")
+
+(forall (x)
+	(= 	0 (meet x (oc x)))
+)
+
+(cl-comment "OC2: Orthocomplement is involutary")
+
+(forall (x)
+	(= 	x (oc (oc x)))
+)
+
+
+(cl-comment "OC3'")
+
+(forall (x)
+	(= 	(join x y)
+		(oc (meet (oc x) (oc y))))
+)
+
+
+(cl-comment "S1: Stone identity")
+
+(forall (x y)
+	(=	(pc (meet x y)) (join (pc x) (pc y)))
+)
+
+
+)

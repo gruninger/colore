@@ -1,0 +1,41 @@
+
+(cl-text cardworld_outer
+
+(cl-imports cardworld_edge)
+
+(forall (e)
+        (if     (outer e) (edge e)))
+
+(forall (s)
+        (if     (surface s)
+                (exists (e)
+                        (and    (outer e) (part e s)))))
+
+(forall (e1 e2 s)
+        (if     (and    (outer e1) (surface s) (edge e2)
+                        (part e1 s) (part e2 s))
+                (iff    (outer e2) (sbetween e1 e2 s))))
+
+(forall (e1 e2 e3)
+        (if     (sbetween e1 e2 e3) (sbetween e2 e3 e1)))
+
+(forall (e1 e2 e3)
+        (if     (sbetween e1 e2 e3)
+                (not (sbetween e3 e2 e1))))
+
+(forall (e1 e2 e3 e4)
+        (if     (and    (sbetween e1 e2 e3) (sbetween e1 e3 e4))
+                (sbetween e1 e2 e4)))
+
+(forall (e1 e2 e3)
+        (if     (sbetween e1 e2 e3)
+                (or     (exists (e4) (sbetween e1 e4 e2) (not (= e4 e2))))
+                        (exists (v) (meet e1 e2 v)))))
+
+(forall (e1 e2 e3)
+        (if     (sbetween e1 e2 e3)
+                (exists (s)
+                        (and    (surface s) (edge e1) (edge e2) (edge e3)
+                                (part e1 s) (part e2 s) (part e3 s)))))
+)
+

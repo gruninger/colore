@@ -1,0 +1,83 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+ 
+(cl-text subactivity
+
+(cl-imports psl_core)
+
+(cl-comment "subactivity is a relation over activities.")
+
+(forall (a1 a2)
+	(if	(subactivity a1 a2)
+		(and	(activity a1)
+			(activity a2))))
+
+(cl-comment "The subactivity relation is reflexive.")
+
+(forall (a)
+	(if	(activity a)
+		(subactivity a a)))
+
+(cl-comment "The subactivity relation is antisymmetric.")
+
+(forall (a1 a2)
+	(if	(and	(subactivity a1 a2)
+			(subactivity a2 a1))
+		(= a1 a2)))
+
+(cl-comment "The subactivity relation is transitive.")
+
+(forall (a1 a2 a3)
+	(if	(and	(subactivity a1 a2)
+			(subactivity a2 a3))
+		(subactivity a1 a3)))
+
+(cl-comment "The subactivity relation is a discrete ordering, so every
+activity has an upwards successor in the ordering.")
+
+(forall (a1 a2)
+	(if	(and	(subactivity a1 a2)
+			(not (= a1 a2)))
+		(exists (a3)
+			(and	(subactivity a1 a3)
+				(subactivity a3 a2)
+				(not (= a3 a1))
+				(forall (a4)
+					(if	(and	(subactivity a1 a4)
+							(subactivity a4 a3))
+						(or	(= a4 a1)
+							(= a4 a3))))))))
+
+(cl-comment "The subactivity relation is a discrete ordering, so every
+activity has a downwards successor in the ordering.")
+
+(forall (a1 a2)
+	(if	(and	(subactivity a1 a2)
+			(not (= a1 a2)))
+		(exists (a3)
+			(and	(subactivity a1 a3)
+				(subactivity a3 a2)
+				(not (= a3 a2))
+				(forall (a4)
+					(if	(and	(subactivity a3 a4)
+							(subactivity a4 a2))
+						(or	(= a4 a2)
+							(= a4 a3))))))))
+
+(cl-comment "An activity is primitive iff it has no proper subactivities.")
+
+(forall (a) (iff (primitive a)
+(and    (activity a)
+	(forall (a1)
+		(if	(subactivity a1 a)
+			(= a1 a))))))
+
+
+)

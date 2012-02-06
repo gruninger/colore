@@ -1,0 +1,98 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-text disc_state
+
+(cl-imports occtree)
+
+(cl-comment "States are objects.")
+
+(forall (f)
+	(if	(state f)
+		(object f)))
+
+(cl-comment "The holds relation is only between states and arboreal ctivity occurrences.
+Intuitively, it means that the fluent (property of the world) is true after
+the activity occurrence occ.")
+
+(forall (f occ)
+	(if	(holds f occ)
+		(and	(state f)
+			(arboreal occ))))
+
+(cl-comment "The prior relation is only between states and arboreal activity occurrences.
+Intuitively, it means that the fluent (property of the world) is true before
+the activity occurrence occ.")
+
+(forall (f occ)
+	(if	(prior f occ)
+		(and	(state f)
+			(arboreal occ))))
+
+(cl-comment "All initial occurrences agree on the states that hold prior to them.")
+
+(forall (occ1 occ2 f)
+	(if	(and	(initial occ1)
+			(initial occ2))
+		(iff	(prior f occ1)
+			(prior f occ2))))
+
+(cl-comment "A state holds after an arboreal activity occurrence if and only if it 
+holds prior to the successor occurrence.")
+
+(forall (f a occ)
+        (iff    (prior f (successor a occ))
+                (and    (holds f occ)
+                        (generator a))))
+(cl-comment "If a fluent holds after some activity occurrence, then there exists
+an earliest activity occurrence along the branch where the fluent holds.")
+
+(forall (occ1 f)
+	(if	(holds f occ1)
+		(exists (occ2)
+			(and	(earlierEq occ2 occ1)
+				(holds f occ2)
+				(or	(initial occ2)
+					(not (prior f occ2)))
+				(forall (occ3)
+					(if	(and	(earlierEq occ2 occ3)
+							(earlierEq occ3 occ1))
+						(holds f occ3)))))))
+
+(cl-comment "If a fluent does not hold after some activity occurrence, then there exists
+an earliest activity occurrence along the branch where the fluent does not hold.")
+
+(forall (occ1 f)
+	(if	(and	(state f)
+			(arboreal occ1)
+			(not (holds f occ1)))
+		(exists (occ2)
+			(and	(earlierEq occ2 occ1)
+				(not (holds f occ2))
+				(or	(initial occ2)
+					(prior f occ2))
+				(not (exists (occ3)
+					(and	(earlierEq occ2 occ3)
+						(earlierEq occ3 occ1)
+						(holds f occ3))))))))
+
+(cl-comment "If a fluent holds, there exists an earliest activity occurrence where it
+holds.")
+
+(forall (f s1)
+	(if	(holds f s1)
+		(exists (s2)
+			(and	(holds f s2)
+				(earlierEq s2 s1)
+				(forall (s3)
+					(if	(holds f s3)
+						(not (earlier s3 s2))))))))
+
+)

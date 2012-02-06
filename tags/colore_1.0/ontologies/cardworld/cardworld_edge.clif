@@ -1,0 +1,48 @@
+
+(cl-text cardworld_edge
+
+(cl-imports cardworld_part)
+
+(cl-comment "Each point is part of some edge")
+(forall (p)
+        (if     (point p)
+                (exists (e)
+                        (and    (edge e) (part p e)))))
+
+(cl-comment "Every edge contains at least two vertices.")
+(forall (e1)
+        (if     (edge e1)
+                (exists (e2 e3 v1 v2)
+                        (and    (meet e1 e2 v1) (meet e1 e3 v2)
+                                (not (= e1 e2)) (not (= v1 v2))))))
+
+(cl-comment "An edge contains at most two vertices.")
+(forall (e v1 v2 v3)
+        (if     (and    (edge e) (vertex v1) (vertex v2) (vertex v3)
+                        (part v1 e) (part v2 e) (part v3 e))
+                (or     (= v1 v2) (= v1 v3) (= v2 v3))))
+
+(cl-comment "Each edge is part of some surface.")
+(forall (e)
+        (if     (edge e)
+                (exists (s)
+                        (and    (surface s) (part e s)))))
+
+(cl-comment "Each surface contains an edge.")
+(forall (s)
+        (if     (surface s)
+                (exists (e)
+                        (and    (edge e) (part e s)))))
+
+(forall (e1 e2 v)
+        (iff    (meet e1 e2 v)
+                (and    (edge e1) (edge e2) (point v) (not (= e1 e2))
+                        (part v e1) (part v e2))))
+
+(forall (v)
+        (iff    (vertex v)
+                (exists (e1 e2)
+                        (meet e1 e2 v))))
+)
+
+

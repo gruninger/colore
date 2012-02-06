@@ -1,0 +1,57 @@
+
+(cl-text bipartite_incidence
+
+(forall (x y)
+	(if	(in x y)
+		(in y x)))
+
+(forall (x)
+	(in x x))
+
+(forall (p)
+	(if	(point p)
+		(not (line p))))
+
+(forall (x y)
+	(if	(and	(in x y)
+			(point x)
+			(point y))
+		(= x y)))
+
+(forall (x y)
+	(if	(and	(in x y)
+			(line x)
+			(line y))
+		(= x y)))
+
+(forall (p1 p2 p3)
+	(iff	(collinear p1 p2)
+		(and	(point p1)
+			(point p2)
+			(point p3)
+			(exists (l)
+				(and	(line l)
+					(in p1 l)
+					(in p2 l)
+					(in p3 l))))))
+
+(forall (l1 l2)
+	(iff	(intersect l1 l2)
+		(and	(line l1)
+			(line l2)
+			(not (= l1 l2))
+			(exists (p)
+				(and	(point p)
+					(in p l1)
+					(in p l2))))))
+
+(forall (l1 l2)
+	(iff	(parallel l1 l2)
+		(and	(line l1)
+			(line l2)
+			(not (exists (p)
+				(and	(point p)
+					(in p l1)
+					(in p l2)))))))
+
+)
