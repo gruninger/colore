@@ -1,0 +1,129 @@
+
+formulas(assumptions).
+
+all x all y all z
+        ((between(x,y,z)
+        & point(x)
+        & point(y)
+        & point(z))
+        ->
+        between(z,y,x)).
+
+all x all y
+	(in(x,y)
+	->
+	in(y,x)).
+
+all x 
+	(in(x,x)).
+
+all p
+	(point(p)
+	->
+	(-line(p))).
+
+all x all y
+	((in(x,y)
+	& point(x)
+	& point(y))
+	->
+	(x = y)).
+
+all x all y
+	((in(x,y)
+	& line(x)
+	& line(y))
+	->
+	(x=y)).
+
+all x (point(x) | line(x)).
+
+all l
+	(line(l)
+	->
+	(exists p
+		(point(p)
+		& in(p,l)))).
+
+all x all y all z
+	(between(x,y,z)
+	->
+	(point(x)
+	& point(y)
+	& point(z))).
+
+all x all y all z all w all l
+	((between(x,y,z) & (y != z)
+	& between(y,z,w)
+	& in(x,l)
+	& in(y,l)
+	& in(w,l)
+	& line(l))
+	->
+	between(x,y,w)).
+
+all x all y all z all w all l
+	((between(x,y,w)
+	& between(y,z,w)
+	& in(x,l)
+	& in(y,l)
+	& in(z,l)
+	& line(l))
+	->
+	between(x,y,z)).
+
+(all x all y all z all w all u all l
+	((line(l)
+	& point(x)
+	& point(y)
+	& point(z)
+	& point(w)
+	& point(u)
+	& in(x,l)
+	& in(y,l)
+	& in(z,l)
+	& in(u,l)
+	& in(w,l)
+	& between(x,y,z)
+	& between(y,w,u))
+	->
+	(between(z,y,w)
+	| between(u,y,z)))).
+
+(all x all y all z all l
+	((line(l)
+	& point(x)
+	& point(y)
+	& point(z)
+	& in(x,l)
+	& in(y,l)
+	& in(z,l))
+	->
+	(exists w
+		(in(w,l)
+		& between(x,w,y)
+		& between(y,w,z)
+		& between(z,w,x))))).
+
+all x all y all z all w all u all l
+        ((between(x,y,z)
+        & between(x,w,z)
+        & between(y,u,w)
+        & in(x,l)
+        & in(z,l)
+	& point(x)
+	& point(y)
+	& point(z)
+	& point(w)
+	& point(u)
+        & line(l))
+        ->
+        (in(u,l)
+        & between(x,u,z))).
+
+(exists x exists y (point(x) & line(y) & in(x,y))).
+
+(exists x exists y exists z (between(x,y,z))).
+
+
+end_of_list.

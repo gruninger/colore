@@ -1,0 +1,80 @@
+
+formulas(assumptions).
+
+all x all y
+	(in(x,y)
+	->
+	in(y,x)).
+
+all x
+	(in(x,x)).
+
+all p
+	(point(p)
+	->
+	-line(p)).
+
+all x all y
+	((in(x,y)
+	& point(x)
+	& point(y))
+	->
+	(x=y)).
+
+all x all y
+	((in(x,y)
+	& line(x)
+	& line(y))
+	->
+	(x=y)).
+
+%partial_bipartite
+
+all l
+	(line(l)
+	->
+	(exists p
+		(point(p)
+		& in(p,l)))).
+
+%double_points
+
+all x all y all z all l
+        ((point(x)
+        & point(y)
+        & point(z)
+        & line(l)
+        & in(x,l)
+        & in(y,l)
+        & in(z,l))
+        ->
+        ((z = x) | (z = y) | (x = y))).
+
+%line_existence
+
+all x all y
+        ((point(x)
+        & point(y)
+        & (x != y))
+        ->
+        (exists z
+                (line(z)
+                & in(x,z)
+                & in(y,z)))).
+
+%trivial_lines
+
+(all x
+        (point(x)
+        ->
+        (exists y
+                (line(y)
+                & in(x,y)
+                & (all z
+                        ((point(z)
+                        & in(z,y))
+                        ->
+                        (z=x))))))).
+
+
+end_of_list.

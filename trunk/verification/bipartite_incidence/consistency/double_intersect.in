@@ -1,0 +1,57 @@
+
+formulas(assumptions).
+
+all x all y
+	(in(x,y)
+	->
+	in(y,x)).
+
+all x
+	(in(x,x)).
+
+all p
+	(point(p)
+	->
+	-line(p)).
+
+all x all y
+	((in(x,y)
+	& point(x)
+	& point(y))
+	->
+	(x=y)).
+
+all x all y
+	((in(x,y)
+	& line(x)
+	& line(y))
+	->
+	(x=y)).
+
+(all l1 all l2
+        (intersect(l1,l2)
+        <->
+        (exists p1
+                (point(p1)
+                & line(l1)
+                & line(l2)
+                & (l1 != l2)
+                & in(p1,l1)
+                & in(p1,l2))))).
+
+%double_intersect
+
+(all l1 all l2 all l3 all l4
+	((intersect(l1,l2)
+	& intersect(l1,l3)
+	& intersect(l1,l4))
+	->
+	((l2=l3) | (l2=l4) | (l3=l4)))).
+
+(exists p exists l
+        (point(p)
+        & line(l)
+        & in(p,l))).
+
+
+end_of_list.

@@ -1,0 +1,64 @@
+
+formulas(assumptions).
+
+all x all y
+	(in(x,y)
+	->
+	in(y,x)).
+
+all x
+	(in(x,x)).
+
+all p
+	(point(p)
+	->
+	-line(p)).
+
+all x all y
+	((in(x,y)
+	& point(x)
+	& point(y))
+	->
+	(x=y)).
+
+all x all y
+	((in(x,y)
+	& line(x)
+	& line(y))
+	->
+	(x=y)).
+
+(all x all y
+	(parallel(x,y)
+	<->
+	(line(x)
+	& line(y)
+	& -(exists z
+		(point(z)
+		& in(z,x)
+		& in(z,y)))))).
+
+%unique_parallel
+
+(all p1 all l1 all l2
+	((point(p1)
+	& line(l1)
+	& -in(p1,l1)
+	& line(l2)
+	& in(p1,l2)
+	& parallel(l1,l2)
+	& line(l3)
+	& in(p,l3)
+	& (l2 != l3))
+	->
+	(exists p2
+		(point(p2)
+		& in(p2,l1)
+		& in(p2,l3))))).
+
+(exists p exists l
+        (point(p)
+        & line(l)
+        & in(p,l))).
+
+end_of_list.

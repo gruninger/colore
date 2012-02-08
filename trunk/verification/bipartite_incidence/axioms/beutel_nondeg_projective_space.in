@@ -1,0 +1,76 @@
+
+formulas(assumptions).
+
+% Beutelspacher and Rosenbaum p6-7
+
+% Axiom 1: For any two distinct points P and Q, there is exactly one line
+% that is incident with both P and Q
+
+(all p all q
+	((point(p)
+	& point(q)
+	& (p != q))
+	->
+	(exists l
+		(line(l)
+		& in(p,l)
+		& in(q,l))))).
+
+(all p all q all l1 all l2
+	((point(p)
+	& point(q)
+	& (p != q)
+	& line(l1)
+	& line(l2)
+	& in(p,l1)
+	& in(q,l1)
+	& in(p,l2)
+	& in(q,l2))
+	->
+	(l1=l2))).
+
+% Axiom 2: Let A,B,C,D be four points such that (the line) AB intersects
+% with the line CD. Then AC intersects the line BD.
+
+(all a all b all c all d all l1 all l2 all l3 all l4
+	((point(a)
+	& point(b)
+	& point(c)
+	& point(d)
+	& line(l1)
+	& line(l2)
+	& line(l3)
+	& line(l4)
+	& in(a,l1)
+	& in(b,l1)
+	& in(c,l2)
+	& in(d,l2)
+	& intersect(l1,l2)
+	& in(a,l3)
+	& in(c,l3)
+	& in(b,l4)
+	& in(d,l4))
+	->
+	intersect(l3,l4))).
+
+% Axiom 3: Any line is incident with at least three points.
+
+(all l
+	(line(l)
+	->
+	(exists p1 exists p2 exists p3
+		(point(p1)
+		& point(p2)
+		& point(p3)
+		& (p1 != p2)
+		& (p1 != p3)
+		& (p2 != p3))))).
+
+% Axiom 4: There are at least two lines
+
+(exists l1 exists l2
+	(line(l1)
+	& line(l2)
+	& (l1 != l2))).
+
+end_of_list.
