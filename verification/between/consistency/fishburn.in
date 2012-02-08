@@ -1,0 +1,56 @@
+
+formulas(assumptions).
+
+% from Interval Orders and Graphs, page 57-60
+
+% Betweenness relation
+all x all y all z
+	(between(x,y,z) 
+	->
+	between(z,y,x)).
+
+% Strict betweenness
+all x all y all z
+	(between(x,y,z) 
+	->
+	-between(y,x,z)).
+
+% Axiom A1
+all x all y all z all a
+	((between(x,y,z) 
+	& same_triple(y,a)
+	& -(a=y))
+	->
+	(between(x,y,a)
+	<->
+	-between(a,y,z))).
+
+% Axiom A2
+all x all y all z
+	((same_triple(x,y)
+	& same_triple(y,z)
+	& same_triple(x,z)
+	& -(x=y)
+	& -(y=z)
+	& -(x=z))
+	->
+	(between(x,y,z) | between(z,x,y) | between(y,z,x))).
+
+% Axiom A3
+all x all y all z all a all b all c ((between(x,y,z) & between(a,b,c)) -> 
+(between(a,b,x) | between(a,b,z) | between(x,y,c) | between(z,y,c))).
+
+% Although this relation is not explicit in Fishburn, 
+% it captures the notion of two elements appearing in the same triple.
+all x all y 
+	(same_triple(x,y)
+	<->
+	(exists z
+		(between(x,y,z)
+		| between(y,z,x)
+		| between(z,x,y)
+		| between(z,y,x)
+		| between(y,x,z)
+		| between(x,z,y)))).
+
+end_of_list.

@@ -1,0 +1,60 @@
+
+formulas(assumptions).
+
+all x all y all z 
+	(between(x,y,z)
+	->
+	between(z,y,x)).
+
+% C
+all a all b1 all b2 all c all d
+	((between(a,c,b1)
+	& between(c,d,b2))
+	->
+	(exists b
+		(between(b1,b,b2)
+		& between(a,d,b)))).
+
+% L1
+all a all b
+	(between(a,b,a)
+	->
+	(b=a)).
+
+% L2
+all a all b all c all d
+	((between(a,b,c)
+	& between(b,c,d)
+	& -(b=c))
+	->
+	between(a,b,d)).
+
+% L3
+all a all b all c all x
+	((-between(a,c,b)
+	& -between(a,b,c)
+	& between(a,x,b)
+	& between(a,x,c))
+	->
+	(x=a)).
+
+% L4
+all a all b all c all x
+	(between(a,c,b)
+	-> 
+	(between(a,x,b)
+	<->
+	(between(a,x,c) | (x=c)
+	| between(c,x,b)))).
+
+% P
+all a all b1 all b2 all c1 all c2
+	((between(a,c1,b1)
+	& between(a,c2,b2))
+	->
+	(exists x
+		(between(b1,x,c2)
+		& between(b2,x,c1)))).
+
+
+end_of_list.

@@ -1,0 +1,106 @@
+
+formulas(assumptions).
+
+all x all y
+	(in(x,y)
+	->
+	in(y,x)).
+
+all x
+	(in(x,x)).
+
+all p
+	(point(p)
+	->
+	-line(p)).
+
+all x all y
+	((in(x,y)
+	& point(x)
+	& point(y))
+	->
+	(x=y)).
+
+all x all y
+	((in(x,y)
+	& line(x)
+	& line(y))
+	->
+	(x=y)).
+
+%partial_bipartite
+
+all l
+	(line(l)
+	->
+	(exists p
+		(point(p)
+		& in(p,l)))).
+
+%unique_line
+
+(all p1 all p2 all l1 all l2
+        ((point(p1)
+        & point(p2)
+        & line(l1)
+        & line(l2)
+        & in(p1,l1)
+        & in(p1,l2)
+        & in(p2,l1)
+        & in(p2,l2))
+        ->
+        ((p1=p2) | (l1=l2)))).
+
+
+%double_points
+
+all x all y all z all l
+        ((point(x)
+        & point(y)
+        & point(z)
+        & line(l)
+        & in(x,l)
+        & in(y,l)
+        & in(z,l))
+        ->
+        ((z = x) | (z = y) | (x = y))).
+
+%point_intersect
+
+(all x
+        (point(x)
+        ->
+        (exists l1 exists l2
+                (line(l1)
+                & line(l2)
+                & (l1 != l2)
+                & in(x,l1)
+                & in(x,l2))))).
+
+%nontrivial_lines
+
+all l
+        (line(l)
+        ->
+        (exists p1 exists p2
+                (point(p1)
+                & point(p2)
+                & (p1 != p2)
+                & in(p1,l)
+                & in(p2,l)))).
+
+%double_lines
+
+(all x all y all z all w
+        ((point(x)
+        & line(y)
+        & line(z)
+        & line(w)
+        & in(x,y)
+        & in(x,z)
+        & in(x,w))
+        ->
+        ((w=z) | (y=z) | (w=y)))).
+
+
+end_of_list.

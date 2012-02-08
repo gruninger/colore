@@ -1,0 +1,58 @@
+
+formulas(assumptions).
+
+all x all y
+	(in(x,y)
+	->
+	in(y,x)).
+
+all x
+	(in(x,x)).
+
+all p
+	(point(p)
+	->
+	-line(p)).
+
+all x all y
+	((in(x,y)
+	& point(x)
+	& point(y))
+	->
+	(x=y)).
+
+all x all y
+	((in(x,y)
+	& line(x)
+	& line(y))
+	->
+	(x=y)).
+
+%unique_line
+
+(all p1 all p2 all l1 all l2
+	((point(p1)
+	& point(p2)
+	& line(l1)
+	& line(l2)
+	& in(p1,l1)
+	& in(p1,l2)
+	& in(p2,l1)
+	& in(p2,l2))
+	->
+	((p1=p2) | (l1=l2)))).
+	
+%nontrivial_lines
+
+all l
+        (line(l)
+        ->
+        (exists p1 exists p2
+                (point(p1)
+                & point(p2)
+                & (p1 != p2)
+                & in(p1,l)
+                & in(p2,l)))).
+
+
+end_of_list.

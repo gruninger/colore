@@ -1,0 +1,80 @@
+
+formulas(assumptions).
+
+all x all y all z 
+	((between(x,y,z)
+	& point(x)
+	& point(y)
+	& point(z))
+	->
+	between(z,y,x)).
+
+all x all y
+	(in(x,y)
+	->
+	in(y,x)).
+
+all x 
+	(in(x,x)).
+
+all p
+	(point(p)
+	->
+	(-line(p))).
+
+all x all y
+	((in(x,y)
+	& point(x)
+	& point(y))
+	->
+	(x = y)).
+
+all x all y
+	((in(x,y)
+	& line(x)
+	& line(y))
+	->
+	(x=y)).
+
+all x (point(x) | line(x)).
+
+all l
+	(line(l)
+	->
+	(exists p
+		(point(p)
+		& in(p,l)))).
+
+all x all y all z
+	(between(x,y,z)
+	->
+	(point(x)
+	& point(y)
+	& point(z))).
+
+all x all y all z all w all l
+	((between(x,y,z) & (y != z)
+	& between(y,z,w)
+	& in(x,l)
+	& in(y,l)
+	& in(w,l)
+	& line(l))
+	->
+	between(x,y,w)).
+
+all x all y all z all w all l
+	((between(x,y,w)
+	& between(y,z,w)
+	& in(x,l)
+	& in(y,l)
+	& in(z,l)
+	& line(l))
+	->
+	between(x,y,z)).
+
+(exists x exists y (point(x) & line(y) & in(x,y))).
+
+(exists x exists y exists z (between(x,y,z))).
+
+
+end_of_list.
