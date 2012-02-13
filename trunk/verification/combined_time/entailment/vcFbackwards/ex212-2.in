@@ -1,0 +1,126 @@
+
+formulas(assumptions).
+
+(all x all y all z
+	((timepoint(x)
+	& timepoint(y)
+	& timepoint(z)
+	& before(x,y)
+	& before(y,z))
+	->
+	before(x,z))).
+
+(all x
+	(timepoint(x)
+	->
+	-before(x,x))).
+
+(all x all y 
+	((timepoint(x)
+	& timepoint(y))
+	->
+	(before(x,y) | before(y,x) | (x=y)))).
+
+(all x all y
+	(bbefore(x,y)
+	<->
+	(timepoint(x)
+	& timepoint(y)
+	& (before(x,y) | (x=y))))).
+
+(all x
+	(timepoint(x)
+	->
+	(exists y
+		(timepoint(y)
+		& before(y,x))))).
+
+(all x
+        (timepoint(x)
+        ->
+        (exists y
+                (timepoint(y)
+                & before(x,y))))).
+
+(all x
+	(timepoint(x)
+	<->
+	-timeinterval(x))).
+
+(all i all p
+	(((p=beginof(i))
+	& (q=endof(i)))
+	->
+	(i=between(p,q)))).
+
+(all i
+	(timeinterval(i)
+	->
+	(timepoint(beginof(i))
+	& timepoint(endof(i))))).
+
+(all p all q
+	((timepoint(p)
+	& timepoint(q))
+	->
+	timeinterval(between(p,q)))).
+
+(all p all q
+	((timepoint(p)
+	& timepoint(q))
+	->
+	((p=beginof(between(p,q)))
+	& (q=endof(between(p,q)))))).
+
+(all i all j
+	(meets(i,j)
+	<->
+	(timeinterval(i)
+	& timeinterval(j)
+	& (endof(i)=beginof(j))))).
+
+(all x all y all z
+	(meets_at(x,y,z)
+	<->
+	(timeinterval(x)
+	& timeinterval(z)
+	& timepoint(y)
+	& (y=endof(x))
+	& (y=beginof(z))))).
+
+(all i all j all k
+	(plus(i,j,k)
+	<->
+	(timeinterval(i)
+	& timeinterval(j)
+	& timeinterval(k)
+	& (k=between(beginof(i),endof(j)))))).
+
+(all x
+	(moment(x)
+	<->
+	(timeinterval(x)
+	& (beginof(x)=endof(x))))).
+
+(all i
+	(forwards(i)
+	<->
+	(before(beginof(i),endof(i))))).
+
+(all i all j
+	(back(i,j)
+	<->
+	(timeinterval(i)
+	& timeinterval(j)
+	& (j=between(endof(i),beginof(i)))))).
+
+-(all p all q
+        ((before(p,q)
+        & timepoint(p)
+        & timepoint(q))
+        ->
+        ((p=beginof(between(p,q)))
+        & (q=endof(between(p,q)))))).
+
+
+end_of_list.

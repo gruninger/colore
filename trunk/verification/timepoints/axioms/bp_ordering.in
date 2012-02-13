@@ -1,0 +1,42 @@
+
+formulas(assumptions).
+
+(all x all y all z
+	((timepoint(x)
+	& timepoint(y)
+	& timepoint(z)
+	& before(x,y)
+	& before(y,z))
+	->
+	before(x,z))).
+
+(all x
+	(timepoint(x)
+	->
+	-before(x,x))).
+
+(all x all y all z
+	((timepoint(x)
+	& timepoint(y)
+	& timepoint(z)
+	& before(y,x)
+	& before(z,x))
+	->
+	(before(z,y) | before(y,z) | (z=y)))).
+
+(all x all y
+	((timepoint(x)
+	& timepoint(y))
+	->
+	(exists z
+		((before(z,x) | (z=x))
+		& (before(z,y) | (z=y)))))).
+
+(all x all y
+	(bbefore(x,y)
+	<->
+	(timepoint(x)
+	& timepoint(y)
+	& (before(x,y) | (x=y))))).
+
+end_of_list.

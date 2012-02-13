@@ -1,0 +1,36 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 3764 was started by mudcat on dynamic-204-d.informatik.uni-bremen.de,
+Mon Feb 13 12:57:56 2012
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 16.
+% Level of proof is 4.
+% Maximum clause weight is 13.
+% Given clauses 21.
+
+4 (all x all y (timepoint(x) & timepoint(y) -> before(x,y) | before(y,x) | x = y)) # label(non_clause).  [assumption].
+7 (all x all y (before(x,y) -> timeinterval(between(x,y)))) # label(non_clause).  [assumption].
+11 -(all p all q (timepoint(p) & timepoint(q) & p != q -> (exists l (timeinterval(l) & (between(p,q) = l | between(q,p) = l))))) # label(non_clause).  [assumption].
+19 -before(x,y) | timeinterval(between(x,y)).  [clausify(7)].
+22 -timeinterval(x) | between(c1,c2) != x.  [clausify(11)].
+23 -timeinterval(x) | between(c2,c1) != x.  [clausify(11)].
+28 -timepoint(x) | -timepoint(y) | before(x,y) | before(y,x) | y = x.  [clausify(4)].
+32 timepoint(c1).  [clausify(11)].
+33 timepoint(c2).  [clausify(11)].
+34 c2 != c1.  [clausify(11)].
+41 between(c1,c2) != between(x,y) | -before(x,y).  [resolve(22,a,19,b)].
+43 between(c2,c1) != between(x,y) | -before(x,y).  [resolve(23,a,19,b)].
+44 -timepoint(x) | before(x,c1) | before(c1,x) | c1 = x.  [resolve(32,a,28,b)].
+62 -before(c1,c2).  [ur(41,a,xx)].
+65 -before(c2,c1).  [ur(43,a,xx)].
+67 $F.  [resolve(44,a,33,a),flip(c),unit_del(a,65),unit_del(b,62),unit_del(c,34)].
+
+============================== end of proof ==========================

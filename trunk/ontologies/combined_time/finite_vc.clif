@@ -1,0 +1,78 @@
+
+(cl-text finite_vc
+
+(cl-imports lp_ordering)
+
+(forall (x)
+	(iff	(timepoint x)
+		(not (timeinterval x))))
+
+(forall (i p q)
+	(if	(and	(= p (beginof i))
+			(= q (endof i)))
+		(= i (between p q))))
+
+(forall (i)
+	(if	(timeinterval i) 
+		(and	(timepoint (beginof i))
+			(timepoint (endof i)))))
+
+(forall (x y)
+        (if     (and    (timepoint x)
+                        (timepoint y))
+                (timeinterval (between x y))))
+
+(forall (p q)
+        (if     (and    (timepoint p)
+                        (timepoint q))
+                (and    (= p (beginof (between p q)))
+                        (= q (endof (between p q)))))
+
+(forall (i j)
+(iff	(meets i j)
+	(and	(timeinterval i)
+		(timeinterval j)
+		(= (endof i) (beginof j)))))
+
+(forall (i p j)
+	(iff	(meets_at i p j) 
+		(and	(timeinterval i)
+			(timepoint p)
+			(timeinterval j)
+			(= p (endof i))
+			(= p (beginof j))))) 
+
+(forall (p q)
+	(iff	(before p q) 
+		(exists (i j k) 
+			(and	(meets_at i p j)
+				(meets_at j q k)))))
+
+(forall (i j)
+	(iff	(meets i j)
+		(and	(timeinterval i)
+			(timeinterval j)
+			(= (endof i) (beginof j)))))
+
+(forall (i j k)
+	(iff	(plus i j k)
+		(and	(timeinterval i)
+			(timeinterval j)
+			(timeinterval k)
+			(= k (between (beginof i) (endof j))))))
+
+(forall (x) 
+	(iff	(moment x) 
+		(= (beginof x) (endof x))))
+
+(forall (i)
+	(iff	(forwards i)
+		(before (beginof i) (endof i)))) 
+
+(forall (i j)
+	(iff	(back i j)
+		(and	(timeinterval i)
+			(timeinterval j)
+			(= j (between (endof i) (beginof i))))))
+
+)
