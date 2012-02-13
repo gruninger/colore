@@ -1,0 +1,45 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 3042 was started by mudcat on Hrabanus.fritz.box,
+Sun Feb 12 23:03:49 2012
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.03 (+ 0.01) seconds.
+% Length of proof is 25.
+% Level of proof is 6.
+% Maximum clause weight is 14.
+% Given clauses 119.
+
+4 (all x all y (timepoint(x) & timepoint(y) -> before(x,y) | before(y,x) | x = y)) # label(non_clause).  [assumption].
+10 (all i (timeinterval(i) -> timepoint(beginof(i)) & timepoint(endof(i)))) # label(non_clause).  [assumption].
+11 (all x all y (before(x,y) -> timeinterval(between(x,y)))) # label(non_clause).  [assumption].
+12 (all p all q (before(p,q) -> p = beginof(between(p,q)) & q = endof(between(p,q)))) # label(non_clause).  [assumption].
+14 (all i1 (timeinterval(i1) -> -(exists i2 (timeinterval(i2) & beginof(i2) = endof(i1) & endof(i2) = beginof(i1))))) # label(non_clause).  [assumption].
+15 -(all i (timeinterval(i) -> before(beginof(i),endof(i)))) # label(non_clause).  [assumption].
+25 -timepoint(x) | -timepoint(y) | before(x,y) | before(y,x) | y = x.  [clausify(4)].
+33 -timeinterval(x) | timepoint(beginof(x)).  [clausify(10)].
+34 -timeinterval(x) | timepoint(endof(x)).  [clausify(10)].
+35 -before(x,y) | timeinterval(between(x,y)).  [clausify(11)].
+36 -before(x,y) | beginof(between(x,y)) = x.  [clausify(12)].
+37 -before(x,y) | endof(between(x,y)) = y.  [clausify(12)].
+39 -timeinterval(x) | -timeinterval(y) | endof(x) != beginof(y) | endof(y) != beginof(x).  [clausify(14)].
+40 timeinterval(c1).  [clausify(15)].
+41 -before(beginof(c1),endof(c1)).  [clausify(15)].
+48 -timeinterval(x) | endof(x) != beginof(c1) | endof(c1) != beginof(x).  [resolve(40,a,39,b)].
+50 timepoint(endof(c1)).  [resolve(40,a,34,a)].
+51 timepoint(beginof(c1)).  [resolve(40,a,33,a)].
+54 endof(c1) != beginof(c1).  [factor(48,b,c),unit_del(a,40)].
+64 -timepoint(x) | before(x,endof(c1)) | before(endof(c1),x) | endof(c1) = x.  [resolve(50,a,25,b)].
+445 before(endof(c1),beginof(c1)).  [resolve(64,a,51,a),unit_del(a,41),unit_del(c,54)].
+448 endof(between(endof(c1),beginof(c1))) = beginof(c1).  [resolve(445,a,37,a)].
+449 beginof(between(endof(c1),beginof(c1))) = endof(c1).  [resolve(445,a,36,a)].
+450 timeinterval(between(endof(c1),beginof(c1))).  [resolve(445,a,35,a)].
+453 $F.  [resolve(450,a,48,a),rewrite([448(6),449(13)]),xx(a),xx(b)].
+
+============================== end of proof ==========================

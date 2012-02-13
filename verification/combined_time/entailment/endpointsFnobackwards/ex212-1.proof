@@ -1,0 +1,40 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 2810 was started by mudcat on Hrabanus.fritz.box,
+Sun Feb 12 22:20:17 2012
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 20.
+% Level of proof is 6.
+% Maximum clause weight is 9.
+% Given clauses 36.
+
+1 (all x all y (before(x,y) -> timepoint(x) & timepoint(y))) # label(non_clause).  [assumption].
+2 (all x all y all z (before(x,y) & before(y,z) -> before(x,z))) # label(non_clause).  [assumption].
+3 (all x (timepoint(x) -> -before(x,x))) # label(non_clause).  [assumption].
+10 (all i (timeinterval(i) -> before(beginof(i),endof(i)))) # label(non_clause).  [assumption].
+13 -(all i1 (timeinterval(i1) -> -(exists i2 (timeinterval(i2) & beginof(i2) = endof(i1) & endof(i2) = beginof(i1))))) # label(non_clause).  [assumption].
+22 -timeinterval(x) | before(beginof(x),endof(x)).  [clausify(10)].
+24 timeinterval(c1).  [clausify(13)].
+25 timeinterval(c2).  [clausify(13)].
+27 -before(x,y) | timepoint(y).  [clausify(1)].
+28 -before(x,y) | -before(y,z) | before(x,z).  [clausify(2)].
+29 -timepoint(x) | -before(x,x).  [clausify(3)].
+38 endof(c1) = beginof(c2).  [clausify(13)].
+39 endof(c2) = beginof(c1).  [clausify(13)].
+46 before(beginof(c1),endof(c1)).  [resolve(24,a,22,a)].
+47 before(beginof(c1),beginof(c2)).  [copy(46),rewrite([38(4)])].
+51 before(beginof(c2),endof(c2)).  [resolve(25,a,22,a)].
+52 before(beginof(c2),beginof(c1)).  [copy(51),rewrite([39(4)])].
+75 timepoint(beginof(c2)).  [resolve(47,a,27,a)].
+86 -before(beginof(c2),beginof(c2)).  [ur(29,a,75,a)].
+112 $F.  [ur(28,b,47,a,c,86,a),unit_del(a,52)].
+
+============================== end of proof ==========================

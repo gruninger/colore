@@ -1,0 +1,86 @@
+
+formulas(assumptions).
+
+(all x all y
+	(before(x,y)
+	->
+	(timepoint(x)
+	& timepoint(y)))).
+
+(all x all y all z
+	((before(x,y)
+	& before(y,z))
+	->
+	before(x,z))).
+
+(all x
+	(timepoint(x)
+	->
+	-before(x,x))).
+
+(all x all y 
+	((timepoint(x)
+	& timepoint(y))
+	->
+	(before(x,y) | before(y,x) | (x=y)))).
+
+(all x all y
+	(bbefore(x,y)
+	<->
+	(timepoint(x)
+	& timepoint(y)
+	& (before(x,y) | (x=y))))).
+
+(all x
+	(timepoint(x)
+	->
+	(exists y
+		(timepoint(y)
+		& before(y,x))))).
+
+(all x
+        (timepoint(x)
+        ->
+        (exists y
+                (timepoint(y)
+                & before(x,y))))).
+
+(all x
+	(timepoint(x)
+	<->
+	-timeinterval(x))).
+
+(all i all p all q
+	((timeinterval(i)
+	& (p=beginof(i))
+	& (q=endof(i)))
+	->
+	(i=between(p,q)))).
+
+(all i
+	(timeinterval(i)
+	->
+	(timepoint(beginof(i))
+	& timepoint(endof(i))))).
+
+(all x all y
+        (before(x,y)
+        ->
+        timeinterval(between(x,y)))).
+
+(all p all q
+	(before(p,q)
+	->
+	((p=beginof(between(p,q)))
+	& (q=endof(between(p,q)))))).
+
+(all i1
+        (timeinterval(i1)
+        ->
+        (exists i2
+                (timeinterval(i2)
+                & (beginof(i2)=endof(i1))
+                & (endof(i2)=beginof(i1)))))).
+
+
+end_of_list.

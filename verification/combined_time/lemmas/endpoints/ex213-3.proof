@@ -1,0 +1,79 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 3737 was started by mudcat on dynamic-204-d.informatik.uni-bremen.de,
+Mon Feb 13 12:56:25 2012
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.07 (+ 0.01) seconds.
+% Length of proof is 59.
+% Level of proof is 16.
+% Maximum clause weight is 27.
+% Given clauses 129.
+
+2 (all x all y all z (before(x,y) & before(y,z) -> before(x,z))) # label(non_clause).  [assumption].
+3 (all x (timepoint(x) -> -before(x,x))) # label(non_clause).  [assumption].
+4 (all x all y (timepoint(x) & timepoint(y) -> before(x,y) | before(y,x) | x = y)) # label(non_clause).  [assumption].
+6 (all x (timepoint(x) <-> -timeinterval(x))) # label(non_clause).  [assumption].
+7 (all x all y (before(x,y) -> timeinterval(between(x,y)))) # label(non_clause).  [assumption].
+8 (all i (timeinterval(i) -> before(beginof(i),endof(i)))) # label(non_clause).  [assumption].
+10 (all p all q (before(p,q) <-> p = beginof(between(p,q)) & q = endof(between(p,q)))) # label(non_clause).  [assumption].
+11 -(all p all q (timepoint(p) & timepoint(q) & p != q -> (exists l (timeinterval(l) & (beginof(l) = p & endof(l) = q | beginof(l) = q & endof(l) = p))))) # label(non_clause).  [assumption].
+17 timepoint(x) | timeinterval(x).  [clausify(6)].
+18 -timepoint(x) | -timeinterval(x).  [clausify(6)].
+19 -before(x,y) | timeinterval(between(x,y)).  [clausify(7)].
+20 -timeinterval(x) | before(beginof(x),endof(x)).  [clausify(8)].
+22 -timeinterval(x) | beginof(x) != c1 | endof(x) != c2.  [clausify(11)].
+23 -timeinterval(x) | beginof(x) != c2 | endof(x) != c1.  [clausify(11)].
+26 -before(x,y) | -before(y,z) | before(x,z).  [clausify(2)].
+27 -timepoint(x) | -before(x,x).  [clausify(3)].
+28 -timepoint(x) | -timepoint(y) | before(x,y) | before(y,x) | y = x.  [clausify(4)].
+29 -before(x,y) | beginof(between(x,y)) = x.  [clausify(10)].
+30 -before(x,y) | endof(between(x,y)) = y.  [clausify(10)].
+31 before(x,y) | beginof(between(x,y)) != x | endof(between(x,y)) != y.  [clausify(10)].
+32 timepoint(c1).  [clausify(11)].
+33 timepoint(c2).  [clausify(11)].
+34 c2 != c1.  [clausify(11)].
+35 -before(x,y) | -timepoint(between(x,y)).  [resolve(19,b,18,b)].
+37 before(beginof(between(x,y)),endof(between(x,y))) | -before(x,y).  [resolve(20,a,19,b)].
+40 beginof(x) != c1 | endof(x) != c2 | timepoint(x).  [resolve(22,a,17,b)].
+41 beginof(between(x,y)) != c1 | endof(between(x,y)) != c2 | -before(x,y).  [resolve(22,a,19,b)].
+43 beginof(between(x,y)) != c2 | endof(between(x,y)) != c1 | -before(x,y).  [resolve(23,a,19,b)].
+44 -timepoint(x) | before(x,c1) | before(c1,x) | c1 = x.  [resolve(32,a,28,b)].
+47 -before(c2,c2).  [ur(27,a,33,a)].
+63 before(c2,c1) | before(c1,c2).  [resolve(44,a,33,a),flip(c),unit_del(c,34)].
+68 before(c1,c2) | beginof(between(c2,c1)) != c2 | endof(between(c2,c1)) != c1.  [resolve(63,a,43,c)].
+71 before(c1,c2) | before(beginof(between(c2,c1)),endof(between(c2,c1))).  [resolve(63,a,37,b)].
+73 before(c1,c2) | endof(between(c2,c1)) = c1.  [resolve(63,a,30,a)].
+74 before(c1,c2) | beginof(between(c2,c1)) = c2.  [resolve(63,a,29,a)].
+81 endof(between(c2,c1)) = c1 | beginof(between(c1,c2)) != c1 | endof(between(c1,c2)) != c2.  [resolve(73,a,41,c)].
+85 endof(between(c2,c1)) = c1 | endof(between(c1,c2)) = c2.  [resolve(73,a,30,a)].
+86 endof(between(c2,c1)) = c1 | beginof(between(c1,c2)) = c1.  [resolve(73,a,29,a)].
+93 beginof(between(c2,c1)) = c2 | -timepoint(between(c1,c2)).  [resolve(74,a,35,a)].
+94 beginof(between(c2,c1)) = c2 | endof(between(c1,c2)) = c2.  [resolve(74,a,30,a)].
+95 beginof(between(c2,c1)) = c2 | beginof(between(c1,c2)) = c1.  [resolve(74,a,29,a)].
+114 before(c1,c2) | beginof(between(beginof(between(c2,c1)),endof(between(c2,c1)))) != c2 | endof(between(beginof(between(c2,c1)),endof(between(c2,c1)))) != c1.  [resolve(71,b,43,c)].
+196 beginof(between(c1,c2)) = c1 | before(c2,c1) | beginof(between(c2,c1)) != c2.  [resolve(86,a,31,c)].
+217 beginof(between(c2,c1)) = c2 | beginof(between(c1,c2)) != c1 | timepoint(between(c1,c2)).  [resolve(94,b,40,b)].
+407 before(c1,c2) | beginof(between(c2,c1)) != c2 | beginof(between(c1,c2)) = c1.  [resolve(68,c,86,a)].
+408 before(c1,c2) | beginof(between(c2,c1)) != c2 | endof(between(c1,c2)) = c2.  [resolve(68,c,85,a)].
+523 beginof(between(c1,c2)) = c1 | before(c2,c1).  [resolve(196,c,95,a),merge(c)].
+529 beginof(between(c1,c2)) = c1 | -before(c1,x) | before(c2,x).  [resolve(523,b,26,a)].
+596 before(c1,c2) | beginof(between(c1,c2)) = c1.  [resolve(407,b,95,a),merge(c)].
+597 beginof(between(c1,c2)) = c1.  [resolve(596,a,529,b),merge(b),unit_del(b,47)].
+658 beginof(between(c2,c1)) = c2 | timepoint(between(c1,c2)).  [back_rewrite(217),rewrite([597(10)]),xx(b)].
+676 endof(between(c2,c1)) = c1 | endof(between(c1,c2)) != c2.  [back_rewrite(81),rewrite([597(10)]),xx(b)].
+696 beginof(between(c2,c1)) = c2.  [resolve(658,b,93,b),merge(b)].
+718 before(c1,c2) | endof(between(c1,c2)) = c2.  [back_rewrite(408),rewrite([696(7)]),xx(b)].
+737 before(c1,c2) | beginof(between(c2,endof(between(c2,c1)))) != c2 | endof(between(c2,endof(between(c2,c1)))) != c1.  [back_rewrite(114),rewrite([696(7),696(16)])].
+755 endof(between(c1,c2)) = c2.  [resolve(718,a,30,a),merge(b)].
+758 endof(between(c2,c1)) = c1.  [back_rewrite(676),rewrite([755(10)]),xx(b)].
+760 before(c1,c2).  [back_rewrite(737),rewrite([758(8),696(7),758(11),758(10)]),xx(b),xx(c)].
+777 $F.  [resolve(760,a,41,c),rewrite([597(4),755(7)]),xx(a),xx(b)].
+
+============================== end of proof ==========================

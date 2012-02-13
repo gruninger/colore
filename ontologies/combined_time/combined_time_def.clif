@@ -1,0 +1,76 @@
+
+(cl-text combined_time_def
+
+(cl-imports sim_vc_end)
+
+(forall (i j k)
+        (iff    (plus i j k)
+                (and    (timeinterval i)
+                        (timeinterval j)
+                        (timeinterval k)
+                        (= k (between (beginof i) (endof j))))))
+
+(forall (x)
+        (iff    (moment x)
+                (= (beginof x) (endof x))))
+
+(forall (i)
+        (iff    (forwards i)
+                (before (beginof i) (endof i))))
+
+(forall (i j)
+        (iff    (back i j)
+                (and    (timeinterval i)
+                        (timeinterval j)
+                        (= j (between (endof i) (beginof i))))))
+
+(forall (i p j)
+	(iff	(meets_at i p j)
+		(and	(timeinterval i)
+			(timeinterval j)
+			(timepoint p)
+			(= p (endof i))
+			(= p (beginof j)))))
+
+(forall (i j)
+	(iff	(meets i j)
+		(and	(timeinterval i)
+			(timeinterval j)
+			(= (endof i) (beginof j)))))
+
+(forall (i j)
+	(iff	(precedes i j) 
+		(and	(timeinterval i) 
+			(timeinterval j)
+			(before (endof i) (beginof j))))) 
+ 
+(forall (i j)
+	(iff	(overlaps i j) 
+             	(and	(timeinterval i) 
+			(timeinterval j)
+			(before (beginof i) (beginof j))
+			(before (beginof j) (endof i))
+			(before (endof i) (endof j)))))
+ 
+(forall (i j)
+	(iff	(starts i j) 
+		(and	(timeinterval i) 
+			(timeinterval j)
+              		(= (beginof i) (beginof j)) 
+              		(before (endof i) (endof j))))) 
+
+(forall (i j)
+	(iff	(during i j) 
+          	(and	(timeinterval i) 
+			(timeinterval j)
+			(before (beginof j) (beginof i))
+			(beginof (endof i) (endof j))))) 
+ 
+(forall (i j)
+	(iff	(finishes i j) 
+		(and	(timeinterval i) 
+			(timeinterval j)
+			(before (beginof j) (beginof i)) 
+			(= (endof i) (endof j))))) 
+
+)

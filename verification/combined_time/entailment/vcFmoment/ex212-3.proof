@@ -1,0 +1,35 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 1952 was started by mudcat on Hrabanus.fritz.box,
+Sun Feb 12 14:18:45 2012
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 15.
+% Level of proof is 4.
+% Maximum clause weight is 16.
+% Given clauses 21.
+
+8 (all p all q (timepoint(p) & timepoint(q) -> timeinterval(between(p,q)))) # label(non_clause).  [assumption].
+9 (all p all q (timepoint(p) & timepoint(q) -> p = beginof(between(p,q)) & q = endof(between(p,q)))) # label(non_clause).  [assumption].
+16 -(all t (timepoint(t) -> (exists i (timeinterval(i) & t = beginof(i) & t = endof(i))))) # label(non_clause).  [assumption].
+50 -timepoint(x) | -timepoint(y) | timeinterval(between(x,y)).  [clausify(8)].
+51 -timeinterval(x) | beginof(x) != c1 | endof(x) != c1.  [clausify(16)].
+56 -timepoint(x) | -timepoint(y) | beginof(between(x,y)) = x.  [clausify(9)].
+57 -timepoint(x) | -timepoint(y) | endof(between(x,y)) = y.  [clausify(9)].
+58 timepoint(c1).  [clausify(16)].
+65 beginof(between(x,y)) != c1 | endof(between(x,y)) != c1 | -timepoint(x) | -timepoint(y).  [resolve(51,a,50,c)].
+67 -timepoint(x) | beginof(between(x,x)) = x.  [factor(56,a,b)].
+68 -timepoint(x) | endof(between(x,x)) = x.  [factor(57,a,b)].
+72 beginof(between(x,x)) != c1 | endof(between(x,x)) != c1 | -timepoint(x).  [factor(65,c,d)].
+111 beginof(between(c1,c1)) = c1.  [resolve(67,a,58,a)].
+114 endof(between(c1,c1)) = c1.  [resolve(68,a,58,a)].
+121 $F.  [resolve(72,c,58,a),rewrite([111(4),114(7)]),xx(a),xx(b)].
+
+============================== end of proof ==========================

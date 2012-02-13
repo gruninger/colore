@@ -1,0 +1,78 @@
+
+formulas(assumptions).
+
+(all x all y
+	(before(x,y)
+	->
+	(timepoint(x)
+	& timepoint(y)))).
+
+(all x all y all z
+	((before(x,y)
+	& before(y,z))
+	->
+	before(x,z))).
+
+(all x
+	(timepoint(x)
+	->
+	-before(x,x))).
+
+(all x all y 
+	((timepoint(x)
+	& timepoint(y))
+	->
+	(before(x,y) | before(y,x) | (x=y)))).
+
+(all x all y
+	(bbefore(x,y)
+	<->
+	(timepoint(x)
+	& timepoint(y)
+	& (before(x,y) | (x=y))))).
+
+(all x
+	(timepoint(x)
+	<->
+	-timeinterval(x))).
+
+(all i all p all q
+	((timeinterval(i)
+	& (p=beginof(i))
+	& (q=endof(i)))
+	->
+	(i=between(p,q)))).
+
+(all i
+	(timeinterval(i)
+	->
+	(timepoint(beginof(i))
+	& timepoint(endof(i))))).
+
+(all x all y
+        (before(x,y)
+        ->
+        timeinterval(between(x,y)))).
+
+(all p all q
+	(before(p,q)
+	->
+	((p=beginof(between(p,q)))
+	& (q=endof(between(p,q)))))).
+
+(all t
+        (timepoint(t)
+        ->
+        (exists i
+                (timeinterval(i)
+                & (t=beginof(i))
+                & (t=endof(i)))))).
+
+(exists x exists y exists z
+        (timepoint(x)
+        & timepoint(y)
+        & before(x,y)
+        & timeinterval(z))).
+
+
+end_of_list.

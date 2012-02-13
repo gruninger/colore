@@ -1,0 +1,40 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 1929 was started by mudcat on Hrabanus.fritz.box,
+Sun Feb 12 14:14:19 2012
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 9.17 (+ 0.06) seconds.
+% Length of proof is 20.
+% Level of proof is 5.
+% Maximum clause weight is 18.
+% Given clauses 326.
+
+9 (all i (timeinterval(i) -> timepoint(beginof(i)) & timepoint(endof(i)))) # label(non_clause).  [assumption].
+10 (all p all q (timepoint(p) & timepoint(q) -> timeinterval(between(p,q)))) # label(non_clause).  [assumption].
+11 (all p all q (timepoint(p) & timepoint(q) -> p = beginof(between(p,q)) & q = endof(between(p,q)))) # label(non_clause).  [assumption].
+18 -(all i1 (timeinterval(i1) -> (exists i2 (timeinterval(i2) & beginof(i2) = endof(i1) & endof(i2) = beginof(i1))))) # label(non_clause).  [assumption].
+50 -timeinterval(x) | timepoint(beginof(x)).  [clausify(9)].
+51 -timeinterval(x) | timepoint(endof(x)).  [clausify(9)].
+52 -timepoint(x) | -timepoint(y) | timeinterval(between(x,y)).  [clausify(10)].
+53 timeinterval(c1).  [clausify(18)].
+54 -timeinterval(x) | endof(c1) != beginof(x) | endof(x) != beginof(c1).  [clausify(18)].
+63 -timepoint(x) | -timepoint(y) | beginof(between(x,y)) = x.  [clausify(11)].
+64 -timepoint(x) | -timepoint(y) | endof(between(x,y)) = y.  [clausify(11)].
+71 timepoint(beginof(c1)).  [resolve(53,a,50,a)].
+72 timepoint(endof(c1)).  [resolve(53,a,51,a)].
+74 endof(c1) != beginof(between(x,y)) | endof(between(x,y)) != beginof(c1) | -timepoint(x) | -timepoint(y).  [resolve(54,a,52,c)].
+115 -timepoint(x) | endof(between(x,beginof(c1))) = beginof(c1).  [resolve(71,a,64,b)].
+117 -timepoint(x) | beginof(between(x,beginof(c1))) = x.  [resolve(71,a,63,b)].
+143 beginof(between(endof(c1),x)) != endof(c1) | endof(between(endof(c1),x)) != beginof(c1) | -timepoint(x).  [resolve(74,c,72,a),flip(a)].
+8543 endof(between(endof(c1),beginof(c1))) = beginof(c1).  [resolve(115,a,72,a)].
+8981 beginof(between(endof(c1),beginof(c1))) = endof(c1).  [resolve(117,a,72,a)].
+13650 $F.  [resolve(143,c,71,a),rewrite([8981(6),8543(11)]),xx(a),xx(b)].
+
+============================== end of proof ==========================

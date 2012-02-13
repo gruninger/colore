@@ -1,0 +1,37 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 3682 was started by mudcat on dynamic-204-d.informatik.uni-bremen.de,
+Mon Feb 13 12:52:01 2012
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.19 (+ 0.01) seconds.
+% Length of proof is 17.
+% Level of proof is 6.
+% Maximum clause weight is 15.
+% Given clauses 209.
+
+1 (all x all y (before(x,y) -> timepoint(x) & timepoint(y))) # label(non_clause).  [assumption].
+3 (all x (timepoint(x) -> -before(x,x))) # label(non_clause).  [assumption].
+10 (all i (timeinterval(i) -> before(beginof(i),endof(i)))) # label(non_clause).  [assumption].
+13 -(all l (timeinterval(l) -> (exists p exists q (timepoint(p) & timepoint(q) & p != q & (beginof(l) = p & endof(l) = q | beginof(l) = q & endof(l) = p))))) # label(non_clause).  [assumption].
+22 -timeinterval(x) | before(beginof(x),endof(x)).  [clausify(10)].
+24 timeinterval(c1).  [clausify(13)].
+25 -before(x,y) | timepoint(x).  [clausify(1)].
+26 -before(x,y) | timepoint(y).  [clausify(1)].
+28 -timepoint(x) | -before(x,x).  [clausify(3)].
+38 -timepoint(x) | -timepoint(y) | y = x | beginof(c1) != y | endof(c1) != x.  [clausify(13)].
+45 before(beginof(c1),endof(c1)).  [resolve(24,a,22,a)].
+73 timepoint(endof(c1)).  [resolve(45,a,26,a)].
+74 timepoint(beginof(c1)).  [resolve(45,a,25,a)].
+75 -timepoint(x) | endof(c1) = x | beginof(c1) != x.  [resolve(73,a,38,a),flip(b),xx(d)].
+88 -before(beginof(c1),beginof(c1)).  [ur(28,a,74,a)].
+1155 endof(c1) = beginof(c1).  [resolve(75,a,74,a),xx(b)].
+1279 $F.  [back_rewrite(45),rewrite([1155(4)]),unit_del(a,88)].
+
+============================== end of proof ==========================
