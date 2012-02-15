@@ -1,0 +1,63 @@
+
+formulas(assumptions).
+
+(all x all y all z
+	((cmpof(x,y)
+	& cmpof(y,z))
+	->
+	cmpof(x,z))).
+
+(all x all y
+	(cmpof(x,y)
+	->
+	-cmpof(y,x))).
+
+(all x all y
+	((cmpof(x,y)
+	& -cmpofi(x,y))
+	->
+	((exists z
+		(cmpofi(x,z) & cmpof(z,y)))
+	& (exists w
+		(cmpof(x,w) & cmpofi(w,y)))))).
+
+(all x all y 
+	(cmpofo(x,y) 
+	-> 
+	(cmpof(x,y) | (x=y) | cmpof(y,x)))).
+
+(all x all y
+	(cmpofi(x,y)
+	->
+	(exists z
+		(cmpofi(z,y) & (z != x))))).
+
+(all x all y all z
+	((cmpofi(x,y)
+	& cmpofi(x,z))
+	->
+	(y=z))).
+
+(all x all y
+	(cmpof(x,y)
+	->
+	(exists z
+		(cmpof(z,y)
+		& -cmpofo(z,x))))).
+
+(all x all y
+	(cmpofo(x,y)
+	<->
+	(exists z
+		((cmpof(z,x) | (z=x))
+		& (cmpof(z,y) | (z=y)))))).
+
+(all x all y
+	(cmpofi(x,y)
+	<->
+	(cmpof(x,y)
+	& -(exists z
+		(cmpof(x,z)
+		& cmpof(z,y)))))).
+
+end_of_list.

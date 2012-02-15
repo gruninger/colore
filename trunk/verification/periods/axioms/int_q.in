@@ -1,0 +1,217 @@
+
+formulas(assumptions).
+
+%Periods:
+%Precendence
+%TRANS
+(all x all y all z 
+	((precedence(x,y) 
+	& precedence(y,z)) 
+	-> 
+	precedence(x,z))).
+
+%IRREF
+(all x 
+	-precedence(x,x)).
+
+%Inclusion
+%TRANS
+(all x all y all z 
+	((inclusion(x,y) 
+	& inclusion(y,z)) 
+	-> 
+	inclusion(x,z))).
+
+%ANTIS
+(all x all y 
+	((inclusion(x,y) 
+	& inclusion(y,x)) 
+	-> 
+	(x = y))).
+
+%REF
+(all x 
+	inclusion(x,x)).
+
+%MIXED
+%MON
+(all x all y all z 
+	((precedence(x,y) 
+	& inclusion(z,x)) 
+	-> 
+	precedence(z,y))).
+
+(all x all y all z 
+	((precedence(x,y) 
+	& inclusion(z,y)) 
+	-> 
+	precedence(x,z))).
+
+%CONJ
+(all x all y 
+	(overlaps(x,y) <-> 
+	(exists z 
+		(inclusion(z,x) & inclusion(z,y))))).
+
+(all x all y 
+	(overlaps(x,y) 
+	-> 
+	(exists z 
+		(glb(x,y,z))))).
+
+all x all y all z 
+	(glb(x,y,z) 
+	<-> 
+	(inclusion(z,x) 
+	& inclusion(z,y) 
+	& (all u 
+		((inclusion(u,x) 
+		& inclusion(u,y)) 
+		-> 
+		inclusion(u,z))))).
+
+%SUCC
+all x exists y (precedence(y,x)).
+all x exists y (precedence(x,y)).
+
+%NEIGH*
+all x all y 
+	(precedence(x,y) 
+	-> 
+	(exists w 
+		(precedence(x,w) 
+		& -(exists z 
+			(precedence(x,z) 
+			& precedence(z,w)))))).
+
+all x all y 
+	(precedence(y,x) 
+	-> 
+	(exists w 
+		(precedence(w,x) 
+		& -(exists z 
+			(precedence(w,z) 
+			& precedence(z,x)))))).
+
+%DISJ
+all x all y all z 
+	(lub(x,y,z) 
+	<-> 
+	(inclusion(x,z) 
+	& inclusion(y,z) 
+	& (all u 
+		((inclusion(x,u) 
+		& inclusion(y,u)) 
+		-> 
+		inclusion(z,u))))).
+
+all x all y 
+	(underlaps(x,y) 
+	<-> 
+	(exists z 
+		(inclusion(x,z) 
+		& inclusion(y,z)))).
+
+all x all y 
+	(underlaps(x,y) 
+	-> 
+	(exists z 
+		(lub(x,y,z)))).
+
+%FREE
+all x all y 
+	(-inclusion(x,y) 
+	-> 
+	(exists z 
+		(inclusion(z,x) 
+		& -overlaps(z,y)))).
+
+%DIR
+all x all y exists u 
+	(inclusion(x,u) 
+	& inclusion(y,u)).
+
+%MOND
+all x all y all z 
+	(glb(x,y,z) 
+	<-> 
+	(inclusion(z,x) 
+	& inclusion(z,y) 
+	& (all u 
+		((inclusion(u,x) 
+		& inclusion(u,y)) 
+		-> 
+		inclusion(u,z))))).
+
+all x all y all z 
+	((precedence(x,y) 
+	& precedence(z,y)) 
+	-> 
+	(exists w 
+		(glb(x,z,w) 
+		& precedence(w,y)))).
+
+all x all y all z 
+	((precedence(y,x) 
+	& precedence(y,z))
+	-> 
+	(exists w 
+		(glb(x,z,w) 
+		& precedence(y,w)))).
+
+%CONV
+all x all y all z 
+	((precedence(x,y) 
+	& precedence(y,z)) 
+	-> 
+	(all u 
+		((inclusion(x,u) 
+		& inclusion(z,u)) 
+		-> 
+		inclusion(y,u)))).
+
+%LIN*
+all x all y (precedence(x,y) | precedence(y,x) | overlaps(x,y)).
+
+%DENS*
+all x exists y1 exists y2 (precedence(y1,y2) & lub(y1,y2,x)).
+
+%ORIENT
+%all x all y 
+	(overlaps(x,y) 
+	-> 
+	((x=y) 
+	| (inclusion(x,y) 
+		& ((exists z1 (precedence(x,z1) & lub(x,z1,y))) 
+			| (exists z2 (precedence(z2,x) & lub(z2,x,y))) 
+			| (exists z3 exists z4 exists z5 
+				(precedence(z3,x) 
+				& precedence(x,z4) 
+				& lub(z3,x,z5) 
+				& lub(z5,z4,y))))) 
+	| (inclusion(y,x) 
+		& ((exists u1 (precedence(y,u1) & lub(y,u1,x))) 
+			| (exists u2 (precedence(u2,y) & lub(u2,y,x))) 
+			| (exists u3 exists u4 exists u5 
+				(precedence(u3,y) 
+				& precedence(y,u4) 
+				& lub(u3,y,u5) 
+				& lub(u5,u4,x))))) 
+	| (exists i1 exists i2 
+		(precedence(i1,i2) 
+		& lub(i1,i2,x) 
+		& precedence(i1,y) 
+		& inclusion(i2,y) 
+		& (exists i3 
+			(lub(i2,i3,y) 
+			& precedence(x,i3))))) 
+	| (exists k1 exists k2 
+		(lub(k1,k2,y) 
+		& precedence(k1,k2) 
+		& precedence(k1,x) 
+		& inclusion(k2,x) 
+		& (exists k3 
+			(lub(k2,k3,x) 
+			& precedence(y,k3))))).
+
+end_of_list.
