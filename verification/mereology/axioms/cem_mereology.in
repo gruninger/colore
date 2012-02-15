@@ -1,0 +1,68 @@
+
+formulas(assumptions).
+
+(all x
+	(part(x,x))).
+
+(all x all y
+	((part(x,y)
+	& part(y,x))
+	->
+	(x=y))).
+
+(all x all y all z
+	((part(x,y)
+	& part(y,z))
+	->
+	part(x,z))).
+
+(all x all y
+	(ppart(x,y)
+	<->
+	(part(x,y)
+	& -part(y,x)))).
+
+(all x all y
+	(overlaps(x,y)
+	<->
+	(exists z
+		(part(z,x)
+		& part(z,y))))).
+(all x all y
+	(disjoint(x,y)
+	<->
+	-overlaps(x,y))).
+
+(all x all y
+	(underlaps(x,y)
+	<->
+	(exists z
+		(part(x,z)
+		& part(y,z))))).
+
+(all x all y
+	(-part(x,y)
+	->
+	(exists z
+		(part(z,x)
+		& disjoint(z,y))))).
+
+(all x all y
+	(underlaps(x,y)
+	->
+	(exists z
+		(all v
+			(overlaps(v,z)
+			<->
+			(overlaps(v,x) | overlaps(v,y))))))).
+
+(all x all y
+	(overlaps(x,y)
+	->
+	(exists z
+		(all v
+			(ppart(v,z)
+			<->
+			(ppart(v,x) | ppart(v,y))))))).
+
+end_of_list.

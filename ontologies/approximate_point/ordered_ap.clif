@@ -1,0 +1,45 @@
+(cl-text ordered_ap
+
+(cl-imports approximate_point)
+
+(cl-comment "Glb")
+(forall (x y z)
+(iff	(glb x y z)
+	(and	(finer z x)
+		(finer z y)
+		(forall (u)
+			(if	(and	(finer u x)
+					(finer u y))
+				(finer u z))))))
+
+(cl-comment "CONJ")
+(forall	(x y)
+(if	(ncdf x y)
+	(exists	(z)
+		(glb x y z))))
+
+(cl-comment "Underlaps")
+(forall (x y)
+(iff	(underlaps x y)
+		(exists (z)
+				(and	(finer x z)
+						(finer y z)))))
+
+(cl-comment "Lub")
+(forall (x y z)
+(iff	(lub x y z)
+		(and	(finer x z)
+				(finer y z)
+				(forall (u)
+						(if	(and	(finer x u)
+									(finer y u))
+							(finer z u))))))
+							
+(cl-comment "DISJ")
+(forall (x y)												
+(if		(underlaps x y)
+		(exists (z)
+				(lub x y z))))
+
+					
+)
