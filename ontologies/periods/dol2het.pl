@@ -3,8 +3,6 @@
 # simple-minded conversion from DOL to HetCASL
 # by stripping features that HetCASL does not yet support
 
-use feature qw(say);
-
 my $dolfile = $ARGV[0];
 (my $hetfile = $dolfile) =~ s/\.dol$/.het/;
 
