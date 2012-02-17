@@ -82,6 +82,17 @@ while (<INPUT>) {
     }
 
     # strip namespace URIs from anything that is known to be in the HETS library
+    s{<([^>]+)>}{
+      my $path;
+      if (grep {
+          ($1 =~ /^\Q$_\E(.*)$/) &&
+          ($path = $1)              # this is $1 matched in the line above!
+        } @IN_HETS_LIB) {
+        $path
+      } else {
+        "<$1>"
+      }
+    }egx;
 
     print OUTPUT;
 }
