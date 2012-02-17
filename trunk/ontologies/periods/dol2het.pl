@@ -47,7 +47,7 @@ while (<INPUT>) {
       [[:space:]]+:  # whitespace and colon
       /view $1 :/x;
     
-    # semi-smart stripping of prefixes from ontology names
+    # expand prefixes to namespace URIs
     s/(?<!%)        # if this is no %cons-like annotation
       (?:($NAME):)? # optional prefix
       ($LOCALNAME)  # local name
@@ -73,5 +73,19 @@ while (<INPUT>) {
       ($NAME)>                    # the unprefixed name of the logic
       }{logic $1}x;
     
+    if (defined $prefixes{''}) {
+      # strip URI from anything that is a fragment in the local DOL file
+      # we assume that the empty namespace prefix refers to the local DOL file
+      s/<\Q$prefixes{''}\E # the empty namespace (assumed to refer to the local DOL file)
+         ([^>]+)>          # the fragment ID
+         /$1/gx;
+    }
+
+    # strip namespace URIs from anything that is known to be in the HETS library
+
     print OUTPUT;
 }
+
+# # for debugging: dump all prefix bindings
+# use Data::Dumper;
+# print Dumper(\%prefixes);
