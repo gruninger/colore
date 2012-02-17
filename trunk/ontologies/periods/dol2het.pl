@@ -16,6 +16,12 @@ my $dolfile = $ARGV[0];
 open(INPUT, $dolfile) || die "Cannot open file $dolfile";
 open(OUTPUT, ">$hetfile") || die "Cannot create file $hetfile";
 
+# libraries for which we need "from ... get ..." declarations (a hash used as a set)
+my %download_items;
+
+# all the other HetCASL output, which we can only write after %download_items
+my @buffered_output;
+
 my %prefixes;
 
 my $NAME = '\b[[:alpha:]_][[:alnum:]_]*\b';
@@ -23,7 +29,6 @@ my $NAME = '\b[[:alpha:]_][[:alnum:]_]*\b';
 my $LOCALNAME = '\b[[:alnum:]/._-]+\b';
 
 while (<INPUT>) {
-    
     # remove DOL syntactic namespace prefix declarations
     if (/^prefix                  # the prefix keyword
         [[:space:]]+              # whitespace
@@ -88,15 +93,29 @@ while (<INPUT>) {
           ($1 =~ /^\Q$_\E(.*)$/) &&
           ($path = $1)              # this is $1 matched in the line above!
         } @IN_HETS_LIB) {
-        $path
+        if ($path =~ m{/([^/]+)$}) {
+          # as $1 is a function of $path, this assignment will result in the same value in subsequent executions
+          $download_items{$path} = $1;
+          $1
+        } else {
+          $path
+        }
       } else {
+        print STDERR "Warning: <$1>\n         does not have a local copy within the HETS_LIB path.\n         Please check the \@IN_HETS_LIB variable in this script.\n";
         "<$1>"
       }
     }egx;
 
-    print OUTPUT;
+    push @buffered_output, $_;
 }
 
-# # for debugging: dump all prefix bindings
+# do the actual output
+while (my ($library, $spec) = each %download_items) {
+    print OUTPUT "from $library get $spec\n";
+}
+
+print OUTPUT foreach (@buffered_output);
+
+# # for debugging
 # use Data::Dumper;
-# print Dumper(\%prefixes);
+# print Dumper(\%download_items);
