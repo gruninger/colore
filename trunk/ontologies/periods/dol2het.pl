@@ -29,6 +29,11 @@ my $NAME = '\b[[:alpha:]_][[:alnum:]_]*\b';
 my $LOCALNAME = '\b[[:alnum:]/._-]+\b';
 
 while (<INPUT>) {
+    # skip all-comment lines
+    next if /^\%\%/;
+
+    # TODO remove other comments (including nested ones)
+    
     # remove DOL syntactic namespace prefix declarations
     if (/^prefix                  # the prefix keyword
         [[:space:]]+              # whitespace
@@ -43,14 +48,10 @@ while (<INPUT>) {
     # replace keyword "interpretation" with "view"
     s/^interpretation/view/;
     
-    # strip conservativity annotations of views
-    s/^view          # the view keyword
-      [[:space:]]+   # whitespace
-      ($NAME)        # the view name
-      [[:space:]]+   # whitespace
-      \%[[:alpha:]]+ # the conservativity annotation (we don't care about its exact name)
-      [[:space:]]+:  # whitespace and colon
-      /view $1 :/x;
+    # no need to strip conservativity annotations of views – Hets ignores them anyway if they are not supported
+
+    # newline after %annotations
+    s/(\%[[:alpha:]]+)/$1\n/g;
     
     # expand prefixes to namespace URIs
     s/(?<!%)        # if this is no %cons-like annotation
