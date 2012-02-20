@@ -1,0 +1,50 @@
+
+(cl-text owltime_interval_reduction
+
+(forall (x)
+	(iff	(Instant x)
+		(point x)))
+
+(forall (x)
+	(iff	(Interval x)
+		(line x)))
+
+(forall (x)
+	(iff	(TemporalEntity x)
+		(or	(point x)
+			(line x))))
+
+forall (x y)
+	(iff	(begins x y)
+		(and	(point x)
+			(line y)
+			(in x y)
+			(forall (z)
+				(if	(and	(point z)
+						(in z y))
+					(leq x z))))))
+
+forall (x y)
+	(iff	(ends x y)
+		(and	(point x)
+			(line y)
+			(in x y)
+			(forall (z)
+				(if	(and	(point z)
+						(in z y))
+					(leq z x))))))
+
+(forall (x y z)
+	(iff	(timeBetween x y z)
+		(and	(line x)
+			(point y)
+			(point z)
+			(in y x)
+			(in z x)
+			(lt y z))))
+
+(forall (x y)
+	(iff	(before x y)
+		(leq x y)))
+
+)
