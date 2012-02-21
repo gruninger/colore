@@ -7,6 +7,8 @@ prefix Owltime_Interval = <http://code.google.com/p/colore/source/browse/trunk/o
 
 prefix Owltime_Instants = <http://code.google.com/p/colore/source/browse/trunk/ontologies/owltime/owltime_instants/>
 
+prefix Combined_Time = <http://code.google.com/p/colore/source/browse/trunk/ontologies/combined_time/>
+
 prefix Timepoints = <http://code.google.com/p/colore/source/browse/trunk/ontologies/timepoints/>
 
 prefix Orderings = <http://code.google.com/p/colore/source/browse/trunk/ontologies/orderings/>
@@ -18,18 +20,29 @@ logic log:CommonLogic
 interpretation i0 : Owltime_Interval:owltime_le to Owltime_Interval:owltime_leu
 end
 
-interpretation i1 %mcons : Owltime_Instants:owltime_instant_l to Owltime_Interval:owltime_leu
+interpretation i1 : Owltime_Interval:owltime_mleu to Owltime_Interval:owltime_leu
 end
 
-interpretation i2 %mcons : Orderings:linear_ordering to
+interpretation i2 %mcons : Owltime_Instants:owltime_instant_l to Owltime_Interval:owltime_leu
+end
+
+interpretation i3 %mcons : Orderings:linear_ordering to
 	{Owltime_Interval:owltime_leu and %def Owltime_Instants:mappings/owltime2orderings}
 end
 
-interpretation i3 %mcons : Bipartite_Incidence:strong_graphical to
+interpretation i4 %mcons : Bipartite_Incidence:loop_graphical to
 	{Owltime_Interval:owltime_leu and %def Owltime_Interval:mappings/owltime2bipartite_incidence}
 end
 
-interpretation i4 %mcons : Owltime_Interval:owltime_leu to
-	{Orderings:linear_ordering and Bipartite_Incidence:strong_graphical and %def Owltime_Interval:mappings/owltime_interval_reduction}
+interpretation i5 %mcons : Owltime_Interval:owltime_leu to
+	{Orderings:linear_ordering and Bipartite_Incidence:loop_graphical and %def Owltime_Interval:mappings/owltime_interval_reduction}
+end
+
+interpretation i6 %mcons : Combined_Time:moment to
+	{Owltime_Interval:owltime_leu and %def Owltime_Interval:mappings/owltime2combined_time}
+end
+
+interpretation i7 %mcons : Owltime_Interval:owltime_leu to
+	{Combined_Time:moment and %def Combined_Time:mappings/combined_time2owltime}
 end
 
