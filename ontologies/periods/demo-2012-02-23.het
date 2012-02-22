@@ -1,0 +1,35 @@
+from periods/periods_root get periods_root
+from approximate_point/approximate_point get approximate_point
+from periods/periods get periods
+from periods/mappings/periods2ap get periods2ap
+from approximate_point/mappings/approximate2periods get approximate2periods
+
+
+
+
+
+logic CommonLogic
+
+view i0 : periods_root to periods
+end
+
+view i1 %mcons
+ : periods to
+	{approximate_point then %def
+ approximate2periods then
+. (exists (x y z) (glb x y z))
+. (exists (x y z) (lub x y z))
+. (exists (x y) (overlaps x y))
+. (exists (x y) (underlaps x y))
+             }
+end
+
+view i2 %mcons
+ : approximate_point to
+	{periods then %def
+ periods2ap then
+. (exists (x y) (meets x y))
+. (exists (x) (moment x))
+        }
+end
+
