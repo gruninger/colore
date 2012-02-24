@@ -1,9 +1,5 @@
 
-(cl-text periods2ap
-
-(cl-imports periods_root)
-
-(cl-imports periods_def)
+(cl-text periods2approximate_point
 
 (forall (x y)
 	(iff	(precedes x y)
@@ -15,6 +11,22 @@
 
 (forall (x y)
 	(iff	(ncdf x y)
-		(overlaps x y)))
+        	(exists (z)
+                	(and    (inclusion z x)
+                        	(inclusion z y)))))
+
+(forall (x y)
+(iff    (meets x y)
+        (and    (precedence x y)
+                (not (exists (z)
+                        (and    (precedence x z)
+                                (precedence z y)))))))
+
+(forall (x)
+(iff    (moment x)
+        (not (exists (y)
+                (and    (inclusion y x)
+                        (not (=  x y)))))))
+
 
 )
