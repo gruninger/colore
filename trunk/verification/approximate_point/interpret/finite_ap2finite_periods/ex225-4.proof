@@ -1,0 +1,44 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 3090 was started by mudcat on Hrabanus.fritz.box,
+Sat Feb 25 21:11:52 2012
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 24.
+% Level of proof is 5.
+% Maximum clause weight is 11.
+% Given clauses 51.
+
+6 (all x all y (ncdf(x,y) | precedes(x,y) | precedes(y,x))) # label(non_clause).  [assumption].
+9 (all x all y (ncdf(x,y) <-> (exists z (finer(z,x) & finer(z,y))))) # label(non_clause).  [assumption].
+11 (all x all y (precedence(x,y) <-> precedes(x,y))) # label(non_clause).  [assumption].
+12 (all x all y (inclusion(x,y) <-> finer(x,y))) # label(non_clause).  [assumption].
+13 (all x all y (overlaps(x,y) <-> (exists z (inclusion(z,x) & inclusion(z,y))))) # label(non_clause).  [assumption].
+14 -(all x all y (precedence(x,y) | precedence(y,x) | overlaps(x,y))) # label(non_clause).  [assumption].
+15 -ncdf(x,y) | finer(f1(x,y),x).  [clausify(9)].
+16 ncdf(x,y) | precedes(x,y) | precedes(y,x).  [clausify(6)].
+17 -ncdf(x,y) | finer(f1(x,y),y).  [clausify(9)].
+29 precedence(x,y) | -precedes(x,y).  [clausify(11)].
+31 inclusion(x,y) | -finer(x,y).  [clausify(12)].
+34 overlaps(x,y) | -inclusion(z,x) | -inclusion(z,y).  [clausify(13)].
+35 -precedence(c1,c2).  [clausify(14)].
+36 -precedence(c2,c1).  [clausify(14)].
+37 -overlaps(c1,c2).  [clausify(14)].
+38 finer(f1(x,y),x) | precedes(x,y) | precedes(y,x).  [resolve(15,a,16,a)].
+39 finer(f1(x,y),y) | precedes(x,y) | precedes(y,x).  [resolve(17,a,16,a)].
+58 -precedes(c1,c2).  [ur(29,a,35,a)].
+59 -precedes(c2,c1).  [ur(29,a,36,a)].
+102 finer(f1(c2,c1),c1).  [resolve(58,a,39,c),unit_del(b,59)].
+104 finer(f1(c2,c1),c2).  [resolve(58,a,38,c),unit_del(b,59)].
+147 inclusion(f1(c2,c1),c1).  [resolve(102,a,31,b)].
+171 inclusion(f1(c2,c1),c2).  [resolve(104,a,31,b)].
+231 $F.  [ur(34,a,37,a,b,147,a),unit_del(a,171)].
+
+============================== end of proof ==========================
