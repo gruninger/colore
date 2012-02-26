@@ -1,0 +1,49 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 4663 was started by mudcat on Hrabanus.fritz.box,
+Sun Feb 26 20:06:03 2012
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 29.
+% Level of proof is 6.
+% Maximum clause weight is 11.
+% Given clauses 34.
+
+6 (all x all y (ncdf(x,y) | precedes(x,y) | precedes(y,x))) # label(non_clause).  [assumption].
+9 (all x all y (ncdf(x,y) <-> (exists z (finer(z,x) & finer(z,y))))) # label(non_clause).  [assumption].
+13 (all x all y (meets(x,y) <-> precedes(x,y) & -(exists z (precedes(x,z) & precedes(z,y))))) # label(non_clause).  [assumption].
+14 (all x (moment(x) <-> -(exists y (finer(y,x) & x != y)))) # label(non_clause).  [assumption].
+15 -(all x all y all z (meets(x,y) & meets(z,y) & moment(z) -> finer(z,x))) # label(non_clause).  [assumption].
+16 -ncdf(x,y) | finer(f1(x,y),x).  [clausify(9)].
+17 ncdf(x,y) | precedes(x,y) | precedes(y,x).  [clausify(6)].
+18 -ncdf(x,y) | finer(f1(x,y),y).  [clausify(9)].
+21 -meets(x,y) | precedes(x,y).  [clausify(13)].
+22 -meets(x,y) | -precedes(x,z) | -precedes(z,y).  [clausify(13)].
+24 meets(c1,c2).  [clausify(15)].
+25 meets(c3,c2).  [clausify(15)].
+27 -moment(x) | -finer(y,x) | y = x.  [clausify(14)].
+29 moment(c3).  [clausify(15)].
+41 -finer(c3,c1).  [clausify(15)].
+42 finer(f1(x,y),x) | precedes(x,y) | precedes(y,x).  [resolve(16,a,17,a)].
+43 finer(f1(x,y),y) | precedes(x,y) | precedes(y,x).  [resolve(18,a,17,a)].
+48 precedes(c1,c2).  [resolve(24,a,21,a)].
+49 -precedes(c1,x) | -precedes(x,c2).  [resolve(24,a,22,a)].
+50 precedes(c3,c2).  [resolve(25,a,21,a)].
+51 -precedes(c3,x) | -precedes(x,c2).  [resolve(25,a,22,a)].
+54 -finer(x,c3) | x = c3.  [resolve(29,a,27,a)].
+55 -finer(x,c3) | c3 = x.  [copy(54),flip(b)].
+165 -precedes(c1,c3).  [resolve(50,a,49,b)].
+181 -precedes(c3,c1).  [resolve(51,b,48,a)].
+217 finer(f1(c1,c3),c3).  [resolve(165,a,43,b),unit_del(b,181)].
+219 finer(f1(c1,c3),c1).  [resolve(165,a,42,b),unit_del(b,181)].
+238 f1(c1,c3) = c3.  [resolve(217,a,55,a),flip(a)].
+239 $F.  [back_rewrite(219),rewrite([238(3)]),unit_del(a,41)].
+
+============================== end of proof ==========================

@@ -1,0 +1,74 @@
+
+formulas(assumptions).
+
+(all i all j
+	(meets(i,j)
+	->
+	(timeinterval(i)
+	& timeinterval(j)))).
+
+(all i all j all k all m
+	((meets(i,k)
+	& meets(j,k)
+	& meets(i,m))
+	->
+	meets(j,m))).
+
+(all i
+	(exists j exists k
+		(meets(j,i)
+		& meets(i,k)))).
+
+(all i all j all k all m
+	((meets(i,j)
+	& meets(k,l))
+	->
+	(meets(i,l)
+	| (exists n
+		((meets(i,n) & meets(n,l))
+		| (meets(k,n) & meets(n,j))))))).
+
+(all i all j
+	(meets(i,j)
+	->
+	-meets(j,i))).
+
+(all i all j all k all m
+	((meets(i,j)
+	& meets(j,k)
+	& meets(k,m))
+	->
+	(exists n
+		(meets(i,n)
+		& meets(n,m))))).
+
+(all p all q all r all s
+	((meets(p,q)
+	& meets(q,s)
+	& meets(p,r)
+	& meets(r,s))
+	->
+	(q=r))).
+
+(all p all q all r all s
+	(equiv(p,q,r,s)
+	<->
+	(meets(p,q)
+	& meets(r,s)
+	& meets(p,s)))).
+
+(all p all q all r all s
+	(pointless(p,q,r,s)
+	<->
+	(exists u exists v exists w
+		(equiv(p,q,u,v)
+		& equiv(r,s,v,w))))).
+
+(all p all q all r all s
+	(pointless(p,q,r,s)
+	->
+	(exists x exists y
+		(pointless(p,q,x,y)
+		& pointless(x,y,r,s))))).
+
+end_of_list.
