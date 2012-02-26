@@ -1,0 +1,91 @@
+
+formulas(assumptions).
+
+(all i all j
+	(meets(i,j)
+	->
+	(timeinterval(i)
+	& timeinterval(j)))).
+
+(all i all j all k all m
+	((meets(i,k)
+	& meets(j,k)
+	& meets(i,m))
+	->
+	meets(j,m))).
+
+(all i all j all k all m
+	((meets(i,j)
+	& meets(k,l))
+	->
+	(meets(i,l)
+	| (exists n
+		((meets(i,n) & meets(n,l))
+		| (meets(k,n) & meets(n,j))))))).
+
+(all i all j
+	(meets(i,j)
+	->
+	-meets(j,i))).
+
+(all i all j all k all m
+	((meets(i,j)
+	& meets(j,k)
+	& meets(k,m))
+	->
+	(exists n
+		(meets(i,n)
+		& meets(n,m))))).
+
+(all x all y
+	(precedes(x,y)
+	<->
+	(meets(x,y)
+	| (exists z
+		(meets(x,z)
+		& meets(z,y)))))).
+
+(all x all y
+	(finer(x,y)
+	<->
+	(starts(x,y) | during(x,y) | finishes(x,y) | (x=y)))).
+
+(all i all j
+	(starts(i,j)
+	<->
+	(exists k exists m exists n
+		(meets(k,i)
+		& meets(i,m)
+		& meets(m,n)
+		& meets(k,j)
+		& meets(j,n))))).
+
+(all i all j
+	(during(i,j)
+	<->
+	(exists k exists m exists n exists o
+		(meets(k,m)
+		& meets(m,i)
+		& meets(i,n)
+		& meets(n,o)
+		& meets(k,j)
+		& meets(j,o))))).
+
+(all i all j
+	(finishes(i,j)
+	<->
+	(exists k exists m exists n
+		(meets(k,m)
+		& meets(m,i)
+		& meets(i,n)
+		& meets(k,j)
+		& meets(j,n))))).
+
+-(all x all y all z
+        ((finer(x,y)
+        & precedes(y,z))
+        ->
+        precedes(x,z))).
+
+
+end_of_list.

@@ -1,0 +1,84 @@
+formulas(assumptions).
+
+%approximate_point Axioms
+
+all x all y all z 
+	((precedes(x,y) 
+	& precedes(y,z)) 
+	-> 
+	precedes(x,z)).
+
+all x all y all z 
+	((finer(x,y) 
+	& finer(y,z)) 
+	-> 
+	finer(x,z)).
+
+all x all y 
+	((finer(x,y) 
+	& finer(y,x)) 
+	-> 
+	(x=y)).
+
+all x 
+	(-precedes(x,x)).
+
+all x 
+	(finer(x,x)).
+
+all x all y 
+	((ncdf(x,y) 
+	| precedes(x,y) 
+	| precedes(y,x))).
+
+all x all y 
+	(finer(x,y) 
+	-> 
+	-precedes(x,y)).
+
+all x all y all z 
+	((finer(x,y) 
+	& precedes(y,z)) 
+	-> 
+	precedes(x,z)).
+
+all x all y
+	(ncdf(x,y) 
+	<-> 
+	(exists z 
+		(finer(z,x) 
+		& finer(z,y)))).
+
+all x 
+	(exists y 
+		(precedes(y,x))).
+
+all x 
+	(exists y 
+		(precedes(x,y))). 
+
+all x all y 
+	(exists z 
+		(finer(x,z) & finer(y,z))).
+
+(all x all y
+        (meets(x,y)
+        <->
+        (precedes(x,y)
+        & -(exists z
+                (precedes(x,z)
+                & precedes(z,y)))))).
+
+(all x
+        (moment(x)
+        <->
+        -(exists y
+                (finer(y,x)
+                & (x != y))))).
+
+
+-(all x all y all z
+((meets(x,y) & meets(z,y) & moment(z)) -> finer(z,x))).
+
+end_of_list.
+
