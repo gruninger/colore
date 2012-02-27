@@ -1,23 +1,28 @@
 
 (cl-text owltime_inside2ordered_geometry
 
+(forall (x)
+        (iff    (point x)
+                (Instant x)))
+
+(forall (x)
+        (iff    (line x)
+                (Interval x)))
+
 (forall (x y)
 	(iff	(in x y)
-		(or	(and	(Instant x)
-				(Interval y)
-				(inside x y))
-			(and	(Interval x)
-				(Instant y)
-				(inside y x)))))
+		(or	(inside x y)
+			(inside y x)
+			(= x y))))
 
 (forall (x y z)
 	(iff	(between x y z)
 		(and	(Instant x)
 			(Instant y)
 			(Instant z)
-			(or	(and	(before x y)
-					(before y z))
-				(and	(before z y)
-					(before y z))))))
+			(or	(and	(or (before x y) (= x y))
+					(or (before y z) (= y z)))
+				(and	(or (before z y) (= z y))
+					(or (before y x) (= y x)))))))
 
 )
