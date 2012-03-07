@@ -1,0 +1,51 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 1514 was started by mudcat on mie-17-23.internal.mie.utoronto.ca,
+Wed Mar  7 15:25:28 2012
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.05 (+ 0.01) seconds.
+% Length of proof is 31.
+% Level of proof is 7.
+% Maximum clause weight is 12.
+% Given clauses 147.
+
+2 (all x all y all z (before(x,y) & before(y,z) -> before(x,z))) # label(non_clause).  [assumption].
+9 (all x all y (before(x,y) -> timeinterval(between(x,y)))) # label(non_clause).  [assumption].
+10 (all i (timeinterval(i) -> before(beginof(i),endof(i)))) # label(non_clause).  [assumption].
+12 (all p all q (before(p,q) <-> p = beginof(between(p,q)) & q = endof(between(p,q)))) # label(non_clause).  [assumption].
+14 (all x all y (leq(x,y) <-> before(x,y) | x = y)) # label(non_clause).  [assumption].
+15 -(all x all y all z (leq(x,y) & leq(y,z) -> leq(x,z))) # label(non_clause).  [assumption].
+23 -before(x,y) | timeinterval(between(x,y)).  [clausify(9)].
+24 -timeinterval(x) | before(beginof(x),endof(x)).  [clausify(10)].
+30 -before(x,y) | -before(y,z) | before(x,z).  [clausify(2)].
+37 -before(x,y) | beginof(between(x,y)) = x.  [clausify(12)].
+38 -before(x,y) | endof(between(x,y)) = y.  [clausify(12)].
+40 -leq(x,y) | before(x,y) | y = x.  [clausify(14)].
+41 leq(x,y) | -before(x,y).  [clausify(14)].
+42 leq(x,y) | y != x.  [clausify(14)].
+43 leq(c1,c2).  [clausify(15)].
+44 leq(c2,c3).  [clausify(15)].
+45 -leq(c1,c3).  [clausify(15)].
+48 before(beginof(between(x,y)),endof(between(x,y))) | -before(x,y).  [resolve(24,a,23,b)].
+52 before(c1,c2) | c2 = c1.  [resolve(43,a,40,a)].
+53 before(c2,c3) | c3 = c2.  [resolve(44,a,40,a)].
+54 c3 != c1.  [ur(42,a,45,a)].
+55 -before(c1,c3).  [ur(41,a,45,a)].
+89 c2 = c1 | -before(c2,x) | before(c1,x).  [resolve(52,a,30,a)].
+98 c3 = c2 | before(beginof(between(c2,c3)),endof(between(c2,c3))).  [resolve(53,a,48,b)].
+100 c3 = c2 | endof(between(c2,c3)) = c3.  [resolve(53,a,38,a)].
+101 c3 = c2 | beginof(between(c2,c3)) = c2.  [resolve(53,a,37,a)].
+901 c2 = c1 | c3 = c2.  [resolve(89,b,53,a),unit_del(b,55)].
+903 c2 = c1.  [para(901(b,1),45(a,2)),unit_del(b,43)].
+1055 beginof(between(c1,c3)) = c1.  [back_rewrite(101),rewrite([903(2),903(4),903(8)]),unit_del(a,54)].
+1056 endof(between(c1,c3)) = c3.  [back_rewrite(100),rewrite([903(2),903(4)]),unit_del(a,54)].
+1058 $F.  [back_rewrite(98),rewrite([903(2),903(4),1055(7),903(5),1056(8)]),unit_del(a,54),unit_del(b,55)].
+
+============================== end of proof ==========================

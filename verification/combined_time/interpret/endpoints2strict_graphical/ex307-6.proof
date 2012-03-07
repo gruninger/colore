@@ -1,0 +1,44 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 1681 was started by mudcat on mie-17-23.internal.mie.utoronto.ca,
+Wed Mar  7 15:49:45 2012
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.02 (+ 0.00) seconds.
+% Length of proof is 24.
+% Level of proof is 6.
+% Maximum clause weight is 14.
+% Given clauses 95.
+
+1 (all x all y (before(x,y) -> timepoint(x) & timepoint(y))) # label(non_clause).  [assumption].
+10 (all i (timeinterval(i) -> before(beginof(i),endof(i)))) # label(non_clause).  [assumption].
+11 (all i (timeinterval(i) -> i = between(beginof(i),endof(i)))) # label(non_clause).  [assumption].
+13 (all x (point(x) <-> timepoint(x))) # label(non_clause).  [assumption].
+14 (all x (line(x) <-> timeinterval(x))) # label(non_clause).  [assumption].
+15 (all x all y (in(x,y) <-> begins(x) = y & timeinterval(x) & timepoint(y) | ends(x) = y & timeinterval(x) & timepoint(y) | begins(y) = x & timeinterval(y) & timepoint(x) | ends(y) = x & timeinterval(y) & timepoint(x) | (exists z (between(x,z) = y & timepoint(x) & timepoint(z) & timeinterval(y))) | (exists z (between(z,x) = y & timepoint(x) & timepoint(z) & timeinterval(y))) | (exists z (between(y,z) = x & timepoint(x) & timepoint(z) & timeinterval(y))) | (exists z (between(z,y) = x & timepoint(x) & timepoint(z) & timeinterval(y))) | x = y)) # label(non_clause).  [assumption].
+16 -(all l (line(l) -> (exists p (point(p) & in(p,l))))) # label(non_clause).  [assumption].
+22 point(x) | -timepoint(x).  [clausify(13)].
+24 -point(x) | -in(x,c1).  [clausify(16)].
+26 -line(x) | timeinterval(x).  [clausify(14)].
+27 line(c1).  [clausify(16)].
+28 -before(x,y) | timepoint(x).  [clausify(1)].
+29 -before(x,y) | timepoint(y).  [clausify(1)].
+40 -timeinterval(x) | before(beginof(x),endof(x)).  [clausify(10)].
+41 -timeinterval(x) | between(beginof(x),endof(x)) = x.  [clausify(11)].
+102 in(x,y) | between(z,x) != y | -timepoint(x) | -timepoint(z) | -timeinterval(y).  [clausify(15)].
+106 -in(x,c1) | -timepoint(x).  [resolve(24,a,22,a)].
+107 timeinterval(c1).  [resolve(27,a,26,a)].
+133 between(beginof(c1),endof(c1)) = c1.  [resolve(107,a,41,a)].
+134 before(beginof(c1),endof(c1)).  [resolve(107,a,40,a)].
+150 timepoint(endof(c1)).  [resolve(134,a,29,a)].
+151 timepoint(beginof(c1)).  [resolve(134,a,28,a)].
+157 -in(endof(c1),c1).  [ur(106,b,150,a)].
+181 $F.  [ur(102,a,157,a,c,150,a,d,151,a,e,107,a),rewrite([133(5)]),xx(a)].
+
+============================== end of proof ==========================
