@@ -1,0 +1,33 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 2548 was started by mudcat on mie-12-39.internal.mie.utoronto.ca,
+Thu Mar  8 15:16:06 2012
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 13.
+% Level of proof is 4.
+% Maximum clause weight is 15.
+% Given clauses 60.
+
+9 (all x all y (before(x,y) -> timeinterval(between(x,y)))) # label(non_clause).  [assumption].
+11 (all i (timeinterval(i) -> i = between(beginof(i),endof(i)))) # label(non_clause).  [assumption].
+12 (all p all q (before(p,q) <-> p = beginof(between(p,q)) & q = endof(between(p,q)))) # label(non_clause).  [assumption].
+13 -(all i (timeinterval(i) <-> i = between(beginof(i),endof(i)))) # label(non_clause).  [assumption].
+30 -before(x,y) | timeinterval(between(x,y)).  [clausify(9)].
+32 -timeinterval(x) | between(beginof(x),endof(x)) = x.  [clausify(11)].
+35 before(x,y) | beginof(between(x,y)) != x | endof(between(x,y)) != y.  [clausify(12)].
+36 timeinterval(c1) | between(beginof(c1),endof(c1)) = c1.  [clausify(13)].
+37 -timeinterval(c1) | between(beginof(c1),endof(c1)) != c1.  [clausify(13)].
+40 between(beginof(c1),endof(c1)) = c1.  [resolve(36,a,32,a),merge(b)].
+41 -timeinterval(c1).  [back_rewrite(37),rewrite([40(7)]),xx(b)].
+111 before(beginof(c1),endof(c1)).  [para(40(a,1),35(c,1,1)),rewrite([40(10)]),xx(b),xx(c)].
+189 $F.  [resolve(111,a,30,a),rewrite([40(5)]),unit_del(a,41)].
+
+============================== end of proof ==========================
