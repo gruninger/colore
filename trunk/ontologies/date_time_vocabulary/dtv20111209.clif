@@ -126,11 +126,10 @@
 			("time interval1 is part of time interval2" t1 t3)
 			("time interval1 is part of time interval2" t2 t3))))
 
-(forall ((t1 "time interval") (t2 "time interval") (t3 "time interval") (t3 "time interval")) 
+(forall ((t1 "time interval") (t2 "time interval") (t3 "time interval"))
 	(if 	(and 	("time interval1 is part of time interval2" t1 t3)
-			("time interval1 is part of time interval2" t2 t3)
-			("time interval1 plus time interval2 is time interval3" t1 t2 t4))
-		("time interval1 is part of time interval2" t4 t3)))
+			("time interval1 is part of time interval2" t2 t3))
+		("time interval1 is part of time interval2" ("time interval1 plus time interval2 is time interval3" t1 t2) t3)))
 
 (forall ((t1 "time interval") (t2 "time interval"))
 	(exists ((t3 "time interval"))
@@ -163,10 +162,11 @@
 					(not ("time interval1 overlaps time interval2" t4 t1)))
 				("time interval1 is part of time interval2" t4 t3)))))
 
-(forall ((t1 "time interval") (t2 "time interval") (t3 "time interval") (t4 "time interval"))
-	(if	(and	("time interval1 starts time interval2 complementing time interval3" t1 t2 t3)
-			("time interval1 starts time interval2 complementing time interval3" t1 t2 t4))
-	(= t3 t4)))
+(forall ((t1 "time interval") (t2 "time interval") (t3 "time interval"))
+	(if 	("time interval1 starts time interval2" t1 t2)
+		(exists ((i integer))
+			(and 	(count ("time interval1 starts time interval2 complementing time interval3" t1 t2) i)
+				(= i 1)))))
 
 (forall ((t1 "time interval") (t2 "time interval"))
 	(exists (t3 "time interval))
@@ -182,10 +182,9 @@
 					(not ("time interval1 overlaps time interval2" t4 t1)))
 				("time interval1 is part of time interval2" t4 t3)))))
 
-(forall ((t1 "time interval") (t2 "time interval") (t3 "time interval") (t4 "time interval"))
-	(if 	(and	("time interval1 finishes time interval2 complementing" t1 t2 t3)
-			("time interval1 finishes time interval2 complementing" t1 t2 t4))
-	(= t3 t4)))
+(forall ((t1 "time interval") (t2 "time interval") (t3 "time interval"))
+	(if 	("time interval1 finishes time interval2" t1 t2 t3)
+		(= 1 (count ("time interval1 finishes time interval2 complementing" t1 t2)))))
 
 (forall ((t1 "time interval") (t2 "time interval") (t3 "time interval"))
 	(iff 	("time interval1 intersects time interval2 with time interval3" t1 t2 t3)
@@ -199,11 +198,9 @@
 			("time interval1 is part of time interval2" t4 t2))
 		("time interval1 is part of time interval2" t4 t3)))
 
-(forall ((t1 "time interval") (t2 "time interval") (t3 "time interval") (t4 "time interval"))
-	(if 	(and	("time interval1 overlaps time interval2" t1 t2)
-			("time interval1 intersects time interval2" t1 t2 t3)
-			("time interval1 intersects time interval2" t1 t2 t4))
-		(= t3 t4)))
+(forall ((t1 "time interval") (t2 "time interval"))
+	(if 	("time interval1 overlaps time interval2" t1 t2)
+		(= 1 (count ("time interval1 intersects time interval2" t1 t2)))))
 
 (forall ((t1 "time interval") (t2 "time interval"))
 	(if 	("time interval1 is properly before time interval2" t1 t2)
@@ -248,25 +245,26 @@
 		(= D0 (+ d1 d2))))
 
 (forall ((n1 number) (d1 duration))
-	(exists (d2 duration)
-		(= (mult n1 d1) d2)))
+	(exists ((d2 duration))
+		(mult n1 d1 d2)))
 
 (forall  ((d1 duration) (d2 duration) (n1 number))  
-	(exists ((d3 duration))    
-		(if 	(= d3 (mult n1 (+ d1 d2)))
-			(= d3 (+ (mult n1 d1) (mult n1 d2))))))
+        (exists ((d3 duration)) 
+		(if     (= d3 (mult n1 (+ d1 d2)))
+                        (= d3 (+ (mult n1 d1) (mult n1 d2))))))
+
 
 (forall ((d1 duration) (n1 number) (n2 number))
 	(= (mult (+ n1 n2) d1) (+ (mult n1 d1) (mult n2 d1))))
 
 (forall ((d1 duration))
-	(= (mult 0 d1) D0))
+	(mult 0 d1 D0))
 
-(forall ((n1 number) (d1 duration))          
-	(exists ((d2 duration))
-		(iff    (= D0 (* n1 d1))
-			(or     (= n1 0)
-                                (= d1 D0)))))
+(forall ((n1 number) (d1 duration))  
+	(exists ((d2 duration))    
+		(iff 	(= D0 (* n1 d1))
+			(or 	(= n1 0)
+				(= d1 D0)))))
 
 (forall ((d1 duration))
 	(if 	(not (= d1 D0))
@@ -284,8 +282,8 @@
 (forall ((t "time interval"))
 	(not (= ("duration of" t) D0)))
 
-(forall ((t1 "time interval") (t2 "time interval"))
-	(not (= D0 (+ ("duration of" t1) ("duration of" t2)))))
+(forall ((t "time interval"))
+	(not (= D0 (- (D0 t)))))
 
 (forall ((t1 "time interval") (t2 "time interval"))
 	(if 	("time interval1 is part of time interval2" t1 t2)
@@ -301,12 +299,12 @@
 (forall ((t1 "time interval") (t2 "time interval"))
 	(exists ((t3 "time interval"))
 		(if 	("time interval1 starts time interval2 complementing time interval3" t1 t2 t3)
-			(= ("duration of" t2) (+ ("duration of" t3) ("duration of" t1))))))
+			(= ("duration of" t3) (- ("duration of" t2) ("duration of" t1))))))
 
 (forall ((t1 "time interval") (t2 "time interval"))
 	(exists ((t3 "time interval"))
 		(if 	("time interval1 finishes time interval2 complementing time interval3" t1 t2 t3)
-			(= ("duration of" t2) (+ ("duration of" t3) ("duration of" t1))))))
+			(= ("duration of" t3) (- ("duration of" t2) ("duration of" t1))))))
 
 (forall ((o occurrence) (t "time interval"))
 	(iff 	("occurrence occurs within time interval" o t)
@@ -376,6 +374,66 @@
 			(if 	(and 	("situation model has occurrence" s1 o1)
 					("situation model has occurrence" s2 o2))
 				("occurrence1 ends before occurrence2" o1 o2)))))
+
+(forall (s schedule)    (and      (exists ((g "general situation model")               (tt "time table"))        (and          ("schedule is for general situation model" s g)          ("schedule has time table" s tt)          (set s)          (forall ((i thing))            (if              ("set has element" s i)              (and                ("individual situation model" i)                ("refinement refines situation model"                       i g)                (exists ((te "table entry"))                  (and                    ("time table has table entry" tt te)                    ("situation model occurs for time                       interval" i te)))              )))))))
+
+(forall ((s "schedule") (tt "time table"))  (iff ("schedule has time table" s tt)    (forall (ti "time interval")      (and        ("time table has table entry" tt ti)        (exists ((i "individual occurrence"))          (and            ("set has member" s i)            ("individual situation model occurs over time               interval" i ti)))))))
+
+(forall ((s "schedule") (span "time interval"))  (iff ("schedule has time span" s span)   (and    (forall ((tt "time table") (ti "time interval"))       (if         (and ("schedule has time table" s tt)             ("time table has time table period" tt ti))        (= span ti))))))
+
+(exists ((s sequence)) (exists ((i1 index) (sp1 "sequence position")         (i2 index) (sp2 "sequence position"))  (if (and ("sequence has sequence position" s sp1)           ("sequence has sequence position" s sp2)           ("sequence position has index" sp1 i1)           ("sequence position has index" sp2 i2)           (= i1 i2))       (= sp1 sp2))))
+
+(forall ((s "sequence position") (nsp "sequence position")         (sp "sequence position")) (iff ("next sequence position succeeds sequence position"        nsp sp)      (exists ((sp2 "sequence position")               (ni index) (i2 index))        (and          ("sequence position1 precedes sequence position2"           sp nsp)          ("sequence position1 precedes sequence position2"           sp sp2)          ("sequence position has index" nsp ni)          ("sequence position has index" sp3 i2)          (<= ni i2)))))
+
+(forall ((s sequence) (member thing))  (iff ("sequence has member" s member)       (exists ((sp "sequence position"))        (and ("sequence has sequence position" s sp)             ("sequence position has member" sp m)))))
+
+(forall ((s sequence) (index integer) (member thing)) (iff ("member has index in sequence" member index s)      (exists ((sp "sequence position"))       (and        ("sequence has sequence position" s sp)        ("sequence position has index" sp index)        ("sequence position has member" sp member)))))
+
+(forall ((s sequence) (index integer) (member thing)) (iff ("index of member in sequence" index member s)      (exists ((sp "sequence position"))        (if (and             ("sequence has sequence position" s sp)             ("sequence position has member" sp member))            ("sequence position has index" sp index)         ))))
+
+(forall ((s sequence) (index integer) (member thing)) (iff ("member with index in sequence " member index s)      (exists ((sp "sequence position"))        (if (and               ("sequence has sequence position" s sp)              ("sequence position has index" sp index))            ("sequence position has member" sp member)))))
+
+(forall ((member thing) (s sequence)) (exists ((c concept))  (iff ("sequence is of concept" s c)       (if ("member participates in sequence" member s)        ("concept corresponds to instance" c member)))))
+
+(forall ((s sequence) (p "index order position")) (iff ("sequence has index order position" s p)      (exists ((i1 index) (i2 index))       (and        ("sequence position has index" p i1)        ("sequence has index origin value" s i2)        (= i1 i2)))))
+
+(forall ((s sequence)) (iff ("consecutive sequence" s)  (forall ((sp1 "sequence position"))   (if (and        ("sequence has sequence position" s sp1)        (not (exists ((first "sequence position"))               (and                ("sequence has first position" s first)                (= sp1 first))))        )       (exists ((sp2 "sequence position")           (i1 index) (i2 index))        (and         ("sequence is next after sequence position"          sp1 sp2)         ("sequence position has index" sp1 i1)         ("sequence position has index" sp2 i2)         (= (+ 1 i1) i2)))))))
+
+(forall ((s sequence)) (iff ("unique sequence" s)  (forall ((member thing)            (sp1 "sequence position")           (sp2 "sequence position"))   (if    (and      ("sequence has sequence position" s sp1)     ("sequence has sequence position" s sp2)     ("sequence position has element" sp1 member)     ("sequence position has element" sp2 member))   (= sp1 sp2)))))
+
+(forall (s sequence) (iff ("regular sequence" s)  (and     ("consecutive sequence" s)     ("unique sequence" s))))
+
+(forall ((s sequence)(m1 thing)(m2 thing)) (iff ("member1 precedes member2 in unique sequence"        m1 m2 s)      (and        ("member participates in sequence" m1 s)        ("member participates in sequence" m2 s)        (forall ((sp1 "sequence position")                 (sp2 "sequence position"))          (if            (and              ("sequence position of member" sp1 m1)              ("sequence position of member" sp2 m2))           ("sequence position1 precedes              sequence position2" sp1 sp2))))))
+
+(forall ((s "finite sequence") (m thing)) (iff ("sequence has first member" s m)  (exists (first "sequence position")   (and    ("sequence has first position" s first)    ("sequence position has member" first m)))))
+
+(forall ((s sequence) (m thing)) (iff ("sequence has last member" s m)  (exists (last "sequence position")   (and    ("sequence has last position" s last)    ("sequence position has member" last m)))))
+
+(forall ((s "sequence") (nm thing) (m thing))  (iff   ("next member is next after thing in unique sequence"    nm m s)   (exists (sp "sequence position")    (and     ("sequence has sequence position" s sp)     ("sequence position has member" sp m)     (forall (sp2 "sequence position")       (if         (and         ("sequence has sequence position" s sp2)         ("sequence position has member" sp2 m))        (= sp2 sp)))     (exists (np "sequence position")      (and         ("sequence has sequence position" s np)        ("next sequence position succeeds sequence position" np sp)        ("sequence position has element" np nm)))    ))))
+
+(forall ((s sequence) (last thing)) (if    ("sequence has last member" s last)   (not (exists (m thing)     ("member is next after thing in sequence"           m last s)))))
+
+(forall ((s "unique sequence") (m thing)) (if   (and      ("element participates in sequence" m s)     (not (exists (nm thing)       ("next member is next after thing in sequence"        nm m s))))   ("sequence has last member" s m)))
+
+(forall ((s sequence) (pm thing) (m thing))  (iff   ("previous member is just before thing in unique sequence"    pm m s)   (exists (sp "sequence position")    (and     ("sequence has sequence position" s sp)     ("sequence position has member" sp m)     (forall (sp2 "sequence position")       (if         (and         ("sequence has sequence position" s sp2)         ("sequence position has member" sp2 m))        (= sp2 sp)))     (exists (pp "sequence position")      (and         ("sequence has sequence position" s pp)        ("next sequence position succeeds sequence position" sp pp)        ("sequence position has element" pp pm)))    ))))
+
+(forall ((s sequence) (first thing)) (if    ("sequence has first member" s first)   (not (exists (m thing)     ("member is just before thing in sequence"           m first s)))))
+
+(forall ((s "unique sequence") (m thing)) (if   (and      ("element participates in sequence" m s)     (not (exists (pm thing)       ("previous member is just before thing in sequence"        pm m s))))   ("sequence has first member" s m)))
+
+(forall ((quantity quantity)) (= (count ("quantity has quantity kind" quantity))    1))
+
+(forall (("system of units" "system of units"))        (= (count             ("system of units is for system of quantities"              "system of units"))           1))
+
+(forall ((thing thing)) (iff ("quantity value"(thing))      (or ("atomic quantity value"(thing))          ("compound quantity value"(thing)))))
+
+(forall (("atomic quantity value 1" "atomic quantity value")         ("atomic quantity value 2" "atomic quantity value")         ("measurement unit" "measurement unit")) (iff (converted "atomic quantity value 1"                 "atomic quantity value 2"                 "measurement unit")      (exists ((quantity quantity)               ("measurement unit 2" "measurement unit"))        (and ("quantity value has measurement unit"              "atomic quantity value 2"              "measurement unit 2")             (= "measurement unit" "measurement unit 2")             (= "atomic value 1" quantity)             (= "atomic value 2" quantity)))))
+
+(forall (("atomic quantity value 2" "atomic quantity value")         ("measurement unit" "measurement unit"))        (= (count ("atomic quantity value1 is atomic                     quantity value2 converted to                    measurement unit"                    "atomic quantity value 2"                    "measurement unit"))           1))
+
+(forall (("compound quantity value"         "compound quantity value")) (>= (count ("compound quantity value has              atomic quantity value"             "compound quantity value"))  2))
+
+(forall (("compound quantity value"          "compound quantity value")         ("atomic quantity value" "atomic quantity value")) (iff ("is equivalent to" "compound quantity value"                          "atomic quantity value")      (forall ("atomic quantity value 1"               "atomic quantity value")       (exists (("quantity 1" quantity)                ("quantity 2" quantity)                ("quantity kind 1" "quantity kind")                ("quantity kind 2" "quantity kind"))           (and ("compound quantity value has atomic                   quantity value"                 "compound quantity value"                 "atomic quantity value 1")                ("quantity value quantifies quantity"                  "atomic quantity value 1" "quantity 1")                ("quantity has quantity kind"                 "quantity 1" "quantity kind 1")                ("quantity value quantifies quantity"                 "atomic quantity value" "quantity 2")                ("quantity has quantity kind"                 "quantity 2" "quantity kind 2")                (= "quantity kind 1" "quantity kind 2"))))))
 
 
 (forall ((part thing)) 

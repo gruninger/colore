@@ -126,11 +126,10 @@
 			("time interval1 is part of time interval2" t1 t3)
 			("time interval1 is part of time interval2" t2 t3))))
 
-(forall ((t1 "time interval") (t2 "time interval") (t3 "time interval") (t3 "time interval")) 
+(forall ((t1 "time interval") (t2 "time interval") (t3 "time interval"))
 	(if 	(and 	("time interval1 is part of time interval2" t1 t3)
-			("time interval1 is part of time interval2" t2 t3)
-			("time interval1 plus time interval2 is time interval3" t1 t2 t4))
-		("time interval1 is part of time interval2" t4 t3)))
+			("time interval1 is part of time interval2" t2 t3))
+		("time interval1 is part of time interval2" ("time interval1 plus time interval2 is time interval3" t1 t2) t3)))
 
 (forall ((t1 "time interval") (t2 "time interval"))
 	(exists ((t3 "time interval"))
@@ -163,10 +162,11 @@
 					(not ("time interval1 overlaps time interval2" t4 t1)))
 				("time interval1 is part of time interval2" t4 t3)))))
 
-(forall ((t1 "time interval") (t2 "time interval") (t3 "time interval") (t4 "time interval"))
-	(if	(and	("time interval1 starts time interval2 complementing time interval3" t1 t2 t3)
-			("time interval1 starts time interval2 complementing time interval3" t1 t2 t4))
-	(= t3 t4)))
+(forall ((t1 "time interval") (t2 "time interval") (t3 "time interval"))
+	(if 	("time interval1 starts time interval2" t1 t2)
+		(exists ((i integer))
+			(and 	(count ("time interval1 starts time interval2 complementing time interval3" t1 t2) i)
+				(= i 1)))))
 
 (forall ((t1 "time interval") (t2 "time interval"))
 	(exists (t3 "time interval))
@@ -182,10 +182,9 @@
 					(not ("time interval1 overlaps time interval2" t4 t1)))
 				("time interval1 is part of time interval2" t4 t3)))))
 
-(forall ((t1 "time interval") (t2 "time interval") (t3 "time interval") (t4 "time interval"))
-	(if 	(and	("time interval1 finishes time interval2 complementing" t1 t2 t3)
-			("time interval1 finishes time interval2 complementing" t1 t2 t4))
-	(= t3 t4)))
+(forall ((t1 "time interval") (t2 "time interval") (t3 "time interval"))
+	(if 	("time interval1 finishes time interval2" t1 t2 t3)
+		(= 1 (count ("time interval1 finishes time interval2 complementing" t1 t2)))))
 
 (forall ((t1 "time interval") (t2 "time interval") (t3 "time interval"))
 	(iff 	("time interval1 intersects time interval2 with time interval3" t1 t2 t3)
@@ -199,11 +198,9 @@
 			("time interval1 is part of time interval2" t4 t2))
 		("time interval1 is part of time interval2" t4 t3)))
 
-(forall ((t1 "time interval") (t2 "time interval") (t3 "time interval") (t4 "time interval"))
-	(if 	(and	("time interval1 overlaps time interval2" t1 t2)
-			("time interval1 intersects time interval2" t1 t2 t3)
-			("time interval1 intersects time interval2" t1 t2 t4))
-		(= t3 t4)))
+(forall ((t1 "time interval") (t2 "time interval"))
+	(if 	("time interval1 overlaps time interval2" t1 t2)
+		(= 1 (count ("time interval1 intersects time interval2" t1 t2)))))
 
 (forall ((t1 "time interval") (t2 "time interval"))
 	(if 	("time interval1 is properly before time interval2" t1 t2)
@@ -248,25 +245,26 @@
 		(= D0 (+ d1 d2))))
 
 (forall ((n1 number) (d1 duration))
-	(exists (d2 duration)
-		(= (mult n1 d1) d2)))
+	(exists ((d2 duration))
+		(mult n1 d1 d2)))
 
 (forall  ((d1 duration) (d2 duration) (n1 number))  
-	(exists ((d3 duration))    
-		(if 	(= d3 (mult n1 (+ d1 d2)))
-			(= d3 (+ (mult n1 d1) (mult n1 d2))))))
+        (exists ((d3 duration)) 
+		(if     (= d3 (mult n1 (+ d1 d2)))
+                        (= d3 (+ (mult n1 d1) (mult n1 d2))))))
+
 
 (forall ((d1 duration) (n1 number) (n2 number))
 	(= (mult (+ n1 n2) d1) (+ (mult n1 d1) (mult n2 d1))))
 
 (forall ((d1 duration))
-	(= (mult 0 d1) D0))
+	(mult 0 d1 D0))
 
-(forall ((n1 number) (d1 duration))          
-	(exists ((d2 duration))
-		(iff    (= D0 (* n1 d1))
-			(or     (= n1 0)
-                                (= d1 D0)))))
+(forall ((n1 number) (d1 duration))  
+	(exists ((d2 duration))    
+		(iff 	(= D0 (* n1 d1))
+			(or 	(= n1 0)
+				(= d1 D0)))))
 
 (forall ((d1 duration))
 	(if 	(not (= d1 D0))
@@ -284,8 +282,8 @@
 (forall ((t "time interval"))
 	(not (= ("duration of" t) D0)))
 
-(forall ((t1 "time interval") (t2 "time interval"))
-	(not (= D0 (+ ("duration of" t1) ("duration of" t2)))))
+(forall ((t "time interval"))
+	(not (= D0 (- (D0 t)))))
 
 (forall ((t1 "time interval") (t2 "time interval"))
 	(if 	("time interval1 is part of time interval2" t1 t2)
@@ -301,12 +299,12 @@
 (forall ((t1 "time interval") (t2 "time interval"))
 	(exists ((t3 "time interval"))
 		(if 	("time interval1 starts time interval2 complementing time interval3" t1 t2 t3)
-			(= ("duration of" t2) (+ ("duration of" t3) ("duration of" t1))))))
+			(= ("duration of" t3) (- ("duration of" t2) ("duration of" t1))))))
 
 (forall ((t1 "time interval") (t2 "time interval"))
 	(exists ((t3 "time interval"))
 		(if 	("time interval1 finishes time interval2 complementing time interval3" t1 t2 t3)
-			(= ("duration of" t2) (+ ("duration of" t3) ("duration of" t1))))))
+			(= ("duration of" t3) (- ("duration of" t2) ("duration of" t1))))))
 
 (forall ((o occurrence) (t "time interval"))
 	(iff 	("occurrence occurs within time interval" o t)
