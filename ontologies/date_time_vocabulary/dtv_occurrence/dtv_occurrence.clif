@@ -1,0 +1,76 @@
+
+(cl-text dtv_occurrence
+
+(cl-imports dtv_dur_interval)
+
+(forall ((o occurrence) (t "time interval"))
+	(iff 	("occurrence occurs within time interval" o t)
+		(exists ((t2 "time interval"))
+			(and 	("time interval1 is part of time interval2" t2 t)
+				("occurrence occurs throughout time interval" o t2)))))
+
+(forall ((o occurrence) (t "time interval"))
+	(iff 	("occurrence occurs for time interval" o t)
+		(and 	("occurrence occurs throughout time interval" o t)
+			(exists ((t2 "time interval"))
+				(and 	("time interval1 meets time interval2" t2 t)
+					(not ("occurrence occurs within time interval" o t2))))
+			(exists ((t3 "time interval"))
+				(and 	("time interval1 meets time interval2" t t3)
+					(not ("occurrence occurs within time interval" o t3)))))))
+
+(forall ((o occurrence) (d duration))
+	(iff 	("occurrence lasts for duration" o d)
+		(exists ((t "time interval"))
+			(and 	("occurrence occurs for time interval" o t)
+				("time interval has duration" t d)))))
+
+(forall ((o1 occurrence) (o2 occurrence))
+	(iff 	("occurrence1 precedes occurrence2" o1 o2)
+		(forall ((t1 "time interval") (t2 "time interval"))
+			(if 	(and 	("situation model occurs for time interval" o1 t1)
+					("situation model occurs for time interval" o2 t2))
+			("time interval1 precedes time interval2" t1 t2)))))
+
+(forall ((o1 occurrence) (o2 occurrence) (o3 occurrence))
+	(if 	(and 	("occurrence1 precedes occurrence2" o1 o2)
+			("occurrence1 precedes occurrence2" o2 o3))
+		("occurrence1 precedes occurrence2" o1 o3)))
+
+(forall ((o1 occurrence) (o2 occurrence))
+	(iff 	("occurrence1 starts before occurrence2" o1 o2)
+		(forall ((t1 "time interval") (t2 "time interval"))
+			(if 	(and 	("situation model occurs for time interval" o1 t1)
+					("situation model occurs for time interval" o2 t2))
+				("time interval1 starts before time interval2" t1 t2)))))
+
+(forall ((o1 occurrence) (o2 occurrence))
+	(iff 	("occurrence1 ends before occurrence2" o1 o2)
+		(forall ((t1 "time interval") (t2 "time interval"))
+			(if 	(and 	("situation model occurs for time interval" o1 t1)
+					("situation model occurs for time interval" o2 t2))
+				("time interval1 ends before time interval2" t1 t2)))))
+
+(forall ((s1 "situation model") (s2 "situation model"))
+	(iff 	("situation model1 precedes situation model2" s1 s2)
+		(forall ((o1 occurrence) (o2 occurrence))
+			(if 	(and 	("situation model has occurrence" s1 o1)
+					("situation model has occurrence" s2 o2))
+				("occurrence1 precedes occurrence2" o1 o2)))))
+
+(forall ((s1 "situation model") (s2 "situation model"))
+	(iff 	("situation model1 starts before situation model2" s1 s2)
+		(forall ((o1 occurrence) (o2 occurrence))
+			(if 	(and 	("situation model has occurrence" s1 o1)
+					("situation model has occurrence" s2 o2))
+				("occurrence1 starts before occurrence2" o1 o2)))))
+
+(forall ((s1 "situation model") (s2 "situation model"))
+	(iff 	("situation model1 ends before situation model2" s1 s2)
+		(forall ((o1 occurrence) (o2 occurrence))
+			(if 	(and 	("situation model has occurrence" s1 o1)
+					("situation model has occurrence" s2 o2))
+				("occurrence1 ends before occurrence2" o1 o2)))))
+
+
+)
