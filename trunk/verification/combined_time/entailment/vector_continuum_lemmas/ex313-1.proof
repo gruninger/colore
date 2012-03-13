@@ -1,0 +1,52 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 5695 was started by mudcat on mie-17-23.internal.mie.utoronto.ca,
+Tue Mar 13 15:03:23 2012
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 8.45 (+ 0.05) seconds.
+% Length of proof is 32.
+% Level of proof is 7.
+% Maximum clause weight is 15.
+% Given clauses 345.
+
+8 (all i all p all q (timeinterval(i) & p = beginof(i) & q = endof(i) -> i = between(p,q))) # label(non_clause).  [assumption].
+9 (all i (timeinterval(i) -> timepoint(beginof(i)) & timepoint(endof(i)))) # label(non_clause).  [assumption].
+11 (all p all q (timepoint(p) & timepoint(q) -> p = beginof(between(p,q)) & q = endof(between(p,q)))) # label(non_clause).  [assumption].
+17 (all i all j (back(i,j) <-> timeinterval(i) & timeinterval(j) & j = between(endof(i),beginof(i)))) # label(non_clause).  [assumption].
+18 -(all i all j all k (back(i,j) & back(j,k) -> i = k)) # label(non_clause).  [assumption].
+45 -back(x,y) | timeinterval(x).  [clausify(17)].
+47 -back(x,y) | between(endof(x),beginof(x)) = y.  [clausify(17)].
+48 back(c1,c2).  [clausify(18)].
+49 back(c2,c3).  [clausify(18)].
+52 -timeinterval(x) | beginof(x) != y | endof(x) != z | between(y,z) = x.  [clausify(8)].
+53 -timeinterval(x) | timepoint(beginof(x)).  [clausify(9)].
+54 -timeinterval(x) | timepoint(endof(x)).  [clausify(9)].
+56 timeinterval(c1).  [resolve(48,a,45,a)].
+66 -timepoint(x) | -timepoint(y) | beginof(between(x,y)) = x.  [clausify(11)].
+67 -timepoint(x) | -timepoint(y) | endof(between(x,y)) = y.  [clausify(11)].
+68 c3 != c1.  [clausify(18)].
+69 between(endof(c1),beginof(c1)) = c2.  [resolve(48,a,47,a)].
+70 c2 = between(endof(c1),beginof(c1)).  [copy(69),flip(a)].
+71 between(endof(c2),beginof(c2)) = c3.  [resolve(49,a,47,a)].
+72 c3 = between(endof(between(endof(c1),beginof(c1))),beginof(between(endof(c1),beginof(c1)))).  [copy(71),rewrite([70(1),70(7)]),flip(a)].
+81 beginof(c1) != x | endof(c1) != y | between(x,y) = c1.  [resolve(56,a,52,a)].
+82 timepoint(beginof(c1)).  [resolve(56,a,53,a)].
+83 timepoint(endof(c1)).  [resolve(56,a,54,a)].
+103 between(endof(between(endof(c1),beginof(c1))),beginof(between(endof(c1),beginof(c1)))) != c1.  [back_rewrite(68),rewrite([72(1)])].
+140 endof(c1) != x | between(beginof(c1),x) = c1.  [xx_res(81,a)].
+148 -timepoint(x) | endof(between(x,beginof(c1))) = beginof(c1).  [resolve(82,a,67,b)].
+150 -timepoint(x) | beginof(between(x,beginof(c1))) = x.  [resolve(82,a,66,b)].
+11089 between(beginof(c1),endof(c1)) = c1.  [xx_res(140,a)].
+13239 endof(between(endof(c1),beginof(c1))) = beginof(c1).  [resolve(148,a,83,a)].
+13358 between(beginof(c1),beginof(between(endof(c1),beginof(c1)))) != c1.  [back_rewrite(103),rewrite([13239(6)])].
+14443 beginof(between(endof(c1),beginof(c1))) = endof(c1).  [resolve(150,a,83,a)].
+14482 $F.  [back_rewrite(13358),rewrite([14443(8),11089(5)]),xx(a)].
+
+============================== end of proof ==========================
