@@ -1,0 +1,40 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 6715 was started by mudcat on mie-17-23.internal.mie.utoronto.ca,
+Wed Mar 14 15:37:47 2012
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 20.
+% Level of proof is 4.
+% Maximum clause weight is 10.
+% Given clauses 29.
+
+11 (all i (timeinterval(i) -> i = between(beginof(i),endof(i)))) # label(non_clause).  [assumption].
+15 (all p all q (begins(p,q) <-> timepoint(p) & timeinterval(q) & beginof(q) = p)) # label(non_clause).  [assumption].
+16 (all p all q (ends(p,q) <-> timepoint(p) & timeinterval(q) & endof(q) = p)) # label(non_clause).  [assumption].
+17 -(all t1 all t2 all i1 all i2 (begins(t1,i1) & ends(t2,i1) & begins(t1,i2) & ends(t2,i2) -> i1 = i2)) # label(non_clause).  [assumption].
+27 -timeinterval(x) | between(beginof(x),endof(x)) = x.  [clausify(11)].
+30 -begins(x,y) | timeinterval(y).  [clausify(15)].
+58 -begins(x,y) | beginof(y) = x.  [clausify(15)].
+60 -ends(x,y) | endof(y) = x.  [clausify(16)].
+61 begins(c1,c3).  [clausify(17)].
+62 ends(c2,c3).  [clausify(17)].
+63 begins(c1,c4).  [clausify(17)].
+64 ends(c2,c4).  [clausify(17)].
+65 c4 != c3.  [clausify(17)].
+73 -begins(x,y) | between(beginof(y),endof(y)) = y.  [resolve(30,b,27,a)].
+85 beginof(c3) = c1.  [resolve(61,a,58,a)].
+87 endof(c3) = c2.  [resolve(62,a,60,a)].
+89 beginof(c4) = c1.  [resolve(63,a,58,a)].
+90 endof(c4) = c2.  [resolve(64,a,60,a)].
+110 between(c1,c2) = c4.  [resolve(73,a,63,a),rewrite([89(2),90(3)])].
+111 $F.  [resolve(73,a,61,a),rewrite([85(2),87(3),110(3)]),unit_del(a,65)].
+
+============================== end of proof ==========================

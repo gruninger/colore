@@ -1,0 +1,73 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 6774 was started by mudcat on mie-17-23.internal.mie.utoronto.ca,
+Wed Mar 14 16:01:21 2012
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 53.
+% Level of proof is 8.
+% Maximum clause weight is 19.
+% Given clauses 80.
+
+6 (all t (TemporalEntity(t) -> Interval(t) | Instant(t))) # label(non_clause).  [assumption].
+7 (all t (Interval(t) -> -Instant(t))) # label(non_clause).  [assumption].
+8 (all t all x (begins(t,x) -> Instant(t) & TemporalEntity(x))) # label(non_clause).  [assumption].
+9 (all t all x (ends(t,x) -> Instant(t) & TemporalEntity(x))) # label(non_clause).  [assumption].
+12 (all x all t1 all t2 (TemporalEntity(x) & begins(t1,x) & begins(t2,x) -> t1 = t2)) # label(non_clause).  [assumption].
+13 (all x all t1 all t2 (TemporalEntity(x) & ends(t1,x) & ends(t2,x) -> t1 = t2)) # label(non_clause).  [assumption].
+16 (all x all t1 all t2 (Interval(x) & begins(t1,x) & ends(t2,x) -> -before(t2,t1))) # label(non_clause).  [assumption].
+17 (all x all t1 all t2 (ProperInterval(x) & begins(t1,x) & ends(t2,x) -> before(t1,t2))) # label(non_clause).  [assumption].
+19 (all x (ProperInterval(x) <-> Interval(x) & (all t1 all t2 (begins(t1,x) & ends(t2,x) -> t1 != t2)))) # label(non_clause).  [assumption].
+20 -(all i1 (Interval(i1) -> -(exists i2 exists p1 exists p2 (p1 != p2 & Interval(i2) & begins(p1,i2) & ends(p1,i1) & ends(p2,i2) & begins(p2,i1))))) # label(non_clause).  [assumption].
+21 -TemporalEntity(x) | Interval(x) | Instant(x).  [clausify(6)].
+24 -begins(x,y) | TemporalEntity(y).  [clausify(8)].
+25 -ends(x,y) | TemporalEntity(y).  [clausify(9)].
+26 -TemporalEntity(x) | -begins(y,x) | -begins(z,x) | z = y.  [clausify(12)].
+27 -TemporalEntity(x) | -ends(y,x) | -ends(z,x) | z = y.  [clausify(13)].
+30 -Interval(x) | -Instant(x).  [clausify(7)].
+31 -Interval(x) | -begins(y,x) | -ends(z,x) | -before(z,y).  [clausify(16)].
+32 ProperInterval(x) | -Interval(x) | begins(f2(x),x).  [clausify(19)].
+33 ProperInterval(x) | -Interval(x) | ends(f3(x),x).  [clausify(19)].
+34 ProperInterval(x) | -Interval(x) | f3(x) = f2(x).  [clausify(19)].
+35 Interval(c1).  [clausify(20)].
+36 Interval(c2).  [clausify(20)].
+37 -begins(x,y) | Interval(y) | Instant(y).  [resolve(24,b,21,a)].
+53 ProperInterval(c1) | begins(f2(c1),c1).  [resolve(35,a,32,b)].
+54 -ProperInterval(x) | -begins(y,x) | -ends(z,x) | before(y,z).  [clausify(17)].
+58 ProperInterval(c1) | ends(f3(c1),c1).  [resolve(35,a,33,b)].
+65 -begins(x,y) | Instant(y) | ProperInterval(y) | f3(y) = f2(y).  [resolve(37,b,34,b)].
+82 c4 != c3.  [clausify(20)].
+83 begins(c3,c2).  [clausify(20)].
+84 ends(c3,c1).  [clausify(20)].
+85 ends(c4,c2).  [clausify(20)].
+86 begins(c4,c1).  [clausify(20)].
+88 -begins(x,y) | -begins(z,y) | z = x | -begins(u,y).  [resolve(26,a,24,b)].
+91 -ends(x,y) | -ends(z,y) | z = x | -ends(u,y).  [resolve(27,a,25,b)].
+92 -Instant(c1).  [resolve(35,a,30,a)].
+95 -begins(x,c2) | -ends(y,c2) | -before(y,x).  [resolve(36,a,31,a)].
+101 begins(f2(c1),c1) | -begins(x,c1) | -ends(y,c1) | before(x,y).  [resolve(53,a,54,a)].
+103 ends(f3(c1),c1) | -begins(x,c1) | -ends(y,c1) | before(x,y).  [resolve(58,a,54,a)].
+117 -begins(x,y) | Instant(y) | f3(y) = f2(y) | -begins(z,y) | -ends(u,y) | before(z,u).  [resolve(65,c,54,a)].
+120 -begins(x,y) | -begins(z,y) | z = x.  [factor(88,a,d)].
+121 -ends(x,y) | -ends(z,y) | z = x.  [factor(91,a,d)].
+127 -begins(x,y) | Instant(y) | f3(y) = f2(y) | -ends(z,y) | before(x,z).  [factor(117,a,d)].
+136 -before(c4,c3).  [ur(95,a,83,a,b,85,a)].
+137 begins(f2(c1),c1) | -begins(x,c1) | before(x,c3).  [resolve(101,c,84,a)].
+139 ends(f3(c1),c1) | -begins(x,c1) | before(x,c3).  [resolve(103,c,84,a)].
+149 -begins(x,c1) | c4 = x.  [resolve(120,a,86,a),flip(b)].
+154 -ends(x,c1) | c3 = x.  [resolve(121,a,84,a),flip(b)].
+169 begins(f2(c1),c1).  [resolve(137,b,86,a),unit_del(b,136)].
+170 f2(c1) = c4.  [resolve(169,a,149,a),flip(a)].
+175 ends(f3(c1),c1).  [resolve(139,b,86,a),unit_del(b,136)].
+176 f3(c1) = c3.  [resolve(175,a,154,a),flip(a)].
+178 -begins(x,c1) | before(x,c3).  [resolve(175,a,127,d),rewrite([176(6),170(7),176(9)]),flip(c),unit_del(b,92),unit_del(c,82)].
+187 $F.  [resolve(178,a,86,a),unit_del(a,136)].
+
+============================== end of proof ==========================
