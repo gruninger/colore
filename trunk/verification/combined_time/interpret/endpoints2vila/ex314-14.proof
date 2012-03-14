@@ -1,0 +1,62 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 6667 was started by mudcat on mie-17-23.internal.mie.utoronto.ca,
+Wed Mar 14 15:32:00 2012
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.04 (+ 0.01) seconds.
+% Length of proof is 42.
+% Level of proof is 8.
+% Maximum clause weight is 13.
+% Given clauses 155.
+
+1 (all x all y (before(x,y) -> timepoint(x) & timepoint(y))) # label(non_clause).  [assumption].
+8 (all x (timepoint(x) <-> -timeinterval(x))) # label(non_clause).  [assumption].
+9 (all x all y (before(x,y) -> timeinterval(between(x,y)))) # label(non_clause).  [assumption].
+10 (all i (timeinterval(i) -> before(beginof(i),endof(i)))) # label(non_clause).  [assumption].
+12 (all p all q (before(p,q) <-> p = beginof(between(p,q)) & q = endof(between(p,q)))) # label(non_clause).  [assumption].
+14 (all x (Interval(x) <-> timeinterval(x))) # label(non_clause).  [assumption].
+15 (all p all q (begins(p,q) <-> timepoint(p) & timeinterval(q) & beginof(q) = p)) # label(non_clause).  [assumption].
+16 (all p all q (ends(p,q) <-> timepoint(p) & timeinterval(q) & endof(q) = p)) # label(non_clause).  [assumption].
+17 -(all t1 all t2 (Instant(t1) & Instant(t2) & before(t1,t2) -> (exists p (Interval(p) & begins(t1,p) & ends(t2,p))))) # label(non_clause).  [assumption].
+23 timepoint(x) | timeinterval(x).  [clausify(8)].
+24 -timepoint(x) | -timeinterval(x).  [clausify(8)].
+25 -before(x,y) | timeinterval(between(x,y)).  [clausify(9)].
+26 -timeinterval(x) | before(beginof(x),endof(x)).  [clausify(10)].
+29 Interval(x) | -timeinterval(x).  [clausify(14)].
+30 -begins(x,y) | timeinterval(y).  [clausify(15)].
+31 begins(x,y) | -timepoint(x) | -timeinterval(y) | beginof(y) != x.  [clausify(15)].
+33 ends(x,y) | -timepoint(x) | -timeinterval(y) | endof(y) != x.  [clausify(16)].
+39 -Interval(x) | -begins(c1,x) | -ends(c2,x).  [clausify(17)].
+44 -begins(x,y) | Interval(y).  [resolve(30,b,29,b)].
+48 -before(x,y) | timepoint(x).  [clausify(1)].
+49 -before(x,y) | timepoint(y).  [clausify(1)].
+57 -before(x,y) | beginof(between(x,y)) = x.  [clausify(12)].
+58 -before(x,y) | endof(between(x,y)) = y.  [clausify(12)].
+64 before(c1,c2).  [clausify(17)].
+65 -before(x,y) | -timepoint(between(x,y)).  [resolve(25,b,24,b)].
+66 before(beginof(x),endof(x)) | timepoint(x).  [resolve(26,a,23,b)].
+73 begins(x,y) | -timepoint(x) | beginof(y) != x | timepoint(y).  [resolve(31,c,23,b)].
+80 ends(x,y) | -timepoint(x) | endof(y) != x | timepoint(y).  [resolve(33,c,23,b)].
+88 -begins(x,y) | -begins(c1,y) | -ends(c2,y).  [resolve(44,b,39,a)].
+89 -begins(c1,x) | -ends(c2,x).  [factor(88,a,b)].
+90 endof(between(c1,c2)) = c2.  [resolve(64,a,58,a)].
+91 beginof(between(c1,c2)) = c1.  [resolve(64,a,57,a)].
+94 -timepoint(between(c1,c2)).  [resolve(65,a,64,a)].
+100 timepoint(x) | timepoint(endof(x)).  [resolve(66,a,49,a)].
+101 timepoint(x) | timepoint(beginof(x)).  [resolve(66,a,48,a)].
+338 timepoint(x) | ends(endof(x),y) | endof(y) != endof(x) | timepoint(y).  [resolve(100,b,80,b)].
+345 timepoint(x) | ends(endof(x),x).  [factor(338,a,d),xx(c)].
+348 timepoint(x) | begins(beginof(x),y) | beginof(y) != beginof(x) | timepoint(y).  [resolve(101,b,73,b)].
+355 timepoint(x) | begins(beginof(x),x).  [factor(348,a,d),xx(c)].
+697 ends(c2,between(c1,c2)).  [para(90(a,1),345(b,1)),unit_del(a,94)].
+698 -begins(c1,between(c1,c2)).  [resolve(697,a,89,b)].
+731 $F.  [para(91(a,1),355(b,1)),unit_del(a,94),unit_del(b,698)].
+
+============================== end of proof ==========================

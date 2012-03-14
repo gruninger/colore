@@ -1,0 +1,41 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 6605 was started by mudcat on mie-17-23.internal.mie.utoronto.ca,
+Wed Mar 14 15:29:25 2012
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 21.
+% Level of proof is 5.
+% Maximum clause weight is 11.
+% Given clauses 38.
+
+1 (all x all y (before(x,y) -> timepoint(x) & timepoint(y))) # label(non_clause).  [assumption].
+8 (all x (timepoint(x) <-> -timeinterval(x))) # label(non_clause).  [assumption].
+10 (all i (timeinterval(i) -> before(beginof(i),endof(i)))) # label(non_clause).  [assumption].
+14 (all x (Interval(x) <-> timeinterval(x))) # label(non_clause).  [assumption].
+15 (all p all q (begins(p,q) <-> timepoint(p) & timeinterval(q) & beginof(q) = p)) # label(non_clause).  [assumption].
+17 -(all p (Interval(p) -> (exists i begins(i,p)))) # label(non_clause).  [assumption].
+23 timepoint(x) | timeinterval(x).  [clausify(8)].
+24 -timepoint(x) | -timeinterval(x).  [clausify(8)].
+26 -timeinterval(x) | before(beginof(x),endof(x)).  [clausify(10)].
+28 -Interval(x) | timeinterval(x).  [clausify(14)].
+31 begins(x,y) | -timepoint(x) | -timeinterval(y) | beginof(y) != x.  [clausify(15)].
+36 -Interval(x) | -timepoint(x).  [resolve(28,b,24,b)].
+37 Interval(c1).  [clausify(17)].
+38 -Interval(x) | before(beginof(x),endof(x)).  [resolve(28,b,26,a)].
+46 -before(x,y) | timepoint(x).  [clausify(1)].
+62 -begins(x,c1).  [clausify(17)].
+71 begins(x,y) | -timepoint(x) | beginof(y) != x | timepoint(y).  [resolve(31,c,23,b)].
+82 -timepoint(c1).  [resolve(36,a,37,a)].
+83 before(beginof(c1),endof(c1)).  [resolve(38,a,37,a)].
+108 -timepoint(beginof(c1)).  [ur(71,a,62,a,c,xx,d,82,a)].
+116 $F.  [resolve(83,a,46,a),unit_del(a,108)].
+
+============================== end of proof ==========================

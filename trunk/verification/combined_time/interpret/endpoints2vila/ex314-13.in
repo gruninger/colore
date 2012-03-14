@@ -50,39 +50,57 @@ formulas(assumptions).
 	<->
 	-timeinterval(x))).
 
-(all i all p all q
-	((timeinterval(i)
-	& (p=beginof(i))
-	& (q=endof(i)))
+(all x all y
+	(before(x,y)
 	->
-	(i=between(p,q)))).
+	timeinterval(between(x,y)))).
 
 (all i
 	(timeinterval(i)
 	->
-	(timepoint(beginof(i))
-	& timepoint(endof(i))))).
+	before(beginof(i),endof(i)))).
 
-(all x all y
-        (before(x,y)
-        ->
-        timeinterval(between(x,y)))).
+(all i
+	(timeinterval(i)
+	->
+	(i=between(beginof(i),endof(i))))).
 
 (all p all q
 	(before(p,q)
-	->
+	<->
 	((p=beginof(between(p,q)))
 	& (q=endof(between(p,q)))))).
 
-(all i1
-        (timeinterval(i1)
+(all x 
+        (Instant(x)
+        <->
+        timepoint(x))).
+
+(all x
+        (Interval(x)
+        <->
+        timeinterval(x))).
+
+(all p all q
+	(begins(p,q)
+	<->
+	(timepoint(p)
+	& timeinterval(q)
+	& (beginof(q)=p)))).
+
+(all p all q
+	(ends(p,q)
+	<->
+	(timepoint(p)
+	& timeinterval(q)
+	& (endof(q)=p)))).
+
+-(all x all t1 all t2
+        ((ends(t1,x)
+        & ends(t2,x))
         ->
-        -(exists i2
-                (timeinterval(i2)
-                & (beginof(i2)=endof(i1))
-                & (endof(i2)=beginof(i1))
-                & (beginof(i1)=endof(i1))
-                & (endof(i2)=beginof(i2)))))).
+        (t1 = t2))).
+
 
 
 end_of_list.

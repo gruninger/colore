@@ -1,0 +1,101 @@
+
+formulas(assumptions).
+
+all t1 all t2
+        (before(t1,t2)
+        ->
+        (t1 != t2)).
+
+all t1 all t2
+        (before(t1,t2)
+        ->
+        -before(t2,t1)).
+
+all t1 all t2 all t3
+        ((before(t1,t2)
+        & before(t2,t3))
+        ->
+        before(t1,t3)).
+
+(all t1 all t2
+	((Instant(t1)
+	& Instant(t2))
+	->
+	(before(t1,t2) | before(t2,t1) | (t1=t2)))).
+
+(all x
+        (Instant(x)
+        ->
+        (exists y
+                (Instant(y)
+                & before(y,x))))).
+
+(all x
+        (Instant(x)
+        ->
+        (exists y
+                (Instant(y)
+                & before(x,y))))).
+
+all t all x
+        (begins(t,x)
+        ->
+        (Instant(t)
+        & Interval(x))).
+
+all t all x
+        (ends(t,x)
+        ->
+        (Instant(t)
+        & Interval(x))).
+
+all x all t1 all t2
+        ((begins(t1,x)
+        & ends(t2,x))
+        ->
+        before(t1,t2)).
+
+(all p
+        (Interval(p)
+        ->
+        (exists i
+                (begins(i,p))))).
+
+(all p
+        (Interval(p)
+        ->
+        (exists i
+                (ends(i,p))))).
+
+(all x all t1 all t2
+        ((begins(t1,x)
+        & begins(t2,x))
+        ->
+        (t1 = t2))).
+
+(all x all t1 all t2
+        ((ends(t1,x)
+        & ends(t2,x))
+        ->
+        (t1 = t2))).
+
+(all t1 all t2
+        ((Instant(t1)
+        & Instant(t2)
+        & before(t1,t2))
+        ->
+        (exists p
+		(Interval(p)
+		& begins(t1,p)
+		& ends(t2,p))))).
+
+(all t1 all t2 all i1 all i2
+	((begins(t1,i1)
+	& ends(t2,i1)
+	& begins(t1,i2)
+	& ends(t2,i2))
+	->
+	(i1=i2))).
+
+
+end_of_list.
