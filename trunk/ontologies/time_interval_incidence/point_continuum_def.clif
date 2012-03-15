@@ -1,0 +1,39 @@
+
+(cl-text point_continuum_def
+
+(cl-imports point_continuum)
+
+(forall (i j)
+	(iff	(acoao i j)
+		(if	(and	(timeinterval i) 
+				(timeinterval j))
+			(or	(and	(open i) 
+					(open j)) 
+                  		(and 	(closed i)
+					(closed j))))))
+
+(forall (i j)
+	(iff	(meets i j)
+		(if	(and	(timeinterval i) 
+				(timeinterval j))
+			(and	(not (acoao i j)) 
+				(= (endof i) (beginof j)))))) 
+ 
+(forall (i j)
+	(iff	(starts i j) 
+		(if	(and	(timeinterval i)  
+				(timeinterval j))
+			(and	(acoao i j) 
+				(= (beginof i) (beginof j)) 
+				(before (endof i) (endof j))))))
+ 
+(forall (i j)
+	(iff	(finishes i j) 
+		(if	(and	(timeinterval i) 
+				(timeinterval j))
+			(and	(acoao i j) 
+				(before (beginof j) (beginof i)) 
+				(= (endof i) (endof j)))))) 
+
+)
+
