@@ -1,0 +1,90 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger, Carmen Chui
+ *******************************************************************************/
+ 
+(cl-text dolce_core_location
+
+(cl-comment "The location relation (L) provides the link between qualities and spaces.
+First, we require regions (and in particular spaces) not to change over the
+time they exist (A28). Expression L(x, y, t) is used to state “at time t, region
+x is the location of the individual quality y” as enforced (at least in part)
+by axioms (A30) and (A31).17 Each individual quality in qi must be located
+at least in one of the associated spaces sij (axioms (A34) and (A35)). The
+location in a single space is unique (A36) and a quality that has a location
+in a space needs to have some location in that space during its whole life
+(A37). (A38) says that two qualities coincident at t are also indistinguishable
+with respect to their locations. Together with (A25) and (A26), this axiom
+formalizes the substitutivity of temporary properties represented by qualities:
+two entities that coincide at t are indistinguishable at t with respect to their
+qualities.")
+
+(cl-comment "A28")
+(forall (x t t1)
+	(if (and (R x)(PRE x t)(PRE x t1))
+		(forall (y)
+			(iff (P y x t)(P y x t1)))))
+
+(cl-comment "A29")
+(forall (x y t)
+	(if (and (sij x)(sij y)(PRE x t))
+		(PRE y t)))
+
+(cl-comment "A30")
+(forall (x y t)
+	(if (L x y t)
+		(and (R x)(Q y))))
+
+(cl-comment "A31")
+(forall (x y t)
+	(if (L x y t)
+		(PRE y t)))
+
+(cl-comment "A32")
+(forall (x x1 y t t1)
+	(if (and (L x y t)(P t1 t)(L x1 y t1)(sij x)(sij x1))
+		(forall (t2)
+			(if (PRE x t2)(P x1 x t2)))))
+
+(cl-comment "A33")
+(forall (x x1 x2 y t t1 t2)
+	(if (and (L x1 y t1)(L x2 y t2)(SUM t t1 t2)(SUM x x1 x2)(sij x1)(sij x2))
+		(L x y t)))
+
+(cl-comment "A34")
+/*
+ * A34 - there is a Vj for sij relation...?
+ */
+(forall (x y t)
+	(if (and (L x y t)(Qi y))
+		(sij x)))
+
+(cl-comment "A35")
+(forall (y t)
+	(if (and (Q y)(PRE y t))
+		(exists (x) (L x y t))))
+
+(cl-comment "A36")
+(forall (x x1 y t)
+	(if (and (L x y t)(L x1 y t)(sjk x)(sjk x1))
+		(= x x1)))
+
+(cl-comment "A37")
+(forall (x y t t1)
+	(if (and (L x y t)(PRE y t1)(sjk x))
+		(exists (x1)
+			(and (L x1 y t1)(sjk x1)))))
+
+(cl-comment "A38")
+(cl-comment "L-substitutivity")
+(forall (x x1 y y1 t)
+	(if (and (L x y t)(CC x1 x t)(CC y1 y t))
+		(L x1 y1 t)))
+
+
+)

@@ -1,0 +1,69 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger, Carmen Chui
+ *******************************************************************************/
+ 
+(cl-text dolce_core_quality
+
+(cl-comment "The third option relies on the notions of individual quality, quality kind
+and (quality-)space introduced in section 2.1. Each individual quality, say “the
+color of my car” or “the weight of John”, and its host are in a special relationship
+called inheritance (I). Formally, expression I(x, y), stands for “the
+individual quality x inheres in the entity y”.15 This relationship binds a specific
+bearer (A21) and each quality existentially depends on the entity that
+bears it (A22); in the previous examples the bearers are my car and John,
+respectively. Finally, axiom (A23) states that qualities exist during the whole
+life of their bearers.")
+
+(cl-comment "A20")
+(forall (x y)
+	(if (I x y)(Q x)))
+
+(cl-comment "A21")
+(forall (x y y1)
+	(if (and (I x y)(I x y1))
+		(= y y1)))
+
+(cl-comment "A22")
+(forall (x)
+	(if (Q x)
+		(exists (y) (I x y))))
+
+(cl-comment "A23")
+(forall (x y)
+	(if (I x y)
+		(forall (t)
+			(iff (PRE x t)(PRE y t)))))
+
+(cl-comment "A24")
+(forall (x x1 y)
+	(if (and (I x y)(I x1 y)(Qi x)(Qi x1))
+		(= x x1)))
+
+(cl-comment "A25")
+(forall (x y t)
+	(if (CC x y t)
+		(exists (z)
+			(iff (and (I z x)(Qi z))
+				(exists (z1)
+					(and (I z1 y)(Qi z1)))))))
+
+(cl-comment "A26")
+(forall (x y z t z1)
+	(if
+		(and (CC x y t)(I z x)(I z1 y)(Qi z)(Qi z1))
+		(CC z z1 t)))
+
+(cl-comment "A27")
+(forall (x y v w z)
+	(if
+		(and (I x y)(I v w)(Qi x)(Sum z x v)(Sum s y w))
+		(I z s)))
+
+
+)
