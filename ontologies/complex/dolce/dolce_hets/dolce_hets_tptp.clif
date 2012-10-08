@@ -1,0 +1,2053 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger, Carmen Chui
+ *******************************************************************************/
+ 
+(cl-text dolce_hets_tptp)
+
+/*
+)                       
+logic SoftFOL
+
+list_of_symbols.
+predicates
+[(at, 1), (atP, 2), (atP_2, 2), (atP_2_aa, 2), (atP_2_pp, 2),
+ (at_1, 1), (at_1_a, 1), (at_1_p, 1), (dif, 3), (dif_3, 3),
+ (dif_3_aaa, 3), (dif_3_ppp, 3), (dqt, 2), (dqt_2, 2),
+ (dqt_2_an, 2), (k, 3), (k_3, 3), (ov, 2), (ov_2, 2), (ov_2_aa, 2),
+ (ov_2_pp, 2), (p, 2), (pC, 3), (pP, 2), (pP_2, 2), (pP_2_aa, 2),
+ (pP_2_pp, 2), (pRE, 2), (pRE_2, 2), (pRE_2_at, 2), (pRE_2_pt, 2),
+ (pRE_2_st, 2), (p_2, 2), (p_2_aa, 2), (p_2_pp, 2), (p_T, 2),
+ (ql, 2), (sD, 2), (sD_2, 2), (sD_2_an, 2), (sD_2_ma, 2),
+ (sD_2_na, 2), (sD_2_pp, 2), (sD_2_pt, 2), (tDif, 3), (tOv, 3),
+ (tP, 3), (tPP, 3), (tSum, 3), (tql, 3), (tql_3, 3), (x_Sum, 3),
+ (x_Sum_3, 3), (x_Sum_3_aaa, 3), (x_Sum_3_ppp, 3)].
+sorts[aB, aCC, aCH, aPO, aQ, aR, aS, aSO, eD, eDorPDorQ, eV, f, m,
+      mOB, nAPO, nASO, nPED, nPOB, pD, pED, pOB, pQ, pR, pRO, pT, q, r,
+      s, sAG, sC, sL, sOB, sT, sTV, t, tL, tQ, tR].
+end_of_list.
+*/
+/* Taxonomy according to subsort declarations */
+(cl-comment "Taxonomy")
+(forall (x)
+	(if (or (AB x)(eDorPDorQ x))
+		(PT x)))
+
+(forall (x)
+	(if (or (ED x)(PD x)(Q x))
+		(eDorPDorQ x)))
+
+(forall (x)
+	(if (or (AS x)(NPED x)(PED x))
+		(ED x)))
+
+(forall (x)
+	(if (or (PRO x)(ST x))
+		(STV x)))
+
+(forall (x)
+	(if (or (EV x)(STV x))
+		(PD x)))
+
+(forall (x)
+	(if (or (AQ x)(PQ x)(TQ x))
+		(Q x)))
+
+(forall (x)
+	(if (or (ACC x)(ACH x))
+		(EV x)))
+		
+(forall (x)
+	(if (or (APO x)(NAPO x))
+		(POB x)))
+
+(forall (x)
+	(if (or (SAG x)(SC x))
+		(ASO x)))
+
+(forall (x)
+	(if (or (ASO x)(NASO x))
+		(SOB x)))
+		
+(forall (x)
+	(if (or (SOB x)(MOB x))
+		(NPOB x)))
+
+(forall (x)
+	(if (or (AR x)(PR x)(TR x))
+		(R x)))
+
+(forall (x)
+	(if (R x)
+		(AB x)))
+
+(forall (x)
+	(if (or(F x)(M x)(POB x))
+		(PED x)))
+
+(forall (x)
+	(if (NPOB x)
+		(NPED x)))
+
+(forall (x)
+	(if (S x)
+		(PR x)))
+
+(forall (x)
+	(if (SL x)
+		(PQ x)))
+
+(forall (x)
+	(if (T x)
+		(TR x)))
+
+(forall (x)
+	(if (TL x)
+		(TQ x)))
+
+/*list_of_declarations.
+subsort(aB, pT).
+subsort(aCC, eV).
+subsort(aCH, eV).
+subsort(aPO, pOB).
+subsort(aQ, q).
+subsort(aR, r).
+subsort(aS, eD).
+subsort(aSO, sOB).
+subsort(eD, eDorPDorQ).
+subsort(eDorPDorQ, pT).
+subsort(eV, pD).
+subsort(f, pED).
+subsort(m, pED).
+subsort(mOB, nPOB).
+subsort(nAPO, pOB).
+subsort(nASO, sOB).
+subsort(nPED, eD).
+subsort(nPOB, nPED).
+subsort(pD, eDorPDorQ).
+subsort(pED, eD).
+subsort(pOB, pED).
+subsort(pQ, q).
+subsort(pR, r).
+subsort(pRO, sTV).
+subsort(q, eDorPDorQ).
+subsort(r, aB).
+subsort(s, pR).
+subsort(sAG, aSO).
+subsort(sC, aSO).
+subsort(sL, pQ).
+subsort(sOB, nPOB).
+subsort(sT, sTV).
+subsort(sTV, pD).
+subsort(t, tR).
+subsort(tL, tQ).
+subsort(tQ, q).
+subsort(tR, r).*/
+
+
+/*predicate(at, t).
+predicate(atP, t, t).
+predicate(atP_2, s, s).
+predicate(atP_2_aa, aR, aR).
+predicate(atP_2_pp, pD, pD).
+predicate(at_1, s).
+predicate(at_1_a, aR).
+predicate(at_1_p, pD).
+predicate(dif, t, t, t).
+predicate(dif_3, s, s, s).
+predicate(dif_3_aaa, aR, aR, aR).
+predicate(dif_3_ppp, pD, pD, pD).
+predicate(dqt, tQ, pD).
+predicate(dqt_2, pQ, pED).
+predicate(dqt_2_an, aQ, nPED).
+predicate(k, pD, pD, t).
+predicate(k_3, eD, eD, t).
+predicate(k_3, nPED, nPED, t).
+predicate(k_3, pED, pED, t).
+predicate(ov, t, t).
+predicate(ov_2, s, s).
+predicate(ov_2_aa, aR, aR).
+predicate(ov_2_pp, pD, pD).
+predicate(p, t, t).
+predicate(pC, eD, pD, t).
+predicate(pP, t, t).
+predicate(pP_2, s, s).
+predicate(pP_2_aa, aR, aR).
+predicate(pP_2_pp, pD, pD).
+predicate(pRE, tQ, t).
+predicate(pRE_2, pQ, t).
+predicate(pRE_2, sL, t).
+predicate(pRE_2_at, aQ, t).
+predicate(pRE_2_pt, pD, t).
+predicate(pRE_2_st, aPO, t).
+predicate(pRE_2_st, eD, t).
+predicate(pRE_2_st, f, t).
+predicate(pRE_2_st, mOB, t).
+predicate(pRE_2_st, nAPO, t).
+predicate(pRE_2_st, nASO, t).
+predicate(pRE_2_st, nPED, t).
+predicate(pRE_2_st, pED, t).
+predicate(pRE_2_st, sAG, t).
+predicate(pRE_2_st, sC, t).
+predicate(p_2, s, s).
+predicate(p_2_aa, aR, aR).
+predicate(p_2_pp, pD, pD).
+predicate(p_T, pD, pD).
+predicate(ql, t, tL).
+predicate(ql, tR, tQ).
+predicate(sD, tQ, pD).
+predicate(sD_2, pQ, pED).
+predicate(sD_2_an, aQ, nPED).
+predicate(sD_2_ma, mOB, aPO).
+predicate(sD_2_na, nPED, aQ).
+predicate(sD_2_pp, pED, pQ).
+predicate(sD_2_pt, pD, tQ).
+predicate(tDif, eD, eD, eD).
+predicate(tOv, eD, eD, t).
+predicate(tP, eD, eD, t).
+predicate(tPP, eD, eD, t).
+predicate(tSum, eD, eD, eD).
+predicate(tql, pR, pQ, t).
+predicate(tql, s, sL, t).
+predicate(tql_3, aR, aQ, t).
+predicate(x_Sum, t, t, t).
+predicate(x_Sum_3, s, s, s).
+predicate(x_Sum_3_aaa, aR, aR, aR).
+predicate(x_Sum_3_ppp, pD, pD, pD).
+end_of_list.
+
+list_of_formulae(axioms). */
+
+/*Argument Restrictions
+ * 
+ formula
+(forall
+ ([Y0, Y1, Y2], implies
+                (x_Sum_3_ppp(Y0, Y1, Y2), and(and(pD(Y0), pD(Y1)), pD(Y2)))),
+ arg_restriction_x_Sum_3_ppp).
+formula
+(forall
+ ([Y0, Y1, Y2], implies
+                (x_Sum_3_aaa(Y0, Y1, Y2), and(and(aR(Y0), aR(Y1)), aR(Y2)))),
+ arg_restriction_x_Sum_3_aaa).
+formula
+(forall
+ ([Y0, Y1, Y2], implies
+                (x_Sum_3(Y0, Y1, Y2), and(and(s(Y0), s(Y1)), s(Y2)))),
+ arg_restriction_x_Sum_3).
+formula
+(forall
+ ([Y0, Y1, Y2], implies
+                (x_Sum(Y0, Y1, Y2), and(and(t(Y0), t(Y1)), t(Y2)))),
+ arg_restriction_x_Sum).
+formula
+(forall
+ ([Y0, Y1, Y2], implies
+                (tql_3(Y0, Y1, Y2), and(and(aR(Y0), aQ(Y1)), t(Y2)))),
+ arg_restriction_tql_3).
+formula
+(forall
+ ([Y0, Y1, Y2], implies
+                (tql(Y0, Y1, Y2),
+                 and
+                 (and(or(s(Y0), pR(Y0)), or(sL(Y1), pQ(Y1))),
+                  or(t(Y2), t(Y2))))),
+ arg_restriction_o_tql).
+formula
+(forall
+ ([Y0, Y1, Y2], implies
+                (tSum(Y0, Y1, Y2), and(and(eD(Y0), eD(Y1)), eD(Y2)))),
+ arg_restriction_tSum).
+formula
+(forall
+ ([Y0, Y1, Y2], implies
+                (tPP(Y0, Y1, Y2), and(and(eD(Y0), eD(Y1)), t(Y2)))),
+ arg_restriction_tPP).
+formula
+(forall
+ ([Y0, Y1, Y2], implies
+                (tP(Y0, Y1, Y2), and(and(eD(Y0), eD(Y1)), t(Y2)))),
+ arg_restriction_tP).
+formula
+(forall
+ ([Y0, Y1, Y2], implies
+                (tOv(Y0, Y1, Y2), and(and(eD(Y0), eD(Y1)), t(Y2)))),
+ arg_restriction_tOv).
+formula
+(forall
+ ([Y0, Y1, Y2], implies
+                (tDif(Y0, Y1, Y2), and(and(eD(Y0), eD(Y1)), eD(Y2)))),
+ arg_restriction_tDif).
+formula
+(forall([Y0, Y1], implies(sD_2_pt(Y0, Y1), and(pD(Y0), tQ(Y1)))),
+ arg_restriction_sD_2_pt).
+formula
+(forall([Y0, Y1], implies(sD_2_pp(Y0, Y1), and(pED(Y0), pQ(Y1)))),
+ arg_restriction_sD_2_pp).
+formula
+(forall([Y0, Y1], implies(sD_2_na(Y0, Y1), and(nPED(Y0), aQ(Y1)))),
+ arg_restriction_sD_2_na).
+formula
+(forall([Y0, Y1], implies(sD_2_ma(Y0, Y1), and(mOB(Y0), aPO(Y1)))),
+ arg_restriction_sD_2_ma).
+formula
+(forall([Y0, Y1], implies(sD_2_an(Y0, Y1), and(aQ(Y0), nPED(Y1)))),
+ arg_restriction_sD_2_an).
+formula
+(forall([Y0, Y1], implies(sD_2(Y0, Y1), and(pQ(Y0), pED(Y1)))),
+ arg_restriction_sD_2).
+formula
+(forall([Y0, Y1], implies(sD(Y0, Y1), and(tQ(Y0), pD(Y1)))),
+ arg_restriction_sD).
+formula
+(forall
+ ([Y0, Y1], implies
+            (ql(Y0, Y1), and(or(tR(Y0), t(Y0)), or(tQ(Y1), tL(Y1))))),
+ arg_restriction_o_ql).
+formula
+(forall([Y0, Y1], implies(p_T(Y0, Y1), and(pD(Y0), pD(Y1)))),
+ arg_restriction_p_T).
+formula
+(forall([Y0, Y1], implies(p_2_pp(Y0, Y1), and(pD(Y0), pD(Y1)))),
+ arg_restriction_p_2_pp).
+formula
+(forall([Y0, Y1], implies(p_2_aa(Y0, Y1), and(aR(Y0), aR(Y1)))),
+ arg_restriction_p_2_aa).
+formula
+(forall([Y0, Y1], implies(p_2(Y0, Y1), and(s(Y0), s(Y1)))),
+ arg_restriction_p_2).
+formula
+(forall
+ ([Y0, Y1], implies
+            (pRE_2_st(Y0, Y1),
+             and
+             (or
+              (or
+               (or
+                (or
+                 (or
+                  (or(or(or(or(sC(Y0), sAG(Y0)), pED(Y0)), nPED(Y0)), nASO(Y0)),
+                   nAPO(Y0)),
+                  mOB(Y0)),
+                 f(Y0)),
+                eD(Y0)),
+               aPO(Y0)),
+              or
+              (or
+               (or
+                (or
+                 (or(or(or(or(or(t(Y1), t(Y1)), t(Y1)), t(Y1)), t(Y1)), t(Y1)),
+                  t(Y1)),
+                 t(Y1)),
+                t(Y1)),
+               t(Y1))))),
+ arg_restriction_o_pRE_2_st).
+formula
+(forall([Y0, Y1], implies(pRE_2_pt(Y0, Y1), and(pD(Y0), t(Y1)))),
+ arg_restriction_pRE_2_pt).
+formula
+(forall([Y0, Y1], implies(pRE_2_at(Y0, Y1), and(aQ(Y0), t(Y1)))),
+ arg_restriction_pRE_2_at).
+formula
+(forall
+ ([Y0, Y1], implies
+            (pRE_2(Y0, Y1), and(or(sL(Y0), pQ(Y0)), or(t(Y1), t(Y1))))),
+ arg_restriction_o_pRE_2).
+formula
+(forall([Y0, Y1], implies(pRE(Y0, Y1), and(tQ(Y0), t(Y1)))),
+ arg_restriction_pRE).
+formula
+(forall([Y0, Y1], implies(pP_2_pp(Y0, Y1), and(pD(Y0), pD(Y1)))),
+ arg_restriction_pP_2_pp).
+formula
+(forall([Y0, Y1], implies(pP_2_aa(Y0, Y1), and(aR(Y0), aR(Y1)))),
+ arg_restriction_pP_2_aa).
+formula
+(forall([Y0, Y1], implies(pP_2(Y0, Y1), and(s(Y0), s(Y1)))),
+ arg_restriction_pP_2).
+formula
+(forall([Y0, Y1], implies(pP(Y0, Y1), and(t(Y0), t(Y1)))),
+ arg_restriction_pP).
+formula
+(forall
+ ([Y0, Y1, Y2], implies
+                (pC(Y0, Y1, Y2), and(and(eD(Y0), pD(Y1)), t(Y2)))),
+ arg_restriction_pC).
+formula
+(forall([Y0, Y1], implies(p(Y0, Y1), and(t(Y0), t(Y1)))),
+ arg_restriction_p).
+formula
+(forall([Y0, Y1], implies(ov_2_pp(Y0, Y1), and(pD(Y0), pD(Y1)))),
+ arg_restriction_ov_2_pp).
+formula
+(forall([Y0, Y1], implies(ov_2_aa(Y0, Y1), and(aR(Y0), aR(Y1)))),
+ arg_restriction_ov_2_aa).
+formula
+(forall([Y0, Y1], implies(ov_2(Y0, Y1), and(s(Y0), s(Y1)))),
+ arg_restriction_ov_2).
+formula
+(forall([Y0, Y1], implies(ov(Y0, Y1), and(t(Y0), t(Y1)))),
+ arg_restriction_ov).
+formula
+(forall
+ ([Y0, Y1, Y2], implies
+                (k_3(Y0, Y1, Y2),
+                 and
+                 (and
+                  (or(or(pED(Y0), nPED(Y0)), eD(Y0)),
+                   or(or(pED(Y1), nPED(Y1)), eD(Y1))),
+                  or(or(t(Y2), t(Y2)), t(Y2))))),
+ arg_restriction_o_k_3).
+formula
+(forall
+ ([Y0, Y1, Y2], implies
+                (k(Y0, Y1, Y2), and(and(pD(Y0), pD(Y1)), t(Y2)))),
+ arg_restriction_k).
+formula
+(forall
+ ([Y0, Y1], implies(dqt_2_an(Y0, Y1), and(aQ(Y0), nPED(Y1)))),
+ arg_restriction_dqt_2_an).
+formula
+(forall([Y0, Y1], implies(dqt_2(Y0, Y1), and(pQ(Y0), pED(Y1)))),
+ arg_restriction_dqt_2).
+formula
+(forall([Y0, Y1], implies(dqt(Y0, Y1), and(tQ(Y0), pD(Y1)))),
+ arg_restriction_dqt).
+formula
+(forall
+ ([Y0, Y1, Y2], implies
+                (dif_3_ppp(Y0, Y1, Y2), and(and(pD(Y0), pD(Y1)), pD(Y2)))),
+ arg_restriction_dif_3_ppp).
+formula
+(forall
+ ([Y0, Y1, Y2], implies
+                (dif_3_aaa(Y0, Y1, Y2), and(and(aR(Y0), aR(Y1)), aR(Y2)))),
+ arg_restriction_dif_3_aaa).
+formula
+(forall
+ ([Y0, Y1, Y2], implies
+                (dif_3(Y0, Y1, Y2), and(and(s(Y0), s(Y1)), s(Y2)))),
+ arg_restriction_dif_3).
+formula
+(forall
+ ([Y0, Y1, Y2], implies
+                (dif(Y0, Y1, Y2), and(and(t(Y0), t(Y1)), t(Y2)))),
+ arg_restriction_dif).
+formula
+(forall([Y0], implies(at_1_p(Y0), pD(Y0))),
+ arg_restriction_at_1_p).
+formula
+(forall([Y0], implies(at_1_a(Y0), aR(Y0))),
+ arg_restriction_at_1_a).
+formula
+(forall([Y0], implies(at_1(Y0), s(Y0))), arg_restriction_at_1).
+formula
+(forall([Y0, Y1], implies(atP_2_pp(Y0, Y1), and(pD(Y0), pD(Y1)))),
+ arg_restriction_atP_2_pp).
+formula
+(forall([Y0, Y1], implies(atP_2_aa(Y0, Y1), and(aR(Y0), aR(Y1)))),
+ arg_restriction_atP_2_aa).
+formula
+(forall([Y0, Y1], implies(atP_2(Y0, Y1), and(s(Y0), s(Y1)))),
+ arg_restriction_atP_2).
+formula
+(forall([Y0, Y1], implies(atP(Y0, Y1), and(t(Y0), t(Y1)))),
+ arg_restriction_atP).
+formula(forall([Y0], implies(at(Y0), t(Y0))), arg_restriction_at).
+end_of_list.
+* 
+*/
+
+/*Non-Empty Sort Requirements
+)
+formula(exists([Y], aB(Y)), ga_non_empty_sort_aB).
+
+formula(exists([Y], aCC(Y)), ga_non_empty_sort_aCC).
+
+formula(exists([Y], aCH(Y)), ga_non_empty_sort_aCH).
+
+formula(exists([Y], aPO(Y)), ga_non_empty_sort_aPO).
+
+formula(exists([Y], aQ(Y)), ga_non_empty_sort_aQ).
+
+formula(exists([Y], aR(Y)), ga_non_empty_sort_aR).
+
+formula(exists([Y], aS(Y)), ga_non_empty_sort_aS).
+
+formula(exists([Y], aSO(Y)), ga_non_empty_sort_aSO).
+
+formula(exists([Y], eD(Y)), ga_non_empty_sort_eD).
+
+formula(exists([Y], eDorPDorQ(Y)), ga_non_empty_sort_eDorPDorQ).
+
+formula(exists([Y], eV(Y)), ga_non_empty_sort_eV).
+
+formula(exists([Y], f(Y)), ga_non_empty_sort_f).
+
+formula(exists([Y], m(Y)), ga_non_empty_sort_m).
+
+formula(exists([Y], mOB(Y)), ga_non_empty_sort_mOB).
+
+formula(exists([Y], nAPO(Y)), ga_non_empty_sort_nAPO).
+
+formula(exists([Y], nASO(Y)), ga_non_empty_sort_nASO).
+
+formula(exists([Y], nPED(Y)), ga_non_empty_sort_nPED).
+
+formula(exists([Y], nPOB(Y)), ga_non_empty_sort_nPOB).
+
+formula(exists([Y], pD(Y)), ga_non_empty_sort_pD).
+
+formula(exists([Y], pED(Y)), ga_non_empty_sort_pED).
+
+formula(exists([Y], pOB(Y)), ga_non_empty_sort_pOB).
+
+formula(exists([Y], pQ(Y)), ga_non_empty_sort_pQ).
+
+formula(exists([Y], pR(Y)), ga_non_empty_sort_pR).
+
+formula(exists([Y], pRO(Y)), ga_non_empty_sort_pRO).
+
+formula(exists([Y], pT(Y)), ga_non_empty_sort_pT).
+
+formula(exists([Y], q(Y)), ga_non_empty_sort_q).
+
+formula(exists([Y], r(Y)), ga_non_empty_sort_r).
+
+formula(exists([Y], s(Y)), ga_non_empty_sort_s).
+
+formula(exists([Y], sAG(Y)), ga_non_empty_sort_sAG).
+
+formula(exists([Y], sC(Y)), ga_non_empty_sort_sC).
+
+formula(exists([Y], sL(Y)), ga_non_empty_sort_sL).
+
+formula(exists([Y], sOB(Y)), ga_non_empty_sort_sOB).
+
+formula(exists([Y], sT(Y)), ga_non_empty_sort_sT).
+
+formula(exists([Y], sTV(Y)), ga_non_empty_sort_sTV).
+
+formula(exists([Y], t(Y)), ga_non_empty_sort_t).
+
+formula(exists([Y], tL(Y)), ga_non_empty_sort_tL).
+
+formula(exists([Y], tQ(Y)), ga_non_empty_sort_tQ).
+
+formula(exists([Y], tR(Y)), ga_non_empty_sort_tR).
+ */
+ 
+/*formula
+(forall
+ ([tR(X1), tR(X2), tQ(Y)], implies
+                           (and(ql(X1, Y), ql(X2, Y)), equal(X1, X2))),
+ Ax1).*/
+(forall (x1 x2 y)
+	(if (and (TR x1)(TR x2)(TQ y)(ql x1 y)(ql x2 y))
+		(= x1 x2)))
+
+/*
+formula(forall([tQ(Y)], exists([tR(X)], ql(X, Y))), Ax2). */
+(forall (y)
+	(exists (x)
+		(and (ql x y)(TQ y)(TR x))))
+
+/*formula
+(forall
+ ([t(X1), t(X2), tL(Y)], implies
+                         (and(ql(X1, Y), ql(X2, Y)), equal(X1, X2))),
+ Ax1_3).*/
+(forall (x1 x2 y)
+	(if (and (ql x1 y)(ql x2 y)(T x1)(T x2)(TL y))
+		(= x1 x2)))
+
+/*formula(forall([tL(Y)], exists([t(X)], ql(X, Y))), Ax2_4).*/
+(forall (y)
+	(exists (x) (and (TL y)(T x)(ql x y))))
+
+/* formula
+(forall
+ ([sL(Y), t(T)], implies
+                 (pRE_2(Y, T), exists([s(X)], tql(X, Y, T)))),
+ Ax1_5).*/
+(forall (y t)
+	(if (and (SL y)(T t)(PRE_2 y t))
+		(exists (x) (and (tql x y t)(S x)))))
+
+/*formula
+(forall([s(X), sL(Y), t(T)], implies(tql(X, Y, T), pRE_2(Y, T))),
+ Ax2_7).*/
+(forall (x y t)
+	(if (and (S x)(SL y)(T t)(tql x y t))
+		(PRE_2 y t)))
+
+/*formula
+(forall
+ ([s(X1), sL(X2), t(T1), t(T2)], implies
+                                 (and(tql(X1, X2, T1), p(T2, T1)),
+                                  tql(X1, X2, T2))),
+ Ax1_3_6).*/
+(forall (x1 x2 t1 t2)
+	(if (and (S x1)(SL x2)(T t1)(T t2)(tql x1 x2 t1)(p t2 t1))
+		(tql x1 x2 t2)))
+
+/*formula
+(forall
+ ([t(X), t(Y)], implies
+                (not(p(X, Y)), exists([t(Z)], dif(Z, X, Y)))),
+ Extensionality+existence of the difference).*/
+(forall (x y)
+	(if (and (T x)(T y)(not(P x y)))
+		(exists (z)
+			(and (T z)(dif z x y)))))
+
+/*formula
+(forall([t(X), t(Y)], exists([t(Z)], x_Sum(Z, X, Y))),
+ Existence of the sum).*/
+(forall (x y)
+	(exists (z)
+		(and (T x)(T y)(T z)(x_Sum z x y))))
+
+/*formula
+(forall([t(X), t(Y)], equiv(pP(X, Y), and(p(X, Y), not(p(Y, X))))),
+ Dd14).*/
+(forall (x y)
+	(iff (and (PP x y)(T x)(T y))
+		(and (P x y)(not(p y x)))))
+
+/*formula
+(forall
+ ([t(X), t(Y)], equiv
+                (ov(X, Y), exists([t(Z)], and(p(Z, X), p(Z, Y))))),
+ Dd15).*/
+(forall (x y)
+	(iff (and (ov x y)(T x)(T y))
+		(exists (z) (and (T z)(p z x)(p z y)))))
+
+/*formula
+(forall([t(X)], equiv(at(X), not(exists([t(Y)], pP(Y, X))))),
+ Dd16).*/
+(forall (x)
+	(iff (and (T x)(at x))
+		(not(exists (y)
+			(and (T y)(pP y x))))))
+
+/*formula
+(forall([t(X), t(Y)], equiv(atP(X, Y), and(p(X, Y), at(X)))),
+ Dd17).*/
+(forall (x y)
+	(iff (and (T x)(T y)(atP x y))
+		(and (p x y)(at x))))
+
+/*formula
+(forall
+ ([t(Z), t(X), t(Y)], equiv
+                      (x_Sum(Z, X, Y),
+                       forall
+                       ([t(W)], equiv(ov(W, Z), or(ov(W, X), ov(W, Y)))))),
+ Ax5).*/
+(forall (x y z)
+	(iff (and (T x)(T y)(T z)(x_sum z x y))
+		(forall (w)
+			(iff (and(ov w z)(T w))
+				(or(ov w x)(ov w y))))))
+
+/*formula
+(forall
+ ([t(Z), t(X), t(Y)], equiv
+                      (dif(Z, X, Y),
+                       forall
+                       ([t(W)], equiv(p(W, Z), and(p(W, X), not(ov(W, Y))))))),
+ Ax6).*/
+(forall (x y z)
+	(iff (and (T x)(T y)(T z)(dif z x y))
+		(forall (w)
+			(iff (and (p w z)(T w))
+				(and (p w x)(not(ov w y)))))))
+
+/*formula(forall([t(X), t(Y), t(Z)], p(X, X)), reflexivity).*/
+(forall (x y z)
+	(and (T x)(p x x)))
+
+/*formula
+(forall
+ ([t(X), t(Y), t(Z)], implies(and(p(X, Y), p(Y, X)), equal(X, Y))),
+ antisymmetry).*/
+(forall (x y)
+	(if (and (T x)(T y)(p x y)(p y x))
+		(= x y)))
+
+/*formula
+(forall
+ ([t(X), t(Y), t(Z)], implies(and(p(X, Y), p(Y, Z)), p(X, Z))),
+ transitivity).*/
+(forall (x y z)
+	(if (and (p x y)(p y z)(T x)(T y)(T z))
+		(p x z)))
+
+/*formula(forall([sL(X)], exists([t(T)], pRE_2(X, T))), Ax1_13).*/
+
+/*formula
+(forall
+ ([sL(X), t(T1), t(T2)], implies
+                         (and(pRE_2(X, T1), p(T2, T1)), pRE_2(X, T2))),
+ Ax1_2).*/
+(forall (x t1 t2)
+	(if (and (SL x)(T t1)(T t2))
+		(and (PRE_2 x t1)(p t2 t1)(PRE_2 x t2))))
+
+/*formula
+(forall
+ ([aQ(Y), t(T)], implies
+                 (pRE_2_at(Y, T), exists([aR(X)], tql_3(X, Y, T)))),
+ Ax1_17).*/
+(forall (y t)
+	(if (and (AQ y)(T t)(PRE_2_at y t))
+		(exists (x) (and (tql x y t)(AR x)))))
+
+/*formula
+(forall
+ ([aR(X), aQ(Y), t(T)], implies(tql_3(X, Y, T), pRE_2_at(Y, T))),
+ Ax2_21).*/
+(forall (x y t)
+	(if (and (AR x)(AQ y)(T t)(tql_3 x y t))
+		(PRE_2_at y t)))
+
+/*formula
+(forall
+ ([aR(X1), aQ(X2), t(T1), t(T2)], implies
+                                  (and(tql_3(X1, X2, T1), p(T2, T1)),
+                                   tql_3(X1, X2, T2))),
+ Ax1_3_20).*/
+ (forall (x1 x2 t1 t2)
+ 	(if (and (AR x1)(AQ x2)(T t1)(T t2)(tql_3 x1 x2 tq)(P t2 t1))
+ 		(tql_3 x1 x2 t2)))
+
+/*formula
+(forall([aQ(X)], exists([t(T)], pRE_2_at(X, T))), Ax1_13_18).*/
+(forall (x)
+	(exists (t)(and (AQ x)(T t)(PRE_2_at x t))))
+
+/*formula
+(forall
+ ([pQ(Y), t(T)], implies
+                 (pRE_2(Y, T), exists([pR(X)], tql(X, Y, T)))),
+ Ax1_33).*/
+(forall (y t)
+	(if (and (P y)(T t)(PRE_2_at y t))
+		(exists (x) (and (tql x y t)(PR x)))))
+
+/*formula
+(forall([pR(X), pQ(Y), t(T)], implies(tql(X, Y, T), pRE_2(Y, T))),
+ Ax2_37).*/
+(forall (x y t)
+	(if (and (PR x)(PQ y)(T t)(tql x y t))
+		(PRE_2 y t)))
+
+/*formula
+(forall
+ ([pR(X1), pQ(X2), t(T1), t(T2)], implies
+                                  (and(tql(X1, X2, T1), p(T2, T1)),
+                                   tql(X1, X2, T2))),
+ Ax1_3_36).*/
+ (forall (x1 x2 t1 t2)
+ 	(if (and (PR x1)(PQ x2)(T t1)(T t2)(tql_3 x1 x2 tq)(P t2 t1))
+ 		(tql_3 x1 x2 t2)))
+
+/*formula(forall([pQ(X)], exists([t(T)], pRE_2(X, T))), Ax1_13_34).*/
+(forall (x)
+	(exists (t) (and (PQ x)(T t)(PRE_2 x t))))
+
+/*formula(forall([pD(Y)], exists([tL(X)], dqt(X, Y))), Ax1_31).*/
+(forall (y)
+	(exists (x) (and (PD y)(TL x)(dqt x y))))
+
+/*formula(forall([pED(Y)], exists([sL(X)], dqt_2(X, Y))), Ax2_33).*/
+(forall (y)
+	(exists (x)(and (SL x)(dqt_2 x y))))
+
+/*formula
+(forall
+ ([aQ(X), nPED(Y1), nPED(Y2)], implies
+                               (and(dqt_2_an(X, Y1), dqt_2_an(X, Y2)),
+                                equal(Y1, Y2))),
+ Ax1_3_32).*/
+(forall (x y1 y2)
+	(if (and (AQ x)(NPED y1)(NPED y2)(qt_2_an x y1)(qt_2_an x y2))
+		(= y1 y2)))
+
+/*formula
+(forall
+ ([aQ(X1), aQ(X2), nPED(Y)], implies
+                             (and(dqt_2_an(X1, Y), dqt_2_an(X2, Y)),
+                              equal(X1, X2))),
+ Ax2_4_34).*/
+(forall (x1 x2 y)
+	(if (and (AQ x1)(AQ x2)(NPED y)(qt_2_an x1 y)(qt_2_an x2 y))
+		(= x1 x2)))
+
+/*formula
+(forall
+ ([aQ(X)], and
+           (exists([nPED(Y)], dqt_2_an(X, Y)),
+            forall
+            ([nPED(Y_1), nPED(Y_2)], implies
+                                     (and(dqt_2_an(X, Y_1), dqt_2_an(X, Y_2)),
+                                      equal(Y_1, Y_2))))),
+ Ax3).*/
+(forall (x)
+	(and (exists (y) (and (AQ x)(NPED y)(dqt_2_an x y)))
+		(forall (y1 y2)
+			(if (and (NPED y1)(NPED y2)(dqt_2_an x y1)(qt_2_an x y2))
+				(= y1 y2)))))
+
+/*formula
+(forall
+ ([pQ(X), pED(Y1), pED(Y2)], implies
+                             (and(dqt_2(X, Y1), dqt_2(X, Y2)), equal(Y1, Y2))),
+ Ax1_4).*/
+(forall (x y1 y2)
+	(if (and (PQ x)(PED y1)(PED y2)(dqt_2_an x y1)(dqt_2_an x y2))
+		(= y1 y2)))
+
+/*formula
+(forall
+ ([pQ(X1), pQ(X2), pED(Y)], implies
+                            (and(dqt_2(X1, Y), dqt_2(X2, Y)), equal(X1, X2))),
+ Ax2_5).*/
+(forall (x1 x2 y)
+	(if (and (PQ x1)(PQ x2)(PED y)(qt_2_an x1 y)(qt_2_an x2 y))
+		(= x1 x2)))
+
+/*formula
+(forall
+ ([pQ(X)], and
+           (exists([pED(Y)], dqt_2(X, Y)),
+            forall
+            ([pED(Y_1), pED(Y_2)], implies
+                                   (and(dqt_2(X, Y_1), dqt_2(X, Y_2)),
+                                    equal(Y_1, Y_2))))),
+ Ax3_6).*/
+(forall (x)
+	(and (exists (y) (and (PQ x)(PED y)(dqt_2_an x y)))
+		(forall (y1 y2)
+			(if (and (PED y1)(PED y2)(dqt_2_an x y1)(qt_2_an x y2))
+				(= y1 y2)))))
+
+/*formula
+(forall
+ ([tQ(X), pD(Y1), pD(Y2)], implies
+                           (and(dqt(X, Y1), dqt(X, Y2)), equal(Y1, Y2))),
+ Ax1_7).*/
+(forall (x y1 y2)
+	(if (and (TQ x)(PD y1)(PD y2)(dqt x y1)(dqt x y2))
+		(= y1 y2)))
+
+/*formula
+(forall
+ ([tQ(X1), tQ(X2), pD(Y)], implies
+                           (and(dqt(X1, Y), dqt(X2, Y)), equal(X1, X2))),
+ Ax2_8).*/
+(forall (x1 x2 y)
+	(if (and (TQ x1)(TQ x2)(PD y)(dqt x1 y)(dqt x2 y))
+		(= x1 x2)))
+
+/*formula
+(forall
+ ([tQ(X)], and
+           (exists([pD(Y)], dqt(X, Y)),
+            forall
+            ([pD(Y_1), pD(Y_2)], implies
+                                 (and(dqt(X, Y_1), dqt(X, Y_2)),
+                                  equal(Y_1, Y_2))))),
+ Ax3_9).*/
+(forall (x)
+	(and (exists (y) (and (TQ x)(PD y)(dqt x y)))
+		(forall (y1 y2)
+			(if (and (PD y1)(PD y2)(dqt x y1)(dqt x y2))
+				(= y1 y2)))))
+		
+/*formula
+(forall
+ ([sC(Y), t(T)], or
+                 (not(pRE_2_st(Y, T)), exists([nASO(X)], pRE_2_st(X, T)))),
+ Ax1_42).*/
+(forall (y t)
+	(and (SC y)(T t)
+		(or (not(PRE_2_st y t))
+			(exists (x) (and (NASO x)(PRE_2_st x t))))))
+
+/*formula
+(forall([nASO(X)], exists([t(T)], pRE_2_st(X, T))), Ax1_2_43).*/
+(forall (x)
+	(exists (t) (and (NASO x)(PRE_2_st x t))))
+
+/*formula
+(forall
+ ([nASO(X), t(T)], implies
+                   (and(at(T), pRE_2_st(X, T)),
+                    exists([sC(Y)], pRE_2_st(Y, T)))),
+ Ax2_45).*/
+(forall (x t)
+ 	(if (and (NASO x)(T t)(AT t)(PRE_2_st x t))
+ 		(exists (y)
+ 			(and (SC y)(PRE_2_st y t)))))
+ 
+/*formula
+(forall
+ ([nASO(X), t(T1), t(T2)], implies
+                           (and(pRE_2_st(X, T1), p(T2, T1)), pRE_2_st(X, T2))),
+ Ax1_2_3).*/
+(forall (x t1 t2)
+	(if (and (NASO x)(T t1)(T t2))
+		(and (PRE_2_st x t1)(p t2 t1)(PRE_2_st x t2))))
+
+formula(forall([sC(X)], exists([t(T)], pRE_2_st(X, T))), Ax1_14).
+
+/*formula
+(forall
+ ([sC(X), t(T1), t(T2)], implies
+                         (and(pRE_2_st(X, T1), p(T2, T1)), pRE_2_st(X, T2))),
+ Ax1_2_15).*/
+(forall (x t1 t2)
+	(if (and (SC x)(T t1)(T t2))
+		(and (PRE_2_st x t1)(p t2 t1)(PRE_2_st x t2))))
+
+/*formula
+(forall
+ ([aPO(Y), t(T)], or
+                  (not(pRE_2_st(Y, T)), exists([sAG(X)], pRE_2_st(X, T)))),
+ Ax1_18).*/
+(forall (y t)
+	(and (APO y)(T t)
+		(or (not(PRE_2_st y t))
+			(exists (x)(and (SAG x)(PRE_2_st x t))))))
+
+/*formula
+(forall([sAG(X)], exists([t(T)], pRE_2_st(X, T))), Ax1_2_20).*/
+(forall (x)
+	(exists (t)
+		(and (SAG x)(T t)(PRE_2_st x t))))
+
+/*formula
+(forall
+ ([sAG(X), t(T)], implies
+                  (and(at(T), pRE_2_st(X, T)),
+                   exists([aPO(Y)], pRE_2_st(Y, T)))),
+ Ax2_23).*/
+(forall (x t)
+	(if (and (AT t)(SAG x)(T t)(PRE_2_st x t))
+		(exists (y)
+			(and (APO y)(PRE_2_st y t)))))
+
+/*formula
+(forall
+ ([sAG(X), t(T1), t(T2)], implies
+                          (and(pRE_2_st(X, T1), p(T2, T1)), pRE_2_st(X, T2))),
+ Ax1_2_3_22).*/
+(forall (x t1 t2)
+	(if (and (SAG x)(T t1)(T t2))
+		(and (PRE_2_st x t1)(p t2 t1)(PRE_2_st x t2))))
+
+/*formula
+(forall([aPO(X)], exists([t(T)], pRE_2_st(X, T))), Ax1_14_19).*/
+(forall (x)
+	(exists (t)
+		(and (APO x)(T t)(PRE_2_st x t))))
+
+/*formula
+(forall
+ ([aPO(X), t(T1), t(T2)], implies
+                          (and(pRE_2_st(X, T1), p(T2, T1)), pRE_2_st(X, T2))),
+ Ax1_2_15_21).*/
+(forall (x t1 t2)
+	(if (and (APO x)(T t1)(T t2))
+		(and (PRE_2_st x t1)(p t2 t1)(PRE_2_st x t2))))
+
+/*formula
+(forall
+ ([nAPO(Y), t(T)], or
+                   (not(pRE_2_st(Y, T)), exists([f(X)], pRE_2_st(X, T)))),
+ Ax1_35).*/
+(forall (y t)
+	(and (NAPO y)(T t)
+		(or (not(PRE_2_st y t))
+			(exists (x)(and (F x)(PRE_2_st x t))))))
+
+/*formula(forall([f(X)], exists([t(T)], pRE_2_st(X, T))), Ax1_2_37).*/
+(forall (x)
+	(exists (t)
+		(and (F x)(T t)(PRE_2_st x t))))
+
+/*formula
+(forall
+ ([f(X), t(T)], implies
+                (and(at(T), pRE_2_st(X, T)),
+                 exists([nAPO(Y)], pRE_2_st(Y, T)))),
+ Ax2_40).*/
+(forall (x t)
+	(if (and (AT t)(F x)(T t)(PRE_2_st x t))
+		(exists (y)
+			(and (NAPO y)(PRE_2_st y t)))))
+
+/*formula
+(forall
+ ([f(X), t(T1), t(T2)], implies
+                        (and(pRE_2_st(X, T1), p(T2, T1)), pRE_2_st(X, T2))),
+ Ax1_2_3_39).*/
+(forall (x t1 t2)
+	(if (and (F x)(T t1)(T t2))
+		(and (PRE_2_st x t1)(p t2 t1)(PRE_2_st x t2))))
+
+/*formula
+(forall([nAPO(X)], exists([t(T)], pRE_2_st(X, T))), Ax1_14_36).*/
+(forall (x)
+	(exists (t)
+		(and (NAPO x)(T t)(PRE_2_st x t))))
+
+/*formula
+(forall
+ ([nAPO(X), t(T1), t(T2)], implies
+                           (and(pRE_2_st(X, T1), p(T2, T1)), pRE_2_st(X, T2))),
+ Ax1_2_15_38).*/
+(forall (x t1 t2)
+	(if (and (NAPO x)(T t1)(T t2))
+		(and (PRE_2_st x t1)(p t2 t1)(PRE_2_st x t2))))
+
+/*formula
+(forall
+ ([aPO(Y), t(T)], or
+                  (not(pRE_2_st(Y, T)), exists([mOB(X)], pRE_2_st(X, T)))),
+ Ax1_52).*/
+(forall (y t)
+	(and (APO y)(T t)
+		(or (not(PRE_2_st y t))
+			(exists (x)(and (MOB x)(PRE_2_st x t))))))
+
+/*formula
+(forall
+ ([mOB(X), aPO(Y)], equiv
+                    (sD_2_ma(X, Y),
+                     and
+                     (exists([t(T)], pRE_2_st(X, T)),
+                      forall
+                      ([t(T)], implies(pRE_2_st(X, T), pRE_2_st(Y, T)))))),
+ Ax1_2_54).*/
+ (forall (x y)
+ 	(and (MOB x)(APO y)
+ 		(iff (sD_2_ma x y)
+ 			(and (exists (t) (and (T t)(PRE_2_st x t)))
+ 				(forall (t)
+ 					(if (and (T t)(PRE_2_st x t))
+ 						(PRE_2_st y t)))))))
+
+/*formula(forall([mOB(X)], exists([aPO(Y)], sD_2_ma(X, Y))), Ax2_57).*/
+(forall (x)
+	(exists (y)
+		(and (MOB x)(APO y)(sD_2_ma x y))))
+	
+/*formula
+(forall([mOB(X)], exists([t(T)], pRE_2_st(X, T))), Ax1_3_44).*/
+(forall (x)
+	(exists (t) (and (MOB x)(PRE_2_st x t))))
+
+/*formula
+(forall
+ ([mOB(X), t(T1), t(T2)], implies
+                          (and(pRE_2_st(X, T1), p(T2, T1)), pRE_2_st(X, T2))),
+ Ax1_2_3_56).*/
+(forall (x t1 t2)
+	(if (and (MOB x)(T t1)(T t2))
+		(and (PRE_2_st x t1)(p t2 t1)(PRE_2_st x t2))))
+
+/*formula
+(forall
+ ([nPED(X), aQ(Y)], equiv
+                    (sD_2_na(X, Y),
+                     and
+                     (exists([t(T)], pRE_2_st(X, T)),
+                      forall
+                      ([t(T)], implies(pRE_2_st(X, T), pRE_2_at(Y, T)))))),
+ Ax1_70).*/
+ (forall (x y)
+ 	(and (NPED x)(AQ y)
+ 		(iff (sD_2_na x y)
+ 			(and (exists (t) (and (T t)(PRE_2_st x t)))
+ 				(forall (t)
+ 					(if (and (T t)(PRE_2_st x t))
+ 						(PRE_2_st y t)))))))
+
+/*formula(forall([nPED(X)], exists([aQ(Y)], sD_2_na(X, Y))), Ax2_76).*/
+(forall (x)
+	(exists (y)
+		(and (NPED x)(AQ y)(sD_2_na x y))))
+
+/*formula
+(forall
+ ([aQ(X), t(T1), t(T2)], implies
+                         (and(pRE_2_at(X, T1), p(T2, T1)), pRE_2_at(X, T2))),
+ Ax1_2_15_75).*/
+(forall (x t1 t2)
+	(if (and (AQ x)(T t1)(T t2))
+		(and (PRE_2_at x t1)(p t2 t1)(PRE_2_at x t2))))
+
+/*formula
+(forall
+ ([aQ(X), nPED(Y)], equiv
+                    (sD_2_an(X, Y),
+                     and
+                     (exists([t(T)], pRE_2_at(X, T)),
+                      forall
+                      ([t(T)], implies(pRE_2_at(X, T), pRE_2_st(Y, T)))))),
+ Ax1_18_73).*/
+ (forall (x y)
+ 	(and (AQ x)(NPED y)
+ 		(iff (sD_2_na x y)
+ 			(and (exists (t) (and (T t)(PRE_2_st x t)))
+ 				(forall (t)
+ 					(if (and (T t)(PRE_2_st x t))
+ 						(PRE_2_st y t)))))))
+
+/*formula
+(forall([aQ(X)], exists([nPED(Y)], sD_2_an(X, Y))), Ax2_23_77).*/
+(forall (x)
+	(exists (y)
+		(and (AQ x)(NPED y)(sD_2_na x y))))
+
+/*formula
+(forall
+ ([pED(X), pQ(Y)], equiv
+                   (sD_2_pp(X, Y),
+                    and
+                    (exists([t(T)], pRE_2_st(X, T)),
+                     forall([t(T)], implies(pRE_2_st(X, T), pRE_2(Y, T)))))),
+ Ax1_89).*/
+ (forall (x y)
+ 	(and (PED x)(PQ y)
+ 		(iff (sD_2_pp x y)
+ 			(and (exists (t) (and (T t)(PRE_2_st x t)))
+ 				(forall (t)
+ 					(if (and (T t)(PRE_2_st x t))
+ 						(PRE_2 y t)))))))
+
+/*formula(forall([pED(X)], exists([pQ(Y)], sD_2_pp(X, Y))), Ax2_95).*/
+(forall (x)
+	(exists (y)
+		(and (PED x)(PQ y)(sD_2_pp x y))))
+
+/*formula
+(forall
+ ([pQ(X), t(T1), t(T2)], implies
+                         (and(pRE_2(X, T1), p(T2, T1)), pRE_2(X, T2))),
+ Ax1_2_15_94).*/
+(forall (x t1 t2)
+	(if (and (PQ x)(T t1)(T t2))
+		(and (PRE_2 x t1)(p t2 t1)(PRE_2 x t2))))
+
+/*formula
+(forall
+ ([pQ(X), pED(Y)], equiv
+                   (sD_2(X, Y),
+                    and
+                    (exists([t(T)], pRE_2(X, T)),
+                     forall([t(T)], implies(pRE_2(X, T), pRE_2_st(Y, T)))))),
+ Ax1_18_92).*/
+ (forall (x y)
+ 	(and (PQ x)(PED y)
+ 		(iff (sD_2 x y)
+ 			(and (exists (t) (and (T t)(PRE_2 x t)))
+ 				(forall (t)
+ 					(if (and (T t)(PRE_2 x t))
+ 						(PRE_2_st y t)))))))
+
+/*formula(forall([pQ(X)], exists([pED(Y)], sD_2(X, Y))), Ax2_23_96).*/
+(forall (x)
+	(exists (y)
+		(and (PQ x)(PED y)(sD_2 x y))))
+
+/*formula
+(forall([pED(X)], exists([t(T)], pRE_2_st(X, T))), Ax1_14_19_91).*/
+(forall (x)
+	(exists (t)
+		(and (PED x)(T t)(pRE_2_st x t))))
+
+/*formula
+(forall
+ ([pD(X), tQ(Y)], equiv
+                  (sD_2_pt(X, Y),
+                   and
+                   (exists([t(T)], pRE_2_pt(X, T)),
+                    forall([t(T)], implies(pRE_2_pt(X, T), pRE(Y, T)))))),
+ Ax1_108).*/
+(forall (x y)
+ 	(and (PD x)(TQ y)
+ 		(iff (sD_2_pt x y)
+ 			(and (exists (t) (and (T t)(PRE_2_pt x t)))
+ 				(forall (t)
+ 					(if (and (T t)(PRE_2_pt x t))
+ 						(PRE y t)))))))
+
+/*formula(forall([pD(X)], exists([tQ(Y)], sD_2_pt(X, Y))), Ax2_114).*/
+(forall (x)
+	(exists (y)
+		(and (PD x)(TQ y)(sD_2_pt x y))))
+
+/*formula
+(forall
+ ([pD(X), t(T1), t(T2)], implies
+                         (and(pRE_2_pt(X, T1), p(T2, T1)), pRE_2_pt(X, T2))),
+ Ax1_2_112).*/
+(forall (x t1 t2)
+	(if (and (PD x)(T t1)(T t2))
+		(and (PRE_2_pt x t1)(p t2 t1)(PRE_2_pt x t2))))
+
+formula(forall([tQ(X)], exists([t(T)], pRE(X, T))), Ax1_14_109).
+
+/*formula
+(forall
+ ([tQ(X), t(T1), t(T2)], implies
+                         (and(pRE(X, T1), p(T2, T1)), pRE(X, T2))),
+ Ax1_2_15_113).*/
+(forall (x t1 t2)
+	(if (and (TQ x)(T t1)(T t2))
+		(and (PRE x t1)(p t2 t1)(PRE x t2))))
+
+/*formula
+(forall
+ ([tQ(X), pD(Y)], equiv
+                  (sD(X, Y),
+                   and
+                   (exists([t(T)], pRE(X, T)),
+                    forall([t(T)], implies(pRE(X, T), pRE_2_pt(Y, T)))))),
+ Ax1_18_111).*/
+(forall (x y)
+ 	(and (TQ x)(PD y)
+ 		(iff (sD x y)
+ 			(and (exists (t) (and (T t)(PRE x t)))
+ 				(forall (t)
+ 					(if (and (T t)(PRE x t))
+ 						(PRE_2_pt y t)))))))
+
+/*formula(forall([tQ(X)], exists([pD(Y)], sD(X, Y))), Ax2_23_115).*/
+(forall (x)
+	(exists (y)
+		(and (TQ x)(PD y)(sD x y))))
+		
+/*formula(forall([sC(X)], exists([t(T)], pRE_2_st(X, T))), Ax1_100).*/
+(forall (x)
+	(exists (t)
+		(and (SC x)(T t)(PRE_2_st x t))))
+
+/*formula
+(forall
+ ([sC(X), t(T)], implies
+                 (and(at(T), pRE_2_st(X, T)), exists([sAG(Y)], k_3(Y, X, T)))),
+ Ax2_107).*/
+(forall (x t)
+	(and (SC x)(T t)
+		(if (and (AT t)(PRE_2_st x t))
+			(exists (y)
+				(and (SAG y)(k_3 y x t))))))
+
+/*formula
+(forall
+ ([nPED(X), nPED(Y), nPED(Z), t(T)], implies
+                                     (k_3(X, Y, T), not(k_3(Y, X, T)))),
+ Ax1_3_105).*/
+(forall (x y z t)
+	(and (NPED x)(NPED y)(NPED z)(T t)
+		(if (k_3 x y t)
+			(not (k_3 y x t)))))
+
+/*formula
+(forall
+ ([nPED(X), nPED(Y), nPED(Z), t(T)], implies
+                                     (and(k_3(X, Y, T), k_3(Y, Z, T)),
+                                      k_3(X, Z, T))),
+ Ax2_5_110).*/
+(forall (x y z t)
+	(and (NPED x)(NPED y)(NPED z)(T t)
+		(if (and (k_3 x y t)(k_3 yz t))
+			(k_3 x z t))))
+
+/*formula
+(forall
+ ([nPED(X1), nPED(X2), t(T)], implies
+                              (k_3(X1, X2, T),
+                               and(pRE_2_st(X1, T), pRE_2_st(X2, T)))),
+ Ax1_3_4).*/
+(forall (x1 x2 t)
+	(and (NPED x1)(NPED x2)(T t)
+		(if (k_3 x1 x2 t)
+			(and (pRE_2_st x1 t)(pRE_2_st x2 t)))))
+
+
+/*formula
+(forall([nPED(X)], exists([t(T)], pRE_2_st(X, T))), Ax1_14_101).*/
+(forall (x)
+	(exists (t)
+		(and (NPED x)(T t)(PRE_2_st x t))))
+
+/*formula
+(forall
+ ([nPED(X), t(T1), t(T2)], implies
+                           (and(pRE_2_st(X, T1), p(T2, T1)), pRE_2_st(X, T2))),
+ Ax1_2_15_104).*/
+(forall (x t1 t2)
+	(if (and (NPED x)(T t1)(T t2))
+		(and (PRE_2_st x t1)(p t2 t1)(PRE_2_st x t2))))
+
+/*formula
+(forall
+ ([nPED(X1), nPED(X2), t(T1), t(T2)], implies
+                                      (and(k_3(X1, X2, T1), p(T2, T1)),
+                                       k_3(X1, X2, T2))),
+ Ax1_17_102).*/
+(forall (x1 x2 t1 t2)
+	(and (NPED x1)(NPED x2)(T t1)(T t2)
+		(if (and (k_3 x1 x2 t)(P t2 t1))
+			(k_3 x1 x2 t2))))
+
+/*formula(forall([aPO(X)], exists([t(T)], pRE_2_st(X, T))), Ax1_20).*/
+(forall (x)
+	(exists (t)
+		(and (APO x)(T t)(PRE_2_st x t))))
+
+/*formula
+(forall
+ ([aPO(X), t(T)], implies
+                  (and(at(T), pRE_2_st(X, T)),
+                   exists([nAPO(Y)], k_3(Y, X, T)))),
+ Ax2_26).*/
+(forall (x t)
+	(and (APO x)(T t)
+		(if (and (AT t)(PRE_2_st x t))
+			(exists (y)
+				(and (NAPO y)(k_3 y x t))))))
+
+/*formula
+(forall
+ ([pED(X), pED(Y), pED(Z), t(T)], implies
+                                  (k_3(X, Y, T), not(k_3(Y, X, T)))),
+ Ax1_3_24).*/
+(forall (x y z t)
+	(and (PED x)(PED y)(PED z)(T t)
+		(if (k_3 x y t)
+			(not (k_3 y x t)))))
+
+/*formula
+(forall
+ ([pED(X), pED(Y), pED(Z), t(T)], implies
+                                  (and(k_3(X, Y, T), k_3(Y, Z, T)),
+                                   k_3(X, Z, T))),
+ Ax2_5_27).*/
+(forall (x y z t)
+	(and (PED x)(PED y)(PED z)(T t)
+		(if (and (k_3 x y t)(k_3 y z t))
+			(k_3 x z t))))
+
+/*formula
+(forall
+ ([pED(X1), pED(X2), t(T)], implies
+                            (k_3(X1, X2, T),
+                             and(pRE_2_st(X1, T), pRE_2_st(X2, T)))),
+ Ax1_3_4_25).*/
+(forall (x1 x2 t)
+	(and (PED x1)(PED x2)(T t)
+		(if (k_3 x1 x2 t)
+			(and (PRE_2_st x1 t)(PRE_2_st x2 t)))))
+
+/*formula
+(forall
+ ([pED(X), t(T1), t(T2)], implies
+                          (and(pRE_2_st(X, T1), p(T2, T1)), pRE_2_st(X, T2))),
+ Ax1_2_15_23).*/
+(forall (x t1 t2)
+	(if (and (PED x)(T t1)(T t2))
+		(and (PRE_2_st x t1)(p t2 t1)(PRE_2_st x t2))))
+
+/*formula
+(forall
+ ([pED(X1), pED(X2), t(T1), t(T2)], implies
+                                    (and(k_3(X1, X2, T1), p(T2, T1)),
+                                     k_3(X1, X2, T2))),
+ Ax1_17_22).*/
+(forall (x1 x2 t1 t2)
+	(and (PED x1)(PED x2)(T t1)(T t2)
+		(if (and (k_3 x1 x2 t1)(p t2 t1))
+			(k_3 x1 x2 t2))))
+
+/*formula(forall([nAPO(X)], exists([t(T)], pRE_2_st(X, T))), Ax1_39).*/
+(forall (x)
+	(exists (t)
+		(and (NAPO x)(T t)(PRE_2_st x t))))
+
+/*formula
+(forall
+ ([nAPO(X), t(T)], implies
+                   (and(at(T), pRE_2_st(X, T)), exists([m(Y)], k_3(Y, X, T)))),
+ Ax2_45_109).*/
+(forall (x t)
+	(and (NAPO x)(T t)
+		(if (and (AT t)(PRE_2_st x t))
+			(exists (y)
+				(and (M y)(k_3 y x t))))))
+
+/*formula(forall([eD(X), t(T)], not(k_3(X, X, T))), Td1).*/
+(forall (x t)
+	(and (ED x)(T t)(not (k_3 x x t))))
+
+/*formula
+(forall
+ ([eD(X), eD(Y), eD(Y1), t(T)], implies
+                                (and(k_3(X, Y, T), tP(Y1, Y, T)),
+                                 exists
+                                 ([eD(X1)], and
+                                            (tP(X1, X, T), k_3(X1, Y1, T))))),
+ Ax1_58).*/
+(forall (x y y1 t)
+	(and (ED x)(ED y)(ED y1)(T t)
+		(if (and (k_3 x y t)(tP y1 y t))
+			(exists (x1)
+				(and (ED x1)(tP x1 x t)(k_2 x1 y1 t))))))
+
+/*formula
+(forall
+ ([eD(X), eD(Y), t(T)], implies
+                        (and (and(pRE_2_st(X, T), pRE_2_st(Y, T)), not(tP(X, Y, T))),
+                         exists([eD(Z)], and(tP(Z, X, T), not(tOv(Z, Y, T)))))),
+ Ax3_111).*/
+(forall (x y t)
+	(and (ED x)(ED y)(T t)
+		(if (and (PRE_2_st x t)(PRE_2_st y t)(not (tP x y t)))
+			(exists (z)
+				(and (ED z)(tP z x t)(not (tOv z y t)))))))
+
+/*formula
+(forall
+ ([eD(X), eD(Y), t(T)], equiv
+                        (tPP(X, Y, T), and(tP(X, Y, T), not(tP(Y, X, T))))),
+ Ax1_5_106).*/
+(forall (x y t)
+	(and (ED x)(ED y)(T t)
+		(iff (tPP x y t)
+			(and (tP x y t)(not (tP y x t))))))
+
+/*formula
+(forall
+ ([eD(X), eD(Y), t(T)], equiv
+                        (tOv(X, Y, T),
+                         exists([eD(Z)], and(tP(Z, X, T), tP(Z, Y, T))))),
+ Ax2_6).*/
+(forall (x y t)
+	(and (ED x)(ED y)(T t)
+		(iff (tOV x y t)
+			(exists (z)
+				(and (ED z)(tP z x t)(tP z y t))))))
+
+/*formula
+(forall
+ ([eD(X1), eD(X2), t(T1), t(T2)], implies
+                                  (and(tP(X1, X2, T1), p(T2, T1)),
+                                   tP(X1, X2, T2))),
+ Ax1_15).*/
+(forall (x1 x2 t1 t2)
+	(and (ED x1)(ED x2)(T t1)(T t2)
+		(if (and (tP x1 x2 t1)(P t2 t1))
+			(tP x1 x2 t2))))
+
+/*formula
+(forall
+ ([eD(X), eD(Y), eD(Z), t(T)], implies
+                               (pRE_2_st(X, T), tP(X, X, T))),
+ Ax1_27).*/
+(forall (x y z t)
+	(and (ED x)(ED y)(ED z)(T t)
+		(if (PRE_2_st x t)
+			(tP x x t))))
+
+/*formula
+(forall
+ ([eD(X), eD(Y), eD(Z), t(T)], implies
+                               (and(tP(X, Y, T), tP(Y, Z, T)), tP(X, Z, T))),
+ Ax2_4_108).*/
+(forall (x y z t)
+	(and (ED x)(ED y)(ED z)(T t)
+		(if (and (tP x y t)(tP y z t))
+			(tP x z t))))
+
+/*formula
+(forall
+ ([eD(X), t(T1), t(T2)], implies
+                         (and(pRE_2_st(X, T1), p(T2, T1)), pRE_2_st(X, T2))),
+ Ax1_2_103).*/
+(forall (x t1 t2)
+	(if (and (ED x)(T t1)(T t2))
+		(and (PRE_2_st x t1)(p t2 t1)(PRE_2_st x t2))))
+
+/*formula
+(forall
+ ([eD(X), eD(Y), eD(Z), t(T)], implies
+                               (k_3(X, Y, T), not(k_3(Y, X, T)))),
+ Ax1_24).*/
+(forall (x y z t)
+	(and (ED x)(ED y)(ED z)(T t)
+		(if (k_3 x y t)
+			(not(k_3 y x t)))))
+
+/*formula
+(forall
+ ([eD(X), eD(Y), eD(Z), t(T)], implies
+                               (and(k_3(X, Y, T), k_3(Y, Z, T)), k_3(X, Z, T))),
+ Ax2_27).*/
+(forall (x y z t)
+	(and (ED x)(ED y)(ED z)(T t)
+		(if (and (k_3 x y t)(k_3 y z t))
+			(k_3 x z t))))
+
+/*formula
+(forall
+ ([eD(X1), eD(X2), t(T)], implies
+                          (k_3(X1, X2, T),
+                           and(pRE_2_st(X1, T), pRE_2_st(X2, T)))),
+ Ax1_3_26).*/
+(forall (x1 x2 t)
+	(and (ED x1)(ED x2)(T t)
+		(if (k_3 x1 x2 t)
+			(and (PRE_2_st x1 t)(PRE_2_st x2 t)))))
+
+/*formula
+(forall
+ ([eD(X1), eD(X2), t(T1), t(T2)], implies
+                                  (and(k_3(X1, X2, T1), p(T2, T1)),
+                                   k_3(X1, X2, T2))),
+ Ax1_17_60).*/
+(forall (x1 x2 t1 t2)
+	(and (ED x1)(ED x2)(T t1)(T t2)
+		(if (and (k_3 x1 x2 t)(P t2 t1))
+			(k_3 x1 x2 t2))))
+
+/*formula
+(forall
+ ([pD(X), pD(Y), pD(Z), t(T)], implies
+                               (k(X, Y, T), not(k(Y, X, T)))),
+ Ax1_87).*/
+(forall (x y z t)
+	(and (PD x)(PD y)(PD z)(T t)
+		(if (K x y t)
+			(not (K y x t)))))
+
+/*formula
+(forall
+ ([pD(X), pD(Y), pD(Z), t(T)], implies
+                               (and(k(X, Y, T), k(Y, Z, T)), k(X, Z, T))),
+ Ax2_92).*/
+(forall (x y z t)
+	(and (PD x)(PD y)(PD z)(T t)
+		(if (and (K x y t)(K y z t))
+			(K z x t))))
+
+/*formula
+(forall
+ ([pD(X1), pD(X2), t(T)], implies
+                          (k(X1, X2, T),
+                           and(pRE_2_pt(X1, T), pRE_2_pt(X2, T)))),
+ Ax1_3_91).*/
+(forall (x1 x2 t)
+	(and (PD x1)(PD x2)(T t)
+		(if (K x1 x2 t)
+			(and (PRE_2_pt x1 t)(PRE_2_pt x2 t)))))
+
+/*formula
+(forall
+ ([pD(X1), pD(X2), t(T1), t(T2)], implies
+                                  (and(k(X1, X2, T1), p(T2, T1)),
+                                   k(X1, X2, T2))),
+ Ax1_17_89).*/
+(forall (x1 x2 t1 t2)
+	(and (PD x1)(PD x2)(T t1)(T t2)
+		(if (and (K x1 x2 t)(P t2 t1))
+			(K x1 x2 t2))))
+
+/*formula
+(forall
+ ([eD(X), pD(Y), t(T)], implies
+                        (pC(X, Y, T), and(pRE_2_st(X, T), pRE_2_pt(Y, T)))),
+ T33).*/
+(forall (x y t)
+	(and (ED x)(PD y)(T t)
+		(if (PC x y t)
+			(and (PRE_2_st x t)(PRE_2_pt y t)))))
+			
+/*formula
+(forall
+ ([pD(Y), t(T)], implies
+                 (pRE_2_pt(Y, T), exists([eD(X)], pC(X, Y, T)))),
+ Ax1_153).*/
+(forall (y t)
+	(and (PD y)(T t)
+		(if (PRE_2_pt y t)
+			(exists (x)
+				(and (ED x)(PC x y t))))))
+
+/*formula
+(forall([eD(X)], exists([pD(Y), t(T)], pC(X, Y, T))), Ax2_160).*/
+(forall (x)
+	(and (ED x)
+		(exists (y t)
+			(and (PD y)(T t)(PC x y t)))))
+
+/*formula
+(forall
+ ([eD(X1), pD(X2), t(T)], implies
+                          (pC(X1, X2, T),
+                           and(pRE_2_st(X1, T), pRE_2_pt(X2, T)))),
+ Ax1_4_159).*/
+(forall (x1 x2 t)
+	(and (ED x1)(PD x2)(T t)
+		(if (PC x1 x2 t)
+			(and (PRE_2_st x1 t)(PRE_2_pt x2 t)))))
+
+/*formula
+(forall([pD(X)], exists([t(T)], pRE_2_pt(X, T))), Ax1_14_154).*/
+(forall (x)
+	(exists (t)
+		(and (PD x)(T t)(PRE_2_pt x t))))
+
+/*formula
+(forall
+ ([eD(X1), pD(X2), t(T1), t(T2)], implies
+                                  (and(pC(X1, X2, T1), p(T2, T1)),
+                                   pC(X1, X2, T2))),
+ Ax1_17_155).*/
+(forall (x1 x2 t1 t2)
+	(and (ED x1)(PD x2)(T t1)(T t2)
+		(if (and (PC x1 x2 t1)(P t2 t1))
+			(PC x1 x2 t2))))
+
+/*formula
+(forall
+ ([eD(X), eD(Y), t(T)], implies
+                        (tP(X, Y, T), equiv(pED(X), pED(Y)))),
+ Ax1_173).*/
+(forall (x y t)
+	(and (ED x)(ED y)(T t)
+		(if (tP x y t)
+			(= (PED x)(PED y)))))
+
+/*formula
+(forall
+ ([eD(X), eD(Y), t(T)], implies
+                        (tP(X, Y, T), equiv(nPED(X), nPED(Y)))),
+ Ax2_181).*/
+(forall (x y t)
+	(and (ED x)(ED y)(T t)
+		(if (tP x y t)
+			(= (NPED x)(NPED y)))))
+
+/*formula
+(forall
+ ([eD(Z), eD(X), eD(Y)], equiv
+                         (tSum(Z, X, Y),
+                          forall
+                          ([eD(W), t(T)], equiv
+                                          (tOv(W, Z, T),
+                                           or(tOv(W, X, T), tOv(W, Y, T)))))),
+ Ax1_3_178).*/
+(forall (x y z)
+	(and (ED z)(ED x)(ED y)
+		(iff (tSum z x y)
+			(forall (w t)
+				(and (ED w)(T t)
+					(iff (tOv w z t)
+						(or (tP w x t)(tOv w y t))))))))
+
+/*formula
+(forall
+ ([eD(Z), eD(X), eD(Y)], equiv
+                         (tDif(Z, X, Y),
+                          forall
+                          ([eD(W), t(T)], equiv
+                                          (tP(W, Z, T),
+                                           and
+                                           (tP(W, X, T), not(tOv(W, Y, T))))))),
+ Ax2_5_183).*/
+(forall (x y z)
+	(and (ED z)(ED x)(ED y)
+		(iff (tDif z x y)
+			(forall (w t)
+				(and (ED w)(T t)
+					(iff (tP w z t)
+						(and (tP w x t)(not (tOv w y t)))))))))
+
+/*formula
+(forall([eD(X), eD(Y), t(T)], exists([eD(Z)], tSum(Z, X, Y))),
+ Existence of the sum_192).*/
+(forall (x y)
+	(exists (z)
+		(and (ED x)(ED y)(ED z)(tSum z x y))))
+
+/*formula
+(forall
+ ([eD(X1), eD(X2), t(T)], implies
+                          (tP(X1, X2, T),
+                           and(pRE_2_st(X1, T), pRE_2_st(X2, T)))),
+ Ax1_3_4_179).*/
+(forall (x1 x2 t)
+	(and (ED x1)(ED x2)(T t)
+		(if (tP x1 x2 t)
+			(and (PRE_2_st x1 t)(PRE_2_st x2 t)))))
+
+/*formula
+(forall([eD(X)], exists([t(T)], pRE_2_st(X, T))), Ax1_14_174).*/
+(forall (x)
+	(exists (t) (and (ED x)(PRE_2_st x t))))
+
+/*formula
+(forall
+ ([pD(X), pD(Y)], equiv
+                  (p_T(X, Y), and (p_2_pp(X, Y),
+                   	forall ([pD(Z)], implies
+                              (and (p_2_pp(Z, Y),
+                                forall ([t(T)], implies
+                                         (pRE_2_pt(Z, T), pRE_2_pt(X, T)))), p_2_pp(Z, X)))))),
+ Ax1_198).*/
+(forall (x y)
+	(and (PD x)(PD y)
+		(iff (p_T x y)
+			(and (p_2_pp x y)
+				(forall (z)
+					(and (PD z)
+						(if (p_2_pp z y)
+							(forall (t)
+								(and (T t)
+									(if (and (PRE_2_pt z t)(PRE_2_pt x t))
+										(p_2_pp z x)))))))))))
+
+/*formula(forall([s(X)], p_2(X, X)), reflex_th).*/
+(forall (x)
+	(and (S x)(p_2 x x)))
+
+/*formula
+(forall
+ ([aR(X), aR(Y)], implies
+                  (not(p_2_aa(X, Y)), exists([aR(Z)], dif_3_aaa(Z, X, Y)))),
+ Extensionality+existence of the difference_21).*/
+(forall (x y)
+	(if (and (AR x)(Ar y)(not(p_2_aa x y)))
+		(exists (z)
+			(and (AR z)(dif_3_aaa z x y)))))
+
+/*formula
+(forall([aR(X), aR(Y)], exists([aR(Z)], x_Sum_3_aaa(Z, X, Y))),
+ Existence of the sum_20).*/
+ (forall (x y)
+	(exists (z)
+		(and (AR x)(Ar y)(AR z)(x_Sum_3_aaa z x y))))
+
+/*formula
+(forall
+ ([aR(X), aR(Y)], equiv
+                  (pP_2_aa(X, Y), and(p_2_aa(X, Y), not(p_2_aa(Y, X))))),
+ Dd14_16).*/
+ (forall (x y)
+	(iff (and (pP_2_aa x y)(AR x)(AR y))
+		(and (p_2_aa x y)(not(p_2_aa y x)))))
+
+/*formula
+(forall
+ ([aR(X), aR(Y)], equiv
+                  (ov_2_aa(X, Y),
+                   exists([aR(Z)], and(p_2_aa(Z, X), p_2_aa(Z, Y))))),
+ Dd15_17).*/
+(forall (x y)
+	(iff (and (ov_2_aa x y)(AR x)(Ar y))
+		(exists (z) (and (AR z)(p_2_aa z x)(p_2_aa z y)))))
+
+/*formula
+(forall
+ ([aR(X)], equiv(at_1_a(X), not(exists([aR(Y)], pP_2_aa(Y, X))))),
+ Dd16_18).*/
+(forall (x)
+	(iff (and (AR x)(at_1_a x))
+		(not(exists (y)
+			(and (Ar y)(pP_2_aa y x))))))
+
+/*formula
+(forall
+ ([aR(X), aR(Y)], equiv
+                  (atP_2_aa(X, Y), and(p_2_aa(X, Y), at_1_a(X)))),
+ Dd17_19).*/
+(forall (x y)
+	(iff (and (AR x)(AR y)(atP_2_aa x y))
+		(and (p x y)(at_1_a x))))
+
+/*formula
+(forall
+ ([aR(Z), aR(X), aR(Y)], equiv
+                         (x_Sum_3_aaa(Z, X, Y),
+                          forall
+                          ([aR(W)], equiv
+                                    (ov_2_aa(W, Z),
+                                     or(ov_2_aa(W, X), ov_2_aa(W, Y)))))),
+ Ax5_14).*/
+(forall (x y z)
+	(iff (and (AR x)(AR y)(AR z)(x_sum_3_aaa z x y))
+		(forall (w)
+			(iff (and(ov_2_aa w z)(AR w))
+				(or(ov_2_aa w x)(ov_2_aa w y))))))
+
+/*formula
+(forall
+ ([aR(Z), aR(X), aR(Y)], equiv
+                         (dif_3_aaa(Z, X, Y),
+                          forall
+                          ([aR(W)], equiv
+                                    (p_2_aa(W, Z),
+                                     and(p_2_aa(W, X), not(ov_2_aa(W, Y))))))),
+ Ax6_15).*/
+(forall (x y z)
+	(iff (and (AR z)(AR x)(AR y)(dif_3_aaa z x y))
+		(forall (w)
+			(iff (and (AR w)(p_2_aa w z))
+				(and (p_2_aa w x)(not(ov_2_aa w y)))))))
+
+/*formula
+(forall([aR(X), aR(Y), aR(Z)], p_2_aa(X, X)), reflexivity_23).*/
+(forall (x y z)
+	(and (AR x)(p_2_aa x x)))
+
+/*formula
+(forall
+ ([aR(X), aR(Y), aR(Z)], implies
+                         (and(p_2_aa(X, Y), p_2_aa(Y, X)), equal(X, Y))),
+ antisymmetry_22).*/
+(forall (x y)
+	(if (and (AR x)(AR y)(p_2_aa x y)(p_2_aa y x))
+		(= x y)))
+
+/*formula
+(forall
+ ([aR(X), aR(Y), aR(Z)], implies
+                         (and(p_2_aa(X, Y), p_2_aa(Y, Z)), p_2_aa(X, Z))),
+ transitivity_24).*/
+(forall (x y z)
+	(if (and (p_2_aa x y)(p_2_aa y z)(AR x)(AR y)(AR z))
+		(p_2_aa x z)))
+
+/*formula
+(forall
+ ([s(X), s(Y)], implies
+                (not(p_2(X, Y)), exists([s(Z)], dif_3(Z, X, Y)))),
+ Extensionality+existence of the difference_20).*/
+(forall (x y)
+	(if (and (S x)(S y)(not(p_2 x y)))
+		(exists (z)
+			(and (S z)(dif_3 z x y)))))
+
+/*formula
+(forall([s(X), s(Y)], exists([s(Z)], x_Sum_3(Z, X, Y))),
+ Existence of the sum_19).*/
+(forall (x y)
+	(exists (z)
+		(and (S x)(S y)(S z)(x_Sum_3 z x y))))
+
+/*formula
+(forall
+ ([s(X), s(Y)], equiv(pP_2(X, Y), and(p_2(X, Y), not(p_2(Y, X))))),
+ Dd14_15).*/
+(forall (x y)
+	(and (S x)(S y)
+		(iff (pP_2 x y)
+			(and (p_2 x y)(not(p_2 y x))))))
+
+/*formula
+(forall
+ ([s(X), s(Y)], equiv
+                (ov_2(X, Y), exists([s(Z)], and(p_2(Z, X), p_2(Z, Y))))),
+ Dd15_16).*/
+(forall (x y)
+	(and (S x)(S y)
+		(iff (ov_2 x y)
+			(exists (z)
+				(and (S z)(P_2 z x)(P_2 z y))))))
+
+/*formula
+(forall([s(X)], equiv(at_1(X), not(exists([s(Y)], pP_2(Y, X))))),
+ Dd16_17).*/
+(forall (x)
+	(iff (and (S x)(at_1 x))
+		(not(exists (y)
+			(and (S y)(pP_2 y x))))))
+
+formula
+(forall([s(X), s(Y)], equiv(atP_2(X, Y), and(p_2(X, Y), at_1(X)))),
+ Dd17_18).
+
+/*formula
+(forall
+ ([s(Z), s(X), s(Y)], equiv
+                      (x_Sum_3(Z, X, Y),
+                       forall
+                       ([s(W)], equiv
+                                (ov_2(W, Z), or(ov_2(W, X), ov_2(W, Y)))))),
+ Ax5_13).*/
+(forall (x y z)
+	(iff (and (S x)(S y)(S z)(x_sum_3 z x y))
+		(forall (w)
+			(iff (and(ov_2 w z)(S w))
+				(or(ov_2 w x)(ov_2 w y))))))
+
+/*formula
+(forall
+ ([s(Z), s(X), s(Y)], equiv
+                      (dif_3(Z, X, Y),
+                       forall
+                       ([s(W)], equiv
+                                (p_2(W, Z), and(p_2(W, X), not(ov_2(W, Y))))))),
+ Ax6_14).*/
+(forall (x y z)
+	(iff (and (S x)(S y)(S z)(dif_3 z x y))
+		(forall (w)
+			(iff (and (p_2 w z)(S w))
+				(and (p_2 w x)(not(ov_2 w y)))))))
+
+/*formula(forall([s(X), s(Y), s(Z)], p_2(X, X)), reflexivity_22).*/
+(forall (x y z)
+	(and (S x)(p_2 x x)))
+
+/*formula
+(forall
+ ([s(X), s(Y), s(Z)], implies
+                      (and(p_2(X, Y), p_2(Y, X)), equal(X, Y))),
+ antisymmetry_21).*/
+(forall (x y)
+	(if (and (S x)(S y)(p_2 x y)(p_2 y x))
+		(= x y)))
+
+/*formula
+(forall
+ ([s(X), s(Y), s(Z)], implies
+                      (and(p_2(X, Y), p_2(Y, Z)), p_2(X, Z))),
+ transitivity_23).*/
+(forall (x y z)
+	(if (and (S x)(S y)(S z)(p_2 x y)(p_2 y z))
+		(p_2 x z)))
+
+
+/*formula
+(forall
+ ([pD(X), pD(Y)], implies
+                  (not(p_2_pp(X, Y)), exists([pD(Z)], dif_3_ppp(Z, X, Y)))),
+ Extensionality+existence of the difference_31).*/
+(forall (x y)
+	(if (and (PD x)(PD y)(not(p_2_pp x y)))
+		(exists (z)
+			(and (PD z)(dif_3_ppp z x y)))))
+
+
+/*formula
+(forall([pD(X), pD(Y)], exists([pD(Z)], x_Sum_3_ppp(Z, X, Y))),
+ Existence of the sum_30).*/
+(forall (x y)
+	(exists (z)
+		(and (PD x)(PD y)(PD z)(x_Sum_3ppp z x y))))
+
+/*formula
+(forall
+ ([pD(X), pD(Y)], equiv
+                  (pP_2_pp(X, Y), and(p_2_pp(X, Y), not(p_2_pp(Y, X))))),
+ Dd14_26).*/
+(forall (x y)
+	(iff (and (pP_2_pp x y)(PD x)(PD y))
+		(and (p_2_pp x y)(not(p_2_pp y x)))))
+
+/*formula
+(forall
+ ([pD(X), pD(Y)], equiv
+                  (ov_2_pp(X, Y),
+                   exists([pD(Z)], and(p_2_pp(Z, X), p_2_pp(Z, Y))))),
+ Dd15_27).*/
+(forall (x y)
+	(iff (and (ov_2_pp x y)(PD x)(PD y))
+		(exists (z) (and (PD z)(p_2_pp z x)(p_2_pp z y)))))
+
+/*formula
+(forall
+ ([pD(X)], equiv(at_1_p(X), not(exists([pD(Y)], pP_2_pp(Y, X))))),
+ Dd16_28).*/
+(forall (x)
+	(iff (and (PD x)(at_1_p x))
+		(not(exists (y)
+			(and (PD y)(pP_2_pp y x))))))
+
+/*formula
+(forall
+ ([pD(X), pD(Y)], equiv
+                  (atP_2_pp(X, Y), and(p_2_pp(X, Y), at_1_p(X)))),
+ Dd17_29).*/
+(forall (x y)
+	(iff (and (PD x)(PD y)(atP_2_pp x y))
+		(and (p_2_pp x y)(at_1_p x))))
+
+/*formula
+(forall
+ ([pD(Z), pD(X), pD(Y)], equiv
+                         (x_Sum_3_ppp(Z, X, Y),
+                          forall
+                          ([pD(W)], equiv
+                                    (ov_2_pp(W, Z),
+                                     or(ov_2_pp(W, X), ov_2_pp(W, Y)))))),
+ Ax5_24).*/
+(forall (x y z)
+	(iff (and (PD x)(PD y)(PD z)(x_sum_3_ppp z x y))
+		(forall (w)
+			(iff (and(ov_2_pp w z)(PD w))
+				(or(ov_2_pp w x)(ov_2_pp w y))))))
+
+/*formula
+(forall
+ ([pD(Z), pD(X), pD(Y)], equiv
+                         (dif_3_ppp(Z, X, Y),
+                          forall
+                          ([pD(W)], equiv
+                                    (p_2_pp(W, Z),
+                                     and(p_2_pp(W, X), not(ov_2_pp(W, Y))))))),
+ Ax6_25).*/
+(forall (x y z)
+	(iff (and (PD x)(PD y)(PD z)(dif_3_ppp z x y))
+		(forall (w)
+			(iff
+				(and(p_2_pp w z)(PD w))
+				(not (ov_2_pp w y))))))
+
+/*formula
+(forall([pD(X), pD(Y), pD(Z)], p_2_pp(X, X)), reflexivity_33).*/
+(forall (x)
+	(and (p_2_pp x x)(PD x))
+
+
+/*formula
+(forall
+ ([pD(X), pD(Y), pD(Z)], implies
+                         (and(p_2_pp(X, Y), p_2_pp(Y, X)), equal(X, Y))),
+ antisymmetry_32).*/
+(forall (x y z)
+	(if (and (p_2_pp x y)(p_2_pp y x)(PD x)(PD y))
+		(= x y)))
+
+/*formula
+ * (forall
+ ([pD(X), pD(Y), pD(Z)], implies
+                         (and(p_2_pp(X, Y), p_2_pp(Y, Z)), p_2_pp(X, Z))),
+ transitivity_34).*/
+(forall (x y z)
+	(if (and (p_2_pp x y)(p_2_pp y z)(PD x)(PD y)(PD z))
+		(p_2_pp x z)))
+
+)
