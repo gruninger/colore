@@ -1,0 +1,198 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger, Carmen Chui
+ *******************************************************************************/
+ 
+(cl-text dolce_present
+
+(cl-comment "DOLCE axioms from 4.3.8 Being Present")
+
+(cl-comment "Td15 to Td18")
+
+/*
+ * 4.2.4 BEING PRESENT DEFINITION
+ */
+ 
+(cl-comment "Dd40 - Being Present at t")
+(forall (x t)
+	(iff (PRE x t)
+		(exists t1
+			(and (ql_t t1 x)(P t t1)))))
+
+(cl-comment "Dd41 - Being Present in s at t")
+(forall (x s t)
+	(iff (PRE x s t)
+		(and (PRE x t)
+			(exists s1
+				(and (ql_s s1 x t)(P s s1))))))
+
+(cl-comment "Dd41 - Being Present in s at t - Expanded with PRE(x,y) definition")
+(forall (x s t)
+	(iff (PRE x s t)
+		(and (exists t1
+				(and (ql_t t1 x)(P t t1)))
+			(exists s1
+				(and (ql_s s1 x t)(P s s1))))))
+ 
+/*
+ * Section 4.3.8 Being Present - WITHOUT EXPANSION
+ * 
+ * Argument Restrictions
+ */
+(cl-comment "Argument Restrictions")
+
+(cl-comment "Td15")
+(forall (x)
+	(if (or (ED x)(PD x)(Q x))
+		(exists (t)
+			(PRE x t))))
+
+(cl-comment "Td16")
+(forall (x t)
+	(if (and (or (PED x)(PQ x))
+		(PRE x t))
+		(exists (s)
+			(PRE s x t))))
+
+(cl-comment "Ground Axioms")
+
+(cl-comment "Td17")
+(forall (x t t1)
+	(if (and (PRE x t)(P t1 t))
+		(PRE x t1)))
+
+(cl-comment "Td18")
+(forall (s x t)
+	(if (PRE s x t)
+		(PRE x t)))
+
+/*
+ * Section 4.3.8 Being Present - EXPANDED WITH DEFINITIONS FROM 4.2.4
+ * 
+ * Argument Restrictions
+ */
+
+(cl-comment "Argument Restrictions")
+
+(cl-comment "Td15")
+(forall (x)
+	(if (or (ED x)(PD x)(Q x))
+		(exists (t)
+			(exists t1
+				(and (ql_t t1 x)(P t t1))))))
+			
+(cl-comment "Td16")
+(forall (x t)
+	(if (and (or (PED x)(PQ x))
+		(exists t1
+			(and (ql_t t1 x)(P t t1))))
+		(exists (s)
+			(and (exists t1
+				(and (ql_t t1 x)(P t t1)))
+			(exists s1
+				(and (ql_s(s1 x t))(P s s1)))))))
+
+(cl-comment "Ground Axioms")
+
+(cl-comment "Td17")
+(forall (x t t1)
+	(if (and (exists t1
+			(and (ql_t t1 x)(P t t1)))(P t1 t))
+		(exists t2
+			(and (ql_t t2 x)(P t1 t2)))))
+
+(cl-comment "Td18")
+(forall (s x t)
+	(if (and (exists t1
+				(and (ql_t t1 x)(P t t1)))
+			(exists s1
+				(and (ql_s(s1 x t))(P s s1))))
+		(exists t1
+			(and (ql_t t1 x)(P t t1)))))
+
+/*
+ * ASIDE
+ * 4.2.3 TEMPORAL AND SPATIAL QUALE DEFINITIONS
+ */
+(cl-comment "Dd30 - ql_t_pd")
+(forall (x t)
+	(iff (ql_t_pd t x)
+		(and (PD x)
+			(exists (z)
+				(and (qt TL z x)(ql t z))))))
+
+/*
+ * Check the typo? In KIF version,
+ *  '=' exists between t and sigma t.
+ */
+(cl-comment "Dd31 - ql_t_ed")
+(forall (x t t1)
+	(iff (ql_t_ed t x)
+		(and (ED x)
+			(= t (sigma_t1 (exists (y)
+				(PC x y t1)))))))
+
+(cl-comment "Dd32 - ql_t_tq")
+(forall (x t)
+	(iff (ql_t_tq t x)
+		(and (TQ x)
+			(exists (z)
+				(and (qt x z)(ql_t_pd t z))))))
+
+(cl-comment "Dd33 - ql_t_pqaq")
+(forall (x t)
+	(iff (ql_t_pqaq t x)
+		(and (or (PQ x)(AQ x))
+			(exists (z)
+				(and (qt x z)(ql_t_ed t z))))))
+
+(cl-comment "Dd34 - ql_t_q")
+(forall (x t)
+	(iff (ql_t_q t x)
+		(or (ql_t_tq t x)(ql_t_pqaq t x))))
+		
+(cl-comment "Dd35 - Temporal Quale - ql_t")
+(forall (x t)
+	(iff (ql_t t x)
+		(or (ql_t_ed t x)(ql_t_pd t x)(ql_t_q t x))))
+
+(cl-comment "Dd36 - Temporal Quale - ql_s_ped")
+(forall (s x t)
+	(iff (ql_s_ped s x t)
+		(and (PED x)(exists (z)
+			(and (qt SL z x)(ql s z t))))))
+
+(cl-comment "Dd37 - ql_s_pq")
+(forall (s x t)
+	(iff (ql_s_pq s x t)
+		(and (PQ x)
+			(exists (z)
+				(and (qt x z)(ql_s_ped s z t))))))
+
+(cl-comment "Dd38 - ql_s_pd")
+(forall (s x t)
+	(iff (ql_s_pd s x t)
+		(and (PD x)
+			(exists (z)
+				(and (mppc z x)(ql_s_ped s z t))))))
+
+(cl-comment "Dd39 - Spatial Quale - ql_s")
+(forall (s x t)
+	(iff (ql_s s x t)
+		(or (ql_s_ped s z t)(ql_s_pq s x t)(ql_s_pd s x t))))
+
+/*
+ * ASIDE
+ * 4.2.7 PARTICIPATION DEFINITION FOR mppc (Dd67)
+ */
+ (cl-comment "Dd67 - Maximal Physical Participant")
+ (forall (x y)
+ 	(iff (mppc x y)
+ 		(= x (sigma_t_z (PC_T y z)))))
+ 
+)
