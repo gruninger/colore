@@ -1,0 +1,89 @@
+% psl_core.in
+
+%The before relation only holds between timepoints.
+
+(all t1 all t2 (before(t1,t2) -> (timepoint(t1) & timepoint(t2)))).
+
+%The before relation is a total ordering.
+
+(all t1 all t2 ((timepoint(t1) & timepoint(t2)) -> ((t1=t2) | before(t1,t2) | before(t2,t1)))).
+
+%The before relation is irreflexive.
+
+(all t1 (-before(t1,t1))).
+
+%The before relation is transitive.
+
+(all t1 all t2 all t3 ((before(t1,t2) & before(t2,t3)) -> before(t1,t3))).
+
+%The timepoint inf- (infneg) is before all other timepoints.
+
+(all t ((timepoint(t) & (-(t=infneg))) -> before(infneg,t))).
+
+%Every other timepoint is before inf+ (infpos).
+
+(all t ((timepoint(t) & (-(t=infpos))) -> before(t,infpos))).
+
+%Given any timepoint t other than inf-, there is a timepoint between inf- and t.
+
+(all t ((timepoint(t) & (-(t=infneg))) -> (exists u (between(infneg,u,t))))).
+
+%Given any timepoint t other than inf+, there is a timepoint between t and inf+.
+
+(all t ((timepoint(t) & (-(t=infpos))) -> (exists u (between(t,u,infpos))))).
+
+%Everything is either an activity, activity occurrence, timepoint, or object.
+
+(all x (activity(x) | activity_occurrence(x) | timepoint(x) | object(x))).
+
+%Objects, activities, activity occurrences, and timepoints are all distinct kinds of things.
+
+(all x (activity(x) -> ((-(activity_occurrence(x) | object(x) | timepoint(x))) & (activity_occurrence(x) -> (-(object(x) | timepoint(x)))) & (object(x) -> (-(timepoint(x))))))).
+
+%The occurrence relation only holds between activities and activity occurrences.
+
+(all a all occ (occurrence_of(occ,a) -> (activity(a) & activity_occurrence(occ)))).
+
+%Every activity occurrence is the occurrence of some activity.
+
+(all occ (activity_occurrence(occ) -> (exists a (activity(a) & occurrence_of(occ,a))))).
+
+%An activity occurrence is associated with a unique activity.
+
+(all occ all a1 all a2 ((occurrence_of(occ,a1) & occurrence_of(occ,a2)) -> (a1=a2))).
+
+%The begin and end of an activity occurrence or object are timepoints.
+
+(all a all x ((occurrence_of(x,a) | object(x)) -> (timepoint(beginof(x)) & timepoint(endof(x))))).
+
+%The begin point of every activity occurrence or object is before or equal to its end point.
+
+(all x ((activity_occurrence(x) | object(x)) -> (beforeEq(beginof(x),endof(x))))).
+
+%The participates_in relation only holds between objects, activity occurrences, and timepoints, respectively.
+
+(all x all occ all t (participates_in(x,occ,t) -> (object(x) & activity_occurrence(occ) & timepoint(t)))).
+
+%An object can participate in an activity occurrence only at those timepoints at which both the object exists and the activity is occurring.
+
+(all x all occ all t (participates_in(x,occ,t) -> (exists_at(x,t) & is_occurring_at(occ,t)))).
+
+%Timepoint t2 is between timepoints t1 and t3 if and only if t1 is before t2 and t2 is before t3.
+
+(all t1 all t2 all t3 (between(t1,t2,t3) <-> (before(t1,t2) & before(t2,t3)))).
+
+%Timepoint t1 is beforeEq timepoint t2 if and only if t1 is before or equal to t2.
+
+(all t1 all t2 (beforeEq(t1,t2) <-> (timepoint(t1) & timepoint(t2) & (before(t1,t2) | (t1=t2))))).
+
+%Timepoint t2 is betweenEq timepoints t1 and t3 if and only if t1 is before or equal to t2, and t2 is before or equal to t3.
+
+(all t1 all t2 all t3 (betweenEq(t1,t2,t3) <-> (beforeEq(t1,t2) & beforeEq(t2,t3)))).
+
+%An object exists at a timepoint t if and only if t is betweenEq its begin and end points.
+
+(all x all t (exists_at(x,t) <-> (object(x) & betweenEq(beginof(x),t,endof(x))))).
+
+%An activity is occurring at a timepoint t if and only if t is betweenEq the begin and end points of the activity occurrence.
+
+(all occ all t (is_occurring_at(occ,t) <-> (betweenEq(beginof(occ),t,endof(occ))))).
