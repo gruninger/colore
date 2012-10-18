@@ -10,24 +10,25 @@
  
 (cl-text dolce_time_mereology
 
-(cl-comment "DOLCE's time mereology.")
+(cl-comment "Source: Michael Gruninger, Carmen Chui.")
+(cl-comment "Comment: DOLCE's time mereology based off the original DOLCE mereology - argument restrictions (time intervals) have been placed on the sorts.")
+
+(cl-comment "Import the DOLCE taxonomy.")
+(cl-imports dolce_taxonomy)
 
 (cl-comment "Argument Restrictions")
 
 (cl-comment "Ad1")
-
 (forall (x y)
 	(if	(P x y)
 		(and	((timeinterval y)(timeinterval y)))))
 
 (cl-comment "Ad2")
-
 (forall (x y)
 	(if ((P x y)
 		(iff (timeinterval x) (timeinterval y)))))
 
-(cl-comment "Ad4")
-/* to remove? */
+(cl-comment "Ad4")//to remove?
 (forall (x y)
 	(if (and (P x y)(SB R phi)(X phi))
 		(iff (phi x)(phi y))))
@@ -47,10 +48,7 @@
 	(if (and (P x y)(X AR)
 			(if (AR x)(R x)))
 		(iff (AR x)(AR y))))
-		
-/*
- * Ground Axioms
- */
+
 (cl-comment "Ground Axioms")
 
 (cl-comment "Ad5")
@@ -95,9 +93,6 @@
 		(and (Sum k x y)
 				(and (timeinterval x)(timeinterval y)))))
 
-/*
- * BINARY SUM
- */
 (cl-comment "Binary Sum")
 (forall (x y z)
 	(iff (Sum z x y)
@@ -105,9 +100,6 @@
 			(iff (O w z)
 				(or (O w x)(O w y))))))
 
-/*
- * BINARY DIFFERENCE
- */
 (cl-comment "Binary Difference")
 (forall (x y z)
 	(iff (Dif z x y)
@@ -115,9 +107,7 @@
 			(iff (P w z)
 				(and (P w x)(not (O w y)))))))
 
-/*
- * Additional Axioms for extensionality, existence of the difference and sum
- */
+(cl-comment "Additional Axioms for extensionality, existence of the difference and sum")
 (forall (x y)
 	(if (not(P x y))
 		(exists (z)(Dif z x y))))
@@ -125,24 +115,17 @@
 (forall (x y)
 	(exists (z)(Sum z x y)))
 
-/*
- * Implied parts of sum
- */
+(cl-comment "Implied parts of sum")
 (forall (x y z)
 	(if (Sum z x y)
 		(and (P x z)(P y z))))
 
-/*
- * Implied proper parts of sum
- */
+(cl-comment "Implied proper parts of sum")
 (forall (x y z)
 	(if (and (not(P x y))(Sum z x y))
 		(PP y z)))
 
-/*
- * ARGUMENT RESTRICTIONS FOR EXTENDING DOLCE MEREOLOGY TO 
- * MEREOLOGY SUBTHEORIES IN COLORE
- */
+(cl-comment "ARGUMENT RESTRICTIONS FOR EXTENDING DOLCE MEREOLOGY TO MEREOLOGY SUBTHEORIES IN COLORE")
 (cl-comment "ptype")
 (forall (x)
 	(iff (ptype x)
@@ -155,6 +138,5 @@
 			(forall (v)
 				(iff (overlaps v z)
 					(or (overlaps v x)(overlaps v y)))))))
-
 
 )

@@ -10,18 +10,16 @@
  
 (cl-text dolce_mereology
 
-(cl-comment "DOLCE axioms from 4.3.1 Parthood")
+(cl-comment "Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).")
+(cl-comment "Comment: DOLCE axioms from 4.3.1 Parthood")
 (cl-comment "We shall adopt for the atemporal parthood the axioms of atomic General Extensional
 Mereology (GEM), and the classical definitions of overlap, proper part, atom, etc.")
+
+(cl-comment "Import the DOLCE taxonomy.")
+(cl-imports dolce_taxonomy)
+
 (cl-comment "Ad1 to Ad9")
 
-/*
- * Section 4.3.1 - Parthood
- * We shall adopt for the atemporal parthood the axioms of atomic General Extensional 
- * Mereology (GEM), and the classical definitions of overlap, proper part, atom, etc.
- * 
- * Argument Restrictions
- */
 (cl-comment "Argument Restrictions")
 
 (cl-comment "Ad1")
@@ -66,9 +64,6 @@ Mereology (GEM), and the classical definitions of overlap, proper part, atom, et
 			(if (AR x)(R x)))
 		(iff (AR x)(AR y))))
 		
-/*
- * Ground Axioms
- */
 (cl-comment "Ground Axioms")
 
 (cl-comment "Ad5")
@@ -91,7 +86,6 @@ Mereology (GEM), and the classical definitions of overlap, proper part, atom, et
 	(if	(and	(P x y)
 				(P y z))
 		(P x z)))
-
 
 (cl-comment "Ad8")
 
@@ -116,9 +110,6 @@ Mereology (GEM), and the classical definitions of overlap, proper part, atom, et
 				(or (and (AB x)(AB y))
 					(and (PD x)(PD y))))))
 
-/*
- * BINARY SUM
- */
 (cl-comment "Binary Sum")
 (forall (x y z)
 	(iff (Sum z x y)
@@ -126,9 +117,6 @@ Mereology (GEM), and the classical definitions of overlap, proper part, atom, et
 			(iff (O w z)
 				(or (O w x)(O w y))))))
 
-/*
- * BINARY DIFFERENCE
- */
 (cl-comment "Binary Difference")
 (forall (x y z)
 	(iff (Dif z x y)
@@ -136,9 +124,7 @@ Mereology (GEM), and the classical definitions of overlap, proper part, atom, et
 			(iff (P w z)
 				(and (P w x)(not (O w y)))))))
 
-/*
- * Additional Axioms for extensionality, existence of the difference and sum
- */
+(cl-comment "Additional Axioms for extensionality, existence of the difference and sum.")
 (forall (x y)
 	(if (not(P x y))
 		(exists (z)(Dif z x y))))
@@ -146,24 +132,17 @@ Mereology (GEM), and the classical definitions of overlap, proper part, atom, et
 (forall (x y)
 	(exists (z)(Sum z x y)))
 
-/*
- * Implied parts of sum
- */
+(cl-comment "Implied parts of sum.")
 (forall (x y z)
 	(if (Sum z x y)
 		(and (P x z)(P y z))))
 
-/*
- * Implied proper parts of sum
- */
+(cl-comment "Implied proper parts of sum")
 (forall (x y z)
 	(if (and (not(P x y))(Sum z x y))
 		(PP y z)))
 
-/*
- * ARGUMENT RESTRICTIONS FOR EXTENDING DOLCE MEREOLOGY TO 
- * MEREOLOGY SUBTHEORIES IN COLORE
- */
+(cl-comment "ARGUMENT RESTRICTIONS FOR EXTENDING DOLCE MEREOLOGY TO MEREOLOGY SUBTHEORIES IN COLORE")
 (cl-comment "ptype")
 (forall (x)
 	(iff (ptype x)
