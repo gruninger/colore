@@ -1,0 +1,155 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger, Carmen Chui
+ *******************************************************************************/
+ 
+(cl-text dolce_temporary_parthood
+
+(cl-comment "Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).")
+(cl-comment "Comment: DOLCE axioms from 4.3.2 Temporary Parthood")
+(cl-comment "We drop antisymmetry and we slightly modify the axioms for P by introducing the infinite
+sum defined in (D27).")
+
+(cl-comment "Import the DOLCE taxonomy.")
+(cl-imports dolce_taxonomy)
+
+(cl-comment "A10 to Ad19")
+
+(cl-comment "Section 4.3.2 - Temporary Parthood")
+(cl-comment "Argument Restrictions")
+
+(cl-comment "Ad10")
+
+(forall (x y t)
+	(if	(tP x y t)
+		(and	(ED x)
+				(ED y)
+				(T t))))
+				
+(cl-comment "Ad11")
+
+(forall (x y t)
+	(if	(tP x y t)
+		(iff	(PED x)
+				(PED y))))
+
+(cl-comment "Ad12")
+
+(forall (x y t)
+	(if	(tP x y t)
+		(iff	(NPED x)
+				(NPED y))))
+				
+(cl-comment "Ground Axioms")
+
+(cl-comment "Ad13")
+(forall (x y z t)
+	(if (and (tP x y t) (tP y z t))
+		(tP x z t)))
+
+(cl-comment "Ad14")
+(forall (x y z t)
+	(if	(and	(ED x)
+				(ED y)
+				(PRE x t)
+				(PRE y t)
+				(not (tP x y t)))
+		(exists (z)
+			(and	(tP z x t)
+					(not(O z y t))))))
+
+(cl-comment "Ad15 - original DOLCE axiom")
+(if (or (and (exists x (phi x))
+			(if (forall (x)(phi x))
+					(ED x))))
+	(exists k (= k sigma_te_x_phi x)))
+
+(cl-comment "Ad15 - edited with argument restrictions and binary sum")
+(forall (x y)
+	(exists (k)
+		(and (Sum k x y)
+				(ED x)(ED y))))
+
+(cl-comment "Links With Other Primitives")
+
+(cl-comment "Ad16")
+(forall (x t)
+	(if	(and	(ED x)
+				(PRE x t))
+		(tP x x t)))
+		
+(cl-comment "Ad17")
+(forall (x y t)
+	(if	(tP x y t)
+		(and (PRE x t) (PRE y t))))
+
+(cl-comment "Ad18")
+(forall (x y t1)
+	(if (tP x y t1)
+		(forall (t2)
+			(if (tP t2 t1)
+				(tP x y t2)))))
+
+(cl-comment "Ad19 - IGNORE FOR NOW")
+(forall (x y t)
+	(if (and (PED x)(tP x y t))
+		(x_subeq_S y t)))
+
+(cl-comment "By substituting in the \texttt{Dd44} definition for temporary spatial inclusion, the axiom can be rewritten as:")
+(cl-comment "Ad19 - expanded")
+(forall (x y t)
+	(if (and (PED x)(tP x y t))
+		(exists (s s1)
+			(and (ql_s s x t)(ql_s s1 y t)(tP s s1)))))
+
+(cl-comment "Temporary Binary Sum")
+(forall (x y z)
+	(iff (tSum z x y)
+		(forall (w t)
+			(iff (O w z t)
+				(or (O w x t)(O w y t))))))
+
+(cl-comment "Temporary Binary Difference")
+(forall (x y z)
+	(iff (tDif z x y)
+		(forall (w t)
+			(iff (tP w z t)
+				(and (tP w x t)(not (O w y t)))))))
+
+(cl-comment "Additional Axioms for extensionality, existence of the difference and sum.")
+(forall (x y t t1 t2)
+	(exists (z)(tSum z x y)))
+
+(forall (x y t t1 t2)
+	(if (forall (t) (not (tP x y t)))
+		(exists (z) (tDif z x y))))
+
+(forall (x y t t1 t2)
+	(if (and (PRE x t1)(PRE x t2)(Sum t t1 t2))
+		(PRE x t)))
+
+(forall (x y t)
+	(if (not (forall (x y z t))
+			(and (PRE x t)(Sum z x y)))
+			(tP x z t)))
+
+(cl-comment "ARGUMENT RESTRICTIONS FOR EXTENDING DOLCE MEREOLOGY TO MEREOLOGY SUBTHEORIES IN COLORE")
+(cl-comment "ptype")
+(forall (x)
+	(iff (ptype x)
+		(or (AB x)(PD x))))
+
+(cl-comment "Sum")
+(forall (x y)
+	(if (and (underlaps x y)(ptype x)(ptype y))
+		(exists (z)
+			(forall (v)
+				(iff (overlaps v z)
+					(or (overlaps v x)(overlaps v y)))))))
+
+)
