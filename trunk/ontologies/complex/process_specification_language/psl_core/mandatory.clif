@@ -20,12 +20,12 @@
 		(exists (o t)
 			(participatesin x o t))))
 
-(cl-comment "Source: psl_core.in in COLORE.")
+(cl-comment "Source: psl_core")
 (cl-comment "Comment: ALL of the axioms below are from psl_core.  We have removed between and before relations.")
 
+(cl-comment "Source: psl_core")
 (cl-comment "Objects, activities, activity occurrences, and timepoints are all
 distinct kinds of things.")
-
 (forall (x)
 	(and (if (activity x)
 		(not (or (activity_occurrence x) (object x) (timepoint x))))
@@ -34,58 +34,58 @@ distinct kinds of things.")
 		(if (object x)
 			(not (timepoint x)))))
 
+(cl-comment "Source: psl_core")
 (cl-comment "The occurrence relation only holds between activities and
 activity occurrences.")
-
 (forall (a occ)
 	(if (occurrence_of occ a)
 		(and (activity a)
 			(activity_occurrence occ))))
 
+(cl-comment "Source: psl_core")
 (cl-comment "Every activity occurrence is the occurrence of some activity.")
-
 (forall (occ)
 	(if (activity_occurrence occ)
 		(exists (a)
 			(and (activity a)
 				(occurrence_of occ a)))))
 
+(cl-comment "Source: psl_core")
 (cl-comment "An activity occurrence is associated with a unique activity.")
-
 (forall (occ a1 a2)
 	(if (and (occurrence_of occ a1)
 		(occurrence_of occ a2))
 		(= a1 a2)))
 
+(cl-comment "Source: psl_core")
 (cl-comment "The begin and end of an activity occurrence or object are timepoints.")
-
 (forall (a x)
 	(if (or (occurrence_of x a)
 		(object x))
 		(and (timepoint (beginof x))
 			(timepoint (endof x)))))
 
+(cl-comment "Source: psl_core")
 (cl-comment "The begin point of every activity occurrence or object is
 before or equal to its end point.")
-
 (forall (x)
 	(if (or (activity_occurrence x)
 		(object x))
 		(beforeEq (beginof x) (endof x))))
 
+(cl-comment "Source: psl_core")
 (cl-comment "The participates_in relation only holds between objects,
 activity occurrences, and timepoints, respectively.")
-
 (forall (x occ t)
 	(if (participates_in x occ t)
 		(and (object x)
 			(activity_occurrence occ)
 			(timepoint t))))
 
+(cl-comment "Source: psl_core")
 (cl-comment "An object can participate in an activity
 occurrence only at those timepoints at which both the object exists and
 the activity is occurring.")
-
 (forall (x occ t)
 	(if (participates_in x occ t)
 		(and (exists_at x t)
@@ -93,33 +93,33 @@ the activity is occurring.")
 
 (cl-comment "Definition of between has been removed.")
 
+(cl-comment "Source: psl_core")
 (cl-comment "Timepoint t1 is beforeEq timepoint t2 if and only if t1 is before or equal
 to t2.")
-
 (forall (t1 t2)
 	(iff (beforeEq t1 t2)
 		(and (timepoint t1) (timepoint t2)
 			(or (before t1 t2) (= t1 t2)))))
 
+(cl-comment "Source: psl_core")
 (cl-comment "Timepoint t2 is betweenEq timepoints t1 and t3 if and only if
 t1 is before or equal to t2, and t2 is before or equal to t3.")
-
 (forall (t1 t2 t3)
 	(iff (betweenEq t1 t2 t3)
 		(and (beforeEq t1 t2)
 			(beforeEq t2 t3))))
 
+(cl-comment "Source: psl_core")
 (cl-comment "An object exists at a timepoint t if and only if t is betweenEq its begin
 and end points.")
-
 (forall (x t)
 	(iff (exists_at x t)
 		(and (object x)
 			(betweenEq (beginof x) t (endof x)))))
 
+(cl-comment "Source: psl_core")
 (cl-comment "An activity is occurring at a timepoint t if and only if t
 is betweenEq the begin and end points of the activity occurrence.")
-
 (forall (occ t)
 	(iff (is_occurring_at occ t)
 		(betweenEq (beginof occ) t (endof occ))))
