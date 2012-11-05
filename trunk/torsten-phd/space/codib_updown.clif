@@ -1,0 +1,137 @@
+(cl-text space/codib_updown
+
+(cl-comment 'CODI with downwards closure and a ternary sum relation (not forcing the existence of sums)')
+
+(cl-comment "Sum-A0prime")
+
+(forall (x y z v)
+	(if
+		(and
+			(TSum x y z)
+			(TSum x y v)
+		)
+		(and
+			(S x)
+			(S y)
+			(S z)
+			(= v z)
+		)
+	)
+)
+
+(cl-comment "Sum-A1prime: sum is commutative")
+
+(forall (x y z)
+	(if
+		(TSum x y z)
+		(TSum y x z)
+	)
+)
+
+
+(cl-comment "Sum-A2prime: sum of entities of different dimensions")
+
+(forall (x y)
+	(if
+		(< x y)
+		(TSum x y y)
+	)
+)
+
+
+(cl-comment "Sum-A3prime: every part of y is a part of z=x+y if x<=y")
+
+(forall (x y z v)
+	(if
+		(and
+			(TSum x y z)
+			(<= x y)
+			(Cont v y)
+		)
+		(Cont v z)
+	)
+)
+
+
+(cl-comment "Sum-A4prime: everything contained in the sum has a part contained in x or contained in y")
+
+(forall (x y z v)
+	(if
+		(and
+			(TSum x y z)
+			(Cont v z)
+			(not (Cont v x))
+		)
+		(Cont (difference v x) y)
+	)
+)
+
+
+(cl-comment "Sum-A5prime")
+
+(forall (x y z)
+	(if
+		(and
+			(S z)
+			(EqDim x y)
+			(forall (v)
+				(iff
+					(PO v z)
+					(or
+						(PO v x)
+						(PO v y)
+					)
+				)
+			)
+		)
+		(TSum x y z)
+	)
+)
+		
+
+
+(cl-comment "Sum-A6prime: forcing the existence of sums of equidimensional entities that only meet in boundary of minimal parts")
+
+(forall (x y)
+	(if
+		(and
+			(EqDim x y)
+			(forall (z)
+				(if
+					(and
+						(Cont z x)
+						(Cont z y)
+						(Min z)
+					)
+					(exists (u v)
+						(and
+							(P u x)
+							(P v y)
+							(BCont z u)
+							(BCont z v)
+						)
+					)
+				)
+			)
+		)
+		(exists (z)
+			(TSum x y z)
+		)
+	)
+)
+
+
+(cl-comment 'U-A1: everything is contained in a universal entity')
+
+(forall (x)
+	(if 
+		(and
+			(S x)
+			(not (ZEX x))
+		)
+		(Cont x Uni)
+	)
+)
+
+
+)

@@ -1,0 +1,23 @@
+% Automatically generated from CL/KIF
+formulas(sos).
+% Module codib/codi_bcont
+%imports("codi/codi").
+%imports("codi/defs/min_max_in_dim").
+%imports("codi/defs/po").
+%imports("codi/defs/inc").
+%imports("codi/defs/sc").
+%imports("codi/theorems/po_theorems").
+%imports("codi/theorems/inc_theorems").
+%imports("codi/theorems/sc_theorems").
+% 'BC-A1: entities in the boundary are at least of a dimension lower than the bounded entity'
+ all x all y ((BCont(x, y) -> Cont(x, y) & Inc(x, y))).
+% 'BC-A2: if z is contained in two superficially connected entities x and y embedded in an entity v of the dimension of x, that is x has locally a codimension of zero, then z is contained in the boundary of x'
+ all x all y all v all z ((SC(x, y) & Min(x) & P(x, v) & Cont(y, v) & Cont(z, x) & Cont(z, y) -> BCont(z, x))).
+% 'BC-A3: any z contained in two superficially connected parts x and y of v that is exactly of one dimension lower than v is not in the boundary of v'
+ all x all y all z all v ((SC(x, y) & P(x, v) & P(y, v) & Cont(z, x) & Cont(z, y) & Covers(v, z) -> -(BCont(z, v)))).
+% 'BC-A4'
+ all x all y all z ((BCont(x, y) & P(y, z) &  all v all w ((P(v, z) & -(PO(v, y)) & P(w, x) -> -(Cont(w, v)))) -> BCont(x, z))).
+% 'BC-A5: transitivity with respect to Cont'
+ all x all y all z ((BCont(x, y) & Cont(z, x) -> BCont(z, y))).
+
+end_of_list.

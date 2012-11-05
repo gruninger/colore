@@ -1,0 +1,627 @@
+(cl-comment 'all axioms in codi_updown as a single file')
+
+(cl-module codi/codi_updown
+
+(cl-comment 'CODI with downwards and upwards closure')
+
+(cl-comment 'U-A1: everything is contained in a universal entity')
+
+(forall (x)
+	(if 
+		(not (ZEX x))
+		(Cont x Uni)
+	)
+)
+
+
+
+(cl-module codi/codi_down_sum
+
+(cl-comment 'CODI with downwards closure and sums')
+
+
+(cl-comment 'Sum-A1: sum is commutative')
+
+(forall (x y)
+	(= (sum x y) (sum y x))
+)
+
+
+(cl-comment "Sum-A2: sum of entities of different dimensions")
+
+(forall (x y)
+	(if
+		(< x y)
+		(= y (sum x y))
+	)
+)
+
+
+(cl-comment "Sum-A3: every part of y is a part of x+y if x<=y")
+
+(forall (x y z)
+	(if
+		(and
+			(<= x y)
+			(Cont z y)
+		)
+		(Cont z (sum x y))
+	)
+)
+
+
+(cl-comment "Sum-A4: everything contained in the sum has a part contained in x or contained in y")
+
+(forall (x y z)
+	(if
+		(and
+			(Cont z (sum x y))
+			(not (Cont z x))
+		)
+		(Cont (difference z x) y)
+	)
+)
+
+)
+
+
+(cl-module codi/theorems/codi_down_theoremsPO-E1
+
+
+(cl-comment 'parthood defined by PO')
+
+(forall (x y)
+	(if
+		(and
+			(not (ZEX x))
+			(forall (z)
+				(if
+					(PO x z)
+					(PO y z)
+				)
+			)
+		)
+		(P x y)
+	)
+)
+
+
+(cl-comment 'PO-E1: extensionality of PO')
+
+(forall (x y)
+	(if
+		(forall (z)
+			(iff
+				(PO x z)
+				(PO y z)
+			)
+		)
+		(= x y)
+	)
+)
+
+)
+
+
+
+(cl-module codi/codi_down
+
+(cl-comment 'Closure under differences')
+
+
+(cl-comment 'Dif-A1: difference is of same dimension')
+
+(forall (x y)
+	(if
+		(not (ZEX (difference x y)))
+		(EqDim x (difference x y))
+	)
+)
+
+(cl-comment 'Dif-A2: difference with a entity of lower dimension')
+
+(forall (x y)
+	(if
+		(< y x)
+		(= x (difference x y))
+	)
+)
+
+
+(cl-comment 'Dif-A3a: constitution of the difference with an entity of greater or equal dimension')
+
+(forall (x y z)
+	(if
+		(and
+			(<= x y)
+			(Cont z x)
+			(< (intersection z y) z)
+		)
+		(Cont z (difference x y))
+	)
+)
+
+
+(cl-comment 'Dif-A3b: constitution of the difference with an entity of greater or equal dimension')
+
+(forall (x y z)
+	(if
+		(and
+			(<= x y)
+			(Cont z (difference x y))
+		)
+		(Cont z x)
+	)
+)
+
+
+(cl-comment 'Dif-A3c: constitution of the difference with an entity of greater or equal dimension')
+
+(forall (x y z)
+	(if
+		(and
+			(<= x y)
+			(P z (difference x y))
+		)
+		(< (intersection z y) z)
+	)
+)
+
+
+
+(cl-comment 'Dif-A4: zero difference only for contained entities or for zero entity')
+
+(forall (x y)
+	(iff
+		(ZEX (difference x y))
+		(or
+			(ZEX x)
+			(Cont x y)
+		)
+	)
+)
+
+
+(cl-module codi/codi_int
+
+
+(cl-comment 'Int-A1: disconnected entities have empty intersection')
+
+(forall (x y)
+	(if
+		(not (C x y)) 
+		(ZEX (intersection x y))
+	)
+)
+
+
+(cl-comment 'Int-A2: the intersection is contained in the intersecting entities (also ensures the intersection is of no greater dimension than necessary)')
+
+(forall (x y)
+	(if
+		(not (ZEX (intersection x y)))
+		(Cont (intersection x y) x)
+	)
+)
+
+
+
+(cl-comment 'Int-A3: the intersection is of greatest possible dimension (determines the dimension of the intersection)')
+
+(forall (x y z)
+	(if
+		(and
+			(Cont z x)
+			(Cont z y)
+		)
+		(<= z (intersection x y))
+	)
+)
+
+
+(cl-comment 'Int-A4: the intersection contains everything of the greatest possible dimension (and whatever those things contain)')
+
+(forall (x y z)
+	(iff
+		(and
+			(Cont z x)
+			(Cont z y)
+			(EqDim z (intersection x y))
+		)
+		(P z (intersection x y))
+	)
+) 
+
+)
+
+
+(cl-module codi/codi
+
+(cl-comment 'CD-A1: containment requires that the contained entity has a dimension that is lower or equal to the entity containing it')
+
+(forall (x y)
+	(if 	(Cont x y)
+			(<= x y)
+	)
+)
+
+)
+
+
+
+(cl-module dim/zex
+
+(cl-comment 'forces a special null region (zex)')
+
+(cl-comment 'Z-A1: there exists a zex')
+
+(exists (x)
+	(ZEX x)
+)
+
+)
+
+
+
+(cl-module dim/dim_prime_linear
+
+(cl-comment 'compact axioms for linear relative dimension')
+
+(cl-comment 'D-A1: irreflexive')
+(forall (x)
+	(not (< x x))
+)
+
+(cl-comment 'D-A2: asymmetric (antisymmetric & irreflexive)')
+(forall (x y)
+	(if 	(< x y)
+		(not (< y x))
+	)
+)
+
+(cl-comment 'D-A3: transitive (corrected from IJCAI version: need <= in the second condition to ensure that EqDim is transitive)')
+(forall (x y z)
+	(if 	(and (< x y) (<= y z))
+		(< x z)
+	)
+)
+
+
+(cl-comment 'D-A4: unique ZEX')
+(forall (x y)
+	(if
+		(and (ZEX x) (ZEX y))
+		(= x y)
+	)
+)
+
+(cl-comment 'D-A5: ZEX has dimension lower than anything else')
+
+(forall (x y)
+	(if
+		(and (ZEX x) (not (ZEX y)))
+		(< x y)
+	)
+)
+
+
+(cl-comment 'D-A6: a lowest dimension must exist')
+
+(exists (x)
+	(MinDim x)
+)
+
+(cl-comment 'D-D2: define EqDim in terms of <')
+
+(forall (x y)
+	(iff 
+		(EqDim x y)
+		(and 	(not (< x y))
+				(not (< y x))
+		)
+	)
+)
+
+
+(cl-comment 'D-D3: <=')
+
+(forall (x y)
+	(iff (<= x y) (or (< x y) (EqDim x y)))
+)
+
+
+(cl-comment 'D-D4: Maximal dimension (Codim=0)')
+(forall (x)
+	(iff	(MaxDim x)
+			(forall (y) 
+					(<= y x)
+			)
+	)
+)
+
+
+(cl-comment 'D-D5: Minimal dimension (Dim=0)')
+(forall (x)
+	(iff	(MinDim x)
+		(and
+			(not (ZEX x))
+			(forall (y)
+				(if
+					(< y x)
+					(ZEX y)
+				)
+			)	
+		)
+	)
+)
+
+
+(cl-comment 'D-D6: next highest dimension (covers), x covers y if x>y and no z s.t. x>z>y')
+
+(forall (x y)
+	(iff 
+		(Covers x y)
+		(and
+			(< y x)
+			(forall (z)
+				(not
+					(and
+						(< y z)
+						(< z x)
+					)
+				)
+			)
+		)
+	)
+)
+
+
+)
+
+
+
+(cl-module cont/cont_c-ext
+
+)
+
+
+
+(cl-module codi/defs/ep
+
+(cl-comment 'basic axioms of traditional parthood (parthood of equidimensional entities) which is a non-strict partial order')
+
+(cl-comment 'parthood holds between two entities of the same spatial dimension')
+
+(cl-comment 'EP-D: definition of parthood')
+(forall (x y)
+	(iff 	(P x y)
+		(and (Cont x y) (EqDim x y))
+	)
+)
+
+)
+
+
+
+(cl-module codi/defs/epp
+
+(cl-comment 'EPP-D: definition of proper parthood')
+
+(forall (x y)
+	(iff 	
+		(PP x y)
+		(and 
+			(P x y) 
+			(not (= x y))
+		)
+	)
+)
+
+)
+
+
+(cl-module codi/defs/po
+
+
+(cl-comment 'PO-D: partial overlap (strong contact)')
+
+(forall (x y)
+	(iff
+		(PO x y)
+		(exists (z)
+			(and (P z x) (P z y))
+		)
+	)
+)
+
+)
+
+
+(cl-module codi/defs/inc
+
+(cl-comment 'basic axioms of incidence (two entities occupy some same space. It is reserved for entities of differing dimensions. It is a variant of contact.')
+
+(cl-comment 'Inc-D: incidence holds if and only if some entity of the dimension as the lower of the two incident entities is shared')
+
+(forall (x y)
+	(iff	
+		(Inc x y)
+		(or
+			(exists (z)
+				(and (< z x) (Cont z x) (P z y))
+			)
+			(exists (z)
+				(and (< z y) (Cont z y) (P z x))
+			)
+		)
+	)
+)
+
+)
+
+
+(cl-module codi/defs/sc
+
+(cl-comment 'SC-D: superficial (weak) contact (contact is of a lesser dimension than either involved entity) - prover9 file needs extra parentheses')
+
+(forall (x y)
+	(iff
+		(SC x y)
+		(and
+			(exists (z)
+				(and 
+					(Cont z x)
+					(Cont z y)
+				) 
+			)
+			(forall (z)
+				(if
+					(and
+						(Cont z x)
+						(Cont z y)
+					)
+					(and 
+						(< z x)
+						(< z y)
+					)
+				)
+			)
+		)
+	)
+)
+
+)
+
+
+(cl-module codi/defs/min_max_in_dim
+
+(cl-comment 'definitional extension')
+
+(cl-comment 'ME-D1: defining maximal entities of a dimension')
+
+(forall (x)
+	(iff
+		(Max x)
+		(and
+			(not (ZEX x))
+			(forall (y)
+				(not (PP x y))
+			)
+		)
+	)
+)
+
+
+(cl-comment 'ME-D2: defining minimal entities of a dimension')
+
+(forall (x)
+	(iff
+		(Min x)
+		(and
+			(not (ZEX x))
+			(forall (y)
+				(not (PP y x))
+			)
+		)
+	)
+)
+
+)
+
+
+(cl-module cont/cont_c
+
+(cl-comment 'C-D: definition of contact in terms of containment')
+
+(forall (x y)
+	(iff
+		(C x y)
+		(exists (z)
+			(and (Cont z x) (Cont z y))
+		)
+	)
+)
+
+
+(cl-comment 'C-A5: C strictly monotone implies Cont')
+
+(forall (x y)
+	(if
+		(and
+			(not (ZEX x))
+			(forall (z)
+				(if
+					(C z x)
+					(C z y)
+				)
+			)
+			(exists (z)
+				(and
+					(C z y)
+					(not (C z x))
+				)
+			)
+		)
+		(Cont x y)
+	)
+)
+
+)
+
+
+(cl-module cont/cont_ext
+
+(cl-comment 'C-E1: Cont is extensional')
+
+(forall (x y)
+	(if
+		(forall (z)
+			(iff
+				(Cont z x)
+				(Cont z y)
+			)
+		)
+		(= x y)
+	)
+)
+
+)
+
+
+(cl-module cont/cont_basic
+
+(cl-comment 'basic axioms of containment (parthood irrespective of dimension) which is a non-strict partial order')
+
+(cl-comment 'a possibly existing zero extent ZEX is included')
+
+(cl-comment 'C-A1: reflexive')
+(forall (x)
+	(iff
+		(not (ZEX x))
+		(Cont x x)
+	)
+)
+
+(cl-comment 'C-A2: antisymmetric')
+(forall (x y)
+	(if	(and (Cont x y) (Cont y x))
+		(= x y)
+	)
+)
+
+(cl-comment 'C-A3: transitive')
+(forall (x y z)
+	(if 	(and (Cont x y) (Cont y z))
+		(Cont x z)
+	)
+)
+
+(cl-comment 'C-A4: ZEXs are not contained in anything and contain nothing')
+(forall (x y)
+	(if
+		(ZEX x)
+		(and (not (Cont y x)) (not (Cont x y)))
+	)
+)
+
+)

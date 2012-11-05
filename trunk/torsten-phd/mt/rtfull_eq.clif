@@ -1,0 +1,167 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text mt/rtfull_eq
+
+(cl-imports mt/rtminus_eq)
+
+(cl-comment 'Contact')
+
+(forall (x y)
+	(iff
+		(C x y)
+		(not (= (meet x (oc y)) x))
+	)
+)
+
+(cl-comment 'Parthood')
+
+(forall (x y)
+	(iff
+		(P x y)
+		(and
+			(= (meet x y) x)
+			(not (= x zero))
+		)
+	)
+)
+
+(cl-comment 'D3: Overlap')
+
+(forall (x y)
+	(iff 	(O x y)
+		(exists (z)
+				(and 	(P z x)
+					(P z y) )))
+)
+
+
+(cl-comment 'D4: External connection')
+
+(forall (x y)
+	(iff 	(EC x y)
+		(and 	(C x y)
+			(not (O x y)) ))
+)
+
+
+(cl-comment 'D6: Non-tangential parthood')
+
+(forall (x y)
+	(iff 	(NTP x y)
+		(and 	(P x y)
+			(not (exists (z) 
+					(and 	(EC z x)
+						(EC z y))
+			)) ))
+)
+
+
+(cl-comment 'D7: Closure function closure(x) as -i(-x)')
+
+(forall (x)
+	(= (closure x) (neg (i (neg x))))
+)
+
+
+(cl-comment 'D8: Open')
+
+(forall (x)
+	(iff 	(OP x)
+		(= x (i x)))
+)
+
+
+(cl-comment 'A8: Unique interiors')
+
+(forall (x)
+	(exists (z)
+		(and	(= (i x) z)
+				(forall (u)
+					(iff 	(C u z)
+						(exists (v)
+							(and 	(NTP v x)
+								(C v u)
+)	)	)		)	)	)	)
+
+
+(cl-comment 'A9: closure of the universal region')
+
+(= (closure ONE) ONE)
+
+
+(cl-comment 'A10: Open intersection of open elements')
+
+(forall (x y)
+	(if 
+		(and 	(OP x)
+			(OP y)
+			(O x y))
+		(OP (meet x y))
+)	)
+
+
+(cl-comment 'D2: Proper Parthood')
+
+(forall (x y)
+	(iff
+	 	(PP x y)
+		(and
+			(P x y)
+			(not (= x y))
+		)
+	)
+)
+
+(cl-comment 'Lemma: transitivity of parthood')
+
+(forall (x y z)
+	(if
+		(and
+			(PP x y)
+			(PP y z)
+		)
+		(PP x z)
+	)
+)
+
+
+(cl-comment "D11+A12: Existence of Weak contact")
+
+(exists (x y)
+	(and 	
+		(not (C (closure x) (closure y)))
+		(forall (z)
+			(if 	
+				(and	
+					(P x z)
+					(OP z)
+				)
+				(C (closure z) y)
+			)
+		)
+	)
+)
+
+(cl-comment "A13: Existence of a smallest open neighborhood n(x) for every x")
+
+(forall (x)
+	(exists (y)
+		(and 	
+			(P x y)
+			(OP y)
+			(forall (z)
+				(if
+					(and 	
+						(P x z)
+						(OP z))
+					(P y z))))))
+
+)

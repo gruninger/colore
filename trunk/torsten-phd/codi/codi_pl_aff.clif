@@ -1,0 +1,61 @@
+(cl-module codi/codi_pl_aff
+
+(cl-imports codi/codi_pl_lin)
+
+
+(cl-comment 'PL-A4: Line Dimension Axiom: there exist three distinct, non-collinear points')
+
+(exists (p q r)
+	(and
+		(Pt p)
+		(Pt q)
+		(Pt r)
+		(not (= p q))
+		(not (= p r))
+		(not (= q r))
+		(forall (l)
+			(if
+				(L l)		
+				(or
+					(not (Cont p l))
+					(not (Cont q l))
+					(not (Cont r l))
+				)
+			)
+		)
+	)
+)		
+
+
+(cl-comment 'PL-A5: Parallel Axiom')
+
+(forall (p l)
+	(if
+		(and
+			(L l)
+			(Pt p)
+			(not (Cont p l))
+		)
+		(exists (m)
+			(and
+				(L m)
+				(Cont p m)
+				(not (C l m))
+				(forall (n)
+					(if
+						(and
+							(L n)
+							(Cont p n)
+							(not (C l n))
+						)
+						(= m n)
+					)
+				)
+			)
+		)
+	)
+)
+
+
+
+)

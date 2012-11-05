@@ -1,0 +1,140 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 18420 was started by torsten on stl-ws2,
+Tue Oct 30 14:01:20 2012
+The command was "prover9 -t 600 -f cont/p9/cont_c.p9 cont/p9/cont_basic.p9 cont//theorems/p9/options.txt cont//theorems/p9/cont_c_theorems_4.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file cont/p9/cont_c.p9
+
+
+formulas(sos).
+(all x all y (C(x,y) <-> (exists z (Cont(z,x) & Cont(z,y))))).
+end_of_list.
+
+% Reading from file cont/p9/cont_basic.p9
+
+
+formulas(sos).
+(all x (-ZEX(x) <-> Cont(x,x))).
+(all x all y (Cont(x,y) & Cont(y,x) -> x = y)).
+(all x all y all z (Cont(x,y) & Cont(y,z) -> Cont(x,z))).
+(all x all y (ZEX(x) -> -Cont(y,x) & -Cont(x,y))).
+(all x all y (ZEX(x) & ZEX(y) -> x = y)).
+end_of_list.
+
+% Reading from file cont//theorems/p9/options.txt
+
+clear(auto_denials).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+
+% Reading from file cont//theorems/p9/cont_c_theorems_4.p9
+
+
+formulas(goals).
+(all x all y (Cont(x,y) -> (all z (C(z,x) -> C(z,y))))).
+end_of_list.
+
+============================== end of input ==========================
+
+% From the command line: assign(max_seconds, 600).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x all y (C(x,y) <-> (exists z (Cont(z,x) & Cont(z,y))))) # label(non_clause).  [assumption].
+2 (all x (-ZEX(x) <-> Cont(x,x))) # label(non_clause).  [assumption].
+3 (all x all y (Cont(x,y) & Cont(y,x) -> x = y)) # label(non_clause).  [assumption].
+4 (all x all y all z (Cont(x,y) & Cont(y,z) -> Cont(x,z))) # label(non_clause).  [assumption].
+5 (all x all y (ZEX(x) -> -Cont(y,x) & -Cont(x,y))) # label(non_clause).  [assumption].
+6 (all x all y (ZEX(x) & ZEX(y) -> x = y)) # label(non_clause).  [assumption].
+7 (all x all y (Cont(x,y) -> (all z (C(z,x) -> C(z,y))))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+============================== PREDICATE ELIMINATION =================
+
+No predicates eliminated.
+
+============================== end predicate elimination =============
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, ZEX, Cont, C ]).
+Function symbol precedence:  function_order([ c1, c2, c3, f1 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+  % set(binary_resolution).  % (non-Horn)
+  % set(neg_ur_resolution).  % (non-Horn, less than 100 clauses)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.01 seconds.
+
+============================== PROOF =================================
+
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 15.
+% Level of proof is 4.
+% Maximum clause weight is 9.000.
+% Given clauses 29.
+
+1 (all x all y (C(x,y) <-> (exists z (Cont(z,x) & Cont(z,y))))) # label(non_clause).  [assumption].
+4 (all x all y all z (Cont(x,y) & Cont(y,z) -> Cont(x,z))) # label(non_clause).  [assumption].
+7 (all x all y (Cont(x,y) -> (all z (C(z,x) -> C(z,y))))) # label(non_clause) # label(goal).  [goal].
+8 -C(x,y) | Cont(f1(x,y),x).  [clausify(1)].
+9 -C(x,y) | Cont(f1(x,y),y).  [clausify(1)].
+10 C(x,y) | -Cont(z,x) | -Cont(z,y).  [clausify(1)].
+14 -Cont(x,y) | -Cont(y,z) | Cont(x,z).  [clausify(4)].
+18 Cont(c1,c2).  [deny(7)].
+19 C(c3,c1).  [deny(7)].
+20 -C(c3,c2).  [deny(7)].
+26 -Cont(x,c1) | Cont(x,c2).  [resolve(18,a,14,b)].
+31 Cont(f1(c3,c1),c1).  [resolve(19,a,9,a)].
+32 Cont(f1(c3,c1),c3).  [resolve(19,a,8,a)].
+66 -Cont(f1(c3,c1),c2).  [ur(10,a,20,a,b,32,a)].
+69 $F.  [resolve(26,a,31,a),unit_del(a,66)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=29. Generated=89. Kept=61. proofs=1.
+Usable=29. Sos=29. Demods=0. Limbo=0, Disabled=16. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=27. Back_subsumed=2.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=1.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=25. Nonunit_bsub_feature_tests=51.
+Megabytes=0.11.
+User_CPU=0.01, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 18420 exit (max_proofs) Tue Oct 30 14:01:20 2012

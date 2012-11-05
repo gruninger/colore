@@ -1,0 +1,41 @@
+
+% The LADR formulas contain function or predicate symbols
+% that are not legal TPTP symbols, and we have replaced those
+% symbols with new symbols.  Here is the list of the unaccepted
+% symbols and the corresponding replacements.
+%
+%   (arity 0)   "zero"    '"zero"'
+%   (arity 0)    "one"    '"one"'
+%   (arity 2)        P    'P'
+%   (arity 1)       OP    'OP'
+%   (arity 2)        C    'C'
+%   (arity 2)       PP    'PP'
+%   (arity 2)        O    'O'
+%   (arity 0)      ONE    'ONE'
+%   (arity 2)      NTP    'NTP'
+%   (arity 2)       EC    'EC'
+
+fof(sos18,axiom,! [X0] : ! [X1] : ('C'(X0,X1) <=> ~ meet(X0,oc(X1)) = X0)).
+fof(sos19,axiom,! [X2] : ! [X3] : ('P'(X2,X3) <=> (meet(X2,X3) = X2 & ~ X2 ='"zero"'))).
+fof(sos20,axiom,! [X4] : ! [X5] : ('O'(X4,X5) <=> ? [X6] : ('P'(X6,X4) &'P'(X6,X5)))).
+fof(sos21,axiom,! [X7] : ! [X8] : ('EC'(X7,X8) <=> ('C'(X7,X8) & ~'O'(X7,X8)))).
+fof(sos22,axiom,! [X9] : ! [X10] : ('NTP'(X9,X10) <=> ('P'(X9,X10) & ~ (? [X11] : ('EC'(X11,X9) &'EC'(X11,X10)))))).
+fof(sos23,axiom,! [X12] : closure(X12) = neg(i(neg(X12)))).
+fof(sos24,axiom,! [X13] : ('OP'(X13) <=> X13 = i(X13))).
+fof(sos25,axiom,! [X14] : ? [X15] : (i(X14) = X15 & ! [X16] : ('C'(X16,X15) <=> ? [X17] : ('NTP'(X17,X14) &'C'(X17,X16))))).
+cnf(sos,axiom,closure('ONE') ='ONE').
+fof(sos27,axiom,! [X18] : ! [X19] : (('OP'(X18) & ('OP'(X19) &'O'(X18,X19))) =>'OP'(meet(X18,X19)))).
+fof(sos28,axiom,! [X20] : ! [X21] : ('PP'(X20,X21) <=> ('P'(X20,X21) & ~ X20 = X21))).
+fof(sos29,axiom,! [X22] : ! [X23] : ! [X24] : (('PP'(X22,X23) &'PP'(X23,X24)) =>'PP'(X22,X24))).
+fof(sos30,axiom,? [X25] : ? [X26] : (~'C'(closure(X25),closure(X26)) & ! [X27] : (('P'(X25,X27) &'OP'(X27)) =>'C'(closure(X27),X26)))).
+fof(sos31,axiom,! [X28] : ? [X29] : ('P'(X28,X29) & ('OP'(X29) & ! [X30] : (('P'(X28,X30) &'OP'(X30)) =>'P'(X29,X30))))).
+fof(sos32,axiom,! [X31] : ! [X32] : meet(X31,X32) = meet(X32,X31)).
+fof(sos33,axiom,! [X33] : ! [X34] : ! [X35] : meet(X33,meet(X34,X35)) = meet(meet(X33,X34),X35)).
+fof(sos34,axiom,! [X36] : ! [X37] : meet(oc(meet(oc(X36),oc(X37))),X36) = X36).
+fof(sos35,axiom,! [X38] : meet('"one"',X38) = X38).
+fof(sos36,axiom,! [X39] : oc(oc(X39)) = X39).
+fof(sos37,axiom,! [X40] : meet(X40,oc(X40)) ='"zero"').
+fof(sos38,axiom,! [X41] : ! [X42] : meet(X41,pc(meet(X41,X42))) = meet(X41,pc(X42))).
+cnf(sos,axiom,pc('"zero"') ='"one"').
+cnf(sos,axiom,pc('"one"') ='"zero"').
+fof(sos41,axiom,! [X43] : ! [X44] : pc(meet(X43,X44)) = oc(meet(oc(pc(X43)),oc(pc(X44))))).

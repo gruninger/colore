@@ -1,0 +1,67 @@
+
+% The LADR formulas contain function or predicate symbols
+% that are not legal TPTP symbols, and we have replaced those
+% symbols with new symbols.  Here is the list of the unaccepted
+% symbols and the corresponding replacements.
+%
+%   (arity 1)      ZEX    'ZEX'
+%   (arity 2)     Cont    'Cont'
+%   (arity 2)     LESS    'LESS'
+%   (arity 2)   Covers    'Covers'
+%   (arity 1)   MinDim    'MinDim'
+%   (arity 2)      LEQ    'LEQ'
+%   (arity 1)   MaxDim    'MaxDim'
+%   (arity 2)    EqDim    'EqDim'
+%   (arity 2)        C    'C'
+%   (arity 2)        P    'P'
+%   (arity 2)       PP    'PP'
+%   (arity 1)      Min    'Min'
+%   (arity 1)      Max    'Max'
+%   (arity 2)       SC    'SC'
+%   (arity 2)      Inc    'Inc'
+%   (arity 2)       PO    'PO'
+%   (arity 1)      Con    'Con'
+
+fof(sos25,axiom,! [X0] : ('Min'(X0) =>'Con'(X0))).
+fof(sos26,axiom,! [X1] : ('ZEX'(X1) =>'Con'(X1))).
+fof(sos27,axiom,! [X2] : ! [X3] : (('Con'(X2) &'PP'(X3,X2)) =>'SC'(X3,difference(X2,X3)))).
+fof(sos28,axiom,! [X4] : ! [X5] : (('Con'(X4) & ('PO'(X4,X5) & (~'ZEX'(difference(X4,X5)) & ~'ZEX'(intersection(X4,X5))))) =>'SC'(intersection(X4,X5),difference(X4,X5)))).
+fof(sos29,axiom,! [X6] : ! [X7] : (('Con'(X6) & ('Inc'(X6,X7) & ('EqDim'(difference(X6,X7),intersection(X6,X7)) & (~'ZEX'(difference(X6,X7)) & ~'ZEX'(intersection(X6,X7)))))) =>'SC'(intersection(X6,X7),difference(X6,X7)))).
+fof(sos30,axiom,! [X8] : ! [X9] : ! [X10] : ((~'C'(X9,X10) & ('P'(X9,X8) & ('P'(X10,X8) & ! [X11] : (~'Cont'(X11,X8) | ('Cont'(X11,X9) |'Cont'(X11,X10)))))) => ~'Con'(X8))).
+fof(sos31,axiom,! [X12] : ! [X13] : (~'ZEX'(difference(X12,X13)) =>'EqDim'(X12,difference(X12,X13)))).
+fof(sos32,axiom,! [X14] : ! [X15] : ('LESS'(X15,X14) => X14 = difference(X14,X15))).
+fof(sos33,axiom,! [X16] : ! [X17] : ! [X18] : (('LEQ'(X16,X17) & ('Cont'(X18,X16) &'LESS'(intersection(X18,X17),X18))) =>'Cont'(X18,difference(X16,X17)))).
+fof(sos34,axiom,! [X19] : ! [X20] : ! [X21] : (('LEQ'(X19,X20) &'Cont'(X21,difference(X19,X20))) =>'Cont'(X21,X19))).
+fof(sos35,axiom,! [X22] : ! [X23] : ! [X24] : (('LEQ'(X22,X23) &'P'(X24,difference(X22,X23))) =>'LESS'(intersection(X24,X23),X24))).
+fof(sos36,axiom,! [X25] : ! [X26] : ('ZEX'(difference(X25,X26)) <=> ('ZEX'(X25) |'Cont'(X25,X26)))).
+fof(sos37,axiom,! [X27] : ('Con'(X27) <=> ! [X28] : ('PP'(X28,X27) =>'SC'(X28,difference(X27,X28))))).
+fof(sos38,axiom,! [X29] : ! [X30] : ('PO'(X29,X30) <=> ? [X31] : ('P'(X31,X29) &'P'(X31,X30)))).
+fof(sos39,axiom,! [X32] : ! [X33] : ('Inc'(X32,X33) <=> (? [X34] : ('LESS'(X34,X32) & ('Cont'(X34,X32) &'P'(X34,X33))) | ? [X35] : ('LESS'(X35,X33) & ('Cont'(X35,X33) &'P'(X35,X32)))))).
+fof(sos40,axiom,! [X36] : ! [X37] : ('SC'(X36,X37) <=> (? [X38] : ('Cont'(X38,X36) &'Cont'(X38,X37)) & ! [X39] : (('Cont'(X39,X36) &'Cont'(X39,X37)) => ('LESS'(X39,X36) &'LESS'(X39,X37)))))).
+fof(sos41,axiom,! [X40] : ('Max'(X40) <=> (~'ZEX'(X40) & ! [X41] : ~'PP'(X40,X41)))).
+fof(sos42,axiom,! [X42] : ('Min'(X42) <=> (~'ZEX'(X42) & ! [X43] : ~'PP'(X43,X42)))).
+fof(sos43,axiom,! [X44] : ! [X45] : (~'C'(X44,X45) <=>'ZEX'(intersection(X44,X45)))).
+fof(sos44,axiom,! [X46] : ! [X47] : (~'ZEX'(intersection(X46,X47)) =>'Cont'(intersection(X46,X47),X46))).
+fof(sos45,axiom,! [X48] : ! [X49] : ! [X50] : (('Cont'(X50,X48) &'Cont'(X50,X49)) =>'LEQ'(X50,intersection(X48,X49)))).
+fof(sos46,axiom,! [X51] : ! [X52] : ! [X53] : (('Cont'(X53,X51) & ('Cont'(X53,X52) &'EqDim'(X53,intersection(X51,X52)))) <=>'P'(X53,intersection(X51,X52)))).
+fof(sos47,axiom,! [X54] : ! [X55] : ('PP'(X54,X55) <=> ('P'(X54,X55) & ~ X54 = X55))).
+fof(sos48,axiom,! [X56] : ! [X57] : ('P'(X56,X57) <=> ('Cont'(X56,X57) &'EqDim'(X56,X57)))).
+fof(sos49,axiom,! [X58] : ! [X59] : ('Cont'(X58,X59) => ('LESS'(X58,X59) |'EqDim'(X58,X59)))).
+fof(sos50,axiom,? [X60] :'ZEX'(X60)).
+fof(sos51,axiom,? [X61] :'MinDim'(X61)).
+fof(sos52,axiom,! [X62] : ! [X63] : ('C'(X62,X63) <=> ? [X64] : ('Cont'(X64,X62) &'Cont'(X64,X63)))).
+fof(sos53,axiom,! [X65] : ~'LESS'(X65,X65)).
+fof(sos54,axiom,! [X66] : ! [X67] : ('LESS'(X66,X67) => ~'LESS'(X67,X66))).
+fof(sos55,axiom,! [X68] : ! [X69] : ! [X70] : (('LESS'(X68,X69) &'LEQ'(X69,X70)) =>'LESS'(X68,X70))).
+fof(sos56,axiom,! [X71] : ! [X72] : (('ZEX'(X71) &'ZEX'(X72)) => X71 = X72)).
+fof(sos57,axiom,! [X73] : ! [X74] : (('ZEX'(X73) & ~'ZEX'(X74)) =>'LESS'(X73,X74))).
+fof(sos58,axiom,! [X75] : ! [X76] : ('EqDim'(X75,X76) <=> (~'LESS'(X75,X76) & ~'LESS'(X76,X75)))).
+fof(sos59,axiom,! [X77] : ! [X78] : ('LEQ'(X77,X78) <=> ('LESS'(X77,X78) |'EqDim'(X77,X78)))).
+fof(sos60,axiom,! [X79] : ('MaxDim'(X79) <=> ! [X80] :'LEQ'(X80,X79))).
+fof(sos61,axiom,! [X81] : ('MinDim'(X81) <=> (~'ZEX'(X81) & ! [X82] : ('LESS'(X82,X81) =>'ZEX'(X82))))).
+fof(sos62,axiom,! [X83] : ! [X84] : ('Covers'(X83,X84) <=> ('LESS'(X84,X83) & ! [X85] : ~ ('LESS'(X84,X85) &'LESS'(X85,X83))))).
+fof(sos63,axiom,! [X86] : (~'ZEX'(X86) <=>'Cont'(X86,X86))).
+fof(sos64,axiom,! [X87] : ! [X88] : (('Cont'(X87,X88) &'Cont'(X88,X87)) => X87 = X88)).
+fof(sos65,axiom,! [X89] : ! [X90] : ! [X91] : (('Cont'(X89,X90) &'Cont'(X90,X91)) =>'Cont'(X89,X91))).
+fof(sos66,axiom,! [X92] : ! [X93] : ('ZEX'(X92) => (~'Cont'(X93,X92) & ~'Cont'(X92,X93)))).
+fof(sos67,axiom,! [X94] : ! [X95] : (('ZEX'(X94) &'ZEX'(X95)) => X94 = X95)).

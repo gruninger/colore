@@ -1,0 +1,138 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 17378 was started by torsten on stl-ws2,
+Tue Oct 30 13:38:50 2012
+The command was "prover9 -t 600 -f cont/p9/cont_basic.p9 cont//theorems/p9/options.txt cont//theorems/p9/cont_basic_ext_1.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file cont/p9/cont_basic.p9
+
+
+formulas(sos).
+(all x (-ZEX(x) <-> Cont(x,x))).
+(all x all y (Cont(x,y) & Cont(y,x) -> x = y)).
+(all x all y all z (Cont(x,y) & Cont(y,z) -> Cont(x,z))).
+(all x all y (ZEX(x) -> -Cont(y,x) & -Cont(x,y))).
+(all x all y (ZEX(x) & ZEX(y) -> x = y)).
+end_of_list.
+
+% Reading from file cont//theorems/p9/options.txt
+
+clear(auto_denials).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+
+% Reading from file cont//theorems/p9/cont_basic_ext_1.p9
+
+
+formulas(goals).
+(all x all y ((all z (Cont(z,x) <-> Cont(z,y))) -> x = y)).
+end_of_list.
+
+============================== end of input ==========================
+
+% From the command line: assign(max_seconds, 600).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (-ZEX(x) <-> Cont(x,x))) # label(non_clause).  [assumption].
+2 (all x all y (Cont(x,y) & Cont(y,x) -> x = y)) # label(non_clause).  [assumption].
+3 (all x all y all z (Cont(x,y) & Cont(y,z) -> Cont(x,z))) # label(non_clause).  [assumption].
+4 (all x all y (ZEX(x) -> -Cont(y,x) & -Cont(x,y))) # label(non_clause).  [assumption].
+5 (all x all y (ZEX(x) & ZEX(y) -> x = y)) # label(non_clause).  [assumption].
+6 (all x all y ((all z (Cont(z,x) <-> Cont(z,y))) -> x = y)) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+============================== PREDICATE ELIMINATION =================
+
+No predicates eliminated.
+
+============================== end predicate elimination =============
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, ZEX, Cont ]).
+Function symbol precedence:  function_order([ c1, c2 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+  % set(binary_resolution).  % (non-Horn)
+  % set(neg_ur_resolution).  % (non-Horn, less than 100 clauses)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.01 seconds.
+
+============================== PROOF =================================
+
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 21.
+% Level of proof is 7.
+% Maximum clause weight is 9.000.
+% Given clauses 17.
+
+1 (all x (-ZEX(x) <-> Cont(x,x))) # label(non_clause).  [assumption].
+2 (all x all y (Cont(x,y) & Cont(y,x) -> x = y)) # label(non_clause).  [assumption].
+4 (all x all y (ZEX(x) -> -Cont(y,x) & -Cont(x,y))) # label(non_clause).  [assumption].
+5 (all x all y (ZEX(x) & ZEX(y) -> x = y)) # label(non_clause).  [assumption].
+6 (all x all y ((all z (Cont(z,x) <-> Cont(z,y))) -> x = y)) # label(non_clause) # label(goal).  [goal].
+7 ZEX(x) | Cont(x,x).  [clausify(1)].
+9 -Cont(x,y) | -Cont(y,x) | y = x.  [clausify(2)].
+11 -ZEX(x) | -Cont(y,x).  [clausify(4)].
+13 -ZEX(x) | -ZEX(y) | y = x.  [clausify(5)].
+14 -Cont(x,c1) | Cont(x,c2).  [deny(6)].
+15 Cont(x,c1) | -Cont(x,c2).  [deny(6)].
+16 c2 != c1.  [deny(6)].
+17 Cont(c1,c2) | ZEX(c1).  [resolve(14,a,7,b)].
+18 Cont(c2,c1) | ZEX(c2).  [resolve(15,b,7,b)].
+19 ZEX(c1) | -ZEX(c2).  [resolve(17,a,11,b)].
+21 ZEX(c1) | -Cont(c2,c1).  [resolve(17,a,9,b),flip(c),unit_del(c,16)].
+22 ZEX(c2) | -ZEX(c1).  [resolve(18,a,11,b)].
+25 ZEX(c1) | ZEX(c2).  [resolve(21,b,18,a)].
+26 ZEX(c1).  [resolve(25,b,19,b),merge(b)].
+27 ZEX(c2).  [back_unit_del(22),unit_del(b,26)].
+29 $F.  [ur(13,b,26,a,c,16,a(flip)),unit_del(a,27)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=17. Generated=45. Kept=22. proofs=1.
+Usable=10. Sos=1. Demods=0. Limbo=1, Disabled=20. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=22. Back_subsumed=9.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=1.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=20. Nonunit_bsub_feature_tests=32.
+Megabytes=0.06.
+User_CPU=0.01, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 17378 exit (max_proofs) Tue Oct 30 13:38:50 2012

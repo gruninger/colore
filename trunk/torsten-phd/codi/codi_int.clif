@@ -1,0 +1,57 @@
+(cl-module codi/codi_int
+
+(cl-imports codi/codi_linear)
+
+(cl-imports zex/zex)
+
+
+(cl-comment 'Int-A1: disconnected entities have empty intersection')
+
+(forall (x y)
+	(iff
+		(not (C x y)) 
+		(ZEX (intersection x y))
+	)
+)
+
+
+(cl-comment 'Int-A2: the intersection is contained in the intersecting entities (also ensures the intersection is of no greater dimension than necessary)')
+
+(forall (x y)
+	(if
+		(not (ZEX (intersection x y)))
+		(Cont (intersection x y) x)
+	)
+)
+
+
+
+(cl-comment 'Int-A3: the intersection is of greatest possible dimension (determines the dimension of the intersection)')
+
+(forall (x y z)
+	(if
+		(and
+			(Cont z x)
+			(Cont z y)
+		)
+		(<= z (intersection x y))
+	)
+)
+
+
+(cl-comment 'Int-A4: the intersection contains everything of the greatest possible dimension (and whatever those things contain)')
+
+(forall (x y z)
+	(iff
+		(and
+			(Cont z x)
+			(Cont z y)
+			(EqDim z (intersection x y))
+		)
+		(P z (intersection x y))
+	)
+) 
+
+
+
+)

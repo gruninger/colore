@@ -1,0 +1,28 @@
+% Automatically generated from CL/KIF
+formulas(sos).
+% Module codi/codi_linear_nodefs
+%imports("cont/cont_basic").
+% 'CD-A1: containment requires that the contained entity has a dimension that is lower or equal to the entity containing it'
+ all x all y ((Cont(x, y) -> <(x, y) | EqDim(x, y))).
+% 'D-A1: irreflexive'
+ all x (-(<(x, x))).
+% 'D-A2: asymmetric (antisymmetric & irreflexive)'
+ all x all y ((<(x, y) -> -(<(y, x)))).
+% 'D-A3: transitive (corrected from IJCAI version: need <= in the second condition to ensure that EqDim is transitive)'
+ all x all y all z ((<(x, y) & <=(y, z) -> <(x, z))).
+% 'D-A3: transitive (corrected from IJCAI version: need <= in the second condition to ensure that EqDim is transitive)'
+ all x all y all z ((<=(x, y) & <=(y, z) -> <=(x, z))).
+% 'D-A4: unique ZEX'
+ all x all y ((ZEX(x) & ZEX(y) -> (x = y))).
+% 'D-A5: ZEX has dimension lower than anything else'
+ all x all y ((ZEX(x) & -(ZEX(y)) -> <(x, y))).
+% 'D-A6: a lowest dimension must exist'
+ exists x (MinDim(x)).
+% 'D-D2: define EqDim in terms of <'
+ all x all y ((EqDim(x, y) <-> -(<(x, y)) & -(<(y, x)))).
+% 'D-D3: <='
+ all x all y ((<=(x, y) <-> <(x, y) | EqDim(x, y))).
+% 'D-D5: Minimal dimension (Dim=0)'
+ all x ((MinDim(x) <-> -(ZEX(x)) &  all y ((<(y, x) -> ZEX(y))))).
+
+end_of_list.

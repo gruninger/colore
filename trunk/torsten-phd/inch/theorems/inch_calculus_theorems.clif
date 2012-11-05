@@ -1,0 +1,63 @@
+(cl-module inch/theorems/inch_calculus_theorems
+
+(cl-imports inch/inch_calculus)
+
+		
+			
+
+(cl-comment 'I-T14: OV(x,y) -> exists z [CH(z,x) & CH(z,y)]')
+
+(forall (x y)
+	(if
+		(and
+			(INCH x y)
+			(INCH y x)
+		)
+		(exists (z)
+			(and
+				(CH z x)
+				(CH z y)
+			)
+		)
+	)
+)
+
+
+(cl-comment 'I-T15: forall z [CH(z,x) -> INCH(z,y)] -> CS(x,y)')
+
+(forall (x y)
+	(if
+		(and
+			(GED x y)
+			(GED y x)
+			(forall (z)
+				(if
+					(CH z x)
+					(CH z y)
+				)
+			)
+		)
+		(CS x y)
+	)
+)	
+
+
+(cl-comment 'not automatically provable, but manually')
+
+(forall (x y)
+	(if
+		(and
+			(not (CS x y))
+			(GED x y)
+			(GED y x)
+		)
+		(exists (z)
+			(and
+				(CH z x)
+				(not (INCH z y))
+			)
+		)
+	)
+)
+	
+)

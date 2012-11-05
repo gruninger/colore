@@ -1,0 +1,45 @@
+(cl-module inch/inch_dim_linear
+
+(cl-imports inch/codi_mapping)
+(cl-imports inch/inch_weak)
+(cl-imports inch/defs/dim_prime_defs)
+
+(cl-comment 'D-A1: irreflexive')
+(forall (x)
+	(not (< x x))
+)
+
+(cl-comment 'D-A2: asymmetric (antisymmetric & irreflexive)')
+(forall (x y)
+	(if 	(< x y)
+		(not (< y x))
+	)
+)
+
+(cl-comment 'D-A3: transitive (corrected from IJCAI version: need <= in the second condition to ensure that EqDim is transitive)')
+(forall (x y z)
+	(if 	(and (< x y) (<= y z))
+		(< x z)
+	)
+)
+
+
+(cl-comment 'D-A4: unique ZEX')
+(forall (x y)
+	(if
+		(and (ZEX x) (ZEX y))
+		(= x y)
+	)
+)
+
+(cl-comment 'D-A5: ZEX has dimension lower than anything else')
+
+(forall (x y)
+	(if
+		(and (ZEX x) (not (ZEX y)))
+		(< x y)
+	)
+)
+
+
+)

@@ -1,0 +1,80 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 600).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%axioms from module codi/p9/codi_linear.p9
+%----------------------------------
+% 'cd-a1: containment requires that the contained entity has a dimension that is lower or equal to the entity containing it'
+ all x all y ((cont(x, y) -> leq(x, y))).
+% 'z-a1: there exists a zex'
+ exists x (zex(x)).
+% module dim/dim_prime_linear
+% 'compact axioms for linear relative dimension'
+% 'd-a1: irreflexive'
+ all x (-(less(x, x))).
+% 'd-a2: asymmetric (antisymmetric & irreflexive)'
+ all x all y ((less(x, y) -> -(less(y, x)))).
+% 'd-a3: transitive (corrected from ijcai version: need <= in the second condition to ensure that eqdim is transitive)'
+ all x all y all z ((less(x, y) & leq(y, z) -> less(x, z))).
+% 'd-a4: unique zex'
+ all x all y ((zex(x) & zex(y) -> (x = y))).
+% 'd-a5: zex has dimension lower than anything else'
+ all x all y ((zex(x) & -(zex(y)) -> less(x, y))).
+% 'd-d2: define eqdim in terms of <'
+ all x all y ((eqdim(x, y) <-> -(less(x, y)) & -(less(y, x)))).
+% 'd-d3: <='
+ all x all y ((leq(x, y) <-> less(x, y) | eqdim(x, y))).
+
+% 'c-a1: reflexive'
+ all x ((-(zex(x)) <-> cont(x, x))).
+% 'c-a2: antisymmetric'
+ all x all y ((cont(x, y) & cont(y, x) -> (x = y))).
+% 'c-a3: transitive'
+ all x all y all z ((cont(x, y) & cont(y, z) -> cont(x, z))).
+% 'c-a4: zexs are not contained in anything and contain nothing'
+ all x all y ((zex(x) -> -(cont(y, x)) & -(cont(x, y)))).
+% 'c-e1: cont is extensional'
+all x all y (( all z ((cont(z, x) <-> cont(z, y))) -> (x = y))).
+% provable:
+%all x all y (-zex(x) -> ( all z ((cont(z, x) -> cont(z, y))) -> cont(x,y))).
+
+% definition of P
+all x all y (p(x,y) <-> cont(x,y) & eqdim(x,y)).
+
+% ----
+% intersections
+% ----
+
+% 'Int-A1: disconnected entities have empty intersection'
+ all x all y ((all z (-cont(z,x) | -cont(z,y)) -> zex(intersection(x, y)))).
+% not provable from INCH (irrelevant)
+
+% 'Int-T5: intersection commutative'
+ all x all y ((intersection(x, y) = intersection(y, x))).
+
+% 'Int-A3: the intersection is contained in the intersecting entities (also ensures the intersection is of no greater dimension than necessary)'
+ all x all y ((-(zex(intersection(x, y))) -> cont(intersection(x, y), x))).
+% 'Int-A4: the intersection is of greatest possible dimension (determines the dimension of the intersection)'
+ all x all y all z ((cont(z, x) & cont(z, y) -> leq(z, intersection(x, y)))).
+% 'Int-A5: the intersection contains everything of the greatest possible dimension (and whatever those things contain)'
+ all x all y all z ((cont(z, x) & cont(z, y) & eqdim(z, intersection(x, y)) <-> p(z, intersection(x, y)))).
+
+end_of_list.
+
+formulas(goals).
+
+% Int-T11'.IIb
+all x all y (-zex(intersection(x,y)) -> cont(intersection(x,intersection(x,y)),intersection(x,y))).
+
+end_of_list.
+

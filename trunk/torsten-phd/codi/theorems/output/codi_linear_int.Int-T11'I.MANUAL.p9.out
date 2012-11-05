@@ -1,0 +1,391 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 21396 was started by torsten on stl-ws2,
+Thu Sep  1 11:39:40 2011
+The command was "/nfs/stllocal/p9m4-v05/bin/prover9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+assign(report_stderr,2).
+set(ignore_option_dependencies).
+if(Prover9).
+% Conditional input included.
+assign(max_seconds,600).
+end_if.
+if(Mace4).
+% Conditional input omitted.
+end_if.
+
+formulas(assumptions).
+(all x all y (cont(x,y) -> leq(x,y))).
+(exists x zex(x)).
+(all x -less(x,x)).
+(all x all y (less(x,y) -> -less(y,x))).
+(all x all y all z (less(x,y) & leq(y,z) -> less(x,z))).
+(all x all y (zex(x) & zex(y) -> x = y)).
+(all x all y (zex(x) & -zex(y) -> less(x,y))).
+(all x all y (eqdim(x,y) <-> -less(x,y) & -less(y,x))).
+(all x all y (leq(x,y) <-> less(x,y) | eqdim(x,y))).
+(all x (-zex(x) <-> cont(x,x))).
+(all x all y (cont(x,y) & cont(y,x) -> x = y)).
+(all x all y all z (cont(x,y) & cont(y,z) -> cont(x,z))).
+(all x all y (zex(x) -> -cont(y,x) & -cont(x,y))).
+(all x all y ((all z (cont(z,x) <-> cont(z,y))) -> x = y)).
+(all x all y (p(x,y) <-> cont(x,y) & eqdim(x,y))).
+(all x all y ((all z (-cont(z,x) | -cont(z,y))) -> zex(intersection(x,y)))).
+(all x all y intersection(x,y) = intersection(y,x)).
+(all x all y (-zex(intersection(x,y)) -> cont(intersection(x,y),x))).
+(all x all y all z (cont(z,x) & cont(z,y) -> leq(z,intersection(x,y)))).
+(all x all y all z (cont(z,x) & cont(z,y) & eqdim(z,intersection(x,y)) <-> p(z,intersection(x,y)))).
+end_of_list.
+
+formulas(goals).
+(all x all y (zex(intersection(x,y)) -> zex(intersection(x,intersection(x,y))))).
+end_of_list.
+
+============================== end of input ==========================
+
+% Enabling option dependencies (ignore applies only on input).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x all y (cont(x,y) -> leq(x,y))) # label(non_clause).  [assumption].
+2 (exists x zex(x)) # label(non_clause).  [assumption].
+3 (all x -less(x,x)) # label(non_clause).  [assumption].
+4 (all x all y (less(x,y) -> -less(y,x))) # label(non_clause).  [assumption].
+5 (all x all y all z (less(x,y) & leq(y,z) -> less(x,z))) # label(non_clause).  [assumption].
+6 (all x all y (zex(x) & zex(y) -> x = y)) # label(non_clause).  [assumption].
+7 (all x all y (zex(x) & -zex(y) -> less(x,y))) # label(non_clause).  [assumption].
+8 (all x all y (eqdim(x,y) <-> -less(x,y) & -less(y,x))) # label(non_clause).  [assumption].
+9 (all x all y (leq(x,y) <-> less(x,y) | eqdim(x,y))) # label(non_clause).  [assumption].
+10 (all x (-zex(x) <-> cont(x,x))) # label(non_clause).  [assumption].
+11 (all x all y (cont(x,y) & cont(y,x) -> x = y)) # label(non_clause).  [assumption].
+12 (all x all y all z (cont(x,y) & cont(y,z) -> cont(x,z))) # label(non_clause).  [assumption].
+13 (all x all y (zex(x) -> -cont(y,x) & -cont(x,y))) # label(non_clause).  [assumption].
+14 (all x all y ((all z (cont(z,x) <-> cont(z,y))) -> x = y)) # label(non_clause).  [assumption].
+15 (all x all y (p(x,y) <-> cont(x,y) & eqdim(x,y))) # label(non_clause).  [assumption].
+16 (all x all y ((all z (-cont(z,x) | -cont(z,y))) -> zex(intersection(x,y)))) # label(non_clause).  [assumption].
+17 (all x all y intersection(x,y) = intersection(y,x)) # label(non_clause).  [assumption].
+18 (all x all y (-zex(intersection(x,y)) -> cont(intersection(x,y),x))) # label(non_clause).  [assumption].
+19 (all x all y all z (cont(z,x) & cont(z,y) -> leq(z,intersection(x,y)))) # label(non_clause).  [assumption].
+20 (all x all y all z (cont(z,x) & cont(z,y) & eqdim(z,intersection(x,y)) <-> p(z,intersection(x,y)))) # label(non_clause).  [assumption].
+21 (all x all y (zex(intersection(x,y)) -> zex(intersection(x,intersection(x,y))))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-cont(x,y) | leq(x,y).  [clausify(1)].
+zex(c1).  [clausify(2)].
+-less(x,x).  [clausify(3)].
+-less(x,y) | -less(y,x).  [clausify(4)].
+-less(x,y) | -leq(y,z) | less(x,z).  [clausify(5)].
+-zex(x) | -zex(y) | y = x.  [clausify(6)].
+-zex(x) | zex(y) | less(x,y).  [clausify(7)].
+-eqdim(x,y) | -less(x,y).  [clausify(8)].
+-eqdim(x,y) | -less(y,x).  [clausify(8)].
+eqdim(x,y) | less(x,y) | less(y,x).  [clausify(8)].
+-leq(x,y) | less(x,y) | eqdim(x,y).  [clausify(9)].
+leq(x,y) | -less(x,y).  [clausify(9)].
+leq(x,y) | -eqdim(x,y).  [clausify(9)].
+zex(x) | cont(x,x).  [clausify(10)].
+-zex(x) | -cont(x,x).  [clausify(10)].
+-cont(x,y) | -cont(y,x) | y = x.  [clausify(11)].
+-cont(x,y) | -cont(y,z) | cont(x,z).  [clausify(12)].
+-zex(x) | -cont(y,x).  [clausify(13)].
+-zex(x) | -cont(x,y).  [clausify(13)].
+cont(f1(x,y),x) | cont(f1(x,y),y) | y = x.  [clausify(14)].
+-cont(f1(x,y),x) | -cont(f1(x,y),y) | y = x.  [clausify(14)].
+-p(x,y) | cont(x,y).  [clausify(15)].
+-p(x,y) | eqdim(x,y).  [clausify(15)].
+p(x,y) | -cont(x,y) | -eqdim(x,y).  [clausify(15)].
+cont(f2(x,y),x) | zex(intersection(x,y)).  [clausify(16)].
+cont(f2(x,y),y) | zex(intersection(x,y)).  [clausify(16)].
+intersection(x,y) = intersection(y,x).  [clausify(17)].
+zex(intersection(x,y)) | cont(intersection(x,y),x).  [clausify(18)].
+-cont(x,y) | -cont(x,z) | leq(x,intersection(y,z)).  [clausify(19)].
+-cont(x,y) | -cont(x,z) | -eqdim(x,intersection(y,z)) | p(x,intersection(y,z)).  [clausify(20)].
+cont(x,y) | -p(x,intersection(y,z)).  [clausify(20)].
+cont(x,y) | -p(x,intersection(z,y)).  [clausify(20)].
+eqdim(x,intersection(y,z)) | -p(x,intersection(y,z)).  [clausify(20)].
+zex(intersection(c2,c3)).  [deny(21)].
+-zex(intersection(c2,intersection(c2,c3))).  [deny(21)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating leq/2
+22 -less(x,y) | -leq(y,z) | less(x,z).  [clausify(5)].
+23 -cont(x,y) | leq(x,y).  [clausify(1)].
+Derived: -less(x,y) | less(x,z) | -cont(y,z).  [resolve(22,b,23,b)].
+24 -leq(x,y) | less(x,y) | eqdim(x,y).  [clausify(9)].
+Derived: less(x,y) | eqdim(x,y) | -cont(x,y).  [resolve(24,a,23,b)].
+25 leq(x,y) | -less(x,y).  [clausify(9)].
+Derived: -less(x,y) | -less(z,x) | less(z,y).  [resolve(25,a,22,b)].
+26 leq(x,y) | -eqdim(x,y).  [clausify(9)].
+Derived: -eqdim(x,y) | -less(z,x) | less(z,y).  [resolve(26,a,22,b)].
+27 -cont(x,y) | -cont(x,z) | leq(x,intersection(y,z)).  [clausify(19)].
+Derived: -cont(x,y) | -cont(x,z) | -less(u,x) | less(u,intersection(y,z)).  [resolve(27,c,22,b)].
+Derived: -cont(x,y) | -cont(x,z) | less(x,intersection(y,z)) | eqdim(x,intersection(y,z)).  [resolve(27,c,24,a)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (non-Horn, no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, zex, cont, less, eqdim, p ]).
+Function symbol precedence:  function_order([ c1, c2, c3, intersection, f1, f2 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+  % set(binary_resolution).  % (non-Horn)
+  % set(neg_ur_resolution).  % (non-Horn, less than 100 clauses)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+kept:      28 zex(c1).  [clausify(2)].
+kept:      29 -less(x,x).  [clausify(3)].
+kept:      30 -less(x,y) | -less(y,x).  [clausify(4)].
+kept:      31 -zex(x) | -zex(y) | y = x.  [clausify(6)].
+kept:      32 -zex(x) | zex(y) | less(x,y).  [clausify(7)].
+kept:      33 -eqdim(x,y) | -less(x,y).  [clausify(8)].
+kept:      34 -eqdim(x,y) | -less(y,x).  [clausify(8)].
+kept:      35 eqdim(x,y) | less(x,y) | less(y,x).  [clausify(8)].
+kept:      36 zex(x) | cont(x,x).  [clausify(10)].
+kept:      37 -zex(x) | -cont(x,x).  [clausify(10)].
+kept:      38 -cont(x,y) | -cont(y,x) | y = x.  [clausify(11)].
+kept:      39 -cont(x,y) | -cont(y,z) | cont(x,z).  [clausify(12)].
+kept:      40 -zex(x) | -cont(y,x).  [clausify(13)].
+kept:      41 -zex(x) | -cont(x,y).  [clausify(13)].
+kept:      42 cont(f1(x,y),x) | cont(f1(x,y),y) | y = x.  [clausify(14)].
+kept:      43 -cont(f1(x,y),x) | -cont(f1(x,y),y) | y = x.  [clausify(14)].
+kept:      44 -p(x,y) | cont(x,y).  [clausify(15)].
+kept:      45 -p(x,y) | eqdim(x,y).  [clausify(15)].
+kept:      46 p(x,y) | -cont(x,y) | -eqdim(x,y).  [clausify(15)].
+kept:      47 cont(f2(x,y),x) | zex(intersection(x,y)).  [clausify(16)].
+kept:      48 cont(f2(x,y),y) | zex(intersection(x,y)).  [clausify(16)].
+
+% Operation intersection is commutative; C redundancy checks enabled.
+kept:      49 intersection(x,y) = intersection(y,x).  [clausify(17)].
+kept:      50 zex(intersection(x,y)) | cont(intersection(x,y),x).  [clausify(18)].
+kept:      51 -cont(x,y) | -cont(x,z) | -eqdim(x,intersection(y,z)) | p(x,intersection(y,z)).  [clausify(20)].
+kept:      52 cont(x,y) | -p(x,intersection(y,z)).  [clausify(20)].
+kept:      53 cont(x,y) | -p(x,intersection(z,y)).  [clausify(20)].
+kept:      54 zex(intersection(c2,c3)).  [deny(21)].
+kept:      55 -zex(intersection(c2,intersection(c2,c3))).  [deny(21)].
+kept:      56 -less(x,y) | less(x,z) | -cont(y,z).  [resolve(22,b,23,b)].
+kept:      57 less(x,y) | eqdim(x,y) | -cont(x,y).  [resolve(24,a,23,b)].
+kept:      58 -less(x,y) | -less(z,x) | less(z,y).  [resolve(25,a,22,b)].
+kept:      59 -eqdim(x,y) | -less(z,x) | less(z,y).  [resolve(26,a,22,b)].
+kept:      60 -cont(x,y) | -cont(x,z) | -less(u,x) | less(u,intersection(y,z)).  [resolve(27,c,22,b)].
+kept:      61 -cont(x,y) | -cont(x,z) | less(x,intersection(y,z)) | eqdim(x,intersection(y,z)).  [resolve(27,c,24,a)].
+kept:      62 eqdim(x,x).  [factor(35,b,c),unit_del(b,29)].
+kept:      63 -cont(x,y) | -eqdim(x,intersection(y,y)) | p(x,intersection(y,y)).  [factor(51,a,b)].
+kept:      64 -cont(x,y) | -less(z,x) | less(z,intersection(y,y)).  [factor(60,a,b)].
+kept:      65 -cont(x,y) | less(x,intersection(y,y)) | eqdim(x,intersection(y,y)).  [factor(61,a,b)].
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+% Clauses after input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+28 zex(c1).  [clausify(2)].
+29 -less(x,x).  [clausify(3)].
+30 -less(x,y) | -less(y,x).  [clausify(4)].
+31 -zex(x) | -zex(y) | y = x.  [clausify(6)].
+32 -zex(x) | zex(y) | less(x,y).  [clausify(7)].
+33 -eqdim(x,y) | -less(x,y).  [clausify(8)].
+34 -eqdim(x,y) | -less(y,x).  [clausify(8)].
+35 eqdim(x,y) | less(x,y) | less(y,x).  [clausify(8)].
+36 zex(x) | cont(x,x).  [clausify(10)].
+38 -cont(x,y) | -cont(y,x) | y = x.  [clausify(11)].
+39 -cont(x,y) | -cont(y,z) | cont(x,z).  [clausify(12)].
+40 -zex(x) | -cont(y,x).  [clausify(13)].
+41 -zex(x) | -cont(x,y).  [clausify(13)].
+42 cont(f1(x,y),x) | cont(f1(x,y),y) | y = x.  [clausify(14)].
+43 -cont(f1(x,y),x) | -cont(f1(x,y),y) | y = x.  [clausify(14)].
+44 -p(x,y) | cont(x,y).  [clausify(15)].
+45 -p(x,y) | eqdim(x,y).  [clausify(15)].
+46 p(x,y) | -cont(x,y) | -eqdim(x,y).  [clausify(15)].
+47 cont(f2(x,y),x) | zex(intersection(x,y)).  [clausify(16)].
+48 cont(f2(x,y),y) | zex(intersection(x,y)).  [clausify(16)].
+49 intersection(x,y) = intersection(y,x).  [clausify(17)].
+50 zex(intersection(x,y)) | cont(intersection(x,y),x).  [clausify(18)].
+51 -cont(x,y) | -cont(x,z) | -eqdim(x,intersection(y,z)) | p(x,intersection(y,z)).  [clausify(20)].
+52 cont(x,y) | -p(x,intersection(y,z)).  [clausify(20)].
+53 cont(x,y) | -p(x,intersection(z,y)).  [clausify(20)].
+54 zex(intersection(c2,c3)).  [deny(21)].
+55 -zex(intersection(c2,intersection(c2,c3))).  [deny(21)].
+56 -less(x,y) | less(x,z) | -cont(y,z).  [resolve(22,b,23,b)].
+57 less(x,y) | eqdim(x,y) | -cont(x,y).  [resolve(24,a,23,b)].
+58 -less(x,y) | -less(z,x) | less(z,y).  [resolve(25,a,22,b)].
+59 -eqdim(x,y) | -less(z,x) | less(z,y).  [resolve(26,a,22,b)].
+60 -cont(x,y) | -cont(x,z) | -less(u,x) | less(u,intersection(y,z)).  [resolve(27,c,22,b)].
+61 -cont(x,y) | -cont(x,z) | less(x,intersection(y,z)) | eqdim(x,intersection(y,z)).  [resolve(27,c,24,a)].
+62 eqdim(x,x).  [factor(35,b,c),unit_del(b,29)].
+63 -cont(x,y) | -eqdim(x,intersection(y,y)) | p(x,intersection(y,y)).  [factor(51,a,b)].
+64 -cont(x,y) | -less(z,x) | less(z,intersection(y,y)).  [factor(60,a,b)].
+65 -cont(x,y) | less(x,intersection(y,y)) | eqdim(x,intersection(y,y)).  [factor(61,a,b)].
+end_of_list.
+
+formulas(demodulators).
+49 intersection(x,y) = intersection(y,x).  [clausify(17)].
+        % (lex-dep)
+end_of_list.
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.01 seconds.
+
+given #1 (I,wt=2): 28 zex(c1).  [clausify(2)].
+
+given #2 (I,wt=3): 29 -less(x,x).  [clausify(3)].
+
+given #3 (I,wt=6): 30 -less(x,y) | -less(y,x).  [clausify(4)].
+
+given #4 (I,wt=7): 31 -zex(x) | -zex(y) | y = x.  [clausify(6)].
+
+given #5 (I,wt=7): 32 -zex(x) | zex(y) | less(x,y).  [clausify(7)].
+
+given #6 (I,wt=6): 33 -eqdim(x,y) | -less(x,y).  [clausify(8)].
+
+given #7 (I,wt=6): 34 -eqdim(x,y) | -less(y,x).  [clausify(8)].
+
+given #8 (I,wt=9): 35 eqdim(x,y) | less(x,y) | less(y,x).  [clausify(8)].
+
+given #9 (I,wt=5): 36 zex(x) | cont(x,x).  [clausify(10)].
+
+given #10 (I,wt=9): 38 -cont(x,y) | -cont(y,x) | y = x.  [clausify(11)].
+
+given #11 (I,wt=9): 39 -cont(x,y) | -cont(y,z) | cont(x,z).  [clausify(12)].
+
+given #12 (I,wt=5): 40 -zex(x) | -cont(y,x).  [clausify(13)].
+
+given #13 (I,wt=5): 41 -zex(x) | -cont(x,y).  [clausify(13)].
+
+given #14 (I,wt=13): 42 cont(f1(x,y),x) | cont(f1(x,y),y) | y = x.  [clausify(14)].
+
+given #15 (I,wt=13): 43 -cont(f1(x,y),x) | -cont(f1(x,y),y) | y = x.  [clausify(14)].
+
+given #16 (I,wt=6): 44 -p(x,y) | cont(x,y).  [clausify(15)].
+
+given #17 (I,wt=6): 45 -p(x,y) | eqdim(x,y).  [clausify(15)].
+
+given #18 (I,wt=9): 46 p(x,y) | -cont(x,y) | -eqdim(x,y).  [clausify(15)].
+
+given #19 (I,wt=9): 47 cont(f2(x,y),x) | zex(intersection(x,y)).  [clausify(16)].
+
+given #20 (I,wt=9): 48 cont(f2(x,y),y) | zex(intersection(x,y)).  [clausify(16)].
+
+given #21 (I,wt=7): 49 intersection(x,y) = intersection(y,x).  [clausify(17)].
+
+given #22 (I,wt=9): 50 zex(intersection(x,y)) | cont(intersection(x,y),x).  [clausify(18)].
+
+given #23 (I,wt=16): 51 -cont(x,y) | -cont(x,z) | -eqdim(x,intersection(y,z)) | p(x,intersection(y,z)).  [clausify(20)].
+
+given #24 (I,wt=8): 52 cont(x,y) | -p(x,intersection(y,z)).  [clausify(20)].
+
+given #25 (I,wt=8): 53 cont(x,y) | -p(x,intersection(z,y)).  [clausify(20)].
+
+given #26 (I,wt=4): 54 zex(intersection(c2,c3)).  [deny(21)].
+
+given #27 (I,wt=6): 55 -zex(intersection(c2,intersection(c2,c3))).  [deny(21)].
+
+given #28 (I,wt=9): 56 -less(x,y) | less(x,z) | -cont(y,z).  [resolve(22,b,23,b)].
+
+given #29 (I,wt=9): 57 less(x,y) | eqdim(x,y) | -cont(x,y).  [resolve(24,a,23,b)].
+
+given #30 (I,wt=9): 58 -less(x,y) | -less(z,x) | less(z,y).  [resolve(25,a,22,b)].
+
+given #31 (I,wt=9): 59 -eqdim(x,y) | -less(z,x) | less(z,y).  [resolve(26,a,22,b)].
+
+given #32 (I,wt=14): 60 -cont(x,y) | -cont(x,z) | -less(u,x) | less(u,intersection(y,z)).  [resolve(27,c,22,b)].
+
+given #33 (I,wt=16): 61 -cont(x,y) | -cont(x,z) | less(x,intersection(y,z)) | eqdim(x,intersection(y,z)).  [resolve(27,c,24,a)].
+
+given #34 (I,wt=3): 62 eqdim(x,x).  [factor(35,b,c),unit_del(b,29)].
+
+given #35 (I,wt=13): 63 -cont(x,y) | -eqdim(x,intersection(y,y)) | p(x,intersection(y,y)).  [factor(51,a,b)].
+
+given #36 (I,wt=11): 64 -cont(x,y) | -less(z,x) | less(z,intersection(y,y)).  [factor(60,a,b)].
+
+given #37 (I,wt=13): 65 -cont(x,y) | less(x,intersection(y,y)) | eqdim(x,intersection(y,y)).  [factor(61,a,b)].
+
+given #38 (A,wt=5): 66 -zex(x) | c1 = x.  [resolve(31,a,28,a),flip(b)].
+
+given #39 (F,wt=3): 68 -cont(x,c1).  [ur(40,a,28,a)].
+
+============================== PROOF =================================
+
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 19.
+% Level of proof is 5.
+% Maximum clause weight is 9.000.
+% Given clauses 39.
+
+2 (exists x zex(x)) # label(non_clause).  [assumption].
+6 (all x all y (zex(x) & zex(y) -> x = y)) # label(non_clause).  [assumption].
+13 (all x all y (zex(x) -> -cont(y,x) & -cont(x,y))) # label(non_clause).  [assumption].
+17 (all x all y intersection(x,y) = intersection(y,x)) # label(non_clause).  [assumption].
+18 (all x all y (-zex(intersection(x,y)) -> cont(intersection(x,y),x))) # label(non_clause).  [assumption].
+21 (all x all y (zex(intersection(x,y)) -> zex(intersection(x,intersection(x,y))))) # label(non_clause) # label(goal).  [goal].
+28 zex(c1).  [clausify(2)].
+31 -zex(x) | -zex(y) | y = x.  [clausify(6)].
+40 -zex(x) | -cont(y,x).  [clausify(13)].
+49 intersection(x,y) = intersection(y,x).  [clausify(17)].
+50 zex(intersection(x,y)) | cont(intersection(x,y),x).  [clausify(18)].
+54 zex(intersection(c2,c3)).  [deny(21)].
+55 -zex(intersection(c2,intersection(c2,c3))).  [deny(21)].
+66 -zex(x) | c1 = x.  [resolve(31,a,28,a),flip(b)].
+68 -cont(x,c1).  [ur(40,a,28,a)].
+130 intersection(c2,c3) = c1.  [resolve(66,a,54,a),flip(a)].
+131 -zex(intersection(c1,c2)).  [back_rewrite(55),rewrite([130(4),49(3)])].
+132 zex(intersection(c1,x)).  [resolve(68,a,50,b)].
+133 $F.  [resolve(132,a,131,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=39. Generated=169. Kept=105. proofs=1.
+Usable=37. Sos=60. Demods=2. Limbo=0, Disabled=48. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=64. Back_subsumed=1.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=2 (1 lex), Back_demodulated=6. Back_unit_deleted=0.
+Demod_attempts=786. Demod_rewrites=10.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=179. Nonunit_bsub_feature_tests=251.
+Megabytes=0.23.
+User_CPU=0.01, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 21396 exit (max_proofs) Thu Sep  1 11:39:40 2011

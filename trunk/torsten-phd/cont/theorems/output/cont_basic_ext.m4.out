@@ -1,0 +1,106 @@
+============================== Mace4 =================================
+Mace4 (64) version 2009-11A, November 2009.
+Process 18371 was started by torsten on scotus.mie.utoronto.ca,
+Sun May 20 16:04:05 2012
+The command was "mace4 -c -t 600 -s 60 -n 2 -N 20 -f cont/theorems/p9/cont_basic_ext.p9 cont/p9/cont_basic.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file cont/theorems/p9/cont_basic_ext.p9
+
+
+formulas(sos).
+(all x all y ((all z (Cont(z,x) <-> Cont(z,y))) -> x = y)).
+end_of_list.
+
+% Reading from file cont/p9/cont_basic.p9
+
+
+formulas(sos).
+(all x (-ZEX(x) <-> Cont(x,x))).
+(all x all y (Cont(x,y) & Cont(y,x) -> x = y)).
+(all x all y all z (Cont(x,y) & Cont(y,z) -> Cont(x,z))).
+(all x all y (ZEX(x) -> -Cont(y,x) & -Cont(x,y))).
+(all x all y (ZEX(x) & ZEX(y) -> x = y)).
+end_of_list.
+
+% From the command line: assign(max_seconds, 600).
+
+% From the command line: assign(max_seconds_per, 60).
+    % assign(domain_size, 2) -> assign(start_size, 2).
+    % assign(domain_size, 2) -> assign(end_size, 2).
+
+% From the command line: assign(domain_size, 2).
+
+% From the command line: assign(end_size, 20).
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x all y ((all z (Cont(z,x) <-> Cont(z,y))) -> x = y)) # label(non_clause).  [assumption].
+2 (all x (-ZEX(x) <-> Cont(x,x))) # label(non_clause).  [assumption].
+3 (all x all y (Cont(x,y) & Cont(y,x) -> x = y)) # label(non_clause).  [assumption].
+4 (all x all y all z (Cont(x,y) & Cont(y,z) -> Cont(x,z))) # label(non_clause).  [assumption].
+5 (all x all y (ZEX(x) -> -Cont(y,x) & -Cont(x,y))) # label(non_clause).  [assumption].
+6 (all x all y (ZEX(x) & ZEX(y) -> x = y)) # label(non_clause).  [assumption].
+
+============================== end of process non-clausal formulas ===
+
+============================== CLAUSES FOR SEARCH ====================
+
+formulas(mace4_clauses).
+Cont(f1(x,y),x) | Cont(f1(x,y),y) | y = x.
+-Cont(f1(x,y),x) | -Cont(f1(x,y),y) | y = x.
+ZEX(x) | Cont(x,x).
+-ZEX(x) | -Cont(x,x).
+-Cont(x,y) | -Cont(y,x) | y = x.
+-Cont(x,y) | -Cont(y,z) | Cont(x,z).
+-ZEX(x) | -Cont(y,x).
+-ZEX(x) | -Cont(x,y).
+-ZEX(x) | -ZEX(y) | y = x.
+end_of_list.
+
+============================== end of clauses for search =============
+
+% There are no natural numbers in the input.
+
+============================== DOMAIN SIZE 2 =========================
+
+============================== MODEL =================================
+
+interpretation( 2, [number=1, seconds=0], [
+
+        function(f1(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(ZEX(_), [ 0, 0 ]),
+
+        relation(Cont(_,_), [
+			   1, 0,
+			   0, 1 ])
+]).
+
+============================== end of model ==========================
+
+============================== STATISTICS ============================
+
+For domain size 2.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.01 seconds).
+Ground clauses: seen=36, kept=28.
+Selections=7, assignments=7, propagations=3, current_models=1.
+Rewrite_terms=8, rewrite_bools=40, indexes=1.
+Rules_from_neg_clauses=0, cross_offs=0.
+
+============================== end of statistics =====================
+
+User_CPU=0.01, System_CPU=0.00, Wall_clock=0.
+
+Exiting with 1 model.
+
+Process 18371 exit (max_models) Sun May 20 16:04:05 2012
+The process finished Sun May 20 16:04:05 2012

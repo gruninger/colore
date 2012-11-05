@@ -1,0 +1,75 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% 'I-PA1: (PA1) extensionality of INCH - 1, not provable'
+ all x all y (((x = y) <->  all z ((INCH(x, z) <-> INCH(y, z))))).
+% 'I-PA2 (PA2) extensionality of INCH - 2, not provable'
+ all x all y (((x = y) <->  all z ((INCH(z, x) <-> INCH(z, y))))).
+% 'I-PA3: (PA3) reflexivity of INCH'
+ all x all y ((INCH(x, y) -> INCH(x, x))).
+% 'I-PA4: extents are dimensionally comparable - equal to using linear dimension'
+ all x all y (GED(x, y) | GED(y, x)).
+% 'I-PA5: GED transitive (equal to (< or EqDim transitive))'
+ all x all y all z ((GED(x, y) & GED(y, z) -> GED(x, z))).
+% 'I-PA6'
+ all x all y all z ((INCH(x, y) & INCH(y, z) & INCH(z, x) -> INCH(y, x))).
+% 'I-PA7'
+ all x all y ((INCH(x, y) ->  exists z (CS(z, x) & OV(z, y)))).
+% ----
+% EXTENSION: I-PA7* = I-A1
+% ----
+% all x all y ((INCH(x, y) ->  exists z (CS(z, x) & CH(z, y)))).
+% 'I-PA8'
+ all x all y ((CH(x, y) -> CS(x, y))).
+% 'I-PA9: (PA9) z = sum(x,y)'
+ all x all y ((GED(x, y) & GED(y, x) ->  exists z ( all w ((INCH(z, w) <-> INCH(x, w) | INCH(y, w)))))).
+% 'I-PA10: (PA10) z = diff(x,y)'
+ all x all y ((GED(x, y) & GED(y, x) ->  exists z ( all w ((INCH(z, w) <->  exists v (INCH(v, w) & CH(v, x) &  -OV(v, y)) ))) )).
+% I-PA10 with I-D2 used to replace OV
+% all x all y ((GED(x, y) & GED(y, x) ->  exists z ( all w ((INCH(z, w) <->  exists v (INCH(v, w) & CH(v, x) &  -(INCH(v, y) & INCH(y, v)) ) ))) )).
+% I-PA10 with I-D4 used to replace CH
+% all x all y ((GED(x, y) & GED(y, x) ->  exists z ( all w ((INCH(z, w) <->  exists v (INCH(v, w) & INCH(v, x) &  all u ((OV(v, u) -> OV(x, u) )) &  -OV(v, y) ) ))) )).
+
+% 'I-D1: CS = Cont?'
+ all x all y ((CS(x, y) <->  all z ((INCH(x, z) -> INCH(y, z))))).
+% 'I-D2: OV (traditional overlap); PO <-> OV'
+all x all y ((OV(x, y) <-> INCH(x, y) & INCH(y, x))).
+%% 'I-D3: CO (connected to) = C?' unnecessary
+% all x all y ((CO(x, y) <->  exists z (-(ZEX(z)) & CS(z, x) & CS(z, y)))).
+% 'I-D4: CH (chunk) = P?'
+ all x all y ((CH(x, y) <-> INCH(x, y) &  all z ((OV(x, z) -> OV(y, z))))).
+%% 'I-D5: EL (lower-dimensional part) = CONT & <?' unnecessary
+% all x all y ((EL(x, y) <-> CS(x, y) & -(INCH(x, y)))).
+% 'I-D6: D6
+ all x all y ((ZEX(x) <-> -(INCH(x, x)))).
+% D7 : GED
+ all x all y ((GED(x,y) <-> ZEX(y) | exists z (INCH(x,z) & INCH(z,y)))).
+%% D8: ED, unnecessary
+%all x all y (ED(x,y) <-> GED(x,y) & GED(y,x)).
+%% D9: GD, unnecessary
+%all x all y (GD(x,y) <-> GED(x,y) & -GED(y,x)).
+
+% ----
+% EXTENSION: some minimal chunk in each entity
+% ----
+%all x (exists y (CH(y,x)) -> exists y (CH(y,x) & all z (CH(z,y) -> z=y))).
+
+end_of_list.
+
+formulas(goals).
+
+all x all y (CS(x,y) & GED(x,y) & GED(y,x) & -ZEX(x) <- CH(x,y)).
+
+end_of_list.
+

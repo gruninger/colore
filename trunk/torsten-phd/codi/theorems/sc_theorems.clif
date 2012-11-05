@@ -1,0 +1,106 @@
+(cl-module codi/sc_theorems
+
+(cl-imports codi/codi_basic)
+
+(cl-imports codi/defs/ep)
+
+(cl-imports codi/defs/sc)
+
+
+(cl-comment 'SC-T1a: alternative definition of superficial contact')
+
+(forall (x y)
+	(if
+		(SC x y)
+		(C x y)
+	)
+)
+
+(cl-comment 'SC-T1b: alternative definition of superficial contact')
+
+(forall (x y)
+	(if
+		(SC x y)
+		(not (exists (z)
+			(and
+				(Cont z x)
+				(P z y)
+			)
+		))
+	)
+)
+
+
+(cl-comment 'SC-T1c: alternative definition of superficial contact')
+
+(forall (x y)
+	(if
+		(SC x y)
+		(not (exists (z)
+			(and
+				(P z x)
+				(Cont z y)
+			)
+		))
+	)
+)
+
+(cl-comment 'SC-T1d: alternative definition of superficial contact')
+
+(forall (x y)
+	(if
+		(and
+			(C x y)
+			(forall (z)
+				(or
+					(not (Cont z x))
+					(not (Cont z y))
+					(and
+						(not (P z x))
+						(not (P z y))
+					)
+				)
+			)
+		)
+		(SC x y)
+	)
+)
+
+
+
+(cl-comment 'SC-T2: superficial contact irreflexive')
+
+(forall (x)
+	(not (SC x x))
+)
+
+
+(cl-comment 'SC-T3: superficial contact symmetric')
+
+(forall (x y)
+	(if
+		(SC x y)
+		(SC y x)
+	)
+)
+
+
+(cl-comment 'SC-T4: superficial contact requires a shared entity of a lower dimension')
+
+(forall (x y)
+	(if
+		(SC x y)
+		(exists (z)
+			(and 
+				(< z x)
+				(< z y)
+				(Cont z x)
+				(Cont z y)
+			)
+		)
+	)
+)
+
+
+
+)

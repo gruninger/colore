@@ -1,0 +1,704 @@
+============================== Mace4 =================================
+Mace4 (64) version 2009-11A, November 2009.
+Process 31006 was started by torsten on stl-ws2,
+Tue Aug 21 11:26:01 2012
+The command was "mace4 -c -t 600 -s 60 -n 2 -N 20 -f codi/p9/codi_pl_aff.p9 codi/p9/codi_pl_lin.p9 codi/p9/codi_pl_slin.p9 codi/p9/codi_pl.p9 codi/p9/codi.p9 codi/p9/codi_linear.p9 cont/p9/cont_c.p9 codi//defs/p9/ep.p9 codi//defs/p9/epp.p9 codi//defs/p9/po.p9 codi//defs/p9/inc.p9 codi//defs/p9/sc.p9 codi//defs/p9/min_max_in_dim.p9 dim/p9/dim_prime_linear.p9 cont/p9/cont_basic.p9 dim/p9/dim_prime_linear_unbounded.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file codi/p9/codi_pl_aff.p9
+
+
+formulas(sos).
+(exists p exists q exists r (Pt(p) & Pt(q) & Pt(r) & p != q & p != r & q != r & (all l (L(l) -> -Cont(p,l) | -Cont(q,l) | -Cont(r,l))))).
+(all p all l (L(l) & Pt(p) & -Cont(p,l) -> (exists m (L(m) & Cont(p,m) & -C(l,m) & (all n (L(n) & Cont(p,n) & -C(l,n) -> m = n)))))).
+end_of_list.
+
+% Reading from file codi/p9/codi_pl_lin.p9
+
+
+formulas(sos).
+(all p all q (Pt(p) & Pt(q) & p != q -> (exists l (L(l) & Cont(p,l) & Cont(q,l))))).
+end_of_list.
+
+% Reading from file codi/p9/codi_pl_slin.p9
+
+
+formulas(sos).
+(all l all m all p all q (L(l) & L(m) & Pt(p) & Pt(q) & p != q & Cont(p,l) & Cont(q,l) & Cont(p,m) & Cont(q,m) -> l = m)).
+end_of_list.
+
+% Reading from file codi/p9/codi_pl.p9
+
+
+formulas(sos).
+(all x (Pt(x) <-> Max(x) & MinDim(x))).
+(all x (L(x) <-> Max(x) & (all y (Pt(y) -> Covers(x,y))))).
+(all x (L(x) -> (exists y exists z (Pt(y) & Pt(z) & Cont(y,x) & Cont(z,x) & y != z)))).
+end_of_list.
+
+% Reading from file codi/p9/codi.p9
+
+
+formulas(sos).
+end_of_list.
+
+% Reading from file codi/p9/codi_linear.p9
+
+
+formulas(sos).
+(all x all y (Cont(x,y) -> x < y | EqDim(x,y))).
+end_of_list.
+
+% Reading from file cont/p9/cont_c.p9
+
+
+formulas(sos).
+(all x all y (C(x,y) <-> (exists z (Cont(z,x) & Cont(z,y))))).
+end_of_list.
+
+% Reading from file codi//defs/p9/ep.p9
+
+
+formulas(sos).
+(all x all y (P(x,y) <-> Cont(x,y) & EqDim(x,y))).
+end_of_list.
+
+% Reading from file codi//defs/p9/epp.p9
+
+
+formulas(sos).
+(all x all y (PP(x,y) <-> P(x,y) & x != y)).
+end_of_list.
+
+% Reading from file codi//defs/p9/po.p9
+
+
+formulas(sos).
+(all x all y (PO(x,y) <-> (exists z (P(z,x) & P(z,y))))).
+end_of_list.
+
+% Reading from file codi//defs/p9/inc.p9
+
+
+formulas(sos).
+(all x all y (Inc(x,y) <-> (exists z (z < x & Cont(z,x) & P(z,y))) | (exists z (z < y & Cont(z,y) & P(z,x))))).
+end_of_list.
+
+% Reading from file codi//defs/p9/sc.p9
+
+
+formulas(sos).
+(all x all y (SC(x,y) <-> (exists z (Cont(z,x) & Cont(z,y))) & (all z (Cont(z,x) & Cont(z,y) -> z < x & z < y)))).
+end_of_list.
+
+% Reading from file codi//defs/p9/min_max_in_dim.p9
+
+
+formulas(sos).
+(all x (Max(x) <-> -ZEX(x) & (all y -PP(x,y)))).
+(all x (Min(x) <-> -ZEX(x) & (all y -PP(y,x)))).
+end_of_list.
+
+% Reading from file dim/p9/dim_prime_linear.p9
+
+
+formulas(sos).
+(exists x MinDim(x)).
+end_of_list.
+
+% Reading from file cont/p9/cont_basic.p9
+
+
+formulas(sos).
+(all x (-ZEX(x) <-> Cont(x,x))).
+(all x all y (Cont(x,y) & Cont(y,x) -> x = y)).
+(all x all y all z (Cont(x,y) & Cont(y,z) -> Cont(x,z))).
+(all x all y (ZEX(x) -> -Cont(y,x) & -Cont(x,y))).
+(all x all y (ZEX(x) & ZEX(y) -> x = y)).
+end_of_list.
+
+% Reading from file dim/p9/dim_prime_linear_unbounded.p9
+
+
+formulas(sos).
+(all x -(x < x)).
+(all x all y (x < y -> -(y < x))).
+(all x all y all z (x < y & y <= z -> x < z)).
+(all x all y (ZEX(x) & ZEX(y) -> x = y)).
+(all x all y (ZEX(x) & -ZEX(y) -> x < y)).
+(all x all y (EqDim(x,y) <-> -(x < y) & -(y < x))).
+(all x all y (x <= y <-> x < y | EqDim(x,y))).
+(all x (MaxDim(x) <-> (all y y <= x))).
+(all x (MinDim(x) <-> -ZEX(x) & (all y (y < x -> ZEX(y))))).
+(all x all y (Covers(x,y) <-> y < x & (all z -(y < z & z < x)))).
+end_of_list.
+
+% From the command line: assign(max_seconds, 600).
+
+% From the command line: assign(max_seconds_per, 60).
+    % assign(domain_size, 2) -> assign(start_size, 2).
+    % assign(domain_size, 2) -> assign(end_size, 2).
+
+% From the command line: assign(domain_size, 2).
+
+% From the command line: assign(end_size, 20).
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (exists p exists q exists r (Pt(p) & Pt(q) & Pt(r) & p != q & p != r & q != r & (all l (L(l) -> -Cont(p,l) | -Cont(q,l) | -Cont(r,l))))) # label(non_clause).  [assumption].
+2 (all p all l (L(l) & Pt(p) & -Cont(p,l) -> (exists m (L(m) & Cont(p,m) & -C(l,m) & (all n (L(n) & Cont(p,n) & -C(l,n) -> m = n)))))) # label(non_clause).  [assumption].
+3 (all p all q (Pt(p) & Pt(q) & p != q -> (exists l (L(l) & Cont(p,l) & Cont(q,l))))) # label(non_clause).  [assumption].
+4 (all l all m all p all q (L(l) & L(m) & Pt(p) & Pt(q) & p != q & Cont(p,l) & Cont(q,l) & Cont(p,m) & Cont(q,m) -> l = m)) # label(non_clause).  [assumption].
+5 (all x (Pt(x) <-> Max(x) & MinDim(x))) # label(non_clause).  [assumption].
+6 (all x (L(x) <-> Max(x) & (all y (Pt(y) -> Covers(x,y))))) # label(non_clause).  [assumption].
+7 (all x (L(x) -> (exists y exists z (Pt(y) & Pt(z) & Cont(y,x) & Cont(z,x) & y != z)))) # label(non_clause).  [assumption].
+8 (all x all y (Cont(x,y) -> x < y | EqDim(x,y))) # label(non_clause).  [assumption].
+9 (all x all y (C(x,y) <-> (exists z (Cont(z,x) & Cont(z,y))))) # label(non_clause).  [assumption].
+10 (all x all y (P(x,y) <-> Cont(x,y) & EqDim(x,y))) # label(non_clause).  [assumption].
+11 (all x all y (PP(x,y) <-> P(x,y) & x != y)) # label(non_clause).  [assumption].
+12 (all x all y (PO(x,y) <-> (exists z (P(z,x) & P(z,y))))) # label(non_clause).  [assumption].
+13 (all x all y (Inc(x,y) <-> (exists z (z < x & Cont(z,x) & P(z,y))) | (exists z (z < y & Cont(z,y) & P(z,x))))) # label(non_clause).  [assumption].
+14 (all x all y (SC(x,y) <-> (exists z (Cont(z,x) & Cont(z,y))) & (all z (Cont(z,x) & Cont(z,y) -> z < x & z < y)))) # label(non_clause).  [assumption].
+15 (all x (Max(x) <-> -ZEX(x) & (all y -PP(x,y)))) # label(non_clause).  [assumption].
+16 (all x (Min(x) <-> -ZEX(x) & (all y -PP(y,x)))) # label(non_clause).  [assumption].
+17 (exists x MinDim(x)) # label(non_clause).  [assumption].
+18 (all x (-ZEX(x) <-> Cont(x,x))) # label(non_clause).  [assumption].
+19 (all x all y (Cont(x,y) & Cont(y,x) -> x = y)) # label(non_clause).  [assumption].
+20 (all x all y all z (Cont(x,y) & Cont(y,z) -> Cont(x,z))) # label(non_clause).  [assumption].
+21 (all x all y (ZEX(x) -> -Cont(y,x) & -Cont(x,y))) # label(non_clause).  [assumption].
+22 (all x all y (ZEX(x) & ZEX(y) -> x = y)) # label(non_clause).  [assumption].
+23 (all x -(x < x)) # label(non_clause).  [assumption].
+24 (all x all y (x < y -> -(y < x))) # label(non_clause).  [assumption].
+25 (all x all y all z (x < y & y <= z -> x < z)) # label(non_clause).  [assumption].
+26 (all x all y (ZEX(x) & ZEX(y) -> x = y)) # label(non_clause).  [assumption].
+27 (all x all y (ZEX(x) & -ZEX(y) -> x < y)) # label(non_clause).  [assumption].
+28 (all x all y (EqDim(x,y) <-> -(x < y) & -(y < x))) # label(non_clause).  [assumption].
+29 (all x all y (x <= y <-> x < y | EqDim(x,y))) # label(non_clause).  [assumption].
+30 (all x (MaxDim(x) <-> (all y y <= x))) # label(non_clause).  [assumption].
+31 (all x (MinDim(x) <-> -ZEX(x) & (all y (y < x -> ZEX(y))))) # label(non_clause).  [assumption].
+32 (all x all y (Covers(x,y) <-> y < x & (all z -(y < z & z < x)))) # label(non_clause).  [assumption].
+
+============================== end of process non-clausal formulas ===
+
+============================== CLAUSES FOR SEARCH ====================
+
+formulas(mace4_clauses).
+Pt(c1).
+Pt(c2).
+Pt(c3).
+c2 != c1.
+c3 != c1.
+c3 != c2.
+-L(x) | -Cont(c1,x) | -Cont(c2,x) | -Cont(c3,x).
+-L(x) | -Pt(y) | Cont(y,x) | L(f1(y,x)).
+-L(x) | -Pt(y) | Cont(y,x) | Cont(y,f1(y,x)).
+-L(x) | -Pt(y) | Cont(y,x) | -C(x,f1(y,x)).
+-L(x) | -Pt(y) | Cont(y,x) | -L(z) | -Cont(y,z) | C(x,z) | z = f1(y,x).
+-Pt(x) | -Pt(y) | y = x | L(f2(x,y)).
+-Pt(x) | -Pt(y) | y = x | Cont(x,f2(x,y)).
+-Pt(x) | -Pt(y) | y = x | Cont(y,f2(x,y)).
+-L(x) | -L(y) | -Pt(z) | -Pt(u) | u = z | -Cont(z,x) | -Cont(u,x) | -Cont(z,y) | -Cont(u,y) | y = x.
+-Pt(x) | Max(x).
+-Pt(x) | MinDim(x).
+Pt(x) | -Max(x) | -MinDim(x).
+-L(x) | Max(x).
+-L(x) | -Pt(y) | Covers(x,y).
+L(x) | -Max(x) | Pt(f3(x)).
+L(x) | -Max(x) | -Covers(x,f3(x)).
+-L(x) | Pt(f4(x)).
+-L(x) | Pt(f5(x)).
+-L(x) | Cont(f4(x),x).
+-L(x) | Cont(f5(x),x).
+-L(x) | f5(x) != f4(x).
+-Cont(x,y) | x < y | EqDim(x,y).
+-C(x,y) | Cont(f6(x,y),x).
+-C(x,y) | Cont(f6(x,y),y).
+C(x,y) | -Cont(z,x) | -Cont(z,y).
+-P(x,y) | Cont(x,y).
+-P(x,y) | EqDim(x,y).
+P(x,y) | -Cont(x,y) | -EqDim(x,y).
+-PP(x,y) | P(x,y).
+-PP(x,y) | y != x.
+PP(x,y) | -P(x,y) | y = x.
+-PO(x,y) | P(f7(x,y),x).
+-PO(x,y) | P(f7(x,y),y).
+PO(x,y) | -P(z,x) | -P(z,y).
+-Inc(x,y) | f8(x,y) < x | f9(x,y) < y.
+-Inc(x,y) | f8(x,y) < x | Cont(f9(x,y),y).
+-Inc(x,y) | f8(x,y) < x | P(f9(x,y),x).
+-Inc(x,y) | Cont(f8(x,y),x) | f9(x,y) < y.
+-Inc(x,y) | Cont(f8(x,y),x) | Cont(f9(x,y),y).
+-Inc(x,y) | Cont(f8(x,y),x) | P(f9(x,y),x).
+-Inc(x,y) | P(f8(x,y),y) | f9(x,y) < y.
+-Inc(x,y) | P(f8(x,y),y) | Cont(f9(x,y),y).
+-Inc(x,y) | P(f8(x,y),y) | P(f9(x,y),x).
+Inc(x,y) | -(z < x) | -Cont(z,x) | -P(z,y).
+Inc(x,y) | -(z < y) | -Cont(z,y) | -P(z,x).
+-SC(x,y) | Cont(f10(x,y),x).
+-SC(x,y) | Cont(f10(x,y),y).
+-SC(x,y) | -Cont(z,x) | -Cont(z,y) | z < x.
+-SC(x,y) | -Cont(z,x) | -Cont(z,y) | z < y.
+SC(x,y) | -Cont(z,x) | -Cont(z,y) | Cont(f11(x,y),x).
+SC(x,y) | -Cont(z,x) | -Cont(z,y) | Cont(f11(x,y),y).
+SC(x,y) | -Cont(z,x) | -Cont(z,y) | -(f11(x,y) < x) | -(f11(x,y) < y).
+-Max(x) | -ZEX(x).
+-Max(x) | -PP(x,y).
+Max(x) | ZEX(x) | PP(x,f12(x)).
+-Min(x) | -ZEX(x).
+-Min(x) | -PP(y,x).
+Min(x) | ZEX(x) | PP(f13(x),x).
+MinDim(c4).
+ZEX(x) | Cont(x,x).
+-ZEX(x) | -Cont(x,x).
+-Cont(x,y) | -Cont(y,x) | y = x.
+-Cont(x,y) | -Cont(y,z) | Cont(x,z).
+-ZEX(x) | -Cont(y,x).
+-ZEX(x) | -Cont(x,y).
+-ZEX(x) | -ZEX(y) | y = x.
+-(x < x).
+-(x < y) | -(y < x).
+-(x < y) | -(y <= z) | x < z.
+-ZEX(x) | -ZEX(y) | y = x.
+-ZEX(x) | ZEX(y) | x < y.
+-EqDim(x,y) | -(x < y).
+-EqDim(x,y) | -(y < x).
+EqDim(x,y) | x < y | y < x.
+-(x <= y) | x < y | EqDim(x,y).
+x <= y | -(x < y).
+x <= y | -EqDim(x,y).
+-MaxDim(x) | y <= x.
+MaxDim(x) | -(f14(x) <= x).
+-MinDim(x) | -ZEX(x).
+-MinDim(x) | -(y < x) | ZEX(y).
+MinDim(x) | ZEX(x) | f15(x) < x.
+MinDim(x) | ZEX(x) | -ZEX(f15(x)).
+-Covers(x,y) | y < x.
+-Covers(x,y) | -(y < z) | -(z < x).
+Covers(x,y) | -(y < x) | y < f16(x,y).
+Covers(x,y) | -(y < x) | f16(x,y) < x.
+end_of_list.
+
+============================== end of clauses for search =============
+
+% There are no natural numbers in the input.
+
+============================== DOMAIN SIZE 2 =========================
+
+============================== STATISTICS ============================
+
+For domain size 2.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.01 seconds).
+Ground clauses: seen=369, kept=307.
+Selections=1, assignments=1, propagations=24, current_models=0.
+Rewrite_terms=8, rewrite_bools=195, indexes=5.
+Rules_from_neg_clauses=2, cross_offs=2.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 3 =========================
+
+============================== STATISTICS ============================
+
+For domain size 3.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.01 seconds).
+Ground clauses: seen=949, kept=814.
+Selections=2, assignments=3, propagations=95, current_models=0.
+Rewrite_terms=46, rewrite_bools=1086, indexes=13.
+Rules_from_neg_clauses=9, cross_offs=27.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 4 =========================
+
+============================== STATISTICS ============================
+
+For domain size 4.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.02 seconds).
+Ground clauses: seen=1971, kept=1719.
+Selections=3, assignments=6, propagations=158, current_models=0.
+Rewrite_terms=80, rewrite_bools=2439, indexes=26.
+Rules_from_neg_clauses=11, cross_offs=64.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 5 =========================
+
+============================== STATISTICS ============================
+
+For domain size 5.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.03 seconds).
+Ground clauses: seen=3597, kept=3172.
+Selections=4, assignments=10, propagations=263, current_models=0.
+Rewrite_terms=233, rewrite_bools=4863, indexes=34.
+Rules_from_neg_clauses=25, cross_offs=148.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 6 =========================
+
+============================== STATISTICS ============================
+
+For domain size 6.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.04 seconds).
+Ground clauses: seen=6013, kept=5347.
+Selections=5, assignments=15, propagations=368, current_models=0.
+Rewrite_terms=359, rewrite_bools=8357, indexes=43.
+Rules_from_neg_clauses=31, cross_offs=234.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 7 =========================
+
+============================== STATISTICS ============================
+
+For domain size 7.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.07 seconds).
+Ground clauses: seen=9429, kept=8442.
+Selections=6, assignments=21, propagations=483, current_models=0.
+Rewrite_terms=514, rewrite_bools=13510, indexes=53.
+Rules_from_neg_clauses=38, cross_offs=360.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 8 =========================
+
+============================== STATISTICS ============================
+
+For domain size 8.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.11 seconds).
+Ground clauses: seen=14079, kept=12679.
+Selections=7, assignments=28, propagations=631, current_models=0.
+Rewrite_terms=808, rewrite_bools=20705, indexes=62.
+Rules_from_neg_clauses=51, cross_offs=532.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 9 =========================
+
+============================== STATISTICS ============================
+
+For domain size 9.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.16 seconds).
+Ground clauses: seen=20221, kept=18304.
+Selections=8, assignments=36, propagations=760, current_models=0.
+Rewrite_terms=1002, rewrite_bools=29923, indexes=72.
+Rules_from_neg_clauses=60, cross_offs=711.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 10 ========================
+
+============================== MODEL =================================
+
+interpretation( 10, [number=1, seconds=0], [
+
+        function(c1, [ 0 ]),
+
+        function(c2, [ 1 ]),
+
+        function(c3, [ 2 ]),
+
+        function(c4, [ 0 ]),
+
+        function(f3(_), [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]),
+
+        function(f4(_), [ 0, 0, 0, 0, 0, 1, 2, 1, 0, 0 ]),
+
+        function(f5(_), [ 0, 0, 0, 1, 2, 2, 9, 9, 9, 0 ]),
+
+        function(f12(_), [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]),
+
+        function(f13(_), [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]),
+
+        function(f14(_), [ 3, 3, 3, 0, 0, 0, 0, 0, 0, 3 ]),
+
+        function(f15(_), [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]),
+
+        function(f1(_,_), [
+			   0, 0, 0, 0, 0, 8, 3, 4, 0, 0,
+			   0, 0, 0, 0, 7, 0, 3, 0, 5, 0,
+			   0, 0, 0, 6, 0, 0, 0, 4, 5, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 6, 7, 8, 0, 0, 0, 0 ]),
+
+        function(f2(_,_), [
+			   0, 3, 4, 0, 0, 0, 0, 0, 0, 8,
+			   3, 0, 5, 0, 0, 0, 0, 0, 0, 7,
+			   4, 5, 0, 0, 0, 0, 0, 0, 0, 6,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   8, 7, 6, 0, 0, 0, 0, 0, 0, 0 ]),
+
+        function(f6(_,_), [
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 1, 0, 1, 0, 1, 0, 1, 0, 0,
+			   0, 0, 2, 0, 2, 2, 2, 0, 0, 0,
+			   0, 1, 0, 0, 0, 1, 0, 1, 0, 0,
+			   0, 0, 2, 0, 0, 2, 2, 0, 0, 0,
+			   0, 1, 2, 1, 2, 1, 2, 1, 0, 0,
+			   0, 0, 2, 0, 2, 2, 2, 9, 9, 9,
+			   0, 1, 0, 1, 0, 1, 9, 1, 9, 9,
+			   0, 0, 0, 0, 0, 0, 9, 9, 0, 9,
+			   0, 0, 0, 0, 0, 0, 9, 9, 9, 9 ]),
+
+        function(f7(_,_), [
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 2, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 3, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 4, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 5, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 6, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 7, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 8, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 9 ]),
+
+        function(f8(_,_), [
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 2, 0, 0, 0, 0, 0, 0, 0,
+			   0, 1, 2, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 2, 0, 0, 0, 0, 0, 0, 9,
+			   0, 1, 0, 0, 0, 0, 0, 0, 0, 9,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]),
+
+        function(f9(_,_), [
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 1, 0, 1, 0, 1, 0, 0,
+			   0, 0, 0, 0, 2, 2, 2, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 9, 9, 9, 0 ]),
+
+        function(f10(_,_), [
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 1, 0, 1, 0, 0,
+			   0, 0, 0, 0, 0, 2, 2, 0, 0, 0,
+			   0, 0, 0, 1, 2, 0, 2, 1, 0, 0,
+			   0, 0, 0, 0, 2, 2, 0, 9, 9, 0,
+			   0, 0, 0, 1, 0, 1, 9, 0, 9, 0,
+			   0, 0, 0, 0, 0, 0, 9, 9, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]),
+
+        function(f11(_,_), [
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 1, 0, 1, 0, 1, 0, 1, 0, 0,
+			   0, 0, 2, 0, 2, 2, 2, 0, 0, 0,
+			   0, 1, 0, 3, 0, 0, 0, 0, 0, 0,
+			   0, 0, 2, 0, 4, 0, 0, 0, 0, 0,
+			   0, 1, 2, 0, 0, 5, 0, 0, 0, 0,
+			   0, 0, 2, 0, 0, 0, 6, 0, 0, 9,
+			   0, 1, 0, 0, 0, 0, 0, 7, 0, 9,
+			   0, 0, 0, 0, 0, 0, 0, 0, 8, 9,
+			   0, 0, 0, 0, 0, 0, 9, 9, 9, 9 ]),
+
+        function(f16(_,_), [
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]),
+
+        relation(L(_), [ 0, 0, 0, 1, 1, 1, 1, 1, 1, 0 ]),
+
+        relation(Max(_), [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ]),
+
+        relation(MaxDim(_), [ 0, 0, 0, 1, 1, 1, 1, 1, 1, 0 ]),
+
+        relation(Min(_), [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ]),
+
+        relation(MinDim(_), [ 1, 1, 1, 0, 0, 0, 0, 0, 0, 1 ]),
+
+        relation(Pt(_), [ 1, 1, 1, 0, 0, 0, 0, 0, 0, 1 ]),
+
+        relation(ZEX(_), [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]),
+
+        relation(<(_,_), [
+			   0, 0, 0, 1, 1, 1, 1, 1, 1, 0,
+			   0, 0, 0, 1, 1, 1, 1, 1, 1, 0,
+			   0, 0, 0, 1, 1, 1, 1, 1, 1, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 1, 1, 1, 1, 1, 1, 0 ]),
+
+        relation(<=(_,_), [
+			   1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			   1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			   1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+			   0, 0, 0, 1, 1, 1, 1, 1, 1, 0,
+			   0, 0, 0, 1, 1, 1, 1, 1, 1, 0,
+			   0, 0, 0, 1, 1, 1, 1, 1, 1, 0,
+			   0, 0, 0, 1, 1, 1, 1, 1, 1, 0,
+			   0, 0, 0, 1, 1, 1, 1, 1, 1, 0,
+			   0, 0, 0, 1, 1, 1, 1, 1, 1, 0,
+			   1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ]),
+
+        relation(C(_,_), [
+			   1, 0, 0, 1, 1, 0, 0, 0, 1, 0,
+			   0, 1, 0, 1, 0, 1, 0, 1, 0, 0,
+			   0, 0, 1, 0, 1, 1, 1, 0, 0, 0,
+			   1, 1, 0, 1, 1, 1, 0, 1, 1, 0,
+			   1, 0, 1, 1, 1, 1, 1, 0, 1, 0,
+			   0, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+			   0, 0, 1, 0, 1, 1, 1, 1, 1, 1,
+			   0, 1, 0, 1, 0, 1, 1, 1, 1, 1,
+			   1, 0, 0, 1, 1, 0, 1, 1, 1, 1,
+			   0, 0, 0, 0, 0, 0, 1, 1, 1, 1 ]),
+
+        relation(Cont(_,_), [
+			   1, 0, 0, 1, 1, 0, 0, 0, 1, 0,
+			   0, 1, 0, 1, 0, 1, 0, 1, 0, 0,
+			   0, 0, 1, 0, 1, 1, 1, 0, 0, 0,
+			   0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+			   0, 0, 0, 0, 0, 0, 1, 1, 1, 1 ]),
+
+        relation(Covers(_,_), [
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   1, 1, 1, 0, 0, 0, 0, 0, 0, 1,
+			   1, 1, 1, 0, 0, 0, 0, 0, 0, 1,
+			   1, 1, 1, 0, 0, 0, 0, 0, 0, 1,
+			   1, 1, 1, 0, 0, 0, 0, 0, 0, 1,
+			   1, 1, 1, 0, 0, 0, 0, 0, 0, 1,
+			   1, 1, 1, 0, 0, 0, 0, 0, 0, 1,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]),
+
+        relation(EqDim(_,_), [
+			   1, 1, 1, 0, 0, 0, 0, 0, 0, 1,
+			   1, 1, 1, 0, 0, 0, 0, 0, 0, 1,
+			   1, 1, 1, 0, 0, 0, 0, 0, 0, 1,
+			   0, 0, 0, 1, 1, 1, 1, 1, 1, 0,
+			   0, 0, 0, 1, 1, 1, 1, 1, 1, 0,
+			   0, 0, 0, 1, 1, 1, 1, 1, 1, 0,
+			   0, 0, 0, 1, 1, 1, 1, 1, 1, 0,
+			   0, 0, 0, 1, 1, 1, 1, 1, 1, 0,
+			   0, 0, 0, 1, 1, 1, 1, 1, 1, 0,
+			   1, 1, 1, 0, 0, 0, 0, 0, 0, 1 ]),
+
+        relation(Inc(_,_), [
+			   0, 0, 0, 1, 1, 0, 0, 0, 1, 0,
+			   0, 0, 0, 1, 0, 1, 0, 1, 0, 0,
+			   0, 0, 0, 0, 1, 1, 1, 0, 0, 0,
+			   1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+			   1, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+			   0, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 1, 0, 0, 0, 0, 0, 0, 1,
+			   0, 1, 0, 0, 0, 0, 0, 0, 0, 1,
+			   1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+			   0, 0, 0, 0, 0, 0, 1, 1, 1, 0 ]),
+
+        relation(P(_,_), [
+			   1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ]),
+
+        relation(PO(_,_), [
+			   1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 1, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 1 ]),
+
+        relation(PP(_,_), [
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]),
+
+        relation(SC(_,_), [
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			   0, 0, 0, 0, 1, 1, 0, 1, 1, 0,
+			   0, 0, 0, 1, 0, 1, 1, 0, 1, 0,
+			   0, 0, 0, 1, 1, 0, 1, 1, 0, 0,
+			   0, 0, 0, 0, 1, 1, 0, 1, 1, 0,
+			   0, 0, 0, 1, 0, 1, 1, 0, 1, 0,
+			   0, 0, 0, 1, 1, 0, 1, 1, 0, 0,
+			   0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ])
+]).
+
+============================== end of model ==========================
+
+============================== STATISTICS ============================
+
+For domain size 10.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.27 seconds).
+Ground clauses: seen=28137, kept=25587.
+Selections=896, assignments=1177, propagations=1446, current_models=1.
+Rewrite_terms=10046, rewrite_bools=46863, indexes=117.
+Rules_from_neg_clauses=181, cross_offs=2280.
+
+============================== end of statistics =====================
+
+User_CPU=0.27, System_CPU=0.01, Wall_clock=0.
+
+Exiting with 1 model.
+
+Process 31006 exit (max_models) Tue Aug 21 11:26:01 2012
+The process finished Tue Aug 21 11:26:01 2012

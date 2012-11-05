@@ -1,0 +1,140 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 14730 was started by torsten on stl-ws2,
+Mon Aug 27 16:18:05 2012
+The command was "prover9 -t 600 -f oig/p9/b_2d.p9 oig//theorems/p9/options.txt oig//theorems/p9/b_2d_theorems_2.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file oig/p9/b_2d.p9
+
+
+formulas(sos).
+(all x all y (on(x,y) -> P(x) & L(y))).
+(all x (P(x) | L(x))).
+(all x (-P(x) | -L(x))).
+(all a all b all c (B(a,b,c) -> B(c,b,a))).
+(all a all b all c (B(a,b,c) -> -B(b,c,a))).
+(all a all b all c all p ((exists l (on(a,l) & on(b,l) & on(c,l))) & a != b & a != c & b != c <-> B(a,b,c) | B(b,c,a) | B(c,a,b))).
+(all a all b all c all p all l (on(a,l) & on(b,l) & on(c,l) & on(p,l) & p != a & p != b & p != c & B(a,p,b) -> B(b,p,c) & -B(a,p,c) | B(a,p,c) & -B(b,p,c))).
+end_of_list.
+
+% Reading from file oig//theorems/p9/options.txt
+
+clear(auto_denials).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+
+% Reading from file oig//theorems/p9/b_2d_theorems_2.p9
+
+
+formulas(goals).
+(all a all b all c (B(a,b,c) -> -B(a,c,b) & -B(b,a,c))).
+end_of_list.
+
+============================== end of input ==========================
+
+% From the command line: assign(max_seconds, 600).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x all y (on(x,y) -> P(x) & L(y))) # label(non_clause).  [assumption].
+2 (all x (P(x) | L(x))) # label(non_clause).  [assumption].
+3 (all x (-P(x) | -L(x))) # label(non_clause).  [assumption].
+4 (all a all b all c (B(a,b,c) -> B(c,b,a))) # label(non_clause).  [assumption].
+5 (all a all b all c (B(a,b,c) -> -B(b,c,a))) # label(non_clause).  [assumption].
+6 (all a all b all c all p ((exists l (on(a,l) & on(b,l) & on(c,l))) & a != b & a != c & b != c <-> B(a,b,c) | B(b,c,a) | B(c,a,b))) # label(non_clause).  [assumption].
+7 (all a all b all c all p all l (on(a,l) & on(b,l) & on(c,l) & on(p,l) & p != a & p != b & p != c & B(a,p,b) -> B(b,p,c) & -B(a,p,c) | B(a,p,c) & -B(b,p,c))) # label(non_clause).  [assumption].
+8 (all a all b all c (B(a,b,c) -> -B(a,c,b) & -B(b,a,c))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating P/1
+9 -P(x) | -L(x).  [clausify(3)].
+10 -on(x,y) | P(x).  [clausify(1)].
+11 P(x) | L(x).  [clausify(2)].
+Derived: -L(x) | -on(x,y).  [resolve(9,a,10,b)].
+
+Eliminating L/1
+12 -L(x) | -on(x,y).  [resolve(9,a,10,b)].
+13 -on(x,y) | L(y).  [clausify(1)].
+Derived: -on(x,y) | -on(z,x).  [resolve(12,a,13,b)].
+
+============================== end predicate elimination =============
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, on, B ]).
+Function symbol precedence:  function_order([ c1, c2, c3, f1 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+  % set(binary_resolution).  % (non-Horn)
+  % set(neg_ur_resolution).  % (non-Horn, less than 100 clauses)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.01 seconds.
+
+============================== PROOF =================================
+
+% Proof 1 at 0.02 (+ 0.00) seconds.
+% Length of proof is 10.
+% Level of proof is 4.
+% Maximum clause weight is 8.000.
+% Given clauses 30.
+
+4 (all a all b all c (B(a,b,c) -> B(c,b,a))) # label(non_clause).  [assumption].
+5 (all a all b all c (B(a,b,c) -> -B(b,c,a))) # label(non_clause).  [assumption].
+8 (all a all b all c (B(a,b,c) -> -B(a,c,b) & -B(b,a,c))) # label(non_clause) # label(goal).  [goal].
+14 -B(x,y,z) | B(z,y,x).  [clausify(4)].
+15 -B(x,y,z) | -B(y,z,x).  [clausify(5)].
+34 B(c1,c2,c3).  [deny(8)].
+35 B(c1,c3,c2) | B(c2,c1,c3).  [deny(8)].
+63 B(c3,c2,c1).  [resolve(34,a,14,a)].
+81 B(c1,c3,c2).  [resolve(35,b,15,b),unit_del(b,63)].
+92 $F.  [resolve(63,a,15,b),unit_del(a,81)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=30. Generated=193. Kept=78. proofs=1.
+Usable=29. Sos=17. Demods=0. Limbo=10, Disabled=53. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=114. Back_subsumed=18.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=4.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=170. Nonunit_bsub_feature_tests=308.
+Megabytes=0.17.
+User_CPU=0.02, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 14730 exit (max_proofs) Mon Aug 27 16:18:05 2012
