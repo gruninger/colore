@@ -1,0 +1,410 @@
+============================== Mace4 =================================
+Mace4 (64) version 2009-11A, November 2009.
+Process 23825 was started by torsten on scotus.mie.utoronto.ca,
+Wed Aug 15 18:03:22 2012
+The command was "mace4 -c -t 600 -s 60 -n 2 -N 20 -f codi//theorems/p9/codi_down_theoremsT12.p9 codi/p9/codi_down.p9 codi/p9/codi_basic_atomic.p9 codi//defs/p9/min_max_in_dim.p9 codi/p9/codi_int.p9 codi/p9/codi_basic.p9 codi//defs/p9/ep.p9 codi//defs/p9/epp.p9 codi/p9/codi_linear.p9 zex/p9/zex.p9 dim/p9/dim_basic.p9 cont/p9/cont_ext.p9 dim/p9/dim_prime_linear.p9 cont/p9/cont_c.p9 cont/p9/cont_basic.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file codi//theorems/p9/codi_down_theoremsT12.p9
+
+
+formulas(sos).
+(all x all y all z (Cont(z,x) & Cont(difference(y,z),x) -> Cont(y,x))).
+end_of_list.
+
+% Reading from file codi/p9/codi_down.p9
+
+
+formulas(sos).
+(all x all y (-ZEX(difference(x,y)) -> EqDim(x,difference(x,y)))).
+(all x all y (y < x -> x = difference(x,y))).
+(all x all y all z (x <= y & Cont(z,x) & intersection(z,y) < z -> Cont(z,difference(x,y)))).
+(all x all y all z (x <= y & Cont(z,difference(x,y)) -> Cont(z,x))).
+(all x all y all z (x <= y & P(z,difference(x,y)) -> intersection(z,y) < z)).
+(all x all y (ZEX(difference(x,y)) <-> ZEX(x) | Cont(x,y))).
+end_of_list.
+
+% Reading from file codi/p9/codi_basic_atomic.p9
+
+
+formulas(sos).
+(all x (-ZEX(x) -> (exists y (P(y,x) & Min(y))))).
+end_of_list.
+
+% Reading from file codi//defs/p9/min_max_in_dim.p9
+
+
+formulas(sos).
+(all x (Max(x) <-> -ZEX(x) & (all y -PP(x,y)))).
+(all x (Min(x) <-> -ZEX(x) & (all y -PP(y,x)))).
+end_of_list.
+
+% Reading from file codi/p9/codi_int.p9
+
+
+formulas(sos).
+(all x all y (-C(x,y) <-> ZEX(intersection(x,y)))).
+(all x all y (-ZEX(intersection(x,y)) -> Cont(intersection(x,y),x))).
+(all x all y all z (Cont(z,x) & Cont(z,y) -> z <= intersection(x,y))).
+(all x all y all z (Cont(z,x) & Cont(z,y) & EqDim(z,intersection(x,y)) <-> P(z,intersection(x,y)))).
+end_of_list.
+
+% Reading from file codi/p9/codi_basic.p9
+
+
+formulas(sos).
+(all x all y (Cont(x,y) -> x < y | EqDim(x,y))).
+end_of_list.
+
+% Reading from file codi//defs/p9/ep.p9
+
+
+formulas(sos).
+(all x all y (P(x,y) <-> Cont(x,y) & EqDim(x,y))).
+end_of_list.
+
+% Reading from file codi//defs/p9/epp.p9
+
+
+formulas(sos).
+(all x all y (PP(x,y) <-> P(x,y) & x != y)).
+end_of_list.
+
+% Reading from file codi/p9/codi_linear.p9
+
+
+formulas(sos).
+(all x all y (Cont(x,y) -> x < y | EqDim(x,y))).
+end_of_list.
+
+% Reading from file zex/p9/zex.p9
+
+
+formulas(sos).
+(exists x ZEX(x)).
+end_of_list.
+
+% Reading from file dim/p9/dim_basic.p9
+
+
+formulas(sos).
+(all x -(x < x)).
+(all x all y (x < y -> -(y < x))).
+(all x all y all z (x < y & y < z -> x < z)).
+(all x EqDim(x,x)).
+(all x all y (EqDim(x,y) -> EqDim(y,x))).
+(all x all y all z (EqDim(x,y) & EqDim(y,z) -> EqDim(x,z))).
+(all x all y (x < y -> -EqDim(x,y))).
+(all x all y all z (EqDim(x,y) -> (z < x -> z < y))).
+(all x all y all z (EqDim(x,y) -> (x < z -> y < z))).
+(exists x (-ZEX(x) & (all y (y < x -> ZEX(y))))).
+(all x all y (ZEX(x) & ZEX(y) -> x = y)).
+(all x all y (ZEX(x) & -ZEX(y) -> x < y)).
+end_of_list.
+
+% Reading from file cont/p9/cont_ext.p9
+
+
+formulas(sos).
+(all x all y ((all z (Cont(z,x) <-> Cont(z,y))) -> x = y)).
+end_of_list.
+
+% Reading from file dim/p9/dim_prime_linear.p9
+
+
+formulas(sos).
+(all x -(x < x)).
+(all x all y (x < y -> -(y < x))).
+(all x all y all z (x < y & y <= z -> x < z)).
+(all x all y (ZEX(x) & ZEX(y) -> x = y)).
+(all x all y (ZEX(x) & -ZEX(y) -> x < y)).
+(exists x MinDim(x)).
+(all x all y (EqDim(x,y) <-> -(x < y) & -(y < x))).
+(all x all y (x <= y <-> x < y | EqDim(x,y))).
+(all x (MaxDim(x) <-> (all y y <= x))).
+(all x (MinDim(x) <-> -ZEX(x) & (all y (y < x -> ZEX(y))))).
+(all x all y (Covers(x,y) <-> y < x & (all z -(y < z & z < x)))).
+end_of_list.
+
+% Reading from file cont/p9/cont_c.p9
+
+
+formulas(sos).
+(all x all y (C(x,y) <-> (exists z (Cont(z,x) & Cont(z,y))))).
+end_of_list.
+
+% Reading from file cont/p9/cont_basic.p9
+
+
+formulas(sos).
+(all x (-ZEX(x) <-> Cont(x,x))).
+(all x all y (Cont(x,y) & Cont(y,x) -> x = y)).
+(all x all y all z (Cont(x,y) & Cont(y,z) -> Cont(x,z))).
+(all x all y (ZEX(x) -> -Cont(y,x) & -Cont(x,y))).
+(all x all y (ZEX(x) & ZEX(y) -> x = y)).
+end_of_list.
+
+% From the command line: assign(max_seconds, 600).
+
+% From the command line: assign(max_seconds_per, 60).
+    % assign(domain_size, 2) -> assign(start_size, 2).
+    % assign(domain_size, 2) -> assign(end_size, 2).
+
+% From the command line: assign(domain_size, 2).
+
+% From the command line: assign(end_size, 20).
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x all y all z (Cont(z,x) & Cont(difference(y,z),x) -> Cont(y,x))) # label(non_clause).  [assumption].
+2 (all x all y (-ZEX(difference(x,y)) -> EqDim(x,difference(x,y)))) # label(non_clause).  [assumption].
+3 (all x all y (y < x -> x = difference(x,y))) # label(non_clause).  [assumption].
+4 (all x all y all z (x <= y & Cont(z,x) & intersection(z,y) < z -> Cont(z,difference(x,y)))) # label(non_clause).  [assumption].
+5 (all x all y all z (x <= y & Cont(z,difference(x,y)) -> Cont(z,x))) # label(non_clause).  [assumption].
+6 (all x all y all z (x <= y & P(z,difference(x,y)) -> intersection(z,y) < z)) # label(non_clause).  [assumption].
+7 (all x all y (ZEX(difference(x,y)) <-> ZEX(x) | Cont(x,y))) # label(non_clause).  [assumption].
+8 (all x (-ZEX(x) -> (exists y (P(y,x) & Min(y))))) # label(non_clause).  [assumption].
+9 (all x (Max(x) <-> -ZEX(x) & (all y -PP(x,y)))) # label(non_clause).  [assumption].
+10 (all x (Min(x) <-> -ZEX(x) & (all y -PP(y,x)))) # label(non_clause).  [assumption].
+11 (all x all y (-C(x,y) <-> ZEX(intersection(x,y)))) # label(non_clause).  [assumption].
+12 (all x all y (-ZEX(intersection(x,y)) -> Cont(intersection(x,y),x))) # label(non_clause).  [assumption].
+13 (all x all y all z (Cont(z,x) & Cont(z,y) -> z <= intersection(x,y))) # label(non_clause).  [assumption].
+14 (all x all y all z (Cont(z,x) & Cont(z,y) & EqDim(z,intersection(x,y)) <-> P(z,intersection(x,y)))) # label(non_clause).  [assumption].
+15 (all x all y (Cont(x,y) -> x < y | EqDim(x,y))) # label(non_clause).  [assumption].
+16 (all x all y (P(x,y) <-> Cont(x,y) & EqDim(x,y))) # label(non_clause).  [assumption].
+17 (all x all y (PP(x,y) <-> P(x,y) & x != y)) # label(non_clause).  [assumption].
+18 (all x all y (Cont(x,y) -> x < y | EqDim(x,y))) # label(non_clause).  [assumption].
+19 (exists x ZEX(x)) # label(non_clause).  [assumption].
+20 (all x -(x < x)) # label(non_clause).  [assumption].
+21 (all x all y (x < y -> -(y < x))) # label(non_clause).  [assumption].
+22 (all x all y all z (x < y & y < z -> x < z)) # label(non_clause).  [assumption].
+23 (all x EqDim(x,x)) # label(non_clause).  [assumption].
+24 (all x all y (EqDim(x,y) -> EqDim(y,x))) # label(non_clause).  [assumption].
+25 (all x all y all z (EqDim(x,y) & EqDim(y,z) -> EqDim(x,z))) # label(non_clause).  [assumption].
+26 (all x all y (x < y -> -EqDim(x,y))) # label(non_clause).  [assumption].
+27 (all x all y all z (EqDim(x,y) -> (z < x -> z < y))) # label(non_clause).  [assumption].
+28 (all x all y all z (EqDim(x,y) -> (x < z -> y < z))) # label(non_clause).  [assumption].
+29 (exists x (-ZEX(x) & (all y (y < x -> ZEX(y))))) # label(non_clause).  [assumption].
+30 (all x all y (ZEX(x) & ZEX(y) -> x = y)) # label(non_clause).  [assumption].
+31 (all x all y (ZEX(x) & -ZEX(y) -> x < y)) # label(non_clause).  [assumption].
+32 (all x all y ((all z (Cont(z,x) <-> Cont(z,y))) -> x = y)) # label(non_clause).  [assumption].
+33 (all x -(x < x)) # label(non_clause).  [assumption].
+34 (all x all y (x < y -> -(y < x))) # label(non_clause).  [assumption].
+35 (all x all y all z (x < y & y <= z -> x < z)) # label(non_clause).  [assumption].
+36 (all x all y (ZEX(x) & ZEX(y) -> x = y)) # label(non_clause).  [assumption].
+37 (all x all y (ZEX(x) & -ZEX(y) -> x < y)) # label(non_clause).  [assumption].
+38 (exists x MinDim(x)) # label(non_clause).  [assumption].
+39 (all x all y (EqDim(x,y) <-> -(x < y) & -(y < x))) # label(non_clause).  [assumption].
+40 (all x all y (x <= y <-> x < y | EqDim(x,y))) # label(non_clause).  [assumption].
+41 (all x (MaxDim(x) <-> (all y y <= x))) # label(non_clause).  [assumption].
+42 (all x (MinDim(x) <-> -ZEX(x) & (all y (y < x -> ZEX(y))))) # label(non_clause).  [assumption].
+43 (all x all y (Covers(x,y) <-> y < x & (all z -(y < z & z < x)))) # label(non_clause).  [assumption].
+44 (all x all y (C(x,y) <-> (exists z (Cont(z,x) & Cont(z,y))))) # label(non_clause).  [assumption].
+45 (all x (-ZEX(x) <-> Cont(x,x))) # label(non_clause).  [assumption].
+46 (all x all y (Cont(x,y) & Cont(y,x) -> x = y)) # label(non_clause).  [assumption].
+47 (all x all y all z (Cont(x,y) & Cont(y,z) -> Cont(x,z))) # label(non_clause).  [assumption].
+48 (all x all y (ZEX(x) -> -Cont(y,x) & -Cont(x,y))) # label(non_clause).  [assumption].
+49 (all x all y (ZEX(x) & ZEX(y) -> x = y)) # label(non_clause).  [assumption].
+
+============================== end of process non-clausal formulas ===
+
+============================== CLAUSES FOR SEARCH ====================
+
+formulas(mace4_clauses).
+-Cont(x,y) | -Cont(difference(z,x),y) | Cont(z,y).
+ZEX(difference(x,y)) | EqDim(x,difference(x,y)).
+-(x < y) | difference(y,x) = y.
+-(x <= y) | -Cont(z,x) | -(intersection(z,y) < z) | Cont(z,difference(x,y)).
+-(x <= y) | -Cont(z,difference(x,y)) | Cont(z,x).
+-(x <= y) | -P(z,difference(x,y)) | intersection(z,y) < z.
+-ZEX(difference(x,y)) | ZEX(x) | Cont(x,y).
+ZEX(difference(x,y)) | -ZEX(x).
+ZEX(difference(x,y)) | -Cont(x,y).
+ZEX(x) | P(f1(x),x).
+ZEX(x) | Min(f1(x)).
+-Max(x) | -ZEX(x).
+-Max(x) | -PP(x,y).
+Max(x) | ZEX(x) | PP(x,f2(x)).
+-Min(x) | -ZEX(x).
+-Min(x) | -PP(y,x).
+Min(x) | ZEX(x) | PP(f3(x),x).
+C(x,y) | ZEX(intersection(x,y)).
+-C(x,y) | -ZEX(intersection(x,y)).
+ZEX(intersection(x,y)) | Cont(intersection(x,y),x).
+-Cont(x,y) | -Cont(x,z) | x <= intersection(y,z).
+-Cont(x,y) | -Cont(x,z) | -EqDim(x,intersection(y,z)) | P(x,intersection(y,z)).
+Cont(x,y) | -P(x,intersection(y,z)).
+Cont(x,y) | -P(x,intersection(z,y)).
+EqDim(x,intersection(y,z)) | -P(x,intersection(y,z)).
+-Cont(x,y) | x < y | EqDim(x,y).
+-P(x,y) | Cont(x,y).
+-P(x,y) | EqDim(x,y).
+P(x,y) | -Cont(x,y) | -EqDim(x,y).
+-PP(x,y) | P(x,y).
+-PP(x,y) | y != x.
+PP(x,y) | -P(x,y) | y = x.
+-Cont(x,y) | x < y | EqDim(x,y).
+ZEX(c1).
+-(x < x).
+-(x < y) | -(y < x).
+-(x < y) | -(y < z) | x < z.
+EqDim(x,x).
+-EqDim(x,y) | EqDim(y,x).
+-EqDim(x,y) | -EqDim(y,z) | EqDim(x,z).
+-(x < y) | -EqDim(x,y).
+-EqDim(x,y) | -(z < x) | z < y.
+-EqDim(x,y) | -(x < z) | y < z.
+-ZEX(c2).
+-(x < c2) | ZEX(x).
+-ZEX(x) | -ZEX(y) | y = x.
+-ZEX(x) | ZEX(y) | x < y.
+Cont(f4(x,y),x) | Cont(f4(x,y),y) | y = x.
+-Cont(f4(x,y),x) | -Cont(f4(x,y),y) | y = x.
+-(x < x).
+-(x < y) | -(y < x).
+-(x < y) | -(y <= z) | x < z.
+-ZEX(x) | -ZEX(y) | y = x.
+-ZEX(x) | ZEX(y) | x < y.
+MinDim(c3).
+-EqDim(x,y) | -(x < y).
+-EqDim(x,y) | -(y < x).
+EqDim(x,y) | x < y | y < x.
+-(x <= y) | x < y | EqDim(x,y).
+x <= y | -(x < y).
+x <= y | -EqDim(x,y).
+-MaxDim(x) | y <= x.
+MaxDim(x) | -(f5(x) <= x).
+-MinDim(x) | -ZEX(x).
+-MinDim(x) | -(y < x) | ZEX(y).
+MinDim(x) | ZEX(x) | f6(x) < x.
+MinDim(x) | ZEX(x) | -ZEX(f6(x)).
+-Covers(x,y) | y < x.
+-Covers(x,y) | -(y < z) | -(z < x).
+Covers(x,y) | -(y < x) | y < f7(x,y).
+Covers(x,y) | -(y < x) | f7(x,y) < x.
+-C(x,y) | Cont(f8(x,y),x).
+-C(x,y) | Cont(f8(x,y),y).
+C(x,y) | -Cont(z,x) | -Cont(z,y).
+ZEX(x) | Cont(x,x).
+-ZEX(x) | -Cont(x,x).
+-Cont(x,y) | -Cont(y,x) | y = x.
+-Cont(x,y) | -Cont(y,z) | Cont(x,z).
+-ZEX(x) | -Cont(y,x).
+-ZEX(x) | -Cont(x,y).
+-ZEX(x) | -ZEX(y) | y = x.
+end_of_list.
+
+============================== end of clauses for search =============
+
+% There are no natural numbers in the input.
+
+============================== DOMAIN SIZE 2 =========================
+
+============================== MODEL =================================
+
+interpretation( 2, [number=1, seconds=0], [
+
+        function(c1, [ 0 ]),
+
+        function(c2, [ 1 ]),
+
+        function(c3, [ 1 ]),
+
+        function(f1(_), [ 0, 1 ]),
+
+        function(f2(_), [ 0, 0 ]),
+
+        function(f3(_), [ 0, 0 ]),
+
+        function(f5(_), [ 1, 0 ]),
+
+        function(f6(_), [ 0, 0 ]),
+
+        function(difference(_,_), [
+			   0, 0,
+			   1, 0 ]),
+
+        function(intersection(_,_), [
+			   0, 0,
+			   0, 1 ]),
+
+        function(f4(_,_), [
+			   0, 1,
+			   1, 0 ]),
+
+        function(f7(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        function(f8(_,_), [
+			   0, 0,
+			   0, 1 ]),
+
+        relation(Max(_), [ 0, 1 ]),
+
+        relation(MaxDim(_), [ 0, 1 ]),
+
+        relation(Min(_), [ 0, 1 ]),
+
+        relation(MinDim(_), [ 0, 1 ]),
+
+        relation(ZEX(_), [ 1, 0 ]),
+
+        relation(<(_,_), [
+			   0, 1,
+			   0, 0 ]),
+
+        relation(<=(_,_), [
+			   1, 1,
+			   0, 1 ]),
+
+        relation(C(_,_), [
+			   0, 0,
+			   0, 1 ]),
+
+        relation(Cont(_,_), [
+			   0, 0,
+			   0, 1 ]),
+
+        relation(Covers(_,_), [
+			   0, 0,
+			   1, 0 ]),
+
+        relation(EqDim(_,_), [
+			   1, 0,
+			   0, 1 ]),
+
+        relation(P(_,_), [
+			   0, 0,
+			   0, 1 ]),
+
+        relation(PP(_,_), [
+			   0, 0,
+			   0, 0 ])
+]).
+
+============================== end of model ==========================
+
+============================== STATISTICS ============================
+
+For domain size 2.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.01 seconds).
+Ground clauses: seen=351, kept=277.
+Selections=20, assignments=22, propagations=55, current_models=1.
+Rewrite_terms=191, rewrite_bools=417, indexes=19.
+Rules_from_neg_clauses=13, cross_offs=13.
+
+============================== end of statistics =====================
+
+User_CPU=0.01, System_CPU=0.00, Wall_clock=0.
+
+Exiting with 1 model.
+
+Process 23825 exit (max_models) Wed Aug 15 18:03:22 2012
+The process finished Wed Aug 15 18:03:22 2012

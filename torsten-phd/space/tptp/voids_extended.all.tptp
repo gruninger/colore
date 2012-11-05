@@ -1,0 +1,184 @@
+
+% The LADR formulas contain function or predicate symbols
+% that are not legal TPTP symbols, and we have replaced those
+% symbols with new symbols.  Here is the list of the unaccepted
+% symbols and the corresponding replacements.
+%
+%   (arity 2)    EqDim    'EqDim'
+%   (arity 2)     Cont    'Cont'
+%   (arity 2)        P    'P'
+%   (arity 2)       PP    'PP'
+%   (arity 2)    BCont    'BCont'
+%   (arity 2)    TCont    'TCont'
+%   (arity 2)    ICont    'ICont'
+%   (arity 1)   Closed    'Closed'
+%   (arity 2)        <    '<'
+%   (arity 2)       SC    'SC'
+%   (arity 2)      Inc    'Inc'
+%   (arity 2)       PO    'PO'
+%   (arity 1)      ZEX    'ZEX'
+%   (arity 1)      Min    'Min'
+%   (arity 1)      Max    'Max'
+%   (arity 2)   Covers    'Covers'
+%   (arity 2)  StrongC    'StrongC'
+%   (arity 1)      Con    'Con'
+%   (arity 1)        S    'S'
+%   (arity 1)     UCon    'UCon'
+%   (arity 1)     ICon    'ICon'
+%   (arity 0)      Uni    'Uni'
+%   (arity 3)     TSum    'TSum'
+%   (arity 2)        C    'C'
+%   (arity 1)   MinDim    'MinDim'
+%   (arity 1)   MaxDim    'MaxDim'
+%   (arity 2)      DK1    'DK1'
+%   (arity 1)      RPF    'RPF'
+%   (arity 1)      POD    'POD'
+%   (arity 1)        F    'F'
+%   (arity 1)        M    'M'
+%   (arity 1)      DPF    'DPF'
+%   (arity 1)      PED    'PED'
+%   (arity 1)     NAPO    'NAPO'
+%   (arity 1)        V    'V'
+%   (arity 1)  SimpleV    'SimpleV'
+%   (arity 1) ComplexV    'ComplexV'
+%   (arity 2)       VS    'VS'
+%   (arity 1)      TUN    'TUN'
+%   (arity 1)      HOL    'HOL'
+%   (arity 1)   CAVITY    'CAVITY'
+%   (arity 0)        U    'U'
+%   (arity 1)      Gap    'Gap'
+%   (arity 1)     Hole    'Hole'
+
+fof(sos52,axiom,! [X0] : ! [X1] : (hostsh(X0,X1) <=> (hostsv(X0,X1) &'ICon'(r(X0))))).
+fof(sos53,axiom,! [X2] : ! [X3] : (hostsg(X2,X3) <=> (hostsv(X2,X3) & ~'ICon'(r(X2))))).
+fof(sos54,axiom,! [X4] : ('Hole'(X4) <=> ? [X5] : hostsh(X5,X4))).
+fof(sos55,axiom,! [X6] : ('Gap'(X6) <=> ? [X7] : hostsg(X7,X6))).
+fof(sos56,axiom,! [X8] : ! [X9] : (hostsv(X8,X9) => op(X8,X9) = intersection(r(X9),difference('U',sum(r(X8),r(X9)))))).
+fof(sos57,axiom,! [X10] : ! [X11] : (hostscavity(X10,X11) <=> (hostsv(X10,X11) & ~'Covers'(r(X10),op(X10,X11))))).
+fof(sos58,axiom,! [X12] : ('CAVITY'(X12) <=> ? [X13] : hostscavity(X13,X12))).
+fof(sos59,axiom,! [X14] : ! [X15] : (hostscavityi(X14,X15) <=> (hostscavity(X14,X15) &'ZEX'(op(X14,X15))))).
+fof(sos60,axiom,! [X16] : ! [X17] : (hostscavityt(X16,X17) <=> (hostscavity(X16,X17) & ~'ZEX'(op(X16,X17))))).
+fof(sos61,axiom,! [X18] : ! [X19] : (hostshollow(X18,X19) <=> (hostsv(X18,X19) & ('Covers'(r(X18),op(X18,X19)) &'ICon'(op(X18,X19)))))).
+fof(sos62,axiom,! [X20] : ('HOL'(X20) <=> ? [X21] : hostshollow(X21,X20))).
+fof(sos63,axiom,! [X22] : ! [X23] : (hoststunnel(X22,X23) <=> (hostsv(X22,X23) & ('Covers'(r(X22),op(X22,X23)) & ~'ICon'(op(X22,X23)))))).
+fof(sos64,axiom,! [X24] : ('TUN'(X24) <=> ? [X25] : hoststunnel(X25,X24))).
+fof(sos65,axiom,! [X26] : ! [X27] : (hostsve(X26,X27) <=> (hostsv(X26,X27) & ? [X28] : ('P'(X28,op(X26,X27)) & ! [X29] : ((hostsv(X26,X29) &'EqDim'(intersection(X28,r(X29)),X28)) => ('PO'(r(X27),r(X29)) &'Cont'(intersection(X28,r(X29)),op(X26,X29)))))))).
+fof(sos66,axiom,! [X30] : ! [X31] : (hostsvi(X30,X31) <=> (hostsv(X30,X31) & ~ hostsve(X30,X31)))).
+fof(sos67,axiom,! [X32] : ! [X33] : ('PO'(X32,porespace(X33)) <=> ? [X34] : ('DK1'(X34,X33) & (! [X35] : (hostsv(X33,X35) => ~'PO'(X32,r(X35))) & ? [X36] : (hostsv(X34,X36) &'PO'(X32,r(X36))))))).
+fof(sos68,axiom,! [X37] : ! [X38] : ('PO'(X37,voidspace(X38)) <=> ('PO'(X37,porespace(X38)) | ? [X39] : (hostsv(X38,X39) &'PO'(X37,r(X39)))))).
+fof(sos69,axiom,! [X40] : (~'ZEX'(porespace(X40)) => ? [X41] : ? [X42] : (r(X41) = porespace(X40) & (hostsv(X42,X41) &'DK1'(X42,X40))))).
+fof(sos70,axiom,! [X43] : (~'ZEX'(voidspace(X43)) => ? [X44] : ? [X45] : (r(X44) = voidspace(X43) & (hostsv(X45,X44) &'DK1'(X45,X43))))).
+fof(sos71,axiom,! [X46] : ! [X47] : ('PO'(X46,convoidspace(X47)) <=> ? [X48] : ('PO'(X46,X48) & ('ICon'(X48) & ('Cont'(X48,voidspace(X47)) &'StrongC'(X48,difference('Uni',sum(r(X47),voidspace(X47))))))))).
+fof(sos72,axiom,! [X49] : ! [X50] : ('PO'(X49,conporespace(X50)) <=> ? [X51] : ('PO'(X49,X51) & ('ICon'(X51) & ('Cont'(X51,porespace(X50)) &'StrongC'(X51,difference('Uni',sum(r(X50),porespace(X50))))))))).
+fof(sos73,axiom,! [X52] : ! [X53] : ('VS'(X52,X53) <=> ('PED'(X52) & ('S'(X53) & ('Cont'(X53,ch(X52)) & ~'PO'(X53,r(X52))))))).
+fof(sos74,axiom,! [X54] : ! [X55] : ('SimpleV'(X55) <=> ('ICon'(r(X55)) & ? [X56] : hostsv(X56,X55)))).
+fof(sos75,axiom,! [X57] : ! [X58] : ('ComplexV'(X58) <=> (~'ICon'(r(X58)) & ? [X59] : hostsv(X59,X58)))).
+fof(sos76,axiom,! [X60] : ('V'(X60) <=> ('SimpleV'(X60) |'ComplexV'(X60)))).
+fof(sos77,axiom,! [X61] : ! [X62] : (hostsv(X61,X62) => (hosts(X61,X62) & ('VS'(X61,r(X62)) &'StrongC'(r(X61),r(X62)))))).
+fof(sos78,axiom,! [X63] : ! [X64] : ! [X65] : ((hostsv(X63,X64) & ('ComplexV'(X64) &'PO'(r(X65),r(X64)))) => ? [X66] : (hostsv(X63,X66) & ('SimpleV'(X66) &'PO'(r(X65),r(X66)))))).
+fof(sos79,axiom,! [X67] : ! [X68] : ((hosts(X67,X68) &'V'(X68)) => ~'V'(X67))).
+fof(sos80,axiom,! [X69] : ! [X70] : ((hostsv(X69,X70) &'RPF'(X69)) => ? [X71] : (hosts(X71,X69) & (~'F'(X71) & hostsv(X71,X70))))).
+fof(sos81,axiom,! [X72] : ! [X73] : ((hostsv(X72,X73) & ~'F'(X72)) => ? [X74] : (hosts(X72,X74) & ('RPF'(X74) & hostsv(X74,X73))))).
+fof(sos82,axiom,! [X75] : ! [X76] : ! [X77] : ((hostsv(X75,X76) & (hostsv(X75,X77) &'PO'(r(X76),r(X77)))) => ('Cont'(r(X76),r(X77)) |'Cont'(r(X77),r(X76))))).
+fof(sos83,axiom,! [X78] : ! [X79] : ! [X80] : ((hostsv(X78,X79) & ('P'(r(X78),r(X79)) & ('PED'(X79) & (~'DPF'(X79) & ~'Cont'(r(X80),r(X79)))))) => ? [X81] : ('Cont'(difference(r(X80),r(X79)),r(X81)) & hostsv(X79,X81)))).
+fof(sos84,axiom,! [X82] : ! [X83] : ! [X84] : ((hostsv(X82,X84) & ('P'(r(X83),r(X82)) & ('PED'(X83) & (~'DPF'(X83) &'PO'(r(X84),ch(X83)))))) => ? [X85] : (r(X85) = intersection(r(X84),ch(X83)) & hostsv(X83,X85)))).
+fof(sos85,axiom,! [X86] :'S'(ch(X86))).
+fof(sos86,axiom,! [X87] : ch(X87) = ch(r(X87))).
+fof(sos87,axiom,! [X88] : (~'ZEX'(X88) =>'ICon'(ch(X88)))).
+fof(sos88,axiom,! [X89] : ch(X89) = ch(ch(X89))).
+fof(sos89,axiom,! [X90] : (~'ZEX'(X90) =>'Cont'(r(X90),ch(X90)))).
+fof(sos90,axiom,! [X91] : ((~'ZEX'(X91) & ~'Closed'(r(X91))) =>'TCont'(r(X91),ch(X91)))).
+fof(sos91,axiom,! [X92] : ! [X93] : ('Cont'(r(X92),r(X93)) =>'Cont'(ch(X92),ch(X93)))).
+fof(sos92,axiom,! [X94] : ! [X95] : ((ch(X94) = ch(X95) & ~'ZEX'(X94)) =>'C'(r(X94),r(X95)))).
+fof(sos93,axiom,! [X96] : ! [X97] : (('MaxDim'(r(X96)) & ('MaxDim'(r(X97)) & (r(X96) = ch(X96) & r(X97) = ch(X97)))) => intersection(ch(X96),ch(X97)) = ch(intersection(ch(X96),ch(X97))))).
+fof(sos94,axiom,! [X98] : ! [X99] : (('ICont'(r(X98),r(X99)) & ~'Closed'(difference(r(X99),r(X98)))) => ~ difference(r(X99),r(X98)) = ch(difference(r(X99),r(X98))))).
+fof(sos95,axiom,! [X100] : ! [X101] : (('ICont'(r(X100),r(X101)) & ('MaxDim'(r(X100)) &'MaxDim'(r(X101)))) =>'Cont'(r(X100),ch(difference(r(X101),r(X100)))))).
+fof(sos96,axiom,! [X102] : ! [X103] : ((~'ZEX'(X102) | ~'ZEX'(X103)) => ? [X104] : ? [X105] : ('TSum'(r(X102),r(X103),r(X104)) & ('TSum'(ch(X102),ch(X103),r(X105)) &'Cont'(X105,ch(X104)))))).
+fof(sos97,axiom,! [X106] : ! [X107] : ! [X108] : ! [X109] : ! [X110] : (('EqDim'(X106,X107) & ('EqDim'(X107,X108) & ('SC'(X106,X107) & ('SC'(X107,X108) & (~'C'(X106,X108) & ('TSum'(X106,X107,X109) & ('TSum'(X107,X108,X110) & (X109 = ch(X109) & X110 = ch(X110))))))))) => X107 = ch(X107))).
+fof(sos98,axiom,! [X111] : (~'PED'(X111) | ~'S'(X111))).
+fof(sos99,axiom,! [X112] :'S'(r(X112))).
+fof(sos100,axiom,! [X113] : ('S'(X113) <=> X113 = r(X113))).
+fof(sos101,axiom,! [X114] : ! [X115] : ('Cont'(X114,X115) => ('S'(X114) &'S'(X115)))).
+fof(sos102,axiom,! [X116] : ! [X117] : ('<'(X116,X117) => ('S'(X116) &'S'(X117)))).
+fof(sos103,axiom,! [X118] : ('ZEX'(X118) =>'S'(X118))).
+fof(sos104,axiom,! [X119] : ! [X120] : ('BCont'(X119,X120) => ('S'(X119) &'S'(X120)))).
+fof(sos105,axiom,! [X121] : ('PED'(X121) =>'MaxDim'(r(X121)))).
+fof(sos106,axiom,! [X122] : ! [X123] : ('DK1'(X122,X123) =>'P'(r(X122),r(X123)))).
+fof(sos107,axiom,! [X124] : ! [X125] : (hosts(X124,X125) => ('RPF'(X125) <=>'P'(r(X124),r(X125))))).
+fof(sos108,axiom,! [X126] : ! [X127] : ! [X128] : ! [X129] : ((hosts(X126,X127) & ('RPF'(X127) & ('DK1'(X128,X126) &'DK1'(X129,X127)))) =>'P'(r(X129),r(X128)))).
+fof(sos109,axiom,! [X130] : ! [X131] : (hosts(X130,X131) => ('DPF'(X131) <=> ~'PO'(r(X130),r(X131))))).
+fof(sos110,axiom,! [X132] : ('PED'(X132) => ('POD'(X132) | ('M'(X132) |'F'(X132))))).
+fof(sos111,axiom,! [X133] : ('POD'(X133) =>'PED'(X133))).
+fof(sos112,axiom,! [X134] : ('M'(X134) =>'PED'(X134))).
+fof(sos113,axiom,! [X135] : ('F'(X135) =>'PED'(X135))).
+fof(sos114,axiom,! [X136] : ('POD'(X136) => ~'M'(X136))).
+fof(sos115,axiom,! [X137] : ('POD'(X137) => ~'F'(X137))).
+fof(sos116,axiom,! [X138] : ('M'(X138) => ~'F'(X138))).
+fof(sos117,axiom,! [X139] : ('NAPO'(X139) =>'POD'(X139))).
+fof(sos118,axiom,! [X140] : ! [X141] : (hosts(X140,X141) => ('PED'(X140) &'F'(X141)))).
+fof(sos119,axiom,! [X142] : ('F'(X142) <=> ? [X143] : hosts(X143,X142))).
+fof(sos120,axiom,! [X144] : ! [X145] : (hosts(X144,X145) => ~ hosts(X145,X144))).
+fof(sos121,axiom,! [X146] : ('F'(X146) <=> ('RPF'(X146) |'DPF'(X146)))).
+fof(sos122,axiom,! [X147] : (~'RPF'(X147) | ~'DPF'(X147))).
+fof(sos123,axiom,! [X148] : ! [X149] : ('DK1'(X148,X149) =>'M'(X148))).
+fof(sos124,axiom,! [X150] : ! [X151] : ('DK1'(X150,X151) => ('POD'(X151) |'F'(X151)))).
+fof(sos125,axiom,! [X152] : ! [X153] : ! [X154] : (('DK1'(X152,X153) &'DK1'(X154,X153)) => X152 = X154)).
+fof(sos126,axiom,! [X155] : (('POD'(X155) |'RPF'(X155)) => ? [X156] :'DK1'(X156,X155))).
+fof(sos127,axiom,? [X157] :'ZEX'(X157)).
+fof(sos128,axiom,! [X158] : ~ '<'(X158,X158)).
+fof(sos129,axiom,! [X159] : ! [X160] : ('<'(X159,X160) => ~ '<'(X160,X159))).
+fof(sos130,axiom,! [X161] : ! [X162] : ! [X163] : (('<'(X161,X162) & (X162 <= X163)) => '<'(X161,X163))).
+fof(sos131,axiom,! [X164] : ! [X165] : (('ZEX'(X164) &'ZEX'(X165)) => X164 = X165)).
+fof(sos132,axiom,! [X166] : ! [X167] : (('ZEX'(X166) & ('S'(X167) & ~'ZEX'(X167))) => '<'(X166,X167))).
+fof(sos133,axiom,! [X168] : ! [X169] : ('EqDim'(X168,X169) <=> ('S'(X168) & ('S'(X169) & (~ '<'(X168,X169) & ~ '<'(X169,X168)))))).
+fof(sos134,axiom,! [X170] : ! [X171] : ((X170 <= X171) <=> ('<'(X170,X171) |'EqDim'(X170,X171)))).
+fof(sos135,axiom,! [X172] : ('MaxDim'(X172) <=> ('S'(X172) & ! [X173] : ('S'(X173) => (X173 <= X172))))).
+fof(sos136,axiom,! [X174] : ('MinDim'(X174) <=> ('S'(X174) & (~'ZEX'(X174) & ! [X175] : (('S'(X175) & '<'(X175,X174)) =>'ZEX'(X175)))))).
+fof(sos137,axiom,! [X176] : ! [X177] : ('Covers'(X176,X177) <=> ('<'(X177,X176) & ! [X178] : ('S'(X178) => ~ ('<'(X177,X178) & '<'(X178,X176)))))).
+fof(sos138,axiom,? [X179] :'MinDim'(X179)).
+fof(sos139,axiom,! [X180] : (('S'(X180) & ~'ZEX'(X180)) <=>'Cont'(X180,X180))).
+fof(sos140,axiom,! [X181] : ! [X182] : (('Cont'(X181,X182) &'Cont'(X182,X181)) => X181 = X182)).
+fof(sos141,axiom,! [X183] : ! [X184] : ! [X185] : (('Cont'(X183,X184) &'Cont'(X184,X185)) =>'Cont'(X183,X185))).
+fof(sos142,axiom,! [X186] : ! [X187] : ('ZEX'(X186) => ('S'(X186) & (~'Cont'(X187,X186) & ~'Cont'(X186,X187))))).
+fof(sos143,axiom,! [X188] : ! [X189] : (('ZEX'(X188) &'ZEX'(X189)) => X188 = X189)).
+fof(sos144,axiom,! [X190] : ! [X191] : ('C'(X190,X191) <=> ? [X192] : ('Cont'(X192,X190) &'Cont'(X192,X191)))).
+fof(sos145,axiom,! [X193] : ! [X194] : ('Cont'(X193,X194) => ('<'(X193,X194) |'EqDim'(X193,X194)))).
+fof(sos146,axiom,! [X195] : ! [X196] : (('S'(X195) & ('S'(X196) & ~'C'(X195,X196))) <=>'ZEX'(intersection(X195,X196)))).
+fof(sos147,axiom,! [X197] : ! [X198] : (('S'(X197) & ('S'(X198) & ~'ZEX'(intersection(X197,X198)))) =>'Cont'(intersection(X197,X198),X197))).
+fof(sos148,axiom,! [X199] : ! [X200] : ! [X201] : (('Cont'(X201,X199) &'Cont'(X201,X200)) => (X201 <= intersection(X199,X200)))).
+fof(sos149,axiom,! [X202] : ! [X203] : ! [X204] : (('Cont'(X204,X202) & ('Cont'(X204,X203) &'EqDim'(X204,intersection(X202,X203)))) <=>'P'(X204,intersection(X202,X203)))).
+fof(sos150,axiom,! [X205] : ! [X206] : (('S'(X205) & ('S'(X206) & ~'ZEX'(difference(X205,X206)))) =>'EqDim'(X205,difference(X205,X206)))).
+fof(sos151,axiom,! [X207] : ! [X208] : ('<'(X208,X207) => X207 = difference(X207,X208))).
+fof(sos152,axiom,! [X209] : ! [X210] : ! [X211] : (((X209 <= X210) & ('Cont'(X211,X209) & '<'(intersection(X211,X210),X211))) =>'Cont'(X211,difference(X209,X210)))).
+fof(sos153,axiom,! [X212] : ! [X213] : ! [X214] : (((X212 <= X213) &'Cont'(X214,difference(X212,X213))) =>'Cont'(X214,X212))).
+fof(sos154,axiom,! [X215] : ! [X216] : ! [X217] : (((X215 <= X216) &'P'(X217,difference(X215,X216))) => '<'(intersection(X217,X216),X217))).
+fof(sos155,axiom,! [X218] : ! [X219] : ('ZEX'(difference(X218,X219)) <=> ('ZEX'(X218) |'Cont'(X218,X219)))).
+fof(sos156,axiom,! [X220] : (('S'(X220) & ~'ZEX'(X220)) => ? [X221] : ('P'(X221,X220) &'Min'(X221)))).
+fof(sos157,axiom,! [X222] : ! [X223] : (('S'(X222) & ('S'(X223) &'BCont'(X222,X223))) => ('Cont'(X222,X223) &'Inc'(X222,X223)))).
+fof(sos158,axiom,! [X224] : ! [X225] : ! [X226] : ! [X227] : (('S'(X224) & ('S'(X225) & ('S'(X226) & ('S'(X227) & ('SC'(X224,X225) & ('Min'(X224) & ('P'(X224,X226) & ('Cont'(X225,X226) & ('Cont'(X227,X224) &'Cont'(X227,X225)))))))))) =>'BCont'(X227,X224))).
+fof(sos159,axiom,! [X228] : ! [X229] : ! [X230] : ! [X231] : (('S'(X228) & ('S'(X229) & ('S'(X231) & ('S'(X230) & ('SC'(X228,X229) & ('P'(X228,X231) & ('P'(X229,X231) & ('Cont'(X230,X228) & ('Cont'(X230,X229) &'Covers'(X231,X230)))))))))) => ~'BCont'(X230,X231))).
+fof(sos160,axiom,! [X232] : ! [X233] : ! [X234] : (('S'(X232) & ('S'(X233) & ('S'(X234) & ('BCont'(X232,X233) & ('P'(X233,X234) & ! [X235] : ! [X236] : (('S'(X235) & ('S'(X236) & ('P'(X235,X234) & (~'PO'(X235,X233) &'P'(X236,X232))))) => ~'Cont'(X236,X235))))))) =>'BCont'(X232,X234))).
+fof(sos161,axiom,! [X237] : ! [X238] : ! [X239] : (('S'(X237) & ('S'(X238) & ('S'(X239) & ('BCont'(X237,X238) &'Cont'(X239,X237))))) =>'BCont'(X239,X238))).
+fof(sos162,axiom,! [X240] : ! [X241] : (('S'(X240) & ('S'(X241) &'BCont'(X240,X241))) <=> ('S'(X240) & ('S'(X241) & (~'ZEX'(X240) & ! [X242] : (('P'(X242,X240) &'Min'(X242)) =>'BCont'(X242,X241))))))).
+fof(sos163,axiom,! [X243] : ! [X244] : ! [X245] : ! [X246] : (('TSum'(X243,X244,X245) &'TSum'(X243,X244,X246)) => ('S'(X243) & ('S'(X244) & ('S'(X245) & X246 = X245))))).
+fof(sos164,axiom,! [X247] : ! [X248] : ! [X249] : ('TSum'(X247,X248,X249) =>'TSum'(X248,X247,X249))).
+fof(sos165,axiom,! [X250] : ! [X251] : ('<'(X250,X251) =>'TSum'(X250,X251,X251))).
+fof(sos166,axiom,! [X252] : ! [X253] : ! [X254] : ! [X255] : (('TSum'(X252,X253,X254) & ((X252 <= X253) &'Cont'(X255,X253))) =>'Cont'(X255,X254))).
+fof(sos167,axiom,! [X256] : ! [X257] : ! [X258] : ! [X259] : (('TSum'(X256,X257,X258) & ('Cont'(X259,X258) & ~'Cont'(X259,X256))) =>'Cont'(difference(X259,X256),X257))).
+fof(sos168,axiom,! [X260] : ! [X261] : ! [X262] : (('S'(X262) & ('EqDim'(X260,X261) & ! [X263] : ('PO'(X263,X262) <=> ('PO'(X263,X260) |'PO'(X263,X261))))) =>'TSum'(X260,X261,X262))).
+fof(sos169,axiom,! [X264] : ! [X265] : (('EqDim'(X264,X265) & ! [X266] : (('Cont'(X266,X264) & ('Cont'(X266,X265) &'Min'(X266))) => ? [X267] : ? [X268] : ('P'(X267,X264) & ('P'(X268,X265) & ('BCont'(X266,X267) &'BCont'(X266,X268)))))) => ? [X269] :'TSum'(X264,X265,X269))).
+fof(sos170,axiom,! [X270] : (('S'(X270) & ~'ZEX'(X270)) =>'Cont'(X270,'Uni'))).
+fof(sos171,axiom,! [X271] : ('Con'(X271) <=> ('S'(X271) & ! [X272] : ('PP'(X272,X271) =>'SC'(X272,difference(X271,X272)))))).
+fof(sos172,axiom,! [X273] : ('ICon'(X273) <=> ('Con'(X273) & ! [X274] : ('PP'(X274,X273) =>'Covers'(X273,intersection(X274,difference(X273,X274))))))).
+fof(sos173,axiom,! [X275] : ('UCon'(X275) <=> ('S'(X275) & ('Con'(X275) & ! [X276] : ! [X277] : (('PP'(X276,X275) & ('Cont'(X277,X276) &'Cont'(X277,difference(X275,X276)))) =>'Cont'(X277,intersection(X276,difference(X275,X276)))))))).
+fof(sos174,axiom,! [X278] : ! [X279] : ('StrongC'(X278,X279) <=> ('SC'(X278,X279) & ('EqDim'(X278,X279) &'Covers'(X278,intersection(X278,X279)))))).
+fof(sos175,axiom,! [X280] : ('Max'(X280) <=> (~'ZEX'(X280) & ! [X281] : ~'PP'(X280,X281)))).
+fof(sos176,axiom,! [X282] : ('Min'(X282) <=> (~'ZEX'(X282) & ! [X283] : ~'PP'(X283,X282)))).
+fof(sos177,axiom,! [X284] : ! [X285] : ('PO'(X284,X285) <=> ? [X286] : ('P'(X286,X284) &'P'(X286,X285)))).
+fof(sos178,axiom,! [X287] : ! [X288] : ('Inc'(X287,X288) <=> (? [X289] : ('<'(X289,X287) & ('Cont'(X289,X287) &'P'(X289,X288))) | ? [X290] : ('<'(X290,X288) & ('Cont'(X290,X288) &'P'(X290,X287)))))).
+fof(sos179,axiom,! [X291] : ! [X292] : ('SC'(X291,X292) <=> (? [X293] : ('Cont'(X293,X291) &'Cont'(X293,X292)) & ! [X294] : (('Cont'(X294,X291) &'Cont'(X294,X292)) => ('<'(X294,X291) & '<'(X294,X292)))))).
+fof(sos180,axiom,! [X295] : ('Closed'(X295) <=> ! [X296] : ~'BCont'(X296,X295))).
+fof(sos181,axiom,! [X297] : ! [X298] : ('ICont'(X297,X298) <=> ('Cont'(X297,X298) & ! [X299] : ('Cont'(X299,X297) => ~'BCont'(X299,X298))))).
+fof(sos182,axiom,! [X300] : ! [X301] : ('TCont'(X300,X301) <=> ('Cont'(X300,X301) & ? [X302] : ('Cont'(X302,X300) &'BCont'(X302,X301))))).
+fof(sos183,axiom,! [X303] : ! [X304] : ('PP'(X303,X304) <=> ('P'(X303,X304) & ~ X303 = X304))).
+fof(sos184,axiom,! [X305] : ! [X306] : ('P'(X305,X306) <=> ('Cont'(X305,X306) &'EqDim'(X305,X306)))).

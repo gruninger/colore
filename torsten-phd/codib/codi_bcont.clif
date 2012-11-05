@@ -1,0 +1,105 @@
+(cl-module codib/codi_bcont
+
+(cl-imports codi/codi)
+
+(cl-imports codi/defs/min_max_in_dim)
+
+(cl-imports codi/defs/po)
+
+(cl-imports codi/defs/inc)
+
+(cl-imports codi/defs/sc)
+
+(cl-imports codi/theorems/po_theorems)
+
+(cl-imports codi/theorems/inc_theorems)
+
+(cl-imports codi/theorems/sc_theorems)
+
+
+
+(cl-comment 'BC-A1: entities in the boundary are at least of a dimension lower than the bounded entity')
+
+(forall (x y)
+	(if
+		(BCont x y)
+		(and
+			(Cont x y)
+			(Inc x y)
+		)
+	)
+) 
+
+(cl-comment 'BC-A2: if z is contained in two superficially connected entities x and y embedded in an entity v of the dimension of x, that is x has locally a codimension of zero, then z is contained in the boundary of x')
+
+(forall (x y v z)
+	(if
+		(and
+			(SC x y)
+			(Min x)
+			(P x v)
+			(Cont y v)
+			(Cont z x)
+			(Cont z y)
+		)
+		(BCont z x)
+	)
+) 
+
+
+
+(cl-comment 'BC-A3: any z contained in two superficially connected parts x and y of v that is exactly of one dimension lower than v is not in the boundary of v')
+
+(forall (x y z v)
+	(if
+		(and
+			(SC x y)
+			(P x v)
+			(P y v)
+			(Cont z x)
+			(Cont z y)
+			(Covers v z)
+		)
+		(not (BCont z v))
+	)
+) 
+
+
+(cl-comment 'BC-A4')
+
+(forall (x y z)
+	(if
+		(and
+			(BCont x y)
+			(P y z)
+			(forall (v w)
+				(if
+					(and
+						(P v z)
+						(not (PO v y))
+						(P w x)
+					)
+					(not (Cont w v))
+				)
+			)
+		)
+		(BCont x z)
+	)
+)
+
+
+(cl-comment 'BC-A5: transitivity with respect to Cont')
+
+(forall (x y z)
+	(if
+		(and
+			(BCont x y)
+			(Cont z x)
+		)
+		(BCont z y)
+	)
+)
+
+
+
+)

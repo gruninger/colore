@@ -1,0 +1,50 @@
+(cl-module inch/defs/dim_prime_defs
+
+(cl-comment 'compact axioms for linear relative dimension')
+
+(cl-comment 'D-D2: define EqDim in terms of <')
+
+(forall (x y)
+	(iff 
+		(EqDim x y)
+		(and 	(not (< x y))
+				(not (< y x))
+		)
+	)
+)
+
+
+(cl-comment 'D-D3: <=')
+
+(forall (x y)
+	(iff (<= x y) (or (< x y) (EqDim x y)))
+)
+
+
+(cl-comment 'D-D4: Maximal dimension (Codim=0)')
+(forall (x)
+	(iff	(MaxDim x)
+			(forall (y) 
+					(<= y x)
+			)
+	)
+)
+
+
+(cl-comment 'D-D5: Minimal dimension (Dim=0)')
+(forall (x)
+	(iff	(MinDim x)
+		(and
+			(not (ZEX x))
+			(forall (y)
+				(if
+					(< y x)
+					(ZEX y)
+				)
+			)	
+		)
+	)
+)
+
+
+)

@@ -1,0 +1,156 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 14965 was started by torsten on stl-ws2,
+Mon Aug 27 16:19:49 2012
+The command was "prover9 -t 600 -f oig/p9/b_3d.p9 oig//theorems/p9/options.txt oig//theorems/p9/b_3d_theorems_2.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file oig/p9/b_3d.p9
+
+
+formulas(sos).
+(all x (Pt(x) | L(x) | Pl(x))).
+(all x (-Pt(x) | -L(x) & -Pt(x) | -Pl(x) & -L(x) | -Pl(x))).
+(all x all y (on(x,y) -> Pt(x) & L(y) | Pl(y))).
+(all a all b all c (B(a,b,c) -> B(c,b,a))).
+(all a all b all c (B(a,b,c) -> -B(b,c,a))).
+(all a all b all c all p (a != b & a != c & b != c & (exists l (L(l) & on(a,l) & on(b,l) & on(c,l))) <-> B(a,b,c) | B(b,c,a) | B(c,a,b))).
+(all a all b all c all p all l (L(l) & on(a,l) & on(b,l) & on(c,l) & on(p,l) & p != a & p != b & p != c & B(a,p,b) -> B(b,p,c) & -B(a,p,c) | B(a,p,c) & -B(b,p,c))).
+end_of_list.
+
+% Reading from file oig//theorems/p9/options.txt
+
+clear(auto_denials).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+
+% Reading from file oig//theorems/p9/b_3d_theorems_2.p9
+
+
+formulas(goals).
+(all a all b all c (B(a,b,c) -> -B(a,c,b) & -B(b,a,c))).
+end_of_list.
+
+============================== end of input ==========================
+
+% From the command line: assign(max_seconds, 600).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (Pt(x) | L(x) | Pl(x))) # label(non_clause).  [assumption].
+2 (all x (-Pt(x) | -L(x) & -Pt(x) | -Pl(x) & -L(x) | -Pl(x))) # label(non_clause).  [assumption].
+3 (all x all y (on(x,y) -> Pt(x) & L(y) | Pl(y))) # label(non_clause).  [assumption].
+4 (all a all b all c (B(a,b,c) -> B(c,b,a))) # label(non_clause).  [assumption].
+5 (all a all b all c (B(a,b,c) -> -B(b,c,a))) # label(non_clause).  [assumption].
+6 (all a all b all c all p (a != b & a != c & b != c & (exists l (L(l) & on(a,l) & on(b,l) & on(c,l))) <-> B(a,b,c) | B(b,c,a) | B(c,a,b))) # label(non_clause).  [assumption].
+7 (all a all b all c all p all l (L(l) & on(a,l) & on(b,l) & on(c,l) & on(p,l) & p != a & p != b & p != c & B(a,p,b) -> B(b,p,c) & -B(a,p,c) | B(a,p,c) & -B(b,p,c))) # label(non_clause).  [assumption].
+8 (all a all b all c (B(a,b,c) -> -B(a,c,b) & -B(b,a,c))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating Pt/1
+9 -Pt(x) | -Pl(x).  [clausify(2)].
+10 Pt(x) | L(x) | Pl(x).  [clausify(1)].
+11 -on(x,y) | Pt(x) | Pl(y).  [clausify(3)].
+Derived: -on(x,y) | Pl(y) | -Pl(x).  [resolve(11,b,9,a)].
+
+Eliminating L/1
+12 x = y | z = y | z = x | -L(u) | -on(y,u) | -on(x,u) | -on(z,u) | B(y,x,z) | B(x,z,y) | B(z,y,x).  [clausify(6)].
+13 -on(x,y) | L(y) | Pl(y).  [clausify(3)].
+Derived: x = y | z = y | z = x | -on(y,u) | -on(x,u) | -on(z,u) | B(y,x,z) | B(x,z,y) | B(z,y,x) | -on(w,u) | Pl(u).  [resolve(12,d,13,b)].
+14 L(f1(x,y,z,u)) | -B(x,y,z).  [clausify(6)].
+Derived: -B(x,y,z) | u = w | v5 = w | v5 = u | -on(w,f1(x,y,z,v6)) | -on(u,f1(x,y,z,v6)) | -on(v5,f1(x,y,z,v6)) | B(w,u,v5) | B(u,v5,w) | B(v5,w,u).  [resolve(14,a,12,d)].
+15 L(f1(x,y,z,u)) | -B(y,z,x).  [clausify(6)].
+Derived: -B(x,y,z) | u = w | v5 = w | v5 = u | -on(w,f1(z,x,y,v6)) | -on(u,f1(z,x,y,v6)) | -on(v5,f1(z,x,y,v6)) | B(w,u,v5) | B(u,v5,w) | B(v5,w,u).  [resolve(15,a,12,d)].
+16 L(f1(x,y,z,u)) | -B(z,x,y).  [clausify(6)].
+Derived: -B(x,y,z) | u = w | v5 = w | v5 = u | -on(w,f1(y,z,x,v6)) | -on(u,f1(y,z,x,v6)) | -on(v5,f1(y,z,x,v6)) | B(w,u,v5) | B(u,v5,w) | B(v5,w,u).  [resolve(16,a,12,d)].
+17 -L(x) | -on(y,x) | -on(z,x) | -on(u,x) | -on(w,x) | w = y | w = z | w = u | -B(y,w,z) | B(z,w,u) | B(y,w,u).  [clausify(7)].
+Derived: -on(x,y) | -on(z,y) | -on(u,y) | -on(w,y) | w = x | w = z | w = u | -B(x,w,z) | B(z,w,u) | B(x,w,u) | -on(v5,y) | Pl(y).  [resolve(17,a,13,b)].
+Derived: -on(x,f1(y,z,u,w)) | -on(v5,f1(y,z,u,w)) | -on(v6,f1(y,z,u,w)) | -on(v7,f1(y,z,u,w)) | v7 = x | v7 = v5 | v7 = v6 | -B(x,v7,v5) | B(v5,v7,v6) | B(x,v7,v6) | -B(y,z,u).  [resolve(17,a,14,a)].
+Derived: -on(x,f1(y,z,u,w)) | -on(v5,f1(y,z,u,w)) | -on(v6,f1(y,z,u,w)) | -on(v7,f1(y,z,u,w)) | v7 = x | v7 = v5 | v7 = v6 | -B(x,v7,v5) | B(v5,v7,v6) | B(x,v7,v6) | -B(z,u,y).  [resolve(17,a,15,a)].
+Derived: -on(x,f1(y,z,u,w)) | -on(v5,f1(y,z,u,w)) | -on(v6,f1(y,z,u,w)) | -on(v7,f1(y,z,u,w)) | v7 = x | v7 = v5 | v7 = v6 | -B(x,v7,v5) | B(v5,v7,v6) | B(x,v7,v6) | -B(u,y,z).  [resolve(17,a,16,a)].
+18 -L(x) | -on(y,x) | -on(z,x) | -on(u,x) | -on(w,x) | w = y | w = z | w = u | -B(y,w,z) | -B(y,w,u) | -B(z,w,u).  [clausify(7)].
+Derived: -on(x,y) | -on(z,y) | -on(u,y) | -on(w,y) | w = x | w = z | w = u | -B(x,w,z) | -B(x,w,u) | -B(z,w,u) | -on(v5,y) | Pl(y).  [resolve(18,a,13,b)].
+Derived: -on(x,f1(y,z,u,w)) | -on(v5,f1(y,z,u,w)) | -on(v6,f1(y,z,u,w)) | -on(v7,f1(y,z,u,w)) | v7 = x | v7 = v5 | v7 = v6 | -B(x,v7,v5) | -B(x,v7,v6) | -B(v5,v7,v6) | -B(y,z,u).  [resolve(18,a,14,a)].
+Derived: -on(x,f1(y,z,u,w)) | -on(v5,f1(y,z,u,w)) | -on(v6,f1(y,z,u,w)) | -on(v7,f1(y,z,u,w)) | v7 = x | v7 = v5 | v7 = v6 | -B(x,v7,v5) | -B(x,v7,v6) | -B(v5,v7,v6) | -B(z,u,y).  [resolve(18,a,15,a)].
+Derived: -on(x,f1(y,z,u,w)) | -on(v5,f1(y,z,u,w)) | -on(v6,f1(y,z,u,w)) | -on(v7,f1(y,z,u,w)) | v7 = x | v7 = v5 | v7 = v6 | -B(x,v7,v5) | -B(x,v7,v6) | -B(v5,v7,v6) | -B(u,y,z).  [resolve(18,a,16,a)].
+
+============================== end predicate elimination =============
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, Pl, on, B ]).
+Function symbol precedence:  function_order([ c1, c2, c3, f1 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+  % set(binary_resolution).  % (non-Horn)
+  % set(neg_ur_resolution).  % (non-Horn, less than 100 clauses)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.03 seconds.
+
+============================== PROOF =================================
+
+% Proof 1 at 0.05 (+ 0.00) seconds.
+% Length of proof is 10.
+% Level of proof is 4.
+% Maximum clause weight is 8.000.
+% Given clauses 50.
+
+4 (all a all b all c (B(a,b,c) -> B(c,b,a))) # label(non_clause).  [assumption].
+5 (all a all b all c (B(a,b,c) -> -B(b,c,a))) # label(non_clause).  [assumption].
+8 (all a all b all c (B(a,b,c) -> -B(a,c,b) & -B(b,a,c))) # label(non_clause) # label(goal).  [goal].
+19 -B(x,y,z) | B(z,y,x).  [clausify(4)].
+20 -B(x,y,z) | -B(y,z,x).  [clausify(5)].
+36 B(c1,c2,c3).  [deny(8)].
+37 B(c1,c3,c2) | B(c2,c1,c3).  [deny(8)].
+103 B(c3,c2,c1).  [resolve(36,a,19,a)].
+113 B(c1,c3,c2).  [resolve(37,b,20,b),unit_del(b,103)].
+209 $F.  [resolve(103,a,20,b),unit_del(a,113)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=50. Generated=819. Kept=190. proofs=1.
+Usable=49. Sos=68. Demods=0. Limbo=40, Disabled=78. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=628. Back_subsumed=33.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=1796. Nonunit_bsub_feature_tests=1035.
+Megabytes=0.42.
+User_CPU=0.05, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 14965 exit (max_proofs) Mon Aug 27 16:19:49 2012

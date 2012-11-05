@@ -1,0 +1,212 @@
+============================== Mace4 =================================
+Mace4 (64) version 2009-11A, November 2009.
+Process 25887 was started by torsten on stl-ws2,
+Fri Nov  2 19:36:27 2012
+The command was "mace4 -c -t 600 -s 60 -n 2 -N 20 -f mt/p9/rcc_basic_strict.p9 mt/p9/rcc_basic.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file mt/p9/rcc_basic_strict.p9
+
+
+formulas(sos).
+(all x all y (P(x,y) & P(y,x) -> x = y)).
+end_of_list.
+
+% Reading from file mt/p9/rcc_basic.p9
+
+
+formulas(sos).
+(all x all y (P(x,y) <-> (all z (C(z,x) -> C(z,y))))).
+(all x all y (PP(x,y) <-> P(x,y) & -P(y,x))).
+(all x all y (O(x,y) <-> (exists z (P(z,x) & P(z,y))))).
+(all x all y (EC(x,y) <-> C(x,y) & -O(x,y))).
+(all x all y (NTPP(x,y) <-> PP(x,y) & -(exists z (EC(z,x) & EC(z,y))))).
+(all x C(x,x)).
+(all x all y (C(x,y) -> C(y,x))).
+(all x C(x,Uni)).
+(all x all y (y != Uni -> (O(x,compl(y)) <-> -P(x,y)))).
+(all x all y all z (C(x,sum(y,z)) <-> C(x,y) | C(x,z))).
+(all x all y all z (O(y,z) -> (C(x,prod(y,z)) <-> (exists w (P(w,y) & P(w,z) & C(x,w)))))).
+end_of_list.
+
+% From the command line: assign(max_seconds, 600).
+
+% From the command line: assign(max_seconds_per, 60).
+    % assign(domain_size, 2) -> assign(start_size, 2).
+    % assign(domain_size, 2) -> assign(end_size, 2).
+
+% From the command line: assign(domain_size, 2).
+
+% From the command line: assign(end_size, 20).
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x all y (P(x,y) & P(y,x) -> x = y)) # label(non_clause).  [assumption].
+2 (all x all y (P(x,y) <-> (all z (C(z,x) -> C(z,y))))) # label(non_clause).  [assumption].
+3 (all x all y (PP(x,y) <-> P(x,y) & -P(y,x))) # label(non_clause).  [assumption].
+4 (all x all y (O(x,y) <-> (exists z (P(z,x) & P(z,y))))) # label(non_clause).  [assumption].
+5 (all x all y (EC(x,y) <-> C(x,y) & -O(x,y))) # label(non_clause).  [assumption].
+6 (all x all y (NTPP(x,y) <-> PP(x,y) & -(exists z (EC(z,x) & EC(z,y))))) # label(non_clause).  [assumption].
+7 (all x C(x,x)) # label(non_clause).  [assumption].
+8 (all x all y (C(x,y) -> C(y,x))) # label(non_clause).  [assumption].
+9 (all x C(x,Uni)) # label(non_clause).  [assumption].
+10 (all x all y (y != Uni -> (O(x,compl(y)) <-> -P(x,y)))) # label(non_clause).  [assumption].
+11 (all x all y all z (C(x,sum(y,z)) <-> C(x,y) | C(x,z))) # label(non_clause).  [assumption].
+12 (all x all y all z (O(y,z) -> (C(x,prod(y,z)) <-> (exists w (P(w,y) & P(w,z) & C(x,w)))))) # label(non_clause).  [assumption].
+
+============================== end of process non-clausal formulas ===
+
+============================== CLAUSES FOR SEARCH ====================
+
+formulas(mace4_clauses).
+-P(x,y) | -P(y,x) | y = x.
+-P(x,y) | -C(z,x) | C(z,y).
+P(x,y) | C(f1(x,y),x).
+P(x,y) | -C(f1(x,y),y).
+-PP(x,y) | P(x,y).
+-PP(x,y) | -P(y,x).
+PP(x,y) | -P(x,y) | P(y,x).
+-O(x,y) | P(f2(x,y),x).
+-O(x,y) | P(f2(x,y),y).
+O(x,y) | -P(z,x) | -P(z,y).
+-EC(x,y) | C(x,y).
+-EC(x,y) | -O(x,y).
+EC(x,y) | -C(x,y) | O(x,y).
+-NTPP(x,y) | PP(x,y).
+-NTPP(x,y) | -EC(z,x) | -EC(z,y).
+NTPP(x,y) | -PP(x,y) | EC(f3(x,y),x).
+NTPP(x,y) | -PP(x,y) | EC(f3(x,y),y).
+C(x,x).
+-C(x,y) | C(y,x).
+C(x,Uni).
+Uni = x | -O(y,compl(x)) | -P(y,x).
+Uni = x | O(y,compl(x)) | P(y,x).
+-C(x,sum(y,z)) | C(x,y) | C(x,z).
+C(x,sum(y,z)) | -C(x,y).
+C(x,sum(y,z)) | -C(x,z).
+-O(x,y) | -C(z,prod(x,y)) | P(f4(z,x,y),x).
+-O(x,y) | -C(z,prod(x,y)) | P(f4(z,x,y),y).
+-O(x,y) | -C(z,prod(x,y)) | C(z,f4(z,x,y)).
+-O(x,y) | C(z,prod(x,y)) | -P(u,x) | -P(u,y) | -C(z,u).
+end_of_list.
+
+============================== end of clauses for search =============
+
+% There are no natural numbers in the input.
+
+============================== DOMAIN SIZE 2 =========================
+
+============================== STATISTICS ============================
+
+For domain size 2.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.01 seconds).
+Ground clauses: seen=160, kept=150.
+Selections=4176, assignments=8351, propagations=16804, current_models=0.
+Rewrite_terms=29762, rewrite_bools=50603, indexes=281.
+Rules_from_neg_clauses=80, cross_offs=80.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 3 =========================
+
+============================== MODEL =================================
+
+interpretation( 3, [number=1, seconds=0], [
+
+        function(Uni, [ 0 ]),
+
+        function(compl(_), [ 0, 2, 1 ]),
+
+        function(prod(_,_), [
+			   0, 1, 2,
+			   1, 1, 0,
+			   2, 0, 2 ]),
+
+        function(sum(_,_), [
+			   0, 0, 0,
+			   0, 1, 0,
+			   0, 0, 2 ]),
+
+        function(f1(_,_), [
+			   0, 2, 1,
+			   0, 0, 1,
+			   0, 2, 0 ]),
+
+        function(f2(_,_), [
+			   0, 1, 2,
+			   1, 1, 0,
+			   2, 0, 2 ]),
+
+        function(f3(_,_), [
+			   0, 0, 0,
+			   0, 0, 0,
+			   0, 0, 0 ]),
+
+        function(f4(_,_,_), [
+			   0, 1, 2,
+			   1, 1, 0,
+			   2, 0, 2,
+			   0, 1, 0,
+			   1, 1, 0,
+			   0, 0, 0,
+			   0, 0, 2,
+			   0, 0, 0,
+			   2, 0, 2 ]),
+
+        relation(C(_,_), [
+			   1, 1, 1,
+			   1, 1, 0,
+			   1, 0, 1 ]),
+
+        relation(EC(_,_), [
+			   0, 0, 0,
+			   0, 0, 0,
+			   0, 0, 0 ]),
+
+        relation(NTPP(_,_), [
+			   0, 0, 0,
+			   1, 0, 0,
+			   1, 0, 0 ]),
+
+        relation(O(_,_), [
+			   1, 1, 1,
+			   1, 1, 0,
+			   1, 0, 1 ]),
+
+        relation(P(_,_), [
+			   1, 0, 0,
+			   1, 1, 0,
+			   1, 0, 1 ]),
+
+        relation(PP(_,_), [
+			   0, 0, 0,
+			   1, 0, 0,
+			   1, 0, 0 ])
+]).
+
+============================== end of model ==========================
+
+============================== STATISTICS ============================
+
+For domain size 3.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.03 seconds).
+Ground clauses: seen=483, kept=462.
+Selections=1708, assignments=5040, propagations=22291, current_models=1.
+Rewrite_terms=23004, rewrite_bools=121845, indexes=1153.
+Rules_from_neg_clauses=1832, cross_offs=6367.
+
+============================== end of statistics =====================
+
+User_CPU=0.03, System_CPU=0.00, Wall_clock=0.
+
+Exiting with 1 model.
+
+Process 25887 exit (max_models) Fri Nov  2 19:36:27 2012
+The process finished Fri Nov  2 19:36:27 2012

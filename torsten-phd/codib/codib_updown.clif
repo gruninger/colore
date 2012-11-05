@@ -1,0 +1,52 @@
+(cl-module codib/codib_updown
+
+(cl-imports codib/codib_down)
+
+(cl-imports codi/codi_down_sum_prime)
+
+(cl-imports codi/defs/min_max_in_dim)
+
+
+(cl-comment "Sum-A6prime: forcing the existence of sums of equidimensional entities that only meet in boundary of minimal parts")
+
+(forall (x y)
+	(if
+		(and
+			(EqDim x y)
+			(forall (z)
+				(if
+					(and
+						(Cont z x)
+						(Cont z y)
+						(Min z)
+					)
+					(exists (u v)
+						(and
+							(P u x)
+							(P v y)
+							(BCont z u)
+							(BCont z v)
+						)
+					)
+				)
+			)
+		)
+		(exists (z)
+			(TSum x y z)
+		)
+	)
+)
+
+
+(cl-comment 'U-A1: everything is contained in a universal entity')
+
+(forall (x)
+	(if 
+		(not (ZEX x))
+		(Cont x Uni)
+	)
+)
+
+
+
+)

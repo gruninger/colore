@@ -1,0 +1,207 @@
+(cl-text space/voids
+
+(cl-imports space/spch)
+
+
+(cl-comment 'VS-D:')
+
+(forall (x y)
+	(iff
+		(VS x y)
+		(and
+			(PED x)
+			(S y)
+			(Cont y (ch x))
+			(not (PO y (r x)))
+		)
+	)
+)
+
+
+(cl-comment 'V-S-D: simple void')
+
+(forall (x y)
+	(iff
+		(SimpleV y)
+		(and
+			(ICon (r y))
+			(exists (x)
+				(hostsv x y)
+			)
+		)
+	)
+)
+
+
+(cl-comment 'V-S-D: complex void')
+
+(forall (x y)
+	(iff
+		(ComplexV y)
+		(and
+			(not (ICon (r y)))
+			(exists (x)
+				(hostsv x y)
+			)
+		)
+	)
+)
+
+(cl-comment 'V-D: void')
+
+(forall (x)
+	(iff
+		(V x)
+		(or
+			(SimpleV x)
+			(ComplexV x)
+		)
+	)
+)
+
+
+(cl-comment 'V-A1:')
+
+(forall (x y)
+	(if
+		(hostsv x y)
+		(and
+			(hosts x y)
+			(VS x (r y))
+			(StrongC (r x) (r y))
+		)
+	)
+)
+
+
+
+(cl-comment 'V-A2:')
+
+(forall (x y z)
+	(if
+		(and
+			(hostsv x y)
+			(ComplexV y)
+			(PO (r z) (r y))
+		)
+		(exists (v)
+			(and
+				(hostsv x v)
+				(SimpleV v)
+				(PO (r z) (r v))
+			)
+		)
+	)
+)
+
+
+(cl-comment 'V-A3:')
+
+(forall (x y)
+	(if
+		(and
+			(hosts x y)
+			(V y)
+		)
+		(not (V x))
+	)
+)
+
+
+(cl-comment 'V-A4:')
+
+(forall (x y)
+	(if
+		(and
+			(hostsv x y)
+			(RPF x)
+		)
+		(exists (z)
+			(and
+				(hosts z x)
+				(not (F z))
+				(hostsv z y)
+			)
+		)
+	)
+)
+
+
+(cl-comment 'V-A5:')
+
+(forall (x y)
+	(if
+		(and
+			(hostsv x y)
+			(not (F x))
+		)
+		(exists (z)
+			(and
+				(hosts x z)
+				(RPF z)
+				(hostsv z y)
+			)
+		)
+	)
+)
+
+
+(cl-comment 'V-A6:')
+
+(forall (x y z)
+	(if
+		(and
+			(hostsv x y)
+			(hostsv x z)
+			(PO (r y) (r z))
+		)
+		(or
+			(Cont (r y) (r z))
+			(Cont (r z) (r y))
+		)
+	)
+)
+
+
+(cl-comment 'V-A7:')
+
+(forall (x y v)
+	(if
+		(and
+			(hostsv x y)
+			(P (r x) (r y))
+			(PED y)
+			(not (DPF y))
+			(not (Cont (r v) (r y)))
+		)
+		(exists (u)
+			(and
+				(Cont (difference (r v) (r y)) (r u))
+				(hostsv y u)
+			)
+		)
+	)
+)
+
+
+(cl-comment 'V-A8:')
+
+(forall (x y v)
+	(if
+		(and
+			(hostsv x v)
+			(P (r y) (r x))
+			(PED y)
+			(not (DPF y))
+			(PO (r v) (ch y))
+		)
+		(exists (u)
+			(and
+				(= (r u) (intersection (r v) (ch y)))
+				(hostsv y u)
+			)
+		)
+	)
+)
+
+)

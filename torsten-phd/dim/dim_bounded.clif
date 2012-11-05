@@ -1,0 +1,49 @@
+(cl-module dim/dim_bounded
+
+(cl-imports  dim/dim_basic)
+(cl-imports  dim/defs/min_max_dim)
+
+(cl-comment 'D-E1: There exists a unique minimum dimension')
+
+(exists (x)
+	(and
+		(MinDim x)
+		(forall (y)	
+			(iff
+				(MinDim y)
+				(EqDim x y)
+			)
+		)
+	)
+)
+
+
+(cl-comment 'D-E2: There exists a unique maximum dimension')
+
+(exists (x)
+	(and
+		(MaxDim x)
+		(forall (y)	
+			(iff
+				(MaxDim y)
+				(EqDim x y)
+			)
+		)
+	)
+)
+
+(cl-comment 'D-E3: if something is of minimum and maximum dimension, then every element is of the same dimension')
+
+(forall (x y)
+	(if
+		(and (MaxDim x) (Atom x))
+		(if
+			(not (ZEX y))
+			(EqDim x y)
+		)
+	)
+)
+	
+
+
+)

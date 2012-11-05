@@ -1,0 +1,162 @@
+(cl-text space/spch
+
+(cl-imports space/space)
+
+
+
+(cl-comment 'CH1: ')
+
+(forall (x)
+	(S (ch x))
+)
+
+(cl-comment 'CH2: ')
+
+(forall (x)
+	(= (ch x) (ch (r x)))
+)
+
+(cl-comment 'CH3: ')
+
+(forall (x)
+	(if
+		(not (ZEX x))
+		(ICon (ch x))
+	)
+)
+
+(cl-comment 'CH4: ')
+
+(forall (x)
+	(= (ch x) (ch (ch x)))
+)
+		
+
+(cl-comment 'CH5: ')
+
+(forall (x)
+	(if
+		(not (ZEX x))
+		(Cont (r x) (ch x))
+	)
+)
+
+
+(cl-comment 'CH6: ')
+
+(forall (x)
+	(if
+		(and
+			(not (ZEX x))
+			(not (Closed (r x)))
+		)
+		(TCont (r x) (ch x))
+	)
+)
+
+(cl-comment 'CH7: ')
+
+(forall (x y)
+	(if
+		(Cont (r x) (r y))
+		(Cont (ch x) (ch y))
+	)
+)
+
+
+(cl-comment 'CH8: ')
+
+(forall (x y)
+	(if
+		(and
+			(= (ch x) (ch y))
+			(not (ZEX x))
+		)
+		(C (r x) (r y))
+	)
+)
+
+(cl-comment 'CH9: ')
+
+(forall (x y)
+	(if
+		(and
+			(MaxDim (r x))
+			(MaxDim (r y))
+			(= (r x) (ch x))
+			(= (r y) (ch y))
+		)
+		(= (intersection (ch x) (ch y)) (ch (intersection (ch x) (ch y))) )
+	)
+)
+
+
+
+(cl-comment 'CH10: ')
+
+(forall (x y)
+	(if
+		(and
+			(ICont (r x) (r y))
+			(not (Closed (difference (r y) (r x))))
+		)
+		(not (= (difference (r y) (r x)) (ch (difference (r y) (r x))))) 
+	)
+)
+
+
+(cl-comment 'CH11: ')
+
+(forall (x y)
+	(if
+		(and
+			(ICont (r x) (r y))
+			(MaxDim (r x))
+			(MaxDim (r y))
+		)
+		(Cont (r x) (ch (difference (r y) (r x)))) 
+	)
+)
+
+
+
+(cl-comment 'CH12: ')
+
+(forall (x y)
+	(if
+		(or
+			(not (ZEX x))
+			(not (ZEX y))
+		)
+		(exists (z v)
+			(and
+				(TSum (r x) (r y) (r z))
+				(TSum (ch x) (ch y) (r v))
+				(Cont v (ch z))
+			)
+		)
+	)
+)
+
+
+(cl-comment 'CH13: ')
+
+(forall (x y z v w)
+	(if
+		(and
+			(EqDim x y)
+			(EqDim y z)
+			(SC x y)
+			(SC y z)
+			(not (C x z))
+			(TSum x y v)
+			(TSum y z w)
+			(= v (ch v))
+			(= w (ch w))
+		)
+		(= y (ch y))
+	)
+)
+
+
+)

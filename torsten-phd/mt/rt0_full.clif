@@ -1,0 +1,199 @@
+(cl-module mt/rt0_full
+
+(cl-comment "Complete set of axioms of the mereotopology RT0")
+
+
+(cl-comment 'D1: Parthood')
+
+(forall (x y)
+	(iff 	(P x y)
+		(forall (z) 
+				(if 	
+					(C z x)
+					(C z y) )))
+)
+
+(cl-comment 'D3: Overlap')
+
+(forall (x y)
+	(iff 	(O x y)
+		(exists (z)
+				(and 	(P z x)
+					(P z y) )))
+)
+
+
+(cl-comment 'D4: External connection')
+
+(forall (x y)
+	(iff 	(EC x y)
+		(and 	(C x y)
+			(not (O x y)) ))
+)
+
+
+(cl-comment 'D6: Non-tangential parthood')
+
+(forall (x y)
+	(iff 	(NTP x y)
+		(and 	(P x y)
+			(not (exists (z) 
+					(and 	(EC z x)
+						(EC z y))
+			)) ))
+)
+
+
+(cl-comment 'D7: Closure function closure(x) as -i(-x)')
+
+(forall (x)
+	(= (closure x) (neg (i (neg x))))
+)
+
+
+(cl-comment 'D8: Open')
+
+(forall (x)
+	(iff 	(OP x)
+		(= x (i x)))
+)
+
+
+(cl-comment 'A1: C reflexive')
+
+(forall (x) 
+	(C x x)
+)
+
+
+(cl-comment 'A2: C symmetric')
+
+(forall (x y) 
+	(if (C x y) (C y x))
+)
+
+
+(cl-comment 'A3: C extensional')
+
+(forall (x y) 
+	(if 	(forall (z) (iff (C z x) (C z y)))
+		(= x y))
+)
+
+
+(cl-comment 'A4: Universally connected region ONE')
+
+(forall (y) 
+	(C ONE y)
+)
+
+
+(cl-comment 'A5: Unique sums')
+
+(forall (x y) 
+	(exists (z) 
+		(forall (u) 
+			(iff 	(C u z) 
+				(or (C u x) (C u y)))
+)))
+
+
+
+(cl-comment 'A6: Unique intersections (MEET)')
+
+(forall (x y) 
+	(if 	(O x y)
+		(exists (z)
+			(and 	(= z (MEET x y))
+				(forall (u) 
+					(iff 	(C u z)
+						(exists (v)
+							(and 	(P v x)
+								(P v y)
+								(C v u)
+)	)	)	)	)	)	)	)
+
+
+
+(cl-comment 'A7: Unique complements')
+
+(forall (x)
+	(if	(exists (y) (not (C y x)))
+		(exists (z) 
+			(and	(= (neg x) z)
+					(forall (u)
+						(iff 	(C u z)
+							(exists (v)
+								(and 	(not (C v x))
+									(C v u)
+)	)	)	)		)	)	)	)
+
+
+(cl-comment 'A8: Unique interiors')
+
+(forall (x)
+	(exists (z)
+		(and	(= (i x) z)
+				(forall (u)
+					(iff 	(C u z)
+						(exists (v)
+							(and 	(NTP v x)
+								(C v u)
+)	)	)		)	)	)	)
+
+
+(cl-comment 'A9: closure of the universal region')
+
+(= (closure ONE) ONE)
+
+
+(cl-comment 'A10: Open intersection of open elements')
+
+(forall (x y)
+	(if 
+		(and 	(OP x)
+			(OP y)
+			(O x y))
+		(OP (MEET x y))
+)	)
+
+(cl-comment "D11: Weak contact")
+
+(forall (x y)
+	(iff	(WCont x y)
+		(and 	(not (C (closure x) (closure y)))
+			(forall (z)
+				(if 	(and	(P x z)
+						(OP z) )
+					(C (closure z) y)
+)	)	)	)	)
+
+
+(cl-comment "A11: Existence of an external connection")
+
+(exists (x y)
+	(EC x y)
+)
+
+
+(cl-comment "A12: Existence of a weak contact")
+
+(exists (x y)
+	(WCont x y)
+)
+
+(cl-comment "A13: Existence of a smallest open neighborhood n(x) for every x")
+
+(forall (x)
+	(exists (y)
+		(and 	
+			(P x y)
+			(OP y)
+			(forall (z)
+				(if
+					(and 	
+						(P x z)
+						(OP z))
+					(P y z))))))
+					
+)

@@ -1,0 +1,91 @@
+(cl-module codi/codi_plp_g
+
+(cl-imports codi/codi_plp)
+
+
+(cl-comment 'PL-A3: Line Axiom, Part II')
+
+(forall (p q)
+	(if
+		(and
+			(Pt p)
+			(Pt q)
+			(not (= p q))
+		)
+		(exists (l)
+			(and
+				(L l)		
+				(Cont p l)
+				(Cont q l)
+			)
+		)
+	)
+)		
+
+(cl-comment 'PLP-A1: Plane Axiom, Part I')
+
+(forall (p q r)
+	(if
+		(and
+			(Pt p)
+			(Pt q)
+			(Pt r)
+			(not (= p q))
+			(not (= p r))
+			(not (= q r))
+			(forall (l)
+				(if
+					(L l)
+					(or 
+						(not (Cont p l))
+						(not (Cont q l))
+						(not (Cont r l))
+					)
+				)
+			)
+		)
+		(exists (x)
+			(and
+				(Pl x)		
+				(Cont p x)
+				(Cont q x)
+				(Cont r x)
+			)
+		)
+	)
+)		
+
+
+(cl-comment 'PLP-A3: Plane Existence Axiom')
+
+(forall (x)
+	(if
+		(Pl x)
+		(exists (p q r)
+			(and
+				(Pt p)
+				(Pt q)
+				(Pt r)
+				(not (= p q))
+				(not (= p r))
+				(not (= q r))
+				(forall (l)
+					(if
+						(L l)
+						(or 
+							(not (Cont p l))
+							(not (Cont q l))
+							(not (Cont r l))
+						)
+					)
+				)
+				(Pl x)
+				(Cont p x)
+				(Cont q x)
+				(Cont r x)
+			)
+		)
+	)
+)
+
+)

@@ -1,0 +1,98 @@
+(cl-module codi/theorems/con_theorems
+
+(cl-imports codi/codi_down)
+
+(cl-imports codi/defs/connected)
+
+(cl-imports codi/defs/po)
+
+(cl-imports codi/defs/inc)
+
+(cl-imports codi/defs/sc)
+
+(cl-imports codi/defs/min_max_in_dim)
+
+(cl-comment "Defining when an entity is self-connected")
+
+
+(cl-comment "Con-T1: all minimal entities are connected")
+
+(forall (x)
+	(if
+		(Min x)
+		(Con x)
+	)
+)
+
+
+(cl-comment "Con-T2: zero entity is connected")
+
+(forall (x)
+	(if
+		(ZEX x)
+		(Con x)
+	)
+)
+
+(cl-comment "Con-T3")
+
+(forall (x y)
+	(if
+		(and
+			(Con x)
+			(PP y x)
+		)
+		(SC y (difference x y))
+	)
+)
+
+(cl-comment "Con-T4: ")
+
+(forall (x y)
+	(if
+		(and
+			(Con x)
+			(PO x y)
+			(not (ZEX (difference x y)))
+			(not (ZEX (intersection x y)))
+		)
+		(SC (intersection x y) (difference x y))
+	)
+)
+	
+(cl-comment "Con-T5: ")
+
+(forall (x y)
+	(if
+		(and
+			(Con x)
+			(Inc x y)
+			(EqDim (difference x y) (intersection x y))
+			(not (ZEX (difference x y)))
+			(not (ZEX (intersection x y)))
+		)
+		(SC (intersection x y) (difference x y))
+	)
+)
+
+
+(cl-comment "Con-T6: not connected by counterexample")
+(forall (x y z)
+	(if
+		(and
+			(not (C y z))
+			(P y x)
+			(P z x)
+			(forall (v)
+				(or
+					(not (Cont v x))
+					(Cont v y)
+					(Cont v z)
+				)
+			)
+		)
+		(not (Con x))
+	)
+)
+
+)

@@ -1,0 +1,97 @@
+(cl-module codi/theorems/codi_updown_theorems
+
+(cl-imports codi/codi_updown)
+
+
+(cl-comment 'U-T1')
+
+(MaxDim Uni)
+
+
+(cl-comment 'U-T2')
+
+(Max Uni)
+
+
+(cl-comment 'U-T3')
+
+(forall (x)
+	(if
+		(not (ZEX x))
+		(Cont x (intersection Uni x))
+	)
+)
+
+(cl-comment 'U-T4')
+
+(forall (x)
+	(if
+		(not (ZEX x))
+		(ZEX (difference x Uni))
+	)
+)
+
+
+(cl-comment 'U-T5')
+(forall (x)
+	(if
+		(not (ZEX x))
+		(= Uni (sum x Uni))
+	)
+)
+
+(cl-comment 'U-T6a')
+(forall (x y)
+	(if
+		(and
+			(MaxDim x)
+			(MaxDim y)
+			(not (ZEX (difference U (intersection x y))))
+		)
+		(Cont (difference Uni (intersection x y)) (sum (difference Uni x) (difference Uni y)))
+	)
+)
+
+
+(cl-comment 'U-T6b')
+(forall (x y)
+	(if
+		(and
+			(MaxDim x)
+			(MaxDim y)
+			(not (ZEX (sum (difference Uni x) (difference Uni y))))
+		)
+		(Cont (sum (difference Uni x) (difference Uni y)) (difference Uni (intersection x y)))
+	)
+)
+
+
+(cl-comment 'U-T7a')
+(forall (x y)
+	(if
+		(and
+			(MaxDim x)
+			(MaxDim y)
+			(not (= Uni (sum x y)))
+			(not (ZEX (difference Uni (sum x y))))
+		)
+		(Cont (difference Uni (sum x y)) (intersection (difference Uni x) (difference Uni y)))
+	)
+)
+
+
+(cl-comment 'U-T7b')
+(forall (x y)
+	(if
+		(and
+			(MaxDim x)
+			(MaxDim y)
+			(not (= Uni (sum x y)))
+			(not (ZEX (intersection (difference Uni x) (difference Uni y))))
+		)
+		(Cont (intersection (difference Uni x) (difference Uni y)) (difference Uni (sum x y)))
+	)
+)
+
+
+)

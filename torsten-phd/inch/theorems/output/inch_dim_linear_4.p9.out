@@ -1,0 +1,236 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 22657 was started by torsten on scotus.mie.utoronto.ca,
+Tue May 22 10:46:56 2012
+The command was "prover9 -t 600 -f inch/p9/codi_mapping.p9 inch/p9/inch_weak.p9 inch//defs/p9/dim_prime_defs.p9 inch//theorems/p9/options.txt inch//theorems/p9/inch_dim_linear_4.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file inch/p9/codi_mapping.p9
+
+
+formulas(sos).
+(all x all y (Cont(x,y) <-> CS(x,y) & -ZEXI(x))).
+(all x (ZEX(x) <-> ZEXI(x))).
+(all x all y (x < y <-> GED(y,x) & -GED(x,y))).
+end_of_list.
+
+% Reading from file inch/p9/inch_weak.p9
+
+
+formulas(sos).
+(all x all y (CS(x,y) <-> (all z (INCH(x,z) -> INCH(y,z))))).
+(all x all y (CH(x,y) <-> INCH(x,y) & (all z (INCH(x,z) & INCH(z,x) -> INCH(y,z) & INCH(z,y))))).
+(all x all y (ZEXI(x) <-> -INCH(x,x))).
+(all x all y (GED(x,y) <-> ZEXI(y) | (exists z (INCH(x,z) & INCH(z,y))))).
+(all x all y (x = y <-> (all z (INCH(x,z) <-> INCH(y,z))))).
+(all x all y (x = y <-> (all z (INCH(z,x) <-> INCH(z,y))))).
+(all x all y (INCH(x,y) -> INCH(x,x))).
+(all x all y (GED(x,y) | GED(y,x))).
+(all x all y all z (GED(x,y) & GED(y,z) -> GED(x,z))).
+end_of_list.
+
+% Reading from file inch//defs/p9/dim_prime_defs.p9
+
+
+formulas(sos).
+(all x all y (EqDim(x,y) <-> -(x < y) & -(y < x))).
+(all x all y (x <= y <-> x < y | EqDim(x,y))).
+(all x (MaxDim(x) <-> (all y y <= x))).
+(all x (MinDim(x) <-> -ZEX(x) & (all y (y < x -> ZEX(y))))).
+end_of_list.
+
+% Reading from file inch//theorems/p9/options.txt
+
+clear(auto_denials).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+
+% Reading from file inch//theorems/p9/inch_dim_linear_4.p9
+
+
+formulas(goals).
+(all x all y (ZEX(x) & ZEX(y) -> x = y)).
+end_of_list.
+
+============================== end of input ==========================
+
+% From the command line: assign(max_seconds, 600).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x all y (Cont(x,y) <-> CS(x,y) & -ZEXI(x))) # label(non_clause).  [assumption].
+2 (all x (ZEX(x) <-> ZEXI(x))) # label(non_clause).  [assumption].
+3 (all x all y (x < y <-> GED(y,x) & -GED(x,y))) # label(non_clause).  [assumption].
+4 (all x all y (CS(x,y) <-> (all z (INCH(x,z) -> INCH(y,z))))) # label(non_clause).  [assumption].
+5 (all x all y (CH(x,y) <-> INCH(x,y) & (all z (INCH(x,z) & INCH(z,x) -> INCH(y,z) & INCH(z,y))))) # label(non_clause).  [assumption].
+6 (all x all y (ZEXI(x) <-> -INCH(x,x))) # label(non_clause).  [assumption].
+7 (all x all y (GED(x,y) <-> ZEXI(y) | (exists z (INCH(x,z) & INCH(z,y))))) # label(non_clause).  [assumption].
+8 (all x all y (x = y <-> (all z (INCH(x,z) <-> INCH(y,z))))) # label(non_clause).  [assumption].
+9 (all x all y (x = y <-> (all z (INCH(z,x) <-> INCH(z,y))))) # label(non_clause).  [assumption].
+10 (all x all y (INCH(x,y) -> INCH(x,x))) # label(non_clause).  [assumption].
+11 (all x all y (GED(x,y) | GED(y,x))) # label(non_clause).  [assumption].
+12 (all x all y all z (GED(x,y) & GED(y,z) -> GED(x,z))) # label(non_clause).  [assumption].
+13 (all x all y (EqDim(x,y) <-> -(x < y) & -(y < x))) # label(non_clause).  [assumption].
+14 (all x all y (x <= y <-> x < y | EqDim(x,y))) # label(non_clause).  [assumption].
+15 (all x (MaxDim(x) <-> (all y y <= x))) # label(non_clause).  [assumption].
+16 (all x (MinDim(x) <-> -ZEX(x) & (all y (y < x -> ZEX(y))))) # label(non_clause).  [assumption].
+17 (all x all y (ZEX(x) & ZEX(y) -> x = y)) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating Cont/2
+18 Cont(x,y) | -CS(x,y) | ZEXI(x).  [clausify(1)].
+19 -Cont(x,y) | CS(x,y).  [clausify(1)].
+20 -Cont(x,y) | -ZEXI(x).  [clausify(1)].
+
+Eliminating ZEXI/1
+21 ZEX(x) | -ZEXI(x).  [clausify(2)].
+22 -ZEX(x) | ZEXI(x).  [clausify(2)].
+23 -ZEXI(x) | -INCH(x,x).  [clausify(6)].
+Derived: -INCH(x,x) | -ZEX(x).  [resolve(23,a,22,b)].
+24 ZEXI(x) | INCH(x,x).  [clausify(6)].
+Derived: INCH(x,x) | ZEX(x).  [resolve(24,a,21,b)].
+25 -GED(x,y) | ZEXI(y) | INCH(x,f3(x,y)).  [clausify(7)].
+Derived: -GED(x,y) | INCH(x,f3(x,y)) | ZEX(y).  [resolve(25,b,21,b)].
+Derived: -GED(x,y) | INCH(x,f3(x,y)) | -INCH(y,y).  [resolve(25,b,23,a)].
+26 -GED(x,y) | ZEXI(y) | INCH(f3(x,y),y).  [clausify(7)].
+Derived: -GED(x,y) | INCH(f3(x,y),y) | ZEX(y).  [resolve(26,b,21,b)].
+Derived: -GED(x,y) | INCH(f3(x,y),y) | -INCH(y,y).  [resolve(26,b,23,a)].
+27 GED(x,y) | -ZEXI(y).  [clausify(7)].
+Derived: GED(x,y) | -ZEX(y).  [resolve(27,b,22,b)].
+Derived: GED(x,y) | INCH(y,y).  [resolve(27,b,24,a)].
+Derived: GED(x,y) | -GED(z,y) | INCH(z,f3(z,y)).  [resolve(27,b,25,b)].
+Derived: GED(x,y) | -GED(z,y) | INCH(f3(z,y),y).  [resolve(27,b,26,b)].
+
+Eliminating CS/2
+28 CS(x,y) | INCH(x,f1(x,y)).  [clausify(4)].
+29 -CS(x,y) | -INCH(x,z) | INCH(y,z).  [clausify(4)].
+Derived: INCH(x,f1(x,y)) | -INCH(x,z) | INCH(y,z).  [resolve(28,a,29,a)].
+30 CS(x,y) | -INCH(y,f1(x,y)).  [clausify(4)].
+Derived: -INCH(x,f1(y,x)) | -INCH(y,z) | INCH(x,z).  [resolve(30,a,29,a)].
+
+Eliminating CH/2
+31 CH(x,y) | -INCH(x,y) | INCH(x,f2(x,y)).  [clausify(5)].
+32 -CH(x,y) | INCH(x,y).  [clausify(5)].
+33 -CH(x,y) | -INCH(x,z) | -INCH(z,x) | INCH(y,z).  [clausify(5)].
+34 -CH(x,y) | -INCH(x,z) | -INCH(z,x) | INCH(z,y).  [clausify(5)].
+Derived: -INCH(x,y) | INCH(x,f2(x,y)) | -INCH(x,z) | -INCH(z,x) | INCH(y,z).  [resolve(31,a,33,a)].
+Derived: -INCH(x,y) | INCH(x,f2(x,y)) | -INCH(x,z) | -INCH(z,x) | INCH(z,y).  [resolve(31,a,34,a)].
+35 CH(x,y) | -INCH(x,y) | INCH(f2(x,y),x).  [clausify(5)].
+Derived: -INCH(x,y) | INCH(f2(x,y),x) | -INCH(x,z) | -INCH(z,x) | INCH(y,z).  [resolve(35,a,33,a)].
+Derived: -INCH(x,y) | INCH(f2(x,y),x) | -INCH(x,z) | -INCH(z,x) | INCH(z,y).  [resolve(35,a,34,a)].
+36 CH(x,y) | -INCH(x,y) | -INCH(y,f2(x,y)) | -INCH(f2(x,y),y).  [clausify(5)].
+Derived: -INCH(x,y) | -INCH(y,f2(x,y)) | -INCH(f2(x,y),y) | -INCH(x,z) | -INCH(z,x) | INCH(y,z).  [resolve(36,a,33,a)].
+Derived: -INCH(x,y) | -INCH(y,f2(x,y)) | -INCH(f2(x,y),y) | -INCH(x,z) | -INCH(z,x) | INCH(z,y).  [resolve(36,a,34,a)].
+
+Eliminating EqDim/2
+37 EqDim(x,y) | x < y | y < x.  [clausify(13)].
+38 -EqDim(x,y) | -(x < y).  [clausify(13)].
+39 -EqDim(x,y) | -(y < x).  [clausify(13)].
+40 -(x <= y) | x < y | EqDim(x,y).  [clausify(14)].
+Derived: -(x <= y) | x < y | -(y < x).  [resolve(40,c,39,a)].
+41 x <= y | -EqDim(x,y).  [clausify(14)].
+Derived: x <= y | x < y | y < x.  [resolve(41,b,37,a)].
+
+Eliminating MaxDim/1
+42 MaxDim(x) | -(f6(x) <= x).  [clausify(15)].
+43 -MaxDim(x) | y <= x.  [clausify(15)].
+Derived: -(f6(x) <= x) | y <= x.  [resolve(42,a,43,a)].
+
+Eliminating MinDim/1
+44 MinDim(x) | ZEX(x) | f7(x) < x.  [clausify(16)].
+45 -MinDim(x) | -ZEX(x).  [clausify(16)].
+46 -MinDim(x) | -(y < x) | ZEX(y).  [clausify(16)].
+Derived: ZEX(x) | f7(x) < x | -(y < x) | ZEX(y).  [resolve(44,a,46,a)].
+47 MinDim(x) | ZEX(x) | -ZEX(f7(x)).  [clausify(16)].
+Derived: ZEX(x) | -ZEX(f7(x)) | -(y < x) | ZEX(y).  [resolve(47,a,46,a)].
+
+============================== end predicate elimination =============
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, ZEX, INCH, GED, <, <= ]).
+Function symbol precedence:  function_order([ c1, c2, f1, f2, f3, f4, f5, f6, f7 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+  % set(binary_resolution).  % (non-Horn)
+  % set(neg_ur_resolution).  % (non-Horn, less than 100 clauses)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.01 seconds.
+
+============================== PROOF =================================
+
+% Proof 1 at 0.02 (+ 0.00) seconds.
+% Length of proof is 20.
+% Level of proof is 5.
+% Maximum clause weight is 16.000.
+% Given clauses 57.
+
+2 (all x (ZEX(x) <-> ZEXI(x))) # label(non_clause).  [assumption].
+6 (all x all y (ZEXI(x) <-> -INCH(x,x))) # label(non_clause).  [assumption].
+8 (all x all y (x = y <-> (all z (INCH(x,z) <-> INCH(y,z))))) # label(non_clause).  [assumption].
+10 (all x all y (INCH(x,y) -> INCH(x,x))) # label(non_clause).  [assumption].
+17 (all x all y (ZEX(x) & ZEX(y) -> x = y)) # label(non_clause) # label(goal).  [goal].
+22 -ZEX(x) | ZEXI(x).  [clausify(2)].
+23 -ZEXI(x) | -INCH(x,x).  [clausify(6)].
+52 x != y | -INCH(y,z) | INCH(x,z).  [clausify(8)].
+54 x = y | INCH(y,f4(y,x)) | INCH(x,f4(y,x)).  [clausify(8)].
+60 -INCH(x,y) | INCH(x,x).  [clausify(10)].
+64 ZEX(c1).  [deny(17)].
+65 ZEX(c2).  [deny(17)].
+66 c2 != c1.  [deny(17)].
+67 -INCH(x,x) | -ZEX(x).  [resolve(23,a,22,b)].
+99 x = y | INCH(x,f4(y,x)) | z != y | INCH(z,f4(y,x)).  [resolve(54,b,52,b)].
+128 -INCH(c2,c2).  [ur(67,b,65,a)].
+129 -INCH(c1,c1).  [ur(67,b,64,a)].
+258 -INCH(c2,x).  [ur(60,b,128,a)].
+259 -INCH(c1,x).  [ur(60,b,129,a)].
+271 $F.  [ur(99,a,66,a,b,258,a,d,259,a),xx(a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=57. Generated=430. Kept=223. proofs=1.
+Usable=54. Sos=160. Demods=0. Limbo=2, Disabled=79. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=206. Back_subsumed=6.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=1.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=1358. Nonunit_bsub_feature_tests=1170.
+Megabytes=0.41.
+User_CPU=0.02, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 22657 exit (max_proofs) Tue May 22 10:46:56 2012

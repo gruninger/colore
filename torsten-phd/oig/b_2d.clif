@@ -1,0 +1,90 @@
+(cl-module oig/b_2d
+
+(cl-comment 'basic axioms of betweenness in 2D incidence geometry')
+
+(cl-comment 'incidence')
+
+(forall (x y)
+	(if
+		(on x y)
+		(and
+			(Pt x)
+			(not (Pt y))
+		)
+	)
+)
+
+
+(cl-comment 'B1: outer symmetry')
+
+(forall (a b c)
+	(if
+		(B a b c)
+		(B c b a)
+	)
+)
+
+
+(cl-comment 'B2: strict, i.e. acyclic')
+
+(forall (a b c)
+	(if
+		(B a b c)
+		(not (B b c a))
+	)
+)
+
+(cl-comment 'B3: linear coherence')
+
+(forall (a b c p)
+	(iff
+		(and
+			(exists (l)
+				(and
+					(on a l)
+					(on b l)
+					(on c l)
+				)
+			)
+			(not (= a b))
+			(not (= a c))
+			(not (= b c))	
+		)
+		(or
+			(B a b c)
+			(B b c a)
+			(B c a b)
+		)
+	)
+)
+
+
+(cl-comment 'B4: Separation')
+
+(forall (a b c p l)
+	(if
+		(and
+			(on a l)
+			(on b l)
+			(on c l)
+			(on p l)
+			(not (= p a))
+			(not (= p b))
+			(not (= p c))	
+			(B a p b)
+		)
+		(or
+			(and
+				(B b p c)
+				(not (B a p c))
+			)
+			(and
+				(B a p c)
+				(not (B b p c))
+			)
+		)
+	)
+)
+
+
+)

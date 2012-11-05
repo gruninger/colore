@@ -1,0 +1,36 @@
+
+% The LADR formulas contain function or predicate symbols
+% that are not legal TPTP symbols, and we have replaced those
+% symbols with new symbols.  Here is the list of the unaccepted
+% symbols and the corresponding replacements.
+%
+%   (arity 2)        P    'P'
+%   (arity 1)       OP    'OP'
+%   (arity 2)    WCont    'WCont'
+%   (arity 2)       EC    'EC'
+%   (arity 2)        C    'C'
+%   (arity 2)     MEET    'MEET'
+%   (arity 2)        O    'O'
+%   (arity 0)      ONE    'ONE'
+%   (arity 2)      NTP    'NTP'
+
+fof(sos17,axiom,! [X0] : ! [X1] : ('P'(X0,X1) <=> ! [X2] : ('C'(X2,X0) =>'C'(X2,X1)))).
+fof(sos18,axiom,! [X3] : ! [X4] : ('O'(X3,X4) <=> ? [X5] : ('P'(X5,X3) &'P'(X5,X4)))).
+fof(sos19,axiom,! [X6] : ! [X7] : ('EC'(X6,X7) <=> ('C'(X6,X7) & ~'O'(X6,X7)))).
+fof(sos20,axiom,! [X8] : ! [X9] : ('NTP'(X8,X9) <=> ('P'(X8,X9) & ~ (? [X10] : ('EC'(X10,X8) &'EC'(X10,X9)))))).
+fof(sos21,axiom,! [X11] : closure(X11) = neg(i(neg(X11)))).
+fof(sos22,axiom,! [X12] : ('OP'(X12) <=> X12 = i(X12))).
+fof(sos23,axiom,! [X13] :'C'(X13,X13)).
+fof(sos24,axiom,! [X14] : ! [X15] : ('C'(X14,X15) =>'C'(X15,X14))).
+fof(sos25,axiom,! [X16] : ! [X17] : (! [X18] : ('C'(X18,X16) <=>'C'(X18,X17)) => X16 = X17)).
+fof(sos26,axiom,! [X19] :'C'('ONE',X19)).
+fof(sos27,axiom,! [X20] : ! [X21] : ? [X22] : ! [X23] : ('C'(X23,X22) <=> ('C'(X23,X20) |'C'(X23,X21)))).
+fof(sos28,axiom,! [X24] : ! [X25] : ('O'(X24,X25) => ? [X26] : (X26 ='MEET'(X24,X25) & ! [X27] : ('C'(X27,X26) <=> ? [X28] : ('P'(X28,X24) & ('P'(X28,X25) &'C'(X28,X27))))))).
+fof(sos29,axiom,! [X29] : (? [X30] : ~'C'(X30,X29) => ? [X31] : (neg(X29) = X31 & ! [X32] : ('C'(X32,X31) <=> ? [X33] : (~'C'(X33,X29) &'C'(X33,X32)))))).
+fof(sos30,axiom,! [X34] : ? [X35] : (i(X34) = X35 & ! [X36] : ('C'(X36,X35) <=> ? [X37] : ('NTP'(X37,X34) &'C'(X37,X36))))).
+cnf(sos,axiom,closure('ONE') ='ONE').
+fof(sos32,axiom,! [X38] : ! [X39] : (('OP'(X38) & ('OP'(X39) &'O'(X38,X39))) =>'OP'('MEET'(X38,X39)))).
+fof(sos33,axiom,! [X40] : ! [X41] : ('WCont'(X40,X41) <=> (~'C'(closure(X40),closure(X41)) & ! [X42] : (('P'(X40,X42) &'OP'(X42)) =>'C'(closure(X42),X41))))).
+fof(sos34,axiom,? [X43] : ? [X44] :'EC'(X43,X44)).
+fof(sos35,axiom,? [X45] : ? [X46] :'WCont'(X45,X46)).
+fof(sos36,axiom,! [X47] : ? [X48] : ('P'(X47,X48) & ('OP'(X48) & ! [X49] : (('P'(X47,X49) &'OP'(X49)) =>'P'(X48,X49))))).

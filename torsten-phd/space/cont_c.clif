@@ -1,0 +1,74 @@
+(cl-text space/cont_c
+
+(cl-comment 'C-A1: reflexive')
+(forall (x)
+	(iff
+		(and
+			(S x)
+			(not (ZEX x))
+		)
+		(Cont x x)
+	)
+)
+
+(cl-comment 'C-A2: antisymmetric')
+(forall (x y)
+	(if	
+		(and 
+			(Cont x y)
+			(Cont y x)
+		)
+		(= x y)
+	)
+)
+
+(cl-comment 'C-A3: transitive')
+(forall (x y z)
+	(if 	
+		(and 
+			(Cont x y)
+			(Cont y z)
+		)
+		(Cont x z)
+	)
+)
+
+(cl-comment 'C-A4: ZEXs are not contained in anything and contain nothing')
+(forall (x y)
+	(if
+		(ZEX x)
+		(and
+			(S x)
+			(not (Cont y x))
+			(not (Cont x y))
+		)
+	)
+)
+
+(cl-comment 'The following hold no matter whether a ZEX exists or not (already included in the basic axiomatization of dimension)')
+
+(cl-comment 'D-A4: unique ZEX (previously Z-A2)')
+(forall (x y)
+	(if
+		(and 
+			(ZEX x)
+			(ZEX y)
+		)
+		(= x y)
+	)
+)
+
+(cl-comment 'C-D: definition of contact in terms of containment')
+
+(forall (x y)
+	(iff
+		(C x y)
+		(exists (z)
+			(and (Cont z x) (Cont z y))
+		)
+	)
+)
+
+
+
+)

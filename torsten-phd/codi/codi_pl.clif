@@ -1,0 +1,82 @@
+(cl-module codi/codi_pl
+
+(cl-imports codi/codi)
+
+(cl-comment 'PL-D1: points')
+
+(forall (x)
+	(iff
+		(Pt x)
+		(and
+			(Max x)
+			(MinDim x)
+		)
+	)
+)
+
+(cl-comment 'PL-D1: lines')
+
+
+(forall (x)
+	(iff
+		(L x)
+		(and
+			(Max x)
+			(forall (y)
+				(if
+					(Pt y)
+					(Covers x y)
+				)
+			)
+		)
+	)
+)
+
+
+(cl-comment 'PL-A1')
+
+(forall (x)
+	(if
+		(L x)
+		(exists (y z)
+			(and
+				(Pt y)
+				(Pt z)
+				(Cont y x)
+				(Cont z x)
+				(not (= y z))
+			)
+		)
+	)
+)
+
+(cl-comment 'PL-E1')
+
+(forall (x y)
+	(if
+		(and
+			(Max x)
+			(Max y)
+			(Inc x y)
+			(< x y)
+		)
+		(Cont x y)
+	)
+)
+
+
+(cl-comment 'CD-E1')
+
+(forall (x)
+	(if
+		(MinDim x)
+		(forall (y)
+			(if
+				(Cont y x)
+				(= x y)
+			)
+		)
+	)
+)
+	
+)

@@ -1,0 +1,150 @@
+(cl-text space/dim_prime_linear
+
+(cl-comment 'compact axioms for linear relative dimension')
+
+(cl-comment 'D-A1: irreflexive')
+(forall (x)
+	(not (< x x))
+)
+
+(cl-comment 'D-A2: asymmetric (antisymmetric & irreflexive)')
+(forall (x y)
+	(if 	
+		(< x y)
+		(not (< y x))
+	)
+)
+
+(cl-comment 'D-A3: transitive (corrected from IJCAI version: need <= in the second condition to ensure that EqDim is transitive)')
+(forall (x y z)
+	(if 	
+		(and 
+			(< x y) 
+			(<= y z)
+		)
+		(< x z)
+	)
+)
+
+
+(cl-comment 'D-A4: unique ZEX')
+(forall (x y)
+	(if
+		(and 
+			(ZEX x)
+			(ZEX y)
+		)
+		(= x y)
+	)
+)
+
+(cl-comment 'D-A5: ZEX has dimension lower than anything else')
+
+(forall (x y)
+	(if
+		(and 
+			(ZEX x) 
+			(S y)
+			(not (ZEX y))
+		)
+		(< x y)
+	)
+)
+
+
+(cl-comment 'D-D2: define EqDim in terms of <')
+
+(forall (x y)
+	(iff 
+		(EqDim x y)
+		(and 
+			(S x)
+			(S y)
+			(not (< x y))
+			(not (< y x))
+		)
+	)
+)
+
+
+(cl-comment 'D-D3: <=')
+
+(forall (x y)
+	(iff 
+		(<= x y) 
+		(or 
+			(< x y)
+			(EqDim x y)
+		)
+	)
+)
+
+
+(cl-comment 'D-D4: Maximal dimension (Codim=0)')
+(forall (x)
+	(iff
+		(MaxDim x)
+		(and
+			(S x)
+			(forall (y)
+				(if
+					(S y)
+					(<= y x)
+				)
+			)
+		)
+	)
+)
+
+
+(cl-comment 'D-D5: Minimal dimension (Dim=0)')
+(forall (x)
+	(iff
+		(MinDim x)
+		(and
+			(S x)
+			(not (ZEX x))
+			(forall (y)
+				(if
+					(and
+						(S y)
+						(< y x)
+					)
+					(ZEX y)
+				)
+			)	
+		)
+	)
+)
+
+
+(cl-comment 'D-D6: next highest dimension (covers), x covers y if x>y and no z s.t. x>z>y')
+
+(forall (x y)
+	(iff 
+		(Covers x y)
+		(and
+			(< y x)
+			(forall (z)
+				(if
+					(S z)
+					(not
+						(and
+							(< y z)
+							(< z x)
+						)
+					)
+				)
+			)
+		)
+	)
+)
+
+(cl-comment 'D-A6: a lowest dimension must exist')
+
+(exists (x)
+	(MinDim x)
+)
+
+
+)

@@ -1,0 +1,48 @@
+% Automatically generated from CL/KIF
+formulas(sos).
+% Module space/voids_extended
+%imports("space/voids").
+% 'V-A9:'
+ all x all y ((hostsh(x, y) <-> hostsv(x, y) & ICon(r(x)))).
+% 'V-A10:'
+ all x all y ((hostsg(x, y) <-> hostsv(x, y) & -(ICon(r(x))))).
+% 'Hole-D:'
+ all y ((Hole(y) <->  exists x (hostsh(x, y)))).
+% 'Gap-D:'
+ all y ((Gap(y) <->  exists x (hostsg(x, y)))).
+% 'V-A11: opening of a void'
+ all x all v ((hostsv(x, v) -> (op(x, v) = intersection(r(v), difference(U, sum(r(x), r(v))))))).
+% 'V-A12: hosting a cavity'
+ all x all y ((hostscavity(x, y) <-> hostsv(x, y) & -(Covers(r(x), op(x, y))))).
+% 'CAV-D'
+ all y ((CAVITY(y) <->  exists x (hostscavity(x, y)))).
+% 'V-A13: hosting an internal cavity'
+ all x all y ((hostscavityi(x, y) <-> hostscavity(x, y) & ZEX(op(x, y)))).
+% 'V-A14: hosting a tangential cavity'
+ all x all y ((hostscavityt(x, y) <-> hostscavity(x, y) & -(ZEX(op(x, y))))).
+% 'V-A15: hosting a hollow'
+ all x all y ((hostshollow(x, y) <-> hostsv(x, y) & Covers(r(x), op(x, y)) & ICon(op(x, y)))).
+% 'HOL-D'
+ all y ((HOL(y) <->  exists x (hostshollow(x, y)))).
+% 'V-A16: hosting a tunnel'
+ all x all y ((hoststunnel(x, y) <-> hostsv(x, y) & Covers(r(x), op(x, y)) & -(ICon(op(x, y))))).
+% 'TUN-D'
+ all y ((TUN(y) <->  exists x (hoststunnel(x, y)))).
+% 'V-A17: hosting an external void'
+ all x all y ((hostsve(x, y) <-> hostsv(x, y) &  exists z (P(z, op(x, y)) &  all u ((hostsv(x, u) & EqDim(intersection(z, r(u)), z) -> PO(r(y), r(u)) & Cont(intersection(z, r(u)), op(x, u))))))).
+% 'V-A18: hosting an internal void'
+ all x all y ((hostsvi(x, y) <-> hostsv(x, y) & -(hostsve(x, y)))).
+% 'V-A19: porespace'
+ all v all o ((PO(v, porespace(o)) <->  exists m (DK1(m, o) &  all u ((hostsv(o, u) -> -(PO(v, r(u))))) &  exists u (hostsv(m, u) & PO(v, r(u)))))).
+% 'V-A20: voidspace'
+ all v all o ((PO(v, voidspace(o)) <-> PO(v, porespace(o)) |  exists u (hostsv(o, u) & PO(v, r(u))))).
+% 'V-A21'
+ all o ((-(ZEX(porespace(o))) ->  exists v exists m ((r(v) = porespace(o)) & hostsv(m, v) & DK1(m, o)))).
+% 'V-A22'
+ all o ((-(ZEX(voidspace(o))) ->  exists v exists m ((r(v) = voidspace(o)) & hostsv(m, v) & DK1(m, o)))).
+% 'V-A23: connected voidspace'
+ all v all o ((PO(v, convoidspace(o)) <->  exists u (PO(v, u) & ICon(u) & Cont(u, voidspace(o)) & StrongC(u, difference(Uni, sum(r(o), voidspace(o))))))).
+% 'V-A24: connected porespace'
+ all v all o ((PO(v, conporespace(o)) <->  exists u (PO(v, u) & ICon(u) & Cont(u, porespace(o)) & StrongC(u, difference(Uni, sum(r(o), porespace(o))))))).
+
+end_of_list.
