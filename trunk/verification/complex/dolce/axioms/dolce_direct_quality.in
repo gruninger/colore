@@ -1,0 +1,115 @@
+% Automatically generated from CL/KIF
+formulas(sos).
+% dolce_taxonomy
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
+% 'Comment: DOLCE axioms from 4.1 Taxonomic Constraints'
+% 'Subsumption Constraints.'
+% 'Level 1 Hierarchy.'
+ all x ((ED(x) | PD(x) | Q(x) | AB(x) -> PT(x))).
+% 'Level 2 Hierarchy.'
+ all x ((PED(x) | NPED(x) | AS(x) -> ED(x))).
+ all x ((EV(x) | STV(x) -> PD(x))).
+ all x ((TQ(x) | PQ(x) | AQ(x) -> Q(x))).
+ all x ((R(x) -> AB(x))).
+% 'Level 3 Hierarchy.'
+ all x ((M(x) | F(x) | POB(x) -> PED(x))).
+ all x ((NPOB(x) -> NPED(x))).
+ all x ((ACH(x) | ACC(x) -> EV(x))).
+ all x ((ST(x) | PRO(x) -> STV(x))).
+ all x ((TL(x) -> TQ(x))).
+ all x ((SL(x) -> PQ(x))).
+ all x ((TR(x) | PR(x) | AR(x) -> R(x))).
+% 'Level 4 Hierarchy.'
+ all x ((APO(x) | NAPO(x) -> POB(x))).
+ all x ((MOB(x) | SOB(x) -> NPOB(x))).
+ all x ((T(x) -> TR(x))).
+ all x ((S(x) -> PR(x))).
+% 'Level 5 Hierarchy.'
+ all x ((ASO(x) | NASO(x) -> SOB(x))).
+% 'Level 6 of Hierarchy'
+ all x ((SAG(x) | SC(x) -> ASO(x))).
+% 'Partitioning classes in a taxonomy.'
+% 'Level 0.'
+ all x ((PT(x) <-> ED(x) | PD(x) | Q(x) | AB(x))).
+ all x ((ED(x) -> -(PD(x)) & -(Q(x)) & -(AB(x)))).
+ all x ((PD(x) -> -(Q(x)) & -(AB(x)))).
+ all x ((Q(x) -> -(AB(x)))).
+% 'Level 1: Endurant.'
+ all x ((ED(x) <-> PED(x) | NPED(x) | AS(x))).
+ all x ((PED(x) -> -(NPED(x)) & -(AS(x)))).
+ all x ((NPED(x) -> -(AS(x)))).
+% 'Level 1: Perdurant.'
+ all x ((PD(x) <-> EV(x) | STV(x))).
+ all x ((EV(x) -> -(STV(x)))).
+% 'Level 1: Quality.'
+ all x ((Q(x) <-> TQ(x) | PQ(x) | AQ(x))).
+ all x ((TQ(x) -> -(PQ(x)) & -(AQ(x)))).
+ all x ((PQ(x) -> -(AQ(x)))).
+% 'Level 2: Physical Endurant.'
+ all x ((PED(x) <-> M(x) | F(x) | POB(x))).
+ all x ((M(x) -> -(F(x)) & -(POB(x)))).
+ all x ((F(x) -> -(POB(x)))).
+% 'Level 2: Event.'
+ all x ((EV(x) <-> ACH(x) | ACC(x))).
+ all x ((ACH(x) -> -(ACC(x)))).
+% 'Level 2: Stative.'
+ all x ((STV(x) <-> ST(x) | PRO(x))).
+ all x ((ST(x) -> -(PRO(x)))).
+% 'Level 2: Region.'
+ all x ((R(x) <-> TR(x) | PR(x) | AR(x))).
+ all x ((TR(x) -> -(PR(x)) & -(AR(x)))).
+ all x ((PR(x) -> -(AR(x)))).
+% 'Level 3: Physical Object.'
+ all x ((POB(x) <-> APO(x) | NAPO(x))).
+ all x ((APO(x) -> -(NAPO(x)))).
+% 'Level 3: Non-Physical Object.'
+ all x ((NPOB(x) <-> MOB(x) | SOB(x))).
+ all x ((MOB(x) -> -(SOB(x)))).
+% 'Level 4: Social Object.'
+ all x ((SOB(x) <-> ASO(x) | NASO(x))).
+ all x ((ASO(x) -> -(NASO(x)))).
+% 'Level 5: Agentive Social Object.'
+ all x ((ASO(x) <-> SAG(x) | SC(x))).
+ all x ((SAG(x) -> -(SC(x)))).
+
+
+% dolce_direct_quality
+% 'Ad38 to Ad51'
+% 'Td8'
+% 'Section 4.3.5 - Quality'
+% 'Argument Restrictions'
+% 'Ad38'
+ all x all y ((qt2(x, y) -> Q(x) & Q(y) | ED(y) | PD(y))).
+% 'Ad39'
+ all x all y ((qt2(x, y) -> (TQ(x) <-> TQ(y) | PD(y)))).
+% 'Ad40'
+ all x all y ((PQ(x) -> (PQ(x) <-> PQ(y) | PED(y)))).
+% 'Ad41'
+ all x all y ((qt2(x, y) -> (AQ(x) <-> AQ(y) | NPED(y)))).
+% 'Ground Axioms'
+% 'Ad42'
+ all x all y all z ((qt2(x, y) & qt2(y, z) -> qt2(x, z))).
+% 'Ad43'
+ all x all y all y1 ((dqt(x, y) & dqt(x, y1) -> (y = y1))).
+% 'Ad44'
+% 'To be done later since there are phis/other symbols in the axiom.'
+% 'Ad45'
+% 'To be done later since there are phis/other symbols in the axiom.'
+% 'Existential Axioms'
+% 'Ad46'
+ all x ((TQ(x) ->  exists z ( all y ((qt2(x, y) & PD(y) <-> (y = z)))))).
+% 'Ad47'
+ all x ((PQ(x) ->  exists z ( all y ((qt2(x, y) & PED(y) <-> (y = z)))))).
+% 'Ad48'
+ all x ((AQ(x) ->  exists z ( all y ((qt2(x, y) & NPED(y) <-> (y = z)))))).
+% 'Ad49'
+ all x all tl ((PD(x) ->  exists y (qt3(tl, y, x)))).
+% 'Ad50'
+ all x all sl ((PED(x) ->  exists y (qt3(sl, y, x)))).
+% 'Ad51'
+% 'To be done later since there are phis/other symbols in the axiom.'
+% 'Ground Properties'
+% 'Td8'
+ all x (-(qt2(x, x))).
+
+end_of_list.
