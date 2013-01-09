@@ -1,0 +1,381 @@
+% Automatically generated from CL/KIF
+formulas(sos).
+
+% moment with endpoints ---------------------------------------------------
+% lp_ordering
+ all x all y all z ((timepoint(x) & timepoint(y) & timepoint(z) & before(x, y) & before(y, z) -> before(x, z))).
+ all x ((timepoint(x) -> -(before(x, x)))).
+ all x all y ((timepoint(x) & timepoint(y) -> before(x, y) | before(y, x) | (x = y))).
+ all x all y ((bbefore(x, y) <-> timepoint(x) & timepoint(y) & before(x, y) | (x = y))).
+
+% lp_infinite_end
+ exists t1 (timepoint(t1) &  all t2 ((timepoint(t2) & -((t1 = t2)) -> before(t2, t1))) &  all t3 ((timepoint(t3) & -((t1 = t3)) ->  exists t4 (before(t3, t4) & before(t4, t1))))).
+ exists t1 (timepoint(t1) &  all t2 ((timepoint(t2) & -((t1 = t2)) -> before(t1, t2))) &  all t3 ((timepoint(t3) & -((t1 = t3)) ->  exists t4 (before(t4, t3) & before(t1, t4))))).
+
+% interval_with_endpoints
+% 'The following axioms are extracted from the sim_vc_end theory.'
+% 'Source: sim_vc_end'
+% 'Comment: Extracted from sim_vc_end'
+ all x ((timepoint(x) <-> -(timeinterval(x)))).
+% 'Source: sim_vc_end'
+% 'Comment: Extracted from sim_vc_end'
+ all i all p all q ((timeinterval(i) & (p = beginof(i)) & (q = endof(i)) -> (i = between(p, q)))).
+% 'Source: sim_vc_end'
+% 'Comment: Extracted from sim_vc_end'
+ all i ((timeinterval(i) -> timepoint(beginof(i)) & timepoint(endof(i)))).
+% 'Source: sim_vc_end'
+% 'Comment: Extracted from sim_vc_end'
+ all x all y ((before(x, y) -> timeinterval(between(x, y)))).
+% 'Source: sim_vc_end'
+% 'Comment: Extracted from sim_vc_end'
+ all p all q ((before(p, q) -> (p = beginof(between(p, q))) & (q = endof(between(p, q))))).
+
+%moment
+(all x all y
+	(before(x,y)
+	->
+	(timepoint(x)
+	& timepoint(y)))).
+
+(all x all y all z
+	((before(x,y)
+	& before(y,z))
+	->
+	before(x,z))).
+
+(all x
+	(timepoint(x)
+	->
+	-before(x,x))).
+
+(all x all y 
+	((timepoint(x)
+	& timepoint(y))
+	->
+	(before(x,y) | before(y,x) | (x=y)))).
+
+(all x all y
+	(bbefore(x,y)
+	<->
+	(timepoint(x)
+	& timepoint(y)
+	& (before(x,y) | (x=y))))).
+
+(all x
+	(timepoint(x)
+	->
+	(exists y
+		(timepoint(y)
+		& before(y,x))))).
+
+(all x
+        (timepoint(x)
+        ->
+        (exists y
+                (timepoint(y)
+                & before(x,y))))).
+
+(all x
+	(timepoint(x)
+	<->
+	-timeinterval(x))).
+
+(all i all p all q
+	((timeinterval(i)
+	& (p=beginof(i))
+	& (q=endof(i)))
+	->
+	(i=between(p,q)))).
+
+(all i
+	(timeinterval(i)
+	->
+	(timepoint(beginof(i))
+	& timepoint(endof(i))))).
+
+(all x all y
+        (before(x,y)
+        ->
+        timeinterval(between(x,y)))).
+
+(all p all q
+	(before(p,q)
+	->
+	((p=beginof(between(p,q)))
+	& (q=endof(between(p,q)))))).
+
+(all t
+        (timepoint(t)
+        ->
+        (exists i
+                (timeinterval(i)
+                & (t=beginof(i))
+                & (t=endof(i)))))).
+
+% psl_core.in-------------------------------------------------------------------------------------
+
+%The before relation only holds between timepoints.
+
+(all t1 all t2 (before(t1,t2) -> (timepoint(t1) & timepoint(t2)))).
+
+%The before relation is a total ordering.
+
+(all t1 all t2 ((timepoint(t1) & timepoint(t2)) -> ((t1=t2) | before(t1,t2) | before(t2,t1)))).
+
+%The before relation is irreflexive.
+
+(all t1 (-before(t1,t1))).
+
+%The before relation is transitive.
+
+(all t1 all t2 all t3 ((before(t1,t2) & before(t2,t3)) -> before(t1,t3))).
+
+%The timepoint inf- (infneg) is before all other timepoints.
+
+(all t ((timepoint(t) & (-(t=infneg))) -> before(infneg,t))).
+
+%Every other timepoint is before inf+ (infpos).
+
+(all t ((timepoint(t) & (-(t=infpos))) -> before(t,infpos))).
+
+%Given any timepoint t other than inf-, there is a timepoint between inf- and t.
+
+%(all t ((timepoint(t) & (-(t=infneg))) -> (exists u (between(infneg,u,t))))).
+
+%Given any timepoint t other than inf+, there is a timepoint between t and inf+.
+
+%(all t ((timepoint(t) & (-(t=infpos))) -> (exists u (between(t,u,infpos))))).
+
+%Everything is either an activity, activity occurrence, timepoint, or object.
+
+(all x (activity(x) | activity_occurrence(x) | timepoint(x) | object(x))).
+
+%Objects, activities, activity occurrences, and timepoints are all distinct kinds of things.
+
+(all x (activity(x) -> ((-(activity_occurrence(x) | object(x) | timepoint(x))) & (activity_occurrence(x) -> (-(object(x) | timepoint(x)))) & (object(x) -> (-(timepoint(x))))))).
+
+%The occurrence relation only holds between activities and activity occurrences.
+
+(all a all occ (occurrence_of(occ,a) -> (activity(a) & activity_occurrence(occ)))).
+
+%Every activity occurrence is the occurrence of some activity.
+
+(all occ (activity_occurrence(occ) -> (exists a (activity(a) & occurrence_of(occ,a))))).
+
+%An activity occurrence is associated with a unique activity.
+
+(all occ all a1 all a2 ((occurrence_of(occ,a1) & occurrence_of(occ,a2)) -> (a1=a2))).
+
+%The begin and end of an activity occurrence or object are timepoints.
+
+(all a all x ((occurrence_of(x,a) | object(x)) -> (timepoint(beginof(x)) & timepoint(endof(x))))).
+
+%The begin point of every activity occurrence or object is before or equal to its end point.
+
+(all x ((activity_occurrence(x) | object(x)) -> (beforeEq(beginof(x),endof(x))))).
+
+%The participates_in relation only holds between objects, activity occurrences, and timepoints, respectively.
+
+(all x all occ all t (participates_in(x,occ,t) -> (object(x) & activity_occurrence(occ) & timepoint(t)))).
+
+%An object can participate in an activity occurrence only at those timepoints at which both the object exists and the activity is occurring.
+
+(all x all occ all t (participates_in(x,occ,t) -> (exists_at(x,t) & is_occurring_at(occ,t)))).
+
+%Timepoint t2 is between timepoints t1 and t3 if and only if t1 is before t2 and t2 is before t3.
+
+%(all t1 all t2 all t3 (between(t1,t2,t3) <-> (before(t1,t2) & before(t2,t3)))).
+
+%Timepoint t1 is beforeEq timepoint t2 if and only if t1 is before or equal to t2.
+
+(all t1 all t2 (beforeEq(t1,t2) <-> (timepoint(t1) & timepoint(t2) & (before(t1,t2) | (t1=t2))))).
+
+%Timepoint t2 is betweenEq timepoints t1 and t3 if and only if t1 is before or equal to t2, and t2 is before or equal to t3.
+
+(all t1 all t2 all t3 (betweenEq(t1,t2,t3) <-> (beforeEq(t1,t2) & beforeEq(t2,t3)))).
+
+%An object exists at a timepoint t if and only if t is betweenEq its begin and end points.
+
+(all x all t (exists_at(x,t) <-> (object(x) & betweenEq(beginof(x),t,endof(x))))).
+
+%An activity is occurring at a timepoint t if and only if t is betweenEq the begin and end points of the activity occurrence.
+
+(all occ all t (is_occurring_at(occ,t) <-> (betweenEq(beginof(occ),t,endof(occ))))).
+
+% dolce_taxonomy
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
+% 'Comment: DOLCE axioms from 4.1 Taxonomic Constraints'
+% 'Subsumption Constraints.'
+% 'Level 1 Hierarchy.'
+ all x ((ED(x) | PD(x) | Q(x) | AB(x) -> PT(x))).
+% 'Level 2 Hierarchy.'
+ all x ((PED(x) | NPED(x) | AS(x) -> ED(x))).
+ all x ((EV(x) | STV(x) -> PD(x))).
+ all x ((TQ(x) | PQ(x) | AQ(x) -> Q(x))).
+ all x ((R(x) -> AB(x))).
+% 'Level 3 Hierarchy.'
+ all x ((M(x) | F(x) | POB(x) -> PED(x))).
+ all x ((NPOB(x) -> NPED(x))).
+ all x ((ACH(x) | ACC(x) -> EV(x))).
+ all x ((ST(x) | PRO(x) -> STV(x))).
+ all x ((TL(x) -> TQ(x))).
+ all x ((SL(x) -> PQ(x))).
+ all x ((TR(x) | PR(x) | AR(x) -> R(x))).
+% 'Level 4 Hierarchy.'
+ all x ((APO(x) | NAPO(x) -> POB(x))).
+ all x ((MOB(x) | SOB(x) -> NPOB(x))).
+ all x ((T(x) -> TR(x))).
+ all x ((S(x) -> PR(x))).
+% 'Level 5 Hierarchy.'
+ all x ((ASO(x) | NASO(x) -> SOB(x))).
+% 'Level 6 of Hierarchy'
+ all x ((SAG(x) | SC(x) -> ASO(x))).
+% 'Partitioning classes in a taxonomy.'
+% 'Level 0.'
+ all x ((PT(x) <-> ED(x) | PD(x) | Q(x) | AB(x))).
+ all x ((ED(x) -> -(PD(x)) & -(Q(x)) & -(AB(x)))).
+ all x ((PD(x) -> -(Q(x)) & -(AB(x)))).
+ all x ((Q(x) -> -(AB(x)))).
+% 'Level 1: Endurant.'
+ all x ((ED(x) <-> PED(x) | NPED(x) | AS(x))).
+ all x ((PED(x) -> -(NPED(x)) & -(AS(x)))).
+ all x ((NPED(x) -> -(AS(x)))).
+% 'Level 1: Perdurant.'
+ all x ((PD(x) <-> EV(x) | STV(x))).
+ all x ((EV(x) -> -(STV(x)))).
+% 'Level 1: Quality.'
+ all x ((Q(x) <-> TQ(x) | PQ(x) | AQ(x))).
+ all x ((TQ(x) -> -(PQ(x)) & -(AQ(x)))).
+ all x ((PQ(x) -> -(AQ(x)))).
+% 'Level 2: Physical Endurant.'
+ all x ((PED(x) <-> M(x) | F(x) | POB(x))).
+ all x ((M(x) -> -(F(x)) & -(POB(x)))).
+ all x ((F(x) -> -(POB(x)))).
+% 'Level 2: Event.'
+ all x ((EV(x) <-> ACH(x) | ACC(x))).
+ all x ((ACH(x) -> -(ACC(x)))).
+% 'Level 2: Stative.'
+ all x ((STV(x) <-> ST(x) | PRO(x))).
+ all x ((ST(x) -> -(PRO(x)))).
+% 'Level 2: Region.'
+ all x ((R(x) <-> TR(x) | PR(x) | AR(x))).
+ all x ((TR(x) -> -(PR(x)) & -(AR(x)))).
+ all x ((PR(x) -> -(AR(x)))).
+% 'Level 3: Physical Object.'
+ all x ((POB(x) <-> APO(x) | NAPO(x))).
+ all x ((APO(x) -> -(NAPO(x)))).
+% 'Level 3: Non-Physical Object.'
+ all x ((NPOB(x) <-> MOB(x) | SOB(x))).
+ all x ((MOB(x) -> -(SOB(x)))).
+% 'Level 4: Social Object.'
+ all x ((SOB(x) <-> ASO(x) | NASO(x))).
+ all x ((ASO(x) -> -(NASO(x)))).
+% 'Level 5: Agentive Social Object.'
+ all x ((ASO(x) <-> SAG(x) | SC(x))).
+ all x ((SAG(x) -> -(SC(x)))).
+
+
+
+% dolce_time_mereology
+% 'Ad1'
+ all x all y ((P(x, y) -> T(y) & T(y))).
+% 'Ad2'
+ all x all y ((P(x, y) -> (T(x) <-> T(y)))).
+% 'Ground Axioms'
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18 Ontology Library final by Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
+% 'Ad5'
+ all x all y ((T(x) -> P(x, x))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
+% 'Ad6'
+ all x all y ((T(x) & T(y) & P(x, y) & P(y, x) -> (x = y))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
+% 'Ad7'
+ all x all y all z ((T(x) & T(y) & P(x, y) & P(y, z) -> P(x, z))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
+% 'Ad8'
+ all x all y ((T(x) & T(y) & -(P(x, y)) ->  exists z (T(z) & P(z, x) & -(O(z, y))))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
+% 'Ad9 - original DOLCE axiom'
+% '(if (or (and (exists x (phi x))\r\n\t\t\t(if (forall (x)(phi x))\r\n\t\t\t\t\t(T x)))\r\n\t\t(forall (x) (if (phi x)(T x))))\r\n\t(exists k (= k sigma_x_phi x)))'
+% 'Ad9 - edited with argument restrictions and binary sum'
+ all x all y ( exists k (Sum(k, x, y) & T(x) & T(y))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
+% 'Binary Sum'
+ all x all y all z ((Sum(z, x, y) <->  all w ((O(w, z) <-> O(w, x) | O(w, y))))).
+
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
+% 'Binary Difference'
+ all x all y all z ((Dif(z, x, y) <->  all w ((P(w, z) <-> P(w, x) & -(O(w, y)))))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
+% 'Additional Axioms for extensionality, existence of the difference and sum'
+ all x all y ((-(P(x, y)) ->  exists z (Dif(z, x, y)))).
+ all x all y ( exists z (Sum(z, x, y))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
+% 'Implied parts of sum'
+ all x all y all z ((Sum(z, x, y) -> P(x, z) & P(y, z))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
+% 'Implied proper parts of sum'
+ all x all y all z ((-(P(x, y)) & Sum(z, x, y) -> PP(y, z))).
+
+
+% dolce_present
+% 'Td15 to Td18'
+% 'Section 4.3.8 Being Present - WITHOUT EXPANSION'
+% 'Argument Restrictions'
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
+% 'Identifier: dolce_Td15'
+ all x ((ED(x) | PD(x) | Q(x) ->  exists t (PRE(x, t)))).
+% 'Ground Axioms'
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
+% 'Identifier: dolce_Td17'
+ all x all t all t1 ((PRE(x, t) & P(t1, t) -> PRE(x, t1))).
+% 'Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).'
+% 'Identifier: dolcecore_A7'
+ all x all t ((PRE(x, t) -> T(t))).
+% 'Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).'
+% 'Identifier: dolcecore_A9'
+% 'Additivity'
+ all x all t all t1 all t2 ((PRE(x, t1) & PRE(x, t2) & SUM(t, t1, t2) -> PRE(x, t))).
+
+% lp_ordering
+ all x all y all z ((timepoint(x) & timepoint(y) & timepoint(z) & before(x, y) & before(y, z) -> before(x, z))).
+ all x ((timepoint(x) -> -(before(x, x)))).
+ all x all y ((timepoint(x) & timepoint(y) -> before(x, y) | before(y, x) | (x = y))).
+ all x all y ((bbefore(x, y) <-> timepoint(x) & timepoint(y) & before(x, y) | (x = y))).
+
+% lp_infinite_end
+ exists t1 (timepoint(t1) &  all t2 ((timepoint(t2) & -((t1 = t2)) -> before(t2, t1))) &  all t3 ((timepoint(t3) & -((t1 = t3)) ->  exists t4 (before(t3, t4) & before(t4, t1))))).
+ exists t1 (timepoint(t1) &  all t2 ((timepoint(t2) & -((t1 = t2)) -> before(t1, t2))) &  all t3 ((timepoint(t3) & -((t1 = t3)) ->  exists t4 (before(t4, t3) & before(t1, t4))))).
+
+% interval_with_endpoints
+% 'The following axioms are extracted from the sim_vc_end theory.'
+% 'Source: sim_vc_end'
+% 'Comment: Extracted from sim_vc_end'
+ all x ((timepoint(x) <-> -(timeinterval(x)))).
+% 'Source: sim_vc_end'
+% 'Comment: Extracted from sim_vc_end'
+ all i all p all q ((timeinterval(i) & (p = beginof(i)) & (q = endof(i)) -> (i = between(p, q)))).
+% 'Source: sim_vc_end'
+% 'Comment: Extracted from sim_vc_end'
+ all i ((timeinterval(i) -> timepoint(beginof(i)) & timepoint(endof(i)))).
+% 'Source: sim_vc_end'
+% 'Comment: Extracted from sim_vc_end'
+ all x all y ((before(x, y) -> timeinterval(between(x, y)))).
+% 'Source: sim_vc_end'
+% 'Comment: Extracted from sim_vc_end'
+ all p all q ((before(p, q) -> (p = beginof(between(p, q))) & (q = endof(between(p, q))))).
+
+% interval_psl_core
+% 'Time interval version of PSL-CORE.'
+% 'Additional axioms that are included in this theory.'
+% 'Source: Michael Gruninger, Carmen Chui.'
+% 'Comment: A new relation created to relate a time interval with an activity occurrence or object.'
+% 'Relate a time interval with an activity occurrence and object.'
+% 'psl_interval(x,y)'
+ all x all y ((psl_interval(x, y) <-> activity_occurrence(x) | object(x) & timeinterval(y) & (beginof(x) = beginof(y)) & (endof(x) = endof(y)))).
+% 'Source: Michael Gruninger, Carmen Chui.'
+% 'Comment: A new relation created to relate two intervals together.'
+% 'A time interval z overlays activities x and y.'
+ all x all y all z ((overlay(x, y, z) <->  exists i1 exists i2 (psl_interval(x, i1) & psl_interval(y, i2) & (beginof(i2) = beginof(z)) & (endof(i1) = endof(z))))).
+
+end_of_list.
