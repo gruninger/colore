@@ -1,8 +1,13 @@
 % Automatically generated from CL/KIF
 formulas(sos).
-% dolce_taxonomy
+% dolce_participation
 % 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
-% 'Comment: DOLCE axioms from 4.1 Taxonomic Constraints'
+% 'Comment: DOLCE axioms from 4.3.4 Participation'
+% 'Import the DOLCE present theory.'
+%imports("test/dolce_present").
+
+% 'Import the DOLCE taxonomy.'
+%imports("test/dolce_taxonomy").
 % 'Subsumption Constraints.'
 % 'Level 1 Hierarchy.'
  all x ((ED(x) | PD(x) | Q(x) | AB(x) -> PT(x))).
@@ -72,7 +77,67 @@ formulas(sos).
  all x ((ASO(x) <-> SAG(x) | SC(x))).
  all x ((SAG(x) -> -(SC(x)))).
 
-% dolce_participation
+% 'Argument Restrictions'
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Ad1'
+ all x all y ((P(x, y) -> T(y) & T(y))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Ad2'
+ all x all y ((P(x, y) -> (T(x) <-> T(y)))).
+% 'Ground Axioms'
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Ad5'
+ all x all y ((T(x) -> P(x, x))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Ad6'
+ all x all y ((T(x) & T(y) & P(x, y) & P(y, x) -> (x = y))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Ad7'
+ all x all y all z ((T(x) & T(y) & P(x, y) & P(y, z) -> P(x, z))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Ad8'
+ all x all y ((T(x) & T(y) & -(P(x, y)) ->  exists z (T(z) & P(z, x) & -(O(z, y))))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Ad9 - original DOLCE axiom'
+% '(if (or (and (exists x (phi x))\r\n\t\t\t(if (forall (x)(phi x))\r\n\t\t\t\t\t(T x)))\r\n\t\t(forall (x) (if (phi x)(T x))))\r\n\t(exists k (= k sigma_x_phi x)))'
+% 'Ad9 - edited with argument restrictions and binary sum'
+ all x all y ( exists k (Sum(k, x, y) & T(x) & T(y))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Binary Sum'
+ all x all y all z ((Sum(z, x, y) <->  all w ((O(w, z) <-> O(w, x) | O(w, y))))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Binary Difference'
+ all x all y all z ((Dif(z, x, y) <->  all w ((P(w, z) <-> P(w, x) & -(O(w, y)))))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Additional Axioms for extensionality, existence of the difference and sum'
+ all x all y ((-(P(x, y)) ->  exists z (Dif(z, x, y)))).
+ all x all y ( exists z (Sum(z, x, y))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Implied parts of sum'
+ all x all y all z ((Sum(z, x, y) -> P(x, z) & P(y, z))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Implied proper parts of sum'
+ all x all y all z ((-(P(x, y)) & Sum(z, x, y) -> PP(y, z))).
+
+% 'Td15 to Td18'
+% 'Section 4.3.8 Being Present - WITHOUT EXPANSION'
+% 'Argument Restrictions'
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
+% 'Identifier: dolce_Td15'
+ all x ((ED(x) | PD(x) | Q(x) ->  exists t (PRE(x, t)))).
+% 'Ground Axioms'
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
+% 'Identifier: dolce_Td17'
+ all x all t all t1 ((PRE(x, t) & P(t1, t) -> PRE(x, t1))).
+% 'Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).'
+% 'Identifier: dolcecore_A7'
+ all x all t ((PRE(x, t) -> T(t))).
+% 'Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).'
+% 'Identifier: dolcecore_A9'
+% 'Additivity'
+ all x all t all t1 all t2 ((PRE(x, t1) & PRE(x, t2) & SUM(t, t1, t2) -> PRE(x, t))).
+
+
 % 'A33 to Ad37'
 % 'Td6 to Td7'
 % 'Section 4.3.4 - Participation'
@@ -95,5 +160,5 @@ formulas(sos).
 % 'Possibly part of the same module as Ad18? Calls the parthood relation.'
 % 'Identifier: dolce_Ad37'
  all x all y all t ((PC(x, y, t) <->  all t1 ((P(t1, t) -> PC(x, y, t1))))).
- 
+
 end_of_list.

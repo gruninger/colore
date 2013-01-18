@@ -1,9 +1,12 @@
 % Automatically generated from CL/KIF
 formulas(sos).
-% dolce_taxonomy
+% dolce_mereology
 % 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
-% 'Comment: DOLCE axioms from 4.1 Taxonomic Constraints'
-% 'Subsumption Constraints.'
+% 'Comment: DOLCE axioms from 4.3.1 Parthood'
+% 'We shall adopt for the atemporal parthood the axioms of atomic General Extensional Mereology (GEM), and the classical definitions of overlap, proper part, atom, etc.'
+% 'Import the DOLCE taxonomy.'
+%imports("test/dolce_taxonomy").
+
 % 'Level 1 Hierarchy.'
  all x ((ED(x) | PD(x) | Q(x) | AB(x) -> PT(x))).
 % 'Level 2 Hierarchy.'
@@ -72,56 +75,105 @@ formulas(sos).
  all x ((ASO(x) <-> SAG(x) | SC(x))).
  all x ((SAG(x) -> -(SC(x)))).
 
+% 'Import the DOLCE time mereology.'
+%imports("test/dolce_time_mereology").
 
-% dolce_mereology
+% 'Argument Restrictions'
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Ad1'
+ all x all y ((P(x, y) -> T(y) & T(y))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Ad2'
+ all x all y ((P(x, y) -> (T(x) <-> T(y)))).
+% 'Ground Axioms'
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Ad5'
+ all x all y ((T(x) -> P(x, x))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Ad6'
+ all x all y ((T(x) & T(y) & P(x, y) & P(y, x) -> (x = y))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Ad7'
+ all x all y all z ((T(x) & T(y) & P(x, y) & P(y, z) -> P(x, z))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Ad8'
+ all x all y ((T(x) & T(y) & -(P(x, y)) ->  exists z (T(z) & P(z, x) & -(O(z, y))))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Ad9 - original DOLCE axiom'
+% '(if (or (and (exists x (phi x))\r\n\t\t\t(if (forall (x)(phi x))\r\n\t\t\t\t\t(T x)))\r\n\t\t(forall (x) (if (phi x)(T x))))\r\n\t(exists k (= k sigma_x_phi x)))'
+% 'Ad9 - edited with argument restrictions and binary sum'
+ all x all y ( exists k (Sum(k, x, y) & T(x) & T(y))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Binary Sum'
+ all x all y all z ((Sum(z, x, y) <->  all w ((O(w, z) <-> O(w, x) | O(w, y))))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Binary Difference'
+ all x all y all z ((Dif(z, x, y) <->  all w ((P(w, z) <-> P(w, x) & -(O(w, y)))))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Additional Axioms for extensionality, existence of the difference and sum'
+ all x all y ((-(P(x, y)) ->  exists z (Dif(z, x, y)))).
+ all x all y ( exists z (Sum(z, x, y))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Implied parts of sum'
+ all x all y all z ((Sum(z, x, y) -> P(x, z) & P(y, z))).
+% 'Source: Michael Gruninger, Carmen Chui, and WonderWeb Deliverable D18.'
+% 'Implied proper parts of sum'
+ all x all y all z ((-(P(x, y)) & Sum(z, x, y) -> PP(y, z))).
+
+
+% 'Ad1 to Ad9'
+% 'Argument Restrictions'
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
 % 'Identifier: dolce_Ad1'
  all x all y ((P(x, y) -> AB(x) | PD(x) & AB(y) | PD(y))).
-
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
 % 'Identifier: dolce_Ad2'
  all x all y ((P(x, y) -> (PD(x) <-> PD(y)))).
-
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
 % 'Identifier: dolce_Ad3'
  all x all y ((P(x, y) -> (AB(x) <-> AB(y)))).
-
-% 'Identifier: dolce_Ad4'
- all x all y ((P(x, y) & SB(R, "phi") & X("phi") -> (phi(x) <-> phi(y)))).
-
-
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
+% 'Identifier: dolce_Ad4\r\n(forall (x y)\r\n\t(if (and (P x y)(SB R phi)(X phi))\r\n\t\t(iff (phi x)(phi y))))\r\n'
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
 % 'We expand Ad4 into three other axioms because the only phi that are subsumed by R are TR, PR, and AR.'
  all x all y ((P(x, y) & (TR(x) -> R(x)) -> (TR(x) <-> TR(y)))).
  all x all y ((P(x, y) & (PR(x) -> R(x)) -> (PR(x) <-> PR(y)))).
  all x all y ((P(x, y) & (AR(x) -> R(x)) -> (AR(x) <-> AR(y)))).
-
+% 'Ground Axioms'
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
 % 'Identifier: dolce_Ad5'
  all x all y ((AB(x) | PD(x) -> P(x, x))).
-
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
 % 'Identifier: dolce_Ad6'
  all x all y ((P(x, y) & P(y, x) -> (x = y))).
-
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
 % 'Identifier: dolce_Ad7'
  all x all y all z ((P(x, y) & P(y, z) -> P(x, z))).
-
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
 % 'Identifier: dolce_Ad8'
  all x all y ((AB(x) | PD(x) & -(P(x, y)) ->  exists z (P(z, x) & -(O(z, y))))).
-
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
+% 'Identifier: dolce_Ad9 - original DOLCE axiom'
+% '(if (or (and (exists x (phi x))\r\n\t\t\t(if (forall (x)(phi x))\r\n\t\t\t\t\t(AB x)))\r\n\t\t(forall (x) (if (phi x)(PD x))))\r\n\t(exists k (= k sigma_x_phi x)))'
 % 'Identifier: dolce_Ad9 - edited with argument restrictions and binary sum'
  all x all y ( exists k (Sum(k, x, y) & AB(x) & AB(y) | PD(x) & PD(y))).
-
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
 % 'Binary Sum'
  all x all y all z ((Sum(z, x, y) <->  all w ((O(w, z) <-> O(w, x) | O(w, y))))).
-
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
 % 'Binary Difference'
  all x all y all z ((Dif(z, x, y) <->  all w ((P(w, z) <-> P(w, x) & -(O(w, y)))))).
-
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
 % 'Additional Axioms for extensionality, existence of the difference and sum.'
  all x all y ((-(P(x, y)) ->  exists z (Dif(z, x, y)))).
  all x all y ( exists z (Sum(z, x, y))).
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
 % 'Implied parts of sum.'
  all x all y all z ((Sum(z, x, y) -> P(x, z) & P(y, z))).
-
+% 'Source: WonderWeb Deliverable D18 Ontology Library final by: Claudio Masolo, Stefano Borgo, Aldo Gangemi, Nicola Guarino, and Alessandro Oltramari (2003).'
 % 'Implied proper parts of sum'
  all x all y all z ((-(P(x, y)) & Sum(z, x, y) -> PP(y, z))).
-
+% 'Source: Michael Gruninger, Carmen Chui.'
 % 'ARGUMENT RESTRICTIONS FOR EXTENDING DOLCE MEREOLOGY TO MEREOLOGY SUBTHEORIES IN COLORE'
 % ptype
  all x ((ptype(x) <-> AB(x) | PD(x))).
