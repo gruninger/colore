@@ -1,0 +1,169 @@
+
+formulas(assumptions).
+
+% Reflexive
+all x
+	(leq(x,x)).
+
+% Antisymmetry
+all x all y
+	((leq(x,y)
+	& leq(y,x))
+	->
+	(x=y)).
+
+% Transitive
+all x all y all z
+	((leq(x,y)
+	& leq(y,z))
+	->
+	leq(x,z)).
+
+% Complete
+all x all y
+        ((x=y)
+        | leq(x,y)
+        | leq(y,x)).
+
+(all x all y
+	(lt(x,y)
+	<->
+	(leq(x,y) & (x != y)))).
+
+all x all y
+	(in(x,y)
+	->
+	in(y,x)).
+
+all x
+	(in(x,x)).
+
+all p
+	(point(p)
+	->
+	-line(p)).
+
+all x all y
+	((in(x,y)
+	& point(x)
+	& point(y))
+	->
+	(x=y)).
+
+all x all y
+	((in(x,y)
+	& line(x)
+	& line(y))
+	->
+	(x=y)).
+
+%partial_bipartite
+
+all l
+	(line(l)
+	->
+	(exists p
+		(point(p)
+		& in(p,l)))).
+
+%double_points
+
+all x all y all z all l
+        ((point(x)
+        & point(y)
+        & point(z)
+        & line(l)
+        & in(x,l)
+        & in(y,l)
+        & in(z,l))
+        ->
+        ((z = x) | (z = y) | (x = y))).
+
+%line_existence
+
+all x all y
+        ((point(x)
+        & point(y)
+        & (x != y))
+        ->
+        (exists z
+                (line(z)
+                & in(x,z)
+                & in(y,z)))).
+
+(all x
+	(Instant(x)
+	<->
+	point(x))).
+
+(all x 
+	(Interval(x)
+	<->
+	line(x))).
+
+(all x
+	(TemporalEntity(x)
+	<->
+	(point(x) | line(x)))).
+
+(all x all y
+	(begins(x,y)
+	<->
+	((point(x)
+	& line(y)
+	& in(x,y)
+	& (all z
+		((point(z)
+		& in(z,y))
+		->
+		leq(x,z))))
+	| (point(x) & (x=y))))).
+
+(all x all y
+	(ends(x,y)
+	<->
+	((point(x)
+	& line(y)
+	& in(x,y)
+	& (all z
+		((point(z)
+		& in(z,y))
+		->
+		leq(z,x))))
+	| (point(x) & (x=y))))).
+
+(all x all y all z
+	(timeBetween(x,y,z)
+	<->
+	(line(x)
+	& point(y)
+	& point(z)
+	& in(y,x)
+	& in(z,x)
+	& lt(y,z)))).
+
+(all x all y
+	(before(x,y)
+	<->
+	lt(x,y))).
+
+all x
+        (ProperInterval(x)
+        <->
+        (Interval(x)
+        & (all t1 all t2
+                ((begins(t1,x)
+                & ends(t2,x))
+                ->
+                ((t1 != t2)))))).
+
+
+-(all x all t1 all t2
+        ((ProperInterval(x)
+        & begins(t1,x)
+        & ends(t2,x))
+        ->
+        before(t1,t2))).
+
+
+end_of_list.

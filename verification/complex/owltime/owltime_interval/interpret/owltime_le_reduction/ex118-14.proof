@@ -1,0 +1,50 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 2386 was started by mudcat on Hrabanus-2.local,
+Sun Jan 20 13:09:20 2013
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.04 (+ 0.01) seconds.
+% Length of proof is 30.
+% Level of proof is 8.
+% Maximum clause weight is 11.
+% Given clauses 122.
+
+2 (all x all y (leq(x,y) & leq(y,x) -> x = y)) # label(non_clause).  [assumption].
+7 (all x in(x,x)) # label(non_clause).  [assumption].
+13 (all x all y (point(x) & point(y) & x != y -> (exists z (line(z) & in(x,z) & in(y,z))))) # label(non_clause).  [assumption].
+17 (all x all y (begins(x,y) <-> point(x) & line(y) & in(x,y) & (all z (point(z) & in(z,y) -> leq(x,z))) | point(x) & x = y)) # label(non_clause).  [assumption].
+18 (all x all y (ends(x,y) <-> point(x) & line(y) & in(x,y) & (all z (point(z) & in(z,y) -> leq(z,x))) | point(x) & x = y)) # label(non_clause).  [assumption].
+19 (all x all y all z (timeBetween(x,y,z) <-> line(x) & point(y) & point(z) & in(y,x) & in(z,x) & lt(y,z))) # label(non_clause).  [assumption].
+21 -(all t1 all t2 (t1 != t2 -> (all x (timeBetween(x,t1,t2) <-> begins(t1,x) & ends(t2,x))))) # label(non_clause).  [assumption].
+22 (all l (line(l) -> (exists p (point(p) & in(p,l) & (all x (point(x) & in(x,y) -> leq(x,z))))))) # label(non_clause).  [assumption].
+43 -leq(x,y) | -leq(y,x) | y = x.  [clausify(2)].
+47 in(x,x).  [clausify(7)].
+54 -point(x) | -point(y) | y = x | line(f2(x,y)).  [clausify(13)].
+57 -begins(x,y) | point(x).  [clausify(17)].
+65 -ends(x,y) | point(x).  [clausify(18)].
+74 -timeBetween(x,y,z) | point(y).  [clausify(19)].
+75 -timeBetween(x,y,z) | point(z).  [clausify(19)].
+78 c2 != c1.  [clausify(21)].
+79 timeBetween(c3,c1,c2) | begins(c1,c3).  [clausify(21)].
+80 timeBetween(c3,c1,c2) | ends(c2,c3).  [clausify(21)].
+84 -line(x) | -point(y) | -in(y,z) | leq(y,u).  [clausify(22)].
+98 begins(c1,c3) | point(c1).  [resolve(79,a,74,a)].
+102 ends(c2,c3) | point(c2).  [resolve(80,a,75,a)].
+105 -line(x) | -point(y) | leq(y,z).  [resolve(84,c,47,a)].
+128 point(c1).  [resolve(98,a,57,a),merge(b)].
+137 -point(x) | c1 = x | line(f2(x,c1)).  [resolve(128,a,54,b)].
+150 point(c2).  [resolve(102,a,65,a),merge(b)].
+359 line(f2(c2,c1)).  [resolve(137,a,150,a),flip(a),unit_del(a,78)].
+372 -point(x) | leq(x,y).  [resolve(359,a,105,a)].
+380 leq(c2,x).  [resolve(372,a,150,a)].
+381 leq(c1,x).  [resolve(372,a,128,a)].
+386 $F.  [ur(43,b,380,a,c,78,a),unit_del(a,381)].
+
+============================== end of proof ==========================

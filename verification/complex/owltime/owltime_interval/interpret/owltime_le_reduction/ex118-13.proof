@@ -1,0 +1,58 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 2072 was started by mudcat on Hrabanus-2.local,
+Sun Jan 20 11:50:20 2013
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.08 (+ 0.01) seconds.
+% Length of proof is 38.
+% Level of proof is 10.
+% Maximum clause weight is 11.
+% Given clauses 97.
+
+2 (all x all y (leq(x,y) & leq(y,x) -> x = y)) # label(non_clause).  [assumption].
+8 (all p (point(p) -> -line(p))) # label(non_clause).  [assumption].
+9 (all x all y (in(x,y) & point(x) & point(y) -> x = y)) # label(non_clause).  [assumption].
+18 (all x all y (ends(x,y) <-> point(x) & line(y) & in(x,y) & (all z (point(z) & in(z,y) -> leq(z,x))) | point(x) & x = y)) # label(non_clause).  [assumption].
+21 -(all x all t1 all t2 (TemporalEntity(x) & ends(t1,x) & ends(t2,x) -> t1 = t2)) # label(non_clause).  [assumption].
+46 -ends(x,y) | point(x).  [clausify(18)].
+47 -ends(x,y) | line(y) | y = x.  [clausify(18)].
+48 -ends(x,y) | in(x,y) | y = x.  [clausify(18)].
+49 -ends(x,y) | -point(z) | -in(z,y) | leq(z,x) | y = x.  [clausify(18)].
+53 ends(c2,c1).  [clausify(21)].
+54 ends(c3,c1).  [clausify(21)].
+61 -leq(x,y) | -leq(y,x) | y = x.  [clausify(2)].
+66 -point(x) | -line(x).  [clausify(8)].
+67 -in(x,y) | -point(x) | -point(y) | y = x.  [clausify(9)].
+80 c3 != c2.  [clausify(21)].
+92 point(c2).  [resolve(53,a,46,a)].
+93 line(c1) | c1 = c2.  [resolve(53,a,47,a)].
+94 line(c1) | c2 = c1.  [copy(93),flip(b)].
+95 in(c2,c1) | c1 = c2.  [resolve(53,a,48,a)].
+96 in(c2,c1) | c2 = c1.  [copy(95),flip(b)].
+97 -point(x) | -in(x,c1) | leq(x,c2) | c1 = c2.  [resolve(53,a,49,a)].
+98 -point(x) | -in(x,c1) | leq(x,c2) | c2 = c1.  [copy(97),flip(d)].
+99 point(c3).  [resolve(54,a,46,a)].
+102 in(c3,c1) | c1 = c3.  [resolve(54,a,48,a)].
+103 in(c3,c1) | c3 = c1.  [copy(102),flip(b)].
+104 -point(x) | -in(x,c1) | leq(x,c3) | c1 = c3.  [resolve(54,a,49,a)].
+105 -point(x) | -in(x,c1) | leq(x,c3) | c3 = c1.  [copy(104),flip(d)].
+127 c2 = c1 | -point(c1).  [resolve(94,a,66,b)].
+141 -in(c3,c2).  [ur(67,b,99,a,c,92,a,d,80,a(flip))].
+146 c3 = c1 | leq(c3,c2) | c2 = c1.  [resolve(103,a,98,b),unit_del(b,99)].
+153 leq(c2,c3) | c3 = c1 | c2 = c1.  [resolve(105,b,96,a),unit_del(a,92)].
+325 c3 = c1 | c2 = c1 | -leq(c2,c3).  [resolve(146,b,61,b),unit_del(d,80)].
+334 c3 = c1 | c2 = c1.  [resolve(325,c,153,a),merge(c),merge(d)].
+357 c2 = c1 | point(c1).  [para(334(a,1),99(a,1))].
+386 c2 = c1.  [resolve(357,b,127,b),merge(b)].
+481 -in(c3,c1).  [back_rewrite(141),rewrite([386(2)])].
+491 c3 != c1.  [back_rewrite(80),rewrite([386(2)])].
+492 $F.  [back_unit_del(103),unit_del(a,481),unit_del(b,491)].
+
+============================== end of proof ==========================
