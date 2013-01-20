@@ -1,0 +1,38 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 2038 was started by mudcat on Hrabanus-2.local,
+Sun Jan 20 11:47:22 2013
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.01) seconds.
+% Length of proof is 18.
+% Level of proof is 6.
+% Maximum clause weight is 5.
+% Given clauses 38.
+
+14 (all x (Instant(x) <-> point(x))) # label(non_clause).  [assumption].
+16 (all x (TemporalEntity(x) <-> point(x) | line(x))) # label(non_clause).  [assumption].
+18 (all x all y (ends(x,y) <-> point(x) & line(y) & in(x,y) & (all z (point(z) & in(z,y) -> leq(z,x))) | point(x) & x = y)) # label(non_clause).  [assumption].
+21 -(all t all x (ends(t,x) -> Instant(t) & TemporalEntity(x))) # label(non_clause).  [assumption].
+40 -ends(x,y) | point(x).  [clausify(18)].
+41 -ends(x,y) | line(y) | y = x.  [clausify(18)].
+47 ends(c1,c2).  [clausify(21)].
+69 Instant(x) | -point(x).  [clausify(14)].
+71 TemporalEntity(x) | -point(x).  [clausify(16)].
+72 TemporalEntity(x) | -line(x).  [clausify(16)].
+78 -Instant(c1) | -TemporalEntity(c2).  [clausify(21)].
+89 point(c1).  [resolve(47,a,40,a)].
+90 line(c2) | c2 = c1.  [resolve(47,a,41,a)].
+103 TemporalEntity(c1).  [resolve(89,a,71,b)].
+104 Instant(c1).  [resolve(89,a,69,b)].
+112 -TemporalEntity(c2).  [back_unit_del(78),unit_del(a,104)].
+113 c2 = c1.  [resolve(90,a,72,b),unit_del(b,112)].
+114 $F.  [back_rewrite(112),rewrite([113(1)]),unit_del(a,103)].
+
+============================== end of proof ==========================

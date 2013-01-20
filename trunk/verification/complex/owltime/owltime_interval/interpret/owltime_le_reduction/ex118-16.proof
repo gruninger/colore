@@ -1,0 +1,56 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 2091 was started by mudcat on Hrabanus-2.local,
+Sun Jan 20 11:52:33 2013
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.02 (+ 0.01) seconds.
+% Length of proof is 36.
+% Level of proof is 7.
+% Maximum clause weight is 13.
+% Given clauses 66.
+
+5 (all x all y (lt(x,y) <-> leq(x,y) & x != y)) # label(non_clause).  [assumption].
+9 (all x all y (in(x,y) & point(x) & point(y) -> x = y)) # label(non_clause).  [assumption].
+17 (all x all y (begins(x,y) <-> point(x) & line(y) & in(x,y) & (all z (point(z) & in(z,y) -> leq(x,z))) | point(x) & x = y)) # label(non_clause).  [assumption].
+18 (all x all y (ends(x,y) <-> point(x) & line(y) & in(x,y) & (all z (point(z) & in(z,y) -> leq(z,x))) | point(x) & x = y)) # label(non_clause).  [assumption].
+20 (all x all y (before(x,y) <-> lt(x,y))) # label(non_clause).  [assumption].
+21 (all x (ProperInterval(x) <-> Interval(x) & (all t1 all t2 (begins(t1,x) & ends(t2,x) -> t1 != t2)))) # label(non_clause).  [assumption].
+22 -(all x all t1 all t2 (ProperInterval(x) & begins(t1,x) & ends(t2,x) -> before(t1,t2))) # label(non_clause).  [assumption].
+23 lt(x,y) | -leq(x,y) | y = x.  [clausify(5)].
+29 before(x,y) | -lt(x,y).  [clausify(20)].
+42 -begins(x,y) | point(x).  [clausify(17)].
+45 -begins(x,y) | -point(z) | -in(z,y) | leq(x,z) | y = x.  [clausify(17)].
+48 begins(x,y) | -point(x) | y != x.  [clausify(17)].
+49 -ProperInterval(x) | -begins(y,x) | -ends(z,x) | z != y.  [clausify(21)].
+50 begins(c2,c1).  [clausify(22)].
+59 -in(x,y) | -point(x) | -point(y) | y = x.  [clausify(9)].
+67 -ends(x,y) | point(x).  [clausify(18)].
+69 -ends(x,y) | in(x,y) | y = x.  [clausify(18)].
+80 ProperInterval(c1).  [clausify(22)].
+81 ends(c3,c1).  [clausify(22)].
+82 -before(c2,c3).  [clausify(22)].
+90 before(x,y) | -leq(x,y) | y = x.  [resolve(29,b,23,a)].
+101 -ProperInterval(x) | -ends(y,x) | y != z | -point(z) | x != z.  [resolve(49,b,48,a)].
+102 point(c2).  [resolve(50,a,42,a)].
+107 -point(x) | -in(x,c1) | leq(c2,x) | c1 = c2.  [resolve(50,a,45,a)].
+108 -point(x) | -in(x,c1) | leq(c2,x) | c2 = c1.  [copy(107),flip(d)].
+109 -ProperInterval(c1) | -ends(x,c1) | x != c2.  [resolve(50,a,49,b)].
+110 -ends(x,c1) | c2 != x.  [copy(109),flip(c),unit_del(a,80)].
+125 in(c3,c1) | c3 = c1.  [resolve(81,a,69,a),flip(b)].
+127 point(c3).  [resolve(81,a,67,a)].
+157 c3 != c2.  [resolve(110,a,81,a),flip(a)].
+165 -leq(c2,c3).  [ur(90,a,82,a,c,157,a)].
+174 c3 != c1.  [ur(101,a,80,a,b,81,a,c,xx,d,127,a),flip(a)].
+176 -in(c3,c2).  [ur(59,b,127,a,c,102,a,d,157,a(flip))].
+178 in(c3,c1).  [back_unit_del(125),unit_del(b,174)].
+183 c2 = c1.  [resolve(178,a,108,b),unit_del(a,127),unit_del(b,165)].
+189 $F.  [back_rewrite(176),rewrite([183(2)]),unit_del(a,178)].
+
+============================== end of proof ==========================

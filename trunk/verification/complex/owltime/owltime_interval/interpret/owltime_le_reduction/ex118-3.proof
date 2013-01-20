@@ -1,0 +1,46 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 1595 was started by mudcat on Hrabanus-2.local,
+Sat Jan 19 19:22:31 2013
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.01) seconds.
+% Length of proof is 26.
+% Level of proof is 7.
+% Maximum clause weight is 9.
+% Given clauses 47.
+
+2 (all x all y (leq(x,y) & leq(y,x) -> x = y)) # label(non_clause).  [assumption].
+3 (all x all y all z (leq(x,y) & leq(y,z) -> leq(x,z))) # label(non_clause).  [assumption].
+5 (all x all y (lt(x,y) <-> leq(x,y) & x != y)) # label(non_clause).  [assumption].
+20 (all x all y (before(x,y) <-> lt(x,y))) # label(non_clause).  [assumption].
+21 -(all t1 all t2 all t3 (before(t1,t2) & before(t2,t3) -> before(t1,t3))) # label(non_clause).  [assumption].
+22 lt(x,y) | -leq(x,y) | y = x.  [clausify(5)].
+23 -lt(x,y) | leq(x,y).  [clausify(5)].
+24 -lt(x,y) | y != x.  [clausify(5)].
+27 -before(x,y) | lt(x,y).  [clausify(20)].
+28 before(x,y) | -lt(x,y).  [clausify(20)].
+53 -leq(x,y) | -leq(y,x) | y = x.  [clausify(2)].
+54 -leq(x,y) | -leq(y,z) | leq(x,z).  [clausify(3)].
+72 before(c1,c2).  [clausify(21)].
+73 before(c2,c3).  [clausify(21)].
+74 -before(c1,c3).  [clausify(21)].
+79 -before(x,y) | leq(x,y).  [resolve(27,b,23,a)].
+80 -before(x,y) | y != x.  [resolve(27,b,24,a)].
+82 before(x,y) | -leq(x,y) | y = x.  [resolve(28,b,22,a)].
+100 leq(c2,c3).  [resolve(79,a,73,a)].
+101 leq(c1,c2).  [resolve(79,a,72,a)].
+102 c3 != c2.  [resolve(80,a,73,a)].
+119 -leq(x,c2) | leq(x,c3).  [resolve(100,a,54,b)].
+121 -leq(c3,c2).  [resolve(100,a,53,b),flip(b),unit_del(b,102)].
+126 leq(c1,c3).  [resolve(119,a,101,a)].
+129 c3 = c1.  [resolve(126,a,82,b),unit_del(a,74)].
+131 $F.  [back_rewrite(121),rewrite([129(1)]),unit_del(a,101)].
+
+============================== end of proof ==========================

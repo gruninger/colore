@@ -1,0 +1,74 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 1880 was started by mudcat on Hrabanus-2.local,
+Sat Jan 19 23:27:16 2013
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.02 (+ 0.01) seconds.
+% Length of proof is 54.
+% Level of proof is 9.
+% Maximum clause weight is 12.
+% Given clauses 58.
+
+2 (all x all y (leq(x,y) & leq(y,x) -> x = y)) # label(non_clause).  [assumption].
+5 (all x all y (lt(x,y) <-> leq(x,y) & x != y)) # label(non_clause).  [assumption].
+7 (all x in(x,x)) # label(non_clause).  [assumption].
+8 (all p (point(p) -> -line(p))) # label(non_clause).  [assumption].
+9 (all x all y (in(x,y) & point(x) & point(y) -> x = y)) # label(non_clause).  [assumption].
+15 (all x (Interval(x) <-> line(x))) # label(non_clause).  [assumption].
+17 (all x all y (begins(x,y) <-> point(x) & line(y) & in(x,y) & (all z (point(z) & in(z,y) -> leq(x,z))) | point(x) & x = y)) # label(non_clause).  [assumption].
+18 (all x all y (ends(x,y) <-> point(x) & line(y) & in(x,y) & (all z (point(z) & in(z,y) -> leq(z,x))) | point(x) & x = y)) # label(non_clause).  [assumption].
+19 (all x all y all z (timeBetween(x,y,z) <-> line(x) & point(y) & point(z) & in(y,x) & in(z,x) & lt(y,z))) # label(non_clause).  [assumption].
+20 (all x all y (before(x,y) <-> lt(x,y))) # label(non_clause).  [assumption].
+21 -(all x all t1 all t2 (Interval(x) & begins(t1,x) & ends(t2,x) -> -before(t2,t1))) # label(non_clause).  [assumption].
+23 -lt(x,y) | leq(x,y).  [clausify(5)].
+24 -lt(x,y) | y != x.  [clausify(5)].
+26 timeBetween(x,y,z) | -line(x) | -point(y) | -point(z) | -in(y,x) | -in(z,x) | -lt(y,z).  [clausify(19)].
+27 -before(x,y) | lt(x,y).  [clausify(20)].
+32 -Interval(x) | line(x).  [clausify(15)].
+33 Interval(c1).  [clausify(21)].
+38 -begins(x,y) | point(x).  [clausify(17)].
+41 -begins(x,y) | -point(z) | -in(z,y) | leq(x,z) | y = x.  [clausify(17)].
+45 begins(c2,c1).  [clausify(21)].
+47 -ends(x,y) | point(x).  [clausify(18)].
+49 -ends(x,y) | in(x,y) | y = x.  [clausify(18)].
+54 ends(c3,c1).  [clausify(21)].
+55 -before(x,y) | leq(x,y).  [resolve(27,b,23,a)].
+56 before(c3,c2).  [clausify(21)].
+57 -before(x,y) | y != x.  [resolve(27,b,24,a)].
+58 -before(x,y) | timeBetween(z,x,y) | -line(z) | -point(x) | -point(y) | -in(x,z) | -in(y,z).  [resolve(27,b,26,g)].
+62 -leq(x,y) | -leq(y,x) | y = x.  [clausify(2)].
+66 in(x,x).  [clausify(7)].
+67 -point(x) | -line(x).  [clausify(8)].
+68 -in(x,y) | -point(x) | -point(y) | y = x.  [clausify(9)].
+78 -timeBetween(x,y,z) | point(z).  [clausify(19)].
+85 line(c1).  [resolve(33,a,32,a)].
+89 point(c2).  [resolve(45,a,38,a)].
+92 -point(x) | -in(x,c1) | leq(c2,x) | c1 = c2.  [resolve(45,a,41,a)].
+93 -point(x) | -in(x,c1) | leq(c2,x) | c2 = c1.  [copy(92),flip(d)].
+97 point(c3).  [resolve(54,a,47,a)].
+98 in(c3,c1) | c1 = c3.  [resolve(54,a,49,a)].
+99 in(c3,c1) | c3 = c1.  [copy(98),flip(b)].
+102 leq(c3,c2).  [resolve(55,a,56,a)].
+103 c2 != c3.  [resolve(57,a,56,a)].
+104 c3 != c2.  [copy(103),flip(a)].
+105 timeBetween(x,c3,c2) | -line(x) | -point(c3) | -point(c2) | -in(c3,x) | -in(c2,x).  [resolve(58,a,56,a)].
+106 timeBetween(x,c3,c2) | -line(x) | -in(c3,x) | -in(c2,x).  [copy(105),unit_del(c,97),unit_del(d,89)].
+117 -point(c1).  [resolve(85,a,67,b)].
+142 c3 = c1 | leq(c2,c3) | c2 = c1.  [resolve(99,a,93,b),unit_del(b,97)].
+149 -leq(c2,c3).  [resolve(102,a,62,b),unit_del(b,104)].
+150 c3 = c1 | c2 = c1.  [back_unit_del(142),unit_del(b,149)].
+152 -in(c3,c2).  [ur(68,b,97,a,c,89,a,d,104,a(flip))].
+153 timeBetween(c1,c3,c2) | -in(c2,c1) | c3 = c1.  [resolve(106,c,99,a),unit_del(b,85)].
+157 -timeBetween(x,y,c1).  [ur(78,b,117,a)].
+184 c2 = c1.  [para(150(a,1),97(a,1)),unit_del(b,117)].
+188 c3 = c1.  [back_rewrite(153),rewrite([184(3),184(5)]),unit_del(a,157),unit_del(b,66)].
+189 $F.  [back_rewrite(152),rewrite([188(1),184(2)]),unit_del(a,66)].
+
+============================== end of proof ==========================
