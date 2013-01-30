@@ -1,0 +1,406 @@
+
+formulas(assumptions).
+
+%psl_core.th:ax9
+all x   (       activity(x) 
+                | activity_occurrence(x) 
+                | timepoint(x) 
+                | object(x) 
+        ).
+
+%psl_core.th:ax10
+all x   
+        (activity(x) 
+        -> 
+        -(activity_occurrence(x) 
+        | object(x) 
+        | timepoint(x))).
+
+all x   
+        (activity_occurrence(x) 
+        -> 
+        -(object(x) 
+        | timepoint(x))).
+
+all x   
+        (object(x) 
+        -> 
+        -timepoint(x)).
+
+%psl_core.th:ax11
+all a all occ
+        (occurrence_of(occ,a)
+        ->
+        (activity(a)
+        & activity_occurrence(occ))).
+
+%psl_core.th:ax12
+all occ
+        (activity_occurrence(occ)
+        ->      
+        (exists a
+                (activity(a)
+                & occurrence_of(occ,a)))).
+
+%psl_core.th:ax13
+all o all a1 all a2
+	((occurrence_of(o,a1)
+	& occurrence_of(o,a2))
+	->
+	(a1=a2)).
+
+%occtree.th:ax1
+all s 
+        (arboreal(s)
+        ->
+        activity_occurrence(s)).
+
+%occtree.th:ax2
+all s1 all s2
+        (earlier(s1,s2)
+        ->      
+        (arboreal(s1)
+        & arboreal(s2))).
+
+%occtree.th:ax3
+all s1 all s2   (earlier(s1,s2)
+                -> -earlier(s2,s1)).
+
+%occtree.th:ax4
+all s1 all s2 all s3
+        ((earlier(s1,s2)
+        & earlier(s2,s3))
+        -> earlier(s1,s3)).
+
+%occtree.th:ax5
+all s1 all s2 all s3
+        ((earlier(s1,s2)
+        & earlier(s3,s2))
+        ->
+        (earlier(s3,s1)
+        | earlier(s1,s3)
+        | (s1=s3))).
+
+%occtree.th:ax6
+all s1 all s2
+        (earlier(s1,s2)
+        ->
+        (exists sp
+                (initial(sp)
+                & earlierEq(sp,s1)))).
+
+%occtree.th:ax7
+all s1 all s2 all a
+        ((initial(s1)
+        & initial(s2)
+        & occurrence_of(s1,a)
+        & occurrence_of(s2,a))
+        ->
+        (s1 = s2)).
+
+%occtree.th:ax8
+all a
+        (generator(a)
+        ->
+        (exists s
+                (initial(s)
+                & occurrence_of(s,a)))).
+
+%occtree.th:ax9
+all s all a
+        (occurrence_of(s,a)
+        ->
+        (arboreal(s)
+        <->
+        generator(a))).
+
+%occtree.th:ax10
+all a all o
+        (occurrence_of(successor(a,o),a)
+        <->
+        (generator(a)
+        & arboreal(o))).
+
+%occtree.th:ax11
+all s1 all s2
+        (earlier(s1,s2)
+        ->
+        (exists a exists s3
+                (s2 = successor(a,s3)))).
+
+%occtree.th:ax12
+all a all s1 all s2
+        (generator(a)
+        ->
+        (earlier(s1, successor(a,s2))
+        <->
+        earlierEq(s1,s2))).
+
+%occtree.th:ax13
+all s   (legal(s) -> arboreal(s)).
+
+%occtree.th:ax14
+all s1 all s2
+        ((legal(s1)
+        & earlier(s2,s1))
+        ->
+        legal(s2)).
+
+%occtree.th:def1
+all s1 all s2   (precedes(s1,s2)
+                <->
+                (earlier(s1,s2)
+                & legal(s2))).
+
+%occtree.th:def2
+all s1 all s2
+        (earlierEq(s1,s2)
+        <->
+        (arboreal(s1)
+        & arboreal(s2)
+        & (earlier(s1,s2) | (s1=s2)))).
+
+%occtree.th:def3
+all a all s
+	(poss(a,s)
+	<->
+	(legal(successor(a,s)))).
+
+%occtree.th:def4
+all s
+        (initial(s)
+        <->
+        (arboreal(s)
+        & -( exists sp
+                ( earlier(sp,s))))).
+
+%disc_state.th:ax1
+all f
+	(state(f)
+	->
+	object(f)).
+
+%disc_state.th:ax2
+all f all occ
+	(holds(f,occ)
+	->
+	(state(f)
+	& arboreal(occ))).
+
+%disc_state.th:ax3
+all f all occ
+	(prior(f,occ)
+	->
+	(state(f)
+	& arboreal(occ))).
+
+%disc_state.th:ax4
+all occ1 all occ2 all f 
+	((initial(occ1)
+	& initial(occ2))
+	->
+	(prior(f,occ1)
+	<->
+	prior(f,occ2))).
+
+%disc_state.th:ax5
+all a all occ all f	
+	(prior(f, successor(a,occ))
+	<->
+	(holds(f,occ)
+	& generator(a))).
+
+%disc_state.th:ax6
+all occ1 all f  
+	(holds(f,occ1)
+	->
+	(exists occ2
+		(earlierEq(occ2,occ1)
+		& holds(f,occ2)
+		& (initial(occ)
+		| -prior(f, occ2))
+		& (all occ3
+			(earlierEq(occ2,occ3)              
+			& earlierEq(occ3,occ1)                    
+			-> holds(f,occ3)))))).       
+
+%disc_state.th:ax7
+all occ1 all f  
+	((state(f)
+	& arboreal(occ)
+	& -holds(f,occ1))
+	->
+	(exists occ2
+		(earlierEq(occ2,occ1)
+		& -holds(f,occ2)
+		& (initial(occ)
+		| prior(f, occ2))
+		& -(exists occ3
+			(earlierEq(occ2,occ3)              
+			& earlierEq(occ3,occ1)                    
+			& holds(f,occ3)))))).       
+
+%disc_state.th:ax8
+all f all s1
+        (holds(f,s1)
+        ->
+        (exists s2
+                (holds(f,s2)
+                & earlierEq(s2,s1)
+                & (all s3
+                        (holds(f,s3)
+                        ->
+                        -earlier(s3,s2)))))).
+
+all f all o
+	(falsifies(o,f)
+	<->
+	(state(f)
+	& arboreal(o)
+	& prior(f,o)
+	& -holds(f,o))).
+
+all f all o
+	(achieves(o,f)
+	<->
+	(state(f)
+	& arboreal(o)
+	& -prior(f,o)
+	& holds(f,o))).
+
+all f all o
+	(changes(o,f)
+	<->
+	(achieves(o,f)
+	| falsifies(o,f))).
+
+%rcc_state.th:ax1 
+all x all y all o ((arboreal(o) & prior(connect(x,y),o)) ->  (prior(region(x),o) & prior(region(y),o))).
+
+%rcc_state.th:ax2
+all x all o ((arboreal(o) & prior(region(x),o)) ->  prior(connect(x,x),o)).
+
+%rcc_state.th:ax3
+all x all y all o 
+		((arboreal(o) & prior(connect(x,y),o)) 
+       						-> prior(connect(y,x),o)).
+%rcc_state.th:ax4
+all x all y all o 
+	(prior(Ps(x,y),o) <-> 
+		(arboreal(o) & prior(region(x),o) & prior(region(y),o) & (all z ( prior(connect(z,x),o)
+						    -> prior(connect(z,y),o))))).
+%rcc_state.th:ax5
+all x all y all o 
+	(prior(DCs(x,y),o) <-> (arboreal(o) & prior(region(x),o)  & prior(region(y),o) &
+						 -prior(connect(x,y),o))).
+%rcc_state.th:ax6
+all x all y all o 
+	(prior(Os(x,y),o) <-> (arboreal(o)  & 
+	    (exists z( prior(Ps(z,x),o) & prior(Ps(z,y),o))))).
+
+%rcc_state.th:ax7
+all x all y all o 
+	(prior(ECs(x,y),o) <-> (arboreal(o)  & 
+	 	 prior(connect(x,y),o) & -prior(Os(x,y),o))).
+
+%rcc_state.th:ax8
+all x all y all o 
+	(prior(PPs(x,y),o) <-> (arboreal(o)  &
+	 	 prior(Ps(x,y),o)& -prior(Ps(y,x),o))).
+
+%rcc_state.th:ax9
+all x all y all o 
+	(prior(NTPPs(x,y),o) <-> (arboreal(o) & prior(PPs(x,y),o) & 
+	     -(exists z  (prior(ECs(z,x),o) & prior(ECs(z,y),o))))).
+
+%rcc_state.th:ax10
+all x all y all o 
+	(prior(TPPs(x,y),o) <-> (arboreal(o)  & prior(PPs(x,y),o) & 		
+	(exists z (prior(ECs(z,x),o) &  prior(ECs(z,y),o))))).
+
+%rcc_state.th:ax11
+all x all y all o 
+	(prior(EQs(x,y),o) <-> (arboreal(o)  & 	prior(Ps(x,y),o) & prior(Ps(y,x),o))).
+
+%rcc_state.th:ax12
+all x all y all o 
+	(prior(POs(x,y),o) <-> (arboreal(o)  & prior(Os(x,y),o) 
+			& -prior(Ps(x,y),o) & -prior(Ps(y,x),o))).
+
+%rcc_state.th:ax13
+all x all y all o (prior(DCs(x,y),o) & arboreal(o) ->  ( -prior(ECs(x,y),o) & -prior(POs(x,y),o) & -prior(EQs(x,y),o) & 
+                                                         -prior(TPPs(x,y),o) & -prior(TPPs(y,x),o) & -prior(NTPPs(x,y),o) &
+                                                         -prior(NTPPs(y,x),o)) ).
+
+%rcc_state.th:ax14
+all x all y all o (prior(ECs(x,y),o) & arboreal(o) ->  ( -prior(POs(x,y),o) & -prior(DCs(x,y),o) & -prior(EQs(x,y),o) & 
+                                                         -prior(TPPs(x,y),o) & -prior(TPPs(y,x),o) & -prior(NTPPs(x,y),o) & 
+                                                         -prior(NTPPs(y,x),o)) ).
+
+%rcc_state.th:ax15
+all x all y all o (prior(POs(x,y),o) & arboreal(o) ->  ( -prior(ECs(x,y),o) & -prior(DCs(x,y),o) & -prior(EQs(x,y),o) & 
+                                                         -prior(TPPs(x,y),o) & -prior(TPPs(y,x),o) & -prior(NTPPs(x,y),o) & 
+                                                         -prior(NTPPs(y,x),o)) ).
+
+%rcc_state.th:ax16
+all x all y all o (prior(EQs(x,y),o) & arboreal(o) ->  ( -prior(ECs(x,y),o) & -prior(DCs(x,y),o) & -prior(POs(x,y),o) & 
+                                                         -prior(TPPs(x,y),o) & -prior(TPPs(y,x),o) & -prior(NTPPs(x,y),o) & 
+                                                         -prior(NTPPs(y,x),o)) ).
+
+%rcc_state.th:ax17
+all x all y all o (prior(TPPs(x,y),o) & arboreal(o) -> ( -prior(ECs(x,y),o) & -prior(DCs(x,y),o) & -prior(EQs(x,y),o) & 
+                                                         -prior(POs(x,y),o) & -prior(TPPs(y,x),o) & -prior(NTPPs(x,y),o) & 
+                                                         -prior(NTPPs(y,x),o)) ).
+
+%rcc_state.th:ax18
+all x all y all o (prior(TPPs(y,x),o) & arboreal(o) -> ( -prior(ECs(x,y),o) & -prior(DCs(x,y),o) & -prior(EQs(x,y),o) & 
+                                                         -prior(POs(x,y),o) & -prior(TPPs(x,y),o) & -prior(NTPPs(x,y),o) & 
+                                                         -prior(NTPPs(y,x),o)) ).
+
+%rcc_state.th:ax19
+all x all y all o (prior(NTPPs(x,y),o) & arboreal(o) -> ( -prior(ECs(x,y),o) & -prior(DCs(x,y),o) & -prior(EQs(x,y),o) & 
+                                                         -prior(POs(x,y),o) & -prior(TPPs(x,y),o) & -prior(TPPs(y,x),o) & 
+                                                         -prior(NTPPs(y,x),o)) ).
+
+%rcc_state.th:ax20
+all x all y all o (prior(NTPPs(y,x),o) & arboreal(o) -> ( -prior(ECs(x,y),o) & -prior(DCs(x,y),o) & -prior(EQs(x,y),o) & 
+                                                         -prior(POs(x,y),o) & -prior(TPPs(x,y),o) & -prior(TPPs(y,x),o) & 
+                                                         -prior(NTPPs(x,y),o)) ).
+
+%rcc_state.th:ax21
+all x all y all o (prior(region(x),o) & prior(region(y),o) & arboreal(o) -> 
+                                                             ( prior(DCs(x,y),o) | prior(ECs(x,y),o) | prior(EQs(x,y),o)  | 
+                                                               prior(POs(x,y),o) | prior(TPPs(x,y),o)| prior(TPPs(y,x),o) |  
+                                                               prior(NTPPs(x,y),o) | prior(NTPPs(y,x),o) )) .
+
+%continuous.th:ax1
+all o all x all y 
+	( continuous(o) <-> (arboreal(o) &
+	(-changes(o,region(x))& -changes(o,region(y)) -> (
+       (changes(o,connect(x,y)) -> -changes(o,connect(x,compl(y))) & -changes(o,connect(compl(x),y))  & -changes(o,Os(x,y)) & 
+			-changes(o,Ps(x,y)) & -changes(o,Ps(y,x)) )
+     & (changes(o,connect(x,compl(y))) -> -changes(o,connect(x,y)) & -changes(o,connect(compl(x),y))  & -changes(o,Os(x,y)) & 
+			-changes(o,Ps(x,y)) & -changes(o,Ps(y,x)) )
+	& (changes(o,connect(compl(x),y)) -> -changes(o,connect(x,y)) & -changes(o,connect(x,y))  & -changes(o,Os(x,y)) & 
+			-changes(o,Ps(x,y)) & -changes(o,Ps(y,x)) )
+     & (changes(o,Os(x,y))-> -changes(o,connect(x,y)) &
+		-changes(o,Ps(x,y)) & -changes(o,Ps(y,x)) & -changes(o,connect(x,compl(y))) & -changes(o,connect(compl(x),y)))
+	& (changes(o,Ps(x,y))-> -changes(o,connect(x,y)) & 
+		-changes(o,Os(x,y)) & -changes(o,Ps(y,x)) & -changes(o,connect(x,compl(y))) & -changes(o,connect(compl(x),y)))	
+	& (changes(o,Ps(y,x)) -> -changes(o,connect(x,y)) & 
+		-changes(o,Os(x,y)) & -changes(o,Ps(x,y)) & -changes(o,connect(x,compl(y))) & -changes(o,connect(compl(x),y))) )))).
+
+%EC_NTPP.lemma:1
+all x all y all o (achieves(o,ECs(x,y)) & falsifies(o,NTPPs(x,y)) & arboreal(o) -> ( falsifies(o,Ps(x,y)) & falsifies(o,Os(x,y)))).
+
+%EC_NTPP.lemma:2
+all x all y all o (falsifies(o,ECs(x,y)) & achieves(o,NTPPs(x,y)) & arboreal(o) -> (  achieves(o,Ps(x,y)) & achieves(o,Os(x,y))) ).
+
+end_of_list.
+
+formulas(goals).
+
+all x all y all o (changes(o,ECs(x,y)) & changes(o,NTPPs(x,y)) & arboreal(o) -> -continuous(o)).
+
+end_of_list.
+
