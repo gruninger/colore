@@ -1,0 +1,65 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 8196 was started,
+Wed Jan 16 22:54:44 2013
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.97 (+ 0.09) seconds.
+% Length of proof is 45.
+% Level of proof is 10.
+% Maximum clause weight is 14.
+% Given clauses 607.
+
+6 (all occ (activity_occurrence(occ) -> (exists a (activity(a) & occurrence_of(occ,a))))) # label(non_clause).  [assumption].
+8 (all s (arboreal(s) -> activity_occurrence(s))) # label(non_clause).  [assumption].
+16 (all s all a (occurrence_of(s,a) -> (arboreal(s) <-> generator(a)))) # label(non_clause).  [assumption].
+27 (all f all occ (holds(f,occ) -> state(f) & arboreal(occ))) # label(non_clause).  [assumption].
+30 (all a all occ all f (prior(f,successor(a,occ)) <-> holds(f,occ) & generator(a))) # label(non_clause).  [assumption].
+34 (all f all o (falsifies(o,f) <-> state(f) & arboreal(o) & prior(f,o) & -holds(f,o))) # label(non_clause).  [assumption].
+35 (all f all o (achieves(o,f) <-> state(f) & arboreal(o) & -prior(f,o) & holds(f,o))) # label(non_clause).  [assumption].
+47 (all x all y all o (prior(EQs(x,y),o) <-> arboreal(o) & prior(Ps(x,y),o) & prior(Ps(y,x),o))) # label(non_clause).  [assumption].
+48 (all x all y all o (prior(POs(x,y),o) <-> arboreal(o) & prior(Os(x,y),o) & -prior(Ps(x,y),o) & -prior(Ps(y,x),o))) # label(non_clause).  [assumption].
+59 (all x all y all o (falsifies(o,POs(x,y)) & achieves(o,EQs(x,y)) & arboreal(o) -> achieves(o,Ps(x,y)) & achieves(o,Ps(y,x)))) # label(non_clause) # label(goal).  [goal].
+66 -occurrence_of(x,y) | -arboreal(x) | generator(y).  [clausify(16)].
+75 prior(x,successor(y,z)) | -holds(x,z) | -generator(y).  [clausify(30)].
+81 -holds(x,y) | state(x).  [clausify(27)].
+91 achieves(x,y) | -state(y) | -arboreal(x) | prior(y,x) | -holds(y,x).  [clausify(35)].
+94 -falsifies(x,y) | prior(y,x).  [clausify(34)].
+97 falsifies(c3,POs(c1,c2)).  [deny(59)].
+132 -activity_occurrence(x) | occurrence_of(x,f1(x)).  [clausify(6)].
+134 -arboreal(x) | activity_occurrence(x).  [clausify(8)].
+158 -prior(x,successor(y,z)) | holds(x,z).  [clausify(30)].
+168 -achieves(x,y) | holds(y,x).  [clausify(35)].
+200 -prior(EQs(x,y),z) | prior(Ps(x,y),z).  [clausify(47)].
+201 -prior(EQs(x,y),z) | prior(Ps(y,x),z).  [clausify(47)].
+204 -prior(POs(x,y),z) | -prior(Ps(x,y),z).  [clausify(48)].
+205 -prior(POs(x,y),z) | -prior(Ps(y,x),z).  [clausify(48)].
+234 achieves(c3,EQs(c1,c2)).  [deny(59)].
+235 arboreal(c3).  [deny(59)].
+236 -achieves(c3,Ps(c1,c2)) | -achieves(c3,Ps(c2,c1)).  [deny(59)].
+261 prior(x,successor(y,z)) | -holds(x,z) | -occurrence_of(u,y) | -arboreal(u).  [resolve(75,c,66,c)].
+275 achieves(x,y) | -arboreal(x) | prior(y,x) | -holds(y,x) | -holds(y,z).  [resolve(91,b,81,b)].
+279 prior(POs(c1,c2),c3).  [resolve(97,a,94,a)].
+383 achieves(x,y) | -arboreal(x) | prior(y,x) | -holds(y,x).  [factor(275,d,e)].
+586 holds(EQs(c1,c2),c3).  [resolve(234,a,168,a)].
+591 activity_occurrence(c3).  [resolve(235,a,134,a)].
+595 -prior(Ps(c2,c1),c3).  [resolve(279,a,205,a)].
+596 -prior(Ps(c1,c2),c3).  [resolve(279,a,204,a)].
+601 occurrence_of(c3,f1(c3)).  [resolve(591,a,132,a)].
+607 prior(x,successor(f1(c3),y)) | -holds(x,y).  [resolve(601,a,261,c),unit_del(c,235)].
+799 prior(EQs(c1,c2),successor(f1(c3),c3)).  [resolve(607,b,586,a)].
+937 prior(Ps(c2,c1),successor(f1(c3),c3)).  [resolve(799,a,201,a)].
+938 prior(Ps(c1,c2),successor(f1(c3),c3)).  [resolve(799,a,200,a)].
+1026 holds(Ps(c2,c1),c3).  [resolve(937,a,158,a)].
+1027 achieves(c3,Ps(c2,c1)).  [resolve(1026,a,383,d),unit_del(b,235),unit_del(c,595)].
+1034 -achieves(c3,Ps(c1,c2)).  [back_unit_del(236),unit_del(b,1027)].
+1340 holds(Ps(c1,c2),c3).  [resolve(938,a,158,a)].
+1341 $F.  [resolve(1340,a,383,d),unit_del(a,1034),unit_del(b,235),unit_del(c,596)].
+
+============================== end of proof ==========================
