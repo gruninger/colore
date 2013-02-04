@@ -1,0 +1,48 @@
+% Automatically generated from CL/KIF
+formulas(sos).
+% mandatory
+% 'Source: Michael Gruninger, Carmen Chui'
+% 'Comment: New relation to have mandatory participation of objects in a time object.'
+% 'Every object has to participate in some time object.'
+ all x ((object(x) ->  exists o exists t (participates_in(x, o, t)))).
+% 'Source: psl_core'
+% 'Comment: ALL of the axioms below are from psl_core.  We have removed between and before relations.'
+% 'Source: psl_core'
+% 'Objects, activities, activity occurrences, and timepoints are all\r\ndistinct kinds of things.'
+ all x ((activity(x) -> -(activity_occurrence(x) | object(x) | timepoint(x))) & (activity_occurrence(x) -> -(object(x) | timepoint(x))) & (object(x) -> -(timepoint(x)))).
+% 'Source: psl_core'
+% 'The occurrence relation only holds between activities and\r\nactivity occurrences.'
+ all a all occ ((occurrence_of(occ, a) -> activity(a) & activity_occurrence(occ))).
+% 'Source: psl_core'
+% 'Every activity occurrence is the occurrence of some activity.'
+ all occ ((activity_occurrence(occ) ->  exists a (activity(a) & occurrence_of(occ, a)))).
+% 'Source: psl_core'
+% 'An activity occurrence is associated with a unique activity.'
+ all occ all a1 all a2 ((occurrence_of(occ, a1) & occurrence_of(occ, a2) -> (a1 = a2))).
+% 'Source: psl_core'
+% 'The begin and end of an activity occurrence or object are timepoints.'
+ all a all x ((occurrence_of(x, a) | object(x) -> timepoint(beginof(x)) & timepoint(endof(x)))).
+% 'Source: psl_core'
+% 'The begin point of every activity occurrence or object is\r\nbefore or equal to its end point.'
+ all x ((activity_occurrence(x) | object(x) -> beforeEq(beginof(x), endof(x)))).
+% 'Source: psl_core'
+% 'The participates_in relation only holds between objects,\r\nactivity occurrences, and timepoints, respectively.'
+ all x all occ all t ((participates_in(x, occ, t) -> object(x) & activity_occurrence(occ) & timepoint(t))).
+% 'Source: psl_core'
+% 'An object can participate in an activity\r\noccurrence only at those timepoints at which both the object exists and\r\nthe activity is occurring.'
+ all x all occ all t ((participates_in(x, occ, t) -> exists_at(x, t) & is_occurring_at(occ, t))).
+% 'Definition of between has been removed.'
+% 'Source: psl_core'
+% 'Timepoint t1 is beforeEq timepoint t2 if and only if t1 is before or equal\r\nto t2.'
+ all t1 all t2 ((beforeEq(t1, t2) <-> timepoint(t1) & timepoint(t2) & before(t1, t2) | (t1 = t2))).
+% 'Source: psl_core'
+% 'Timepoint t2 is betweenEq timepoints t1 and t3 if and only if\r\nt1 is before or equal to t2, and t2 is before or equal to t3.'
+ all t1 all t2 all t3 ((betweenEq(t1, t2, t3) <-> beforeEq(t1, t2) & beforeEq(t2, t3))).
+% 'Source: psl_core'
+% 'An object exists at a timepoint t if and only if t is betweenEq its begin\r\nand end points.'
+ all x all t ((exists_at(x, t) <-> object(x) & betweenEq(beginof(x), t, endof(x)))).
+% 'Source: psl_core'
+% 'An activity is occurring at a timepoint t if and only if t\r\nis betweenEq the begin and end points of the activity occurrence.'
+ all occ all t ((is_occurring_at(occ, t) <-> betweenEq(beginof(occ), t, endof(occ)))).
+
+end_of_list.
