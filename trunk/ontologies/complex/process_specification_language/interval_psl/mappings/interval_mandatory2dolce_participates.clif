@@ -1,0 +1,25 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger, Carmen Chui
+ *******************************************************************************/
+ 
+(cl-text interval_mandatory2dolce_participates
+
+(cl-comment "Translation definition for interval_mandatory into dolce_participates.")
+
+(cl-comment "All x and y that participate in z is equivalent to a time interval z that overlays two psl_intervals x and y.")
+(forall (x y z)
+	(iff (PC x y z)
+		(if (and
+				(or (overlay x y z)(overlay y x z))
+				(forall (t)
+					(and (beforeEq (beginof z) t)
+						(beforeEq t (endof z)))))
+			(participates_in x y t))))
+
+)
