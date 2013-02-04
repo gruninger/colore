@@ -1,0 +1,39 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger, Carmen Chui
+ *******************************************************************************/
+ 
+(cl-text interval_psl_core2dolce_present
+
+(cl-comment "Translation definition for interval_psl_core into dolce_present.")
+
+(cl-comment "All endurants in DOLCE are objects in Interval PSL Core.")
+(forall (x)
+	(iff (ED x)(object x)))
+
+(cl-comment "All perdurants in DOLCE are activity occurrences in Interval PSL Core.")
+(forall (x)
+	(iff (PD x)(activity_occurrence x)))
+
+(cl-comment "All time intervals in DOLCE are time intervals in Interval PSL Core.")
+(forall (x)
+	(iff (T x)(timeinterval x)))
+
+(cl-comment "The concept of parthood in DOLCE is equivalent to the inclusion of time intervals in Interval PSL Core.")
+(forall (t1 t2)
+	(iff (P t1 t2)
+		(and (timeinterval t1)(timeinterval t2)
+			(beforeEq (beginof t2) (beginof t1))
+			(beforeEq (beginof t1) (beginof t2)))))
+
+(cl-comment "The concept of being present in DOLCE is equivalent to the concept of in Interval PSL Core.")
+(forall (x y t)
+	(iff (PRE x t)
+		(and (psl_interval x t)(object x))))
+
+)
