@@ -16,6 +16,9 @@
 (forall (x)
 	(iff (ED x)(object x)))
 
+(forall (x)
+	(iff (Q x)(object x)))
+
 (cl-comment "All perdurants in DOLCE are activity occurrences in Interval PSL Core.")
 (forall (x)
 	(iff (PD x)(activity_occurrence x)))
@@ -29,11 +32,26 @@
 	(iff (P t1 t2)
 		(and (timeinterval t1)(timeinterval t2)
 			(beforeEq (beginof t2) (beginof t1))
-			(beforeEq (beginof t1) (beginof t2)))))
+			(beforeEq (endof t1) (endof t2)))))
 
 (cl-comment "The concept of being present in DOLCE is equivalent to the concept of in Interval PSL Core.")
 (forall (x y t)
 	(iff (PRE x t)
-		(and (psl_interval x t)(object x))))
+		(and (or (object x)(activity_occurrence x))
+			(timeinterval t)
+			(beforeEq (beginof x)(beginof t))
+			(beforeEq (endof t)(endof x)))))
+
+(cl-comment "Source: Michael Gruninger, Carmen Chui.")
+(cl-comment "Comment: A new relation created to describe the sum of two intervals.")
+(cl-comment "A time interval z is the sum of the time intervals of two activities x and y.")
+(forall (x y z)
+	(iff (sum z x y)
+		(and (timeinterval x)
+			(timeinterval y)
+			(timeinterval z)
+			(or
+				(and (= (beginof z)(beginof x))(= (endof z)(endof y)))
+				(and (= (beginof z)(beginof y))(= (endof z)(endof x)))))))
 
 )
