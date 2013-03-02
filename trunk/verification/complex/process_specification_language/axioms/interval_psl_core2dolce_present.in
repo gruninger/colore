@@ -1,0 +1,33 @@
+% Automatically generated from CL/KIF
+formulas(sos).
+% interval_psl_core2dolce_present
+% 'Translation definition for interval_psl_core into dolce_present.'
+% 'All endurants in DOLCE are objects in Interval PSL Core.'
+ all x ((ED(x) <-> object(x))).
+ all x ((Q(x) <-> object(x))).
+% 'All perdurants in DOLCE are activity occurrences in Interval PSL Core.'
+ all x ((PD(x) <-> activity_occurrence(x))).
+% 'All time intervals in DOLCE are time intervals in Interval PSL Core.'
+ all x ((T(x) <-> timeinterval(x))).
+% 'The concept of parthood in DOLCE is equivalent to the inclusion of time intervals in Interval PSL Core.'
+ all t1 all t2 ((P(t1, t2) <-> timeinterval(t1) & timeinterval(t2) & beforeEq(beginof(t2), beginof(t1)) & beforeEq(endof(t1), endof(t2)))).
+% 'The concept of being present in DOLCE is equivalent to the concept of in Interval PSL Core.'
+ all x all y all t ((PRE(x, t) <-> object(x) | activity_occurrence(x) & timeinterval(t) & beforeEq(beginof(x), beginof(t)) & beforeEq(endof(t), endof(x)))).
+% 'Source: Michael Gruninger, Carmen Chui.'
+% 'Comment: A new relation created to describe the sum of two intervals.'
+% 'A time interval z is the sum of the time intervals of two activities x and y.'
+ all x all y all z ((sum(z, x, y) <-> timeinterval(x) & timeinterval(y) & timeinterval(z) & (beginof(z) = beginof(x)) & (endof(z) = endof(y)) | (beginof(z) = beginof(y)) & (endof(z) = endof(x)))).
+% 'Lemma'
+% 'Source: Michael Gruninger, Carmen Chui.'
+% 'Comment: For all objects or activity occurrences in PSL, there exists a psl_interval associated with it.'
+ all x ((object(x) | activity_occurrence(x) ->  exists t (psl_interval(x, t)))).
+% 'Lemma'
+% 'Source: Michael Gruninger, Carmen Chui.'
+% 'Comment: Transitivity of the beforeEq axiom.'
+ all x all y all z ((beforeEq(x, y) & beforeEq(y, z) -> beforeEq(x, z))).
+% 'Lemma'
+% 'Source: Michael Gruninger, Carmen Chui.'
+% 'Comment: Transitivity axiom for parthood.'
+ all x all y all z ((P(x, y) & P(y, z) -> P(x, z))).
+
+end_of_list.
