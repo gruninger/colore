@@ -1,0 +1,3088 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 10028 was started by cchui on stl1.mie.utoronto.ca,
+Tue Mar 26 21:11:08 2013
+The command was "prover9 -t 600 -f test/p9/20130326/dolce_time_mereology/ex0326.p9 test/p9/20130326/dolce_time_mereology/dolce_time_mereology.p9 test/p9/20130326/dolce_time_mereology/dolce_time_mereology2cem_mereology.p9 test/p9/20130326/dolce_time_mereology/dolce_taxonomy_pdedq.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file test/p9/20130326/dolce_time_mereology/ex0326.p9
+
+
+formulas(sos).
+(all x all y (overlaps(x,y) -> (exists z all v (ppart(v,z) <-> ppart(v,x) & ppart(v,y))))).
+(all x all y (underlaps(x,y) -> (exists z all v (overlaps(v,z) <-> overlaps(v,x) | overlaps(v,y))))).
+(all x all y (-part(x,y) -> (exists z (part(z,x) & disjoint(z,y))))).
+(all x part(x,x)).
+(all x all y (part(x,y) & part(y,x) -> x = y)).
+(all x all y all z (part(x,y) & part(y,z) -> part(x,z))).
+end_of_list.
+
+% Reading from file test/p9/20130326/dolce_time_mereology/dolce_time_mereology.p9
+
+
+formulas(sos).
+(all x all y (P(x,y) -> T(y) & T(y))).
+(all x all y (P(x,y) -> (T(x) <-> T(y)))).
+(all x all y (T(x) -> P(x,x))).
+(all x all y (T(x) & T(y) & P(x,y) & P(y,x) -> x = y)).
+(all x all y all z (T(x) & T(y) & P(x,y) & P(y,z) -> P(x,z))).
+(all x all y (T(x) & T(y) & -P(x,y) -> (exists z (T(z) & P(z,x) & -O(z,y))))).
+(all x all y (T(x) & T(y) & -P(x,y) -> (exists z (P(z,x) & disjoint(z,y) & T(z))))).
+(all x all y (T(x) & T(y) -> (PP(x,y) <-> P(x,y) & -P(y,x)))).
+(all x all y (T(x) & T(y) -> (O(x,y) <-> (exists z (P(z,x) & P(z,y) & T(z)))))).
+(all x all y (T(x) & T(y) -> (disjoint(x,y) <-> -O(x,y)))).
+(all x all y (T(x) & T(y) -> (U(x,y) <-> (exists z (P(x,z) & P(y,z) & T(z)))))).
+(all x (T(x) -> (AtP(x) <-> (all y (T(y) & P(y,x) -> y = x))))).
+(all x all y (T(x) & T(y) & U(x,y) -> (exists z (T(z) & (all w (T(w) -> (O(w,z) <-> O(w,x) | O(w,y)))))))).
+(all x all y (T(x) & T(y) & O(x,y) -> (exists z (T(z) & (all w (T(w) -> (PP(w,z) <-> PP(w,x) & PP(w,y)))))))).
+end_of_list.
+
+% Reading from file test/p9/20130326/dolce_time_mereology/dolce_time_mereology2cem_mereology.p9
+
+
+formulas(sos).
+(all x all y (part(x,y) <-> P(x,y) & T(x) & T(y))).
+(all x (x = x <-> T(x))).
+(all x all y (ppart(x,y) <-> PP(x,y) & T(x) & T(y))).
+(all x all y (overlaps(x,y) <-> O(x,y) & T(x) & T(y))).
+(all x all y (disjoint(x,y) <-> -overlaps(x,y))).
+(all x all y (overlaps(x,y) <-> (exists z (part(z,x) & part(z,y))))).
+(all x all y (underlaps(x,y) <-> (exists z (part(x,z) & part(y,z))))).
+end_of_list.
+
+% Reading from file test/p9/20130326/dolce_time_mereology/dolce_taxonomy_pdedq.p9
+
+
+formulas(sos).
+(all x (ED(x) | PD(x) | Q(x) | T(x) -> PT(x))).
+(all x (PT(x) <-> ED(x) | PD(x) | Q(x) | T(x))).
+(all x (ED(x) -> -PD(x) & -Q(x) & -T(x))).
+(all x (PD(x) -> -Q(x) & -T(x))).
+(all x (Q(x) -> -T(x))).
+(all x (T(x) -> AB(x))).
+end_of_list.
+
+============================== end of input ==========================
+
+% From the command line: assign(max_seconds, 600).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x all y (overlaps(x,y) -> (exists z all v (ppart(v,z) <-> ppart(v,x) & ppart(v,y))))) # label(non_clause).  [assumption].
+2 (all x all y (underlaps(x,y) -> (exists z all v (overlaps(v,z) <-> overlaps(v,x) | overlaps(v,y))))) # label(non_clause).  [assumption].
+3 (all x all y (-part(x,y) -> (exists z (part(z,x) & disjoint(z,y))))) # label(non_clause).  [assumption].
+4 (all x part(x,x)) # label(non_clause).  [assumption].
+5 (all x all y (part(x,y) & part(y,x) -> x = y)) # label(non_clause).  [assumption].
+6 (all x all y all z (part(x,y) & part(y,z) -> part(x,z))) # label(non_clause).  [assumption].
+7 (all x all y (P(x,y) -> T(y) & T(y))) # label(non_clause).  [assumption].
+8 (all x all y (P(x,y) -> (T(x) <-> T(y)))) # label(non_clause).  [assumption].
+9 (all x all y (T(x) -> P(x,x))) # label(non_clause).  [assumption].
+10 (all x all y (T(x) & T(y) & P(x,y) & P(y,x) -> x = y)) # label(non_clause).  [assumption].
+11 (all x all y all z (T(x) & T(y) & P(x,y) & P(y,z) -> P(x,z))) # label(non_clause).  [assumption].
+12 (all x all y (T(x) & T(y) & -P(x,y) -> (exists z (T(z) & P(z,x) & -O(z,y))))) # label(non_clause).  [assumption].
+13 (all x all y (T(x) & T(y) & -P(x,y) -> (exists z (P(z,x) & disjoint(z,y) & T(z))))) # label(non_clause).  [assumption].
+14 (all x all y (T(x) & T(y) -> (PP(x,y) <-> P(x,y) & -P(y,x)))) # label(non_clause).  [assumption].
+15 (all x all y (T(x) & T(y) -> (O(x,y) <-> (exists z (P(z,x) & P(z,y) & T(z)))))) # label(non_clause).  [assumption].
+16 (all x all y (T(x) & T(y) -> (disjoint(x,y) <-> -O(x,y)))) # label(non_clause).  [assumption].
+17 (all x all y (T(x) & T(y) -> (U(x,y) <-> (exists z (P(x,z) & P(y,z) & T(z)))))) # label(non_clause).  [assumption].
+18 (all x (T(x) -> (AtP(x) <-> (all y (T(y) & P(y,x) -> y = x))))) # label(non_clause).  [assumption].
+19 (all x all y (T(x) & T(y) & U(x,y) -> (exists z (T(z) & (all w (T(w) -> (O(w,z) <-> O(w,x) | O(w,y)))))))) # label(non_clause).  [assumption].
+20 (all x all y (T(x) & T(y) & O(x,y) -> (exists z (T(z) & (all w (T(w) -> (PP(w,z) <-> PP(w,x) & PP(w,y)))))))) # label(non_clause).  [assumption].
+21 (all x all y (part(x,y) <-> P(x,y) & T(x) & T(y))) # label(non_clause).  [assumption].
+22 (all x (x = x <-> T(x))) # label(non_clause).  [assumption].
+23 (all x all y (ppart(x,y) <-> PP(x,y) & T(x) & T(y))) # label(non_clause).  [assumption].
+24 (all x all y (overlaps(x,y) <-> O(x,y) & T(x) & T(y))) # label(non_clause).  [assumption].
+25 (all x all y (disjoint(x,y) <-> -overlaps(x,y))) # label(non_clause).  [assumption].
+26 (all x all y (overlaps(x,y) <-> (exists z (part(z,x) & part(z,y))))) # label(non_clause).  [assumption].
+27 (all x all y (underlaps(x,y) <-> (exists z (part(x,z) & part(y,z))))) # label(non_clause).  [assumption].
+28 (all x (ED(x) | PD(x) | Q(x) | T(x) -> PT(x))) # label(non_clause).  [assumption].
+29 (all x (PT(x) <-> ED(x) | PD(x) | Q(x) | T(x))) # label(non_clause).  [assumption].
+30 (all x (ED(x) -> -PD(x) & -Q(x) & -T(x))) # label(non_clause).  [assumption].
+31 (all x (PD(x) -> -Q(x) & -T(x))) # label(non_clause).  [assumption].
+32 (all x (Q(x) -> -T(x))) # label(non_clause).  [assumption].
+33 (all x (T(x) -> AB(x))) # label(non_clause).  [assumption].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-overlaps(x,y) | -ppart(z,f1(x,y)) | ppart(z,x).  [clausify(1)].
+-overlaps(x,y) | -ppart(z,f1(x,y)) | ppart(z,y).  [clausify(1)].
+-overlaps(x,y) | ppart(z,f1(x,y)) | -ppart(z,x) | -ppart(z,y).  [clausify(1)].
+-underlaps(x,y) | -overlaps(z,f2(x,y)) | overlaps(z,x) | overlaps(z,y).  [clausify(2)].
+-underlaps(x,y) | overlaps(z,f2(x,y)) | -overlaps(z,x).  [clausify(2)].
+-underlaps(x,y) | overlaps(z,f2(x,y)) | -overlaps(z,y).  [clausify(2)].
+part(x,y) | part(f3(x,y),x).  [clausify(3)].
+part(x,y) | disjoint(f3(x,y),y).  [clausify(3)].
+part(x,x).  [clausify(4)].
+-part(x,y) | -part(y,x) | y = x.  [clausify(5)].
+-part(x,y) | -part(y,z) | part(x,z).  [clausify(6)].
+-P(x,y) | T(y).  [clausify(7)].
+-P(x,y) | -T(x) | T(y).  [clausify(8)].
+-P(x,y) | T(x) | -T(y).  [clausify(8)].
+-T(x) | P(x,x).  [clausify(9)].
+-T(x) | -T(y) | -P(x,y) | -P(y,x) | y = x.  [clausify(10)].
+-T(x) | -T(y) | -P(x,y) | -P(y,z) | P(x,z).  [clausify(11)].
+-T(x) | -T(y) | P(x,y) | T(f4(x,y)).  [clausify(12)].
+-T(x) | -T(y) | P(x,y) | P(f4(x,y),x).  [clausify(12)].
+-T(x) | -T(y) | P(x,y) | -O(f4(x,y),y).  [clausify(12)].
+-T(x) | -T(y) | P(x,y) | P(f5(x,y),x).  [clausify(13)].
+-T(x) | -T(y) | P(x,y) | disjoint(f5(x,y),y).  [clausify(13)].
+-T(x) | -T(y) | P(x,y) | T(f5(x,y)).  [clausify(13)].
+-T(x) | -T(y) | -PP(x,y) | P(x,y).  [clausify(14)].
+-T(x) | -T(y) | -PP(x,y) | -P(y,x).  [clausify(14)].
+-T(x) | -T(y) | PP(x,y) | -P(x,y) | P(y,x).  [clausify(14)].
+-T(x) | -T(y) | -O(x,y) | P(f6(x,y),x).  [clausify(15)].
+-T(x) | -T(y) | -O(x,y) | P(f6(x,y),y).  [clausify(15)].
+-T(x) | -T(y) | -O(x,y) | T(f6(x,y)).  [clausify(15)].
+-T(x) | -T(y) | O(x,y) | -P(z,x) | -P(z,y) | -T(z).  [clausify(15)].
+-T(x) | -T(y) | -disjoint(x,y) | -O(x,y).  [clausify(16)].
+-T(x) | -T(y) | disjoint(x,y) | O(x,y).  [clausify(16)].
+-T(x) | -T(y) | -U(x,y) | P(x,f7(x,y)).  [clausify(17)].
+-T(x) | -T(y) | -U(x,y) | P(y,f7(x,y)).  [clausify(17)].
+-T(x) | -T(y) | -U(x,y) | T(f7(x,y)).  [clausify(17)].
+-T(x) | -T(y) | U(x,y) | -P(x,z) | -P(y,z) | -T(z).  [clausify(17)].
+-T(x) | -AtP(x) | -T(y) | -P(y,x) | y = x.  [clausify(18)].
+-T(x) | AtP(x) | T(f8(x)).  [clausify(18)].
+-T(x) | AtP(x) | P(f8(x),x).  [clausify(18)].
+-T(x) | AtP(x) | f8(x) != x.  [clausify(18)].
+-T(x) | -T(y) | -U(x,y) | T(f9(x,y)).  [clausify(19)].
+-T(x) | -T(y) | -U(x,y) | -T(z) | -O(z,f9(x,y)) | O(z,x) | O(z,y).  [clausify(19)].
+-T(x) | -T(y) | -U(x,y) | -T(z) | O(z,f9(x,y)) | -O(z,x).  [clausify(19)].
+-T(x) | -T(y) | -U(x,y) | -T(z) | O(z,f9(x,y)) | -O(z,y).  [clausify(19)].
+-T(x) | -T(y) | -O(x,y) | T(f10(x,y)).  [clausify(20)].
+-T(x) | -T(y) | -O(x,y) | -T(z) | -PP(z,f10(x,y)) | PP(z,x).  [clausify(20)].
+-T(x) | -T(y) | -O(x,y) | -T(z) | -PP(z,f10(x,y)) | PP(z,y).  [clausify(20)].
+-T(x) | -T(y) | -O(x,y) | -T(z) | PP(z,f10(x,y)) | -PP(z,x) | -PP(z,y).  [clausify(20)].
+-part(x,y) | P(x,y).  [clausify(21)].
+-part(x,y) | T(x).  [clausify(21)].
+-part(x,y) | T(y).  [clausify(21)].
+part(x,y) | -P(x,y) | -T(x) | -T(y).  [clausify(21)].
+x != x | T(x).  [clausify(22)].
+x = x | -T(x).  [clausify(22)].
+-ppart(x,y) | PP(x,y).  [clausify(23)].
+-ppart(x,y) | T(x).  [clausify(23)].
+-ppart(x,y) | T(y).  [clausify(23)].
+ppart(x,y) | -PP(x,y) | -T(x) | -T(y).  [clausify(23)].
+-overlaps(x,y) | O(x,y).  [clausify(24)].
+-overlaps(x,y) | T(x).  [clausify(24)].
+-overlaps(x,y) | T(y).  [clausify(24)].
+overlaps(x,y) | -O(x,y) | -T(x) | -T(y).  [clausify(24)].
+-disjoint(x,y) | -overlaps(x,y).  [clausify(25)].
+disjoint(x,y) | overlaps(x,y).  [clausify(25)].
+-overlaps(x,y) | part(f11(x,y),x).  [clausify(26)].
+-overlaps(x,y) | part(f11(x,y),y).  [clausify(26)].
+overlaps(x,y) | -part(z,x) | -part(z,y).  [clausify(26)].
+-underlaps(x,y) | part(x,f12(x,y)).  [clausify(27)].
+-underlaps(x,y) | part(y,f12(x,y)).  [clausify(27)].
+underlaps(x,y) | -part(x,z) | -part(y,z).  [clausify(27)].
+-ED(x) | PT(x).  [clausify(28)].
+-PD(x) | PT(x).  [clausify(28)].
+-Q(x) | PT(x).  [clausify(28)].
+-T(x) | PT(x).  [clausify(28)].
+-PT(x) | ED(x) | PD(x) | Q(x) | T(x).  [clausify(29)].
+PT(x) | -ED(x).  [clausify(29)].
+PT(x) | -PD(x).  [clausify(29)].
+PT(x) | -Q(x).  [clausify(29)].
+PT(x) | -T(x).  [clausify(29)].
+-ED(x) | -PD(x).  [clausify(30)].
+-ED(x) | -Q(x).  [clausify(30)].
+-ED(x) | -T(x).  [clausify(30)].
+-PD(x) | -Q(x).  [clausify(31)].
+-PD(x) | -T(x).  [clausify(31)].
+-Q(x) | -T(x).  [clausify(32)].
+-T(x) | AB(x).  [clausify(33)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating underlaps/2
+34 underlaps(x,y) | -part(x,z) | -part(y,z).  [clausify(27)].
+35 -underlaps(x,y) | -overlaps(z,f2(x,y)) | overlaps(z,x) | overlaps(z,y).  [clausify(2)].
+36 -underlaps(x,y) | overlaps(z,f2(x,y)) | -overlaps(z,x).  [clausify(2)].
+37 -underlaps(x,y) | overlaps(z,f2(x,y)) | -overlaps(z,y).  [clausify(2)].
+38 -underlaps(x,y) | part(x,f12(x,y)).  [clausify(27)].
+39 -underlaps(x,y) | part(y,f12(x,y)).  [clausify(27)].
+Derived: -part(x,y) | -part(z,y) | -overlaps(u,f2(x,z)) | overlaps(u,x) | overlaps(u,z).  [resolve(34,a,35,a)].
+Derived: -part(x,y) | -part(z,y) | overlaps(u,f2(x,z)) | -overlaps(u,x).  [resolve(34,a,36,a)].
+Derived: -part(x,y) | -part(z,y) | overlaps(u,f2(x,z)) | -overlaps(u,z).  [resolve(34,a,37,a)].
+Derived: -part(x,y) | -part(z,y) | part(x,f12(x,z)).  [resolve(34,a,38,a)].
+Derived: -part(x,y) | -part(z,y) | part(z,f12(x,z)).  [resolve(34,a,39,a)].
+
+Eliminating disjoint/2
+40 -T(x) | -T(y) | -disjoint(x,y) | -O(x,y).  [clausify(16)].
+41 part(x,y) | disjoint(f3(x,y),y).  [clausify(3)].
+42 -T(x) | -T(y) | P(x,y) | disjoint(f5(x,y),y).  [clausify(13)].
+Derived: -T(f3(x,y)) | -T(y) | -O(f3(x,y),y) | part(x,y).  [resolve(40,c,41,b)].
+Derived: -T(f5(x,y)) | -T(y) | -O(f5(x,y),y) | -T(x) | -T(y) | P(x,y).  [resolve(40,c,42,d)].
+43 -T(x) | -T(y) | disjoint(x,y) | O(x,y).  [clausify(16)].
+44 -disjoint(x,y) | -overlaps(x,y).  [clausify(25)].
+Derived: -overlaps(f3(x,y),y) | part(x,y).  [resolve(44,a,41,b)].
+Derived: -overlaps(f5(x,y),y) | -T(x) | -T(y) | P(x,y).  [resolve(44,a,42,d)].
+Derived: -overlaps(x,y) | -T(x) | -T(y) | O(x,y).  [resolve(44,a,43,c)].
+45 disjoint(x,y) | overlaps(x,y).  [clausify(25)].
+Derived: overlaps(x,y) | -T(x) | -T(y) | -O(x,y).  [resolve(45,a,40,c)].
+
+Eliminating U/2
+46 -T(x) | -T(y) | U(x,y) | -P(x,z) | -P(y,z) | -T(z).  [clausify(17)].
+47 -T(x) | -T(y) | -U(x,y) | P(x,f7(x,y)).  [clausify(17)].
+48 -T(x) | -T(y) | -U(x,y) | P(y,f7(x,y)).  [clausify(17)].
+49 -T(x) | -T(y) | -U(x,y) | T(f7(x,y)).  [clausify(17)].
+Derived: -T(x) | -T(y) | -P(x,z) | -P(y,z) | -T(z) | -T(x) | -T(y) | P(x,f7(x,y)).  [resolve(46,c,47,c)].
+Derived: -T(x) | -T(y) | -P(x,z) | -P(y,z) | -T(z) | -T(x) | -T(y) | P(y,f7(x,y)).  [resolve(46,c,48,c)].
+Derived: -T(x) | -T(y) | -P(x,z) | -P(y,z) | -T(z) | -T(x) | -T(y) | T(f7(x,y)).  [resolve(46,c,49,c)].
+50 -T(x) | -T(y) | -U(x,y) | T(f9(x,y)).  [clausify(19)].
+Derived: -T(x) | -T(y) | T(f9(x,y)) | -T(x) | -T(y) | -P(x,z) | -P(y,z) | -T(z).  [resolve(50,c,46,c)].
+51 -T(x) | -T(y) | -U(x,y) | -T(z) | -O(z,f9(x,y)) | O(z,x) | O(z,y).  [clausify(19)].
+Derived: -T(x) | -T(y) | -T(z) | -O(z,f9(x,y)) | O(z,x) | O(z,y) | -T(x) | -T(y) | -P(x,u) | -P(y,u) | -T(u).  [resolve(51,c,46,c)].
+52 -T(x) | -T(y) | -U(x,y) | -T(z) | O(z,f9(x,y)) | -O(z,x).  [clausify(19)].
+Derived: -T(x) | -T(y) | -T(z) | O(z,f9(x,y)) | -O(z,x) | -T(x) | -T(y) | -P(x,u) | -P(y,u) | -T(u).  [resolve(52,c,46,c)].
+53 -T(x) | -T(y) | -U(x,y) | -T(z) | O(z,f9(x,y)) | -O(z,y).  [clausify(19)].
+Derived: -T(x) | -T(y) | -T(z) | O(z,f9(x,y)) | -O(z,y) | -T(x) | -T(y) | -P(x,u) | -P(y,u) | -T(u).  [resolve(53,c,46,c)].
+
+Eliminating AtP/1
+54 -T(x) | AtP(x) | T(f8(x)).  [clausify(18)].
+55 -T(x) | -AtP(x) | -T(y) | -P(y,x) | y = x.  [clausify(18)].
+Derived: -T(x) | T(f8(x)) | -T(x) | -T(y) | -P(y,x) | y = x.  [resolve(54,b,55,b)].
+56 -T(x) | AtP(x) | P(f8(x),x).  [clausify(18)].
+Derived: -T(x) | P(f8(x),x) | -T(x) | -T(y) | -P(y,x) | y = x.  [resolve(56,b,55,b)].
+57 -T(x) | AtP(x) | f8(x) != x.  [clausify(18)].
+Derived: -T(x) | f8(x) != x | -T(x) | -T(y) | -P(y,x) | y = x.  [resolve(57,b,55,b)].
+
+Eliminating ED/1
+58 -PT(x) | ED(x) | PD(x) | Q(x) | T(x).  [clausify(29)].
+59 -ED(x) | PT(x).  [clausify(28)].
+60 PT(x) | -ED(x).  [clausify(29)].
+61 -ED(x) | -PD(x).  [clausify(30)].
+62 -ED(x) | -Q(x).  [clausify(30)].
+63 -ED(x) | -T(x).  [clausify(30)].
+
+Eliminating PD/1
+
+Eliminating Q/1
+
+Eliminating PT/1
+
+Eliminating AB/1
+
+============================== end predicate elimination =============
+
+Auto_denials:  (non-Horn, no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, T, P, part, O, overlaps, PP, ppart ]).
+Function symbol precedence:  function_order([ f1, f2, f3, f4, f5, f6, f7, f9, f10, f11, f12, f8 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+  % set(binary_resolution).  % (non-Horn)
+  % set(neg_ur_resolution).  % (non-Horn, less than 100 clauses)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+kept:      64 -overlaps(x,y) | -ppart(z,f1(x,y)) | ppart(z,x).  [clausify(1)].
+kept:      65 -overlaps(x,y) | -ppart(z,f1(x,y)) | ppart(z,y).  [clausify(1)].
+kept:      66 -overlaps(x,y) | ppart(z,f1(x,y)) | -ppart(z,x) | -ppart(z,y).  [clausify(1)].
+kept:      67 part(x,y) | part(f3(x,y),x).  [clausify(3)].
+kept:      68 part(x,x).  [clausify(4)].
+kept:      69 -part(x,y) | -part(y,x) | y = x.  [clausify(5)].
+kept:      70 -part(x,y) | -part(y,z) | part(x,z).  [clausify(6)].
+kept:      71 -P(x,y) | T(y).  [clausify(7)].
+kept:      72 -P(x,y) | T(x) | -T(y).  [clausify(8)].
+kept:      73 -T(x) | P(x,x).  [clausify(9)].
+kept:      74 -T(x) | -T(y) | -P(x,y) | -P(y,x) | y = x.  [clausify(10)].
+kept:      75 -T(x) | -T(y) | -P(x,y) | -P(y,z) | P(x,z).  [clausify(11)].
+kept:      76 -T(x) | -T(y) | P(x,y) | T(f4(x,y)).  [clausify(12)].
+kept:      77 -T(x) | -T(y) | P(x,y) | P(f4(x,y),x).  [clausify(12)].
+kept:      78 -T(x) | -T(y) | P(x,y) | -O(f4(x,y),y).  [clausify(12)].
+kept:      79 -T(x) | -T(y) | P(x,y) | P(f5(x,y),x).  [clausify(13)].
+kept:      80 -T(x) | -T(y) | P(x,y) | T(f5(x,y)).  [clausify(13)].
+kept:      81 -T(x) | -T(y) | -PP(x,y) | P(x,y).  [clausify(14)].
+kept:      82 -T(x) | -T(y) | -PP(x,y) | -P(y,x).  [clausify(14)].
+kept:      83 -T(x) | -T(y) | PP(x,y) | -P(x,y) | P(y,x).  [clausify(14)].
+kept:      84 -T(x) | -T(y) | -O(x,y) | P(f6(x,y),x).  [clausify(15)].
+kept:      85 -T(x) | -T(y) | -O(x,y) | P(f6(x,y),y).  [clausify(15)].
+kept:      86 -T(x) | -T(y) | -O(x,y) | T(f6(x,y)).  [clausify(15)].
+kept:      87 -T(x) | -T(y) | O(x,y) | -P(z,x) | -P(z,y) | -T(z).  [clausify(15)].
+kept:      88 -T(x) | -T(y) | -O(x,y) | T(f10(x,y)).  [clausify(20)].
+kept:      89 -T(x) | -T(y) | -O(x,y) | -T(z) | -PP(z,f10(x,y)) | PP(z,x).  [clausify(20)].
+kept:      90 -T(x) | -T(y) | -O(x,y) | -T(z) | -PP(z,f10(x,y)) | PP(z,y).  [clausify(20)].
+kept:      91 -T(x) | -T(y) | -O(x,y) | -T(z) | PP(z,f10(x,y)) | -PP(z,x) | -PP(z,y).  [clausify(20)].
+kept:      92 -part(x,y) | P(x,y).  [clausify(21)].
+kept:      93 -part(x,y) | T(x).  [clausify(21)].
+kept:      94 -part(x,y) | T(y).  [clausify(21)].
+kept:      95 part(x,y) | -P(x,y) | -T(x) | -T(y).  [clausify(21)].
+           96 x != x | T(x).  [clausify(22)].
+kept:      97 T(x).  [copy(96),xx(a)].
+kept:      98 -ppart(x,y) | PP(x,y).  [clausify(23)].
+           99 ppart(x,y) | -PP(x,y) | -T(x) | -T(y).  [clausify(23)].
+kept:      100 ppart(x,y) | -PP(x,y).  [copy(99),unit_del(c,97),unit_del(d,97)].
+kept:      101 -overlaps(x,y) | O(x,y).  [clausify(24)].
+           102 overlaps(x,y) | -O(x,y) | -T(x) | -T(y).  [clausify(24)].
+kept:      103 overlaps(x,y) | -O(x,y).  [copy(102),unit_del(c,97),unit_del(d,97)].
+kept:      104 -overlaps(x,y) | part(f11(x,y),x).  [clausify(26)].
+kept:      105 -overlaps(x,y) | part(f11(x,y),y).  [clausify(26)].
+kept:      106 overlaps(x,y) | -part(z,x) | -part(z,y).  [clausify(26)].
+kept:      107 -part(x,y) | -part(z,y) | -overlaps(u,f2(x,z)) | overlaps(u,x) | overlaps(u,z).  [resolve(34,a,35,a)].
+kept:      108 -part(x,y) | -part(z,y) | overlaps(u,f2(x,z)) | -overlaps(u,x).  [resolve(34,a,36,a)].
+kept:      109 -part(x,y) | -part(z,y) | overlaps(u,f2(x,z)) | -overlaps(u,z).  [resolve(34,a,37,a)].
+kept:      110 -part(x,y) | -part(z,y) | part(x,f12(x,z)).  [resolve(34,a,38,a)].
+kept:      111 -part(x,y) | -part(z,y) | part(z,f12(x,z)).  [resolve(34,a,39,a)].
+           112 -T(f3(x,y)) | -T(y) | -O(f3(x,y),y) | part(x,y).  [resolve(40,c,41,b)].
+kept:      113 -O(f3(x,y),y) | part(x,y).  [copy(112),unit_del(a,97),unit_del(b,97)].
+           114 -T(f5(x,y)) | -T(y) | -O(f5(x,y),y) | -T(x) | -T(y) | P(x,y).  [resolve(40,c,42,d)].
+kept:      115 -O(f5(x,y),y) | P(x,y).  [copy(114),merge(e),unit_del(a,97),unit_del(b,97),unit_del(d,97)].
+kept:      116 -overlaps(f3(x,y),y) | part(x,y).  [resolve(44,a,41,b)].
+           117 -overlaps(f5(x,y),y) | -T(x) | -T(y) | P(x,y).  [resolve(44,a,42,d)].
+kept:      118 -overlaps(f5(x,y),y) | P(x,y).  [copy(117),unit_del(b,97),unit_del(c,97)].
+           119 -overlaps(x,y) | -T(x) | -T(y) | O(x,y).  [resolve(44,a,43,c)].
+           120 overlaps(x,y) | -T(x) | -T(y) | -O(x,y).  [resolve(45,a,40,c)].
+           121 -T(x) | -T(y) | -P(x,z) | -P(y,z) | -T(z) | -T(x) | -T(y) | P(x,f7(x,y)).  [resolve(46,c,47,c)].
+kept:      122 -P(x,y) | -P(z,y) | P(x,f7(x,z)).  [copy(121),merge(f),merge(g),unit_del(a,97),unit_del(b,97),unit_del(e,97)].
+           123 -T(x) | -T(y) | -P(x,z) | -P(y,z) | -T(z) | -T(x) | -T(y) | P(y,f7(x,y)).  [resolve(46,c,48,c)].
+kept:      124 -P(x,y) | -P(z,y) | P(z,f7(x,z)).  [copy(123),merge(f),merge(g),unit_del(a,97),unit_del(b,97),unit_del(e,97)].
+           125 -T(x) | -T(y) | -P(x,z) | -P(y,z) | -T(z) | -T(x) | -T(y) | T(f7(x,y)).  [resolve(46,c,49,c)].
+           126 -T(x) | -T(y) | T(f9(x,y)) | -T(x) | -T(y) | -P(x,z) | -P(y,z) | -T(z).  [resolve(50,c,46,c)].
+           127 -T(x) | -T(y) | -T(z) | -O(z,f9(x,y)) | O(z,x) | O(z,y) | -T(x) | -T(y) | -P(x,u) | -P(y,u) | -T(u).  [resolve(51,c,46,c)].
+kept:      128 -O(x,f9(y,z)) | O(x,y) | O(x,z) | -P(y,u) | -P(z,u).  [copy(127),merge(g),merge(h),unit_del(a,97),unit_del(b,97),unit_del(c,97),unit_del(i,97)].
+           129 -T(x) | -T(y) | -T(z) | O(z,f9(x,y)) | -O(z,x) | -T(x) | -T(y) | -P(x,u) | -P(y,u) | -T(u).  [resolve(52,c,46,c)].
+kept:      130 O(x,f9(y,z)) | -O(x,y) | -P(y,u) | -P(z,u).  [copy(129),merge(f),merge(g),unit_del(a,97),unit_del(b,97),unit_del(c,97),unit_del(h,97)].
+           131 -T(x) | -T(y) | -T(z) | O(z,f9(x,y)) | -O(z,y) | -T(x) | -T(y) | -P(x,u) | -P(y,u) | -T(u).  [resolve(53,c,46,c)].
+kept:      132 O(x,f9(y,z)) | -O(x,z) | -P(y,u) | -P(z,u).  [copy(131),merge(f),merge(g),unit_del(a,97),unit_del(b,97),unit_del(c,97),unit_del(h,97)].
+           133 -T(x) | T(f8(x)) | -T(x) | -T(y) | -P(y,x) | y = x.  [resolve(54,b,55,b)].
+           134 -T(x) | P(f8(x),x) | -T(x) | -T(y) | -P(y,x) | y = x.  [resolve(56,b,55,b)].
+kept:      135 P(f8(x),x) | -P(y,x) | y = x.  [copy(134),merge(c),unit_del(a,97),unit_del(c,97)].
+           136 -T(x) | f8(x) != x | -T(x) | -T(y) | -P(y,x) | y = x.  [resolve(57,b,55,b)].
+kept:      137 f8(x) != x | -P(y,x) | y = x.  [copy(136),merge(c),unit_del(a,97),unit_del(c,97)].
+kept:      138 -overlaps(x,x) | ppart(y,f1(x,x)) | -ppart(y,x).  [factor(66,c,d)].
+kept:      139 P(x,x) | P(f4(x,x),x).  [factor(77,a,b),unit_del(a,97)].
+kept:      140 P(x,x) | -O(f4(x,x),x).  [factor(78,a,b),unit_del(a,97)].
+kept:      141 P(x,x) | P(f5(x,x),x).  [factor(79,a,b),unit_del(a,97)].
+kept:      142 -PP(x,x) | P(x,x).  [factor(81,a,b),unit_del(a,97)].
+kept:      143 -PP(x,x) | -P(x,x).  [factor(82,a,b),unit_del(a,97)].
+kept:      144 -O(x,x) | P(f6(x,x),x).  [factor(84,a,b),unit_del(a,97)].
+kept:      145 O(x,x) | -P(y,x).  [factor(87,a,b),merge(d),unit_del(a,97),unit_del(d,97)].
+kept:      146 O(x,y) | -P(x,x) | -P(x,y).  [factor(87,a,f),unit_del(a,97),unit_del(b,97)].
+kept:      147 O(x,y) | -P(y,x) | -P(y,y).  [factor(87,b,f),unit_del(a,97),unit_del(b,97)].
+kept:      148 -O(x,x) | -PP(y,f10(x,x)) | PP(y,x).  [factor(89,a,b),unit_del(a,97),unit_del(c,97)].
+kept:      149 -O(x,y) | -PP(x,f10(x,y)) | PP(x,x).  [factor(89,a,d),unit_del(a,97),unit_del(b,97)].
+kept:      150 -O(x,y) | -PP(y,f10(x,y)) | PP(y,x).  [factor(89,b,d),unit_del(a,97),unit_del(b,97)].
+kept:      151 -O(x,y) | -PP(x,f10(x,y)) | PP(x,y).  [factor(90,a,d),unit_del(a,97),unit_del(b,97)].
+kept:      152 -O(x,y) | -PP(y,f10(x,y)) | PP(y,y).  [factor(90,b,d),unit_del(a,97),unit_del(b,97)].
+kept:      153 -O(x,x) | PP(y,f10(x,x)) | -PP(y,x).  [factor(91,a,b),merge(f),unit_del(a,97),unit_del(c,97)].
+kept:      154 -O(x,y) | PP(x,f10(x,y)) | -PP(x,x) | -PP(x,y).  [factor(91,a,d),unit_del(a,97),unit_del(b,97)].
+kept:      155 -O(x,y) | PP(y,f10(x,y)) | -PP(y,x) | -PP(y,y).  [factor(91,b,d),unit_del(a,97),unit_del(b,97)].
+kept:      156 part(x,y) | -P(x,y).  [back_unit_del(95),unit_del(c,97),unit_del(d,97)].
+kept:      157 -O(x,y) | PP(z,f10(x,y)) | -PP(z,x) | -PP(z,y).  [back_unit_del(91),unit_del(a,97),unit_del(b,97),unit_del(d,97)].
+kept:      158 -O(x,y) | -PP(z,f10(x,y)) | PP(z,y).  [back_unit_del(90),unit_del(a,97),unit_del(b,97),unit_del(d,97)].
+kept:      159 -O(x,y) | -PP(z,f10(x,y)) | PP(z,x).  [back_unit_del(89),unit_del(a,97),unit_del(b,97),unit_del(d,97)].
+kept:      160 O(x,y) | -P(z,x) | -P(z,y).  [back_unit_del(87),unit_del(a,97),unit_del(b,97),unit_del(f,97)].
+kept:      161 -O(x,y) | P(f6(x,y),y).  [back_unit_del(85),unit_del(a,97),unit_del(b,97)].
+kept:      162 -O(x,y) | P(f6(x,y),x).  [back_unit_del(84),unit_del(a,97),unit_del(b,97)].
+kept:      163 PP(x,y) | -P(x,y) | P(y,x).  [back_unit_del(83),unit_del(a,97),unit_del(b,97)].
+kept:      164 -PP(x,y) | -P(y,x).  [back_unit_del(82),unit_del(a,97),unit_del(b,97)].
+kept:      165 -PP(x,y) | P(x,y).  [back_unit_del(81),unit_del(a,97),unit_del(b,97)].
+kept:      166 P(x,y) | P(f5(x,y),x).  [back_unit_del(79),unit_del(a,97),unit_del(b,97)].
+kept:      167 P(x,y) | -O(f4(x,y),y).  [back_unit_del(78),unit_del(a,97),unit_del(b,97)].
+kept:      168 P(x,y) | P(f4(x,y),x).  [back_unit_del(77),unit_del(a,97),unit_del(b,97)].
+kept:      169 -P(x,y) | -P(y,z) | P(x,z).  [back_unit_del(75),unit_del(a,97),unit_del(b,97)].
+kept:      170 -P(x,y) | -P(y,x) | y = x.  [back_unit_del(74),unit_del(a,97),unit_del(b,97)].
+kept:      171 P(x,x).  [back_unit_del(73),unit_del(a,97)].
+kept:      172 overlaps(x,x) | -part(y,x).  [factor(106,b,c)].
+kept:      173 -part(x,y) | -overlaps(z,f2(x,x)) | overlaps(z,x).  [factor(107,a,b),merge(d)].
+kept:      174 -part(x,y) | overlaps(z,f2(x,x)) | -overlaps(z,x).  [factor(108,a,b)].
+kept:      175 -part(x,y) | part(x,f12(x,x)).  [factor(110,a,b)].
+kept:      176 -P(x,y) | P(x,f7(x,x)).  [factor(122,a,b)].
+kept:      177 -O(x,f9(y,y)) | O(x,y) | -P(y,z).  [factor(128,b,c),merge(d)].
+kept:      178 O(x,f9(y,y)) | -O(x,y) | -P(y,z).  [factor(130,c,d)].
+kept:      179 O(x,x).  [factor(146,b,c),unit_del(b,171)].
+kept:      180 PP(x,f10(x,x)) | -PP(x,x).  [factor(154,c,d),unit_del(a,179)].
+kept:      181 PP(x,f10(y,y)) | -PP(x,y).  [factor(157,c,d),unit_del(a,179)].
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+% Clauses after input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+64 -overlaps(x,y) | -ppart(z,f1(x,y)) | ppart(z,x).  [clausify(1)].
+65 -overlaps(x,y) | -ppart(z,f1(x,y)) | ppart(z,y).  [clausify(1)].
+66 -overlaps(x,y) | ppart(z,f1(x,y)) | -ppart(z,x) | -ppart(z,y).  [clausify(1)].
+67 part(x,y) | part(f3(x,y),x).  [clausify(3)].
+68 part(x,x).  [clausify(4)].
+69 -part(x,y) | -part(y,x) | y = x.  [clausify(5)].
+70 -part(x,y) | -part(y,z) | part(x,z).  [clausify(6)].
+92 -part(x,y) | P(x,y).  [clausify(21)].
+97 T(x).  [copy(96),xx(a)].
+98 -ppart(x,y) | PP(x,y).  [clausify(23)].
+100 ppart(x,y) | -PP(x,y).  [copy(99),unit_del(c,97),unit_del(d,97)].
+101 -overlaps(x,y) | O(x,y).  [clausify(24)].
+103 overlaps(x,y) | -O(x,y).  [copy(102),unit_del(c,97),unit_del(d,97)].
+104 -overlaps(x,y) | part(f11(x,y),x).  [clausify(26)].
+105 -overlaps(x,y) | part(f11(x,y),y).  [clausify(26)].
+106 overlaps(x,y) | -part(z,x) | -part(z,y).  [clausify(26)].
+107 -part(x,y) | -part(z,y) | -overlaps(u,f2(x,z)) | overlaps(u,x) | overlaps(u,z).  [resolve(34,a,35,a)].
+108 -part(x,y) | -part(z,y) | overlaps(u,f2(x,z)) | -overlaps(u,x).  [resolve(34,a,36,a)].
+109 -part(x,y) | -part(z,y) | overlaps(u,f2(x,z)) | -overlaps(u,z).  [resolve(34,a,37,a)].
+110 -part(x,y) | -part(z,y) | part(x,f12(x,z)).  [resolve(34,a,38,a)].
+111 -part(x,y) | -part(z,y) | part(z,f12(x,z)).  [resolve(34,a,39,a)].
+113 -O(f3(x,y),y) | part(x,y).  [copy(112),unit_del(a,97),unit_del(b,97)].
+115 -O(f5(x,y),y) | P(x,y).  [copy(114),merge(e),unit_del(a,97),unit_del(b,97),unit_del(d,97)].
+116 -overlaps(f3(x,y),y) | part(x,y).  [resolve(44,a,41,b)].
+118 -overlaps(f5(x,y),y) | P(x,y).  [copy(117),unit_del(b,97),unit_del(c,97)].
+122 -P(x,y) | -P(z,y) | P(x,f7(x,z)).  [copy(121),merge(f),merge(g),unit_del(a,97),unit_del(b,97),unit_del(e,97)].
+124 -P(x,y) | -P(z,y) | P(z,f7(x,z)).  [copy(123),merge(f),merge(g),unit_del(a,97),unit_del(b,97),unit_del(e,97)].
+128 -O(x,f9(y,z)) | O(x,y) | O(x,z) | -P(y,u) | -P(z,u).  [copy(127),merge(g),merge(h),unit_del(a,97),unit_del(b,97),unit_del(c,97),unit_del(i,97)].
+130 O(x,f9(y,z)) | -O(x,y) | -P(y,u) | -P(z,u).  [copy(129),merge(f),merge(g),unit_del(a,97),unit_del(b,97),unit_del(c,97),unit_del(h,97)].
+132 O(x,f9(y,z)) | -O(x,z) | -P(y,u) | -P(z,u).  [copy(131),merge(f),merge(g),unit_del(a,97),unit_del(b,97),unit_del(c,97),unit_del(h,97)].
+135 P(f8(x),x) | -P(y,x) | y = x.  [copy(134),merge(c),unit_del(a,97),unit_del(c,97)].
+137 f8(x) != x | -P(y,x) | y = x.  [copy(136),merge(c),unit_del(a,97),unit_del(c,97)].
+138 -overlaps(x,x) | ppart(y,f1(x,x)) | -ppart(y,x).  [factor(66,c,d)].
+156 part(x,y) | -P(x,y).  [back_unit_del(95),unit_del(c,97),unit_del(d,97)].
+157 -O(x,y) | PP(z,f10(x,y)) | -PP(z,x) | -PP(z,y).  [back_unit_del(91),unit_del(a,97),unit_del(b,97),unit_del(d,97)].
+158 -O(x,y) | -PP(z,f10(x,y)) | PP(z,y).  [back_unit_del(90),unit_del(a,97),unit_del(b,97),unit_del(d,97)].
+159 -O(x,y) | -PP(z,f10(x,y)) | PP(z,x).  [back_unit_del(89),unit_del(a,97),unit_del(b,97),unit_del(d,97)].
+160 O(x,y) | -P(z,x) | -P(z,y).  [back_unit_del(87),unit_del(a,97),unit_del(b,97),unit_del(f,97)].
+161 -O(x,y) | P(f6(x,y),y).  [back_unit_del(85),unit_del(a,97),unit_del(b,97)].
+162 -O(x,y) | P(f6(x,y),x).  [back_unit_del(84),unit_del(a,97),unit_del(b,97)].
+163 PP(x,y) | -P(x,y) | P(y,x).  [back_unit_del(83),unit_del(a,97),unit_del(b,97)].
+164 -PP(x,y) | -P(y,x).  [back_unit_del(82),unit_del(a,97),unit_del(b,97)].
+165 -PP(x,y) | P(x,y).  [back_unit_del(81),unit_del(a,97),unit_del(b,97)].
+166 P(x,y) | P(f5(x,y),x).  [back_unit_del(79),unit_del(a,97),unit_del(b,97)].
+167 P(x,y) | -O(f4(x,y),y).  [back_unit_del(78),unit_del(a,97),unit_del(b,97)].
+168 P(x,y) | P(f4(x,y),x).  [back_unit_del(77),unit_del(a,97),unit_del(b,97)].
+169 -P(x,y) | -P(y,z) | P(x,z).  [back_unit_del(75),unit_del(a,97),unit_del(b,97)].
+170 -P(x,y) | -P(y,x) | y = x.  [back_unit_del(74),unit_del(a,97),unit_del(b,97)].
+171 P(x,x).  [back_unit_del(73),unit_del(a,97)].
+172 overlaps(x,x) | -part(y,x).  [factor(106,b,c)].
+173 -part(x,y) | -overlaps(z,f2(x,x)) | overlaps(z,x).  [factor(107,a,b),merge(d)].
+174 -part(x,y) | overlaps(z,f2(x,x)) | -overlaps(z,x).  [factor(108,a,b)].
+175 -part(x,y) | part(x,f12(x,x)).  [factor(110,a,b)].
+176 -P(x,y) | P(x,f7(x,x)).  [factor(122,a,b)].
+177 -O(x,f9(y,y)) | O(x,y) | -P(y,z).  [factor(128,b,c),merge(d)].
+178 O(x,f9(y,y)) | -O(x,y) | -P(y,z).  [factor(130,c,d)].
+179 O(x,x).  [factor(146,b,c),unit_del(b,171)].
+181 PP(x,f10(y,y)) | -PP(x,y).  [factor(157,c,d),unit_del(a,179)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.02 seconds.
+
+given #1 (I,wt=11): 64 -overlaps(x,y) | -ppart(z,f1(x,y)) | ppart(z,x).  [clausify(1)].
+
+given #2 (I,wt=11): 65 -overlaps(x,y) | -ppart(z,f1(x,y)) | ppart(z,y).  [clausify(1)].
+
+given #3 (I,wt=14): 66 -overlaps(x,y) | ppart(z,f1(x,y)) | -ppart(z,x) | -ppart(z,y).  [clausify(1)].
+
+given #4 (I,wt=8): 67 part(x,y) | part(f3(x,y),x).  [clausify(3)].
+
+given #5 (I,wt=3): 68 part(x,x).  [clausify(4)].
+
+given #6 (I,wt=9): 69 -part(x,y) | -part(y,x) | y = x.  [clausify(5)].
+
+given #7 (I,wt=9): 70 -part(x,y) | -part(y,z) | part(x,z).  [clausify(6)].
+
+given #8 (I,wt=6): 92 -part(x,y) | P(x,y).  [clausify(21)].
+
+given #9 (I,wt=2): 97 T(x).  [copy(96),xx(a)].
+
+given #10 (I,wt=6): 98 -ppart(x,y) | PP(x,y).  [clausify(23)].
+
+given #11 (I,wt=6): 100 ppart(x,y) | -PP(x,y).  [copy(99),unit_del(c,97),unit_del(d,97)].
+
+given #12 (I,wt=6): 101 -overlaps(x,y) | O(x,y).  [clausify(24)].
+
+given #13 (I,wt=6): 103 overlaps(x,y) | -O(x,y).  [copy(102),unit_del(c,97),unit_del(d,97)].
+
+given #14 (I,wt=8): 104 -overlaps(x,y) | part(f11(x,y),x).  [clausify(26)].
+
+given #15 (I,wt=8): 105 -overlaps(x,y) | part(f11(x,y),y).  [clausify(26)].
+
+given #16 (I,wt=9): 106 overlaps(x,y) | -part(z,x) | -part(z,y).  [clausify(26)].
+
+given #17 (I,wt=17): 107 -part(x,y) | -part(z,y) | -overlaps(u,f2(x,z)) | overlaps(u,x) | overlaps(u,z).  [resolve(34,a,35,a)].
+
+given #18 (I,wt=14): 108 -part(x,y) | -part(z,y) | overlaps(u,f2(x,z)) | -overlaps(u,x).  [resolve(34,a,36,a)].
+
+given #19 (I,wt=14): 109 -part(x,y) | -part(z,y) | overlaps(u,f2(x,z)) | -overlaps(u,z).  [resolve(34,a,37,a)].
+
+given #20 (I,wt=11): 110 -part(x,y) | -part(z,y) | part(x,f12(x,z)).  [resolve(34,a,38,a)].
+
+given #21 (I,wt=11): 111 -part(x,y) | -part(z,y) | part(z,f12(x,z)).  [resolve(34,a,39,a)].
+
+given #22 (I,wt=8): 113 -O(f3(x,y),y) | part(x,y).  [copy(112),unit_del(a,97),unit_del(b,97)].
+
+given #23 (I,wt=8): 115 -O(f5(x,y),y) | P(x,y).  [copy(114),merge(e),unit_del(a,97),unit_del(b,97),unit_del(d,97)].
+
+given #24 (I,wt=8): 116 -overlaps(f3(x,y),y) | part(x,y).  [resolve(44,a,41,b)].
+
+given #25 (I,wt=8): 118 -overlaps(f5(x,y),y) | P(x,y).  [copy(117),unit_del(b,97),unit_del(c,97)].
+
+given #26 (I,wt=11): 122 -P(x,y) | -P(z,y) | P(x,f7(x,z)).  [copy(121),merge(f),merge(g),unit_del(a,97),unit_del(b,97),unit_del(e,97)].
+
+given #27 (I,wt=11): 124 -P(x,y) | -P(z,y) | P(z,f7(x,z)).  [copy(123),merge(f),merge(g),unit_del(a,97),unit_del(b,97),unit_del(e,97)].
+
+given #28 (I,wt=17): 128 -O(x,f9(y,z)) | O(x,y) | O(x,z) | -P(y,u) | -P(z,u).  [copy(127),merge(g),merge(h),unit_del(a,97),unit_del(b,97),unit_del(c,97),unit_del(i,97)].
+
+given #29 (I,wt=14): 130 O(x,f9(y,z)) | -O(x,y) | -P(y,u) | -P(z,u).  [copy(129),merge(f),merge(g),unit_del(a,97),unit_del(b,97),unit_del(c,97),unit_del(h,97)].
+
+given #30 (I,wt=14): 132 O(x,f9(y,z)) | -O(x,z) | -P(y,u) | -P(z,u).  [copy(131),merge(f),merge(g),unit_del(a,97),unit_del(b,97),unit_del(c,97),unit_del(h,97)].
+
+given #31 (I,wt=10): 135 P(f8(x),x) | -P(y,x) | y = x.  [copy(134),merge(c),unit_del(a,97),unit_del(c,97)].
+
+given #32 (I,wt=10): 137 f8(x) != x | -P(y,x) | y = x.  [copy(136),merge(c),unit_del(a,97),unit_del(c,97)].
+
+given #33 (I,wt=11): 138 -overlaps(x,x) | ppart(y,f1(x,x)) | -ppart(y,x).  [factor(66,c,d)].
+
+given #34 (I,wt=6): 156 part(x,y) | -P(x,y).  [back_unit_del(95),unit_del(c,97),unit_del(d,97)].
+
+given #35 (I,wt=14): 157 -O(x,y) | PP(z,f10(x,y)) | -PP(z,x) | -PP(z,y).  [back_unit_del(91),unit_del(a,97),unit_del(b,97),unit_del(d,97)].
+
+given #36 (I,wt=11): 158 -O(x,y) | -PP(z,f10(x,y)) | PP(z,y).  [back_unit_del(90),unit_del(a,97),unit_del(b,97),unit_del(d,97)].
+
+given #37 (I,wt=11): 159 -O(x,y) | -PP(z,f10(x,y)) | PP(z,x).  [back_unit_del(89),unit_del(a,97),unit_del(b,97),unit_del(d,97)].
+
+given #38 (I,wt=9): 160 O(x,y) | -P(z,x) | -P(z,y).  [back_unit_del(87),unit_del(a,97),unit_del(b,97),unit_del(f,97)].
+
+given #39 (I,wt=8): 161 -O(x,y) | P(f6(x,y),y).  [back_unit_del(85),unit_del(a,97),unit_del(b,97)].
+
+given #40 (I,wt=8): 162 -O(x,y) | P(f6(x,y),x).  [back_unit_del(84),unit_del(a,97),unit_del(b,97)].
+
+given #41 (I,wt=9): 163 PP(x,y) | -P(x,y) | P(y,x).  [back_unit_del(83),unit_del(a,97),unit_del(b,97)].
+
+given #42 (I,wt=6): 164 -PP(x,y) | -P(y,x).  [back_unit_del(82),unit_del(a,97),unit_del(b,97)].
+
+given #43 (I,wt=6): 165 -PP(x,y) | P(x,y).  [back_unit_del(81),unit_del(a,97),unit_del(b,97)].
+
+given #44 (I,wt=8): 166 P(x,y) | P(f5(x,y),x).  [back_unit_del(79),unit_del(a,97),unit_del(b,97)].
+
+given #45 (I,wt=8): 167 P(x,y) | -O(f4(x,y),y).  [back_unit_del(78),unit_del(a,97),unit_del(b,97)].
+
+given #46 (I,wt=8): 168 P(x,y) | P(f4(x,y),x).  [back_unit_del(77),unit_del(a,97),unit_del(b,97)].
+
+given #47 (I,wt=9): 169 -P(x,y) | -P(y,z) | P(x,z).  [back_unit_del(75),unit_del(a,97),unit_del(b,97)].
+
+given #48 (I,wt=9): 170 -P(x,y) | -P(y,x) | y = x.  [back_unit_del(74),unit_del(a,97),unit_del(b,97)].
+
+given #49 (I,wt=3): 171 P(x,x).  [back_unit_del(73),unit_del(a,97)].
+
+given #50 (I,wt=6): 172 overlaps(x,x) | -part(y,x).  [factor(106,b,c)].
+
+given #51 (I,wt=11): 173 -part(x,y) | -overlaps(z,f2(x,x)) | overlaps(z,x).  [factor(107,a,b),merge(d)].
+
+given #52 (I,wt=11): 174 -part(x,y) | overlaps(z,f2(x,x)) | -overlaps(z,x).  [factor(108,a,b)].
+
+given #53 (I,wt=8): 175 -part(x,y) | part(x,f12(x,x)).  [factor(110,a,b)].
+
+given #54 (I,wt=8): 176 -P(x,y) | P(x,f7(x,x)).  [factor(122,a,b)].
+
+given #55 (I,wt=11): 177 -O(x,f9(y,y)) | O(x,y) | -P(y,z).  [factor(128,b,c),merge(d)].
+
+given #56 (I,wt=11): 178 O(x,f9(y,y)) | -O(x,y) | -P(y,z).  [factor(130,c,d)].
+
+given #57 (I,wt=3): 179 O(x,x).  [factor(146,b,c),unit_del(b,171)].
+
+given #58 (I,wt=8): 181 PP(x,f10(y,y)) | -PP(x,y).  [factor(157,c,d),unit_del(a,179)].
+
+given #59 (A,wt=13): 182 -part(x,f3(x,y)) | f3(x,y) = x | part(x,y).  [resolve(69,a,67,b),flip(b)].
+
+given #60 (F,wt=3): 230 -PP(x,x).  [ur(164,b,171,a)].
+
+given #61 (F,wt=3): 243 -ppart(x,x).  [ur(98,b,230,a)].
+
+given #62 (F,wt=5): 241 -PP(f10(x,x),x).  [ur(181,a,230,a)].
+
+given #63 (F,wt=5): 242 -PP(x,f10(x,x)).  [ur(159,a,179,a,c,230,a)].
+
+given #64 (T,wt=3): 231 overlaps(x,x).  [resolve(172,b,68,a)].
+
+given #65 (T,wt=5): 233 part(x,f12(x,x)).  [resolve(175,a,68,a)].
+
+given #66 (T,wt=5): 234 P(x,f7(x,x)).  [resolve(176,a,171,a)].
+
+given #67 (T,wt=5): 237 P(f6(x,x),x).  [resolve(179,a,162,a)].
+
+given #68 (A,wt=11): 183 -part(x,y) | part(f3(x,z),y) | part(x,z).  [resolve(70,a,67,b)].
+
+given #69 (F,wt=5): 245 -ppart(f10(x,x),x).  [ur(98,b,241,a)].
+
+given #70 (F,wt=5): 247 -ppart(x,f10(x,x)).  [ur(98,b,242,a)].
+
+given #71 (F,wt=5): 254 -ppart(x,f1(x,x)).  [ur(65,a,231,a,c,243,a)].
+
+given #72 (F,wt=5): 278 -PP(f7(x,x),x).  [ur(164,b,234,a)].
+
+given #73 (T,wt=5): 253 part(f11(x,x),x).  [resolve(231,a,105,a)].
+
+given #74 (T,wt=5): 261 P(x,f12(x,x)).  [resolve(233,a,92,a)].
+
+given #75 (T,wt=5): 271 part(x,f7(x,x)).  [resolve(234,a,156,b)].
+
+given #76 (T,wt=5): 285 part(f6(x,x),x).  [resolve(237,a,156,b)].
+
+given #77 (A,wt=11): 184 -part(x,f3(y,z)) | part(x,y) | part(y,z).  [resolve(70,b,67,b)].
+
+given #78 (F,wt=5): 292 -PP(x,f6(x,x)).  [ur(164,b,237,a)].
+
+given #79 (F,wt=5): 297 -PP(x,f1(x,x)).  [ur(100,a,254,a)].
+
+given #80 (F,wt=5): 301 -ppart(f7(x,x),x).  [ur(98,b,278,a)].
+
+given #81 (F,wt=5): 325 -PP(f12(x,x),x).  [ur(164,b,261,a)].
+
+given #82 (T,wt=5): 309 P(f11(x,x),x).  [resolve(253,a,92,a)].
+
+given #83 (T,wt=6): 186 overlaps(x,y) | -part(x,y).  [resolve(106,b,68,a)].
+
+given #84 (T,wt=5): 368 overlaps(f6(x,x),x).  [resolve(186,b,285,a)].
+
+given #85 (T,wt=5): 369 overlaps(x,f7(x,x)).  [resolve(186,b,271,a)].
+
+given #86 (A,wt=8): 185 P(f3(x,y),x) | part(x,y).  [resolve(92,a,67,b)].
+
+given #87 (F,wt=5): 349 -ppart(x,f6(x,x)).  [ur(98,b,292,a)].
+
+given #88 (F,wt=5): 354 -ppart(f12(x,x),x).  [ur(98,b,325,a)].
+
+given #89 (F,wt=5): 367 -PP(x,f11(x,x)).  [ur(164,b,309,a)].
+
+given #90 (F,wt=5): 426 -ppart(x,f11(x,x)).  [ur(98,b,367,a)].
+
+given #91 (T,wt=5): 370 overlaps(f11(x,x),x).  [resolve(186,b,253,a)].
+
+given #92 (T,wt=5): 371 overlaps(x,f12(x,x)).  [resolve(186,b,233,a)].
+
+given #93 (T,wt=5): 380 O(f6(x,x),x).  [resolve(368,a,101,a)].
+
+given #94 (T,wt=5): 394 O(x,f7(x,x)).  [resolve(369,a,101,a)].
+
+given #95 (A,wt=11): 187 overlaps(x,y) | -part(f3(x,z),y) | part(x,z).  [resolve(106,b,67,b)].
+
+given #96 (F,wt=7): 295 -ppart(f10(x,x),f1(x,x)).  [ur(65,a,231,a,c,245,a)].
+
+given #97 (F,wt=7): 300 -PP(f7(x,x),f10(x,x)).  [ur(159,a,179,a,c,278,a)].
+
+given #98 (F,wt=7): 351 -ppart(f7(x,x),f1(x,x)).  [ur(65,a,231,a,c,301,a)].
+
+given #99 (F,wt=7): 353 -PP(f12(x,x),f10(x,x)).  [ur(159,a,179,a,c,325,a)].
+
+given #100 (T,wt=5): 437 O(f11(x,x),x).  [resolve(370,a,101,a)].
+
+given #101 (T,wt=5): 455 O(x,f12(x,x)).  [resolve(371,a,101,a)].
+
+given #102 (T,wt=6): 188 overlaps(x,y) | -part(y,x).  [resolve(106,c,68,a)].
+
+given #103 (T,wt=5): 565 overlaps(x,f6(x,x)).  [resolve(188,b,285,a)].
+
+given #104 (A,wt=11): 189 overlaps(x,y) | -part(f3(y,z),x) | part(y,z).  [resolve(106,c,67,b)].
+
+given #105 (F,wt=7): 385 -ppart(x,f1(f6(x,x),x)).  [ur(65,a,368,a,c,243,a)].
+
+given #106 (F,wt=7): 401 -ppart(x,f1(x,f7(x,x))).  [ur(64,a,369,a,c,243,a)].
+
+given #107 (F,wt=7): 422 -ppart(f12(x,x),f1(x,x)).  [ur(65,a,231,a,c,354,a)].
+
+given #108 (F,wt=7): 445 -ppart(x,f1(f11(x,x),x)).  [ur(65,a,370,a,c,243,a)].
+
+given #109 (T,wt=5): 566 overlaps(f7(x,x),x).  [resolve(188,b,271,a)].
+
+given #110 (T,wt=5): 567 overlaps(x,f11(x,x)).  [resolve(188,b,253,a)].
+
+given #111 (T,wt=5): 568 overlaps(f12(x,x),x).  [resolve(188,b,233,a)].
+
+given #112 (T,wt=5): 575 O(x,f6(x,x)).  [resolve(565,a,101,a)].
+
+given #113 (A,wt=8): 190 -part(x,y) | part(y,f12(y,x)).  [resolve(110,a,68,a)].
+
+given #114 (F,wt=7): 466 -ppart(x,f1(x,f12(x,x))).  [ur(64,a,371,a,c,243,a)].
+
+given #115 (F,wt=7): 475 -PP(x,f10(f6(x,x),x)).  [ur(159,a,380,a,c,292,a)].
+
+given #116 (F,wt=7): 498 -PP(x,f10(x,f7(x,x))).  [ur(159,a,394,a,c,230,a)].
+
+given #117 (F,wt=7): 506 -PP(f10(x,x),f1(x,x)).  [ur(100,a,295,a)].
+
+given #118 (T,wt=5): 628 O(f7(x,x),x).  [resolve(566,a,101,a)].
+
+given #119 (T,wt=5): 651 O(x,f11(x,x)).  [resolve(567,a,101,a)].
+
+given #120 (T,wt=5): 677 O(f12(x,x),x).  [resolve(568,a,101,a)].
+
+given #121 (T,wt=6): 224 O(x,y) | -P(y,x).  [resolve(171,a,160,c)].
+
+given #122 (A,wt=15): 191 -part(x,y) | part(f3(y,z),f12(f3(y,z),x)) | part(y,z).  [resolve(110,a,67,b)].
+
+given #123 (F,wt=7): 515 -ppart(f7(x,x),f10(x,x)).  [ur(98,b,300,a)].
+
+given #124 (F,wt=7): 516 -PP(f7(x,x),f1(x,x)).  [ur(100,a,351,a)].
+
+given #125 (F,wt=7): 525 -ppart(f12(x,x),f10(x,x)).  [ur(98,b,353,a)].
+
+given #126 (F,wt=7): 533 -PP(x,f10(f11(x,x),x)).  [ur(159,a,437,a,c,367,a)].
+
+given #127 (T,wt=6): 225 O(x,y) | -P(x,y).  [resolve(171,a,160,b)].
+
+given #128 (T,wt=7): 378 part(f11(f6(x,x),x),x).  [resolve(368,a,105,a)].
+
+given #129 (T,wt=7): 393 part(f11(x,f7(x,x)),x).  [resolve(369,a,104,a)].
+
+given #130 (T,wt=7): 435 part(f11(f11(x,x),x),x).  [resolve(370,a,105,a)].
+
+given #131 (A,wt=8): 192 -part(x,y) | part(x,f12(x,y)).  [resolve(110,b,68,a)].
+
+given #132 (F,wt=7): 561 -PP(x,f10(x,f12(x,x))).  [ur(159,a,455,a,c,230,a)].
+
+given #133 (F,wt=7): 577 -ppart(x,f1(x,f6(x,x))).  [ur(65,a,565,a,c,349,a)].
+
+given #134 (F,wt=7): 593 -PP(x,f1(f6(x,x),x)).  [ur(100,a,385,a)].
+
+given #135 (F,wt=7): 600 -PP(x,f1(x,f7(x,x))).  [ur(100,a,401,a)].
+
+given #136 (T,wt=7): 454 part(f11(x,f12(x,x)),x).  [resolve(371,a,104,a)].
+
+given #137 (T,wt=7): 470 P(f6(f6(x,x),x),x).  [resolve(380,a,161,a)].
+
+given #138 (T,wt=7): 487 P(f6(x,f7(x,x)),x).  [resolve(394,a,162,a)].
+
+given #139 (T,wt=7): 529 P(f6(f11(x,x),x),x).  [resolve(437,a,161,a)].
+
+given #140 (A,wt=13): 193 -part(x,y) | part(x,f12(x,f3(y,z))) | part(y,z).  [resolve(110,b,67,b)].
+
+given #141 (F,wt=7): 607 -PP(f12(x,x),f1(x,x)).  [ur(100,a,422,a)].
+
+given #142 (F,wt=7): 614 -PP(x,f1(f11(x,x),x)).  [ur(100,a,445,a)].
+
+given #143 (F,wt=7): 642 -ppart(x,f1(f7(x,x),x)).  [ur(65,a,566,a,c,243,a)].
+
+given #144 (F,wt=7): 652 -ppart(x,f1(x,f11(x,x))).  [ur(65,a,567,a,c,426,a)].
+
+given #145 (T,wt=7): 548 P(f6(x,f12(x,x)),x).  [resolve(455,a,162,a)].
+
+given #146 (T,wt=7): 574 part(f11(x,f6(x,x)),x).  [resolve(565,a,104,a)].
+
+given #147 (T,wt=7): 626 part(f11(f7(x,x),x),x).  [resolve(566,a,105,a)].
+
+given #148 (T,wt=7): 650 part(f11(x,f11(x,x)),x).  [resolve(567,a,104,a)].
+
+given #149 (A,wt=8): 194 -part(x,y) | part(x,f12(y,x)).  [resolve(111,a,68,a)].
+
+given #150 (F,wt=7): 691 -ppart(x,f1(f12(x,x),x)).  [ur(65,a,568,a,c,243,a)].
+
+given #151 (F,wt=7): 709 -PP(x,f10(x,f6(x,x))).  [ur(159,a,575,a,c,230,a)].
+
+given #152 (F,wt=7): 720 -PP(x,f1(x,f12(x,x))).  [ur(100,a,466,a)].
+
+given #153 (F,wt=7): 736 -ppart(x,f10(f6(x,x),x)).  [ur(98,b,475,a)].
+
+given #154 (T,wt=7): 675 part(f11(f12(x,x),x),x).  [resolve(568,a,105,a)].
+
+given #155 (T,wt=7): 696 P(f6(x,f6(x,x)),x).  [resolve(575,a,162,a)].
+
+given #156 (T,wt=7): 714 part(x,f12(x,f6(x,x))).  [resolve(190,a,285,a)].
+
+given #157 (T,wt=7): 716 part(x,f12(x,f11(x,x))).  [resolve(190,a,253,a)].
+
+given #158 (A,wt=13): 195 -part(x,y) | part(x,f12(f3(y,z),x)) | part(y,z).  [resolve(111,a,67,b)].
+
+given #159 (F,wt=7): 743 -ppart(x,f10(x,f7(x,x))).  [ur(98,b,498,a)].
+
+given #160 (F,wt=7): 772 -PP(x,f10(f7(x,x),x)).  [ur(158,a,628,a,c,230,a)].
+
+given #161 (F,wt=7): 790 -PP(x,f10(x,f11(x,x))).  [ur(159,a,651,a,c,230,a)].
+
+given #162 (F,wt=7): 817 -PP(x,f10(f12(x,x),x)).  [ur(158,a,677,a,c,230,a)].
+
+given #163 (T,wt=7): 753 P(f6(f7(x,x),x),x).  [resolve(628,a,161,a)].
+
+given #164 (T,wt=7): 774 P(f6(x,f11(x,x)),x).  [resolve(651,a,162,a)].
+
+given #165 (T,wt=7): 798 P(f6(f12(x,x),x),x).  [resolve(677,a,161,a)].
+
+given #166 (T,wt=7): 868 overlaps(x,f11(f6(x,x),x)).  [resolve(378,a,188,b)].
+
+given #167 (A,wt=8): 196 -part(x,y) | part(y,f12(x,y)).  [resolve(111,b,68,a)].
+
+given #168 (F,wt=7): 863 -ppart(x,f10(f11(x,x),x)).  [ur(98,b,533,a)].
+
+given #169 (F,wt=7): 931 -ppart(x,f10(x,f12(x,x))).  [ur(98,b,561,a)].
+
+given #170 (F,wt=7): 932 -PP(x,f1(x,f6(x,x))).  [ur(100,a,577,a)].
+
+given #171 (F,wt=7): 992 -PP(x,f6(f6(x,x),x)).  [ur(164,b,470,a)].
+
+given #172 (T,wt=7): 869 overlaps(f11(f6(x,x),x),x).  [resolve(378,a,186,b)].
+
+given #173 (T,wt=7): 878 P(f11(f6(x,x),x),x).  [resolve(378,a,92,a)].
+
+given #174 (T,wt=7): 884 overlaps(x,f11(x,f7(x,x))).  [resolve(393,a,188,b)].
+
+given #175 (T,wt=7): 885 overlaps(f11(x,f7(x,x)),x).  [resolve(393,a,186,b)].
+
+given #176 (A,wt=15): 197 -part(x,y) | part(f3(y,z),f12(x,f3(y,z))) | part(y,z).  [resolve(111,b,67,b)].
+
+given #177 (F,wt=7): 1008 -PP(x,f6(x,f7(x,x))).  [ur(164,b,487,a)].
+
+given #178 (F,wt=7): 1024 -PP(x,f6(f11(x,x),x)).  [ur(164,b,529,a)].
+
+given #179 (F,wt=7): 1052 -PP(x,f1(f7(x,x),x)).  [ur(100,a,642,a)].
+
+given #180 (F,wt=7): 1062 -PP(x,f1(x,f11(x,x))).  [ur(100,a,652,a)].
+
+given #181 (T,wt=7): 894 P(f11(x,f7(x,x)),x).  [resolve(393,a,92,a)].
+
+given #182 (T,wt=7): 900 overlaps(x,f11(f11(x,x),x)).  [resolve(435,a,188,b)].
+
+given #183 (T,wt=7): 901 overlaps(f11(f11(x,x),x),x).  [resolve(435,a,186,b)].
+
+given #184 (T,wt=7): 910 P(f11(f11(x,x),x),x).  [resolve(435,a,92,a)].
+
+given #185 (A,wt=13): 198 P(x,y) | PP(f5(x,y),x) | P(x,f5(x,y)).  [resolve(166,b,163,b)].
+
+given #186 (F,wt=7): 1087 -PP(x,f6(x,f12(x,x))).  [ur(164,b,548,a)].
+
+given #187 (F,wt=7): 1155 -PP(x,f1(f12(x,x),x)).  [ur(100,a,691,a)].
+
+given #188 (F,wt=7): 1174 -ppart(x,f10(x,f6(x,x))).  [ur(98,b,709,a)].
+
+given #189 (F,wt=7): 1227 -PP(x,f6(x,f6(x,x))).  [ur(164,b,696,a)].
+
+given #190 (T,wt=7): 918 part(x,f12(x,f7(x,x))).  [resolve(192,a,271,a)].
+
+given #191 (T,wt=7): 920 part(x,f12(x,f12(x,x))).  [resolve(192,a,233,a)].
+
+given #192 (T,wt=7): 963 overlaps(x,f11(x,f12(x,x))).  [resolve(454,a,188,b)].
+
+given #193 (T,wt=7): 964 overlaps(f11(x,f12(x,x)),x).  [resolve(454,a,186,b)].
+
+given #194 (A,wt=11): 199 P(x,y) | O(z,x) | -P(f5(x,y),z).  [resolve(166,b,160,c)].
+
+given #195 (F,wt=7): 1303 -ppart(x,f10(f7(x,x),x)).  [ur(98,b,772,a)].
+
+given #196 (F,wt=7): 1313 -ppart(x,f10(x,f11(x,x))).  [ur(98,b,790,a)].
+
+given #197 (F,wt=7): 1323 -ppart(x,f10(f12(x,x),x)).  [ur(98,b,817,a)].
+
+given #198 (F,wt=7): 1339 -PP(x,f6(f7(x,x),x)).  [ur(164,b,753,a)].
+
+given #199 (T,wt=7): 973 P(f11(x,f12(x,x)),x).  [resolve(454,a,92,a)].
+
+given #200 (T,wt=7): 977 O(f6(f6(x,x),x),x).  [resolve(470,a,225,b)].
+
+given #201 (T,wt=7): 978 O(x,f6(f6(x,x),x)).  [resolve(470,a,224,b)].
+
+given #202 (T,wt=7): 985 part(f6(f6(x,x),x),x).  [resolve(470,a,156,b)].
+
+given #203 (A,wt=11): 200 P(x,y) | O(x,z) | -P(f5(x,y),z).  [resolve(166,b,160,b)].
+
+given #204 (F,wt=7): 1355 -PP(x,f6(x,f11(x,x))).  [ur(164,b,774,a)].
+
+given #205 (F,wt=7): 1371 -PP(x,f6(f12(x,x),x)).  [ur(164,b,798,a)].
+
+given #206 (F,wt=7): 1458 -ppart(x,f6(f6(x,x),x)).  [ur(98,b,992,a)].
+
+given #207 (F,wt=7): 1508 -PP(x,f11(f6(x,x),x)).  [ur(164,b,878,a)].
+
+given #208 (T,wt=7): 993 O(f6(x,f7(x,x)),x).  [resolve(487,a,225,b)].
+
+given #209 (T,wt=7): 994 O(x,f6(x,f7(x,x))).  [resolve(487,a,224,b)].
+
+given #210 (T,wt=7): 1001 part(f6(x,f7(x,x)),x).  [resolve(487,a,156,b)].
+
+given #211 (T,wt=7): 1009 O(f6(f11(x,x),x),x).  [resolve(529,a,225,b)].
+
+given #212 (A,wt=8): 201 P(x,y) | part(f5(x,y),x).  [resolve(166,b,156,b)].
+
+given #213 (F,wt=7): 1605 -ppart(x,f6(x,f7(x,x))).  [ur(98,b,1008,a)].
+
+given #214 (F,wt=7): 1615 -ppart(x,f6(f11(x,x),x)).  [ur(98,b,1024,a)].
+
+given #215 (F,wt=7): 1646 -PP(x,f11(x,f7(x,x))).  [ur(164,b,894,a)].
+
+given #216 (F,wt=7): 1731 -PP(x,f11(f11(x,x),x)).  [ur(164,b,910,a)].
+
+given #217 (T,wt=7): 1010 O(x,f6(f11(x,x),x)).  [resolve(529,a,224,b)].
+
+given #218 (T,wt=7): 1017 part(f6(f11(x,x),x),x).  [resolve(529,a,156,b)].
+
+given #219 (T,wt=7): 1072 O(f6(x,f12(x,x)),x).  [resolve(548,a,225,b)].
+
+given #220 (T,wt=7): 1073 O(x,f6(x,f12(x,x))).  [resolve(548,a,224,b)].
+
+given #221 (A,wt=12): 202 P(x,y) | f8(x) != x | f5(x,y) = x.  [resolve(166,b,137,b)].
+
+given #222 (F,wt=7): 1747 -ppart(x,f6(x,f12(x,x))).  [ur(98,b,1087,a)].
+
+given #223 (F,wt=7): 1781 -ppart(x,f6(x,f6(x,x))).  [ur(98,b,1227,a)].
+
+given #224 (F,wt=7): 1964 -ppart(x,f6(f7(x,x),x)).  [ur(98,b,1339,a)].
+
+given #225 (F,wt=7): 1977 -PP(x,f11(x,f12(x,x))).  [ur(164,b,973,a)].
+
+given #226 (T,wt=7): 1080 part(f6(x,f12(x,x)),x).  [resolve(548,a,156,b)].
+
+given #227 (T,wt=7): 1092 overlaps(x,f11(x,f6(x,x))).  [resolve(574,a,188,b)].
+
+given #228 (T,wt=7): 1093 overlaps(f11(x,f6(x,x)),x).  [resolve(574,a,186,b)].
+
+given #229 (T,wt=7): 1102 P(f11(x,f6(x,x)),x).  [resolve(574,a,92,a)].
+
+given #230 (A,wt=12): 203 P(x,y) | P(f8(x),x) | f5(x,y) = x.  [resolve(166,b,135,b)].
+
+given #231 (F,wt=7): 2102 -ppart(x,f6(x,f11(x,x))).  [ur(98,b,1355,a)].
+
+given #232 (F,wt=7): 2114 -ppart(x,f6(f12(x,x),x)).  [ur(98,b,1371,a)].
+
+given #233 (F,wt=7): 2143 -ppart(x,f11(f6(x,x),x)).  [ur(98,b,1508,a)].
+
+given #234 (F,wt=7): 2380 -ppart(x,f11(x,f7(x,x))).  [ur(98,b,1646,a)].
+
+given #235 (T,wt=7): 1110 overlaps(x,f11(f7(x,x),x)).  [resolve(626,a,188,b)].
+
+given #236 (T,wt=7): 1111 overlaps(f11(f7(x,x),x),x).  [resolve(626,a,186,b)].
+
+given #237 (T,wt=7): 1120 P(f11(f7(x,x),x),x).  [resolve(626,a,92,a)].
+
+given #238 (T,wt=7): 1128 overlaps(x,f11(x,f11(x,x))).  [resolve(650,a,188,b)].
+
+given #239 (A,wt=15): 204 P(x,y) | -P(z,x) | P(f5(x,y),f7(z,f5(x,y))).  [resolve(166,b,124,b)].
+
+given #240 (F,wt=7): 2395 -ppart(x,f11(f11(x,x),x)).  [ur(98,b,1731,a)].
+
+given #241 (F,wt=7): 2635 -ppart(x,f11(x,f12(x,x))).  [ur(98,b,1977,a)].
+
+given #242 (F,wt=7): 2759 -PP(x,f11(x,f6(x,x))).  [ur(164,b,1102,a)].
+
+given #243 (F,wt=7): 2982 -PP(x,f11(f7(x,x),x)).  [ur(164,b,1120,a)].
+
+given #244 (T,wt=7): 1129 overlaps(f11(x,f11(x,x)),x).  [resolve(650,a,186,b)].
+
+given #245 (T,wt=7): 1138 P(f11(x,f11(x,x)),x).  [resolve(650,a,92,a)].
+
+given #246 (T,wt=7): 1150 part(x,f12(f7(x,x),x)).  [resolve(194,a,271,a)].
+
+given #247 (T,wt=7): 1152 part(x,f12(f12(x,x),x)).  [resolve(194,a,233,a)].
+
+given #248 (A,wt=13): 205 P(x,y) | -P(z,x) | P(z,f7(f5(x,y),z)).  [resolve(166,b,124,a)].
+
+given #249 (F,wt=7): 3119 -ppart(x,f11(x,f6(x,x))).  [ur(98,b,2759,a)].
+
+given #250 (F,wt=7): 3137 -ppart(x,f11(f7(x,x),x)).  [ur(98,b,2982,a)].
+
+given #251 (F,wt=7): 3204 -PP(x,f11(x,f11(x,x))).  [ur(164,b,1138,a)].
+
+given #252 (F,wt=7): 3340 -ppart(x,f11(x,f11(x,x))).  [ur(98,b,3204,a)].
+
+given #253 (T,wt=7): 1198 overlaps(x,f11(f12(x,x),x)).  [resolve(675,a,188,b)].
+
+given #254 (T,wt=7): 1199 overlaps(f11(f12(x,x),x),x).  [resolve(675,a,186,b)].
+
+given #255 (T,wt=7): 1208 P(f11(f12(x,x),x),x).  [resolve(675,a,92,a)].
+
+given #256 (T,wt=7): 1212 O(f6(x,f6(x,x)),x).  [resolve(696,a,225,b)].
+
+given #257 (A,wt=13): 206 P(x,y) | -P(z,x) | P(z,f7(z,f5(x,y))).  [resolve(166,b,122,b)].
+
+given #258 (F,wt=7): 3488 -PP(x,f11(f12(x,x),x)).  [ur(164,b,1208,a)].
+
+given #259 (F,wt=7): 3591 -ppart(x,f11(f12(x,x),x)).  [ur(98,b,3488,a)].
+
+given #260 (F,wt=9): 244 -PP(f10(f10(x,x),f10(x,x)),x).  [ur(181,a,241,a)].
+
+given #261 (F,wt=9): 246 -PP(x,f10(f10(x,x),f10(x,x))).  [ur(159,a,179,a,c,242,a)].
+
+given #262 (T,wt=7): 1213 O(x,f6(x,f6(x,x))).  [resolve(696,a,224,b)].
+
+given #263 (T,wt=7): 1220 part(f6(x,f6(x,x)),x).  [resolve(696,a,156,b)].
+
+given #264 (T,wt=7): 1234 overlaps(f12(x,f6(x,x)),x).  [resolve(714,a,188,b)].
+
+given #265 (T,wt=7): 1236 overlaps(x,f12(x,f6(x,x))).  [resolve(714,a,186,b)].
+
+given #266 (A,wt=15): 207 P(x,y) | -P(z,x) | P(f5(x,y),f7(f5(x,y),z)).  [resolve(166,b,122,a)].
+
+given #267 (F,wt=9): 296 -ppart(x,f1(f10(x,x),f10(x,x))).  [ur(65,a,231,a,c,247,a)].
+
+given #268 (F,wt=9): 298 -ppart(x,f1(f1(x,x),f1(x,x))).  [ur(65,a,231,a,c,254,a)].
+
+given #269 (F,wt=9): 299 -PP(f7(f10(x,x),f10(x,x)),x).  [ur(181,a,278,a)].
+
+given #270 (F,wt=9): 348 -PP(x,f10(f6(x,x),f6(x,x))).  [ur(159,a,179,a,c,292,a)].
+
+given #271 (T,wt=7): 1244 P(x,f12(x,f6(x,x))).  [resolve(714,a,92,a)].
+
+given #272 (T,wt=7): 1254 overlaps(f12(x,f11(x,x)),x).  [resolve(716,a,188,b)].
+
+given #273 (T,wt=7): 1256 overlaps(x,f12(x,f11(x,x))).  [resolve(716,a,186,b)].
+
+given #274 (T,wt=7): 1264 P(x,f12(x,f11(x,x))).  [resolve(716,a,92,a)].
+
+given #275 (A,wt=13): 208 P(x,y) | PP(f4(x,y),x) | P(x,f4(x,y)).  [resolve(168,b,163,b)].
+
+given #276 (F,wt=7): 4020 -PP(f12(x,f6(x,x)),x).  [ur(164,b,1244,a)].
+
+given #277 (F,wt=7): 4155 -PP(f12(x,f11(x,x)),x).  [ur(164,b,1264,a)].
+
+given #278 (F,wt=7): 4200 -ppart(f12(x,f6(x,x)),x).  [ur(98,b,4020,a)].
+
+given #279 (F,wt=7): 4239 -ppart(f12(x,f11(x,x)),x).  [ur(98,b,4155,a)].
+
+given #280 (T,wt=7): 1324 O(f6(f7(x,x),x),x).  [resolve(753,a,225,b)].
+
+given #281 (T,wt=7): 1325 O(x,f6(f7(x,x),x)).  [resolve(753,a,224,b)].
+
+given #282 (T,wt=7): 1332 part(f6(f7(x,x),x),x).  [resolve(753,a,156,b)].
+
+given #283 (T,wt=7): 1340 O(f6(x,f11(x,x)),x).  [resolve(774,a,225,b)].
+
+given #284 (A,wt=11): 209 P(x,y) | O(z,x) | -P(f4(x,y),z).  [resolve(168,b,160,c)].
+
+given #285 (F,wt=9): 350 -PP(x,f10(f1(x,x),f1(x,x))).  [ur(159,a,179,a,c,297,a)].
+
+given #286 (F,wt=9): 352 -PP(f12(f10(x,x),f10(x,x)),x).  [ur(181,a,325,a)].
+
+given #287 (F,wt=9): 381 -ppart(f7(x,x),f1(f6(x,x),x)).  [ur(65,a,368,a,c,301,a)].
+
+given #288 (F,wt=9): 384 -ppart(f10(x,x),f1(f6(x,x),x)).  [ur(65,a,368,a,c,245,a)].
+
+given #289 (T,wt=7): 1341 O(x,f6(x,f11(x,x))).  [resolve(774,a,224,b)].
+
+given #290 (T,wt=7): 1348 part(f6(x,f11(x,x)),x).  [resolve(774,a,156,b)].
+
+given #291 (T,wt=7): 1356 O(f6(f12(x,x),x),x).  [resolve(798,a,225,b)].
+
+given #292 (T,wt=7): 1357 O(x,f6(f12(x,x),x)).  [resolve(798,a,224,b)].
+
+given #293 (A,wt=11): 210 P(x,y) | O(x,z) | -P(f4(x,y),z).  [resolve(168,b,160,b)].
+
+given #294 (F,wt=9): 388 -ppart(f6(x,x),f1(f6(x,x),x)).  [ur(64,a,368,a,c,243,a)].
+
+given #295 (F,wt=9): 397 -ppart(f7(x,x),f1(x,f7(x,x))).  [ur(65,a,369,a,c,243,a)].
+
+given #296 (F,wt=9): 400 -ppart(f10(x,x),f1(x,f7(x,x))).  [ur(64,a,369,a,c,245,a)].
+
+given #297 (F,wt=9): 418 -ppart(x,f1(f6(x,x),f6(x,x))).  [ur(65,a,231,a,c,349,a)].
+
+given #298 (T,wt=7): 1364 part(f6(f12(x,x),x),x).  [resolve(798,a,156,b)].
+
+given #299 (T,wt=7): 1377 O(x,f11(f6(x,x),x)).  [resolve(868,a,101,a)].
+
+given #300 (T,wt=7): 1415 part(x,f12(f6(x,x),x)).  [resolve(196,a,285,a)].
+
+given #301 (T,wt=7): 1417 part(x,f12(f11(x,x),x)).  [resolve(196,a,253,a)].
+
+given #302 (A,wt=8): 211 P(x,y) | part(f4(x,y),x).  [resolve(168,b,156,b)].
+
+given #303 (F,wt=9): 421 -ppart(f12(x,x),f1(f6(x,x),x)).  [ur(65,a,368,a,c,354,a)].
+
+given #304 (F,wt=9): 423 -ppart(f12(x,x),f1(x,f7(x,x))).  [ur(64,a,369,a,c,354,a)].
+
+given #305 (F,wt=9): 425 -PP(x,f10(f11(x,x),f11(x,x))).  [ur(159,a,179,a,c,367,a)].
+
+given #306 (F,wt=9): 428 -ppart(x,f1(f11(x,x),f11(x,x))).  [ur(65,a,231,a,c,426,a)].
+
+given #307 (T,wt=7): 1466 O(f11(f6(x,x),x),x).  [resolve(869,a,101,a)].
+
+given #308 (T,wt=7): 1514 O(x,f11(x,f7(x,x))).  [resolve(884,a,101,a)].
+
+given #309 (T,wt=7): 1551 O(f11(x,f7(x,x)),x).  [resolve(885,a,101,a)].
+
+given #310 (T,wt=7): 1652 O(x,f11(f11(x,x),x)).  [resolve(900,a,101,a)].
+
+given #311 (A,wt=12): 212 P(x,y) | f8(x) != x | f4(x,y) = x.  [resolve(168,b,137,b)].
+
+given #312 (F,wt=9): 439 -ppart(f12(x,x),f1(f11(x,x),x)).  [ur(65,a,370,a,c,354,a)].
+
+given #313 (F,wt=9): 441 -ppart(f7(x,x),f1(f11(x,x),x)).  [ur(65,a,370,a,c,301,a)].
+
+given #314 (F,wt=9): 444 -ppart(f10(x,x),f1(f11(x,x),x)).  [ur(65,a,370,a,c,245,a)].
+
+given #315 (F,wt=9): 449 -ppart(f11(x,x),f1(f11(x,x),x)).  [ur(64,a,370,a,c,243,a)].
+
+given #316 (T,wt=7): 1689 O(f11(f11(x,x),x),x).  [resolve(901,a,101,a)].
+
+given #317 (T,wt=7): 1791 overlaps(f12(x,f7(x,x)),x).  [resolve(918,a,188,b)].
+
+given #318 (T,wt=7): 1793 overlaps(x,f12(x,f7(x,x))).  [resolve(918,a,186,b)].
+
+given #319 (T,wt=7): 1801 P(x,f12(x,f7(x,x))).  [resolve(918,a,92,a)].
+
+given #320 (A,wt=12): 213 P(x,y) | P(f8(x),x) | f4(x,y) = x.  [resolve(168,b,135,b)].
+
+given #321 (F,wt=7): 5956 -PP(f12(x,f7(x,x)),x).  [ur(164,b,1801,a)].
+
+given #322 (F,wt=7): 6071 -ppart(f12(x,f7(x,x)),x).  [ur(98,b,5956,a)].
+
+given #323 (F,wt=9): 459 -ppart(f12(x,x),f1(x,f12(x,x))).  [ur(65,a,371,a,c,243,a)].
+
+given #324 (F,wt=9): 462 -ppart(f7(x,x),f1(x,f12(x,x))).  [ur(64,a,371,a,c,301,a)].
+
+given #325 (T,wt=7): 1814 overlaps(f12(x,f12(x,x)),x).  [resolve(920,a,188,b)].
+
+given #326 (T,wt=7): 1816 overlaps(x,f12(x,f12(x,x))).  [resolve(920,a,186,b)].
+
+given #327 (T,wt=7): 1824 P(x,f12(x,f12(x,x))).  [resolve(920,a,92,a)].
+
+given #328 (T,wt=7): 1833 O(x,f11(x,f12(x,x))).  [resolve(963,a,101,a)].
+
+given #329 (A,wt=15): 214 P(x,y) | -P(z,x) | P(f4(x,y),f7(z,f4(x,y))).  [resolve(168,b,124,b)].
+
+given #330 (F,wt=7): 6373 -PP(f12(x,f12(x,x)),x).  [ur(164,b,1824,a)].
+
+given #331 (F,wt=7): 6542 -ppart(f12(x,f12(x,x)),x).  [ur(98,b,6373,a)].
+
+given #332 (F,wt=9): 465 -ppart(f10(x,x),f1(x,f12(x,x))).  [ur(64,a,371,a,c,245,a)].
+
+given #333 (F,wt=9): 478 -PP(f6(x,x),f10(f6(x,x),x)).  [ur(159,a,380,a,c,230,a)].
+
+given #334 (T,wt=7): 1871 O(f11(x,f12(x,x)),x).  [resolve(964,a,101,a)].
+
+given #335 (T,wt=7): 1985 overlaps(f6(f6(x,x),x),x).  [resolve(977,a,103,b)].
+
+given #336 (T,wt=7): 2030 overlaps(x,f6(f6(x,x),x)).  [resolve(978,a,103,b)].
+
+given #337 (T,wt=7): 2151 overlaps(f6(x,f7(x,x)),x).  [resolve(993,a,103,b)].
+
+given #338 (A,wt=13): 215 P(x,y) | -P(z,x) | P(z,f7(f4(x,y),z)).  [resolve(168,b,124,a)].
+
+given #339 (F,wt=9): 480 -PP(f12(x,x),f10(f6(x,x),x)).  [ur(158,a,380,a,c,325,a)].
+
+given #340 (F,wt=9): 483 -PP(f7(x,x),f10(f6(x,x),x)).  [ur(158,a,380,a,c,278,a)].
+
+given #341 (F,wt=9): 485 -PP(f10(x,x),f10(f6(x,x),x)).  [ur(158,a,380,a,c,241,a)].
+
+given #342 (F,wt=9): 492 -PP(f12(x,x),f10(x,f7(x,x))).  [ur(159,a,394,a,c,325,a)].
+
+given #343 (T,wt=7): 2199 overlaps(x,f6(x,f7(x,x))).  [resolve(994,a,103,b)].
+
+given #344 (T,wt=7): 2268 overlaps(f6(f11(x,x),x),x).  [resolve(1009,a,103,b)].
+
+given #345 (T,wt=7): 2401 overlaps(x,f6(f11(x,x),x)).  [resolve(1010,a,103,b)].
+
+given #346 (T,wt=7): 2472 overlaps(f6(x,f12(x,x)),x).  [resolve(1072,a,103,b)].
+
+given #347 (A,wt=13): 216 P(x,y) | -P(z,x) | P(z,f7(z,f4(x,y))).  [resolve(168,b,122,b)].
+
+given #348 (F,wt=9): 495 -PP(f7(x,x),f10(x,f7(x,x))).  [ur(159,a,394,a,c,278,a)].
+
+given #349 (F,wt=9): 497 -PP(f10(x,x),f10(x,f7(x,x))).  [ur(159,a,394,a,c,241,a)].
+
+given #350 (F,wt=9): 537 -PP(f11(x,x),f10(f11(x,x),x)).  [ur(159,a,437,a,c,230,a)].
+
+given #351 (F,wt=9): 540 -PP(f12(x,x),f10(f11(x,x),x)).  [ur(158,a,437,a,c,325,a)].
+
+given #352 (T,wt=7): 2522 overlaps(x,f6(x,f12(x,x))).  [resolve(1073,a,103,b)].
+
+given #353 (T,wt=7): 2660 O(x,f11(x,f6(x,x))).  [resolve(1092,a,101,a)].
+
+given #354 (T,wt=7): 2707 O(f11(x,f6(x,x)),x).  [resolve(1093,a,101,a)].
+
+given #355 (T,wt=7): 2875 O(x,f11(f7(x,x),x)).  [resolve(1110,a,101,a)].
+
+given #356 (A,wt=15): 217 P(x,y) | -P(z,x) | P(f4(x,y),f7(f4(x,y),z)).  [resolve(168,b,122,a)].
+
+given #357 (F,wt=9): 544 -PP(f7(x,x),f10(f11(x,x),x)).  [ur(158,a,437,a,c,278,a)].
+
+given #358 (F,wt=9): 546 -PP(f10(x,x),f10(f11(x,x),x)).  [ur(158,a,437,a,c,241,a)].
+
+given #359 (F,wt=9): 554 -PP(f12(x,x),f10(x,f12(x,x))).  [ur(159,a,455,a,c,325,a)].
+
+given #360 (F,wt=9): 558 -PP(f7(x,x),f10(x,f12(x,x))).  [ur(159,a,455,a,c,278,a)].
+
+given #361 (T,wt=7): 2926 O(f11(f7(x,x),x),x).  [resolve(1111,a,101,a)].
+
+given #362 (T,wt=7): 2988 O(x,f11(x,f11(x,x))).  [resolve(1128,a,101,a)].
+
+Low Water (keep): wt=33.000, iters=6732
+
+given #363 (T,wt=7): 3145 O(f11(x,f11(x,x)),x).  [resolve(1129,a,101,a)].
+
+given #364 (T,wt=7): 3214 overlaps(f12(f7(x,x),x),x).  [resolve(1150,a,188,b)].
+
+given #365 (A,wt=11): 218 -P(x,y) | P(f4(x,z),y) | P(x,z).  [resolve(169,a,168,b)].
+
+given #366 (F,wt=9): 560 -PP(f10(x,x),f10(x,f12(x,x))).  [ur(159,a,455,a,c,241,a)].
+
+given #367 (F,wt=9): 580 -ppart(f6(x,x),f1(x,f6(x,x))).  [ur(65,a,565,a,c,243,a)].
+
+given #368 (F,wt=9): 582 -ppart(f12(x,x),f1(x,f6(x,x))).  [ur(64,a,565,a,c,354,a)].
+
+Low Water (keep): wt=27.000, iters=6701
+
+given #369 (F,wt=9): 585 -ppart(f7(x,x),f1(x,f6(x,x))).  [ur(64,a,565,a,c,301,a)].
+
+given #370 (T,wt=7): 3216 overlaps(x,f12(f7(x,x),x)).  [resolve(1150,a,186,b)].
+
+given #371 (T,wt=7): 3224 P(x,f12(f7(x,x),x)).  [resolve(1150,a,92,a)].
+
+given #372 (T,wt=7): 3237 overlaps(f12(f12(x,x),x),x).  [resolve(1152,a,188,b)].
+
+given #373 (T,wt=7): 3239 overlaps(x,f12(f12(x,x),x)).  [resolve(1152,a,186,b)].
+
+given #374 (A,wt=11): 219 -P(x,y) | P(f5(x,z),y) | P(x,z).  [resolve(169,a,166,b)].
+
+given #375 (F,wt=7): 8712 -PP(f12(f7(x,x),x),x).  [ur(164,b,3224,a)].
+
+given #376 (F,wt=7): 8950 -ppart(f12(f7(x,x),x),x).  [ur(98,b,8712,a)].
+
+given #377 (F,wt=9): 589 -ppart(f10(x,x),f1(x,f6(x,x))).  [ur(64,a,565,a,c,245,a)].
+
+given #378 (F,wt=9): 634 -ppart(f12(x,x),f1(f7(x,x),x)).  [ur(65,a,566,a,c,354,a)].
+
+given #379 (T,wt=7): 3247 P(x,f12(f12(x,x),x)).  [resolve(1152,a,92,a)].
+
+given #380 (T,wt=7): 3369 O(x,f11(f12(x,x),x)).  [resolve(1198,a,101,a)].
+
+given #381 (T,wt=7): 3425 O(f11(f12(x,x),x),x).  [resolve(1199,a,101,a)].
+
+given #382 (T,wt=7): 3496 overlaps(f6(x,f6(x,x)),x).  [resolve(1212,a,103,b)].
+
+given #383 (A,wt=11): 220 -P(x,f4(y,z)) | P(x,y) | P(y,z).  [resolve(169,b,168,b)].
+
+given #384 (F,wt=7): 9084 -PP(f12(f12(x,x),x),x).  [ur(164,b,3247,a)].
+
+given #385 (F,wt=7): 9393 -ppart(f12(f12(x,x),x),x).  [ur(98,b,9084,a)].
+
+given #386 (F,wt=9): 637 -ppart(f7(x,x),f1(f7(x,x),x)).  [ur(65,a,566,a,c,301,a)].
+
+given #387 (F,wt=9): 641 -ppart(f10(x,x),f1(f7(x,x),x)).  [ur(65,a,566,a,c,245,a)].
+
+given #388 (T,wt=7): 3677 overlaps(x,f6(x,f6(x,x))).  [resolve(1213,a,103,b)].
+
+given #389 (T,wt=7): 3756 O(f12(x,f6(x,x)),x).  [resolve(1234,a,101,a)].
+
+given #390 (T,wt=7): 3811 O(x,f12(x,f6(x,x))).  [resolve(1236,a,101,a)].
+
+given #391 (T,wt=7): 4028 O(f12(x,f11(x,x)),x).  [resolve(1254,a,101,a)].
+
+Low Water (keep): wt=25.000, iters=6720
+
+given #392 (A,wt=11): 221 -P(x,f5(y,z)) | P(x,y) | P(y,z).  [resolve(169,b,166,b)].
+
+given #393 (F,wt=9): 656 -ppart(f11(x,x),f1(x,f11(x,x))).  [ur(65,a,567,a,c,243,a)].
+
+given #394 (F,wt=9): 662 -ppart(f12(x,x),f1(x,f11(x,x))).  [ur(64,a,567,a,c,354,a)].
+
+given #395 (F,wt=9): 665 -ppart(f7(x,x),f1(x,f11(x,x))).  [ur(64,a,567,a,c,301,a)].
+
+given #396 (F,wt=9): 669 -ppart(f10(x,x),f1(x,f11(x,x))).  [ur(64,a,567,a,c,245,a)].
+
+given #397 (T,wt=7): 4085 O(x,f12(x,f11(x,x))).  [resolve(1256,a,101,a)].
+
+given #398 (T,wt=7): 4357 overlaps(f6(f7(x,x),x),x).  [resolve(1324,a,103,b)].
+
+given #399 (T,wt=7): 4422 overlaps(x,f6(f7(x,x),x)).  [resolve(1325,a,103,b)].
+
+given #400 (T,wt=7): 4508 overlaps(f6(x,f11(x,x)),x).  [resolve(1340,a,103,b)].
+
+given #401 (A,wt=13): 222 -P(x,f4(x,y)) | f4(x,y) = x | P(x,y).  [resolve(170,a,168,b),flip(b)].
+
+given #402 (F,wt=9): 683 -ppart(f12(x,x),f1(f12(x,x),x)).  [ur(65,a,568,a,c,354,a)].
+
+given #403 (F,wt=9): 686 -ppart(f7(x,x),f1(f12(x,x),x)).  [ur(65,a,568,a,c,301,a)].
+
+given #404 (F,wt=9): 690 -ppart(f10(x,x),f1(f12(x,x),x)).  [ur(65,a,568,a,c,245,a)].
+
+given #405 (F,wt=9): 702 -PP(f12(x,x),f10(x,f6(x,x))).  [ur(159,a,575,a,c,325,a)].
+
+given #406 (T,wt=7): 4705 overlaps(x,f6(x,f11(x,x))).  [resolve(1341,a,103,b)].
+
+given #407 (T,wt=7): 4794 overlaps(f6(f12(x,x),x),x).  [resolve(1356,a,103,b)].
+
+given #408 (T,wt=7): 4862 overlaps(x,f6(f12(x,x),x)).  [resolve(1357,a,103,b)].
+
+given #409 (T,wt=7): 5145 overlaps(f12(f6(x,x),x),x).  [resolve(1415,a,188,b)].
+
+given #410 (A,wt=13): 223 -P(x,f5(x,y)) | f5(x,y) = x | P(x,y).  [resolve(170,a,166,b),flip(b)].
+
+given #411 (F,wt=9): 706 -PP(f7(x,x),f10(x,f6(x,x))).  [ur(159,a,575,a,c,278,a)].
+
+given #412 (F,wt=9): 708 -PP(f10(x,x),f10(x,f6(x,x))).  [ur(159,a,575,a,c,241,a)].
+
+given #413 (F,wt=9): 713 -PP(f6(x,x),f10(x,f6(x,x))).  [ur(158,a,575,a,c,230,a)].
+
+given #414 (F,wt=9): 760 -PP(f7(x,x),f10(f7(x,x),x)).  [ur(159,a,628,a,c,230,a)].
+
+given #415 (T,wt=7): 5147 overlaps(x,f12(f6(x,x),x)).  [resolve(1415,a,186,b)].
+
+given #416 (T,wt=7): 5155 P(x,f12(f6(x,x),x)).  [resolve(1415,a,92,a)].
+
+given #417 (T,wt=7): 5168 overlaps(f12(f11(x,x),x),x).  [resolve(1417,a,188,b)].
+
+given #418 (T,wt=7): 5170 overlaps(x,f12(f11(x,x),x)).  [resolve(1417,a,186,b)].
+
+given #419 (A,wt=8): 226 -P(x,y) | P(y,f7(x,y)).  [resolve(171,a,124,b)].
+
+given #420 (F,wt=7): 10173 -PP(f12(f6(x,x),x),x).  [ur(164,b,5155,a)].
+
+given #421 (F,wt=7): 10319 -ppart(f12(f6(x,x),x),x).  [ur(98,b,10173,a)].
+
+given #422 (F,wt=9): 766 -PP(f12(x,x),f10(f7(x,x),x)).  [ur(158,a,628,a,c,325,a)].
+
+given #423 (F,wt=9): 771 -PP(f10(x,x),f10(f7(x,x),x)).  [ur(158,a,628,a,c,241,a)].
+
+given #424 (T,wt=7): 5178 P(x,f12(f11(x,x),x)).  [resolve(1417,a,92,a)].
+
+given #425 (T,wt=7): 5793 O(f12(x,f7(x,x)),x).  [resolve(1791,a,101,a)].
+
+given #426 (T,wt=7): 5867 O(x,f12(x,f7(x,x))).  [resolve(1793,a,101,a)].
+
+given #427 (T,wt=7): 6202 O(f12(x,f12(x,x)),x).  [resolve(1814,a,101,a)].
+
+given #428 (A,wt=8): 227 -P(x,y) | P(x,f7(y,x)).  [resolve(171,a,124,a)].
+
+given #429 (F,wt=7): 10430 -PP(f12(f11(x,x),x),x).  [ur(164,b,5178,a)].
+
+given #430 (F,wt=7): 10617 -ppart(f12(f11(x,x),x),x).  [ur(98,b,10430,a)].
+
+given #431 (F,wt=9): 783 -PP(f12(x,x),f10(x,f11(x,x))).  [ur(159,a,651,a,c,325,a)].
+
+given #432 (F,wt=9): 787 -PP(f7(x,x),f10(x,f11(x,x))).  [ur(159,a,651,a,c,278,a)].
+
+given #433 (T,wt=7): 6280 O(x,f12(x,f12(x,x))).  [resolve(1816,a,101,a)].
+
+given #434 (T,wt=7): 8419 O(f12(f7(x,x),x),x).  [resolve(3214,a,101,a)].
+
+given #435 (T,wt=7): 8629 O(x,f12(f7(x,x),x)).  [resolve(3216,a,101,a)].
+
+given #436 (T,wt=7): 8720 O(f12(f12(x,x),x),x).  [resolve(3237,a,101,a)].
+
+given #437 (A,wt=8): 228 -P(x,y) | P(x,f7(x,y)).  [resolve(171,a,122,b)].
+
+given #438 (F,wt=9): 789 -PP(f10(x,x),f10(x,f11(x,x))).  [ur(159,a,651,a,c,241,a)].
+
+given #439 (F,wt=9): 794 -PP(f11(x,x),f10(x,f11(x,x))).  [ur(158,a,651,a,c,230,a)].
+
+given #440 (F,wt=9): 805 -PP(f12(x,x),f10(f12(x,x),x)).  [ur(159,a,677,a,c,230,a)].
+
+given #441 (F,wt=9): 814 -PP(f7(x,x),f10(f12(x,x),x)).  [ur(158,a,677,a,c,278,a)].
+
+given #442 (T,wt=7): 8783 O(x,f12(f12(x,x),x)).  [resolve(3239,a,101,a)].
+
+given #443 (T,wt=7): 10054 O(f12(f6(x,x),x),x).  [resolve(5145,a,101,a)].
+
+given #444 (T,wt=7): 10123 O(x,f12(f6(x,x),x)).  [resolve(5147,a,101,a)].
+
+given #445 (T,wt=7): 10181 O(f12(f11(x,x),x),x).  [resolve(5168,a,101,a)].
+
+given #446 (A,wt=8): 229 -P(x,y) | P(y,f7(y,x)).  [resolve(171,a,122,a)].
+
+given #447 (F,wt=9): 816 -PP(f10(x,x),f10(f12(x,x),x)).  [ur(158,a,677,a,c,241,a)].
+
+given #448 (F,wt=9): 1404 -ppart(x,f1(x,f11(f6(x,x),x))).  [ur(64,a,868,a,c,243,a)].
+
+given #449 (F,wt=9): 1491 -ppart(x,f1(f11(f6(x,x),x),x)).  [ur(65,a,869,a,c,243,a)].
+
+given #450 (F,wt=9): 1543 -ppart(x,f1(x,f11(x,f7(x,x)))).  [ur(64,a,884,a,c,243,a)].
+
+given #451 (T,wt=7): 10210 O(x,f12(f11(x,x),x)).  [resolve(5170,a,101,a)].
+
+given #452 (T,wt=7): 10257 P(x,f7(f11(x,x),x)).  [resolve(226,a,309,a)].
+
+given #453 (T,wt=7): 10259 P(x,f7(f6(x,x),x)).  [resolve(226,a,237,a)].
+
+given #454 (T,wt=7): 10553 P(x,f7(f12(x,x),x)).  [resolve(227,a,261,a)].
+
+given #455 (A,wt=8): 232 ppart(x,f1(y,y)) | -ppart(x,y).  [back_unit_del(138),unit_del(a,231)].
+
+given #456 (F,wt=5): 11230 -ppart(f1(x,x),x).  [ur(232,a,243,a)].
+
+given #457 (F,wt=5): 11232 -PP(f1(x,x),x).  [ur(100,a,11230,a)].
+
+given #458 (F,wt=7): 11150 -PP(f7(f11(x,x),x),x).  [ur(164,b,10257,a)].
+
+given #459 (F,wt=7): 11184 -PP(f7(f6(x,x),x),x).  [ur(164,b,10259,a)].
+
+given #460 (T,wt=7): 10555 P(x,f7(f7(x,x),x)).  [resolve(227,a,234,a)].
+
+given #461 (T,wt=7): 10858 P(x,f7(x,f12(x,x))).  [resolve(228,a,261,a)].
+
+given #462 (T,wt=7): 10860 P(x,f7(x,f7(x,x))).  [resolve(228,a,234,a)].
+
+given #463 (T,wt=7): 11061 P(x,f7(x,f11(x,x))).  [resolve(229,a,309,a)].
+
+given #464 (A,wt=8): 235 O(x,f9(x,x)) | -P(x,y).  [resolve(179,a,178,b)].
+
+given #465 (F,wt=7): 11218 -PP(f7(f12(x,x),x),x).  [ur(164,b,10553,a)].
+
+given #466 (F,wt=7): 11402 -PP(f1(x,x),f10(x,x)).  [ur(159,a,179,a,c,11232,a)].
+
+given #467 (F,wt=7): 11525 -ppart(f7(f11(x,x),x),x).  [ur(98,b,11150,a)].
+
+given #468 (F,wt=7): 11592 -ppart(f7(f6(x,x),x),x).  [ur(98,b,11184,a)].
+
+given #469 (T,wt=5): 11729 O(x,f9(x,x)).  [resolve(235,b,11061,a)].
+
+given #470 (T,wt=5): 11992 overlaps(x,f9(x,x)).  [resolve(11729,a,103,b)].
+
+given #471 (T,wt=7): 11063 P(x,f7(x,f6(x,x))).  [resolve(229,a,237,a)].
+
+given #472 (T,wt=7): 11121 O(x,f7(f11(x,x),x)).  [resolve(10257,a,225,b)].
+
+given #473 (A,wt=8): 236 O(f9(x,x),x) | -P(x,y).  [resolve(179,a,177,a)].
+
+given #474 (F,wt=7): 11626 -PP(f7(f7(x,x),x),x).  [ur(164,b,10555,a)].
+
+given #475 (F,wt=7): 11660 -PP(f7(x,f12(x,x)),x).  [ur(164,b,10858,a)].
+
+given #476 (F,wt=7): 11694 -PP(f7(x,f7(x,x)),x).  [ur(164,b,10860,a)].
+
+given #477 (F,wt=7): 11728 -PP(f7(x,f11(x,x)),x).  [ur(164,b,11061,a)].
+
+given #478 (T,wt=5): 12278 O(f9(x,x),x).  [resolve(236,b,11063,a)].
+
+given #479 (T,wt=5): 12565 overlaps(f9(x,x),x).  [resolve(12278,a,103,b)].
+
+given #480 (T,wt=7): 11122 O(f7(f11(x,x),x),x).  [resolve(10257,a,224,b)].
+
+given #481 (T,wt=7): 11143 part(x,f7(f11(x,x),x)).  [resolve(10257,a,156,b)].
+
+given #482 (A,wt=11): 238 O(x,f9(y,x)) | -P(y,z) | -P(x,z).  [resolve(179,a,132,b)].
+
+given #483 (F,wt=7): 11796 -ppart(f7(f12(x,x),x),x).  [ur(98,b,11218,a)].
+
+given #484 (F,wt=7): 11854 -ppart(f1(x,x),f10(x,x)).  [ur(98,b,11402,a)].
+
+given #485 (F,wt=7): 12081 -PP(x,f10(x,f9(x,x))).  [ur(159,a,11729,a,c,230,a)].
+
+given #486 (F,wt=7): 12204 -ppart(x,f1(x,f9(x,x))).  [ur(64,a,11992,a,c,243,a)].
+
+given #487 (T,wt=7): 11155 O(x,f7(f6(x,x),x)).  [resolve(10259,a,225,b)].
+
+given #488 (T,wt=7): 11156 O(f7(f6(x,x),x),x).  [resolve(10259,a,224,b)].
+
+given #489 (T,wt=7): 11177 part(x,f7(f6(x,x),x)).  [resolve(10259,a,156,b)].
+
+given #490 (T,wt=7): 11189 O(x,f7(f12(x,x),x)).  [resolve(10553,a,225,b)].
+
+given #491 (A,wt=11): 239 O(x,f9(x,y)) | -P(x,z) | -P(y,z).  [resolve(179,a,130,b)].
+
+given #492 (F,wt=7): 12238 -PP(f7(x,f6(x,x)),x).  [ur(164,b,11063,a)].
+
+given #493 (F,wt=7): 12348 -ppart(f7(f7(x,x),x),x).  [ur(98,b,11626,a)].
+
+given #494 (F,wt=7): 12418 -ppart(f7(x,f12(x,x)),x).  [ur(98,b,11660,a)].
+
+given #495 (F,wt=7): 12488 -ppart(f7(x,f7(x,x)),x).  [ur(98,b,11694,a)].
+
+given #496 (T,wt=7): 11190 O(f7(f12(x,x),x),x).  [resolve(10553,a,224,b)].
+
+given #497 (T,wt=7): 11211 part(x,f7(f12(x,x),x)).  [resolve(10553,a,156,b)].
+
+given #498 (T,wt=7): 11597 O(x,f7(f7(x,x),x)).  [resolve(10555,a,225,b)].
+
+given #499 (T,wt=7): 11598 O(f7(f7(x,x),x),x).  [resolve(10555,a,224,b)].
+
+NOTE: Back_subsumption disabled, ratio of kept to back_subsumed is 456 (0.00 of 0.69 sec).
+
+given #500 (A,wt=16): 240 O(f9(x,y),x) | O(f9(x,y),y) | -P(x,z) | -P(y,z).  [resolve(179,a,128,a)].
+
+given #501 (F,wt=7): 12558 -ppart(f7(x,f11(x,x)),x).  [ur(98,b,11728,a)].
+
+given #502 (F,wt=7): 12681 -PP(x,f10(f9(x,x),x)).  [ur(158,a,12278,a,c,230,a)].
+
+given #503 (F,wt=7): 12772 -ppart(x,f1(f9(x,x),x)).  [ur(65,a,12565,a,c,243,a)].
+
+given #504 (F,wt=7): 13079 -ppart(x,f10(x,f9(x,x))).  [ur(98,b,12081,a)].
+
+given #505 (T,wt=7): 11619 part(x,f7(f7(x,x),x)).  [resolve(10555,a,156,b)].
+
+given #506 (T,wt=7): 11631 O(x,f7(x,f12(x,x))).  [resolve(10858,a,225,b)].
+
+given #507 (T,wt=7): 11632 O(f7(x,f12(x,x)),x).  [resolve(10858,a,224,b)].
+
+given #508 (T,wt=7): 11653 part(x,f7(x,f12(x,x))).  [resolve(10858,a,156,b)].
+
+given #509 (A,wt=8): 248 -part(x,y) | overlaps(x,f2(x,x)).  [resolve(231,a,174,c)].
+
+given #510 (F,wt=7): 13080 -PP(x,f1(x,f9(x,x))).  [ur(100,a,12204,a)].
+
+given #511 (F,wt=7): 13404 -ppart(f7(x,f6(x,x)),x).  [ur(98,b,12238,a)].
+
+given #512 (F,wt=7): 13938 -ppart(x,f10(f9(x,x),x)).  [ur(98,b,12681,a)].
+
+given #513 (F,wt=7): 13939 -PP(x,f1(f9(x,x),x)).  [ur(100,a,12772,a)].
+
+Low Water (keep): wt=19.000, iters=6675
+
+given #514 (T,wt=5): 14092 overlaps(x,f2(x,x)).  [resolve(248,a,11653,a)].
+
+given #515 (T,wt=5): 14191 O(x,f2(x,x)).  [resolve(14092,a,101,a)].
+
+given #516 (T,wt=7): 11665 O(x,f7(x,f7(x,x))).  [resolve(10860,a,225,b)].
+
+given #517 (T,wt=7): 11666 O(f7(x,f7(x,x)),x).  [resolve(10860,a,224,b)].
+
+given #518 (A,wt=8): 249 -part(x,y) | overlaps(f2(x,x),x).  [resolve(231,a,173,b)].
+
+given #519 (F,wt=7): 14243 -ppart(x,f1(x,f2(x,x))).  [ur(64,a,14092,a,c,243,a)].
+
+given #520 (F,wt=7): 14282 -PP(x,f10(x,f2(x,x))).  [ur(159,a,14191,a,c,230,a)].
+
+given #521 (F,wt=7): 14375 -PP(x,f1(x,f2(x,x))).  [ur(100,a,14243,a)].
+
+given #522 (F,wt=7): 14378 -ppart(x,f10(x,f2(x,x))).  [ur(98,b,14282,a)].
+
+given #523 (T,wt=5): 14374 overlaps(f2(x,x),x).  [resolve(249,a,11653,a)].
+
+given #524 (T,wt=5): 14387 O(f2(x,x),x).  [resolve(14374,a,101,a)].
+
+given #525 (T,wt=7): 11687 part(x,f7(x,f7(x,x))).  [resolve(10860,a,156,b)].
+
+given #526 (T,wt=7): 11699 O(x,f7(x,f11(x,x))).  [resolve(11061,a,225,b)].
+
+given #527 (A,wt=11): 250 -part(x,y) | -part(z,y) | overlaps(z,f2(x,z)).  [resolve(231,a,109,d)].
+
+given #528 (F,wt=7): 14418 -ppart(x,f1(f2(x,x),x)).  [ur(65,a,14374,a,c,243,a)].
+
+given #529 (F,wt=7): 14501 -PP(x,f10(f2(x,x),x)).  [ur(158,a,14387,a,c,230,a)].
+
+given #530 (F,wt=7): 14634 -PP(x,f1(f2(x,x),x)).  [ur(100,a,14418,a)].
+
+given #531 (F,wt=7): 14637 -ppart(x,f10(f2(x,x),x)).  [ur(98,b,14501,a)].
+
+given #532 (T,wt=7): 11700 O(f7(x,f11(x,x)),x).  [resolve(11061,a,224,b)].
+
+given #533 (T,wt=7): 11721 part(x,f7(x,f11(x,x))).  [resolve(11061,a,156,b)].
+
+given #534 (T,wt=7): 11988 P(f6(x,f9(x,x)),x).  [resolve(11729,a,162,a)].
+
+given #535 (T,wt=7): 12105 part(f11(x,f9(x,x)),x).  [resolve(11992,a,104,a)].
+
+given #536 (A,wt=11): 251 -part(x,y) | -part(z,y) | overlaps(x,f2(x,z)).  [resolve(231,a,108,d)].
+
+given #537 (F,wt=7): 14735 -PP(x,f6(x,f9(x,x))).  [ur(164,b,11988,a)].
+
+given #538 (F,wt=7): 14843 -ppart(x,f6(x,f9(x,x))).  [ur(98,b,14735,a)].
+
+given #539 (F,wt=9): 1576 -ppart(x,f1(f11(x,f7(x,x)),x)).  [ur(65,a,885,a,c,243,a)].
+
+given #540 (F,wt=9): 1681 -ppart(x,f1(x,f11(f11(x,x),x))).  [ur(64,a,900,a,c,243,a)].
+
+given #541 (T,wt=7): 12209 O(x,f7(x,f6(x,x))).  [resolve(11063,a,225,b)].
+
+given #542 (T,wt=7): 12210 O(f7(x,f6(x,x)),x).  [resolve(11063,a,224,b)].
+
+given #543 (T,wt=7): 12231 part(x,f7(x,f6(x,x))).  [resolve(11063,a,156,b)].
+
+given #544 (T,wt=7): 12244 overlaps(x,f7(f11(x,x),x)).  [resolve(11121,a,103,b)].
+
+given #545 (A,wt=16): 252 -part(x,y) | -part(z,y) | overlaps(f2(x,z),x) | overlaps(f2(x,z),z).  [resolve(231,a,107,c)].
+
+given #546 (F,wt=9): 1714 -ppart(x,f1(f11(f11(x,x),x),x)).  [ur(65,a,901,a,c,243,a)].
+
+given #547 (F,wt=9): 1863 -ppart(x,f1(x,f11(x,f12(x,x)))).  [ur(64,a,963,a,c,243,a)].
+
+given #548 (F,wt=9): 1897 -ppart(x,f1(f11(x,f12(x,x)),x)).  [ur(65,a,964,a,c,243,a)].
+
+given #549 (F,wt=9): 1986 -PP(x,f10(f6(f6(x,x),x),x)).  [ur(159,a,977,a,c,992,a)].
+
+given #550 (T,wt=7): 12561 P(f6(f9(x,x),x),x).  [resolve(12278,a,161,a)].
+
+given #551 (T,wt=7): 12687 part(f11(f9(x,x),x),x).  [resolve(12565,a,105,a)].
+
+given #552 (T,wt=7): 12795 overlaps(f7(f11(x,x),x),x).  [resolve(11122,a,103,b)].
+
+given #553 (T,wt=7): 13097 overlaps(x,f7(f6(x,x),x)).  [resolve(11155,a,103,b)].
+
+given #554 (A,wt=10): 255 -part(x,f12(y,y)) | part(y,f12(x,y)).  [resolve(233,a,111,b)].
+
+given #555 (F,wt=7): 15102 -PP(x,f6(f9(x,x),x)).  [ur(164,b,12561,a)].
+
+given #556 (F,wt=7): 15217 -ppart(x,f6(f9(x,x),x)).  [ur(98,b,15102,a)].
+
+given #557 (F,wt=9): 2065 -PP(x,f10(x,f6(f6(x,x),x))).  [ur(159,a,978,a,c,230,a)].
+
+given #558 (F,wt=9): 2152 -PP(x,f10(f6(x,f7(x,x)),x)).  [ur(159,a,993,a,c,1008,a)].
+
+given #559 (T,wt=7): 13142 overlaps(f7(f6(x,x),x),x).  [resolve(11156,a,103,b)].
+
+given #560 (T,wt=7): 13205 overlaps(x,f7(f12(x,x),x)).  [resolve(11189,a,103,b)].
+
+given #561 (T,wt=7): 13622 overlaps(f7(f12(x,x),x),x).  [resolve(11190,a,103,b)].
+
+given #562 (T,wt=7): 13686 overlaps(x,f7(f7(x,x),x)).  [resolve(11597,a,103,b)].
+
+given #563 (A,wt=10): 256 -part(x,f12(y,y)) | part(x,f12(y,x)).  [resolve(233,a,111,a)].
+
+given #564 (F,wt=9): 2237 -PP(x,f10(x,f6(x,f7(x,x)))).  [ur(159,a,994,a,c,230,a)].
+
+given #565 (F,wt=9): 2269 -PP(x,f10(f6(f11(x,x),x),x)).  [ur(159,a,1009,a,c,1024,a)].
+
+given #566 (F,wt=9): 2441 -PP(x,f10(x,f6(f11(x,x),x))).  [ur(159,a,1010,a,c,230,a)].
+
+given #567 (F,wt=9): 2473 -PP(x,f10(f6(x,f12(x,x)),x)).  [ur(159,a,1072,a,c,1087,a)].
+
+given #568 (T,wt=7): 13732 overlaps(f7(f7(x,x),x),x).  [resolve(11598,a,103,b)].
+
+given #569 (T,wt=7): 13987 overlaps(x,f7(x,f12(x,x))).  [resolve(11631,a,103,b)].
+
+given #570 (T,wt=7): 14033 overlaps(f7(x,f12(x,x)),x).  [resolve(11632,a,103,b)].
+
+given #571 (T,wt=7): 14190 part(f11(x,f2(x,x)),x).  [resolve(14092,a,104,a)].
+
+given #572 (A,wt=10): 257 -part(x,f12(y,y)) | part(x,f12(x,y)).  [resolve(233,a,110,b)].
+
+given #573 (F,wt=9): 2562 -PP(x,f10(x,f6(x,f12(x,x)))).  [ur(159,a,1073,a,c,230,a)].
+
+given #574 (F,wt=9): 2699 -ppart(x,f1(x,f11(x,f6(x,x)))).  [ur(64,a,1092,a,c,243,a)].
+
+given #575 (F,wt=9): 2742 -ppart(x,f1(f11(x,f6(x,x)),x)).  [ur(65,a,1093,a,c,243,a)].
+
+given #576 (F,wt=9): 2918 -ppart(x,f1(x,f11(f7(x,x),x))).  [ur(64,a,1110,a,c,243,a)].
+
+given #577 (T,wt=7): 14245 P(f6(x,f2(x,x)),x).  [resolve(14191,a,162,a)].
+
+given #578 (T,wt=7): 14309 overlaps(x,f7(x,f7(x,x))).  [resolve(11665,a,103,b)].
+
+given #579 (T,wt=7): 14345 overlaps(f7(x,f7(x,x)),x).  [resolve(11666,a,103,b)].
+
+given #580 (T,wt=7): 14385 part(f11(f2(x,x),x),x).  [resolve(14374,a,105,a)].
+
+given #581 (A,wt=10): 258 -part(x,f12(y,y)) | part(y,f12(y,x)).  [resolve(233,a,110,a)].
+
+given #582 (F,wt=7): 15571 -PP(x,f6(x,f2(x,x))).  [ur(164,b,14245,a)].
+
+given #583 (F,wt=7): 15691 -ppart(x,f6(x,f2(x,x))).  [ur(98,b,15571,a)].
+
+given #584 (F,wt=9): 2965 -ppart(x,f1(f11(f7(x,x),x),x)).  [ur(65,a,1111,a,c,243,a)].
+
+given #585 (F,wt=9): 3031 -ppart(x,f1(x,f11(x,f11(x,x)))).  [ur(64,a,1128,a,c,243,a)].
+
+given #586 (T,wt=7): 14443 P(f6(f2(x,x),x),x).  [resolve(14387,a,161,a)].
+
+given #587 (T,wt=7): 14527 overlaps(x,f7(x,f11(x,x))).  [resolve(11699,a,103,b)].
+
+given #588 (T,wt=7): 14647 overlaps(f7(x,f11(x,x)),x).  [resolve(11700,a,103,b)].
+
+given #589 (T,wt=7): 14708 O(f6(x,f9(x,x)),x).  [resolve(11988,a,225,b)].
+
+given #590 (A,wt=8): 259 overlaps(x,f12(y,y)) | -part(y,x).  [resolve(233,a,106,c)].
+
+given #591 (F,wt=7): 15734 -PP(x,f6(f2(x,x),x)).  [ur(164,b,14443,a)].
+
+given #592 (F,wt=7): 15877 -ppart(x,f6(f2(x,x),x)).  [ur(98,b,15734,a)].
+
+given #593 (F,wt=9): 3186 -ppart(x,f1(f11(x,f11(x,x)),x)).  [ur(65,a,1129,a,c,243,a)].
+
+given #594 (F,wt=9): 3417 -ppart(x,f1(x,f11(f12(x,x),x))).  [ur(64,a,1198,a,c,243,a)].
+
+given #595 (T,wt=7): 14709 O(x,f6(x,f9(x,x))).  [resolve(11988,a,224,b)].
+
+given #596 (T,wt=7): 14728 part(f6(x,f9(x,x)),x).  [resolve(11988,a,156,b)].
+
+given #597 (T,wt=7): 14746 overlaps(x,f11(x,f9(x,x))).  [resolve(12105,a,188,b)].
+
+given #598 (T,wt=7): 14747 overlaps(f11(x,f9(x,x)),x).  [resolve(12105,a,186,b)].
+
+given #599 (A,wt=8): 260 overlaps(f12(x,x),y) | -part(x,y).  [resolve(233,a,106,b)].
+
+given #600 (F,wt=9): 3469 -ppart(x,f1(f11(f12(x,x),x),x)).  [ur(65,a,1199,a,c,243,a)].
+
+given #601 (F,wt=9): 3497 -PP(x,f10(f6(x,f6(x,x)),x)).  [ur(159,a,1212,a,c,1227,a)].
+
+given #602 (F,wt=9): 3652 -ppart(f10(f10(x,x),f10(x,x)),x).  [ur(98,b,244,a)].
+
+given #603 (F,wt=9): 3671 -ppart(x,f10(f10(x,x),f10(x,x))).  [ur(98,b,246,a)].
+
+given #604 (T,wt=7): 14756 P(f11(x,f9(x,x)),x).  [resolve(12105,a,92,a)].
+
+given #605 (T,wt=7): 14854 overlaps(x,f7(x,f6(x,x))).  [resolve(12209,a,103,b)].
+
+given #606 (T,wt=7): 14890 overlaps(f7(x,f6(x,x)),x).  [resolve(12210,a,103,b)].
+
+given #607 (T,wt=7): 15075 O(f6(f9(x,x),x),x).  [resolve(12561,a,225,b)].
+
+given #608 (A,wt=8): 262 -part(x,y) | part(x,f12(y,y)).  [resolve(233,a,70,b)].
+
+given #609 (F,wt=7): 16174 -PP(x,f11(x,f9(x,x))).  [ur(164,b,14756,a)].
+
+given #610 (F,wt=7): 16319 -ppart(x,f11(x,f9(x,x))).  [ur(98,b,16174,a)].
+
+given #611 (F,wt=9): 3724 -PP(x,f10(x,f6(x,f6(x,x)))).  [ur(159,a,1213,a,c,230,a)].
+
+given #612 (F,wt=9): 3801 -ppart(x,f1(f12(x,f6(x,x)),x)).  [ur(65,a,1234,a,c,243,a)].
+
+given #613 (T,wt=7): 15076 O(x,f6(f9(x,x),x)).  [resolve(12561,a,224,b)].
+
+given #614 (T,wt=7): 15095 part(f6(f9(x,x),x),x).  [resolve(12561,a,156,b)].
+
+given #615 (T,wt=7): 15117 overlaps(x,f11(f9(x,x),x)).  [resolve(12687,a,188,b)].
+
+given #616 (T,wt=7): 15118 overlaps(f11(f9(x,x),x),x).  [resolve(12687,a,186,b)].
+
+given #617 (A,wt=8): 263 -part(f12(x,x),y) | part(x,y).  [resolve(233,a,70,a)].
+
+given #618 (F,wt=9): 3860 -ppart(x,f1(x,f12(x,f6(x,x)))).  [ur(64,a,1236,a,c,243,a)].
+
+given #619 (F,wt=9): 3888 -PP(x,f1(f10(x,x),f10(x,x))).  [ur(100,a,296,a)].
+
+given #620 (F,wt=9): 3916 -PP(x,f1(f1(x,x),f1(x,x))).  [ur(100,a,298,a)].
+
+given #621 (F,wt=9): 3981 -ppart(f7(f10(x,x),f10(x,x)),x).  [ur(98,b,299,a)].
+
+given #622 (T,wt=7): 15127 P(f11(f9(x,x),x),x).  [resolve(12687,a,92,a)].
+
+given #623 (T,wt=7): 15488 overlaps(x,f11(x,f2(x,x))).  [resolve(14190,a,188,b)].
+
+given #624 (T,wt=7): 15489 overlaps(f11(x,f2(x,x)),x).  [resolve(14190,a,186,b)].
+
+given #625 (T,wt=7): 15498 P(f11(x,f2(x,x)),x).  [resolve(14190,a,92,a)].
+
+given #626 (A,wt=10): 264 -part(f12(x,x),x) | f12(x,x) = x.  [resolve(233,a,69,b),flip(b)].
+
+given #627 (F,wt=7): 16598 -PP(x,f11(f9(x,x),x)).  [ur(164,b,15127,a)].
+
+given #628 (F,wt=7): 16703 -PP(x,f11(x,f2(x,x))).  [ur(164,b,15498,a)].
+
+given #629 (F,wt=7): 16706 -ppart(x,f11(f9(x,x),x)).  [ur(98,b,16598,a)].
+
+given #630 (F,wt=7): 16708 -ppart(x,f11(x,f2(x,x))).  [ur(98,b,16703,a)].
+
+given #631 (T,wt=7): 15544 O(f6(x,f2(x,x)),x).  [resolve(14245,a,225,b)].
+
+given #632 (T,wt=7): 15545 O(x,f6(x,f2(x,x))).  [resolve(14245,a,224,b)].
+
+given #633 (T,wt=7): 15564 part(f6(x,f2(x,x)),x).  [resolve(14245,a,156,b)].
+
+given #634 (T,wt=7): 15651 overlaps(x,f11(f2(x,x),x)).  [resolve(14385,a,188,b)].
+
+given #635 (A,wt=10): 265 -P(f7(x,x),x) | f7(x,x) = x.  [resolve(234,a,170,b),flip(b)].
+
+given #636 (F,wt=9): 4001 -ppart(x,f10(f6(x,x),f6(x,x))).  [ur(98,b,348,a)].
+
+given #637 (F,wt=9): 4075 -ppart(x,f1(f12(x,f11(x,x)),x)).  [ur(65,a,1254,a,c,243,a)].
+
+given #638 (F,wt=9): 4136 -ppart(x,f1(x,f12(x,f11(x,x)))).  [ur(64,a,1256,a,c,243,a)].
+
+given #639 (F,wt=9): 4181 -PP(f12(x,f6(x,x)),f10(x,x)).  [ur(159,a,179,a,c,4020,a)].
+
+given #640 (T,wt=7): 15652 overlaps(f11(f2(x,x),x),x).  [resolve(14385,a,186,b)].
+
+given #641 (T,wt=7): 15661 P(f11(f2(x,x),x),x).  [resolve(14385,a,92,a)].
+
+given #642 (T,wt=7): 15707 O(f6(f2(x,x),x),x).  [resolve(14443,a,225,b)].
+
+given #643 (T,wt=7): 15708 O(x,f6(f2(x,x),x)).  [resolve(14443,a,224,b)].
+
+given #644 (A,wt=8): 266 -P(x,y) | P(x,f7(y,y)).  [resolve(234,a,169,b)].
+
+given #645 (F,wt=7): 16938 -PP(x,f11(f2(x,x),x)).  [ur(164,b,15661,a)].
+
+given #646 (F,wt=7): 17058 -ppart(x,f11(f2(x,x),x)).  [ur(98,b,16938,a)].
+
+given #647 (F,wt=9): 4220 -PP(f12(x,f11(x,x)),f10(x,x)).  [ur(159,a,179,a,c,4155,a)].
+
+given #648 (F,wt=9): 4267 -ppart(f12(x,f6(x,x)),f1(x,x)).  [ur(65,a,231,a,c,4200,a)].
+
+given #649 (T,wt=7): 15727 part(f6(f2(x,x),x),x).  [resolve(14443,a,156,b)].
+
+given #650 (T,wt=7): 15804 overlaps(f6(x,f9(x,x)),x).  [resolve(14708,a,103,b)].
+
+given #651 (T,wt=7): 15871 overlaps(f7(x,x),f12(x,x)).  [resolve(259,b,271,a)].
+
+given #652 (T,wt=7): 15888 overlaps(x,f6(x,f9(x,x))).  [resolve(14709,a,103,b)].
+
+given #653 (A,wt=8): 267 -P(f7(x,x),y) | P(x,y).  [resolve(234,a,169,a)].
+
+given #654 (F,wt=9): 4322 -ppart(f12(x,f11(x,x)),f1(x,x)).  [ur(65,a,231,a,c,4239,a)].
+
+given #655 (F,wt=9): 4360 -PP(x,f10(f6(f7(x,x),x),x)).  [ur(159,a,1324,a,c,1339,a)].
+
+given #656 (F,wt=9): 4473 -PP(x,f10(x,f6(f7(x,x),x))).  [ur(159,a,1325,a,c,230,a)].
+
+given #657 (F,wt=9): 4511 -PP(x,f10(f6(x,f11(x,x)),x)).  [ur(159,a,1340,a,c,1355,a)].
+
+given #658 (T,wt=7): 15953 O(x,f11(x,f9(x,x))).  [resolve(14746,a,101,a)].
+
+given #659 (T,wt=7): 15987 O(f11(x,f9(x,x)),x).  [resolve(14747,a,101,a)].
+
+given #660 (T,wt=7): 16052 overlaps(f12(x,x),f7(x,x)).  [resolve(260,b,271,a)].
+
+given #661 (T,wt=7): 16246 overlaps(f6(f9(x,x),x),x).  [resolve(15075,a,103,b)].
+
+given #662 (A,wt=10): 268 PP(x,f7(x,x)) | P(f7(x,x),x).  [resolve(234,a,163,b)].
+
+given #663 (F,wt=9): 4595 -ppart(x,f10(f1(x,x),f1(x,x))).  [ur(98,b,350,a)].
+
+given #664 (F,wt=9): 4639 -ppart(f12(f10(x,x),f10(x,x)),x).  [ur(98,b,352,a)].
+
+given #665 (F,wt=9): 4640 -PP(f7(x,x),f1(f6(x,x),x)).  [ur(100,a,381,a)].
+
+given #666 (F,wt=9): 4670 -PP(f10(x,x),f1(f6(x,x),x)).  [ur(100,a,384,a)].
+
+given #667 (T,wt=7): 16311 part(f6(x,x),f12(x,x)).  [resolve(262,a,285,a)].
+
+given #668 (T,wt=7): 16313 part(f11(x,x),f12(x,x)).  [resolve(262,a,253,a)].
+
+given #669 (T,wt=7): 16330 overlaps(x,f6(f9(x,x),x)).  [resolve(15076,a,103,b)].
+
+given #670 (T,wt=7): 16397 O(x,f11(f9(x,x),x)).  [resolve(15117,a,101,a)].
+
+Low Water (keep): wt=17.000, iters=6680
+
+given #671 (A,wt=8): 269 O(x,f7(y,y)) | -P(y,x).  [resolve(234,a,160,c)].
+
+given #672 (F,wt=9): 4758 -PP(x,f10(x,f6(x,f11(x,x)))).  [ur(159,a,1341,a,c,230,a)].
+
+given #673 (F,wt=9): 4797 -PP(x,f10(f6(f12(x,x),x),x)).  [ur(159,a,1356,a,c,1371,a)].
+
+given #674 (F,wt=9): 4915 -PP(x,f10(x,f6(f12(x,x),x))).  [ur(159,a,1357,a,c,230,a)].
+
+given #675 (F,wt=9): 4930 -PP(f6(x,x),f1(f6(x,x),x)).  [ur(100,a,388,a)].
+
+given #676 (T,wt=7): 16432 O(f11(f9(x,x),x),x).  [resolve(15118,a,101,a)].
+
+given #677 (T,wt=7): 16604 O(x,f11(x,f2(x,x))).  [resolve(15488,a,101,a)].
+
+given #678 (T,wt=7): 16640 O(f11(x,f2(x,x)),x).  [resolve(15489,a,101,a)].
+
+given #679 (T,wt=7): 16718 overlaps(f6(x,f2(x,x)),x).  [resolve(15544,a,103,b)].
+
+given #680 (A,wt=8): 270 O(f7(x,x),y) | -P(x,y).  [resolve(234,a,160,b)].
+
+given #681 (F,wt=9): 4960 -PP(f7(x,x),f1(x,f7(x,x))).  [ur(100,a,397,a)].
+
+given #682 (F,wt=9): 4990 -PP(f10(x,x),f1(x,f7(x,x))).  [ur(100,a,400,a)].
+
+given #683 (F,wt=9): 5020 -PP(x,f1(f6(x,x),f6(x,x))).  [ur(100,a,418,a)].
+
+given #684 (F,wt=9): 5126 -PP(x,f10(x,f11(f6(x,x),x))).  [ur(159,a,1377,a,c,230,a)].
+
+given #685 (T,wt=7): 16753 overlaps(x,f6(x,f2(x,x))).  [resolve(15545,a,103,b)].
+
+given #686 (T,wt=7): 16820 O(x,f11(f2(x,x),x)).  [resolve(15651,a,101,a)].
+
+given #687 (T,wt=7): 16875 O(f11(f2(x,x),x),x).  [resolve(15652,a,101,a)].
+
+given #688 (T,wt=7): 16946 overlaps(f6(f2(x,x),x),x).  [resolve(15707,a,103,b)].
+
+given #689 (A,wt=13): 272 f8(f7(x,x)) != f7(x,x) | f7(x,x) = x.  [resolve(234,a,137,b),flip(b)].
+
+given #690 (F,wt=9): 5203 -PP(f12(x,x),f1(f6(x,x),x)).  [ur(100,a,421,a)].
+
+given #691 (F,wt=9): 5233 -PP(f12(x,x),f1(x,f7(x,x))).  [ur(100,a,423,a)].
+
+given #692 (F,wt=9): 5289 -ppart(x,f10(f11(x,x),f11(x,x))).  [ur(98,b,425,a)].
+
+given #693 (F,wt=9): 5290 -PP(x,f1(f11(x,x),f11(x,x))).  [ur(100,a,428,a)].
+
+given #694 (T,wt=7): 16981 overlaps(x,f6(f2(x,x),x)).  [resolve(15708,a,103,b)].
+
+given #695 (T,wt=7): 17049 P(f11(x,x),f7(x,x)).  [resolve(266,a,309,a)].
+
+given #696 (T,wt=7): 17051 P(f6(x,x),f7(x,x)).  [resolve(266,a,237,a)].
+
+given #697 (T,wt=7): 17160 O(f7(x,x),f12(x,x)).  [resolve(15871,a,101,a)].
+
+given #698 (A,wt=13): 273 P(f8(f7(x,x)),f7(x,x)) | f7(x,x) = x.  [resolve(234,a,135,b),flip(b)].
+
+given #699 (F,wt=7): 18003 -PP(f7(x,x),f11(x,x)).  [ur(164,b,17049,a)].
+
+given #700 (F,wt=7): 18042 -PP(f7(x,x),f6(x,x)).  [ur(164,b,17051,a)].
+
+given #701 (F,wt=7): 18107 -ppart(f7(x,x),f11(x,x)).  [ur(98,b,18003,a)].
+
+given #702 (F,wt=7): 18121 -ppart(f7(x,x),f6(x,x)).  [ur(98,b,18042,a)].
+
+given #703 (T,wt=7): 17318 O(f12(x,x),f7(x,x)).  [resolve(16052,a,101,a)].
+
+given #704 (T,wt=7): 17477 overlaps(f12(x,x),f6(x,x)).  [resolve(16311,a,188,b)].
+
+given #705 (T,wt=7): 17478 overlaps(f6(x,x),f12(x,x)).  [resolve(16311,a,186,b)].
+
+given #706 (T,wt=7): 17486 P(f6(x,x),f12(x,x)).  [resolve(16311,a,92,a)].
+
+given #707 (A,wt=10): 274 -P(x,f7(y,y)) | P(y,f7(x,y)).  [resolve(234,a,124,b)].
+
+given #708 (F,wt=7): 18234 -PP(f12(x,x),f6(x,x)).  [ur(164,b,17486,a)].
+
+given #709 (F,wt=7): 18279 -ppart(f12(x,x),f6(x,x)).  [ur(98,b,18234,a)].
+
+given #710 (F,wt=9): 5329 -PP(x,f10(f11(f6(x,x),x),x)).  [ur(159,a,1466,a,c,1508,a)].
+
+given #711 (F,wt=9): 5448 -PP(x,f10(x,f11(x,f7(x,x)))).  [ur(159,a,1514,a,c,230,a)].
+
+given #712 (T,wt=7): 17507 overlaps(f12(x,x),f11(x,x)).  [resolve(16313,a,188,b)].
+
+given #713 (T,wt=7): 17508 overlaps(f11(x,x),f12(x,x)).  [resolve(16313,a,186,b)].
+
+given #714 (T,wt=7): 17516 P(f11(x,x),f12(x,x)).  [resolve(16313,a,92,a)].
+
+given #715 (T,wt=7): 17978 O(f11(x,x),f7(x,x)).  [resolve(17049,a,225,b)].
+
+given #716 (A,wt=10): 275 -P(x,f7(y,y)) | P(x,f7(y,x)).  [resolve(234,a,124,a)].
+
+given #717 (F,wt=7): 18366 -PP(f12(x,x),f11(x,x)).  [ur(164,b,17516,a)].
+
+given #718 (F,wt=7): 18429 -ppart(f12(x,x),f11(x,x)).  [ur(98,b,18366,a)].
+
+given #719 (F,wt=9): 5467 -PP(x,f10(f11(x,f7(x,x)),x)).  [ur(159,a,1551,a,c,1646,a)].
+
+given #720 (F,wt=9): 5586 -PP(x,f10(x,f11(f11(x,x),x))).  [ur(159,a,1652,a,c,230,a)].
+
+given #721 (T,wt=7): 17979 O(f7(x,x),f11(x,x)).  [resolve(17049,a,224,b)].
+
+given #722 (T,wt=7): 17996 part(f11(x,x),f7(x,x)).  [resolve(17049,a,156,b)].
+
+given #723 (T,wt=7): 18017 O(f6(x,x),f7(x,x)).  [resolve(17051,a,225,b)].
+
+given #724 (T,wt=7): 18018 O(f7(x,x),f6(x,x)).  [resolve(17051,a,224,b)].
+
+given #725 (A,wt=10): 276 -P(x,f7(y,y)) | P(x,f7(x,y)).  [resolve(234,a,122,b)].
+
+given #726 (F,wt=9): 5596 -PP(f12(x,x),f1(f11(x,x),x)).  [ur(100,a,439,a)].
+
+given #727 (F,wt=9): 5626 -PP(f7(x,x),f1(f11(x,x),x)).  [ur(100,a,441,a)].
+
+given #728 (F,wt=9): 5656 -PP(f10(x,x),f1(f11(x,x),x)).  [ur(100,a,444,a)].
+
+given #729 (F,wt=9): 5686 -PP(f11(x,x),f1(f11(x,x),x)).  [ur(100,a,449,a)].
+
+given #730 (T,wt=7): 18035 part(f6(x,x),f7(x,x)).  [resolve(17051,a,156,b)].
+
+given #731 (T,wt=7): 18168 O(f12(x,x),f6(x,x)).  [resolve(17477,a,101,a)].
+
+given #732 (T,wt=7): 18186 O(f6(x,x),f12(x,x)).  [resolve(17478,a,101,a)].
+
+given #733 (T,wt=7): 18300 O(f12(x,x),f11(x,x)).  [resolve(17507,a,101,a)].
+
+given #734 (A,wt=10): 277 -P(x,f7(y,y)) | P(y,f7(y,x)).  [resolve(234,a,122,a)].
+
+given #735 (F,wt=9): 5725 -PP(x,f10(f11(f11(x,x),x),x)).  [ur(159,a,1689,a,c,1731,a)].
+
+given #736 (F,wt=9): 5855 -ppart(x,f1(f12(x,f7(x,x)),x)).  [ur(65,a,1791,a,c,243,a)].
+
+given #737 (F,wt=9): 5935 -ppart(x,f1(x,f12(x,f7(x,x)))).  [ur(64,a,1793,a,c,243,a)].
+
+given #738 (F,wt=9): 6040 -PP(f12(x,f7(x,x)),f10(x,x)).  [ur(159,a,179,a,c,5956,a)].
+
+given #739 (T,wt=7): 18318 O(f11(x,x),f12(x,x)).  [resolve(17508,a,101,a)].
+
+given #740 (T,wt=7): 18372 overlaps(f11(x,x),f7(x,x)).  [resolve(17978,a,103,b)].
+
+given #741 (T,wt=7): 18450 overlaps(f7(x,x),f11(x,x)).  [resolve(17979,a,103,b)].
+
+given #742 (T,wt=7): 18495 overlaps(f6(x,x),f7(x,x)).  [resolve(18017,a,103,b)].
+
+given #743 (A,wt=10): 279 -P(x,f6(x,x)) | f6(x,x) = x.  [resolve(237,a,170,b)].
+
+given #744 (F,wt=9): 6101 -ppart(f12(x,f7(x,x)),f1(x,x)).  [ur(65,a,231,a,c,6071,a)].
+
+given #745 (F,wt=9): 6131 -PP(f12(x,x),f1(x,f12(x,x))).  [ur(100,a,459,a)].
+
+given #746 (F,wt=9): 6163 -PP(f7(x,x),f1(x,f12(x,x))).  [ur(100,a,462,a)].
+
+given #747 (F,wt=9): 6267 -ppart(x,f1(f12(x,f12(x,x)),x)).  [ur(65,a,1814,a,c,243,a)].
+
+given #748 (T,wt=7): 18513 overlaps(f7(x,x),f6(x,x)).  [resolve(18018,a,103,b)].
+
+given #749 (T,wt=8): 280 -P(x,f6(y,y)) | P(x,y).  [resolve(237,a,169,b)].
+
+given #750 (T,wt=8): 281 -P(x,y) | P(f6(x,x),y).  [resolve(237,a,169,a)].
+
+given #751 (T,wt=8): 283 O(x,y) | -P(f6(y,y),x).  [resolve(237,a,160,c)].
+
+given #752 (A,wt=10): 282 PP(f6(x,x),x) | P(x,f6(x,x)).  [resolve(237,a,163,b)].
+
+given #753 (F,wt=9): 6352 -ppart(x,f1(x,f12(x,f12(x,x)))).  [ur(64,a,1816,a,c,243,a)].
+
+given #754 (F,wt=9): 6433 -PP(x,f10(x,f11(x,f12(x,x)))).  [ur(159,a,1833,a,c,230,a)].
+
+given #755 (F,wt=9): 6510 -PP(f12(x,f12(x,x)),f10(x,x)).  [ur(159,a,179,a,c,6373,a)].
+
+given #756 (F,wt=9): 6574 -ppart(f12(x,f12(x,x)),f1(x,x)).  [ur(65,a,231,a,c,6542,a)].
+
+given #757 (T,wt=8): 284 O(x,y) | -P(f6(x,x),y).  [resolve(237,a,160,b)].
+
+given #758 (T,wt=8): 307 overlaps(x,y) | -part(f11(y,y),x).  [resolve(253,a,106,c)].
+
+given #759 (T,wt=8): 308 overlaps(x,y) | -part(f11(x,x),y).  [resolve(253,a,106,b)].
+
+given #760 (T,wt=8): 310 -part(x,f11(y,y)) | part(x,y).  [resolve(253,a,70,b)].
+
+given #761 (A,wt=9): 286 f8(x) != x | f6(x,x) = x.  [resolve(237,a,137,b)].
+
+given #762 (F,wt=9): 6606 -PP(f10(x,x),f1(x,f12(x,x))).  [ur(100,a,465,a)].
+
+given #763 (F,wt=9): 6672 -ppart(f6(x,x),f10(f6(x,x),x)).  [ur(98,b,478,a)].
+
+given #764 (F,wt=9): 6684 -PP(x,f10(f11(x,f12(x,x)),x)).  [ur(159,a,1871,a,c,1977,a)].
+
+given #765 (F,wt=9): 6821 -ppart(x,f1(f6(f6(x,x),x),x)).  [ur(65,a,1985,a,c,243,a)].
+
+given #766 (T,wt=8): 311 -part(x,y) | part(f11(x,x),y).  [resolve(253,a,70,a)].
+
+given #767 (T,wt=8): 314 -P(x,y) | P(x,f12(y,y)).  [resolve(261,a,169,b)].
+
+given #768 (T,wt=8): 315 -P(f12(x,x),y) | P(x,y).  [resolve(261,a,169,a)].
+
+given #769 (T,wt=8): 317 O(x,f12(y,y)) | -P(y,x).  [resolve(261,a,160,c)].
+
+given #770 (A,wt=9): 287 P(f8(x),x) | f6(x,x) = x.  [resolve(237,a,135,b)].
+
+given #771 (F,wt=9): 6839 -ppart(x,f1(x,f6(f6(x,x),x))).  [ur(65,a,2030,a,c,1458,a)].
+
+given #772 (F,wt=9): 6983 -ppart(x,f1(f6(x,f7(x,x)),x)).  [ur(65,a,2151,a,c,243,a)].
+
+given #773 (F,wt=9): 7058 -ppart(f12(x,x),f10(f6(x,x),x)).  [ur(98,b,480,a)].
+
+given #774 (F,wt=9): 7092 -ppart(f7(x,x),f10(f6(x,x),x)).  [ur(98,b,483,a)].
+
+given #775 (T,wt=8): 318 O(f12(x,x),y) | -P(x,y).  [resolve(261,a,160,b)].
+
+given #776 (T,wt=8): 331 overlaps(x,f7(y,y)) | -part(y,x).  [resolve(271,a,106,c)].
+
+given #777 (T,wt=8): 332 overlaps(f7(x,x),y) | -part(x,y).  [resolve(271,a,106,b)].
+
+given #778 (T,wt=8): 333 -part(x,y) | part(x,f7(y,y)).  [resolve(271,a,70,b)].
+
+given #779 (A,wt=12): 288 -P(x,y) | P(f6(y,y),f7(x,f6(y,y))).  [resolve(237,a,124,b)].
+
+given #780 (F,wt=9): 7126 -ppart(f10(x,x),f10(f6(x,x),x)).  [ur(98,b,485,a)].
+
+given #781 (F,wt=9): 7160 -ppart(f12(x,x),f10(x,f7(x,x))).  [ur(98,b,492,a)].
+
+given #782 (F,wt=9): 7170 -ppart(x,f1(x,f6(x,f7(x,x)))).  [ur(65,a,2199,a,c,1605,a)].
+
+given #783 (F,wt=9): 7314 -ppart(x,f1(f6(f11(x,x),x),x)).  [ur(65,a,2268,a,c,243,a)].
+
+given #784 (T,wt=8): 334 -part(f7(x,x),y) | part(x,y).  [resolve(271,a,70,a)].
+
+given #785 (T,wt=8): 341 overlaps(x,y) | -part(f6(y,y),x).  [resolve(285,a,106,c)].
+
+given #786 (T,wt=8): 342 overlaps(x,y) | -part(f6(x,x),y).  [resolve(285,a,106,b)].
+
+given #787 (T,wt=8): 343 -part(x,f6(y,y)) | part(x,y).  [resolve(285,a,70,b)].
+
+given #788 (A,wt=10): 289 -P(x,y) | P(x,f7(f6(y,y),x)).  [resolve(237,a,124,a)].
+
+given #789 (F,wt=9): 7332 -ppart(x,f1(x,f6(f11(x,x),x))).  [ur(65,a,2401,a,c,1615,a)].
+
+given #790 (F,wt=9): 7476 -ppart(x,f1(f6(x,f12(x,x)),x)).  [ur(65,a,2472,a,c,243,a)].
+
+given #791 (F,wt=9): 7552 -ppart(f7(x,x),f10(x,f7(x,x))).  [ur(98,b,495,a)].
+
+given #792 (F,wt=9): 7586 -ppart(f10(x,x),f10(x,f7(x,x))).  [ur(98,b,497,a)].
+
+given #793 (T,wt=8): 344 -part(x,y) | part(f6(x,x),y).  [resolve(285,a,70,a)].
+
+given #794 (T,wt=8): 356 -P(x,f11(y,y)) | P(x,y).  [resolve(309,a,169,b)].
+
+given #795 (T,wt=8): 357 -P(x,y) | P(f11(x,x),y).  [resolve(309,a,169,a)].
+
+given #796 (T,wt=8): 359 O(x,y) | -P(f11(y,y),x).  [resolve(309,a,160,c)].
+
+given #797 (A,wt=10): 290 -P(x,y) | P(x,f7(x,f6(y,y))).  [resolve(237,a,122,b)].
+
+given #798 (F,wt=9): 7620 -ppart(f11(x,x),f10(f11(x,x),x)).  [ur(98,b,537,a)].
+
+given #799 (F,wt=9): 7654 -ppart(f12(x,x),f10(f11(x,x),x)).  [ur(98,b,540,a)].
+
+given #800 (F,wt=9): 7664 -ppart(x,f1(x,f6(x,f12(x,x)))).  [ur(65,a,2522,a,c,1747,a)].
+
+given #801 (F,wt=9): 7804 -PP(x,f10(x,f11(x,f6(x,x)))).  [ur(159,a,2660,a,c,230,a)].
+
+given #802 (T,wt=8): 360 O(x,y) | -P(f11(x,x),y).  [resolve(309,a,160,b)].
+
+given #803 (T,wt=8): 372 overlaps(f3(x,y),x) | part(x,y).  [resolve(186,b,67,b)].
+
+given #804 (T,wt=8): 402 P(f3(x,y),x) | overlaps(x,y).  [resolve(185,b,186,b)].
+
+given #805 (T,wt=8): 412 P(f3(x,y),x) | P(x,y).  [resolve(185,b,92,a)].
+
+given #806 (A,wt=12): 291 -P(x,y) | P(f6(y,y),f7(f6(y,y),x)).  [resolve(237,a,122,a)].
+
+given #807 (F,wt=9): 7827 -PP(x,f10(f11(x,f6(x,x)),x)).  [ur(159,a,2707,a,c,2759,a)].
+
+given #808 (F,wt=9): 7968 -PP(x,f10(x,f11(f7(x,x),x))).  [ur(159,a,2875,a,c,230,a)].
+
+given #809 (F,wt=9): 8049 -ppart(f7(x,x),f10(f11(x,x),x)).  [ur(98,b,544,a)].
+
+given #810 (F,wt=9): 8086 -ppart(f10(x,x),f10(f11(x,x),x)).  [ur(98,b,546,a)].
+
+given #811 (T,wt=8): 505 overlaps(x,f3(x,y)) | part(x,y).  [resolve(187,b,68,a)].
+
+given #812 (T,wt=8): 569 overlaps(x,y) | P(f3(y,x),y).  [resolve(188,b,185,b)].
+
+given #813 (T,wt=8): 818 O(x,f4(x,y)) | P(x,y).  [resolve(224,b,168,b)].
+
+given #814 (T,wt=8): 819 O(x,f5(x,y)) | P(x,y).  [resolve(224,b,166,b)].
+
+given #815 (A,wt=10): 293 part(f3(x,y),f12(x,x)) | part(x,y).  [resolve(183,a,233,a)].
+
+given #816 (F,wt=9): 8123 -ppart(f12(x,x),f10(x,f12(x,x))).  [ur(98,b,554,a)].
+
+given #817 (F,wt=9): 8160 -ppart(f7(x,x),f10(x,f12(x,x))).  [ur(98,b,558,a)].
+
+given #818 (F,wt=9): 8172 -PP(x,f10(f11(f7(x,x),x),x)).  [ur(159,a,2926,a,c,2982,a)].
+
+given #819 (F,wt=9): 8317 -PP(x,f10(x,f11(x,f11(x,x)))).  [ur(159,a,2988,a,c,230,a)].
+
+given #820 (T,wt=8): 864 O(f4(x,y),x) | P(x,y).  [resolve(225,b,168,b)].
+
+given #821 (T,wt=8): 865 O(f5(x,y),x) | P(x,y).  [resolve(225,b,166,b)].
+
+given #822 (T,wt=8): 2319 P(x,y) | overlaps(x,f5(x,y)).  [resolve(201,b,188,b)].
+
+given #823 (T,wt=8): 2320 P(x,y) | overlaps(f5(x,y),x).  [resolve(201,b,186,b)].
+
+given #824 (A,wt=15): 294 part(f3(f3(x,y),z),x) | part(f3(x,y),z) | part(x,y).  [resolve(183,a,67,b)].
+
+given #825 (F,wt=9): 8340 -PP(x,f10(f11(x,f11(x,x)),x)).  [ur(159,a,3145,a,c,3204,a)].
+
+given #826 (F,wt=9): 8482 -ppart(x,f1(f12(f7(x,x),x),x)).  [ur(65,a,3214,a,c,243,a)].
+
+given #827 (F,wt=9): 8560 -ppart(f10(x,x),f10(x,f12(x,x))).  [ur(98,b,560,a)].
+
+given #828 (F,wt=9): 8561 -PP(f6(x,x),f1(x,f6(x,x))).  [ur(100,a,580,a)].
+
+given #829 (T,wt=8): 5190 P(x,y) | overlaps(x,f4(x,y)).  [resolve(211,b,188,b)].
+
+given #830 (T,wt=8): 5191 P(x,y) | overlaps(f4(x,y),x).  [resolve(211,b,186,b)].
+
+given #831 (T,wt=8): 12893 O(x,f9(y,x)) | -P(x,y).  [resolve(238,b,171,a)].
+
+given #832 (T,wt=7): 20078 O(x,f9(f12(x,x),x)).  [resolve(12893,b,261,a)].
+
+given #833 (A,wt=12): 302 part(f3(f11(x,x),y),x) | part(f11(x,x),y).  [resolve(253,a,183,a)].
+
+given #834 (F,wt=9): 8604 -PP(f12(x,x),f1(x,f6(x,x))).  [ur(100,a,582,a)].
+
+given #835 (F,wt=9): 8614 -PP(f7(x,x),f1(x,f6(x,x))).  [ur(100,a,585,a)].
+
+given #836 (F,wt=9): 8686 -ppart(x,f1(x,f12(f7(x,x),x))).  [ur(64,a,3216,a,c,243,a)].
+
+given #837 (F,wt=9): 8769 -ppart(x,f1(f12(f12(x,x),x),x)).  [ur(65,a,3237,a,c,243,a)].
+
+given #838 (T,wt=7): 20080 O(x,f9(f7(x,x),x)).  [resolve(12893,b,234,a)].
+
+given #839 (T,wt=7): 20092 overlaps(x,f9(f12(x,x),x)).  [resolve(20078,a,103,b)].
+
+given #840 (T,wt=7): 20162 overlaps(x,f9(f7(x,x),x)).  [resolve(20080,a,103,b)].
+
+given #841 (T,wt=8): 12936 O(x,f9(y,x)) | -P(y,x).  [resolve(238,c,171,a)].
+
+given #842 (A,wt=12): 303 -part(x,y) | part(f11(y,y),f12(x,f11(y,y))).  [resolve(253,a,111,b)].
+
+given #843 (F,wt=9): 8840 -ppart(x,f1(x,f12(f12(x,x),x))).  [ur(64,a,3239,a,c,243,a)].
+
+given #844 (F,wt=9): 8911 -PP(f12(f7(x,x),x),f10(x,x)).  [ur(159,a,179,a,c,8712,a)].
+
+given #845 (F,wt=9): 8994 -ppart(f12(f7(x,x),x),f1(x,x)).  [ur(65,a,231,a,c,8950,a)].
+
+given #846 (F,wt=9): 9038 -PP(f10(x,x),f1(x,f6(x,x))).  [ur(100,a,589,a)].
+
+given #847 (T,wt=7): 20293 O(x,f9(f11(x,x),x)).  [resolve(12936,b,309,a)].
+
+given #848 (T,wt=7): 20297 O(x,f9(f6(x,x),x)).  [resolve(12936,b,237,a)].
+
+given #849 (T,wt=7): 20351 overlaps(x,f9(f11(x,x),x)).  [resolve(20293,a,103,b)].
+
+given #850 (T,wt=7): 20382 overlaps(x,f9(f6(x,x),x)).  [resolve(20297,a,103,b)].
+
+given #851 (A,wt=10): 304 -part(x,y) | part(x,f12(f11(y,y),x)).  [resolve(253,a,111,a)].
+
+given #852 (F,wt=9): 9048 -PP(f12(x,x),f1(f7(x,x),x)).  [ur(100,a,634,a)].
+
+given #853 (F,wt=9): 9142 -PP(x,f10(x,f11(f12(x,x),x))).  [ur(159,a,3369,a,c,230,a)].
+
+given #854 (F,wt=9): 9164 -PP(x,f10(f11(f12(x,x),x),x)).  [ur(159,a,3425,a,c,3488,a)].
+
+given #855 (F,wt=9): 9277 -ppart(x,f1(f6(x,f6(x,x)),x)).  [ur(65,a,3496,a,c,243,a)].
+
+given #856 (T,wt=8): 13283 O(x,f9(x,y)) | -P(y,x).  [resolve(239,b,171,a)].
+
+given #857 (T,wt=7): 20567 O(x,f9(x,f11(x,x))).  [resolve(13283,b,309,a)].
+
+given #858 (T,wt=7): 20571 O(x,f9(x,f6(x,x))).  [resolve(13283,b,237,a)].
+
+given #859 (T,wt=7): 20583 overlaps(x,f9(x,f11(x,x))).  [resolve(20567,a,103,b)].
+
+given #860 (A,wt=10): 305 -part(x,y) | part(x,f12(x,f11(y,y))).  [resolve(253,a,110,b)].
+
+given #861 (F,wt=9): 9352 -PP(f12(f12(x,x),x),f10(x,x)).  [ur(159,a,179,a,c,9084,a)].
+
+given #862 (F,wt=9): 9438 -ppart(f12(f12(x,x),x),f1(x,x)).  [ur(65,a,231,a,c,9393,a)].
+
+given #863 (F,wt=9): 9483 -PP(f7(x,x),f1(f7(x,x),x)).  [ur(100,a,637,a)].
+
+given #864 (F,wt=9): 9493 -PP(f10(x,x),f1(f7(x,x),x)).  [ur(100,a,641,a)].
+
+given #865 (T,wt=7): 20613 overlaps(x,f9(x,f6(x,x))).  [resolve(20571,a,103,b)].
+
+given #866 (T,wt=8): 13326 O(x,f9(x,y)) | -P(x,y).  [resolve(239,c,171,a)].
+
+given #867 (T,wt=7): 20801 O(x,f9(x,f12(x,x))).  [resolve(13326,b,261,a)].
+
+given #868 (T,wt=7): 20803 O(x,f9(x,f7(x,x))).  [resolve(13326,b,234,a)].
+
+given #869 (A,wt=12): 306 -part(x,y) | part(f11(y,y),f12(f11(y,y),x)).  [resolve(253,a,110,a)].
+
+given #870 (F,wt=9): 9514 -ppart(x,f1(x,f6(x,f6(x,x)))).  [ur(65,a,3677,a,c,1781,a)].
+
+given #871 (F,wt=9): 9638 -PP(x,f10(f12(x,f6(x,x)),x)).  [ur(158,a,3756,a,c,230,a)].
+
+given #872 (F,wt=9): 9697 -PP(x,f10(x,f12(x,f6(x,x)))).  [ur(159,a,3811,a,c,230,a)].
+
+given #873 (F,wt=9): 9738 -PP(x,f10(f12(x,f11(x,x)),x)).  [ur(158,a,4028,a,c,230,a)].
+
+given #874 (T,wt=7): 20814 overlaps(x,f9(x,f12(x,x))).  [resolve(20801,a,103,b)].
+
+given #875 (T,wt=7): 20844 overlaps(x,f9(x,f7(x,x))).  [resolve(20803,a,103,b)].
+
+given #876 (T,wt=8): 14593 -part(x,y) | overlaps(x,f2(y,x)).  [resolve(250,a,68,a)].
+
+Low Water (displace): id=8244, wt=33.000
+
+given #877 (T,wt=7): 21008 overlaps(x,f2(f7(x,x),x)).  [resolve(14593,a,271,a)].
+
+given #878 (A,wt=10): 312 -part(x,f11(x,x)) | f11(x,x) = x.  [resolve(253,a,69,b)].
+
+given #879 (F,wt=9): 9763 -PP(f11(x,x),f1(x,f11(x,x))).  [ur(100,a,656,a)].
+
+given #880 (F,wt=9): 9773 -PP(f12(x,x),f1(x,f11(x,x))).  [ur(100,a,662,a)].
+
+given #881 (F,wt=9): 9783 -PP(f7(x,x),f1(x,f11(x,x))).  [ur(100,a,665,a)].
+
+given #882 (F,wt=9): 9793 -PP(f10(x,x),f1(x,f11(x,x))).  [ur(100,a,669,a)].
+
+given #883 (T,wt=7): 21010 overlaps(x,f2(f12(x,x),x)).  [resolve(14593,a,233,a)].
+
+given #884 (T,wt=7): 21017 O(x,f2(f7(x,x),x)).  [resolve(21008,a,101,a)].
+
+given #885 (T,wt=7): 21050 O(x,f2(f12(x,x),x)).  [resolve(21010,a,101,a)].
+
+given #886 (T,wt=8): 14632 -part(x,y) | overlaps(y,f2(x,y)).  [resolve(250,b,68,a)].
+
+given #887 (A,wt=10): 313 -P(f12(x,x),x) | f12(x,x) = x.  [resolve(261,a,170,b),flip(b)].
+
+given #888 (F,wt=9): 9829 -PP(x,f10(x,f12(x,f11(x,x)))).  [ur(159,a,4085,a,c,230,a)].
+
+given #889 (F,wt=9): 9858 -ppart(x,f1(f6(f7(x,x),x),x)).  [ur(65,a,4357,a,c,243,a)].
+
+given #890 (F,wt=9): 9868 -ppart(x,f1(x,f6(f7(x,x),x))).  [ur(65,a,4422,a,c,1964,a)].
+
+given #891 (F,wt=9): 9916 -ppart(x,f1(f6(x,f11(x,x)),x)).  [ur(65,a,4508,a,c,243,a)].
+
+given #892 (T,wt=7): 21177 overlaps(x,f2(f6(x,x),x)).  [resolve(14632,a,285,a)].
+
+given #893 (T,wt=7): 21179 overlaps(x,f2(f11(x,x),x)).  [resolve(14632,a,253,a)].
+
+Low Water (keep): wt=15.000, iters=6693
+
+given #894 (T,wt=7): 21191 O(x,f2(f6(x,x),x)).  [resolve(21177,a,101,a)].
+
+Low Water (displace): id=8345, wt=31.000
+
+given #895 (T,wt=7): 21219 O(x,f2(f11(x,x),x)).  [resolve(21179,a,101,a)].
+
+given #896 (A,wt=10): 316 PP(x,f12(x,x)) | P(f12(x,x),x).  [resolve(261,a,163,b)].
+
+given #897 (F,wt=9): 9921 -PP(f12(x,x),f1(f12(x,x),x)).  [ur(100,a,683,a)].
+
+given #898 (F,wt=9): 9931 -PP(f7(x,x),f1(f12(x,x),x)).  [ur(100,a,686,a)].
+
+given #899 (F,wt=9): 9941 -PP(f10(x,x),f1(f12(x,x),x)).  [ur(100,a,690,a)].
+
+given #900 (F,wt=9): 9960 -ppart(f12(x,x),f10(x,f6(x,x))).  [ur(98,b,702,a)].
+
+given #901 (T,wt=8): 14799 -part(x,y) | overlaps(y,f2(y,x)).  [resolve(251,a,68,a)].
+
+given #902 (T,wt=7): 21339 overlaps(x,f2(x,f6(x,x))).  [resolve(14799,a,285,a)].
+
+Low Water (displace): id=8599, wt=27.000
+
+given #903 (T,wt=7): 21341 overlaps(x,f2(x,f11(x,x))).  [resolve(14799,a,253,a)].
+
+given #904 (T,wt=7): 21349 O(x,f2(x,f6(x,x))).  [resolve(21339,a,101,a)].
+
+given #905 (A,wt=13): 319 f8(f12(x,x)) != f12(x,x) | f12(x,x) = x.  [resolve(261,a,137,b),flip(b)].
+
+given #906 (F,wt=9): 9966 -ppart(x,f1(x,f6(x,f11(x,x)))).  [ur(65,a,4705,a,c,2102,a)].
+
+given #907 (F,wt=9): 10014 -ppart(x,f1(f6(f12(x,x),x),x)).  [ur(65,a,4794,a,c,243,a)].
+
+given #908 (F,wt=9): 10024 -ppart(x,f1(x,f6(f12(x,x),x))).  [ur(65,a,4862,a,c,2114,a)].
+
+given #909 (F,wt=9): 10073 -ppart(x,f1(f12(f6(x,x),x),x)).  [ur(65,a,5145,a,c,243,a)].
+
+given #910 (T,wt=7): 21374 O(x,f2(x,f11(x,x))).  [resolve(21341,a,101,a)].
+
+given #911 (T,wt=8): 14840 -part(x,y) | overlaps(x,f2(x,y)).  [resolve(251,b,68,a)].
+
+given #912 (T,wt=7): 21496 overlaps(x,f2(x,f7(x,x))).  [resolve(14840,a,271,a)].
+
+given #913 (T,wt=7): 21498 overlaps(x,f2(x,f12(x,x))).  [resolve(14840,a,233,a)].
+
+given #914 (A,wt=13): 320 P(f8(f12(x,x)),f12(x,x)) | f12(x,x) = x.  [resolve(261,a,135,b),flip(b)].
+
+given #915 (F,wt=9): 10087 -ppart(f7(x,x),f10(x,f6(x,x))).  [ur(98,b,706,a)].
+
+given #916 (F,wt=9): 10097 -ppart(f10(x,x),f10(x,f6(x,x))).  [ur(98,b,708,a)].
+
+given #917 (F,wt=9): 10107 -ppart(f6(x,x),f10(x,f6(x,x))).  [ur(98,b,713,a)].
+
+given #918 (F,wt=9): 10117 -ppart(f7(x,x),f10(f7(x,x),x)).  [ur(98,b,760,a)].
+
+given #919 (T,wt=7): 21505 O(x,f2(x,f7(x,x))).  [resolve(21496,a,101,a)].
+
+given #920 (T,wt=7): 21530 O(x,f2(x,f12(x,x))).  [resolve(21498,a,101,a)].
+
+given #921 (T,wt=8): 19780 part(x,y) | O(f3(x,y),x).  [resolve(372,a,101,a)].
+
+given #922 (T,wt=8): 19790 P(f3(x,y),x) | O(x,y).  [resolve(402,b,101,a)].
+
+given #923 (A,wt=10): 321 -P(x,f12(y,y)) | P(y,f7(x,y)).  [resolve(261,a,124,b)].
+
+given #924 (F,wt=9): 10146 -ppart(x,f1(x,f12(f6(x,x),x))).  [ur(64,a,5147,a,c,243,a)].
+
+given #925 (F,wt=9): 10200 -ppart(x,f1(f12(f11(x,x),x),x)).  [ur(65,a,5168,a,c,243,a)].
+
+given #926 (F,wt=9): 10233 -ppart(x,f1(x,f12(f11(x,x),x))).  [ur(64,a,5170,a,c,243,a)].
+
+given #927 (F,wt=9): 10292 -PP(f12(f6(x,x),x),f10(x,x)).  [ur(159,a,179,a,c,10173,a)].
+
+given #928 (T,wt=8): 19818 P(x,y) | O(f3(x,y),x).  [resolve(412,a,225,b)].
+
+given #929 (T,wt=8): 19819 P(x,y) | O(x,f3(x,y)).  [resolve(412,a,224,b)].
+
+given #930 (T,wt=8): 19838 P(x,y) | part(f3(x,y),x).  [resolve(412,a,156,b)].
+
+given #931 (T,wt=8): 19898 part(x,y) | O(x,f3(x,y)).  [resolve(505,a,101,a)].
+
+given #932 (A,wt=10): 322 -P(x,f12(y,y)) | P(x,f7(y,x)).  [resolve(261,a,124,a)].
+
+given #933 (F,wt=9): 10351 -ppart(f12(f6(x,x),x),f1(x,x)).  [ur(65,a,231,a,c,10319,a)].
+
+given #934 (F,wt=9): 10392 -ppart(f12(x,x),f10(f7(x,x),x)).  [ur(98,b,766,a)].
+
+given #935 (F,wt=9): 10402 -ppart(f10(x,x),f10(f7(x,x),x)).  [ur(98,b,771,a)].
+
+given #936 (F,wt=9): 10463 -PP(x,f10(f12(x,f7(x,x)),x)).  [ur(158,a,5793,a,c,230,a)].
+
+given #937 (T,wt=8): 19908 P(f3(x,y),x) | O(y,x).  [resolve(569,a,101,a)].
+
+given #938 (T,wt=8): 21667 P(x,y) | overlaps(f3(x,y),x).  [resolve(19818,b,103,b)].
+
+given #939 (T,wt=8): 21671 P(x,y) | overlaps(x,f3(x,y)).  [resolve(19819,b,103,b)].
+
+given #940 (T,wt=9): 361 f8(x) != x | f11(x,x) = x.  [resolve(309,a,137,b)].
+
+given #941 (A,wt=10): 323 -P(x,f12(y,y)) | P(x,f7(x,y)).  [resolve(261,a,122,b)].
+
+given #942 (F,wt=9): 10491 -PP(x,f10(x,f12(x,f7(x,x)))).  [ur(159,a,5867,a,c,230,a)].
+
+given #943 (F,wt=9): 10527 -PP(x,f10(f12(x,f12(x,x)),x)).  [ur(158,a,6202,a,c,230,a)].
+
+given #944 (F,wt=9): 10588 -PP(f12(f11(x,x),x),f10(x,x)).  [ur(159,a,179,a,c,10430,a)].
+
+given #945 (F,wt=9): 10649 -ppart(f12(f11(x,x),x),f1(x,x)).  [ur(65,a,231,a,c,10617,a)].
+
+given #946 (T,wt=9): 362 P(f8(x),x) | f11(x,x) = x.  [resolve(309,a,135,b)].
+
+given #947 (T,wt=9): 379 part(f11(f6(x,x),x),f6(x,x)).  [resolve(368,a,104,a)].
+
+given #948 (T,wt=9): 392 part(f11(x,f7(x,x)),f7(x,x)).  [resolve(369,a,105,a)].
+
+given #949 (T,wt=9): 436 part(f11(f11(x,x),x),f11(x,x)).  [resolve(370,a,104,a)].
+
+given #950 (A,wt=10): 324 -P(x,f12(y,y)) | P(y,f7(y,x)).  [resolve(261,a,122,a)].
+
+given #951 (F,wt=9): 10690 -ppart(f12(x,x),f10(x,f11(x,x))).  [ur(98,b,783,a)].
+
+given #952 (F,wt=9): 10700 -ppart(f7(x,x),f10(x,f11(x,x))).  [ur(98,b,787,a)].
+
+given #953 (F,wt=9): 10729 -PP(x,f10(x,f12(x,f12(x,x)))).  [ur(159,a,6280,a,c,230,a)].
+
+given #954 (F,wt=9): 10766 -PP(x,f10(f12(f7(x,x),x),x)).  [ur(158,a,8419,a,c,230,a)].
+
+given #955 (T,wt=9): 453 part(f11(x,f12(x,x)),f12(x,x)).  [resolve(371,a,105,a)].
+
+given #956 (T,wt=9): 469 P(f6(f6(x,x),x),f6(x,x)).  [resolve(380,a,162,a)].
+
+given #957 (T,wt=9): 488 P(f6(x,f7(x,x)),f7(x,x)).  [resolve(394,a,161,a)].
+
+given #958 (T,wt=9): 528 P(f6(f11(x,x),x),f11(x,x)).  [resolve(437,a,162,a)].
+
+given #959 (A,wt=10): 326 part(f3(x,y),f7(x,x)) | part(x,y).  [resolve(271,a,183,a)].
+
+given #960 (F,wt=9): 10795 -PP(x,f10(x,f12(f7(x,x),x))).  [ur(159,a,8629,a,c,230,a)].
+
+given #961 (F,wt=9): 10832 -PP(x,f10(f12(f12(x,x),x),x)).  [ur(158,a,8720,a,c,230,a)].
+
+given #962 (F,wt=9): 10874 -ppart(f10(x,x),f10(x,f11(x,x))).  [ur(98,b,789,a)].
+
+given #963 (F,wt=9): 10884 -ppart(f11(x,x),f10(x,f11(x,x))).  [ur(98,b,794,a)].
+
+given #964 (T,wt=9): 549 P(f6(x,f12(x,x)),f12(x,x)).  [resolve(455,a,161,a)].
+
+given #965 (T,wt=9): 573 part(f11(x,f6(x,x)),f6(x,x)).  [resolve(565,a,105,a)].
+
+given #966 (T,wt=9): 627 part(f11(f7(x,x),x),f7(x,x)).  [resolve(566,a,104,a)].
+
+given #967 (T,wt=9): 649 part(f11(x,f11(x,x)),f11(x,x)).  [resolve(567,a,105,a)].
+
+given #968 (A,wt=10): 327 -part(x,f7(y,y)) | part(y,f12(x,y)).  [resolve(271,a,111,b)].
+
+given #969 (F,wt=9): 10894 -ppart(f12(x,x),f10(f12(x,x),x)).  [ur(98,b,805,a)].
+
+given #970 (F,wt=9): 10904 -ppart(f7(x,x),f10(f12(x,x),x)).  [ur(98,b,814,a)].
+
+given #971 (F,wt=9): 10933 -PP(x,f10(x,f12(f12(x,x),x))).  [ur(159,a,8783,a,c,230,a)].
+
+given #972 (F,wt=9): 10970 -PP(x,f10(f12(f6(x,x),x),x)).  [ur(158,a,10054,a,c,230,a)].
+
+given #973 (T,wt=9): 676 part(f11(f12(x,x),x),f12(x,x)).  [resolve(568,a,104,a)].
+
+given #974 (T,wt=9): 697 P(f6(x,f6(x,x)),f6(x,x)).  [resolve(575,a,161,a)].
+
+given #975 (T,wt=9): 715 part(f7(x,x),f12(f7(x,x),x)).  [resolve(190,a,271,a)].
+
+given #976 (T,wt=9): 717 part(f12(x,x),f12(f12(x,x),x)).  [resolve(190,a,233,a)].
+
+given #977 (A,wt=10): 328 -part(x,f7(y,y)) | part(x,f12(y,x)).  [resolve(271,a,111,a)].
+
+given #978 (F,wt=9): 10999 -PP(x,f10(x,f12(f6(x,x),x))).  [ur(159,a,10123,a,c,230,a)].
+
+given #979 (F,wt=9): 11036 -PP(x,f10(f12(f11(x,x),x),x)).  [ur(158,a,10181,a,c,230,a)].
+
+given #980 (F,wt=9): 11078 -ppart(f10(x,x),f10(f12(x,x),x)).  [ur(98,b,816,a)].
+
+given #981 (F,wt=9): 11079 -PP(x,f1(x,f11(f6(x,x),x))).  [ur(100,a,1404,a)].
+
+given #982 (T,wt=9): 752 P(f6(f7(x,x),x),f7(x,x)).  [resolve(628,a,162,a)].
+
+given #983 (T,wt=9): 775 P(f6(x,f11(x,x)),f11(x,x)).  [resolve(651,a,161,a)].
+
+given #984 (T,wt=9): 797 P(f6(f12(x,x),x),f12(x,x)).  [resolve(677,a,162,a)].
+
+Low Water (displace): id=9703, wt=25.000
+
+given #985 (T,wt=9): 867 part(x,f12(x,f11(f6(x,x),x))).  [resolve(378,a,190,a)].
+
+given #986 (A,wt=10): 329 -part(x,f7(y,y)) | part(x,f12(x,y)).  [resolve(271,a,110,b)].
+
+given #987 (F,wt=9): 11081 -PP(x,f1(f11(f6(x,x),x),x)).  [ur(100,a,1491,a)].
+
+given #988 (F,wt=9): 11083 -PP(x,f1(x,f11(x,f7(x,x)))).  [ur(100,a,1543,a)].
+
+given #989 (F,wt=9): 11113 -PP(x,f10(x,f12(f11(x,x),x))).  [ur(159,a,10210,a,c,230,a)].
+
+given #990 (F,wt=9): 11227 -ppart(f12(f1(x,x),f1(x,x)),x).  [ur(232,a,354,a)].
+
+given #991 (T,wt=9): 883 part(x,f12(x,f11(x,f7(x,x)))).  [resolve(393,a,190,a)].
+
+given #992 (T,wt=9): 899 part(x,f12(x,f11(f11(x,x),x))).  [resolve(435,a,190,a)].
+
+given #993 (T,wt=9): 917 part(f6(x,x),f12(f6(x,x),x)).  [resolve(192,a,285,a)].
+
+given #994 (T,wt=9): 919 part(f11(x,x),f12(f11(x,x),x)).  [resolve(192,a,253,a)].
+
+given #995 (A,wt=10): 330 -part(x,f7(y,y)) | part(y,f12(y,x)).  [resolve(271,a,110,a)].
+
+given #996 (F,wt=9): 11228 -ppart(f7(f1(x,x),f1(x,x)),x).  [ur(232,a,301,a)].
+
+given #997 (F,wt=9): 11229 -ppart(f10(f1(x,x),f1(x,x)),x).  [ur(232,a,245,a)].
+
+given #998 (F,wt=9): 11231 -ppart(f1(f1(x,x),f1(x,x)),x).  [ur(232,a,11230,a)].
+
+given #999 (F,wt=9): 11281 -ppart(f1(x,x),f1(f12(x,x),x)).  [ur(65,a,568,a,c,11230,a)].
+
+given #1000 (T,wt=9): 962 part(x,f12(x,f11(x,f12(x,x)))).  [resolve(454,a,190,a)].
+
+given #1001 (T,wt=9): 1091 part(x,f12(x,f11(x,f6(x,x)))).  [resolve(574,a,190,a)].
+
+given #1002 (T,wt=9): 1109 part(x,f12(x,f11(f7(x,x),x))).  [resolve(626,a,190,a)].
+
+given #1003 (T,wt=9): 1127 part(x,f12(x,f11(x,f11(x,x)))).  [resolve(650,a,190,a)].
+
+given #1004 (A,wt=10): 335 -part(f7(x,x),x) | f7(x,x) = x.  [resolve(271,a,69,b),flip(b)].
+
+given #1005 (F,wt=9): 11283 -ppart(f1(x,x),f1(f7(x,x),x)).  [ur(65,a,566,a,c,11230,a)].
+
+given #1006 (F,wt=9): 11286 -ppart(f1(x,x),f1(f11(x,x),x)).  [ur(65,a,370,a,c,11230,a)].
+
+given #1007 (F,wt=9): 11288 -ppart(f1(x,x),f1(f6(x,x),x)).  [ur(65,a,368,a,c,11230,a)].
+
+given #1008 (F,wt=9): 11338 -ppart(f1(x,x),f1(x,f11(x,x))).  [ur(64,a,567,a,c,11230,a)].
+
+given #1009 (T,wt=9): 1149 part(f6(x,x),f12(x,f6(x,x))).  [resolve(194,a,285,a)].
+
+given #1010 (T,wt=9): 1151 part(f11(x,x),f12(x,f11(x,x))).  [resolve(194,a,253,a)].
+
+given #1011 (T,wt=9): 1197 part(x,f12(x,f11(f12(x,x),x))).  [resolve(675,a,190,a)].
+
+given #1012 (T,wt=9): 1228 part(x,f12(f12(x,f6(x,x)),x)).  [resolve(714,a,194,a)].
+
+given #1013 (A,wt=12): 336 part(f3(f6(x,x),y),x) | part(f6(x,x),y).  [resolve(285,a,183,a)].
+
+given #1014 (F,wt=9): 11340 -ppart(f1(x,x),f1(x,f6(x,x))).  [ur(64,a,565,a,c,11230,a)].
+
+given #1015 (F,wt=9): 11341 -ppart(f1(x,x),f1(x,f12(x,x))).  [ur(64,a,371,a,c,11230,a)].
+
+given #1016 (F,wt=9): 11343 -ppart(f1(x,x),f1(x,f7(x,x))).  [ur(64,a,369,a,c,11230,a)].
+
+given #1017 (F,wt=9): 11345 -PP(f1(f10(x,x),f10(x,x)),x).  [ur(181,a,11232,a)].
+
+given #1018 (T,wt=9): 1230 part(x,f12(x,f12(x,f6(x,x)))).  [resolve(714,a,192,a)].
+
+given #1019 (T,wt=9): 1248 part(x,f12(f12(x,f11(x,x)),x)).  [resolve(716,a,194,a)].
+
+given #1020 (T,wt=9): 1250 part(x,f12(x,f12(x,f11(x,x)))).  [resolve(716,a,192,a)].
+
+given #1021 (T,wt=9): 1376 part(f11(x,f11(f6(x,x),x)),x).  [resolve(868,a,104,a)].
+
+given #1022 (A,wt=12): 337 -part(x,y) | part(f6(y,y),f12(x,f6(y,y))).  [resolve(285,a,111,b)].
+
+given #1023 (F,wt=9): 11395 -PP(f1(x,x),f10(x,f11(x,x))).  [ur(159,a,651,a,c,11232,a)].
+
+given #1024 (F,wt=9): 11397 -PP(f1(x,x),f10(x,f6(x,x))).  [ur(159,a,575,a,c,11232,a)].
+
+given #1025 (F,wt=9): 11398 -PP(f1(x,x),f10(x,f12(x,x))).  [ur(159,a,455,a,c,11232,a)].
+
+given #1026 (F,wt=9): 11400 -PP(f1(x,x),f10(x,f7(x,x))).  [ur(159,a,394,a,c,11232,a)].
+
+given #1027 (T,wt=9): 1407 part(x,f12(f11(f12(x,x),x),x)).  [resolve(196,a,675,a)].
+
+given #1028 (T,wt=9): 1408 part(x,f12(f11(x,f11(x,x)),x)).  [resolve(196,a,650,a)].
+
+given #1029 (T,wt=9): 1409 part(x,f12(f11(f7(x,x),x),x)).  [resolve(196,a,626,a)].
+
+given #1030 (T,wt=9): 1410 part(x,f12(f11(x,f6(x,x)),x)).  [resolve(196,a,574,a)].
+
+given #1031 (A,wt=10): 338 -part(x,y) | part(x,f12(f6(y,y),x)).  [resolve(285,a,111,a)].
+
+given #1032 (F,wt=9): 11451 -PP(f1(x,x),f10(f12(x,x),x)).  [ur(158,a,677,a,c,11232,a)].
+
+given #1033 (F,wt=9): 11453 -PP(f1(x,x),f10(f7(x,x),x)).  [ur(158,a,628,a,c,11232,a)].
+
+given #1034 (F,wt=9): 11456 -PP(f1(x,x),f10(f11(x,x),x)).  [ur(158,a,437,a,c,11232,a)].
+
+given #1035 (F,wt=9): 11458 -PP(f1(x,x),f10(f6(x,x),x)).  [ur(158,a,380,a,c,11232,a)].
+
+given #1036 (T,wt=9): 1411 part(x,f12(f11(x,f12(x,x)),x)).  [resolve(196,a,454,a)].
+
+given #1037 (T,wt=9): 1412 part(x,f12(f11(f11(x,x),x),x)).  [resolve(196,a,435,a)].
+
+given #1038 (T,wt=9): 1413 part(x,f12(f11(x,f7(x,x)),x)).  [resolve(196,a,393,a)].
+
+given #1039 (T,wt=9): 1414 part(x,f12(f11(f6(x,x),x),x)).  [resolve(196,a,378,a)].
+
+given #1040 (A,wt=10): 339 -part(x,y) | part(x,f12(x,f6(y,y))).  [resolve(285,a,110,b)].
+
+given #1041 (F,wt=9): 11492 -PP(f7(f11(x,x),x),f10(x,x)).  [ur(159,a,179,a,c,11150,a)].
+
+given #1042 (F,wt=9): 11559 -PP(f7(f6(x,x),x),f10(x,x)).  [ur(159,a,179,a,c,11184,a)].
+
+given #1043 (F,wt=9): 11763 -PP(f7(f12(x,x),x),f10(x,x)).  [ur(159,a,179,a,c,11218,a)].
+
+given #1044 (F,wt=9): 11888 -ppart(f7(f11(x,x),x),f1(x,x)).  [ur(65,a,231,a,c,11525,a)].
+
+given #1045 (T,wt=9): 1416 part(f7(x,x),f12(x,f7(x,x))).  [resolve(196,a,271,a)].
+
+given #1046 (T,wt=9): 1418 part(f12(x,x),f12(x,f12(x,x))).  [resolve(196,a,233,a)].
+
+given #1047 (T,wt=9): 1464 part(f11(f11(f6(x,x),x),x),x).  [resolve(869,a,105,a)].
+
+given #1048 (T,wt=9): 1513 part(f11(x,f11(x,f7(x,x))),x).  [resolve(884,a,104,a)].
+
+given #1049 (A,wt=12): 340 -part(x,y) | part(f6(y,y),f12(f6(y,y),x)).  [resolve(285,a,110,a)].
+
+given #1050 (F,wt=9): 11954 -ppart(f7(f6(x,x),x),f1(x,x)).  [ur(65,a,231,a,c,11592,a)].
+
+given #1051 (F,wt=9): 11994 -PP(f1(x,x),f10(x,f9(x,x))).  [ur(159,a,11729,a,c,11232,a)].
+
+given #1052 (F,wt=9): 12072 -PP(f12(x,x),f10(x,f9(x,x))).  [ur(159,a,11729,a,c,325,a)].
+
+given #1053 (F,wt=9): 12077 -PP(f7(x,x),f10(x,f9(x,x))).  [ur(159,a,11729,a,c,278,a)].
+
+given #1054 (T,wt=9): 1549 part(f11(f11(x,f7(x,x)),x),x).  [resolve(885,a,105,a)].
+
+given #1055 (T,wt=9): 1651 part(f11(x,f11(f11(x,x),x)),x).  [resolve(900,a,104,a)].
+
+given #1056 (T,wt=9): 1687 part(f11(f11(f11(x,x),x),x),x).  [resolve(901,a,105,a)].
+
+given #1057 (T,wt=9): 1785 part(x,f12(f12(x,f7(x,x)),x)).  [resolve(918,a,194,a)].
+
+given #1058 (A,wt=10): 345 -part(x,f6(x,x)) | f6(x,x) = x.  [resolve(285,a,69,b)].
+
+given #1059 (F,wt=9): 12080 -PP(f10(x,x),f10(x,f9(x,x))).  [ur(159,a,11729,a,c,241,a)].
+
+given #1060 (F,wt=9): 12100 -PP(f9(x,x),f10(x,f9(x,x))).  [ur(158,a,11729,a,c,230,a)].
+
+given #1061 (F,wt=9): 12120 -ppart(f9(x,x),f1(x,f9(x,x))).  [ur(65,a,11992,a,c,243,a)].
+
+given #1062 (F,wt=9): 12123 -ppart(f1(x,x),f1(x,f9(x,x))).  [ur(64,a,11992,a,c,11230,a)].
+
+given #1063 (T,wt=9): 1787 part(x,f12(x,f12(x,f7(x,x)))).  [resolve(918,a,192,a)].
+
+given #1064 (T,wt=9): 1808 part(x,f12(f12(x,f12(x,x)),x)).  [resolve(920,a,194,a)].
+
+given #1065 (T,wt=9): 1810 part(x,f12(x,f12(x,f12(x,x)))).  [resolve(920,a,192,a)].
+
+given #1066 (T,wt=9): 1832 part(f11(x,f11(x,f12(x,x))),x).  [resolve(963,a,104,a)].
+
+given #1067 (A,wt=12): 346 part(f6(f3(x,y),f3(x,y)),x) | part(x,y).  [resolve(184,a,285,a)].
+
+given #1068 (F,wt=9): 12196 -ppart(f12(x,x),f1(x,f9(x,x))).  [ur(64,a,11992,a,c,354,a)].
+
+given #1069 (F,wt=9): 12199 -ppart(f7(x,x),f1(x,f9(x,x))).  [ur(64,a,11992,a,c,301,a)].
+
+given #1070 (F,wt=9): 12203 -ppart(f10(x,x),f1(x,f9(x,x))).  [ur(64,a,11992,a,c,245,a)].
+
+given #1071 (F,wt=9): 12273 -PP(x,f10(x,f7(f11(x,x),x))).  [ur(159,a,11121,a,c,230,a)].
+
+given #1072 (T,wt=9): 1869 part(f11(f11(x,f12(x,x)),x),x).  [resolve(964,a,105,a)].
+
+given #1073 (T,wt=9): 1981 P(f6(f6(f6(x,x),x),x),x).  [resolve(977,a,161,a)].
+
+given #1074 (T,wt=9): 2026 P(f6(x,f6(f6(x,x),x)),x).  [resolve(978,a,162,a)].
+
+given #1075 (T,wt=9): 2071 part(x,f12(f6(f6(x,x),x),x)).  [resolve(985,a,196,a)].
+
+given #1076 (A,wt=12): 347 part(f11(f3(x,y),f3(x,y)),x) | part(x,y).  [resolve(184,a,253,a)].
+
+given #1077 (F,wt=9): 12314 -PP(f7(f7(x,x),x),f10(x,x)).  [ur(159,a,179,a,c,11626,a)].
+
+given #1078 (F,wt=9): 12384 -PP(f7(x,f12(x,x)),f10(x,x)).  [ur(159,a,179,a,c,11660,a)].
+
+given #1079 (F,wt=9): 12454 -PP(f7(x,f7(x,x)),f10(x,x)).  [ur(159,a,179,a,c,11694,a)].
+
+given #1080 (F,wt=9): 12524 -PP(f7(x,f11(x,x)),f10(x,x)).  [ur(159,a,179,a,c,11728,a)].
+
+given #1081 (T,wt=9): 2077 part(x,f12(x,f6(f6(x,x),x))).  [resolve(985,a,190,a)].
+
+given #1082 (T,wt=9): 2147 P(f6(f6(x,f7(x,x)),x),x).  [resolve(993,a,161,a)].
+
+given #1083 (T,wt=9): 2195 P(f6(x,f6(x,f7(x,x))),x).  [resolve(994,a,162,a)].
+
+given #1084 (T,wt=9): 2243 part(x,f12(f6(x,f7(x,x)),x)).  [resolve(1001,a,196,a)].
+
+given #1085 (A,wt=10): 355 -P(x,f11(x,x)) | f11(x,x) = x.  [resolve(309,a,170,b)].
+
+given #1086 (F,wt=9): 12588 -PP(f9(x,x),f10(f9(x,x),x)).  [ur(159,a,12278,a,c,230,a)].
+
+given #1087 (F,wt=9): 12594 -PP(f1(x,x),f10(f9(x,x),x)).  [ur(158,a,12278,a,c,11232,a)].
+
+given #1088 (F,wt=9): 12672 -PP(f12(x,x),f10(f9(x,x),x)).  [ur(158,a,12278,a,c,325,a)].
+
+given #1089 (F,wt=9): 12677 -PP(f7(x,x),f10(f9(x,x),x)).  [ur(158,a,12278,a,c,278,a)].
+
+given #1090 (T,wt=9): 2249 part(x,f12(x,f6(x,f7(x,x)))).  [resolve(1001,a,190,a)].
+
+given #1091 (T,wt=9): 2264 P(f6(f6(f11(x,x),x),x),x).  [resolve(1009,a,161,a)].
+
+given #1092 (T,wt=9): 2397 P(f6(x,f6(f11(x,x),x)),x).  [resolve(1010,a,162,a)].
+
+given #1093 (T,wt=9): 2447 part(x,f12(f6(f11(x,x),x),x)).  [resolve(1017,a,196,a)].
+
+given #1094 (A,wt=10): 358 PP(f11(x,x),x) | P(x,f11(x,x)).  [resolve(309,a,163,b)].
+
+given #1095 (F,wt=9): 12680 -PP(f10(x,x),f10(f9(x,x),x)).  [ur(158,a,12278,a,c,241,a)].
+
+given #1096 (F,wt=9): 12691 -ppart(f1(x,x),f1(f9(x,x),x)).  [ur(65,a,12565,a,c,11230,a)].
+
+given #1097 (F,wt=9): 12764 -ppart(f12(x,x),f1(f9(x,x),x)).  [ur(65,a,12565,a,c,354,a)].
+
+given #1098 (F,wt=9): 12767 -ppart(f7(x,x),f1(f9(x,x),x)).  [ur(65,a,12565,a,c,301,a)].
+
+given #1099 (T,wt=9): 2453 part(x,f12(x,f6(f11(x,x),x))).  [resolve(1017,a,190,a)].
+
+given #1100 (T,wt=9): 2468 P(f6(f6(x,f12(x,x)),x),x).  [resolve(1072,a,161,a)].
+
+given #1101 (T,wt=9): 2518 P(f6(x,f6(x,f12(x,x))),x).  [resolve(1073,a,162,a)].
+
+given #1102 (T,wt=9): 2637 part(x,f12(f6(x,f12(x,x)),x)).  [resolve(1080,a,196,a)].
+
+given #1103 (A,wt=12): 363 -P(x,y) | P(f11(y,y),f7(x,f11(y,y))).  [resolve(309,a,124,b)].
+
+given #1104 (F,wt=9): 12771 -ppart(f10(x,x),f1(f9(x,x),x)).  [ur(65,a,12565,a,c,245,a)].
+
+given #1105 (F,wt=9): 12787 -ppart(f9(x,x),f1(f9(x,x),x)).  [ur(64,a,12565,a,c,243,a)].
+
+given #1106 (F,wt=9): 12832 -PP(x,f10(f7(f11(x,x),x),x)).  [ur(158,a,11122,a,c,230,a)].
+
+given #1107 (F,wt=9): 12974 -ppart(f7(f12(x,x),x),f1(x,x)).  [ur(65,a,231,a,c,11796,a)].
+
+given #1108 (T,wt=9): 2643 part(x,f12(x,f6(x,f12(x,x)))).  [resolve(1080,a,190,a)].
+
+given #1109 (T,wt=9): 2659 part(f11(x,f11(x,f6(x,x))),x).  [resolve(1092,a,104,a)].
+
+given #1110 (T,wt=9): 2705 part(f11(f11(x,f6(x,x)),x),x).  [resolve(1093,a,105,a)].
+
+given #1111 (T,wt=9): 2874 part(f11(x,f11(f7(x,x),x)),x).  [resolve(1110,a,104,a)].
+
+given #1112 (A,wt=10): 364 -P(x,y) | P(x,f7(f11(y,y),x)).  [resolve(309,a,124,a)].
+
+given #1113 (F,wt=9): 13130 -PP(x,f10(x,f7(f6(x,x),x))).  [ur(159,a,11155,a,c,230,a)].
+
+given #1114 (F,wt=9): 13179 -PP(x,f10(f7(f6(x,x),x),x)).  [ur(158,a,11156,a,c,230,a)].
+
+given #1115 (F,wt=9): 13238 -PP(x,f10(x,f7(f12(x,x),x))).  [ur(159,a,11189,a,c,230,a)].
+
+given #1116 (F,wt=9): 13367 -PP(f7(x,f6(x,x)),f10(x,x)).  [ur(159,a,179,a,c,12238,a)].
+
+given #1117 (T,wt=9): 2924 part(f11(f11(f7(x,x),x),x),x).  [resolve(1111,a,105,a)].
+
+given #1118 (T,wt=9): 2987 part(f11(x,f11(x,f11(x,x))),x).  [resolve(1128,a,104,a)].
+
+given #1119 (T,wt=9): 3143 part(f11(f11(x,f11(x,x)),x),x).  [resolve(1129,a,105,a)].
+
+given #1120 (T,wt=9): 3208 part(x,f12(f12(f7(x,x),x),x)).  [resolve(1150,a,194,a)].
+
+given #1121 (A,wt=10): 365 -P(x,y) | P(x,f7(x,f11(y,y))).  [resolve(309,a,122,b)].
+
+given #1122 (F,wt=9): 13440 -ppart(f7(f7(x,x),x),f1(x,x)).  [ur(65,a,231,a,c,12348,a)].
+
+given #1123 (F,wt=9): 13510 -ppart(f7(x,f12(x,x)),f1(x,x)).  [ur(65,a,231,a,c,12418,a)].
+
+given #1124 (F,wt=9): 13580 -ppart(f7(x,f7(x,x)),f1(x,x)).  [ur(65,a,231,a,c,12488,a)].
+
+given #1125 (F,wt=9): 13660 -PP(x,f10(f7(f12(x,x),x),x)).  [ur(158,a,11190,a,c,230,a)].
+
+given #1126 (T,wt=9): 3210 part(x,f12(x,f12(f7(x,x),x))).  [resolve(1150,a,192,a)].
+
+given #1127 (T,wt=9): 3231 part(x,f12(f12(f12(x,x),x),x)).  [resolve(1152,a,194,a)].
+
+given #1128 (T,wt=9): 3233 part(x,f12(x,f12(f12(x,x),x))).  [resolve(1152,a,192,a)].
+
+given #1129 (T,wt=9): 3368 part(f11(x,f11(f12(x,x),x)),x).  [resolve(1198,a,104,a)].
+
+given #1130 (A,wt=12): 366 -P(x,y) | P(f11(y,y),f7(f11(y,y),x)).  [resolve(309,a,122,a)].
+
+Low Water (keep): wt=14.000, iters=6679
+
+given #1131 (F,wt=9): 13720 -PP(x,f10(x,f7(f7(x,x),x))).  [ur(159,a,11597,a,c,230,a)].
+
+given #1132 (F,wt=9): 13770 -PP(x,f10(f7(f7(x,x),x),x)).  [ur(158,a,11598,a,c,230,a)].
+
+given #1133 (F,wt=9): 13892 -ppart(f7(x,f11(x,x)),f1(x,x)).  [ur(65,a,231,a,c,12558,a)].
+
+given #1134 (F,wt=9): 14021 -PP(x,f10(x,f7(x,f12(x,x)))).  [ur(159,a,11631,a,c,230,a)].
+
+given #1135 (T,wt=9): 3423 part(f11(f11(f12(x,x),x),x),x).  [resolve(1199,a,105,a)].
+
+given #1136 (T,wt=9): 3492 P(f6(f6(x,f6(x,x)),x),x).  [resolve(1212,a,161,a)].
+
+given #1137 (T,wt=9): 3673 P(f6(x,f6(x,f6(x,x))),x).  [resolve(1213,a,162,a)].
+
+given #1138 (T,wt=9): 3731 part(x,f12(f6(x,f6(x,x)),x)).  [resolve(1220,a,196,a)].
+
+given #1139 (A,wt=10): 373 -part(x,y) | overlaps(f6(x,x),f2(x,x)).  [resolve(368,a,174,c)].
+
+given #1140 (F,wt=9): 14071 -PP(x,f10(f7(x,f12(x,x)),x)).  [ur(158,a,11632,a,c,230,a)].
+
+given #1141 (F,wt=9): 14139 -ppart(f7(x,f6(x,x)),f1(x,x)).  [ur(65,a,231,a,c,13404,a)].
+
+given #1142 (F,wt=9): 14212 -ppart(f2(x,x),f1(x,f2(x,x))).  [ur(65,a,14092,a,c,243,a)].
+
+given #1143 (F,wt=9): 14222 -ppart(f1(x,x),f1(x,f2(x,x))).  [ur(64,a,14092,a,c,11230,a)].
+
+given #1144 (T,wt=7): 24283 overlaps(f6(x,x),f2(x,x)).  [resolve(373,a,12231,a)].
+
+given #1145 (T,wt=7): 24291 O(f6(x,x),f2(x,x)).  [resolve(24283,a,101,a)].
+
+given #1146 (T,wt=9): 3737 part(x,f12(x,f6(x,f6(x,x)))).  [resolve(1220,a,190,a)].
+
+given #1147 (T,wt=9): 3754 part(f11(f12(x,f6(x,x)),x),x).  [resolve(1234,a,105,a)].
+
+given #1148 (A,wt=12): 374 -part(x,y) | overlaps(f6(f2(x,x),f2(x,x)),x).  [resolve(368,a,173,b)].
+
+given #1149 (F,wt=9): 14235 -ppart(f12(x,x),f1(x,f2(x,x))).  [ur(64,a,14092,a,c,354,a)].
+
+given #1150 (F,wt=9): 14238 -ppart(f7(x,x),f1(x,f2(x,x))).  [ur(64,a,14092,a,c,301,a)].
+
+given #1151 (F,wt=9): 14242 -ppart(f10(x,x),f1(x,f2(x,x))).  [ur(64,a,14092,a,c,245,a)].
+
+given #1152 (F,wt=9): 14255 -PP(f1(x,x),f10(x,f2(x,x))).  [ur(159,a,14191,a,c,11232,a)].
+
+given #1153 (T,wt=9): 3810 part(f11(x,f12(x,f6(x,x))),x).  [resolve(1236,a,104,a)].
+
+given #1154 (T,wt=9): 4026 part(f11(f12(x,f11(x,x)),x),x).  [resolve(1254,a,105,a)].
+
+given #1155 (T,wt=9): 4084 part(f11(x,f12(x,f11(x,x))),x).  [resolve(1256,a,104,a)].
+
+given #1156 (T,wt=9): 4353 P(f6(f6(f7(x,x),x),x),x).  [resolve(1324,a,161,a)].
+
+given #1157 (A,wt=13): 375 -part(x,y) | -part(z,y) | overlaps(f6(z,z),f2(x,z)).  [resolve(368,a,109,d)].
+
+given #1158 (F,wt=9): 14273 -PP(f12(x,x),f10(x,f2(x,x))).  [ur(159,a,14191,a,c,325,a)].
+
+given #1159 (F,wt=9): 14278 -PP(f7(x,x),f10(x,f2(x,x))).  [ur(159,a,14191,a,c,278,a)].
+
+given #1160 (F,wt=9): 14281 -PP(f10(x,x),f10(x,f2(x,x))).  [ur(159,a,14191,a,c,241,a)].
+
+given #1161 (F,wt=9): 14303 -PP(f2(x,x),f10(x,f2(x,x))).  [ur(158,a,14191,a,c,230,a)].
+
+given #1162 (T,wt=9): 4418 P(f6(x,f6(f7(x,x),x)),x).  [resolve(1325,a,162,a)].
+
+given #1163 (T,wt=9): 4483 part(x,f12(f6(f7(x,x),x),x)).  [resolve(1332,a,196,a)].
+
+given #1164 (T,wt=9): 4489 part(x,f12(x,f6(f7(x,x),x))).  [resolve(1332,a,190,a)].
+
+given #1165 (T,wt=9): 4504 P(f6(f6(x,f11(x,x)),x),x).  [resolve(1340,a,161,a)].
+
+given #1166 (A,wt=13): 376 -part(x,y) | -part(z,y) | overlaps(f6(x,x),f2(x,z)).  [resolve(368,a,108,d)].
+
+given #1167 (F,wt=9): 14337 -PP(x,f10(x,f7(x,f7(x,x)))).  [ur(159,a,11665,a,c,230,a)].
+
+given #1168 (F,wt=9): 14373 -PP(x,f10(f7(x,f7(x,x)),x)).  [ur(158,a,11666,a,c,230,a)].
+
+given #1169 (F,wt=9): 14397 -ppart(f1(x,x),f1(f2(x,x),x)).  [ur(65,a,14374,a,c,11230,a)].
+
+given #1170 (F,wt=9): 14410 -ppart(f12(x,x),f1(f2(x,x),x)).  [ur(65,a,14374,a,c,354,a)].
+
+given #1171 (T,wt=9): 4701 P(f6(x,f6(x,f11(x,x))),x).  [resolve(1341,a,162,a)].
+
+given #1172 (T,wt=9): 4769 part(x,f12(f6(x,f11(x,x)),x)).  [resolve(1348,a,196,a)].
+
+given #1173 (T,wt=9): 4775 part(x,f12(x,f6(x,f11(x,x)))).  [resolve(1348,a,190,a)].
+
+given #1174 (T,wt=9): 4790 P(f6(f6(f12(x,x),x),x),x).  [resolve(1356,a,161,a)].
+
+given #1175 (A,wt=24): 377 -part(x,y) | -part(z,y) | overlaps(f6(f2(x,z),f2(x,z)),x) | overlaps(f6(f2(x,z),f2(x,z)),z).  [resolve(368,a,107,c)].
+
+given #1176 (F,wt=9): 14413 -ppart(f7(x,x),f1(f2(x,x),x)).  [ur(65,a,14374,a,c,301,a)].
+
+given #1177 (F,wt=9): 14417 -ppart(f10(x,x),f1(f2(x,x),x)).  [ur(65,a,14374,a,c,245,a)].
+
+given #1178 (F,wt=9): 14439 -ppart(f2(x,x),f1(f2(x,x),x)).  [ur(64,a,14374,a,c,243,a)].
+
+given #1179 (F,wt=9): 14467 -PP(f2(x,x),f10(f2(x,x),x)).  [ur(159,a,14387,a,c,230,a)].
+
+given #1180 (T,wt=9): 4858 P(f6(x,f6(f12(x,x),x)),x).  [resolve(1357,a,162,a)].
+
+given #1181 (T,wt=9): 5051 part(x,f12(f6(f12(x,x),x),x)).  [resolve(1364,a,196,a)].
+
+given #1182 (T,wt=9): 5057 part(x,f12(x,f6(f12(x,x),x))).  [resolve(1364,a,190,a)].
+
+given #1183 (T,wt=9): 5070 P(f6(x,f11(f6(x,x),x)),x).  [resolve(1377,a,162,a)].
+
+given #1184 (A,wt=13): 382 -ppart(x,f1(f6(f1(x,x),f1(x,x)),f1(x,x))).  [ur(65,a,368,a,c,254,a)].
+
+given #1185 (F,wt=9): 14474 -PP(f1(x,x),f10(f2(x,x),x)).  [ur(158,a,14387,a,c,11232,a)].
+
+given #1186 (F,wt=9): 14492 -PP(f12(x,x),f10(f2(x,x),x)).  [ur(158,a,14387,a,c,325,a)].
+
+given #1187 (F,wt=9): 14497 -PP(f7(x,x),f10(f2(x,x),x)).  [ur(158,a,14387,a,c,278,a)].
+
+given #1188 (F,wt=9): 14500 -PP(f10(x,x),f10(f2(x,x),x)).  [ur(158,a,14387,a,c,241,a)].
+
+given #1189 (T,wt=9): 5139 part(x,f12(f12(f6(x,x),x),x)).  [resolve(1415,a,194,a)].
+
+given #1190 (T,wt=9): 5141 part(x,f12(x,f12(f6(x,x),x))).  [resolve(1415,a,192,a)].
+
+given #1191 (T,wt=9): 5162 part(x,f12(f12(f11(x,x),x),x)).  [resolve(1417,a,194,a)].
+
+given #1192 (T,wt=9): 5164 part(x,f12(x,f12(f11(x,x),x))).  [resolve(1417,a,192,a)].
+
+given #1193 (A,wt=13): 383 -ppart(x,f1(f6(f10(x,x),f10(x,x)),f10(x,x))).  [ur(65,a,368,a,c,247,a)].
+
+given #1194 (F,wt=9): 14555 -PP(x,f10(x,f7(x,f11(x,x)))).  [ur(159,a,11699,a,c,230,a)].
+
+given #1195 (F,wt=9): 14675 -PP(x,f10(f7(x,f11(x,x)),x)).  [ur(158,a,11700,a,c,230,a)].
+
+given #1196 (F,wt=9): 14845 -PP(x,f1(f11(x,f7(x,x)),x)).  [ur(100,a,1576,a)].
+
+given #1197 (F,wt=9): 14847 -PP(x,f1(x,f11(f11(x,x),x))).  [ur(100,a,1681,a)].
+
+given #1198 (T,wt=9): 5323 P(f6(f11(f6(x,x),x),x),x).  [resolve(1466,a,161,a)].
+
+given #1199 (T,wt=9): 5391 P(f6(x,f11(x,f7(x,x))),x).  [resolve(1514,a,162,a)].
+
+given #1200 (T,wt=9): 5461 P(f6(f11(x,f7(x,x)),x),x).  [resolve(1551,a,161,a)].
+
+given #1201 (T,wt=9): 5529 P(f6(x,f11(f11(x,x),x)),x).  [resolve(1652,a,162,a)].
+
+given #1202 (A,wt=13): 386 -ppart(f7(f6(x,x),f6(x,x)),f1(f6(x,x),x)).  [ur(64,a,368,a,c,301,a)].
+
+given #1203 (F,wt=9): 14882 -PP(x,f10(x,f7(x,f6(x,x)))).  [ur(159,a,12209,a,c,230,a)].
+
+given #1204 (F,wt=9): 14918 -PP(x,f10(f7(x,f6(x,x)),x)).  [ur(158,a,12210,a,c,230,a)].
+
+given #1205 (F,wt=9): 14972 -ppart(x,f1(x,f7(f11(x,x),x))).  [ur(64,a,12244,a,c,243,a)].
+
+given #1206 (F,wt=9): 15057 -PP(x,f1(f11(f11(x,x),x),x)).  [ur(100,a,1714,a)].
+
+given #1207 (T,wt=9): 5719 P(f6(f11(f11(x,x),x),x),x).  [resolve(1689,a,161,a)].
+
+given #1208 (T,wt=9): 5791 part(f11(f12(x,f7(x,x)),x),x).  [resolve(1791,a,105,a)].
+
+given #1209 (T,wt=9): 5866 part(f11(x,f12(x,f7(x,x))),x).  [resolve(1793,a,104,a)].
+
+given #1210 (T,wt=9): 6200 part(f11(f12(x,f12(x,x)),x),x).  [resolve(1814,a,105,a)].
+
+given #1211 (A,wt=13): 387 -ppart(f10(f6(x,x),f6(x,x)),f1(f6(x,x),x)).  [ur(64,a,368,a,c,245,a)].
+
+given #1212 (F,wt=9): 15059 -PP(x,f1(x,f11(x,f12(x,x)))).  [ur(100,a,1863,a)].
+
+given #1213 (F,wt=9): 15061 -PP(x,f1(f11(x,f12(x,x)),x)).  [ur(100,a,1897,a)].
+
+given #1214 (F,wt=9): 15064 -ppart(x,f10(f6(f6(x,x),x),x)).  [ur(98,b,1986,a)].
+
+given #1215 (F,wt=9): 15162 -ppart(x,f1(f7(f11(x,x),x),x)).  [ur(65,a,12795,a,c,243,a)].
+
+given #1216 (T,wt=9): 6279 part(f11(x,f12(x,f12(x,x))),x).  [resolve(1816,a,104,a)].
+
+given #1217 (T,wt=9): 6375 P(f6(x,f11(x,f12(x,x))),x).  [resolve(1833,a,162,a)].
+
+given #1218 (T,wt=9): 6676 P(f6(f11(x,f12(x,x)),x),x).  [resolve(1871,a,161,a)].
+
+given #1219 (T,wt=9): 6753 part(f11(f6(f6(x,x),x),x),x).  [resolve(1985,a,105,a)].
+
+given #1220 (A,wt=14): 389 -part(f7(x,x),y) | overlaps(x,f2(f7(x,x),f7(x,x))).  [resolve(369,a,174,c)].
+
+given #1221 (F,wt=9): 15192 -ppart(x,f1(x,f7(f6(x,x),x))).  [ur(64,a,13097,a,c,243,a)].
+
+given #1222 (F,wt=9): 15220 -ppart(x,f10(x,f6(f6(x,x),x))).  [ur(98,b,2065,a)].
+
+given #1223 (F,wt=9): 15222 -ppart(x,f10(f6(x,f7(x,x)),x)).  [ur(98,b,2152,a)].
+
+given #1224 (F,wt=9): 15254 -ppart(x,f1(f7(f6(x,x),x),x)).  [ur(65,a,13142,a,c,243,a)].
+
+given #1225 (T,wt=9): 6834 part(f11(x,f6(f6(x,x),x)),x).  [resolve(2030,a,104,a)].
+
+given #1226 (T,wt=9): 6915 part(f11(f6(x,f7(x,x)),x),x).  [resolve(2151,a,105,a)].
+
+given #1227 (T,wt=9): 7165 part(f11(x,f6(x,f7(x,x))),x).  [resolve(2199,a,104,a)].
+
+given #1228 (T,wt=9): 7246 part(f11(f6(f11(x,x),x),x),x).  [resolve(2268,a,105,a)].
+
+given #1229 (A,wt=15): 390 -part(x,y) | -part(f7(z,z),y) | overlaps(z,f2(x,f7(z,z))).  [resolve(369,a,109,d)].
+
+given #1230 (F,wt=9): 15284 -ppart(x,f1(x,f7(f12(x,x),x))).  [ur(64,a,13205,a,c,243,a)].
+
+given #1231 (F,wt=9): 15316 -ppart(x,f1(f7(f12(x,x),x),x)).  [ur(65,a,13622,a,c,243,a)].
+
+given #1232 (F,wt=9): 15346 -ppart(x,f1(x,f7(f7(x,x),x))).  [ur(64,a,13686,a,c,243,a)].
+
+given #1233 (F,wt=9): 15371 -ppart(x,f10(x,f6(x,f7(x,x)))).  [ur(98,b,2237,a)].
+
+given #1234 (T,wt=9): 7327 part(f11(x,f6(f11(x,x),x)),x).  [resolve(2401,a,104,a)].
+
+given #1235 (T,wt=9): 7408 part(f11(f6(x,f12(x,x)),x),x).  [resolve(2472,a,105,a)].
+
+Prover catching signal 2.
+
+============================== STATISTICS ============================
+
+Given=1235. Generated=85819. Kept=24883. proofs=0.
+Usable=1229. Sos=20000. Demods=0. Limbo=0, Disabled=3760. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=3255. Back_subsumed=30.
+Sos_limit_deleted=57681. Sos_displaced=3605. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=18.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=95631. Nonunit_bsub_feature_tests=26728.
+Megabytes=38.77.
+User_CPU=1.84, System_CPU=0.07, Wall_clock=2.
+
+Megs malloced by palloc(): 40.
+  type (bytes each)        gets      frees     in use      bytes
+chunk ( 112)               2338       2338          0      0.0 K
+string_buf (  16)          2269       2269          0      0.0 K
+token (  32)               1695       1695          0      0.0 K
+pterm (  32)                954        954          0      0.0 K
+hashtab (  16)               33         33          0      0.0 K
+hashnode (  16)             256        256          0      0.0 K
+term (  32)              954830     771390     183440   5732.5 K
+      term arg arrays:                                  2848.6 K
+attribute (  24)             33          0         33      0.8 K
+ilist (  16)            7289021    7148091     140930   2202.0 K
+plist (  16)             145283      98572      46711    729.9 K
+i2list (  16)               327        327          0      0.0 K
+just (  24)               86875      61642      25233    591.4 K
+parajust (  24)               0          0          0      0.0 K
+instancejust (  16)           0          0          0      0.0 K
+ivyjust (  40)                0          0          0      0.0 K
+formula (  48)             2467       1865        602     28.2 K
+    formula arg arrays:                                    4.2 K
+topform (  88)            85966      60943      25023   2150.4 K
+clist_pos (  40)          54913      29924      24989    976.1 K
+clist (  32)                  8          1          7      0.2 K
+context (1616)           376720     376720          0      0.0 K
+trail (  24)            3339980    3339980          0      0.0 K
+ac_match_pos (100072)          0          0          0      0.0 K
+ac_match_free_vars_pos (20032)
+                              0          0          0      0.0 K
+btm_state ( 112)              0          0          0      0.0 K
+btu_state ( 112)              0          0          0      0.0 K
+ac_position (388448)          0          0          0      0.0 K
+fpa_trie (  40)          143985      20614     123371   4819.2 K
+fpa_state (  56)         895262     895262          0      0.0 K
+fpa_index (  24)             10          0         10      0.2 K
+fpa_chunk (  40)         130290      69706      60584   2366.6 K
+fpa_list (  24)           57650          0      57650   1351.2 K
+      fpa_list chunks:                                  5442.5 K
+discrim (  24)           153309      53730      99579   2333.9 K
+discrim_pos (  32)         2584       2584          0      0.0 K
+flat2 (  56)             409144     409144          0      0.0 K
+flat (  72)                   0          0          0      0.0 K
+flatterm (  56)               0          0          0      0.0 K
+mindex (  48)                13          0         13      0.6 K
+mindex_pos ( 112)        295358     295358          0      0.0 K
+lindex (  24)                 5          0          5      0.1 K
+clash (  72)              46166      46166          0      0.0 K
+di_tree (  24)            47961       1847      46114   1080.8 K
+avl_node (  32)           49664       9664      40000   1250.0 K
+
+Memory report, 2 @ 20 = 40 megs (36.97 megs used).
+List   1, length       6,      0.0 K
+List   2, length      75,      1.2 K
+List   3, length   22341,    523.6 K
+List   4, length   20498,    640.6 K
+List   5, length   28214,   1102.1 K
+List   6, length       9,      0.4 K
+List   7, length     641,     35.1 K
+List   8, length    1206,     75.4 K
+List   9, length       5,      0.4 K
+List  11, length       1,      0.1 K
+List  14, length      37,      4.0 K
+List  16, length     153,     19.1 K
+List  32, length     791,    197.8 K
+List 128, length     525,    525.0 K
+List 202, length       5,      7.9 K
+List 256, length      20,     40.0 K
+
+============================== SELECTOR REPORT =======================
+Sos_deleted=57681, Sos_displaced=3606, Sos_size=20000
+  SELECTOR       PART   PRIORITY      ORDER       SIZE   SELECTED
+         I 2147483647       high        age          0         58
+         H          1       high     weight          0          0
+         A          1        low        age      20000        131
+         F          4        low     weight      10238        524
+         T          4        low     weight       9762        522
+============================== end of selector report ================
+
+============================== end of statistics =====================
+
+Exiting with failure.
+
+Process 10028 exit (SIGINT) Tue Mar 26 21:11:10 2013
