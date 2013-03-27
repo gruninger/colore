@@ -1,0 +1,51 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% Reading from file test/p9/20130326/dolce_time_mereology/dolce_time_mereology_reduction.p9
+(all x (T(x) <-> x = x)).
+(all x all y (P(x,y) <-> part(x,y))).
+(all x all y (O(x,y) <-> overlaps(x,y))).
+(all x all y (U(x,y) <-> underlaps(x,y))).
+
+% Reading from file test/p9/20130326/dolce_time_mereology/cm_mereology.p9
+
+% Reading from file test/p9/20130326/dolce_time_mereology/em_mereology.p9
+(all x all y (-part(x,y) -> (exists z (part(z,x) & disjoint(z,y))))).
+
+% Reading from file test/p9/20130326/dolce_time_mereology/mereology_def.p9
+(all x all y (ppart(x,y) <-> part(x,y) & -part(y,x))).
+%(all x all y (overlaps(x,y) <-> (exists z (part(z,x) & part(z,y))))).
+(all x all y (disjoint(x,y) <-> -overlaps(x,y))).
+%(all x all y (underlaps(x,y) <-> (exists z (part(x,z) & part(y,z))))).
+(all x (atomic_part(x) <-> (all y (part(y,x) -> y = x)))).
+
+% Reading from file test/p9/20130326/dolce_time_mereology/sum_mereology.p9
+(all x all y (underlaps(x,y) -> (exists z all v (overlaps(v,z) <-> overlaps(v,x) | overlaps(v,y))))).
+
+% Reading from file test/p9/20130326/dolce_time_mereology/prod_mereology.p9
+(all x all y (overlaps(x,y) -> (exists z all v (ppart(v,z) <-> ppart(v,x) & ppart(v,y))))).
+
+% Reading from file test/p9/20130326/dolce_time_mereology/m_mereology.p9
+(all x part(x,x)).
+(all x all y (part(x,y) & part(y,x) -> x = y)).
+(all x all y all z (part(x,y) & part(y,z) -> part(x,z))).
+
+end_of_list.
+
+formulas(goals).
+
+(all x all y (T(x) & T(y) & U(x,y) -> (exists z (T(z) & (all w (T(w) -> (O(w,z) <-> O(w,x) | O(w,y)))))))).
+
+end_of_list.
+
