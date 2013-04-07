@@ -1,0 +1,46 @@
+(cl-module ex0326
+
+(cl-imports test/dolce_time_mereology)
+(cl-imports test/dolce_time_mereology2cem_mereology)
+
+(cl-comment "GOALS: cem_mereology axioms")
+
+(cl-comment "Product")
+(forall (x y)
+	(if	(overlaps x y)
+		(exists (z)
+			(forall (v)
+				(iff	(ppart v z)
+					(and	(ppart v x)
+						(ppart v y)))))))
+						
+(cl-comment "Sum")
+(forall (x y)
+	(if	(underlaps x y)
+		(exists (z)
+			(forall (v)
+				(iff	(overlaps v z)
+					(or	(overlaps v x)
+						(overlaps v y)))))))
+
+(cl-comment "Strong Supplementation Principle")
+(forall (x y)
+        (if     (not (part x y))
+                (exists (z)
+                        (and    (part z x)
+                                (disjoint z y)))))
+								
+(forall (x)
+	(part x x))
+
+(forall (x y)
+        (if     (and	(part x y)
+			(part y x))
+		(= x y)))
+
+(forall (x y z)
+        (if     (and    (part x y)
+                        (part y z))
+                (part x z)))
+				
+)
