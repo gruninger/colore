@@ -1,0 +1,34 @@
+
+(cl-text dtv_mereology
+
+(forall ((part "time interval")) 
+	("time interval1 is part of time interval2" part part))
+
+(forall ((part "time interval") (whole "time interval")) 
+	(if 	(and 	("time interval1 is part of time interval2" part whole)
+			("time interval1 is part of time interval2" whole part))
+		(= part whole))) 
+
+(forall ((part "time interval") (whole "time interval") (part3 "time interval"))  
+	(if 	(and 	("time interval1 is part of time interval2" part whole)
+			("time interval1 is part of time interval2" whole part3))
+		("time interval1 is part of time interval2" part part3)))
+
+(forall ((part1 "time interval") (part2 "time interval")) 
+	(iff 	("time interval1 overlaps time interval2" part1 part2)
+		(exists ((part3 "time interval"))
+			(and	("time interval1 is part of time interval2" part3 part1)
+				("time interval1 is part of time interval2" part3 part2)))))
+
+(forall ((whole "time interval") (part "time interval")) 
+	(iff 	("time interval1 is proper part of time interval2" part whole)
+		(and	("time interval1 is part of time interval2" part whole)
+			(not ("time interval1 is part of time interval2" whole part)))))
+
+(forall ((part1 "time interval") (whole "time interval")) 
+	(if 	("time interval1 is proper part of time interval2" part1 whole)
+		(exists ((part2 "time interval"))
+			(and	("time interval1 is proper part of time interval2" part2 whole)
+				(not ("time interval1 overlaps time interval2" part2 part1))))))
+
+)
