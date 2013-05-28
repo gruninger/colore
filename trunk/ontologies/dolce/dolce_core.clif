@@ -1,0 +1,473 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger, Carmen Chui
+ *******************************************************************************/
+ 
+(cl-text http://colore.oor.net/dolce_core/dolce_core
+
+(cl-comment "Import the DOLCE taxonomy.")
+(cl-imports http://colore.oor.net/dolce_taxonomy/dolce_taxonomy)
+
+(cl-comment "Import the DOLCE present theory.")
+(cl-imports http://colore.oor.net/dolce_present/dolce_present)
+
+(cl-comment "------------------------DOLCE_CORE_MEREOLOGY------------------------")
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "DOLCE CORE axioms for parthood and temporary parthood")
+(cl-comment "dolce-core carefully distinguishes spatio-temporal inclusion and parthood
+by adopting the axioms (A1)-(A4) of extensional mereology.")
+(cl-comment "D1 to D2")
+(cl-comment "A1 to A9")
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_D1")
+(cl-comment "Overlap")
+(forall (x y)
+	(iff (O x y)
+		(exists (z)
+				(and (P z x)(P z y)))))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_D2")
+(cl-comment "Binary Sum")
+(forall (x y z)
+	(iff (Sum z x y)
+		(forall (w)
+				(iff (O w z)
+						(or (O w x) (O w y))))))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A1")
+(cl-comment "Reflexivity")
+(forall (x) (P x x))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A2")
+(cl-comment "Transitivity")
+(forall (x y z)
+		(if (and (P x y)(P y z))
+			(P x z)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A3")
+(cl-comment "Antisymmetry")
+(forall (x y z)
+		(if (and (P x y)(P y z))
+			(= x y)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A4")
+(cl-comment "Extensionality")
+(forall (x y)
+		(if (not(P x y))
+			(exists (z)
+					(and (P z x)(not(O z y))))))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A5")
+(cl-comment "Dissectivity")
+(forall (x y)
+	(if (and (O y)(P x y))
+			(O x)))
+
+(forall (x y)
+	(if (and (E y)(P x y))
+			(E x)))
+
+(forall (x y)
+	(if (and (Qi y)(P x y))
+			(Qi x)))
+
+(forall (x y)
+	(if (and (Sjk y)(P x y))
+			(Sjk x)))
+
+(forall (x y)
+	(if (and (C y)(P x y))
+			(C x)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A6")
+(cl-comment "Additivity")
+(forall (x y z)
+	(if (and (O x)(O y)(SUM z x y))
+		(O z)))
+
+(forall (x y z)
+	(if (and (E x)(E y)(SUM z x y))
+		(E z)))
+
+(forall (x y z)
+	(if (and (Qi x)(Qi y)(SUM z x y))
+		(Qi z)))
+
+(forall (x y z)
+	(if (and (Sjk x)(Sjk y)(SUM z x y))
+		(Sjk z)))
+
+(forall (x y z)
+	(if (and (C x)(C y)(SUM z x y))
+		(C z)))
+
+(cl-comment "------------------------DOLCE_CORE_LOCATION------------------------")
+
+(cl-comment "The location relation (L) provides the link between qualities and spaces.
+First, we require regions (and in particular spaces) not to change over the
+time they exist (A28). Expression L(x, y, t) is used to state that time t, region
+x is the location of the individual quality enforced (at least in part)
+by axioms (A30) and (A31).17 Each individual quality in qi must be located
+at least in one of the associated spaces sij (axioms (A34) and (A35)). The
+location in a single space is unique (A36) and a quality that has a location
+in a space needs to have some location in that space during its whole life
+(A37). (A38) says that two qualities coincident at t are also indistinguishable
+with respect to their locations. Together with (A25) and (A26), this axiom
+formalizes the substitutivity of temporary properties represented by qualities:
+two entities that coincide at t are indistinguishable at t with respect to their
+qualities.")
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A28")
+(forall (x t t1)
+	(if (and (R x)(PRE x t)(PRE x t1))
+		(forall (y)
+			(iff (P y x t)(P y x t1)))))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A29")
+(forall (x y t)
+	(if (and (sij x)(sij y)(PRE x t))
+		(PRE y t)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A30")
+(forall (x y t)
+	(if (L x y t)
+		(and (R x)(Q y))))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A31")
+(forall (x y t)
+	(if (L x y t)
+		(PRE y t)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A32")
+(forall (x x1 y t t1)
+	(if (and (L x y t)(P t1 t)(L x1 y t1)(sij x)(sij x1))
+		(forall (t2)
+			(if (PRE x t2)(P x1 x t2)))))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A33")
+(forall (x x1 x2 y t t1 t2)
+	(if (and (L x1 y t1)(L x2 y t2)(SUM t t1 t2)(SUM x x1 x2)(sij x1)(sij x2))
+		(L x y t)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A34")
+(forall (x y t)
+	(if (and (L x y t)(Qi y))
+		(sij x)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A35")
+(forall (y t)
+	(if (and (Q y)(PRE y t))
+		(exists (x) (L x y t))))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A36")
+(forall (x x1 y t)
+	(if (and (L x y t)(L x1 y t)(sjk x)(sjk x1))
+		(= x x1)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A37")
+(forall (x y t t1)
+	(if (and (L x y t)(PRE y t1)(sjk x))
+		(exists (x1)
+			(and (L x1 y t1)(sjk x1)))))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A38")
+(cl-comment "L-substitutivity")
+(forall (x x1 y y1 t)
+	(if (and (L x y t)(CC x1 x t)(CC y1 y t))
+		(L x1 y1 t)))
+
+(cl-comment "------------------------DOLCE_CORE_PARTICIPATION------------------------")
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "The dolce-core unified framework relies on the participation relation (PC) to relate the temporal qualities of events and the atemporal qualities of objects. Participation is taken to be a time regular relation defined between objects and events: PC(x, y, t) stands for the object x participates in the event y at t")
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A39")
+(forall (x y t)
+	(if (PC x y t)
+		(and (O x)(E x))))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A40")
+(forall (x t)
+	(if (and (E x)(PRE x t))
+		(exists (y)
+			(PC y x t))))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A41")
+(forall (x t)
+	(if (and (O x)(PRE x t))
+		(exists (y)
+			(PC y x t))))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A42")
+(forall (x y y1 t)
+	(if (and (PC x y t)(P y y1 t)(E y1))
+		(PC x y1 t)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A43")
+(forall (x x1 y t)
+	(if (and (PC x y t)(P x1 x t))
+		(PC x1 y t)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A44")
+(forall (x y v z)
+	(if (and (I x y)(Qi x)(E y)(I z v)(Qj z)(O v))
+		(and (not(Qj x))(not(Qi z)))))
+
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A45")
+(cl-comment "(A45) makes explicit the temporal nature of the parameter t in the location relation. (A46) guarantees that the events have a time-quality. These axioms, together with (A10) and the axioms on inheritance and location guarantee that, for events, reduces to having a time-quality located in t. In addition, together with (A41) and (A44) they show that objects are in time because of their participation in events.")
+(forall (x y t)
+	(if (and (L x y t)(TQ y))
+		(= x t)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A46")
+(forall (x)
+	(if (E x)
+		(exists (y)
+			(and (TQ y)(I y x)))))
+
+
+(cl-comment "------------------------DOLCE_CORE_PROPERTIES------------------------")
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "The second option consists in reifying properties, that is, in associating
+them to entities in the category of concepts, c.  In order to deal with concepts
+and to relate concepts to an entity according to the properties the latter
+has, a (possibly intensional) instance of relation, called classification (CF),
+is introduced in the ontology. CF(x, y, t) stands for x classifies y as it is at
+time t and is characterized in dolce-core as a time regular relation.")
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A17")
+(forall (x y t)
+	(if (CF x y t)(c x)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A18")
+(forall (x y t)
+	(if (CF x y t)(PRE y t)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A19")
+(forall (x t t1)
+	(if (and (c x)(PRE x t)(PRE x t1))
+		(forall (y)
+			(iff (P x y t)(P y x t1)))))
+
+(cl-comment "------------------------DOLCE_CORE_QUALITY------------------------")
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A20")
+(forall (x y)
+	(if (I x y)(Q x)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A21")
+(forall (x y y1)
+	(if (and (I x y)(I x y1))
+		(= y y1)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A22")
+(forall (x)
+	(if (Q x)
+		(exists (y) (I x y))))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A23")
+(forall (x y)
+	(if (I x y)
+		(forall (t)
+			(iff (PRE x t)(PRE y t)))))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A24")
+(forall (x x1 y)
+	(if (and (I x y)(I x1 y)(Qi x)(Qi x1))
+		(= x x1)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A25")
+(forall (x y t)
+	(if (CC x y t)
+		(exists (z)
+			(iff (and (I z x)(Qi z))
+				(exists (z1)
+					(and (I z1 y)(Qi z1)))))))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A26")
+(forall (x y z t z1)
+	(if
+		(and (CC x y t)(I z x)(I z1 y)(Qi z)(Qi z1))
+		(CC z z1 t)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A27")
+(forall (x y v w z)
+	(if
+		(and (I x y)(I v w)(Qi x)(Sum z x v)(Sum s y w))
+		(I z s)))
+
+(cl-comment "------------------------DOLCE_CORE_TEMPORARY_PARTHOOD------------------------")
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "DOLCE CORE axioms for parthood and temporary parthood")
+(cl-comment "dolce-core carefully distinguishes spatio-temporal inclusion and parthood
+by adopting the axioms (A1)-(A4) of extensional mereology.")
+(cl-comment "A7 to A9")
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A7")
+(forall (x t)
+		(if (PRE x t)(T t)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A8")
+(cl-comment "Dissectivity")
+(forall (x t t1)
+		(if (and (PRE x t)(P t1 t))
+			(PRE x t1)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A9")
+(cl-comment "Additivity")
+(forall (x t t1 t2)
+		(if (and (PRE x t1)(PRE x t2)(SUM t t1 t2))
+			(PRE x t)))
+
+(cl-comment "All DOLCE-CORE entities exist in time. The DOLCE categories ED (endurant) and PD (perdurant) are respectively renamed O (object) and E (event).")
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "All DOLCE-CORE entities exist in time.")
+(forall (x)
+	(if (or (O x)(E x)(Q x)(R x)(C x)(AS x))
+		(PT x)))
+
+(cl-comment "Individual qualities are themselves partioned into quality kinds (qi). Each quality kind qi is associated to one or more spaces (sij): each individual quality in qi has location in (i.e. is associated to a region in each of) the  associated spaces sij .")
+
+(cl-comment "Quality and individual quality will be done later.")
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A10")
+(forall (x)
+		(if (PT x)
+			(exists (t) (PRE x t))))
+
+(cl-comment "DOLCE-CORE adopts a temporary extensional mereology, also denoted by P, which is based on axioms (A12)-(A15), i.e., those of extensional mereology adapted to the extra temporalparameter. Further mereological aspects are enforced via the notion of time regular relation (see below). Expression P(x, y, t) stands for  is part of y at time t? analogously for O(x, y, t).")
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_D3")		
+(cl-comment "Temporary Overlap")
+(forall (x y t)
+		(iff (O x y t)
+				(exists (z)
+						(and (P z x t)(P z y t)))))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A11")
+(cl-comment "Parthood implies being present.")
+(forall (x y t)
+		(if (P x y t)
+			(and (PRE x t)(PRE y t))))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A12")
+(cl-comment "Temporary Reflexivity")
+(forall (x t)
+		(if (PRE x t)(P x x t)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A13")
+(cl-comment "Temporary Transitivity")
+(forall (x y z t)
+		(if (and (P x y t)(P y z t))
+			(P x z t)))
+			
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A14")
+(cl-comment "Temporary Extensionality")
+(forall (x y t)
+		(if (and (PRE x t)(PRE y t)(not(P x y t)))
+			(exists (z)
+					(and (P z x t)(not(O z y t))))))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A15")
+(cl-comment "Temporal Dissectivity")
+(forall (x y t)
+	(if (and (O y)(P x y t))
+		(O x)))
+
+(forall (x y t)
+	(if (and (E y)(P x y t))
+		(E x)))
+
+(forall (x y t)
+	(if (and (Qi y)(P x y t))
+		(Qi x)))
+
+(forall (x y t)
+	(if (and (Sjk y)(P x y t))
+		(Sjk x)))
+
+(forall (x y t)
+	(if (and (C y)(P x y t))
+		(C x)))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_D4")
+(cl-comment "Temporal Coincidence")
+(forall (x y t)
+	(iff (CC x y t)
+		(and (P x y t)(P y x t))))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_D5")
+(cl-comment "Constant Parthood")
+(forall (x y)
+	(iff (CP x y)
+		(if (and (exists (t) (PRE x t))
+			(forall (t) (PRE x t)))
+			(P x y t))))
+
+(cl-comment "Source: Foundational Choices in DOLCE by: Stefano Borgo, and Claudio Masolo In: Handbook on Ontologies Springer (2009).")
+(cl-comment "Identifier: dolcecore_A16")
+(forall (x y)
+	(if (exists (t) (PRE x t))
+		(iff (CP x y)(P x y))))
+
+)
