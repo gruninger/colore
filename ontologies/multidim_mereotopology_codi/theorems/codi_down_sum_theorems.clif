@@ -1,0 +1,323 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text multidim_mereotopology_codi/theorems/codi_down_sum_theorems.clif
+
+(cl-imports multidim_mereotopology_codi/codi_down_sum.clif)
+
+
+(cl-comment "Sum-T1")
+
+
+(forall (x y z)
+	(if
+		(Cont z (sum x y))
+		(exists (v)
+			(or
+				(and
+					(P v z)
+					(Cont v x) 
+				)
+				(and
+					(P v z)
+					(Cont v y)
+				)
+			)
+		)
+	)
+)
+
+
+(cl-comment "Sum-T2a")
+
+(forall (x)
+	(if
+		(not (ZEX x))
+		(P x (sum x x))
+	)
+)
+
+
+(cl-comment "Sum-T2b")
+
+
+(forall (x)
+	(if
+		(and
+			(not (ZEX (sum x x)))
+			(not (ZEX x))
+		)
+		(P (sum x x) x)
+	)
+)
+
+
+(cl-comment "Sum-T3a: zero sum of zero")
+
+(forall (x y)
+	(if
+		(and
+			(ZEX x)
+			(ZEX y)
+		)
+		(ZEX (sum x y))
+	)
+)
+
+(cl-comment "Sum-T3b: zero sum of zero")
+
+(forall (x y)
+	(if
+		(ZEX (sum x y))
+		(ZEX x)
+	)
+)
+
+
+(cl-comment "Sum-T4: sum with zero entity")
+
+(forall (x y)
+	(if 
+		(ZEX y)
+		(= (sum x y) x)
+	)
+)
+
+
+(cl-comment "Sum-T5: dimension of the sum of equidimensional entities")
+
+(forall (x y)
+	(if
+		(and
+			(EqDim x y)
+			(not (ZEX x))
+			(not (ZEX y))
+		)
+		(EqDim x (sum x y))
+	)
+)
+
+
+
+
+(cl-comment "Sum-T7a")
+
+(forall (x y)
+	(if	
+		(and
+			(not (ZEX x))
+			(P y x)
+		)
+		(P x (sum y (difference x y)))
+	)
+)
+
+
+(cl-comment "Sum-T7b")
+
+(forall (x y)
+	(if
+		(and
+			(not (ZEX x))
+			(P y x)
+		)
+		(P (sum y (difference x y)) x)
+	)
+)
+
+
+
+(cl-comment "Contributions to Sum-T8")
+
+(forall (x y w)
+	(if
+		(and
+			(EqDim x y)
+			(Cont w (sum x y))
+			(not (Cont w x))
+			(not (Cont w y))
+			(not (ZEX x))
+			(not (ZEX y))
+		)
+		(Cont (intersection w x) x)
+	)
+)
+
+
+(forall (x y w)
+	(if
+		(and
+			(EqDim x y)
+			(Cont w (sum x y))
+			(not (Cont w x))
+			(not (Cont w y))
+			(not (ZEX x))
+			(not (ZEX y))
+		)
+		(Cont (difference w x) y)
+	)
+)
+
+
+(forall (x y w)
+	(if
+		(and
+			(EqDim x y)
+			(Cont w (sum x y))
+			(not (Cont w x))
+			(not (Cont w y))
+			(not (ZEX x))
+			(not (ZEX y))
+		)
+		(P (intersection w x) w)
+	)
+)
+
+(forall (x y w)
+	(if
+		(and
+			(EqDim x y)
+			(Cont w (sum x y))
+			(not (Cont w x))
+			(not (Cont w y))
+			(not (ZEX x))
+			(not (ZEX y))
+		)
+		(P (difference w x) w)
+	)
+)
+
+
+(forall (x y w)
+	(if
+		(and
+			(EqDim x y)
+			(Cont w (sum x y))
+			(not (Cont w x))
+			(not (Cont w y))
+		)
+		(not (PO (intersection w x) (difference w x)))
+	)
+)
+
+
+(cl-comment "Sum-T6a")
+
+(forall (x y)
+	(if
+		(EqDim x y)
+		(forall (z)
+			(if
+				(or
+					(PO z x)
+					(PO z y)
+				)
+				(PO z (sum x y))
+			)
+		)
+	)
+)
+
+
+(cl-comment "Sum-T6b")
+
+(forall (x y)
+	(if
+		(EqDim x y)
+		(forall (z)
+			(if
+				(PO z (sum x y))
+				(or
+					(PO z x)
+					(PO z y)
+				)
+			)
+		)
+	)
+)
+
+
+(cl-comment "Sum-T9a")
+
+(forall (x y)
+	(if
+		(and
+			(EqDim x y)
+			(not (ZEX x))
+			(not (ZEX y))
+		)
+		(forall (z)
+			(if
+				(and
+					(Cont x z)
+					(Cont y z)
+				)
+				(Cont (sum x y) z)
+			)
+		)
+	)
+)
+
+
+(cl-comment "Sum-T9b")
+
+(forall (x y)
+	(if
+		(and
+			(EqDim x y)
+			(not (ZEX x))
+			(not (ZEX y))
+		)
+		(forall (z)
+			(if
+				(Cont (sum x y) z)
+				(Cont x z)
+			)
+		)
+	)
+)
+
+
+(cl-comment "Sum-T10a")
+
+(forall (x y z w)
+	(if
+		(and
+			(not (ZEX (sum (sum x y) z)))
+			(not (ZEX (sum x y)))
+			(not (ZEX x))
+			(not (ZEX y))
+			(not (ZEX z))
+			(not (ZEX w))
+			(P w (sum (sum x y) z))
+		)
+		(P w (sum x (sum y z)))
+	)
+)
+
+(cl-comment "Sum-T10b")
+
+(forall (x y z w)
+	(if
+		(and
+			(not (ZEX (sum x (sum y z))))
+			(not (ZEX (sum x y)))
+			(not (ZEX x))
+			(not (ZEX y))
+			(not (ZEX z))
+			(not (ZEX w))
+			(P w (sum x (sum y z)))
+		)
+		(P w (sum (sum x y) z))
+	)
+)
+
+
+)

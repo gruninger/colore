@@ -1,0 +1,62 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text multidim_mereotopology_codib/codib_updown.clif
+
+(cl-imports multidim_mereotopology_codib/codib_down.clif)
+
+(cl-imports multidim_mereotopology_codi/codi_down_sum_prime.clif)
+
+(cl-imports multidim_mereotopology_codi/definitions/min_max_in_dim.clif)
+
+
+(cl-comment "Sum-A6prime: forcing the existence of sums of equidimensional entities that only meet in boundary of minimal parts")
+
+(forall (x y)
+	(if
+		(and
+			(EqDim x y)
+			(forall (z)
+				(if
+					(and
+						(Cont z x)
+						(Cont z y)
+						(Min z)
+					)
+					(exists (u v)
+						(and
+							(P u x)
+							(P v y)
+							(BCont z u)
+							(BCont z v)
+						)
+					)
+				)
+			)
+		)
+		(exists (z)
+			(TSum x y z)
+		)
+	)
+)
+
+
+(cl-comment "U-A1: everything is contained in a universal entity")
+
+(forall (x)
+	(if 
+		(not (ZEX x))
+		(Cont x Uni)
+	)
+)
+
+
+
+)

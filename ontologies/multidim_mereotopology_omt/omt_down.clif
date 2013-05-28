@@ -1,0 +1,67 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text multidim_mereotopology_omt/omt_down.clif
+
+(cl-imports multidim_mereotopology_btw/btw.clif)
+
+(cl-imports multidim_mereotopology_codi/codi_down.clif)
+
+(cl-imports multidim_mereotopology_codi/codi.clif)
+
+(cl-imports multidim_mereotopology_codi/definitions/connected.clif)
+
+(cl-comment "axioms relating incidence and betweenness")
+
+(cl-comment "OMT-A1")
+
+(forall (r x y z)
+	(if
+		(Btw r x y z)
+		(and
+			(Con r)
+			(Cont x r)
+			(Cont y r)
+			(Cont z r)
+			(not (C x y))
+			(not (C y z))
+			(not (C x z))
+		)
+	)
+)
+
+
+(cl-comment "OMT-A2")
+
+(forall (r v x y z)
+	(if
+		(and
+			(Btw r x y z)
+			(Cont v r)
+			(Con v)
+			(C v x)
+			(C v z)
+		)
+		(C v y)
+	)
+)
+
+
+(cl-comment "OMT-A3")
+
+(forall (x)
+	(if
+		(Max x)
+		(Con x)
+	)
+)
+
+			
+)

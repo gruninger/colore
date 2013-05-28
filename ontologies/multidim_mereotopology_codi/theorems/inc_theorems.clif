@@ -1,0 +1,86 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text multidim_mereotopology_codi/inc_theorems.clif
+
+(cl-imports multidim_mereotopology_codi/codi_basic.clif)
+
+(cl-imports multidim_mereotopology_codi/definitions/ep.clif)
+
+(cl-imports multidim_mereotopology_codi/definitions/inc.clif)
+
+(cl-comment "Inc-T1: incidence irreflexive")
+
+(forall (x)
+	(not (Inc x x))
+)
+
+
+(cl-comment "Inc-T2: incidence symmetric")
+
+(forall (x y)
+	(if
+		(Inc x y)
+		(Inc y x)
+	)
+)
+
+
+(cl-comment "Inc-T3: equi-dimensionality prevents incidence")
+
+(forall (x y)
+	(if
+		(EqDim x y)
+		(not (Inc x y))
+	)
+)
+
+
+(cl-comment "Inc-T4: incidence requires comparability")
+
+(forall (x y)
+	(if
+		(Inc x y)
+		(or
+			(< x y)
+			(< y x)
+		)
+	)
+)
+
+
+(cl-comment "Inc-T5: containment of a lower-dimensional entity requires incidence")
+
+(forall (x y)
+	(if
+		(and
+			(Cont x y)
+			(< x y)
+		)
+		(Inc x y)
+	)
+)
+
+
+(cl-comment "Inc-T6: incidence transitive with respect to parthood")
+
+(forall (x y z)
+	(if
+		(and
+			(Inc x y)
+			(P y z)
+		)
+		(Inc x z)
+	)
+)
+
+
+
+)
