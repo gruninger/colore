@@ -1,0 +1,107 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text multidim_mereotopology_codi/theorems/codi_down_sum_theoremsT15-T19.clif
+
+(cl-imports multidim_mereotopology_codi/codi_down_sum.clif)
+
+
+(cl-comment "Sum-T16")
+
+(forall (x y)
+	(if
+		(< x y)
+		(ZEX (difference (sum x y) y))
+	)
+)
+
+
+(cl-comment "Sum-T17")
+
+(forall (x y)
+	(if
+		(< x y)
+		(ZEX (difference y (sum x y)))
+	)
+)
+
+(cl-comment "Sum-T15a")
+
+(forall (x y z)
+	(if
+		(and
+			(EqDim x y)
+			(not (ZEX x))
+			(not (ZEX y))
+			(not (ZEX z))
+			(not (ZEX (difference (sum x y) z)))
+		)
+		(P (difference (sum x y) z) (sum (difference x z) (difference y z)))
+	)
+)
+
+
+(cl-comment "Sum-T15b")
+
+(forall (x y z)
+	(if
+		(and
+			(EqDim x y)
+			(not (ZEX x))
+			(not (ZEX y))
+			(not (ZEX z))
+			(not (ZEX (sum (difference x z) (difference y z))))
+		)
+		(P (sum (difference x z) (difference y z)) (difference (sum x y) z))
+	)
+)
+
+(cl-comment "Sum-T18a")
+
+
+(forall (x y z w)
+	(if
+		(and
+			(< z x)
+			(not (ZEX x))
+			(not (ZEX y))
+			(not (ZEX z))
+			(P w (sum x (difference y z)))
+		)
+		(P w (difference (sum x y) (difference z x)))
+	)
+)
+
+
+(cl-comment "Sum-T18b")
+
+(forall (x y z w)
+	(if
+		(and
+			(EqDim z x)
+			(not (ZEX x))
+			(not (ZEX y))
+			(not (ZEX z))
+			(P w (sum x (difference y z)))
+		)
+		(P w (difference (sum x y) (difference z x)))
+	)
+)
+
+
+(cl-comment "Sum-T19")
+
+(forall (x y)
+	(= (sum x (difference y x)) (sum x y))
+)
+
+
+
+)

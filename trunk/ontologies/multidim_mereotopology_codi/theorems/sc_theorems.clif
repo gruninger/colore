@@ -1,0 +1,116 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text multidim_mereotopology_codi/sc_theorems.clif
+
+(cl-imports multidim_mereotopology_codi/codi_basic.clif)
+
+(cl-imports multidim_mereotopology_codi/definitions/ep.clif)
+
+(cl-imports multidim_mereotopology_codi/definitions/sc.clif)
+
+
+(cl-comment "SC-T1a: alternative definition of superficial contact")
+
+(forall (x y)
+	(if
+		(SC x y)
+		(C x y)
+	)
+)
+
+(cl-comment "SC-T1b: alternative definition of superficial contact")
+
+(forall (x y)
+	(if
+		(SC x y)
+		(not (exists (z)
+			(and
+				(Cont z x)
+				(P z y)
+			)
+		))
+	)
+)
+
+
+(cl-comment "SC-T1c: alternative definition of superficial contact")
+
+(forall (x y)
+	(if
+		(SC x y)
+		(not (exists (z)
+			(and
+				(P z x)
+				(Cont z y)
+			)
+		))
+	)
+)
+
+(cl-comment "SC-T1d: alternative definition of superficial contact")
+
+(forall (x y)
+	(if
+		(and
+			(C x y)
+			(forall (z)
+				(or
+					(not (Cont z x))
+					(not (Cont z y))
+					(and
+						(not (P z x))
+						(not (P z y))
+					)
+				)
+			)
+		)
+		(SC x y)
+	)
+)
+
+
+
+(cl-comment "SC-T2: superficial contact irreflexive")
+
+(forall (x)
+	(not (SC x x))
+)
+
+
+(cl-comment "SC-T3: superficial contact symmetric")
+
+(forall (x y)
+	(if
+		(SC x y)
+		(SC y x)
+	)
+)
+
+
+(cl-comment "SC-T4: superficial contact requires a shared entity of a lower dimension")
+
+(forall (x y)
+	(if
+		(SC x y)
+		(exists (z)
+			(and 
+				(< z x)
+				(< z y)
+				(Cont z x)
+				(Cont z y)
+			)
+		)
+	)
+)
+
+
+
+)

@@ -1,0 +1,71 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text multidim_mereotopology_codi/codi_pl_aff.clif
+
+(cl-imports multidim_mereotopology_codi/codi_pl_lin.clif)
+
+
+(cl-comment "PL-A4: Line Dimension Axiom: there exist three distinct, non-collinear points")
+
+(exists (p q r)
+	(and
+		(Pt p)
+		(Pt q)
+		(Pt r)
+		(not (= p q))
+		(not (= p r))
+		(not (= q r))
+		(forall (l)
+			(if
+				(L l)		
+				(or
+					(not (Cont p l))
+					(not (Cont q l))
+					(not (Cont r l))
+				)
+			)
+		)
+	)
+)		
+
+
+(cl-comment "PL-A5: Parallel Axiom")
+
+(forall (p l)
+	(if
+		(and
+			(L l)
+			(Pt p)
+			(not (Cont p l))
+		)
+		(exists (m)
+			(and
+				(L m)
+				(Cont p m)
+				(not (C l m))
+				(forall (n)
+					(if
+						(and
+							(L n)
+							(Cont p n)
+							(not (C l n))
+						)
+						(= m n)
+					)
+				)
+			)
+		)
+	)
+)
+
+
+
+)

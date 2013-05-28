@@ -1,0 +1,176 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text multidim_mereotopology_codi/theorems/codi_int_theorems.clif
+
+(cl-imports multidim_mereotopology_codi/codi_int.clif)
+
+(cl-imports multidim_mereotopology_codi/definitions/po.clif)
+
+(cl-imports multidim_mereotopology_codi/definitions/inc.clif)
+
+(cl-imports multidim_mereotopology_codi/definitions/sc.clif)
+
+
+(cl-comment "Int-T5: intersection commutative")
+
+(forall (x y)
+	(if
+		(not (ZEX (intersection x y)))
+		(P (intersection x y) (intersection y x))
+	)
+)
+
+
+(forall (x y)
+	(if
+		(not (ZEX (intersection y x)))
+		(P (intersection y x) (intersection x y))
+	)
+)
+
+
+(cl-comment "Int-T6: disconnected if empty intersections")
+
+(forall (x y z)
+	(if
+		(ZEX (intersection x y))
+		(not (C x y)) 
+	)
+)
+
+(forall (x y z)
+	(if
+		(not (C x y)) 
+		(ZEX (intersection x y))
+	)
+)
+
+
+(cl-comment "Helper theorem for the next theorem Int-T7")
+
+(forall (x y z)
+	(if
+		(and
+			(Cont z x)
+			(Cont z y)
+			(EqDim z x)
+			(EqDim z y)
+		)
+		(Cont z (intersection x y))
+	)
+)
+
+(cl-comment "Int-T7: PO - the max. intersection is of the same dimension as both intersecting entities")
+
+(forall (x y)
+	(if
+		(PO x y)
+		(EqDim (intersection x y) x)
+	)
+)
+
+
+(cl-comment "Int-T8a: Inc - the max. intersection is of the same dimension as one of the intersecting entities and of lower dimension than the other")
+
+(forall (x y)
+	(if
+		(and
+			(Inc x y)
+			(< x y)
+		)
+		(EqDim (intersection x y) x)
+	)
+)
+
+
+(cl-comment "Int-T8b: Inc - the max. intersection is of the same dimension as one of the intersecting entities and of lower dimension than the other")
+
+(forall (x y)
+	(if
+		(and
+			(Inc x y)
+			(< x y)
+		)
+		(< (intersection x y) y)
+	)
+)
+
+
+(cl-comment "Int-T9: SC - the max. intersection is of a lower dimension than both intersecting entities")
+
+(forall (x y)
+	(if
+		(SC x y)
+		(< (intersection x y) x)
+	)
+)
+
+
+(cl-comment "Int-E1")
+
+(forall (x y z)
+	(if
+		(and
+			(PO x y)
+			(P z x)
+			(P z y)
+		)
+		(P z (intersection x y))
+	)
+)
+
+
+(cl-comment "Int-T10: idempotent")
+
+(forall (x)
+	(if
+		(and
+			(not (ZEX x))
+			(not (ZEX (intersection x x)))
+		)
+		(P (intersection x x) x)
+	)
+)
+
+
+(forall (x)
+	(if
+		(and
+			(not (ZEX x))
+			(not (ZEX (intersection x x)))
+		)
+		(P x (intersection x x))
+	)
+)
+
+
+(cl-comment "Int-T11: left and right alternative")
+
+(forall (x y)
+	(if
+		(not (ZEX (intersection x y)))
+		(P (intersection x y) (intersection x (intersection x y)))
+	)
+)
+
+
+(forall (x y)
+	(if
+		(and
+			(not (ZEX (intersection x y)))
+			(not (ZEX (intersection x (intersection x y))))
+		)
+		(P (intersection x (intersection x y)) (intersection x y))
+	)
+)
+
+
+)

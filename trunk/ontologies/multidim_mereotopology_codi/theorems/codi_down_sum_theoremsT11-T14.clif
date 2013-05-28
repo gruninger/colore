@@ -1,0 +1,133 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text multidim_mereotopology_codi/theorems/codi_down_sum_theoremsT11-T14.clif
+
+(cl-imports multidim_mereotopology_codi/codi_down_sum.clif)
+
+(cl-comment "Sum-T11a: for equidimensional y,z, intersection distributives over sums")
+
+(forall (x y z w)
+	(if
+		(and
+			(EqDim y z)
+			(not (ZEX w))
+			(not (ZEX x))
+			(not (ZEX (intersection x (sum y z))))
+			(P w (intersection x (sum y z)))
+		) 
+		(P w (sum (intersection x y) (intersection x z)))
+	)
+)
+
+
+(cl-comment "Sum-T11b: for equidimensional y,z, intersection distributives over sums")
+
+(forall (x y z w)
+	(if
+		(and
+			(EqDim y z)
+			(not (ZEX w))
+			(not (ZEX x))
+			(not (ZEX (intersection x y)))
+			(not (ZEX (intersection x z)))
+			(not (ZEX (sum (intersection x y) (intersection x z))))
+			(P w (sum (intersection x y) (intersection x z)))
+		) 
+		(P  w (intersection x (sum y z)))
+	)
+)
+
+
+
+(cl-comment "Sum-T12a: for x>=y, intersection absorbs sums")
+
+(forall (x y)
+	(if
+		(and
+			(< y x)
+			(not (ZEX x))
+		)
+		(P x (intersection x (sum x y)))
+	)
+)
+
+
+(cl-comment "Sum-T12b: for x>=y, intersection absorbs sums")
+
+(forall (x y)
+	(if
+		(and
+			(EqDim y x)
+			(not (ZEX x))
+		)
+		(P x (intersection x (sum x y)))
+	)
+)
+
+
+(cl-comment "Sum-T13: for x<y, abnormal case of intersection absorbs sums")
+
+(forall (x y w)
+	(if
+		(and
+			(< x y)
+			(not (ZEX w))
+			(not (ZEX x))
+			(not (ZEX (intersection x y)))
+			(P w (intersection x y))
+		)
+		(P w (intersection x (sum x y)))
+	)
+)
+
+
+(forall (x y w)
+	(if
+		(and
+			(< x y)
+			(not (ZEX w))
+			(not (ZEX x))
+			(not (ZEX (intersection x y)))
+			(P w (intersection x (sum x y)))
+		)
+		(P w (intersection x y))
+	)
+)
+
+
+(cl-comment "Sum-T14a: sum absorbs intersection")
+
+(forall (x y)
+	(if
+		(and
+			(not (ZEX x))
+			(not (ZEX (sum x (intersection x y))))
+			(< (intersection x y) x)
+		)
+		(= x (sum x (intersection x y)))
+	)
+)
+
+(cl-comment "Sum-T14b: sum absorbs intersection")
+
+(forall (x y)
+	(if
+		(and
+			(not (ZEX x))
+			(not (ZEX (sum x (intersection x y))))
+			(EqDim (intersection x y) x)
+		)
+		(= x (sum x (intersection x y)))
+	)
+)
+
+
+)

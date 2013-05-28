@@ -1,0 +1,108 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text multidim_mereotopology_codi/theorems/con_theorems.clif
+
+(cl-imports multidim_mereotopology_codi/codi_down.clif)
+
+(cl-imports multidim_mereotopology_codi/definitions/connected.clif)
+
+(cl-imports multidim_mereotopology_codi/definitions/po.clif)
+
+(cl-imports multidim_mereotopology_codi/definitions/inc.clif)
+
+(cl-imports multidim_mereotopology_codi/definitions/sc.clif)
+
+(cl-imports multidim_mereotopology_codi/definitions/min_max_in_dim.clif)
+
+(cl-comment "Defining when an entity is self-connected")
+
+
+(cl-comment "Con-T1: all minimal entities are connected")
+
+(forall (x)
+	(if
+		(Min x)
+		(Con x)
+	)
+)
+
+
+(cl-comment "Con-T2: zero entity is connected")
+
+(forall (x)
+	(if
+		(ZEX x)
+		(Con x)
+	)
+)
+
+(cl-comment "Con-T3")
+
+(forall (x y)
+	(if
+		(and
+			(Con x)
+			(PP y x)
+		)
+		(SC y (difference x y))
+	)
+)
+
+(cl-comment "Con-T4: ")
+
+(forall (x y)
+	(if
+		(and
+			(Con x)
+			(PO x y)
+			(not (ZEX (difference x y)))
+			(not (ZEX (intersection x y)))
+		)
+		(SC (intersection x y) (difference x y))
+	)
+)
+	
+(cl-comment "Con-T5: ")
+
+(forall (x y)
+	(if
+		(and
+			(Con x)
+			(Inc x y)
+			(EqDim (difference x y) (intersection x y))
+			(not (ZEX (difference x y)))
+			(not (ZEX (intersection x y)))
+		)
+		(SC (intersection x y) (difference x y))
+	)
+)
+
+
+(cl-comment "Con-T6: not connected by counterexample")
+(forall (x y z)
+	(if
+		(and
+			(not (C y z))
+			(P y x)
+			(P z x)
+			(forall (v)
+				(or
+					(not (Cont v x))
+					(Cont v y)
+					(Cont v z)
+				)
+			)
+		)
+		(not (Con x))
+	)
+)
+
+)

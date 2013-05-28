@@ -1,0 +1,140 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text multidim_mereotopology_codi/codi_plp_slin.clif
+
+(cl-imports multidim_mereotopology_codi/codi_plp.clif)
+
+(cl-imports multidim_mereotopology_codi/codi_pl_slin.clif)
+
+
+(cl-comment "PLP-A1: Plane Axiom, Part I")
+
+(forall (p q r)
+	(if
+		(and
+			(Pt p)
+			(Pt q)
+			(Pt r)
+			(not (= p q))
+			(not (= p r))
+			(not (= q r))
+			(forall (l)
+				(if
+					(L l)
+					(or 
+						(not (Cont p l))
+						(not (Cont q l))
+						(not (Cont r l))
+					)
+				)
+			)
+		)
+		(exists (x)
+			(and
+				(Pl x)		
+				(Cont p x)
+				(Cont q x)
+				(Cont r x)
+			)
+		)
+	)
+)		
+
+
+(cl-comment "PLP-A2: Plane Axiom, Part II")
+
+
+(forall (p q r x y)
+	(if
+		(and
+			(Pt p)
+			(Pt q)
+			(Pt r)
+			(not (= p q))
+			(not (= p r))
+			(not (= q r))
+			(forall (l)
+				(if
+					(L l)
+					(or 
+						(not (Cont p l))
+						(not (Cont q l))
+						(not (Cont r l))
+					)
+				)
+			)
+			(Pl x)
+			(Pl y)
+			(Cont p x)
+			(Cont q x)
+			(Cont r x)
+			(Cont p y)
+			(Cont q y)
+			(Cont r y)
+		)
+		(= x y)
+	)
+)		
+
+
+(cl-comment "PLP-A3: Plane Existence Axiom")
+
+(forall (x)
+	(if
+		(Pl x)
+		(exists (p q r)
+			(and
+				(Pt p)
+				(Pt q)
+				(Pt r)
+				(not (= p q))
+				(not (= p r))
+				(not (= q r))
+				(forall (l)
+					(if
+						(L l)
+						(or 
+							(not (Cont p l))
+							(not (Cont q l))
+							(not (Cont r l))
+						)
+					)
+				)
+				(Pl x)
+				(Cont p x)
+				(Cont q x)
+				(Cont r x)
+			)
+		)
+	)
+)
+
+(cl-comment "PLP-A4: Line-Plane Intersection Axiom")
+
+(forall (x l p q)
+	(if
+		(and
+			(Pl x)
+			(L l)
+			(Pt p)
+			(Pt q)
+			(not (= p q))
+			(Cont p l)
+			(Cont q l)
+			(Cont p x)
+			(Cont q x)
+		)
+		(Cont l x)
+	)
+)
+
+
+)

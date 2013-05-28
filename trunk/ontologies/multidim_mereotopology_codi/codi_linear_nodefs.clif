@@ -1,0 +1,116 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text multidim_mereotopology_codi/codi_linear_nodefs.clif
+
+(cl-imports multidim_mereotopology_cont/cont_basic.clif)
+
+
+(cl-comment "CD-A1: containment requires that the contained entity has a dimension that is lower or equal to the entity containing it")
+
+(forall (x y)
+	(if 	
+		(Cont x y)
+		(or
+			(< x y)
+			(EqDim x y)
+		)
+	)
+)
+
+
+(cl-comment "D-A1: irreflexive")
+(forall (x)
+	(not (< x x))
+)
+
+(cl-comment "D-A2: asymmetric (antisymmetric & irreflexive)")
+(forall (x y)
+	(if 	(< x y)
+		(not (< y x))
+	)
+)
+
+(cl-comment "D-A3: transitive (corrected from IJCAI version: need <= in the second condition to ensure that EqDim is transitive)")
+(forall (x y z)
+	(if 	(and (< x y) (<= y z))
+		(< x z)
+	)
+)
+
+(cl-comment "D-A3: transitive (corrected from IJCAI version: need <= in the second condition to ensure that EqDim is transitive)")
+(forall (x y z)
+	(if 	(and (<= x y) (<= y z))
+		(<= x z)
+	)
+)
+
+
+(cl-comment "D-A4: unique ZEX")
+(forall (x y)
+	(if
+		(and (ZEX x) (ZEX y))
+		(= x y)
+	)
+)
+
+(cl-comment "D-A5: ZEX has dimension lower than anything else")
+
+(forall (x y)
+	(if
+		(and (ZEX x) (not (ZEX y)))
+		(< x y)
+	)
+)
+
+
+(cl-comment "D-A6: a lowest dimension must exist")
+
+(exists (x)
+	(MinDim x)
+)
+
+(cl-comment "D-D2: define EqDim in terms of <")
+
+(forall (x y)
+	(iff 
+		(EqDim x y)
+		(and 	(not (< x y))
+				(not (< y x))
+		)
+	)
+)
+
+
+(cl-comment "D-D3: <=")
+
+(forall (x y)
+	(iff (<= x y) (or (< x y) (EqDim x y)))
+)
+
+
+
+(cl-comment "D-D5: Minimal dimension (Dim=0)")
+(forall (x)
+	(iff	(MinDim x)
+		(and
+			(not (ZEX x))
+			(forall (y)
+				(if
+					(< y x)
+					(ZEX y)
+				)
+			)	
+		)
+	)
+)
+
+
+)
