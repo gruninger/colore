@@ -1,0 +1,181 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/mereotopology/rt_full_eq.clif
+
+(cl-comment "Complete set of axioms of the mereotopology RT0 based on the equational axiomatization of RT-")
+
+(cl-imports http://colore.oor.net/mereotopology/rt_minus_eq.clif)
+
+(cl-comment "Contact")
+
+(forall (x y)
+	(iff
+		(c x y)
+		(not (= (meet x (oc y)) x))
+	)
+)
+
+(cl-comment "Parthood")
+
+(forall (x y)
+	(iff
+		(p x y)
+		(and
+			(= (meet x y) x)
+			(not (= x zero))
+		)
+	)
+)
+
+(cl-comment "D3: Overlap")
+
+(forall (x y)
+	(iff 	(o x y)
+		(exists (z)
+				(and 	(p z x)
+					(p z y) )))
+)
+
+
+(cl-comment "D4: External connection")
+
+(forall (x y)
+	(iff 	(ec x y)
+		(and 	(c x y)
+			(not (o x y)) ))
+)
+
+
+(cl-comment "D6: Non-tangential parthood")
+
+(forall (x y)
+	(iff 	(ntp x y)
+		(and 	(p x y)
+			(not (exists (z) 
+					(and 	(ec z x)
+						(ec z y))
+			)) ))
+)
+
+
+(cl-comment "D7: Closure function closure(x) as -i(-x)")
+
+(forall (x)
+	(= (closure x) (neg (i (neg x))))
+)
+
+
+(cl-comment "D8: Open")
+
+(forall (x)
+	(iff 	(op x)
+		(= x (i x)))
+)
+
+
+(cl-comment "A8: Unique interiors")
+
+(forall (x)
+	(exists (z)
+		(and	(= (i x) z)
+				(forall (u)
+					(iff 	(c u z)
+						(exists (v)
+							(and 	(ntp v x)
+								(c v u)
+)	)	)		)	)	)	)
+
+
+(cl-comment "A9: closure of the universal region")
+
+(= (closure one) one)
+
+
+(cl-comment "A10: Open intersection of open elements")
+
+(forall (x y)
+	(if 
+		(and 	
+			(op x)
+			(op y)
+			(o x y)
+		)
+		(op (meet x y))
+)	)
+
+
+(cl-comment "D2: Proper Parthood")
+
+(forall (x y)
+	(iff
+	 	(pp x y)
+		(and
+			(p x y)
+			(not (= x y))
+		)
+	)
+)
+
+(cl-comment "Lemma: transitivity of parthood")
+
+(forall (x y z)
+	(if
+		(and
+			(pp x y)
+			(pp y z)
+		)
+		(pp x z)
+	)
+)
+
+
+(cl-comment "D11+A12: Existence of Weak contact")
+
+(exists (x y)
+	(and 	
+		(not (c (closure x) (closure y)))
+		(forall (z)
+			(if 	
+				(and	
+					(p x z)
+					(op z)
+				)
+				(c (closure z) y)
+			)
+		)
+	)
+)
+
+(cl-comment "A13: Existence of a smallest open neighborhood n(x) for every x")
+
+(forall (x)
+	(exists (y)
+		(and 	
+			(p x y)
+			(op y)
+			(forall (z)
+				(if
+					(and 	
+						(p x z)
+						(op z))
+					(p y z))))))
+
+)
