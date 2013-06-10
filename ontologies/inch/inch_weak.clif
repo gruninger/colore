@@ -1,0 +1,138 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/inch/inch_weak.clif
+
+(cl-comment "weak INCH Calculus with only the essential definitions")
+
+(cl-comment "I-D1: constituent (Cont)")
+
+(forall (x y)
+	(iff
+		(CS x y)
+		(forall (z)
+			(if
+				(INCH x z) 
+				(INCH y z)
+			)
+		)
+	)
+)
+
+(cl-comment "I-D4: chunk (equidmensional part)")
+
+(forall (x y)
+	(iff
+		(CH x y)
+		(and
+			(INCH x y)
+			(forall (z)
+				(if
+					(and
+						(INCH x z)
+						(INCH z x)
+					)
+					(and
+						(INCH y z)
+						(INCH z y)
+					)
+				)
+			)
+		)
+	)
+)
+
+(cl-comment "I-D6: zero region")
+
+(forall (x y)
+	(iff
+		(ZEXI x)
+		(not (INCH x x))
+	)
+)
+
+(cl-comment "I-D7: greater or equal dimension")
+
+(forall (x y)
+	(iff
+		(GED x y)
+		(or
+			(ZEXI y)
+			(exists (z)
+				(and
+					(INCH x z)
+					(INCH z y)
+				)
+			)
+		)
+	)
+)
+
+	
+
+(cl-comment "I-PA1: extensionality of INCH 1")
+
+(forall (x y)
+	(iff
+		(= x y)
+		(forall (z)
+			(iff
+				(INCH x z)
+				(INCH y z)
+			)
+		)
+	)
+)
+
+(cl-comment "I-PA2: extensionality of INCH 2")
+
+(forall (x y)
+	(iff
+		(= x y)
+		(forall (z)
+			(iff
+				(INCH z x)
+				(INCH z y)
+			)
+		)
+	)
+)
+
+(cl-comment "I-PA3: reflexivity of INCH")
+
+(forall (x y)
+	(if
+		(INCH x y)
+		(INCH x x)
+	)
+)
+
+(cl-comment "I-PA4: extents are dimensionally comparable - similar to using linear dimension")
+
+(forall (x y)
+	(or
+		(GED x y)
+		(GED y x)
+	)
+)
+
+(cl-comment "I-PA5: GED transitive")
+
+(forall (x y z)
+	(if
+		(and
+			(GED x y)
+			(GED y z)
+		)
+		(GED x z)
+	)
+)
+
+)

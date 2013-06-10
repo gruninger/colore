@@ -1,0 +1,277 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/inch/inch_original.clif
+
+(cl-comment "original INCH Calculus with all definitions")
+
+(cl-comment "I-D1: constituent (Cont)")
+
+(forall (x y)
+	(iff
+		(CS x y)
+		(all (z)
+			(if
+				(INCH x z) 
+				(INCH y z)
+			)
+		)
+	)
+)
+
+(cl-comment "I-D2: overlap (PO)")
+
+(forall (x y)
+	(iff
+		(OV x y)
+		(and
+			(INCH x y)
+			(INCH y x)
+		)
+	)
+)
+
+(cl-comment "I-D3: contact (C)")
+
+(forall (x y)
+	(iff
+		(CO x y)
+		(exists (z)
+			(and
+				(not (ZEXI z))
+				(CS z x)
+				(CS z y)
+			)
+		)
+	)
+)
+
+(cl-comment "I-D4: chunk (equidmensional part)")
+
+(forall (x y)
+	(iff
+		(CH x y)
+		(and
+			(INCH x y)
+			(forall (z)
+				(if
+					(OV x z)
+					(OV y z)
+				)
+			)
+		)
+	)
+)
+
+(cl-comment "I-D5: element (lower-dimensional part)")
+
+(forall (x y)
+	(iff
+		(EL x y)
+		(and
+			(CS x y)
+			(not (INCH x y))
+		)
+	)
+)
+
+(cl-comment "I-D6: zero region")
+
+(forall (x y)
+	(iff
+		(ZEXI x)
+		(not (INCH x x))
+	)
+)
+
+(cl-comment "I-D7: greater or equal dimension")
+
+(forall (x y)
+	(iff
+		(GED x y)
+		(or
+			(ZEXI y)
+			(exists (z)
+				(and
+					(INCH x z)
+					(INCH z y)
+				)
+			)
+		)
+	)
+)
+
+(cl-comment "I-D8: equal dimension")
+
+(forall (x y)
+	(iff
+		(ED x y)
+		(and
+			(GED x y)
+			(GED y x)
+		)
+	)
+)
+
+(cl-comment "I-D9: greater dimension")
+
+(forall (x y)
+	(iff
+		(GD x y)
+		(and
+			(GED x y)
+			(not (GED y x))
+		)
+	)
+)
+			
+
+(cl-comment "I-PA1: extensionality of INCH 1")
+
+(forall (x y)
+	(iff
+		(= x y)
+		(forall (z)
+			(iff
+				(INCH x z)
+				(INCH y z)
+			)
+		)
+	)
+)
+
+(cl-comment "I-PA2: extensionality of INCH 2")
+
+(forall (x y)
+	(iff
+		(= x y)
+		(forall (z)
+			(iff
+				(INCH z x)
+				(INCH z y)
+			)
+		)
+	)
+)
+
+(cl-comment "I-PA3: reflexivity of INCH")
+
+(forall (x y)
+	(if
+		(INCH x y)
+		(INCH x x)
+	)
+)
+
+(cl-comment "I-PA4: extents are dimensionally comparable - similar to using linear dimension")
+
+(forall (x y)
+	(or
+		(GED x y)
+		(GED y x)
+	)
+)
+
+(cl-comment "I-PA5: GED transitive")
+
+(forall (x y z)
+	(if
+		(and
+			(GED x y)
+			(GED y z)
+		)
+		(GED x z)
+	)
+)
+
+(cl-comment "I-PA6: INCH transitive")
+
+(forall (x y z)
+	(if
+		(and
+			(INCH x y)
+			(INCH y z)
+			(INCH z x)
+		)
+		(INCH y x)
+	)
+)
+
+(cl-comment "I-PA7: INCH(x,y) requires a constituent of x to overlap with y")
+
+(forall (x y)
+	(if
+		(INCH x y)
+		(exists (z)
+			(and
+				(CS z x)
+				(OV z y)
+			)
+		)
+	)
+)
+
+(cl-comment "I-PA8: a chunk is a constituent")
+
+(forall (x y)
+	(if
+		(CH x y)
+		(CS x y)
+	)
+)
+
+(cl-comment "I-PA9: sum")
+
+(forall (x y)
+	(if
+		(and
+			(GED x y)
+			(GED y x)
+		)
+		(exists (z)
+			(forall (w)
+				(iff
+					(INCH z w)
+					(or
+						(INCH x w)
+						(INCH y w)
+					)
+				)
+			)
+		)
+	)
+)
+
+(cl-comment "I-PA10: difference")
+				
+(forall (x y)
+	(if
+		(and
+			(GED x y)
+			(GED y x)
+		)
+		(exists (z)
+			(forall (w)
+				(iff
+					(INCH z w)
+					(exists (v)
+						(and
+							(INCH v w)
+							(CH v x)
+							(not (OV v y))
+						)
+					)
+				)
+			)
+		)
+	)
+)
+
+)

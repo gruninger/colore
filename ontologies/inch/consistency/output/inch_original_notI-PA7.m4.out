@@ -1,0 +1,290 @@
+============================== Mace4 =================================
+Mace4 (64) version 2009-11A, November 2009.
+Process 15606 was started by torsten on scotus.mie.utoronto.ca,
+Mon May 21 20:57:02 2012
+The command was "mace4 -c -t 600 -s 60 -n 2 -N 20 -f inch/p9/inch_original_notI-PA7.p9 inch/p9/inch_original.p9 inch/p9/inch_weak_closed.p9 inch/p9/inch_weak.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file inch/p9/inch_original_notI-PA7.p9
+
+
+formulas(sos).
+(exists x exists y (INCH(x,y) & -(exists z (CS(z,x) & CH(z,y))))).
+end_of_list.
+
+% Reading from file inch/p9/inch_original.p9
+
+
+formulas(sos).
+(all x all y all z (INCH(x,y) & INCH(y,z) & INCH(z,x) -> INCH(y,x))).
+(all x all y (INCH(x,y) -> (exists z (CS(z,x) & INCH(z,y) & INCH(y,z))))).
+(all x all y (CH(x,y) -> CS(x,y))).
+end_of_list.
+
+% Reading from file inch/p9/inch_weak_closed.p9
+
+
+formulas(sos).
+(all x all y (GED(x,y) & GED(y,x) -> (exists z all w (INCH(z,w) <-> INCH(x,w) | INCH(y,w))))).
+(all x all y (GED(x,y) & GED(y,x) -> (exists z all w (INCH(z,w) <-> (exists v (INCH(v,w) & CH(v,x) & -(INCH(v,y) & INCH(y,v)))))))).
+end_of_list.
+
+% Reading from file inch/p9/inch_weak.p9
+
+
+formulas(sos).
+(all x all y (CS(x,y) <-> (all z (INCH(x,z) -> INCH(y,z))))).
+(all x all y (CH(x,y) <-> INCH(x,y) & (all z (INCH(x,z) & INCH(z,x) -> INCH(y,z) & INCH(z,y))))).
+(all x all y (ZEXI(x) <-> -INCH(x,x))).
+(all x all y (GED(x,y) <-> ZEXI(y) | (exists z (INCH(x,z) & INCH(z,y))))).
+(all x all y (x = y <-> (all z (INCH(x,z) <-> INCH(y,z))))).
+(all x all y (x = y <-> (all z (INCH(z,x) <-> INCH(z,y))))).
+(all x all y (INCH(x,y) -> INCH(x,x))).
+(all x all y (GED(x,y) | GED(y,x))).
+(all x all y all z (GED(x,y) & GED(y,z) -> GED(x,z))).
+end_of_list.
+
+% From the command line: assign(max_seconds, 600).
+
+% From the command line: assign(max_seconds_per, 60).
+    % assign(domain_size, 2) -> assign(start_size, 2).
+    % assign(domain_size, 2) -> assign(end_size, 2).
+
+% From the command line: assign(domain_size, 2).
+
+% From the command line: assign(end_size, 20).
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (exists x exists y (INCH(x,y) & -(exists z (CS(z,x) & CH(z,y))))) # label(non_clause).  [assumption].
+2 (all x all y all z (INCH(x,y) & INCH(y,z) & INCH(z,x) -> INCH(y,x))) # label(non_clause).  [assumption].
+3 (all x all y (INCH(x,y) -> (exists z (CS(z,x) & INCH(z,y) & INCH(y,z))))) # label(non_clause).  [assumption].
+4 (all x all y (CH(x,y) -> CS(x,y))) # label(non_clause).  [assumption].
+5 (all x all y (GED(x,y) & GED(y,x) -> (exists z all w (INCH(z,w) <-> INCH(x,w) | INCH(y,w))))) # label(non_clause).  [assumption].
+6 (all x all y (GED(x,y) & GED(y,x) -> (exists z all w (INCH(z,w) <-> (exists v (INCH(v,w) & CH(v,x) & -(INCH(v,y) & INCH(y,v)))))))) # label(non_clause).  [assumption].
+7 (all x all y (CS(x,y) <-> (all z (INCH(x,z) -> INCH(y,z))))) # label(non_clause).  [assumption].
+8 (all x all y (CH(x,y) <-> INCH(x,y) & (all z (INCH(x,z) & INCH(z,x) -> INCH(y,z) & INCH(z,y))))) # label(non_clause).  [assumption].
+9 (all x all y (ZEXI(x) <-> -INCH(x,x))) # label(non_clause).  [assumption].
+10 (all x all y (GED(x,y) <-> ZEXI(y) | (exists z (INCH(x,z) & INCH(z,y))))) # label(non_clause).  [assumption].
+11 (all x all y (x = y <-> (all z (INCH(x,z) <-> INCH(y,z))))) # label(non_clause).  [assumption].
+12 (all x all y (x = y <-> (all z (INCH(z,x) <-> INCH(z,y))))) # label(non_clause).  [assumption].
+13 (all x all y (INCH(x,y) -> INCH(x,x))) # label(non_clause).  [assumption].
+14 (all x all y (GED(x,y) | GED(y,x))) # label(non_clause).  [assumption].
+15 (all x all y all z (GED(x,y) & GED(y,z) -> GED(x,z))) # label(non_clause).  [assumption].
+
+============================== end of process non-clausal formulas ===
+
+============================== CLAUSES FOR SEARCH ====================
+
+formulas(mace4_clauses).
+INCH(c1,c2).
+-CS(x,c1) | -CH(x,c2).
+-INCH(x,y) | -INCH(y,z) | -INCH(z,x) | INCH(y,x).
+-INCH(x,y) | CS(f1(x,y),x).
+-INCH(x,y) | INCH(f1(x,y),y).
+-INCH(x,y) | INCH(y,f1(x,y)).
+-CH(x,y) | CS(x,y).
+-GED(x,y) | -GED(y,x) | -INCH(f2(x,y),z) | INCH(x,z) | INCH(y,z).
+-GED(x,y) | -GED(y,x) | INCH(f2(x,y),z) | -INCH(x,z).
+-GED(x,y) | -GED(y,x) | INCH(f2(x,y),z) | -INCH(y,z).
+-GED(x,y) | -GED(y,x) | -INCH(f3(x,y),z) | INCH(f4(x,y,z),z).
+-GED(x,y) | -GED(y,x) | -INCH(f3(x,y),z) | CH(f4(x,y,z),x).
+-GED(x,y) | -GED(y,x) | -INCH(f3(x,y),z) | -INCH(f4(x,y,z),y) | -INCH(y,f4(x,y,z)).
+-GED(x,y) | -GED(y,x) | INCH(f3(x,y),z) | -INCH(u,z) | -CH(u,x) | INCH(u,y).
+-GED(x,y) | -GED(y,x) | INCH(f3(x,y),z) | -INCH(u,z) | -CH(u,x) | INCH(y,u).
+-CS(x,y) | -INCH(x,z) | INCH(y,z).
+CS(x,y) | INCH(x,f5(x,y)).
+CS(x,y) | -INCH(y,f5(x,y)).
+-CH(x,y) | INCH(x,y).
+-CH(x,y) | -INCH(x,z) | -INCH(z,x) | INCH(y,z).
+-CH(x,y) | -INCH(x,z) | -INCH(z,x) | INCH(z,y).
+CH(x,y) | -INCH(x,y) | INCH(x,f6(x,y)).
+CH(x,y) | -INCH(x,y) | INCH(f6(x,y),x).
+CH(x,y) | -INCH(x,y) | -INCH(y,f6(x,y)) | -INCH(f6(x,y),y).
+-ZEXI(x) | -INCH(x,x).
+ZEXI(x) | INCH(x,x).
+-GED(x,y) | ZEXI(y) | INCH(x,f7(x,y)).
+-GED(x,y) | ZEXI(y) | INCH(f7(x,y),y).
+GED(x,y) | -ZEXI(y).
+GED(x,y) | -INCH(x,z) | -INCH(z,y).
+x != y | -INCH(y,z) | INCH(x,z).
+x != y | INCH(y,z) | -INCH(x,z).
+x = y | INCH(y,f8(y,x)) | INCH(x,f8(y,x)).
+x = y | -INCH(y,f8(y,x)) | -INCH(x,f8(y,x)).
+x != y | -INCH(z,y) | INCH(z,x).
+x != y | INCH(z,y) | -INCH(z,x).
+x = y | INCH(f9(y,x),y) | INCH(f9(y,x),x).
+x = y | -INCH(f9(y,x),y) | -INCH(f9(y,x),x).
+-INCH(x,y) | INCH(x,x).
+GED(x,y) | GED(y,x).
+-GED(x,y) | -GED(y,z) | GED(x,z).
+end_of_list.
+
+============================== end of clauses for search =============
+
+% There are no natural numbers in the input.
+
+============================== DOMAIN SIZE 2 =========================
+
+============================== STATISTICS ============================
+
+For domain size 2.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.02 seconds).
+Ground clauses: seen=243, kept=215.
+Selections=1715, assignments=3429, propagations=1708, current_models=0.
+Rewrite_terms=30035, rewrite_bools=17401, indexes=7363.
+Rules_from_neg_clauses=1099, cross_offs=1099.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 3 =========================
+
+====== Domain size 3 terminated by max_seconds_per. ======
+
+============================== STATISTICS ============================
+
+For domain size 3.
+
+Current CPU time: 0.00 seconds (total CPU time: 60.02 seconds).
+Ground clauses: seen=775, kept=682.
+Selections=1227071, assignments=3681064, propagations=11245006, current_models=0.
+Rewrite_terms=37063802, rewrite_bools=322693297, indexes=12759777.
+Rules_from_neg_clauses=1535113, cross_offs=5213382.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 4 =========================
+
+====== Domain size 4 terminated by max_seconds_per. ======
+
+============================== STATISTICS ============================
+
+For domain size 4.
+
+Current CPU time: 0.00 seconds (total CPU time: 120.02 seconds).
+Ground clauses: seen=1853, kept=1629.
+Selections=998614, assignments=3853733, propagations=9053911, current_models=0.
+Rewrite_terms=14411055, rewrite_bools=342878090, indexes=6319120.
+Rules_from_neg_clauses=514054, cross_offs=6310472.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 5 =========================
+
+====== Domain size 5 terminated by max_seconds_per. ======
+
+============================== STATISTICS ============================
+
+For domain size 5.
+
+Current CPU time: 0.00 seconds (total CPU time: 180.02 seconds).
+Ground clauses: seen=3741, kept=3296.
+Selections=1903662, assignments=5669103, propagations=7765510, current_models=0.
+Rewrite_terms=16032792, rewrite_bools=207048809, indexes=5099045.
+Rules_from_neg_clauses=0, cross_offs=144589.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 6 =========================
+
+====== Domain size 6 terminated by max_seconds_per. ======
+
+============================== STATISTICS ============================
+
+For domain size 6.
+
+Current CPU time: 0.00 seconds (total CPU time: 240.02 seconds).
+Ground clauses: seen=6751, kept=5971.
+Selections=1313163, assignments=3930542, propagations=5560174, current_models=0.
+Rewrite_terms=10112497, rewrite_bools=197395475, indexes=2710984.
+Rules_from_neg_clauses=0, cross_offs=95898.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 7 =========================
+
+====== Domain size 7 terminated by max_seconds_per. ======
+
+============================== STATISTICS ============================
+
+For domain size 7.
+
+Current CPU time: 0.00 seconds (total CPU time: 300.03 seconds).
+Ground clauses: seen=11243, kept=9990.
+Selections=949427, assignments=2846684, propagations=4093417, current_models=0.
+Rewrite_terms=6822716, rewrite_bools=186581859, indexes=1573005.
+Rules_from_neg_clauses=0, cross_offs=75023.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 8 =========================
+
+====== Domain size 8 terminated by max_seconds_per. ======
+
+============================== STATISTICS ============================
+
+For domain size 8.
+
+Current CPU time: 0.00 seconds (total CPU time: 360.03 seconds).
+Ground clauses: seen=17625, kept=15737.
+Selections=720129, assignments=2160183, propagations=3107799, current_models=0.
+Rewrite_terms=4921834, rewrite_bools=172741028, indexes=995095.
+Rules_from_neg_clauses=0, cross_offs=49471.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 9 =========================
+
+====== Domain size 9 terminated by max_seconds_per. ======
+
+============================== STATISTICS ============================
+
+For domain size 9.
+
+Current CPU time: 0.00 seconds (total CPU time: 420.05 seconds).
+Ground clauses: seen=26353, kept=23644.
+Selections=534200, assignments=1603356, propagations=2356107, current_models=0.
+Rewrite_terms=3513626, rewrite_bools=163465770, indexes=632566.
+Rules_from_neg_clauses=0, cross_offs=45320.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 10 ========================
+
+====== Domain size 10 terminated by max_seconds_per. ======
+
+============================== STATISTICS ============================
+
+For domain size 10.
+
+Current CPU time: 0.00 seconds (total CPU time: 480.07 seconds).
+Ground clauses: seen=37931, kept=34191.
+Selections=430501, assignments=1291668, propagations=1857664, current_models=0.
+Rewrite_terms=2750190, rewrite_bools=148495618, indexes=446864.
+Rules_from_neg_clauses=0, cross_offs=24411.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 11 ========================
+
+====== Domain size 11 terminated by max_seconds_per. ======
+
+============================== STATISTICS ============================
+
+For domain size 11.
+
+Current CPU time: 0.00 seconds (total CPU time: 540.09 seconds).
+Ground clauses: seen=52911, kept=47906.
+Selections=318787, assignments=957170, propagations=1465803, current_models=0.
+Rewrite_terms=1988294, rewrite_bools=141902051, indexes=295007.
+Rules_from_neg_clauses=0, cross_offs=35122.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 12 ========================

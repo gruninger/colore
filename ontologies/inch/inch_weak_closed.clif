@@ -1,0 +1,69 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/inch/inch_weak_closed.clif
+
+(cl-imports http://colore.oor.net/inch/inch_weak.clif)
+
+(cl-comment "weak INCH Calculus extended by closure under differences and sums")
+
+(cl-comment "I-PA9: sum")
+
+(forall (x y)
+	(if
+		(and
+			(GED x y)
+			(GED y x)
+		)
+		(exists (z)
+			(forall (w)
+				(iff
+					(INCH z w)
+					(or
+						(INCH x w)
+						(INCH y w)
+					)
+				)
+			)
+		)
+	)
+)
+
+(cl-comment "I-PA10: difference")
+				
+(forall (x y)
+	(if
+		(and
+			(GED x y)
+			(GED y x)
+		)
+		(exists (z)
+			(forall (w)
+				(iff
+					(INCH z w)
+					(exists (v)
+						(and
+							(INCH v w)
+							(CH v x)
+							(not 
+								(and 
+									(INCH v y)
+									(INCH y v)
+								)
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+)
+
+)
