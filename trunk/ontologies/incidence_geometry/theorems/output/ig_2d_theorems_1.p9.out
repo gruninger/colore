@@ -1,0 +1,129 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 25883 was started by torsten on scotus.mie.utoronto.ca,
+Wed Oct 24 22:08:09 2012
+The command was "prover9 -t 600 -f ig/p9/ig_2d.p9 ig//theorems/p9/options.txt ig//theorems/p9/ig_2d_theorems_1.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ig/p9/ig_2d.p9
+
+
+formulas(sos).
+(all x all y (on(x,y) -> Pt(x) & -Pt(y))).
+(all x (L(x) -> (exists y exists z (on(y,x) & on(z,x) & y != z)))).
+end_of_list.
+
+% Reading from file ig//theorems/p9/options.txt
+
+clear(auto_denials).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+
+% Reading from file ig//theorems/p9/ig_2d_theorems_1.p9
+
+
+formulas(goals).
+(all x (Pt(x) -> -L(x))).
+end_of_list.
+
+============================== end of input ==========================
+
+% From the command line: assign(max_seconds, 600).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x all y (on(x,y) -> Pt(x) & -Pt(y))) # label(non_clause).  [assumption].
+2 (all x (L(x) -> (exists y exists z (on(y,x) & on(z,x) & y != z)))) # label(non_clause).  [assumption].
+3 (all x (Pt(x) -> -L(x))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating on/2
+4 -L(x) | on(f1(x),x).  [clausify(2)].
+5 -on(x,y) | Pt(x).  [clausify(1)].
+6 -on(x,y) | -Pt(y).  [clausify(1)].
+Derived: -L(x) | Pt(f1(x)).  [resolve(4,b,5,a)].
+Derived: -L(x) | -Pt(x).  [resolve(4,b,6,a)].
+7 -L(x) | on(f2(x),x).  [clausify(2)].
+Derived: -L(x) | Pt(f2(x)).  [resolve(7,b,5,a)].
+
+Eliminating L/1
+8 L(c1).  [deny(3)].
+9 -L(x) | f2(x) != f1(x).  [clausify(2)].
+Derived: f2(c1) != f1(c1).  [resolve(8,a,9,a)].
+10 -L(x) | Pt(f1(x)).  [resolve(4,b,5,a)].
+Derived: Pt(f1(c1)).  [resolve(10,a,8,a)].
+11 -L(x) | -Pt(x).  [resolve(4,b,6,a)].
+Derived: -Pt(c1).  [resolve(11,a,8,a)].
+12 -L(x) | Pt(f2(x)).  [resolve(7,b,5,a)].
+Derived: Pt(f2(c1)).  [resolve(12,a,8,a)].
+
+============================== end predicate elimination =============
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, Pt ]).
+Function symbol precedence:  function_order([ c1, f1, f2 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=0)
+  % clear(ordered_res).  % (HNE depth_diff=0)
+  % set(ur_resolution).  % (HNE depth_diff=0)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:  (no changes).
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 10.
+% Level of proof is 4.
+% Maximum clause weight is 2.000.
+% Given clauses 0.
+
+1 (all x all y (on(x,y) -> Pt(x) & -Pt(y))) # label(non_clause).  [assumption].
+2 (all x (L(x) -> (exists y exists z (on(y,x) & on(z,x) & y != z)))) # label(non_clause).  [assumption].
+3 (all x (Pt(x) -> -L(x))) # label(non_clause) # label(goal).  [goal].
+4 -L(x) | on(f1(x),x).  [clausify(2)].
+6 -on(x,y) | -Pt(y).  [clausify(1)].
+8 L(c1).  [deny(3)].
+11 -L(x) | -Pt(x).  [resolve(4,b,6,a)].
+13 Pt(c1).  [deny(3)].
+16 -Pt(c1).  [resolve(11,a,8,a)].
+17 $F.  [resolve(16,a,13,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=0. Generated=4. Kept=4. proofs=1.
+Usable=0. Sos=0. Demods=0. Limbo=3, Disabled=13. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=0.
+Megabytes=0.04.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 25883 exit (max_proofs) Wed Oct 24 22:08:09 2012
