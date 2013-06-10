@@ -1,0 +1,172 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/incidence_geometry/ig
+
+(cl-imports http://colore.oor.net/incidence_geometry/ig_2d_lin)
+
+(cl-comment "(linear) incidence geometry")
+
+(cl-comment "I.0b")
+
+(forall (x)
+	(if 
+		(Pt x)
+		(and
+			(not (L x))
+			(not (Pl x))
+		)
+	)
+)		
+
+(forall (x)
+	(if 
+		(L x)
+		(and
+			(not (Pt x))
+			(not (Pl x))
+		)
+	)
+)		
+
+(forall (x)
+	(if 
+		(Pl x)
+		(and
+			(not (Pt x))
+			(not (L x))
+		)
+	)
+)		
+		
+			
+(cl-comment "I.3")
+			
+(forall (x)
+	(if
+		(Pl x)
+		(exists (p q r)
+			(and
+				(not (= p q))
+				(not (= p r))
+				(not (= q r))				
+				(Pt p)
+				(Pt q)
+				(Pt r)
+				(on p x)
+				(on q x)
+				(on r x)
+				(forall (l)
+					(if
+						(L l)
+						(or
+							(not (on p l))
+							(not (on q l))
+							(not (on r l))
+						)
+					)
+				)
+			)
+		)
+	)
+)
+
+(cl-comment "I.4a")
+
+(forall (p q r)
+	(if
+		(and
+			(Pt p)
+			(Pt q)
+			(Pt r)
+			(forall (l)
+				(if
+					(L l)
+					(or
+						(not (on p l))
+						(not (on q l))
+						(not (on r l))
+					)
+				)
+			)
+		)
+		(exists (x)
+			(and
+				(Pl x)
+				(on p x)
+				(on q x)
+				(on r x)
+			)
+		)
+	)
+)
+
+
+
+(cl-comment "I.4b")
+
+(forall (p q r x y)
+	(if
+		(and
+			(Pt p)
+			(Pt q)
+			(Pt r)
+			(forall (l)
+				(if
+					(L l)
+					(or
+						(not (on p l))
+						(not (on q l))
+						(not (on r l))
+					)
+				)
+			)
+			(Pl x)
+			(on p x)
+			(on q x)
+			(on r x)
+			(Pl y)
+			(on p y)
+			(on q y)
+			(on r y)
+		)
+		(= x y)
+	)
+)
+
+
+(cl-comment "I.5")
+
+(forall (p q l x)
+	(if
+		(and
+			(Pt p)
+			(Pt q)
+			(not (= p q))
+			(L l)
+			(on p l)
+			(on q l)
+			(Pl x)
+			(on p x)
+			(on q x)
+		)
+		(forall (r)
+			(if
+				(and
+					(Pt r)
+					(on r l)
+				)
+				(on r x)
+			)
+		)
+	)
+)
+		
+)

@@ -1,0 +1,300 @@
+============================== Mace4 =================================
+Mace4 (64) version 2009-11A, November 2009.
+Process 26157 was started by torsten on scotus.mie.utoronto.ca,
+Wed Oct 24 22:37:29 2012
+The command was "mace4 -c -t 600 -s 60 -n 2 -N 20 -f oig//consistency/p9/woig_2d_nontrivial.p9 oig/p9/woig_2d.p9 oig/p9/b_2d.p9 ig/p9/ig_2d_lin.p9 ig/p9/ig_2d_slin.p9 ig/p9/ig_2d.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file oig//consistency/p9/woig_2d_nontrivial.p9
+
+
+formulas(sos).
+(exists x exists y exists z exists l (B(x,y,z) & x != y & x != z & y != z & on(x,l) & on(y,l) & on(z,l))).
+end_of_list.
+
+% Reading from file oig/p9/woig_2d.p9
+
+
+formulas(sos).
+end_of_list.
+
+% Reading from file oig/p9/b_2d.p9
+
+
+formulas(sos).
+(all x all y (on(x,y) -> Pt(x) & -Pt(y))).
+(all a all b all c (B(a,b,c) -> B(c,b,a))).
+(all a all b all c (B(a,b,c) -> -B(b,c,a))).
+(all a all b all c all p ((exists l (on(a,l) & on(b,l) & on(c,l))) & a != b & a != c & b != c <-> B(a,b,c) | B(b,c,a) | B(c,a,b))).
+(all a all b all c all p all l (on(a,l) & on(b,l) & on(c,l) & on(p,l) & p != a & p != b & p != c & B(a,p,b) -> B(b,p,c) & -B(a,p,c) | B(a,p,c) & -B(b,p,c))).
+end_of_list.
+
+% Reading from file ig/p9/ig_2d_lin.p9
+
+
+formulas(sos).
+(all x all y (Pt(x) & Pt(y) & x != y -> (exists z (L(z) & on(x,z) & on(y,z))))).
+end_of_list.
+
+% Reading from file ig/p9/ig_2d_slin.p9
+
+
+formulas(sos).
+(all l all m all x all y (x != y & L(l) & L(m) & on(x,l) & on(y,l) & on(x,m) & on(y,m) -> l = m)).
+end_of_list.
+
+% Reading from file ig/p9/ig_2d.p9
+
+
+formulas(sos).
+(all x all y (on(x,y) -> Pt(x) & -Pt(y))).
+(all x (L(x) -> (exists y exists z (on(y,x) & on(z,x) & y != z)))).
+end_of_list.
+
+% From the command line: assign(max_seconds, 600).
+
+% From the command line: assign(max_seconds_per, 60).
+    % assign(domain_size, 2) -> assign(start_size, 2).
+    % assign(domain_size, 2) -> assign(end_size, 2).
+
+% From the command line: assign(domain_size, 2).
+
+% From the command line: assign(end_size, 20).
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (exists x exists y exists z exists l (B(x,y,z) & x != y & x != z & y != z & on(x,l) & on(y,l) & on(z,l))) # label(non_clause).  [assumption].
+2 (all x all y (on(x,y) -> Pt(x) & -Pt(y))) # label(non_clause).  [assumption].
+3 (all a all b all c (B(a,b,c) -> B(c,b,a))) # label(non_clause).  [assumption].
+4 (all a all b all c (B(a,b,c) -> -B(b,c,a))) # label(non_clause).  [assumption].
+5 (all a all b all c all p ((exists l (on(a,l) & on(b,l) & on(c,l))) & a != b & a != c & b != c <-> B(a,b,c) | B(b,c,a) | B(c,a,b))) # label(non_clause).  [assumption].
+6 (all a all b all c all p all l (on(a,l) & on(b,l) & on(c,l) & on(p,l) & p != a & p != b & p != c & B(a,p,b) -> B(b,p,c) & -B(a,p,c) | B(a,p,c) & -B(b,p,c))) # label(non_clause).  [assumption].
+7 (all x all y (Pt(x) & Pt(y) & x != y -> (exists z (L(z) & on(x,z) & on(y,z))))) # label(non_clause).  [assumption].
+8 (all l all m all x all y (x != y & L(l) & L(m) & on(x,l) & on(y,l) & on(x,m) & on(y,m) -> l = m)) # label(non_clause).  [assumption].
+9 (all x all y (on(x,y) -> Pt(x) & -Pt(y))) # label(non_clause).  [assumption].
+10 (all x (L(x) -> (exists y exists z (on(y,x) & on(z,x) & y != z)))) # label(non_clause).  [assumption].
+
+============================== end of process non-clausal formulas ===
+
+============================== CLAUSES FOR SEARCH ====================
+
+formulas(mace4_clauses).
+B(c1,c2,c3).
+c2 != c1.
+c3 != c1.
+c3 != c2.
+on(c1,c4).
+on(c2,c4).
+on(c3,c4).
+-on(x,y) | Pt(x).
+-on(x,y) | -Pt(y).
+-B(x,y,z) | B(z,y,x).
+-B(x,y,z) | -B(y,z,x).
+-on(x,y) | -on(z,y) | -on(u,y) | z = x | u = x | u = z | B(x,z,u) | B(z,u,x) | B(u,x,z).
+on(x,f1(x,y,z,u)) | -B(x,y,z).
+on(x,f1(x,y,z,u)) | -B(y,z,x).
+on(x,f1(x,y,z,u)) | -B(z,x,y).
+on(x,f1(y,x,z,u)) | -B(y,x,z).
+on(x,f1(y,x,z,u)) | -B(x,z,y).
+on(x,f1(y,x,z,u)) | -B(z,y,x).
+on(x,f1(y,z,x,u)) | -B(y,z,x).
+on(x,f1(y,z,x,u)) | -B(z,x,y).
+on(x,f1(y,z,x,u)) | -B(x,y,z).
+x != y | -B(y,x,z).
+x != y | -B(x,z,y).
+x != y | -B(z,y,x).
+x != y | -B(y,z,x).
+x != y | -B(z,x,y).
+x != y | -B(x,y,z).
+x != y | -B(z,y,x).
+x != y | -B(y,x,z).
+x != y | -B(x,z,y).
+-on(x,y) | -on(z,y) | -on(u,y) | -on(w,y) | w = x | w = z | w = u | -B(x,w,z) | B(z,w,u) | B(x,w,u).
+-on(x,y) | -on(z,y) | -on(u,y) | -on(w,y) | w = x | w = z | w = u | -B(x,w,z) | -B(x,w,u) | -B(z,w,u).
+-Pt(x) | -Pt(y) | y = x | L(f2(x,y)).
+-Pt(x) | -Pt(y) | y = x | on(x,f2(x,y)).
+-Pt(x) | -Pt(y) | y = x | on(y,f2(x,y)).
+x = y | -L(z) | -L(u) | -on(y,z) | -on(x,z) | -on(y,u) | -on(x,u) | u = z.
+-on(x,y) | Pt(x).
+-on(x,y) | -Pt(y).
+-L(x) | on(f3(x),x).
+-L(x) | on(f4(x),x).
+-L(x) | f4(x) != f3(x).
+end_of_list.
+
+============================== end of clauses for search =============
+
+% There are no natural numbers in the input.
+
+============================== DOMAIN SIZE 2 =========================
+
+============================== STATISTICS ============================
+
+For domain size 2.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.01 seconds).
+Ground clauses: seen=369, kept=167.
+Selections=1, assignments=1, propagations=10, current_models=0.
+Rewrite_terms=6, rewrite_bools=134, indexes=0.
+Rules_from_neg_clauses=2, cross_offs=2.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 3 =========================
+
+============================== STATISTICS ============================
+
+For domain size 3.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.01 seconds).
+Ground clauses: seen=1753, kept=874.
+Selections=3, assignments=6, propagations=49, current_models=0.
+Rewrite_terms=24, rewrite_bools=986, indexes=10.
+Rules_from_neg_clauses=1, cross_offs=39.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 4 =========================
+
+============================== MODEL =================================
+
+interpretation( 4, [number=1, seconds=0], [
+
+        function(c1, [ 0 ]),
+
+        function(c2, [ 1 ]),
+
+        function(c3, [ 2 ]),
+
+        function(c4, [ 3 ]),
+
+        function(f3(_), [ 0, 0, 0, 0 ]),
+
+        function(f4(_), [ 0, 0, 0, 1 ]),
+
+        function(f2(_,_), [
+			   0, 3, 3, 0,
+			   3, 0, 3, 0,
+			   3, 3, 0, 0,
+			   0, 0, 0, 0 ]),
+
+        function(f1(_,_,_,_), [
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   3, 3, 3, 3,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   3, 3, 3, 3,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   3, 3, 3, 3,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   3, 3, 3, 3,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   3, 3, 3, 3,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   3, 3, 3, 3,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0 ]),
+
+        relation(L(_), [ 0, 0, 0, 1 ]),
+
+        relation(Pt(_), [ 1, 1, 1, 0 ]),
+
+        relation(on(_,_), [
+			   0, 0, 0, 1,
+			   0, 0, 0, 1,
+			   0, 0, 0, 1,
+			   0, 0, 0, 0 ]),
+
+        relation(B(_,_,_), [
+			   0, 0, 0, 0,
+			   0, 0, 1, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   1, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0,
+			   0, 0, 0, 0 ])
+]).
+
+============================== end of model ==========================
+
+============================== STATISTICS ============================
+
+For domain size 4.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.04 seconds).
+Ground clauses: seen=5699, kept=3055.
+Selections=254, assignments=261, propagations=143, current_models=1.
+Rewrite_terms=2245, rewrite_bools=4143, indexes=14.
+Rules_from_neg_clauses=30, cross_offs=144.
+
+============================== end of statistics =====================
+
+User_CPU=0.04, System_CPU=0.00, Wall_clock=0.
+
+Exiting with 1 model.
+
+Process 26157 exit (max_models) Wed Oct 24 22:37:29 2012
+The process finished Wed Oct 24 22:37:29 2012
