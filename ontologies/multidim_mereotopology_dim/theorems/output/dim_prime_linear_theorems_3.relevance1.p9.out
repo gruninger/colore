@@ -1,0 +1,180 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 4143 was started by torsten on stl-ws2,
+Mon May  2 11:27:15 2011
+The command was "prover9 -t 600 -f dim/conversions/dim_prime_linear.p9 dim/theorems/input/options.txt dim/theorems/generated/dim_prime_linear_theorems_relevance1.order dim/theorems/input/dim_prime_linear_theorems_3.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file dim/conversions/dim_prime_linear.p9
+
+
+formulas(sos).
+(all x -(x < x)).
+(all x all y (x < y -> -(y < x))).
+(all x all y all z (x < y & y <= z -> x < z)).
+(all x all y (ZEX(x) & ZEX(y) -> x = y)).
+(all x all y (ZEX(x) & -ZEX(y) -> x < y)).
+(exists x MinDim(x)).
+(all x all y (EqDim(x,y) <-> -(x < y) & -(y < x))).
+(all x all y (x <= y <-> x < y | EqDim(x,y))).
+(all x (MaxDim(x) <-> (all y y <= x))).
+(all x (MinDim(x) <-> -ZEX(x) & (all y (y < x -> ZEX(y))))).
+(all x all y (Covers(x,y) <-> y < x & (all z -(y < z & z < x)))).
+end_of_list.
+
+% Reading from file dim/theorems/input/options.txt
+
+clear(auto_denials).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+
+% Reading from file dim/theorems/generated/dim_prime_linear_theorems_relevance1.order
+
+predicate_order([=,<=,ZEX,EqDim,<]).
+set(inverse_order).
+assign(order,kbo).
+
+% Reading from file dim/theorems/input/dim_prime_linear_theorems_3.p9
+
+
+formulas(goals).
+(all x all y all z (EqDim(x,y) & EqDim(y,z) -> EqDim(x,z))).
+end_of_list.
+
+============================== end of input ==========================
+
+% From the command line: assign(max_seconds, 600).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x -(x < x)) # label(non_clause).  [assumption].
+2 (all x all y (x < y -> -(y < x))) # label(non_clause).  [assumption].
+3 (all x all y all z (x < y & y <= z -> x < z)) # label(non_clause).  [assumption].
+4 (all x all y (ZEX(x) & ZEX(y) -> x = y)) # label(non_clause).  [assumption].
+5 (all x all y (ZEX(x) & -ZEX(y) -> x < y)) # label(non_clause).  [assumption].
+6 (exists x MinDim(x)) # label(non_clause).  [assumption].
+7 (all x all y (EqDim(x,y) <-> -(x < y) & -(y < x))) # label(non_clause).  [assumption].
+8 (all x all y (x <= y <-> x < y | EqDim(x,y))) # label(non_clause).  [assumption].
+9 (all x (MaxDim(x) <-> (all y y <= x))) # label(non_clause).  [assumption].
+10 (all x (MinDim(x) <-> -ZEX(x) & (all y (y < x -> ZEX(y))))) # label(non_clause).  [assumption].
+11 (all x all y (Covers(x,y) <-> y < x & (all z -(y < z & z < x)))) # label(non_clause).  [assumption].
+12 (all x all y all z (EqDim(x,y) & EqDim(y,z) -> EqDim(x,z))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating MinDim/1
+13 -MinDim(x) | -ZEX(x).  [clausify(10)].
+14 MinDim(c1).  [clausify(6)].
+Derived: -ZEX(c1).  [resolve(13,a,14,a)].
+15 -MinDim(x) | -(y < x) | ZEX(y).  [clausify(10)].
+Derived: -(x < c1) | ZEX(x).  [resolve(15,a,14,a)].
+16 MinDim(x) | ZEX(x) | f2(x) < x.  [clausify(10)].
+Derived: ZEX(x) | f2(x) < x | -(y < x) | ZEX(y).  [resolve(16,a,15,a)].
+17 MinDim(x) | ZEX(x) | -ZEX(f2(x)).  [clausify(10)].
+Derived: ZEX(x) | -ZEX(f2(x)) | -(y < x) | ZEX(y).  [resolve(17,a,15,a)].
+
+Eliminating MaxDim/1
+18 MaxDim(x) | -(f1(x) <= x).  [clausify(9)].
+19 -MaxDim(x) | y <= x.  [clausify(9)].
+Derived: -(f1(x) <= x) | y <= x.  [resolve(18,a,19,a)].
+
+Eliminating Covers/2
+20 Covers(x,y) | -(y < x) | y < f3(x,y).  [clausify(11)].
+21 -Covers(x,y) | y < x.  [clausify(11)].
+22 -Covers(x,y) | -(y < z) | -(z < x).  [clausify(11)].
+Derived: -(x < y) | x < f3(y,x) | -(x < z) | -(z < y).  [resolve(20,a,22,a)].
+23 Covers(x,y) | -(y < x) | f3(x,y) < x.  [clausify(11)].
+Derived: -(x < y) | f3(y,x) < y | -(x < z) | -(z < y).  [resolve(23,a,22,a)].
+
+============================== end predicate elimination =============
+
+Term ordering decisions:
+Function symbol KB weights:  c1=1. c2=1. c3=1. c4=1. f3=1. f1=1. f2=1.
+Predicate symbol precedence:  predicate_order([ =, <=, ZEX, EqDim, < ]).
+Function symbol precedence:  function_order([ c1, c2, c3, c4, f3, f1, f2 ]).
+Skipping inverse_order, because term ordering is KBO.
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+  % set(binary_resolution).  % (non-Horn)
+  % set(neg_ur_resolution).  % (non-Horn, less than 100 clauses)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.01 seconds.
+
+============================== PROOF =================================
+
+% Proof 1 at 0.02 (+ 0.00) seconds.
+% Length of proof is 22.
+% Level of proof is 5.
+% Maximum clause weight is 12.000.
+% Given clauses 33.
+
+3 (all x all y all z (x < y & y <= z -> x < z)) # label(non_clause).  [assumption].
+7 (all x all y (EqDim(x,y) <-> -(x < y) & -(y < x))) # label(non_clause).  [assumption].
+8 (all x all y (x <= y <-> x < y | EqDim(x,y))) # label(non_clause).  [assumption].
+12 (all x all y all z (EqDim(x,y) & EqDim(y,z) -> EqDim(x,z))) # label(non_clause) # label(goal).  [goal].
+26 -(x < y) | -(y <= z) | x < z.  [clausify(3)].
+29 -EqDim(x,y) | -(x < y).  [clausify(7)].
+30 -EqDim(x,y) | -(y < x).  [clausify(7)].
+31 EqDim(x,y) | x < y | y < x.  [clausify(7)].
+34 x <= y | -EqDim(x,y).  [clausify(8)].
+35 EqDim(c2,c3).  [deny(12)].
+36 EqDim(c3,c4).  [deny(12)].
+37 -EqDim(c2,c4).  [deny(12)].
+46 EqDim(x,y) | y < x | -EqDim(y,x).  [resolve(31,b,30,b)].
+47 EqDim(x,y) | y < x | -(y <= z) | x < z.  [resolve(31,b,26,a)].
+52 c2 <= c3.  [resolve(35,a,34,b)].
+54 -(c2 < c3).  [ur(29,a,35,a)].
+56 -(c4 < c3).  [ur(30,a,36,a)].
+57 -(c3 < c4).  [ur(29,a,36,a)].
+77 EqDim(c4,c3).  [resolve(46,c,36,a),unit_del(b,57)].
+79 -(c4 < c2).  [ur(26,b,52,a,c,56,a)].
+80 c4 <= c3.  [resolve(77,a,34,b)].
+84 $F.  [ur(47,a,37,a,b,79,a,d,54,a),unit_del(a,80)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=33. Generated=131. Kept=60. proofs=1.
+Usable=33. Sos=26. Demods=0. Limbo=1, Disabled=32. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=70. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=111. Nonunit_bsub_feature_tests=173.
+Megabytes=0.14.
+User_CPU=0.02, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 4143 exit (max_proofs) Mon May  2 11:27:15 2011

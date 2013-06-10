@@ -1,0 +1,198 @@
+============================== Mace4 =================================
+Mace4 (64) version 2009-11A, November 2009.
+Process 20952 was started by torsten on stl-ws2,
+Fri Apr 29 17:42:58 2011
+The command was "mace4 -c -t 6000 -s 600 -n 3 -N 20 -f dim/consistency/input/dim_prime_linear_bounded_discrete_nozex_nontrivial.p9 dim/conversions/dim_prime_linear_bounded_discrete.p9 zex/input/nozex.p9 dim/conversions/dim_prime_linear_bounded.p9 dim/conversions/dim_prime_linear.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file dim/consistency/input/dim_prime_linear_bounded_discrete_nozex_nontrivial.p9
+
+
+formulas(sos).
+(exists x (-MaxDim(x) & -MinDim(x))).
+end_of_list.
+
+% Reading from file dim/conversions/dim_prime_linear_bounded_discrete.p9
+
+
+formulas(sos).
+(all x (-MaxDim(x) -> (exists y Covers(y,x)))).
+(all x (-ZEX(x) & -MinDim(x) -> (exists y Covers(x,y)))).
+end_of_list.
+
+% Reading from file zex/input/nozex.p9
+
+
+formulas(sos).
+(all x -ZEX(x)).
+end_of_list.
+
+% Reading from file dim/conversions/dim_prime_linear_bounded.p9
+
+
+formulas(sos).
+(exists x MaxDim(x)).
+end_of_list.
+
+% Reading from file dim/conversions/dim_prime_linear.p9
+
+
+formulas(sos).
+(all x -(x < x)).
+(all x all y (x < y -> -(y < x))).
+(all x all y all z (x < y & y < z -> x < z)).
+(all x all y (ZEX(x) & ZEX(y) -> x = y)).
+(all x all y (ZEX(x) & -ZEX(y) -> x < y)).
+(exists x MinDim(x)).
+(all x all y (EqDim(x,y) <-> -(x < y) & -(y < x))).
+(all x all y (x <= y <-> x < y | EqDim(x,y))).
+(all x (MaxDim(x) <-> (all y y <= x))).
+(all x (MinDim(x) <-> -ZEX(x) & (all y (y < x -> ZEX(y))))).
+(all x all y (Covers(x,y) <-> y < x & (all z -(y < z & z < x)))).
+end_of_list.
+
+% From the command line: assign(max_seconds, 6000).
+
+% From the command line: assign(max_seconds_per, 600).
+    % assign(domain_size, 3) -> assign(start_size, 3).
+    % assign(domain_size, 3) -> assign(end_size, 3).
+
+% From the command line: assign(domain_size, 3).
+
+% From the command line: assign(end_size, 20).
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (exists x (-MaxDim(x) & -MinDim(x))) # label(non_clause).  [assumption].
+2 (all x (-MaxDim(x) -> (exists y Covers(y,x)))) # label(non_clause).  [assumption].
+3 (all x (-ZEX(x) & -MinDim(x) -> (exists y Covers(x,y)))) # label(non_clause).  [assumption].
+4 (all x -ZEX(x)) # label(non_clause).  [assumption].
+5 (exists x MaxDim(x)) # label(non_clause).  [assumption].
+6 (all x -(x < x)) # label(non_clause).  [assumption].
+7 (all x all y (x < y -> -(y < x))) # label(non_clause).  [assumption].
+8 (all x all y all z (x < y & y < z -> x < z)) # label(non_clause).  [assumption].
+9 (all x all y (ZEX(x) & ZEX(y) -> x = y)) # label(non_clause).  [assumption].
+10 (all x all y (ZEX(x) & -ZEX(y) -> x < y)) # label(non_clause).  [assumption].
+11 (exists x MinDim(x)) # label(non_clause).  [assumption].
+12 (all x all y (EqDim(x,y) <-> -(x < y) & -(y < x))) # label(non_clause).  [assumption].
+13 (all x all y (x <= y <-> x < y | EqDim(x,y))) # label(non_clause).  [assumption].
+14 (all x (MaxDim(x) <-> (all y y <= x))) # label(non_clause).  [assumption].
+15 (all x (MinDim(x) <-> -ZEX(x) & (all y (y < x -> ZEX(y))))) # label(non_clause).  [assumption].
+16 (all x all y (Covers(x,y) <-> y < x & (all z -(y < z & z < x)))) # label(non_clause).  [assumption].
+
+============================== end of process non-clausal formulas ===
+
+============================== CLAUSES FOR SEARCH ====================
+
+formulas(mace4_clauses).
+-MaxDim(c1).
+-MinDim(c1).
+MaxDim(x) | Covers(f1(x),x).
+ZEX(x) | MinDim(x) | Covers(x,f2(x)).
+-ZEX(x).
+MaxDim(c2).
+-(x < x).
+-(x < y) | -(y < x).
+-(x < y) | -(y < z) | x < z.
+-ZEX(x) | -ZEX(y) | y = x.
+-ZEX(x) | ZEX(y) | x < y.
+MinDim(c3).
+-EqDim(x,y) | -(x < y).
+-EqDim(x,y) | -(y < x).
+EqDim(x,y) | x < y | y < x.
+-(x <= y) | x < y | EqDim(x,y).
+x <= y | -(x < y).
+x <= y | -EqDim(x,y).
+-MaxDim(x) | y <= x.
+MaxDim(x) | -(f3(x) <= x).
+-MinDim(x) | -ZEX(x).
+-MinDim(x) | -(y < x) | ZEX(y).
+MinDim(x) | ZEX(x) | f4(x) < x.
+MinDim(x) | ZEX(x) | -ZEX(f4(x)).
+-Covers(x,y) | y < x.
+-Covers(x,y) | -(y < z) | -(z < x).
+Covers(x,y) | -(y < x) | y < f5(x,y).
+Covers(x,y) | -(y < x) | f5(x,y) < x.
+end_of_list.
+
+============================== end of clauses for search =============
+
+% There are no natural numbers in the input.
+
+============================== DOMAIN SIZE 3 =========================
+
+============================== MODEL =================================
+
+interpretation( 3, [number=1, seconds=0], [
+
+        function(c1, [ 0 ]),
+
+        function(c2, [ 1 ]),
+
+        function(c3, [ 2 ]),
+
+        function(f1(_), [ 1, 0, 0 ]),
+
+        function(f2(_), [ 2, 0, 0 ]),
+
+        function(f3(_), [ 1, 0, 0 ]),
+
+        function(f4(_), [ 2, 0, 0 ]),
+
+        function(f5(_,_), [
+			   0, 0, 0,
+			   0, 0, 0,
+			   0, 0, 0 ]),
+
+        relation(MaxDim(_), [ 0, 1, 0 ]),
+
+        relation(MinDim(_), [ 0, 0, 1 ]),
+
+        relation(ZEX(_), [ 0, 0, 0 ]),
+
+        relation(<(_,_), [
+			   0, 1, 0,
+			   0, 0, 0,
+			   1, 1, 0 ]),
+
+        relation(<=(_,_), [
+			   1, 1, 0,
+			   0, 1, 0,
+			   1, 1, 1 ]),
+
+        relation(Covers(_,_), [
+			   0, 0, 1,
+			   1, 0, 0,
+			   0, 0, 0 ]),
+
+        relation(EqDim(_,_), [
+			   1, 0, 0,
+			   0, 1, 0,
+			   0, 0, 1 ])
+]).
+
+============================== end of model ==========================
+
+============================== STATISTICS ============================
+
+For domain size 3.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.00 seconds).
+Ground clauses: seen=208, kept=124.
+Selections=17, assignments=20, propagations=70, current_models=1.
+Rewrite_terms=37, rewrite_bools=280, indexes=10.
+Rules_from_neg_clauses=9, cross_offs=20.
+
+============================== end of statistics =====================
+
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+Exiting with 1 model.
+
+Process 20952 exit (max_models) Fri Apr 29 17:42:58 2011
+The process finished Fri Apr 29 17:42:58 2011

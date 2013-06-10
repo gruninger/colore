@@ -1,0 +1,639 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 16713 was started by torsten on stl-ws2,
+Wed Mar 14 15:20:22 2012
+The command was "prover9 -t 6000 -f codi/conversions/codi_down.p9 codi/definitions/input/con.p9 codi/conversions/codi_int.p9 codi/conversions/codi_down.p9 codi/definitions/input/epp.p9 codi/conversions/codi_linear.p9 zex/input/zex.p9 codi/conversions/codi_int.p9 codi/definitions/input/ep.p9 dim/conversions/dim_prime_linear.p9 cont/conversions/cont_c_ext.p9 codi/definitions/input/epp.p9 codi/definitions/input/po.p9 codi/definitions/input/inc.p9 codi/definitions/input/sc.p9 codi/definitions/input/min_max_in_dim.p9 codi/conversions/codi_linear.p9 zex/input/zex.p9 cont/conversions/cont_c.p9 cont/conversions/cont_ext.p9 codi/definitions/input/ep.p9 codi/definitions/input/epp.p9 dim/conversions/dim_prime_linear.p9 cont/conversions/cont_c_ext.p9 codi/definitions/input/po.p9 codi/definitions/input/inc.p9 codi/definitions/input/sc.p9 codi/definitions/input/min_max_in_dim.p9 cont/conversions/cont_basic.p9 codi/definitions/input/ep.p9 cont/conversions/cont_c.p9 cont/conversions/cont_ext.p9 codi/definitions/input/epp.p9 cont/conversions/cont_basic.p9 codi/definitions/input/ep.p9 codi/theorems/input/options.txt codi/theorems/input/con_theorems_6.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file codi/conversions/codi_down.p9
+
+
+formulas(sos).
+(all x all y (-ZEX(difference(x,y)) -> EqDim(x,difference(x,y)))).
+(all x all y (y < x -> x = difference(x,y))).
+(all x all y all z (x <= y & Cont(z,x) & intersection(z,y) < z -> Cont(z,difference(x,y)))).
+(all x all y all z (x <= y & Cont(z,difference(x,y)) -> Cont(z,x))).
+(all x all y all z (x <= y & P(z,difference(x,y)) -> intersection(z,y) < z)).
+(all x all y (ZEX(difference(x,y)) <-> ZEX(x) | Cont(x,y))).
+end_of_list.
+
+% Reading from file codi/definitions/input/con.p9
+
+
+formulas(sos).
+(all x (Con(x) <-> (all y (PP(y,x) -> SC(y,difference(x,y)))))).
+end_of_list.
+
+% Reading from file codi/conversions/codi_int.p9
+
+
+formulas(sos).
+(all x all y (-C(x,y) -> ZEX(intersection(x,y)))).
+(all x all y (-ZEX(intersection(x,y)) -> Cont(intersection(x,y),x))).
+(all x all y all z (Cont(z,x) & Cont(z,y) -> z <= intersection(x,y))).
+(all x all y all z (Cont(z,x) & Cont(z,y) & EqDim(z,intersection(x,y)) <-> P(z,intersection(x,y)))).
+end_of_list.
+
+% Reading from file codi/conversions/codi_down.p9
+
+
+formulas(sos).
+(all x all y (-ZEX(difference(x,y)) -> EqDim(x,difference(x,y)))).
+(all x all y (y < x -> x = difference(x,y))).
+(all x all y all z (x <= y & Cont(z,x) & intersection(z,y) < z -> Cont(z,difference(x,y)))).
+(all x all y all z (x <= y & Cont(z,difference(x,y)) -> Cont(z,x))).
+(all x all y all z (x <= y & P(z,difference(x,y)) -> intersection(z,y) < z)).
+(all x all y (ZEX(difference(x,y)) <-> ZEX(x) | Cont(x,y))).
+end_of_list.
+
+% Reading from file codi/definitions/input/epp.p9
+
+
+formulas(sos).
+(all x all y (PP(x,y) <-> P(x,y) & x != y)).
+end_of_list.
+
+% Reading from file codi/conversions/codi_linear.p9
+
+
+formulas(sos).
+(all x all y (Cont(x,y) -> x <= y)).
+end_of_list.
+
+% Reading from file zex/input/zex.p9
+
+
+formulas(sos).
+(exists x ZEX(x)).
+end_of_list.
+
+% Reading from file codi/conversions/codi_int.p9
+
+
+formulas(sos).
+(all x all y (-C(x,y) -> ZEX(intersection(x,y)))).
+(all x all y (-ZEX(intersection(x,y)) -> Cont(intersection(x,y),x))).
+(all x all y all z (Cont(z,x) & Cont(z,y) -> z <= intersection(x,y))).
+(all x all y all z (Cont(z,x) & Cont(z,y) & EqDim(z,intersection(x,y)) <-> P(z,intersection(x,y)))).
+end_of_list.
+
+% Reading from file codi/definitions/input/ep.p9
+
+
+formulas(sos).
+(all x all y (P(x,y) <-> Cont(x,y) & EqDim(x,y))).
+end_of_list.
+
+% Reading from file dim/conversions/dim_prime_linear.p9
+
+
+formulas(sos).
+(all x -(x < x)).
+(all x all y (x < y -> -(y < x))).
+(all x all y all z (x < y & y <= z -> x < z)).
+(all x all y (ZEX(x) & ZEX(y) -> x = y)).
+(all x all y (ZEX(x) & -ZEX(y) -> x < y)).
+(exists x MinDim(x)).
+(all x all y (EqDim(x,y) <-> -(x < y) & -(y < x))).
+(all x all y (x <= y <-> x < y | EqDim(x,y))).
+(all x (MaxDim(x) <-> (all y y <= x))).
+(all x (MinDim(x) <-> -ZEX(x) & (all y (y < x -> ZEX(y))))).
+(all x all y (Covers(x,y) <-> y < x & (all z -(y < z & z < x)))).
+end_of_list.
+
+% Reading from file cont/conversions/cont_c_ext.p9
+
+
+formulas(sos).
+end_of_list.
+
+% Reading from file codi/definitions/input/epp.p9
+
+
+formulas(sos).
+(all x all y (PP(x,y) <-> P(x,y) & x != y)).
+end_of_list.
+
+% Reading from file codi/definitions/input/po.p9
+
+
+formulas(sos).
+(all x all y (PO(x,y) <-> (exists z (P(z,x) & P(z,y))))).
+end_of_list.
+
+% Reading from file codi/definitions/input/inc.p9
+
+
+formulas(sos).
+(all x all y (Inc(x,y) <-> (exists z (z < x & Cont(z,x) & P(z,y))) | (exists z (z < y & Cont(z,y) & P(z,x))))).
+end_of_list.
+
+% Reading from file codi/definitions/input/sc.p9
+
+
+formulas(sos).
+(all x all y (SC(x,y) <-> (exists z (Cont(z,x) & Cont(z,y))) & (all z (Cont(z,x) & Cont(z,y) -> z < x & z < y)))).
+end_of_list.
+
+% Reading from file codi/definitions/input/min_max_in_dim.p9
+
+
+formulas(sos).
+(all x (Max(x) <-> -ZEX(x) & (all y -PP(x,y)))).
+(all x (Min(x) <-> -ZEX(x) & (all y -PP(y,x)))).
+end_of_list.
+
+% Reading from file codi/conversions/codi_linear.p9
+
+
+formulas(sos).
+(all x all y (Cont(x,y) -> x <= y)).
+end_of_list.
+
+% Reading from file zex/input/zex.p9
+
+
+formulas(sos).
+(exists x ZEX(x)).
+end_of_list.
+
+% Reading from file cont/conversions/cont_c.p9
+
+
+formulas(sos).
+(all x all y (C(x,y) <-> (exists z (Cont(z,x) & Cont(z,y))))).
+(all x all y (-ZEX(x) & (all z (C(z,x) -> C(z,y))) & (exists z (C(z,y) & -C(z,x))) -> Cont(x,y))).
+end_of_list.
+
+% Reading from file cont/conversions/cont_ext.p9
+
+
+formulas(sos).
+(all x all y ((all z (Cont(z,x) <-> Cont(z,y))) -> x = y)).
+end_of_list.
+
+% Reading from file codi/definitions/input/ep.p9
+
+
+formulas(sos).
+(all x all y (P(x,y) <-> Cont(x,y) & EqDim(x,y))).
+end_of_list.
+
+% Reading from file codi/definitions/input/epp.p9
+
+
+formulas(sos).
+(all x all y (PP(x,y) <-> P(x,y) & x != y)).
+end_of_list.
+
+% Reading from file dim/conversions/dim_prime_linear.p9
+
+
+formulas(sos).
+(all x -(x < x)).
+(all x all y (x < y -> -(y < x))).
+(all x all y all z (x < y & y <= z -> x < z)).
+(all x all y (ZEX(x) & ZEX(y) -> x = y)).
+(all x all y (ZEX(x) & -ZEX(y) -> x < y)).
+(exists x MinDim(x)).
+(all x all y (EqDim(x,y) <-> -(x < y) & -(y < x))).
+(all x all y (x <= y <-> x < y | EqDim(x,y))).
+(all x (MaxDim(x) <-> (all y y <= x))).
+(all x (MinDim(x) <-> -ZEX(x) & (all y (y < x -> ZEX(y))))).
+(all x all y (Covers(x,y) <-> y < x & (all z -(y < z & z < x)))).
+end_of_list.
+
+% Reading from file cont/conversions/cont_c_ext.p9
+
+
+formulas(sos).
+end_of_list.
+
+% Reading from file codi/definitions/input/po.p9
+
+
+formulas(sos).
+(all x all y (PO(x,y) <-> (exists z (P(z,x) & P(z,y))))).
+end_of_list.
+
+% Reading from file codi/definitions/input/inc.p9
+
+
+formulas(sos).
+(all x all y (Inc(x,y) <-> (exists z (z < x & Cont(z,x) & P(z,y))) | (exists z (z < y & Cont(z,y) & P(z,x))))).
+end_of_list.
+
+% Reading from file codi/definitions/input/sc.p9
+
+
+formulas(sos).
+(all x all y (SC(x,y) <-> (exists z (Cont(z,x) & Cont(z,y))) & (all z (Cont(z,x) & Cont(z,y) -> z < x & z < y)))).
+end_of_list.
+
+% Reading from file codi/definitions/input/min_max_in_dim.p9
+
+
+formulas(sos).
+(all x (Max(x) <-> -ZEX(x) & (all y -PP(x,y)))).
+(all x (Min(x) <-> -ZEX(x) & (all y -PP(y,x)))).
+end_of_list.
+
+% Reading from file cont/conversions/cont_basic.p9
+
+
+formulas(sos).
+(all x (-ZEX(x) <-> Cont(x,x))).
+(all x all y (Cont(x,y) & Cont(y,x) -> x = y)).
+(all x all y all z (Cont(x,y) & Cont(y,z) -> Cont(x,z))).
+(all x all y (ZEX(x) -> -Cont(y,x) & -Cont(x,y))).
+end_of_list.
+
+% Reading from file codi/definitions/input/ep.p9
+
+
+formulas(sos).
+(all x all y (P(x,y) <-> Cont(x,y) & EqDim(x,y))).
+end_of_list.
+
+% Reading from file cont/conversions/cont_c.p9
+
+
+formulas(sos).
+(all x all y (C(x,y) <-> (exists z (Cont(z,x) & Cont(z,y))))).
+(all x all y (-ZEX(x) & (all z (C(z,x) -> C(z,y))) & (exists z (C(z,y) & -C(z,x))) -> Cont(x,y))).
+end_of_list.
+
+% Reading from file cont/conversions/cont_ext.p9
+
+
+formulas(sos).
+(all x all y ((all z (Cont(z,x) <-> Cont(z,y))) -> x = y)).
+end_of_list.
+
+% Reading from file codi/definitions/input/epp.p9
+
+
+formulas(sos).
+(all x all y (PP(x,y) <-> P(x,y) & x != y)).
+end_of_list.
+
+% Reading from file cont/conversions/cont_basic.p9
+
+
+formulas(sos).
+(all x (-ZEX(x) <-> Cont(x,x))).
+(all x all y (Cont(x,y) & Cont(y,x) -> x = y)).
+(all x all y all z (Cont(x,y) & Cont(y,z) -> Cont(x,z))).
+(all x all y (ZEX(x) -> -Cont(y,x) & -Cont(x,y))).
+end_of_list.
+
+% Reading from file codi/definitions/input/ep.p9
+
+
+formulas(sos).
+(all x all y (P(x,y) <-> Cont(x,y) & EqDim(x,y))).
+end_of_list.
+
+% Reading from file codi/theorems/input/options.txt
+
+clear(auto_denials).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+
+% Reading from file codi/theorems/input/con_theorems_6.p9
+
+
+formulas(goals).
+(all x all y all z (-C(y,z) & P(y,x) & P(z,x) & (all v (-Cont(v,x) | Cont(v,y) | Cont(v,z))) -> -Con(x))).
+end_of_list.
+
+============================== end of input ==========================
+
+% From the command line: assign(max_seconds, 6000).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x all y (-ZEX(difference(x,y)) -> EqDim(x,difference(x,y)))) # label(non_clause).  [assumption].
+2 (all x all y (y < x -> x = difference(x,y))) # label(non_clause).  [assumption].
+3 (all x all y all z (x <= y & Cont(z,x) & intersection(z,y) < z -> Cont(z,difference(x,y)))) # label(non_clause).  [assumption].
+4 (all x all y all z (x <= y & Cont(z,difference(x,y)) -> Cont(z,x))) # label(non_clause).  [assumption].
+5 (all x all y all z (x <= y & P(z,difference(x,y)) -> intersection(z,y) < z)) # label(non_clause).  [assumption].
+6 (all x all y (ZEX(difference(x,y)) <-> ZEX(x) | Cont(x,y))) # label(non_clause).  [assumption].
+7 (all x (Con(x) <-> (all y (PP(y,x) -> SC(y,difference(x,y)))))) # label(non_clause).  [assumption].
+8 (all x all y (-C(x,y) -> ZEX(intersection(x,y)))) # label(non_clause).  [assumption].
+9 (all x all y (-ZEX(intersection(x,y)) -> Cont(intersection(x,y),x))) # label(non_clause).  [assumption].
+10 (all x all y all z (Cont(z,x) & Cont(z,y) -> z <= intersection(x,y))) # label(non_clause).  [assumption].
+11 (all x all y all z (Cont(z,x) & Cont(z,y) & EqDim(z,intersection(x,y)) <-> P(z,intersection(x,y)))) # label(non_clause).  [assumption].
+12 (all x all y (-ZEX(difference(x,y)) -> EqDim(x,difference(x,y)))) # label(non_clause).  [assumption].
+13 (all x all y (y < x -> x = difference(x,y))) # label(non_clause).  [assumption].
+14 (all x all y all z (x <= y & Cont(z,x) & intersection(z,y) < z -> Cont(z,difference(x,y)))) # label(non_clause).  [assumption].
+15 (all x all y all z (x <= y & Cont(z,difference(x,y)) -> Cont(z,x))) # label(non_clause).  [assumption].
+16 (all x all y all z (x <= y & P(z,difference(x,y)) -> intersection(z,y) < z)) # label(non_clause).  [assumption].
+17 (all x all y (ZEX(difference(x,y)) <-> ZEX(x) | Cont(x,y))) # label(non_clause).  [assumption].
+18 (all x all y (PP(x,y) <-> P(x,y) & x != y)) # label(non_clause).  [assumption].
+19 (all x all y (Cont(x,y) -> x <= y)) # label(non_clause).  [assumption].
+20 (exists x ZEX(x)) # label(non_clause).  [assumption].
+21 (all x all y (-C(x,y) -> ZEX(intersection(x,y)))) # label(non_clause).  [assumption].
+22 (all x all y (-ZEX(intersection(x,y)) -> Cont(intersection(x,y),x))) # label(non_clause).  [assumption].
+23 (all x all y all z (Cont(z,x) & Cont(z,y) -> z <= intersection(x,y))) # label(non_clause).  [assumption].
+24 (all x all y all z (Cont(z,x) & Cont(z,y) & EqDim(z,intersection(x,y)) <-> P(z,intersection(x,y)))) # label(non_clause).  [assumption].
+25 (all x all y (P(x,y) <-> Cont(x,y) & EqDim(x,y))) # label(non_clause).  [assumption].
+26 (all x -(x < x)) # label(non_clause).  [assumption].
+27 (all x all y (x < y -> -(y < x))) # label(non_clause).  [assumption].
+28 (all x all y all z (x < y & y <= z -> x < z)) # label(non_clause).  [assumption].
+29 (all x all y (ZEX(x) & ZEX(y) -> x = y)) # label(non_clause).  [assumption].
+30 (all x all y (ZEX(x) & -ZEX(y) -> x < y)) # label(non_clause).  [assumption].
+31 (exists x MinDim(x)) # label(non_clause).  [assumption].
+32 (all x all y (EqDim(x,y) <-> -(x < y) & -(y < x))) # label(non_clause).  [assumption].
+33 (all x all y (x <= y <-> x < y | EqDim(x,y))) # label(non_clause).  [assumption].
+34 (all x (MaxDim(x) <-> (all y y <= x))) # label(non_clause).  [assumption].
+35 (all x (MinDim(x) <-> -ZEX(x) & (all y (y < x -> ZEX(y))))) # label(non_clause).  [assumption].
+36 (all x all y (Covers(x,y) <-> y < x & (all z -(y < z & z < x)))) # label(non_clause).  [assumption].
+37 (all x all y (PP(x,y) <-> P(x,y) & x != y)) # label(non_clause).  [assumption].
+38 (all x all y (PO(x,y) <-> (exists z (P(z,x) & P(z,y))))) # label(non_clause).  [assumption].
+39 (all x all y (Inc(x,y) <-> (exists z (z < x & Cont(z,x) & P(z,y))) | (exists z (z < y & Cont(z,y) & P(z,x))))) # label(non_clause).  [assumption].
+40 (all x all y (SC(x,y) <-> (exists z (Cont(z,x) & Cont(z,y))) & (all z (Cont(z,x) & Cont(z,y) -> z < x & z < y)))) # label(non_clause).  [assumption].
+41 (all x (Max(x) <-> -ZEX(x) & (all y -PP(x,y)))) # label(non_clause).  [assumption].
+42 (all x (Min(x) <-> -ZEX(x) & (all y -PP(y,x)))) # label(non_clause).  [assumption].
+43 (all x all y (Cont(x,y) -> x <= y)) # label(non_clause).  [assumption].
+44 (exists x ZEX(x)) # label(non_clause).  [assumption].
+45 (all x all y (C(x,y) <-> (exists z (Cont(z,x) & Cont(z,y))))) # label(non_clause).  [assumption].
+47 (all x all y ((all z (Cont(z,x) <-> Cont(z,y))) -> x = y)) # label(non_clause).  [assumption].
+48 (all x all y (P(x,y) <-> Cont(x,y) & EqDim(x,y))) # label(non_clause).  [assumption].
+49 (all x all y (PP(x,y) <-> P(x,y) & x != y)) # label(non_clause).  [assumption].
+50 (all x -(x < x)) # label(non_clause).  [assumption].
+51 (all x all y (x < y -> -(y < x))) # label(non_clause).  [assumption].
+52 (all x all y all z (x < y & y <= z -> x < z)) # label(non_clause).  [assumption].
+53 (all x all y (ZEX(x) & ZEX(y) -> x = y)) # label(non_clause).  [assumption].
+54 (all x all y (ZEX(x) & -ZEX(y) -> x < y)) # label(non_clause).  [assumption].
+55 (exists x MinDim(x)) # label(non_clause).  [assumption].
+56 (all x all y (EqDim(x,y) <-> -(x < y) & -(y < x))) # label(non_clause).  [assumption].
+57 (all x all y (x <= y <-> x < y | EqDim(x,y))) # label(non_clause).  [assumption].
+58 (all x (MaxDim(x) <-> (all y y <= x))) # label(non_clause).  [assumption].
+59 (all x (MinDim(x) <-> -ZEX(x) & (all y (y < x -> ZEX(y))))) # label(non_clause).  [assumption].
+60 (all x all y (Covers(x,y) <-> y < x & (all z -(y < z & z < x)))) # label(non_clause).  [assumption].
+61 (all x all y (PO(x,y) <-> (exists z (P(z,x) & P(z,y))))) # label(non_clause).  [assumption].
+62 (all x all y (Inc(x,y) <-> (exists z (z < x & Cont(z,x) & P(z,y))) | (exists z (z < y & Cont(z,y) & P(z,x))))) # label(non_clause).  [assumption].
+63 (all x all y (SC(x,y) <-> (exists z (Cont(z,x) & Cont(z,y))) & (all z (Cont(z,x) & Cont(z,y) -> z < x & z < y)))) # label(non_clause).  [assumption].
+64 (all x (Max(x) <-> -ZEX(x) & (all y -PP(x,y)))) # label(non_clause).  [assumption].
+65 (all x (Min(x) <-> -ZEX(x) & (all y -PP(y,x)))) # label(non_clause).  [assumption].
+66 (all x (-ZEX(x) <-> Cont(x,x))) # label(non_clause).  [assumption].
+67 (all x all y (Cont(x,y) & Cont(y,x) -> x = y)) # label(non_clause).  [assumption].
+68 (all x all y all z (Cont(x,y) & Cont(y,z) -> Cont(x,z))) # label(non_clause).  [assumption].
+69 (all x all y (ZEX(x) -> -Cont(y,x) & -Cont(x,y))) # label(non_clause).  [assumption].
+70 (all x all y (P(x,y) <-> Cont(x,y) & EqDim(x,y))) # label(non_clause).  [assumption].
+71 (all x all y (C(x,y) <-> (exists z (Cont(z,x) & Cont(z,y))))) # label(non_clause).  [assumption].
+73 (all x all y ((all z (Cont(z,x) <-> Cont(z,y))) -> x = y)) # label(non_clause).  [assumption].
+74 (all x all y (PP(x,y) <-> P(x,y) & x != y)) # label(non_clause).  [assumption].
+75 (all x (-ZEX(x) <-> Cont(x,x))) # label(non_clause).  [assumption].
+76 (all x all y (Cont(x,y) & Cont(y,x) -> x = y)) # label(non_clause).  [assumption].
+77 (all x all y all z (Cont(x,y) & Cont(y,z) -> Cont(x,z))) # label(non_clause).  [assumption].
+78 (all x all y (ZEX(x) -> -Cont(y,x) & -Cont(x,y))) # label(non_clause).  [assumption].
+79 (all x all y (P(x,y) <-> Cont(x,y) & EqDim(x,y))) # label(non_clause).  [assumption].
+80 (all x all y all z (-C(y,z) & P(y,x) & P(z,x) & (all v (-Cont(v,x) | Cont(v,y) | Cont(v,z))) -> -Con(x))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating Con/1
+81 Con(x) | PP(f1(x),x).  [clausify(7)].
+82 -Con(x) | -PP(y,x) | SC(y,difference(x,y)).  [clausify(7)].
+Derived: PP(f1(x),x) | -PP(y,x) | SC(y,difference(x,y)).  [resolve(81,a,82,a)].
+83 Con(x) | -SC(f1(x),difference(x,f1(x))).  [clausify(7)].
+Derived: -SC(f1(x),difference(x,f1(x))) | -PP(y,x) | SC(y,difference(x,y)).  [resolve(83,a,82,a)].
+84 Con(c5).  [deny(80)].
+Derived: -PP(x,c5) | SC(x,difference(c5,x)).  [resolve(84,a,82,a)].
+
+Eliminating MinDim/1
+85 -MinDim(x) | -ZEX(x).  [clausify(35)].
+86 MinDim(c2).  [clausify(31)].
+Derived: -ZEX(c2).  [resolve(85,a,86,a)].
+87 -MinDim(x) | -(y < x) | ZEX(y).  [clausify(35)].
+Derived: -(x < c2) | ZEX(x).  [resolve(87,a,86,a)].
+88 MinDim(x) | ZEX(x) | f3(x) < x.  [clausify(35)].
+Derived: ZEX(x) | f3(x) < x | -(y < x) | ZEX(y).  [resolve(88,a,87,a)].
+89 MinDim(x) | ZEX(x) | -ZEX(f3(x)).  [clausify(35)].
+Derived: ZEX(x) | -ZEX(f3(x)) | -(y < x) | ZEX(y).  [resolve(89,a,87,a)].
+90 MinDim(c4).  [clausify(55)].
+Derived: -ZEX(c4).  [resolve(90,a,85,a)].
+Derived: -(x < c4) | ZEX(x).  [resolve(90,a,87,a)].
+91 -MinDim(x) | -ZEX(x).  [clausify(59)].
+92 -MinDim(x) | -(y < x) | ZEX(y).  [clausify(59)].
+93 MinDim(x) | ZEX(x) | f16(x) < x.  [clausify(59)].
+Derived: ZEX(x) | f16(x) < x | -(y < x) | ZEX(y).  [resolve(93,a,87,a)].
+94 MinDim(x) | ZEX(x) | -ZEX(f16(x)).  [clausify(59)].
+Derived: ZEX(x) | -ZEX(f16(x)) | -(y < x) | ZEX(y).  [resolve(94,a,87,a)].
+
+Eliminating MaxDim/1
+95 MaxDim(x) | -(f2(x) <= x).  [clausify(34)].
+96 -MaxDim(x) | y <= x.  [clausify(34)].
+Derived: -(f2(x) <= x) | y <= x.  [resolve(95,a,96,a)].
+97 -MaxDim(x) | y <= x.  [clausify(58)].
+98 MaxDim(x) | -(f15(x) <= x).  [clausify(58)].
+Derived: -(f15(x) <= x) | y <= x.  [resolve(98,a,96,a)].
+
+Eliminating Covers/2
+99 Covers(x,y) | -(y < x) | y < f4(x,y).  [clausify(36)].
+100 -Covers(x,y) | y < x.  [clausify(36)].
+101 -Covers(x,y) | -(y < z) | -(z < x).  [clausify(36)].
+Derived: -(x < y) | x < f4(y,x) | -(x < z) | -(z < y).  [resolve(99,a,101,a)].
+102 Covers(x,y) | -(y < x) | f4(x,y) < x.  [clausify(36)].
+Derived: -(x < y) | f4(y,x) < y | -(x < z) | -(z < y).  [resolve(102,a,101,a)].
+103 -Covers(x,y) | y < x.  [clausify(60)].
+104 -Covers(x,y) | -(y < z) | -(z < x).  [clausify(60)].
+105 Covers(x,y) | -(y < x) | y < f17(x,y).  [clausify(60)].
+Derived: -(x < y) | x < f17(y,x) | -(x < z) | -(z < y).  [resolve(105,a,101,a)].
+106 Covers(x,y) | -(y < x) | f17(x,y) < x.  [clausify(60)].
+Derived: -(x < y) | f17(y,x) < y | -(x < z) | -(z < y).  [resolve(106,a,101,a)].
+
+Eliminating PO/2
+107 PO(x,y) | -P(z,x) | -P(z,y).  [clausify(38)].
+108 -PO(x,y) | P(f5(x,y),x).  [clausify(38)].
+109 -PO(x,y) | P(f5(x,y),y).  [clausify(38)].
+Derived: -P(x,y) | -P(x,z) | P(f5(y,z),y).  [resolve(107,a,108,a)].
+Derived: -P(x,y) | -P(x,z) | P(f5(y,z),z).  [resolve(107,a,109,a)].
+110 -PO(x,y) | P(f18(x,y),x).  [clausify(61)].
+Derived: P(f18(x,y),x) | -P(z,x) | -P(z,y).  [resolve(110,a,107,a)].
+111 -PO(x,y) | P(f18(x,y),y).  [clausify(61)].
+Derived: P(f18(x,y),y) | -P(z,x) | -P(z,y).  [resolve(111,a,107,a)].
+112 PO(x,y) | -P(z,x) | -P(z,y).  [clausify(61)].
+
+Eliminating Inc/2
+113 Inc(x,y) | -(z < x) | -Cont(z,x) | -P(z,y).  [clausify(39)].
+114 -Inc(x,y) | f6(x,y) < x | f7(x,y) < y.  [clausify(39)].
+115 -Inc(x,y) | f6(x,y) < x | Cont(f7(x,y),y).  [clausify(39)].
+116 -Inc(x,y) | f6(x,y) < x | P(f7(x,y),x).  [clausify(39)].
+117 -Inc(x,y) | Cont(f6(x,y),x) | f7(x,y) < y.  [clausify(39)].
+118 -Inc(x,y) | Cont(f6(x,y),x) | Cont(f7(x,y),y).  [clausify(39)].
+119 -Inc(x,y) | Cont(f6(x,y),x) | P(f7(x,y),x).  [clausify(39)].
+120 -Inc(x,y) | P(f6(x,y),y) | f7(x,y) < y.  [clausify(39)].
+121 -Inc(x,y) | P(f6(x,y),y) | Cont(f7(x,y),y).  [clausify(39)].
+122 -Inc(x,y) | P(f6(x,y),y) | P(f7(x,y),x).  [clausify(39)].
+Derived: -(x < y) | -Cont(x,y) | -P(x,z) | f6(y,z) < y | f7(y,z) < z.  [resolve(113,a,114,a)].
+Derived: -(x < y) | -Cont(x,y) | -P(x,z) | f6(y,z) < y | Cont(f7(y,z),z).  [resolve(113,a,115,a)].
+Derived: -(x < y) | -Cont(x,y) | -P(x,z) | f6(y,z) < y | P(f7(y,z),y).  [resolve(113,a,116,a)].
+Derived: -(x < y) | -Cont(x,y) | -P(x,z) | Cont(f6(y,z),y) | f7(y,z) < z.  [resolve(113,a,117,a)].
+Derived: -(x < y) | -Cont(x,y) | -P(x,z) | Cont(f6(y,z),y) | Cont(f7(y,z),z).  [resolve(113,a,118,a)].
+Derived: -(x < y) | -Cont(x,y) | -P(x,z) | Cont(f6(y,z),y) | P(f7(y,z),y).  [resolve(113,a,119,a)].
+Derived: -(x < y) | -Cont(x,y) | -P(x,z) | P(f6(y,z),z) | f7(y,z) < z.  [resolve(113,a,120,a)].
+Derived: -(x < y) | -Cont(x,y) | -P(x,z) | P(f6(y,z),z) | Cont(f7(y,z),z).  [resolve(113,a,121,a)].
+Derived: -(x < y) | -Cont(x,y) | -P(x,z) | P(f6(y,z),z) | P(f7(y,z),y).  [resolve(113,a,122,a)].
+123 Inc(x,y) | -(z < y) | -Cont(z,y) | -P(z,x).  [clausify(39)].
+Derived: -(x < y) | -Cont(x,y) | -P(x,z) | f6(z,y) < z | f7(z,y) < y.  [resolve(123,a,114,a)].
+Derived: -(x < y) | -Cont(x,y) | -P(x,z) | f6(z,y) < z | Cont(f7(z,y),y).  [resolve(123,a,115,a)].
+Derived: -(x < y) | -Cont(x,y) | -P(x,z) | f6(z,y) < z | P(f7(z,y),z).  [resolve(123,a,116,a)].
+Derived: -(x < y) | -Cont(x,y) | -P(x,z) | Cont(f6(z,y),z) | f7(z,y) < y.  [resolve(123,a,117,a)].
+Derived: -(x < y) | -Cont(x,y) | -P(x,z) | Cont(f6(z,y),z) | Cont(f7(z,y),y).  [resolve(123,a,118,a)].
+Derived: -(x < y) | -Cont(x,y) | -P(x,z) | Cont(f6(z,y),z) | P(f7(z,y),z).  [resolve(123,a,119,a)].
+Derived: -(x < y) | -Cont(x,y) | -P(x,z) | P(f6(z,y),y) | f7(z,y) < y.  [resolve(123,a,120,a)].
+Derived: -(x < y) | -Cont(x,y) | -P(x,z) | P(f6(z,y),y) | Cont(f7(z,y),y).  [resolve(123,a,121,a)].
+Derived: -(x < y) | -Cont(x,y) | -P(x,z) | P(f6(z,y),y) | P(f7(z,y),z).  [resolve(123,a,122,a)].
+124 -Inc(x,y) | f19(x,y) < x | f20(x,y) < y.  [clausify(62)].
+Derived: f19(x,y) < x | f20(x,y) < y | -(z < x) | -Cont(z,x) | -P(z,y).  [resolve(124,a,113,a)].
+Derived: f19(x,y) < x | f20(x,y) < y | -(z < y) | -Cont(z,y) | -P(z,x).  [resolve(124,a,123,a)].
+125 -Inc(x,y) | f19(x,y) < x | Cont(f20(x,y),y).  [clausify(62)].
+Derived: f19(x,y) < x | Cont(f20(x,y),y) | -(z < x) | -Cont(z,x) | -P(z,y).  [resolve(125,a,113,a)].
+Derived: f19(x,y) < x | Cont(f20(x,y),y) | -(z < y) | -Cont(z,y) | -P(z,x).  [resolve(125,a,123,a)].
+126 -Inc(x,y) | f19(x,y) < x | P(f20(x,y),x).  [clausify(62)].
+Derived: f19(x,y) < x | P(f20(x,y),x) | -(z < x) | -Cont(z,x) | -P(z,y).  [resolve(126,a,113,a)].
+Derived: f19(x,y) < x | P(f20(x,y),x) | -(z < y) | -Cont(z,y) | -P(z,x).  [resolve(126,a,123,a)].
+127 -Inc(x,y) | Cont(f19(x,y),x) | f20(x,y) < y.  [clausify(62)].
+Derived: Cont(f19(x,y),x) | f20(x,y) < y | -(z < x) | -Cont(z,x) | -P(z,y).  [resolve(127,a,113,a)].
+Derived: Cont(f19(x,y),x) | f20(x,y) < y | -(z < y) | -Cont(z,y) | -P(z,x).  [resolve(127,a,123,a)].
+128 -Inc(x,y) | Cont(f19(x,y),x) | Cont(f20(x,y),y).  [clausify(62)].
+Derived: Cont(f19(x,y),x) | Cont(f20(x,y),y) | -(z < x) | -Cont(z,x) | -P(z,y).  [resolve(128,a,113,a)].
+Derived: Cont(f19(x,y),x) | Cont(f20(x,y),y) | -(z < y) | -Cont(z,y) | -P(z,x).  [resolve(128,a,123,a)].
+129 -Inc(x,y) | Cont(f19(x,y),x) | P(f20(x,y),x).  [clausify(62)].
+Derived: Cont(f19(x,y),x) | P(f20(x,y),x) | -(z < x) | -Cont(z,x) | -P(z,y).  [resolve(129,a,113,a)].
+Derived: Cont(f19(x,y),x) | P(f20(x,y),x) | -(z < y) | -Cont(z,y) | -P(z,x).  [resolve(129,a,123,a)].
+130 -Inc(x,y) | P(f19(x,y),y) | f20(x,y) < y.  [clausify(62)].
+Derived: P(f19(x,y),y) | f20(x,y) < y | -(z < x) | -Cont(z,x) | -P(z,y).  [resolve(130,a,113,a)].
+Derived: P(f19(x,y),y) | f20(x,y) < y | -(z < y) | -Cont(z,y) | -P(z,x).  [resolve(130,a,123,a)].
+131 -Inc(x,y) | P(f19(x,y),y) | Cont(f20(x,y),y).  [clausify(62)].
+Derived: P(f19(x,y),y) | Cont(f20(x,y),y) | -(z < x) | -Cont(z,x) | -P(z,y).  [resolve(131,a,113,a)].
+Derived: P(f19(x,y),y) | Cont(f20(x,y),y) | -(z < y) | -Cont(z,y) | -P(z,x).  [resolve(131,a,123,a)].
+132 -Inc(x,y) | P(f19(x,y),y) | P(f20(x,y),x).  [clausify(62)].
+Derived: P(f19(x,y),y) | P(f20(x,y),x) | -(z < x) | -Cont(z,x) | -P(z,y).  [resolve(132,a,113,a)].
+Derived: P(f19(x,y),y) | P(f20(x,y),x) | -(z < y) | -Cont(z,y) | -P(z,x).  [resolve(132,a,123,a)].
+133 Inc(x,y) | -(z < x) | -Cont(z,x) | -P(z,y).  [clausify(62)].
+134 Inc(x,y) | -(z < y) | -Cont(z,y) | -P(z,x).  [clausify(62)].
+
+Eliminating Max/1
+135 Max(x) | ZEX(x) | PP(x,f10(x)).  [clausify(41)].
+136 -Max(x) | -ZEX(x).  [clausify(41)].
+137 -Max(x) | -PP(x,y).  [clausify(41)].
+Derived: ZEX(x) | PP(x,f10(x)) | -PP(x,y).  [resolve(135,a,137,a)].
+138 -Max(x) | -ZEX(x).  [clausify(64)].
+139 -Max(x) | -PP(x,y).  [clausify(64)].
+140 Max(x) | ZEX(x) | PP(x,f23(x)).  [clausify(64)].
+Derived: ZEX(x) | PP(x,f23(x)) | -PP(x,y).  [resolve(140,a,137,a)].
+
+Eliminating Min/1
+141 Min(x) | ZEX(x) | PP(f11(x),x).  [clausify(42)].
+142 -Min(x) | -ZEX(x).  [clausify(42)].
+143 -Min(x) | -PP(y,x).  [clausify(42)].
+Derived: ZEX(x) | PP(f11(x),x) | -PP(y,x).  [resolve(141,a,143,a)].
+144 -Min(x) | -ZEX(x).  [clausify(65)].
+145 -Min(x) | -PP(y,x).  [clausify(65)].
+146 Min(x) | ZEX(x) | PP(f24(x),x).  [clausify(65)].
+Derived: ZEX(x) | PP(f24(x),x) | -PP(y,x).  [resolve(146,a,143,a)].
+
+============================== end predicate elimination =============
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, ZEX, Cont, <, P, <=, C, EqDim, PP, SC ]).
+Function symbol precedence:  function_order([ c1, c2, c3, c4, c5, c6, c7, intersection, difference, f4, f5, f6, f7, f8, f9, f12, f13, f14, f17, f18, f19, f20, f21, f22, f25, f26, f27, f1, f2, f3, f10, f11, f15, f16, f23, f24 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+  % set(binary_resolution).  % (non-Horn)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.03 seconds.
+
+============================== PROOF =================================
+
+% Proof 1 at 0.14 (+ 0.00) seconds.
+% Length of proof is 32.
+% Level of proof is 8.
+% Maximum clause weight is 9.000.
+% Given clauses 383.
+
+25 (all x all y (P(x,y) <-> Cont(x,y) & EqDim(x,y))) # label(non_clause).  [assumption].
+45 (all x all y (C(x,y) <-> (exists z (Cont(z,x) & Cont(z,y))))) # label(non_clause).  [assumption].
+66 (all x (-ZEX(x) <-> Cont(x,x))) # label(non_clause).  [assumption].
+67 (all x all y (Cont(x,y) & Cont(y,x) -> x = y)) # label(non_clause).  [assumption].
+69 (all x all y (ZEX(x) -> -Cont(y,x) & -Cont(x,y))) # label(non_clause).  [assumption].
+80 (all x all y all z (-C(y,z) & P(y,x) & P(z,x) & (all v (-Cont(v,x) | Cont(v,y) | Cont(v,z))) -> -Con(x))) # label(non_clause) # label(goal).  [goal].
+167 -P(x,y) | Cont(x,y).  [clausify(25)].
+191 C(x,y) | -Cont(z,x) | -Cont(z,y).  [clausify(45)].
+201 ZEX(x) | Cont(x,x).  [clausify(66)].
+203 -Cont(x,y) | -Cont(y,x) | y = x.  [clausify(67)].
+205 -ZEX(x) | -Cont(y,x).  [clausify(69)].
+206 -ZEX(x) | -Cont(x,y).  [clausify(69)].
+213 -C(c6,c7).  [deny(80)].
+214 P(c6,c5).  [deny(80)].
+215 P(c7,c5).  [deny(80)].
+216 -Cont(x,c5) | Cont(x,c6) | Cont(x,c7).  [deny(80)].
+438 Cont(c6,c5).  [resolve(214,a,167,a)].
+441 Cont(c7,c5).  [resolve(215,a,167,a)].
+445 Cont(c5,c6) | Cont(c5,c7) | ZEX(c5).  [resolve(216,a,201,b)].
+586 -ZEX(c6).  [resolve(438,a,206,b)].
+587 -ZEX(c5).  [resolve(438,a,205,b)].
+590 -Cont(c5,c6) | c6 = c5.  [resolve(438,a,203,b)].
+595 C(x,c5) | -Cont(c6,x).  [resolve(438,a,191,c)].
+604 Cont(c5,c6) | Cont(c5,c7).  [back_unit_del(445),unit_del(c,587)].
+611 -ZEX(c7).  [resolve(441,a,206,b)].
+620 C(c5,x) | -Cont(c7,x).  [resolve(441,a,191,b)].
+1057 C(c6,c5).  [resolve(595,b,201,b),unit_del(b,586)].
+1468 Cont(c5,c6) | c7 = c5.  [resolve(604,b,203,b),flip(c),unit_del(b,441)].
+1835 C(c5,c7).  [resolve(620,b,201,b),unit_del(b,611)].
+2137 c7 = c5 | c6 = c5.  [resolve(1468,a,590,a)].
+2429 c6 = c5.  [para(2137(a,1),213(a,2)),unit_del(b,1057)].
+2447 $F.  [back_rewrite(213),rewrite([2429(1)]),unit_del(a,1835)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=383. Generated=4188. Kept=2300. proofs=1.
+Usable=276. Sos=1048. Demods=25. Limbo=18, Disabled=1209. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=1887. Back_subsumed=45.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=40 (0 lex), Back_demodulated=912. Back_unit_deleted=1.
+Demod_attempts=34229. Demod_rewrites=2280.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=9388. Nonunit_bsub_feature_tests=8141.
+Megabytes=5.19.
+User_CPU=0.14, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 16713 exit (max_proofs) Wed Mar 14 15:20:22 2012
