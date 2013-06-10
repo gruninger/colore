@@ -1,0 +1,72 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/inch/inch_calculus_extended.clif
+
+(cl-imports http://colore.oor.net/inch/inch_calculus.clif)
+
+(cl-comment "corrected INCH Calculus with I-E1 to I-E2")
+
+(cl-comment "I-E1: an entity of maximal dimension exists")
+
+(exists (x)
+	(and
+		(not (ZEXI x))
+		(forall (y)
+			(if
+				(not (ZEXI y))
+				(GED y x)
+			)
+		)
+	)
+)
+
+(cl-comment "I-E2")
+
+(forall (x y)
+	(if
+		(exists (w)
+			(and
+				(not (ZEXI w))
+				(CS w x)
+				(CS w y)
+			)
+		)
+		(exists (z)
+			(and
+				(CS z x)
+				(CS z y)
+				(forall (w)
+					(if
+						(and
+							(CS w x)
+							(CS w y)
+						)
+						(GED z w)
+					)
+				)
+				(forall (w)
+					(if
+						(and
+							(CS w x)
+							(CS w y)
+							(GED w z)
+							(GED z w)
+						)
+						(CS w z)
+					)
+				)
+			)
+		)
+	)
+)
+
+
+)

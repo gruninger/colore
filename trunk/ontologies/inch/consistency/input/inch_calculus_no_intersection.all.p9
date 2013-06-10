@@ -1,0 +1,77 @@
+%axioms from module inch//consistency/p9/inch_calculus_no_intersection.p9
+%----------------------------------
+
+% Automatically generated from CL/KIF
+formulas(sos).
+% Module http://colore.oor.net/inch/consistency/inch_calculus_no_intersection
+%imports("http://colore.oor.net/inch/inch_calculus").
+% 'counterexample to closure under intersections'
+ exists x exists y (-( exists z (CS(z, x) & CS(z, y) &  all w ((CS(w, x) & CS(w, y) -> GED(z, w))) &  all w ((CS(w, x) & CS(w, y) & GED(w, z) & GED(z, w) -> CS(w, z)))))).
+
+
+%axioms from module inch/p9/inch_calculus.p9
+%----------------------------------
+
+% Automatically generated from CL/KIF
+% Module http://colore.oor.net/inch/inch_calculus
+%imports("http://colore.oor.net/inch/inch_original").
+% 'corrected INCH Calculus with only the essential definitions'
+% 'I-PA7*: INCH(x,y) requires a chunk of x to overlap with y'
+ all x all y ((INCH(x, y) ->  exists z (CS(z, x) & CH(z, y)))).
+
+
+%axioms from module inch/p9/inch_original.p9
+%----------------------------------
+
+% Automatically generated from CL/KIF
+% Module http://colore.oor.net/inch/inch_original
+%imports("http://colore.oor.net/inch/inch_weak_closed").
+% 'original INCH Calculus with only the essential definitions'
+% 'I-PA6: INCH transitive'
+ all x all y all z ((INCH(x, y) & INCH(y, z) & INCH(z, x) -> INCH(y, x))).
+% 'I-PA7: INCH(x,y) requires a constituent of x to overlap with y'
+ all x all y ((INCH(x, y) ->  exists z (CS(z, x) & INCH(z, y) & INCH(y, z)))).
+% 'I-PA8: a chunk is a constituent'
+ all x all y ((CH(x, y) -> CS(x, y))).
+
+
+%axioms from module inch/p9/inch_weak_closed.p9
+%----------------------------------
+
+% Automatically generated from CL/KIF
+% Module http://colore.oor.net/inch/inch_weak_closed
+%imports("http://colore.oor.net/inch/inch_weak").
+% 'weak INCH Calculus extended by closure under differences and sums'
+% 'I-PA9: sum'
+ all x all y ((GED(x, y) & GED(y, x) ->  exists z ( all w ((INCH(z, w) <-> INCH(x, w) | INCH(y, w)))))).
+% 'I-PA10: difference'
+ all x all y ((GED(x, y) & GED(y, x) ->  exists z ( all w ((INCH(z, w) <->  exists v (INCH(v, w) & CH(v, x) & -(INCH(v, y) & INCH(y, v)))))))).
+
+
+%axioms from module inch/p9/inch_weak.p9
+%----------------------------------
+
+% Automatically generated from CL/KIF
+% Module http://colore.oor.net/inch/inch_weak
+% 'weak INCH Calculus with only the essential definitions'
+% 'I-D1: constituent (Cont)'
+ all x all y ((CS(x, y) <->  all z ((INCH(x, z) -> INCH(y, z))))).
+% 'I-D4: chunk (equidmensional part)'
+ all x all y ((CH(x, y) <-> INCH(x, y) &  all z ((INCH(x, z) & INCH(z, x) -> INCH(y, z) & INCH(z, y))))).
+% 'I-D6: zero region'
+ all x all y ((ZEXI(x) <-> -(INCH(x, x)))).
+% 'I-D7: greater or equal dimension'
+ all x all y ((GED(x, y) <-> ZEXI(y) |  exists z (INCH(x, z) & INCH(z, y)))).
+% 'I-PA1: extensionality of INCH 1'
+ all x all y (((x = y) <->  all z ((INCH(x, z) <-> INCH(y, z))))).
+% 'I-PA2: extensionality of INCH 2'
+ all x all y (((x = y) <->  all z ((INCH(z, x) <-> INCH(z, y))))).
+% 'I-PA3: reflexivity of INCH'
+ all x all y ((INCH(x, y) -> INCH(x, x))).
+% 'I-PA4: extents are dimensionally comparable - similar to using linear dimension'
+ all x all y (GED(x, y) | GED(y, x)).
+% 'I-PA5: GED transitive'
+ all x all y all z ((GED(x, y) & GED(y, z) -> GED(x, z))).
+
+end_of_list.
+

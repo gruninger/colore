@@ -1,0 +1,223 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 22720 was started by torsten on scotus.mie.utoronto.ca,
+Tue May 22 10:48:02 2012
+The command was "prover9 -t 600 -f inch/p9/codi_mapping.p9 inch/p9/inch_weak.p9 inch//theorems/p9/options.txt inch//theorems/p9/inch_cont_basic_1.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file inch/p9/codi_mapping.p9
+
+
+formulas(sos).
+(all x all y (Cont(x,y) <-> CS(x,y) & -ZEXI(x))).
+(all x (ZEX(x) <-> ZEXI(x))).
+(all x all y (x < y <-> GED(y,x) & -GED(x,y))).
+end_of_list.
+
+% Reading from file inch/p9/inch_weak.p9
+
+
+formulas(sos).
+(all x all y (CS(x,y) <-> (all z (INCH(x,z) -> INCH(y,z))))).
+(all x all y (CH(x,y) <-> INCH(x,y) & (all z (INCH(x,z) & INCH(z,x) -> INCH(y,z) & INCH(z,y))))).
+(all x all y (ZEXI(x) <-> -INCH(x,x))).
+(all x all y (GED(x,y) <-> ZEXI(y) | (exists z (INCH(x,z) & INCH(z,y))))).
+(all x all y (x = y <-> (all z (INCH(x,z) <-> INCH(y,z))))).
+(all x all y (x = y <-> (all z (INCH(z,x) <-> INCH(z,y))))).
+(all x all y (INCH(x,y) -> INCH(x,x))).
+(all x all y (GED(x,y) | GED(y,x))).
+(all x all y all z (GED(x,y) & GED(y,z) -> GED(x,z))).
+end_of_list.
+
+% Reading from file inch//theorems/p9/options.txt
+
+clear(auto_denials).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+
+% Reading from file inch//theorems/p9/inch_cont_basic_1.p9
+
+
+formulas(goals).
+(all x (-ZEX(x) <-> Cont(x,x))).
+end_of_list.
+
+============================== end of input ==========================
+
+% From the command line: assign(max_seconds, 600).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x all y (Cont(x,y) <-> CS(x,y) & -ZEXI(x))) # label(non_clause).  [assumption].
+2 (all x (ZEX(x) <-> ZEXI(x))) # label(non_clause).  [assumption].
+3 (all x all y (x < y <-> GED(y,x) & -GED(x,y))) # label(non_clause).  [assumption].
+4 (all x all y (CS(x,y) <-> (all z (INCH(x,z) -> INCH(y,z))))) # label(non_clause).  [assumption].
+5 (all x all y (CH(x,y) <-> INCH(x,y) & (all z (INCH(x,z) & INCH(z,x) -> INCH(y,z) & INCH(z,y))))) # label(non_clause).  [assumption].
+6 (all x all y (ZEXI(x) <-> -INCH(x,x))) # label(non_clause).  [assumption].
+7 (all x all y (GED(x,y) <-> ZEXI(y) | (exists z (INCH(x,z) & INCH(z,y))))) # label(non_clause).  [assumption].
+8 (all x all y (x = y <-> (all z (INCH(x,z) <-> INCH(y,z))))) # label(non_clause).  [assumption].
+9 (all x all y (x = y <-> (all z (INCH(z,x) <-> INCH(z,y))))) # label(non_clause).  [assumption].
+10 (all x all y (INCH(x,y) -> INCH(x,x))) # label(non_clause).  [assumption].
+11 (all x all y (GED(x,y) | GED(y,x))) # label(non_clause).  [assumption].
+12 (all x all y all z (GED(x,y) & GED(y,z) -> GED(x,z))) # label(non_clause).  [assumption].
+13 (all x (-ZEX(x) <-> Cont(x,x))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating CS/2
+14 Cont(x,y) | -CS(x,y) | ZEXI(x).  [clausify(1)].
+15 -Cont(x,y) | CS(x,y).  [clausify(1)].
+16 -CS(x,y) | -INCH(x,z) | INCH(y,z).  [clausify(4)].
+Derived: -INCH(x,y) | INCH(z,y) | -Cont(x,z).  [resolve(16,a,15,b)].
+17 CS(x,y) | INCH(x,f1(x,y)).  [clausify(4)].
+Derived: INCH(x,f1(x,y)) | Cont(x,y) | ZEXI(x).  [resolve(17,a,14,b)].
+Derived: INCH(x,f1(x,y)) | -INCH(x,z) | INCH(y,z).  [resolve(17,a,16,a)].
+18 CS(x,y) | -INCH(y,f1(x,y)).  [clausify(4)].
+Derived: -INCH(x,f1(y,x)) | Cont(y,x) | ZEXI(y).  [resolve(18,a,14,b)].
+Derived: -INCH(x,f1(y,x)) | -INCH(y,z) | INCH(x,z).  [resolve(18,a,16,a)].
+
+Eliminating ZEXI/1
+19 -ZEX(x) | ZEXI(x).  [clausify(2)].
+20 -Cont(x,y) | -ZEXI(x).  [clausify(1)].
+Derived: -ZEX(x) | -Cont(x,y).  [resolve(19,b,20,b)].
+21 ZEX(x) | -ZEXI(x).  [clausify(2)].
+22 -ZEXI(x) | -INCH(x,x).  [clausify(6)].
+Derived: -INCH(x,x) | -ZEX(x).  [resolve(22,a,19,b)].
+23 ZEXI(x) | INCH(x,x).  [clausify(6)].
+Derived: INCH(x,x) | -Cont(x,y).  [resolve(23,a,20,b)].
+Derived: INCH(x,x) | ZEX(x).  [resolve(23,a,21,b)].
+24 -GED(x,y) | ZEXI(y) | INCH(x,f3(x,y)).  [clausify(7)].
+Derived: -GED(x,y) | INCH(x,f3(x,y)) | -Cont(y,z).  [resolve(24,b,20,b)].
+Derived: -GED(x,y) | INCH(x,f3(x,y)) | ZEX(y).  [resolve(24,b,21,b)].
+Derived: -GED(x,y) | INCH(x,f3(x,y)) | -INCH(y,y).  [resolve(24,b,22,a)].
+25 -GED(x,y) | ZEXI(y) | INCH(f3(x,y),y).  [clausify(7)].
+Derived: -GED(x,y) | INCH(f3(x,y),y) | -Cont(y,z).  [resolve(25,b,20,b)].
+Derived: -GED(x,y) | INCH(f3(x,y),y) | ZEX(y).  [resolve(25,b,21,b)].
+Derived: -GED(x,y) | INCH(f3(x,y),y) | -INCH(y,y).  [resolve(25,b,22,a)].
+26 GED(x,y) | -ZEXI(y).  [clausify(7)].
+Derived: GED(x,y) | -ZEX(y).  [resolve(26,b,19,b)].
+Derived: GED(x,y) | INCH(y,y).  [resolve(26,b,23,a)].
+Derived: GED(x,y) | -GED(z,y) | INCH(z,f3(z,y)).  [resolve(26,b,24,b)].
+Derived: GED(x,y) | -GED(z,y) | INCH(f3(z,y),y).  [resolve(26,b,25,b)].
+27 INCH(x,f1(x,y)) | Cont(x,y) | ZEXI(x).  [resolve(17,a,14,b)].
+Derived: INCH(x,f1(x,y)) | Cont(x,y) | -Cont(x,z).  [resolve(27,c,20,b)].
+Derived: INCH(x,f1(x,y)) | Cont(x,y) | ZEX(x).  [resolve(27,c,21,b)].
+Derived: INCH(x,f1(x,y)) | Cont(x,y) | -INCH(x,x).  [resolve(27,c,22,a)].
+Derived: INCH(x,f1(x,y)) | Cont(x,y) | GED(z,x).  [resolve(27,c,26,b)].
+28 -INCH(x,f1(y,x)) | Cont(y,x) | ZEXI(y).  [resolve(18,a,14,b)].
+Derived: -INCH(x,f1(y,x)) | Cont(y,x) | -Cont(y,z).  [resolve(28,c,20,b)].
+Derived: -INCH(x,f1(y,x)) | Cont(y,x) | ZEX(y).  [resolve(28,c,21,b)].
+Derived: -INCH(x,f1(y,x)) | Cont(y,x) | -INCH(y,y).  [resolve(28,c,22,a)].
+Derived: -INCH(x,f1(y,x)) | Cont(y,x) | GED(z,y).  [resolve(28,c,26,b)].
+
+Eliminating </2
+29 x < y | -GED(y,x) | GED(x,y).  [clausify(3)].
+30 -(x < y) | GED(y,x).  [clausify(3)].
+31 -(x < y) | -GED(x,y).  [clausify(3)].
+
+Eliminating CH/2
+32 CH(x,y) | -INCH(x,y) | INCH(x,f2(x,y)).  [clausify(5)].
+33 -CH(x,y) | INCH(x,y).  [clausify(5)].
+34 -CH(x,y) | -INCH(x,z) | -INCH(z,x) | INCH(y,z).  [clausify(5)].
+35 -CH(x,y) | -INCH(x,z) | -INCH(z,x) | INCH(z,y).  [clausify(5)].
+Derived: -INCH(x,y) | INCH(x,f2(x,y)) | -INCH(x,z) | -INCH(z,x) | INCH(y,z).  [resolve(32,a,34,a)].
+Derived: -INCH(x,y) | INCH(x,f2(x,y)) | -INCH(x,z) | -INCH(z,x) | INCH(z,y).  [resolve(32,a,35,a)].
+36 CH(x,y) | -INCH(x,y) | INCH(f2(x,y),x).  [clausify(5)].
+Derived: -INCH(x,y) | INCH(f2(x,y),x) | -INCH(x,z) | -INCH(z,x) | INCH(y,z).  [resolve(36,a,34,a)].
+Derived: -INCH(x,y) | INCH(f2(x,y),x) | -INCH(x,z) | -INCH(z,x) | INCH(z,y).  [resolve(36,a,35,a)].
+37 CH(x,y) | -INCH(x,y) | -INCH(y,f2(x,y)) | -INCH(f2(x,y),y).  [clausify(5)].
+Derived: -INCH(x,y) | -INCH(y,f2(x,y)) | -INCH(f2(x,y),y) | -INCH(x,z) | -INCH(z,x) | INCH(y,z).  [resolve(37,a,34,a)].
+Derived: -INCH(x,y) | -INCH(y,f2(x,y)) | -INCH(f2(x,y),y) | -INCH(x,z) | -INCH(z,x) | INCH(z,y).  [resolve(37,a,35,a)].
+
+============================== end predicate elimination =============
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, ZEX, INCH, GED, Cont ]).
+Function symbol precedence:  function_order([ c1, f1, f2, f3, f4, f5 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+  % set(binary_resolution).  % (non-Horn)
+  % set(neg_ur_resolution).  % (non-Horn, less than 100 clauses)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.01 seconds.
+
+============================== PROOF =================================
+
+% Proof 1 at 0.02 (+ 0.00) seconds.
+% Length of proof is 23.
+% Level of proof is 8.
+% Maximum clause weight is 10.000.
+% Given clauses 53.
+
+1 (all x all y (Cont(x,y) <-> CS(x,y) & -ZEXI(x))) # label(non_clause).  [assumption].
+2 (all x (ZEX(x) <-> ZEXI(x))) # label(non_clause).  [assumption].
+4 (all x all y (CS(x,y) <-> (all z (INCH(x,z) -> INCH(y,z))))) # label(non_clause).  [assumption].
+13 (all x (-ZEX(x) <-> Cont(x,x))) # label(non_clause) # label(goal).  [goal].
+14 Cont(x,y) | -CS(x,y) | ZEXI(x).  [clausify(1)].
+17 CS(x,y) | INCH(x,f1(x,y)).  [clausify(4)].
+18 CS(x,y) | -INCH(y,f1(x,y)).  [clausify(4)].
+19 -ZEX(x) | ZEXI(x).  [clausify(2)].
+20 -Cont(x,y) | -ZEXI(x).  [clausify(1)].
+21 ZEX(x) | -ZEXI(x).  [clausify(2)].
+27 INCH(x,f1(x,y)) | Cont(x,y) | ZEXI(x).  [resolve(17,a,14,b)].
+28 -INCH(x,f1(y,x)) | Cont(y,x) | ZEXI(y).  [resolve(18,a,14,b)].
+50 -ZEX(c1) | Cont(c1,c1).  [deny(13)].
+51 ZEX(c1) | -Cont(c1,c1).  [deny(13)].
+55 -ZEX(x) | -Cont(x,y).  [resolve(19,b,20,b)].
+70 INCH(x,f1(x,y)) | Cont(x,y) | ZEX(x).  [resolve(27,c,21,b)].
+74 -INCH(x,f1(y,x)) | Cont(y,x) | ZEX(y).  [resolve(28,c,21,b)].
+144 INCH(c1,f1(c1,c1)) | ZEX(c1).  [resolve(70,b,51,b),merge(c)].
+261 ZEX(c1) | Cont(c1,c1).  [resolve(144,a,74,a),merge(c)].
+268 ZEX(c1).  [resolve(261,b,51,b),merge(b)].
+269 Cont(c1,c1).  [back_unit_del(50),unit_del(a,268)].
+272 -Cont(c1,x).  [ur(55,a,268,a)].
+273 $F.  [resolve(272,a,269,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=53. Generated=431. Kept=235. proofs=1.
+Usable=49. Sos=152. Demods=0. Limbo=2, Disabled=100. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=196. Back_subsumed=30.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=1.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=1663. Nonunit_bsub_feature_tests=1292.
+Megabytes=0.41.
+User_CPU=0.02, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 22720 exit (max_proofs) Tue May 22 10:48:02 2012
