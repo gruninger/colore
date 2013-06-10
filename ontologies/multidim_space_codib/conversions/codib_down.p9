@@ -1,0 +1,26 @@
+% Automatically generated from CL/KIF
+formulas(sos).
+% 'space/codib_down'
+%imports("http:/colore.oor.net/multidim_mereotopology_codi/definitions/min_max_in_dim").
+%imports("http:/colore.oor.net/multidim_mereotopology_codi/definitions/po").
+%imports("http:/colore.oor.net/multidim_mereotopology_codi/definitions/inc").
+%imports("http:/colore.oor.net/multidim_mereotopology_codi/definitions/sc").
+%imports("http:/colore.oor.net/multidim_mereotopology_codib/definitions/closed").
+%imports("http:/colore.oor.net/multidim_mereotopology_codib/definitions/icont").
+%imports("http:/colore.oor.net/multidim_mereotopology_codib/definitions/tcont").
+% 'ME-E1: atomic'
+ all x ((S(x) & -(ZEX(x)) ->  exists y (P(y, x) & Min(y)))).
+% 'BC-A1: entities in the boundary are at least of a dimension lower than the bounded entity'
+ all x all y ((S(x) & S(y) & BCont(x, y) -> Cont(x, y) & Inc(x, y))).
+% 'BC-A2: if z is contained in two superficially connected entities x and y embedded in an entity v of the dimension of x, that is x has locally a codimension of zero, then z is contained in the boundary of x'
+ all x all y all v all z ((S(x) & S(y) & S(v) & S(z) & SC(x, y) & Min(x) & P(x, v) & Cont(y, v) & Cont(z, x) & Cont(z, y) -> BCont(z, x))).
+% 'BC-A3: any z contained in two superficially connected parts x and y of v that is exactly of one dimension lower than v is not in the boundary of v'
+ all x all y all z all v ((S(x) & S(y) & S(v) & S(z) & SC(x, y) & P(x, v) & P(y, v) & Cont(z, x) & Cont(z, y) & Covers(v, z) -> -(BCont(z, v)))).
+% 'BC-A4'
+ all x all y all z ((S(x) & S(y) & S(z) & BCont(x, y) & P(y, z) &  all v all w ((S(v) & S(w) & P(v, z) & -(PO(v, y)) & P(w, x) -> -(Cont(w, v)))) -> BCont(x, z))).
+% 'BC-A5: transitivity with respect to Cont'
+ all x all y all z ((S(x) & S(y) & S(z) & BCont(x, y) & Cont(z, x) -> BCont(z, y))).
+% 'BC-A6'
+ all x all y ((S(x) & S(y) & BCont(x, y) <-> S(x) & S(y) & -(ZEX(x)) &  all z ((P(z, x) & Min(z) -> BCont(z, y))))).
+
+end_of_list.

@@ -1,0 +1,339 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text space/voids_extended
+
+(cl-imports space/voids)
+
+
+(cl-comment "V-A9:")
+
+(forall (x y)
+	(iff
+		(hostsh x y)
+		(and
+			(hostsv x y)
+			(ICon (r x))
+		)
+	)
+)
+
+
+(cl-comment "V-A10:")
+
+(forall (x y)
+	(iff
+		(hostsg x y)
+		(and
+			(hostsv x y)
+			(not (ICon (r x)))
+		)
+	)
+)
+
+
+(cl-comment "Hole-D:")
+
+(forall (y)
+	(iff
+		(Hole y)
+		(exists (x)
+			(hostsh x y)
+		)
+	)
+)
+
+
+(cl-comment "Gap-D:")
+
+(forall (y)
+	(iff
+		(Gap y)
+		(exists (x)
+			(hostsg x y)
+		)
+	)
+)
+
+
+
+(cl-comment "V-A11: opening of a void")
+
+(forall (x v)
+	(if
+		(hostsv x v)
+		(= 
+			(op x v) 
+			(intersection (r v) (difference U (sum (r x) (r v))))
+		)
+	)
+)
+
+
+(cl-comment "V-A12: hosting a cavity")
+
+(forall (x y)
+	(iff
+		(hostscavity x y)
+		(and
+			(hostsv x y)
+			(not (Covers (r x) (op x y)))
+		)
+	)
+)
+
+
+(cl-comment "CAV-D")
+
+(forall (y)
+	(iff
+		(CAVITY y)
+		(exists (x)
+			(hostscavity x y)
+		)
+	)
+)
+
+
+(cl-comment "V-A13: hosting an internal cavity")
+
+(forall (x y)
+	(iff
+		(hostscavityi x y)
+		(and
+			(hostscavity x y)
+			(ZEX (op x y))
+		)
+	)
+)
+
+
+(cl-comment "V-A14: hosting a tangential cavity")
+
+(forall (x y)
+	(iff
+		(hostscavityt x y)
+		(and
+			(hostscavity x y)
+			(not (ZEX (op x y)))
+		)
+	)
+)
+
+
+
+
+(cl-comment "V-A15: hosting a hollow")
+
+(forall (x y)
+	(iff
+		(hostshollow x y)
+		(and
+			(hostsv x y)
+			(Covers (r x) (op x y))
+			(ICon (op x y))
+		)
+	)
+)
+
+
+
+
+(cl-comment "HOL-D")
+
+(forall (y)
+	(iff
+		(HOL y)
+		(exists (x)
+			(hostshollow x y)
+		)
+	)
+)
+
+
+
+(cl-comment "V-A16: hosting a tunnel")
+
+(forall (x y)
+	(iff
+		(hoststunnel x y)
+		(and
+			(hostsv x y)
+			(Covers (r x) (op x y))
+			(not (ICon (op x y)))
+		)
+	)
+)
+
+
+(cl-comment "TUN-D")
+
+(forall (y)
+	(iff
+		(TUN y)
+		(exists (x)
+			(hoststunnel x y)
+		)
+	)
+)
+
+
+
+(cl-comment "V-A17: hosting an external void")
+
+(forall (x y)
+	(iff
+		(hostsve x y)
+		(and
+			(hostsv x y)
+			(exists (z)
+				(and
+					(P z (op x y))
+					(forall (u)
+						(if
+							(and
+								(hostsv x u)
+								(EqDim (intersection z (r u)) z)
+							)
+							(and
+								(PO (r y) (r u))
+								(Cont (intersection z (r u)) (op x u))
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+)
+
+
+(cl-comment "V-A18: hosting an internal void")
+
+(forall (x y)
+	(iff
+		(hostsvi x y)
+		(and
+			(hostsv x y)
+			(not (hostsve x y))
+		)
+	)
+)
+
+(cl-comment "V-A19: porespace")
+
+(forall (v o)
+	(iff
+		(PO v (porespace o))
+		(exists (m)
+			(and
+				(DK1 m o)
+				(forall (u)
+					(if
+						(hostsv o u)
+						(not (PO v (r u)))
+					)
+				)
+				(exists (u)
+					(and
+						(hostsv m u)
+						(PO v (r u))
+					)
+				)
+			)
+		)
+	)
+)
+
+
+(cl-comment "V-A20: voidspace")
+
+(forall (v o)
+	(iff
+		(PO v (voidspace o))
+		(or
+			(PO v (porespace o))
+			(exists (u)
+				(and
+					(hostsv o u)
+					(PO v (r u))
+				)
+			)
+		)
+	)
+)
+
+
+(cl-comment "V-A21")
+
+(forall (o)
+	(if
+		(not (ZEX (porespace o)))
+		(exists (v m)
+			(and
+				(= (r v) (porespace o))
+				(hostsv m v)
+				(DK1 m o)
+			)
+		)
+	)
+)
+
+
+(cl-comment "V-A22")
+
+(forall (o)
+	(if
+		(not (ZEX (voidspace o)))
+		(exists (v m)
+			(and
+				(= (r v) (voidspace o))
+				(hostsv m v)
+				(DK1 m o)
+			)
+		)
+	)
+)
+
+
+(cl-comment "V-A23: connected voidspace")
+
+(forall (v o)
+	(iff
+		(PO v (convoidspace o))
+		(exists (u)
+			(and
+				(PO v u)
+				(ICon u)
+				(Cont u (voidspace o))
+				(StrongC u (difference Uni (sum (r o) (voidspace o))))
+			)
+		)
+	)
+)
+
+(cl-comment "V-A24: connected porespace")
+
+
+(forall (v o)
+	(iff
+		(PO v (conporespace o))
+		(exists (u)
+			(and
+				(PO v u)
+				(ICon u)
+				(Cont u (porespace o))
+				(StrongC u (difference Uni (sum (r o) (porespace o))))
+			)
+		)
+	)
+)
+
+)
