@@ -1,0 +1,133 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 14314 was started by torsten on stl-ws2,
+Mon Aug 27 16:05:13 2012
+The command was "prover9 -t 600 -f between_quaternary/p9/btw_basic.p9 between_quaternary/theorems/p9/options.txt between_quaternary/theorems/p9/btw_basic_theorems_2.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file between_quaternary/p9/btw_basic.p9
+
+
+formulas(sos).
+(all r all a all b all c (Btw(r,a,b,c) -> a != b & a != c & b != c)).
+(all r all a all b all c (Btw(r,a,b,c) -> Btw(r,c,b,a))).
+(all r all a all b all c (Btw(r,a,b,c) -> -Btw(r,a,c,b))).
+(all r all a all b all x all y (Btw(r,x,a,b) & Btw(r,a,b,y) -> Btw(r,x,a,y))).
+(all r all a all b all x all y (Btw(r,x,a,b) & Btw(r,a,y,b) -> Btw(r,x,a,y))).
+end_of_list.
+
+% Reading from file between_quaternary/theorems/p9/options.txt
+
+clear(auto_denials).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+
+% Reading from file between_quaternary/theorems/p9/btw_basic_theorems_2.p9
+
+
+formulas(goals).
+(all r all a all b all x all y (Btw(r,x,a,b) & Btw(r,a,y,b) -> Btw(r,x,y,b))).
+end_of_list.
+
+============================== end of input ==========================
+
+% From the command line: assign(max_seconds, 600).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all r all a all b all c (Btw(r,a,b,c) -> a != b & a != c & b != c)) # label(non_clause).  [assumption].
+2 (all r all a all b all c (Btw(r,a,b,c) -> Btw(r,c,b,a))) # label(non_clause).  [assumption].
+3 (all r all a all b all c (Btw(r,a,b,c) -> -Btw(r,a,c,b))) # label(non_clause).  [assumption].
+4 (all r all a all b all x all y (Btw(r,x,a,b) & Btw(r,a,b,y) -> Btw(r,x,a,y))) # label(non_clause).  [assumption].
+5 (all r all a all b all x all y (Btw(r,x,a,b) & Btw(r,a,y,b) -> Btw(r,x,a,y))) # label(non_clause).  [assumption].
+6 (all r all a all b all x all y (Btw(r,x,a,b) & Btw(r,a,y,b) -> Btw(r,x,y,b))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+============================== PREDICATE ELIMINATION =================
+
+No predicates eliminated.
+
+============================== end predicate elimination =============
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, Btw ]).
+Function symbol precedence:  function_order([ c1, c2, c3, c4, c5 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=0)
+  % clear(ordered_res).  % (HNE depth_diff=0)
+  % set(ur_resolution).  % (HNE depth_diff=0)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:
+  % set(unit_deletion).  % (Horn set with negative nonunits)
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.01 seconds.
+
+============================== PROOF =================================
+
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 15.
+% Level of proof is 4.
+% Maximum clause weight is 15.000.
+% Given clauses 19.
+
+2 (all r all a all b all c (Btw(r,a,b,c) -> Btw(r,c,b,a))) # label(non_clause).  [assumption].
+4 (all r all a all b all x all y (Btw(r,x,a,b) & Btw(r,a,b,y) -> Btw(r,x,a,y))) # label(non_clause).  [assumption].
+5 (all r all a all b all x all y (Btw(r,x,a,b) & Btw(r,a,y,b) -> Btw(r,x,a,y))) # label(non_clause).  [assumption].
+6 (all r all a all b all x all y (Btw(r,x,a,b) & Btw(r,a,y,b) -> Btw(r,x,y,b))) # label(non_clause) # label(goal).  [goal].
+10 -Btw(x,y,z,u) | Btw(x,u,z,y).  [clausify(2)].
+12 -Btw(x,y,z,u) | -Btw(x,z,u,w) | Btw(x,y,z,w).  [clausify(4)].
+13 -Btw(x,y,z,u) | -Btw(x,z,w,u) | Btw(x,y,z,w).  [clausify(5)].
+14 Btw(c1,c4,c2,c3).  [deny(6)].
+15 Btw(c1,c2,c5,c3).  [deny(6)].
+16 -Btw(c1,c4,c5,c3).  [deny(6)].
+36 Btw(c1,c4,c2,c5).  [ur(13,a,14,a,b,15,a)].
+37 Btw(c1,c3,c5,c2).  [ur(10,a,15,a)].
+40 -Btw(c1,c3,c5,c4).  [resolve(16,a,10,b)].
+44 Btw(c1,c5,c2,c4).  [ur(10,a,36,a)].
+47 $F.  [ur(12,a,37,a,b,44,a),unit_del(a,40)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=19. Generated=112. Kept=40. proofs=1.
+Usable=19. Sos=20. Demods=0. Limbo=1, Disabled=10. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=71. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=78. Nonunit_bsub_feature_tests=74.
+Megabytes=0.09.
+User_CPU=0.01, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 14314 exit (max_proofs) Mon Aug 27 16:05:13 2012
