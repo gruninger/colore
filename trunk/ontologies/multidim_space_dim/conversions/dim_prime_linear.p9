@@ -1,0 +1,28 @@
+% Automatically generated from CL/KIF
+formulas(sos).
+% 'space/dim_prime_linear'
+% 'compact axioms for linear relative dimension'
+% 'D-A1: irreflexive'
+ all x (-(<(x, x))).
+% 'D-A2: asymmetric (antisymmetric & irreflexive)'
+ all x all y ((<(x, y) -> -(<(y, x)))).
+% 'D-A3: transitive (corrected from IJCAI version: need <= in the second condition to ensure that EqDim is transitive)'
+ all x all y all z ((<(x, y) & <=(y, z) -> <(x, z))).
+% 'D-A4: unique ZEX'
+ all x all y ((ZEX(x) & ZEX(y) -> (x = y))).
+% 'D-A5: ZEX has dimension lower than anything else'
+ all x all y ((ZEX(x) & S(y) & -(ZEX(y)) -> <(x, y))).
+% 'D-D2: define EqDim in terms of <'
+ all x all y ((EqDim(x, y) <-> S(x) & S(y) & -(<(x, y)) & -(<(y, x)))).
+% 'D-D3: <='
+ all x all y ((<=(x, y) <-> <(x, y) | EqDim(x, y))).
+% 'D-D4: Maximal dimension (Codim=0)'
+ all x ((MaxDim(x) <-> S(x) &  all y ((S(y) -> <=(y, x))))).
+% 'D-D5: Minimal dimension (Dim=0)'
+ all x ((MinDim(x) <-> S(x) & -(ZEX(x)) &  all y ((S(y) & <(y, x) -> ZEX(y))))).
+% 'D-D6: next highest dimension (covers), x covers y if x>y and no z s.t. x>z>y'
+ all x all y ((Covers(x, y) <-> <(y, x) &  all z ((S(z) -> -(<(y, z) & <(z, x)))))).
+% 'D-A6: a lowest dimension must exist'
+ exists x (MinDim(x)).
+
+end_of_list.

@@ -1,0 +1,202 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 13353 was started by torsten on stl-ws2,
+Tue Oct 23 18:43:51 2012
+The command was "prover9 -t 600 -f  multidim_space_ped/input/ped.p9 space/theorems/input/options.txt multidim_space_ped/theorems/input/ped_theorems_1.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file  multidim_space_ped/input/ped.p9
+
+
+formulas(sos).
+(all x (PED(x) -> POD(x) | M(x) | F(x))).
+(all x (POD(x) -> PED(x))).
+(all x (M(x) -> PED(x))).
+(all x (F(x) -> PED(x))).
+(all x (POD(x) -> -M(x))).
+(all x (POD(x) -> -F(x))).
+(all x (M(x) -> -F(x))).
+(all x (NAPO(x) -> POD(x))).
+(all x all y (hosts(x,y) -> PED(x) & F(y))).
+(all x (F(x) <-> (exists y hosts(y,x)))).
+(all x all y (hosts(x,y) -> -hosts(y,x))).
+(all x (F(x) <-> RPF(x) | DPF(x))).
+(all x (-RPF(x) | -DPF(x))).
+(all x all y (DK1(x,y) -> M(x))).
+(all x all y (DK1(x,y) -> POD(y) | F(y))).
+(all x all y all z (DK1(x,y) & DK1(z,y) -> x = z)).
+(all y (POD(y) | RPF(y) -> (exists x DK1(x,y)))).
+end_of_list.
+
+% Reading from file space/theorems/input/options.txt
+
+clear(auto_denials).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+
+% Reading from file multidim_space_ped/theorems/input/ped_theorems_1.p9
+
+
+formulas(goals).
+(all x -DK1(x,x)).
+end_of_list.
+
+============================== end of input ==========================
+
+% From the command line: assign(max_seconds, 600).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (PED(x) -> POD(x) | M(x) | F(x))) # label(non_clause).  [assumption].
+2 (all x (POD(x) -> PED(x))) # label(non_clause).  [assumption].
+3 (all x (M(x) -> PED(x))) # label(non_clause).  [assumption].
+4 (all x (F(x) -> PED(x))) # label(non_clause).  [assumption].
+5 (all x (POD(x) -> -M(x))) # label(non_clause).  [assumption].
+6 (all x (POD(x) -> -F(x))) # label(non_clause).  [assumption].
+7 (all x (M(x) -> -F(x))) # label(non_clause).  [assumption].
+8 (all x (NAPO(x) -> POD(x))) # label(non_clause).  [assumption].
+9 (all x all y (hosts(x,y) -> PED(x) & F(y))) # label(non_clause).  [assumption].
+10 (all x (F(x) <-> (exists y hosts(y,x)))) # label(non_clause).  [assumption].
+11 (all x all y (hosts(x,y) -> -hosts(y,x))) # label(non_clause).  [assumption].
+12 (all x (F(x) <-> RPF(x) | DPF(x))) # label(non_clause).  [assumption].
+13 (all x (-RPF(x) | -DPF(x))) # label(non_clause).  [assumption].
+14 (all x all y (DK1(x,y) -> M(x))) # label(non_clause).  [assumption].
+15 (all x all y (DK1(x,y) -> POD(y) | F(y))) # label(non_clause).  [assumption].
+16 (all x all y all z (DK1(x,y) & DK1(z,y) -> x = z)) # label(non_clause).  [assumption].
+17 (all y (POD(y) | RPF(y) -> (exists x DK1(x,y)))) # label(non_clause).  [assumption].
+18 (all x -DK1(x,x)) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating PED/1
+19 -POD(x) | PED(x).  [clausify(2)].
+20 -PED(x) | POD(x) | M(x) | F(x).  [clausify(1)].
+21 -M(x) | PED(x).  [clausify(3)].
+22 -F(x) | PED(x).  [clausify(4)].
+23 -hosts(x,y) | PED(x).  [clausify(9)].
+Derived: -hosts(x,y) | POD(x) | M(x) | F(x).  [resolve(23,b,20,a)].
+
+Eliminating POD/1
+24 -NAPO(x) | POD(x).  [clausify(8)].
+25 -POD(x) | -M(x).  [clausify(5)].
+26 -POD(x) | -F(x).  [clausify(6)].
+Derived: -NAPO(x) | -M(x).  [resolve(24,b,25,a)].
+Derived: -NAPO(x) | -F(x).  [resolve(24,b,26,a)].
+27 -DK1(x,y) | POD(y) | F(y).  [clausify(15)].
+Derived: -DK1(x,y) | F(y) | -M(y).  [resolve(27,b,25,a)].
+28 -POD(x) | DK1(f2(x),x).  [clausify(17)].
+Derived: DK1(f2(x),x) | -NAPO(x).  [resolve(28,a,24,b)].
+Derived: DK1(f2(x),x) | -DK1(y,x) | F(x).  [resolve(28,a,27,b)].
+29 -hosts(x,y) | POD(x) | M(x) | F(x).  [resolve(23,b,20,a)].
+Derived: -hosts(x,y) | M(x) | F(x) | DK1(f2(x),x).  [resolve(29,b,28,a)].
+
+Eliminating M/1
+30 -DK1(x,y) | M(x).  [clausify(14)].
+31 -M(x) | -F(x).  [clausify(7)].
+Derived: -DK1(x,y) | -F(x).  [resolve(30,b,31,a)].
+32 -NAPO(x) | -M(x).  [resolve(24,b,25,a)].
+Derived: -NAPO(x) | -DK1(x,y).  [resolve(32,b,30,b)].
+33 -DK1(x,y) | F(y) | -M(y).  [resolve(27,b,25,a)].
+Derived: -DK1(x,y) | F(y) | -DK1(y,z).  [resolve(33,c,30,b)].
+34 -hosts(x,y) | M(x) | F(x) | DK1(f2(x),x).  [resolve(29,b,28,a)].
+Derived: -hosts(x,y) | F(x) | DK1(f2(x),x) | -NAPO(x).  [resolve(34,b,32,b)].
+Derived: -hosts(x,y) | F(x) | DK1(f2(x),x) | -DK1(z,x) | F(x).  [resolve(34,b,33,c)].
+
+Eliminating RPF/1
+35 F(x) | -RPF(x).  [clausify(12)].
+36 -F(x) | RPF(x) | DPF(x).  [clausify(12)].
+37 -RPF(x) | -DPF(x).  [clausify(13)].
+38 -RPF(x) | DK1(f2(x),x).  [clausify(17)].
+Derived: DK1(f2(x),x) | -F(x) | DPF(x).  [resolve(38,a,36,b)].
+
+Eliminating DPF/1
+39 DK1(f2(x),x) | -F(x) | DPF(x).  [resolve(38,a,36,b)].
+40 F(x) | -DPF(x).  [clausify(12)].
+
+Eliminating NAPO/1
+
+============================== end predicate elimination =============
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, F, DK1, hosts ]).
+Function symbol precedence:  function_order([ c1, f1, f2 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+  % set(binary_resolution).  % (non-Horn)
+  % set(neg_ur_resolution).  % (non-Horn, less than 100 clauses)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.01 seconds.
+
+============================== PROOF =================================
+
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 16.
+% Level of proof is 5.
+% Maximum clause weight is 8.000.
+% Given clauses 8.
+
+5 (all x (POD(x) -> -M(x))) # label(non_clause).  [assumption].
+7 (all x (M(x) -> -F(x))) # label(non_clause).  [assumption].
+14 (all x all y (DK1(x,y) -> M(x))) # label(non_clause).  [assumption].
+15 (all x all y (DK1(x,y) -> POD(y) | F(y))) # label(non_clause).  [assumption].
+18 (all x -DK1(x,x)) # label(non_clause) # label(goal).  [goal].
+25 -POD(x) | -M(x).  [clausify(5)].
+27 -DK1(x,y) | POD(y) | F(y).  [clausify(15)].
+30 -DK1(x,y) | M(x).  [clausify(14)].
+31 -M(x) | -F(x).  [clausify(7)].
+33 -DK1(x,y) | F(y) | -M(y).  [resolve(27,b,25,a)].
+45 DK1(c1,c1).  [deny(18)].
+47 -DK1(x,y) | -F(x).  [resolve(30,b,31,a)].
+48 -DK1(x,y) | F(y) | -DK1(y,z).  [resolve(33,c,30,b)].
+54 -F(c1).  [resolve(47,a,45,a)].
+56 -DK1(c1,x).  [resolve(48,a,45,a),unit_del(a,54)].
+57 $F.  [resolve(56,a,45,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=8. Generated=20. Kept=15. proofs=1.
+Usable=8. Sos=5. Demods=0. Limbo=0, Disabled=37. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=5. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=1.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=4. Nonunit_bsub_feature_tests=14.
+Megabytes=0.08.
+User_CPU=0.01, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 13353 exit (max_proofs) Tue Oct 23 18:43:51 2012

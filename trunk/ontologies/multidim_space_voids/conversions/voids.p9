@@ -1,0 +1,30 @@
+% Automatically generated from CL/KIF
+formulas(sos).
+% 'space/voids'
+%imports("space/spch").
+% 'VS-D:'
+ all x all y ((VS(x, y) <-> PED(x) & S(y) & Cont(y, ch(x)) & -(PO(y, r(x))))).
+% 'V-S-D: simple void'
+ all x all y ((SimpleV(y) <-> ICon(r(y)) &  exists x (hostsv(x, y)))).
+% 'V-S-D: complex void'
+ all x all y ((ComplexV(y) <-> -(ICon(r(y))) &  exists x (hostsv(x, y)))).
+% 'V-D: void'
+ all x ((V(x) <-> SimpleV(x) | ComplexV(x))).
+% 'V-A1:'
+ all x all y ((hostsv(x, y) -> hosts(x, y) & VS(x, r(y)) & StrongC(r(x), r(y)))).
+% 'V-A2:'
+ all x all y all z ((hostsv(x, y) & ComplexV(y) & PO(r(z), r(y)) ->  exists v (hostsv(x, v) & SimpleV(v) & PO(r(z), r(v))))).
+% 'V-A3:'
+ all x all y ((hosts(x, y) & V(y) -> -(V(x)))).
+% 'V-A4:'
+ all x all y ((hostsv(x, y) & RPF(x) ->  exists z (hosts(z, x) & -(F(z)) & hostsv(z, y)))).
+% 'V-A5:'
+ all x all y ((hostsv(x, y) & -(F(x)) ->  exists z (hosts(x, z) & RPF(z) & hostsv(z, y)))).
+% 'V-A6:'
+ all x all y all z ((hostsv(x, y) & hostsv(x, z) & PO(r(y), r(z)) -> Cont(r(y), r(z)) | Cont(r(z), r(y)))).
+% 'V-A7:'
+ all x all y all v ((hostsv(x, y) & P(r(x), r(y)) & PED(y) & -(DPF(y)) & -(Cont(r(v), r(y))) ->  exists u (Cont(difference(r(v), r(y)), r(u)) & hostsv(y, u)))).
+% 'V-A8:'
+ all x all y all v ((hostsv(x, v) & P(r(y), r(x)) & PED(y) & -(DPF(y)) & PO(r(v), ch(y)) ->  exists u ((r(u) = intersection(r(v), ch(y))) & hostsv(y, u)))).
+
+end_of_list.

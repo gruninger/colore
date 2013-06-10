@@ -1,0 +1,22 @@
+% Automatically generated from CL/KIF
+formulas(sos).
+% 'space/codib_updown'
+% 'CODI with downwards closure and a ternary sum relation (not forcing the existence of sums)'
+% 'Sum-A0prime'
+ all x all y all z all v ((TSum(x, y, z) & TSum(x, y, v) -> S(x) & S(y) & S(z) & (v = z))).
+% 'Sum-A1prime: sum is commutative'
+ all x all y all z ((TSum(x, y, z) -> TSum(y, x, z))).
+% 'Sum-A2prime: sum of entities of different dimensions'
+ all x all y ((<(x, y) -> TSum(x, y, y))).
+% 'Sum-A3prime: every part of y is a part of z=x+y if x<=y'
+ all x all y all z all v ((TSum(x, y, z) & <=(x, y) & Cont(v, y) -> Cont(v, z))).
+% 'Sum-A4prime: everything contained in the sum has a part contained in x or contained in y'
+ all x all y all z all v ((TSum(x, y, z) & Cont(v, z) & -(Cont(v, x)) -> Cont(difference(v, x), y))).
+% 'Sum-A5prime'
+ all x all y all z ((S(z) & EqDim(x, y) &  all v ((PO(v, z) <-> PO(v, x) | PO(v, y))) -> TSum(x, y, z))).
+% 'Sum-A6prime: forcing the existence of sums of equidimensional entities that only meet in boundary of minimal parts'
+ all x all y ((EqDim(x, y) &  all z ((Cont(z, x) & Cont(z, y) & Min(z) ->  exists u exists v (P(u, x) & P(v, y) & BCont(z, u) & BCont(z, v)))) ->  exists z (TSum(x, y, z)))).
+% 'U-A1: everything is contained in a universal entity'
+ all x ((S(x) & -(ZEX(x)) -> Cont(x, Uni))).
+
+end_of_list.
