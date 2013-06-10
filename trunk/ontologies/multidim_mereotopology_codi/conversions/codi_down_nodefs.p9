@@ -1,0 +1,43 @@
+% Automatically generated from CL/KIF
+formulas(sos).
+% Module http://colore.oor.net/multidim_mereotopology_codi/codi_down_nodefs.clif
+%imports("http://colore.oor.net/multidim_mereotopology_codi/codi_linear_nodefs.clif").
+%imports("http://colore.oor.net/multidim_mereotopology_codi/defs/ep.clif").
+%imports("http://colore.oor.net/multidim_mereotopology_codi/defs/epp.clif").
+%imports("http://colore.oor.net/multidim_mereotopology_codi/defs/po.clif").
+% 'Int-A1: disconnected entities have empty intersection'
+ all x all y ((-(C(x, y)) -> ZEX(intersection(x, y)))).
+% 'Int-A2: the intersection is contained in the intersecting entities (also ensures the intersection is of no greater dimension than necessary)'
+ all x all y ((-(ZEX(intersection(x, y))) -> Cont(intersection(x, y), x))).
+% 'Int-A3: the intersection is of greatest possible dimension (determines the dimension of the intersection)'
+ all x all y all z ((Cont(z, x) & Cont(z, y) -> <=(z, intersection(x, y)))).
+% 'Int-A4: the intersection contains everything of the greatest possible dimension (and whatever those things contain)'
+ all x all y all z ((Cont(z, x) & Cont(z, y) & EqDim(z, intersection(x, y)) <-> P(z, intersection(x, y)))).
+% 'Dif-A1: difference is of same dimension'
+ all x all y ((-(ZEX(difference(x, y))) -> EqDim(x, difference(x, y)))).
+% 'Dif-A2: difference with a entity of lower dimension'
+ all x all y ((<(y, x) -> (x = difference(x, y)))).
+% 'Dif-A3a: constitution of the difference with an entity of greater or equal dimension'
+ all x all y all z ((<=(x, y) & Cont(z, x) & <(intersection(z, y), z) -> Cont(z, difference(x, y)))).
+% 'Dif-A3b: constitution of the difference with an entity of greater or equal dimension'
+ all x all y all z ((<=(x, y) & Cont(z, difference(x, y)) -> Cont(z, x))).
+% 'Dif-A3c: constitution of the difference with an entity of greater or equal dimension'
+ all x all y all z ((<=(x, y) & P(z, difference(x, y)) -> <(intersection(z, y), z))).
+% 'Dif-A4: zero difference only for contained entities or for zero entity'
+ all x all y ((ZEX(difference(x, y)) <-> ZEX(x) | Cont(x, y))).
+% 'EP-E1: weak supplementation - original'
+ all x all y ((PP(x, y) ->  exists z (P(z, y) & -(PO(z, x))))).
+% 'EP-E2.II: strong supplementation'
+ all x all y ((-(ZEX(x)) & -(ZEX(y)) & -(P(y, x)) & EqDim(x, y) & PO(x, y) & -(PP(y, x)) ->  exists z (P(z, y) & -(PO(z, x))))).
+% 'EP-E2.III: strong supplementation'
+ all x all y ((-(ZEX(x)) & -(ZEX(y)) & -(P(y, x)) & EqDim(x, y) & -(PO(x, y)) ->  exists z (P(z, y) & -(PO(z, x))))).
+% 'EP-E2.IV: strong supplementation'
+ all x all y ((-(ZEX(x)) & -(ZEX(y)) & -(P(y, x)) & -(EqDim(x, y)) ->  exists z (P(z, y) & -(PO(z, x))))).
+% 'PO-E1'
+ all x all y (( all z ((PO(z, x) <-> PO(z, y))) -> (x = y))).
+% 'I-D2 together with I-M6: mapping between PO and OV'
+ all x all y ((PO(x, y) <-> INCH(x, y) & INCH(y, x))).
+% 'I-D4 together with I-M6: chunk (equidmensional part)'
+ all x all y ((CH(x, y) <-> INCH(x, y) &  all z ((PO(x, z) -> PO(y, z))))).
+
+end_of_list.

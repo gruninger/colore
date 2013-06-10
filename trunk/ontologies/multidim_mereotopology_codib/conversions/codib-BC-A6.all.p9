@@ -1,0 +1,294 @@
+formulas(goals).
+% 'bc-a6: jordan curve theorem: if two self-connected entities x,y are in contact and embedded in a greater entity v of the dimension of x, then y must intersect the boundary of x'
+ all x all y all v ((c(x, y) & con(x) & con(y) & -(cont(x, y)) & -(cont(y, x)) & p(x, v) & cont(y, v) ->  exists z (bcont(z, x) & cont(z, y)))).
+end_of_list.
+
+%axioms from module codib/p9/codib.p9
+%----------------------------------
+
+% automatically generated from cl/kif
+formulas(sos).
+% Module http://colore.oor.net/multidim_mereotopology_codib/codib.clif
+%imports("http://colore.oor.net/multidim_mereotopology_codi/codi_down.clif").
+%imports("http://colore.oor.net/multidim_mereotopology_codi/defs/connected.clif").
+% 'bc-a1: entities in the boundary are at least of a dimension lower than the bounded entity'
+ all x all y ((bcont(x, y) -> cont(x, y) & less(x, y))).
+% 'bc-a2: transitivity with respect to cont'
+ all x all y all z ((bcont(x, y) & cont(y, z) -> bcont(x, z))).
+% 'bc-a3: anything contained in two superficially connected entities of which one, x, is of codimension zero is in the boundary of x'
+ all x all y all z ((sc(x, y) & maxdim(x) & cont(z, x) & cont(z, y) -> bcont(z, x))).
+% 'bc-a4: if z is contained in two superficially connected entities x and y embedded in an entity v of the dimension of x, that is x has locally a codimension of zero, then z is contained in the boundary of x'
+ all x all y all v all z ((sc(x, y) & p(x, v) & cont(y, v) & cont(z, x) & cont(z, y) -> bcont(z, x))).
+% 'bc-a5: any z contained in two superficially connected parts x and y of v that is exactly of one dimension lower than v is not in the boundary of v'
+ all x all y all z all v ((p(x, v) & p(y, v) & sc(x, y) & cont(z, x) & cont(z, y) & covers(v, z) -> -(bcont(z, v)))).
+end_of_list.
+
+%axioms from module codi/p9/codi_down.p9
+%----------------------------------
+
+% automatically generated from cl/kif
+formulas(sos).
+% Module http://colore.oor.net/multidim_mereotopology_codi/codi_down.clif
+%imports("http://colore.oor.net/multidim_mereotopology_codi/codi_int.clif").
+%imports("http://colore.oor.net/multidim_mereotopology_codi/ep_ext.clif").
+%imports("http://colore.oor.net/multidim_mereotopology_codi/defs/epp.clif").
+%imports("http://colore.oor.net/multidim_mereotopology_codi/defs/sc.clif").
+%imports("http://colore.oor.net/multidim_mereotopology_codi/defs/min_max_in_dim.clif").
+% 'closure under differences'
+% 'dif-a1'
+ all x all y ((pp(y, x) -> pp(difference(x, y), x))).
+% 'dif-a2: y and x-y are superficially connected and have no part in contact (only share a boundary)'
+% 'this is too strong since the entity x could consist of two disconnected pieces; instead we just say that they do not share a part'
+ all x all y ((pp(y, x) -> -(po(difference(x, y), y)))).
+% 'dif-a3: any minimal entity contained in x is contained in either y or x-y. if it were contained in neither but in contact to both, by int-a1 to int-a3, intersections would exist.'
+ all x all y all z ((pp(y, x) & min(z) & cont(z, x) -> cont(z, y) | cont(z, difference(x, y)))).
+% 'dif-a4: if not pp(y,x) then x-y = zex (just a convention)'
+ all x all y ((-(pp(y, x)) -> zex(difference(x, y)))).
+
+end_of_list.
+
+%axioms from module codi/defs/p9/connected.p9
+%----------------------------------
+
+% automatically generated from cl/kif
+formulas(sos).
+% Module http://colore.oor.net/multidim_mereotopology_codi/defs/connected.clif
+%imports("http://colore.oor.net/multidim_mereotopology_codi/codi_down.clif").
+%imports("http://colore.oor.net/multidim_mereotopology_codi/defs/epp.clif").
+% 'defining when an entity is self-connected'
+% 'con-d: definition of connectedness'
+ all x ((con(x) <->  all y ((pp(y, x) -> c(y, difference(x, y)))))).
+% 'icon-d: interior connectedness'
+ all x ((icon(x) <-> con(x) &  all y ((pp(y, x) -> covers(x, intersection(y, difference(x, y))))))).
+% 'ucon-d: uniform connectedness (everything in both x and y is in the intersection)'
+ all x ((ucon(x) <-> con(x) &  all y all z ((pp(y, x) & cont(z, y) & cont(z, difference(x, y)) -> cont(z, intersection(y, difference(x, y))))))).
+
+end_of_list.
+
+%axioms from module codi/p9/codi_int.p9
+%----------------------------------
+
+% automatically generated from cl/kif
+formulas(sos).
+% Module http://colore.oor.net/multidim_mereotopology_codi/codi_int.clif
+%imports("http://colore.oor.net/multidim_mereotopology_codi/codi_linear.clif").
+%imports("http://colore.oor.net/multidim_mereotopology_zex/zex.clif").
+% 'int-a1: disconnected entities have empty intersection'
+ all x all y ((-(c(x, y)) -> zex(intersection(x, y)))).
+% 'int-a2: intersection commutative'
+ all x all y ((intersection(x, y) = intersection(y, x))).
+% 'int-a3: the intersection is contained in the intersecting entities (also ensures the intersection is of no greater dimension than necessary)'
+ all x all y ((-(zex(intersection(x, y))) -> cont(intersection(x, y), x))).
+% 'int-a4: the intersection is of greatest possible dimension (determines the dimension of the intersection)'
+ all x all y all z ((cont(z, x) & cont(z, y) -> leq(z, intersection(x, y)))).
+% 'int-a5: the intersection contains everything of the greatest possible dimension (and whatever those things contain)'
+ all x all y all z ((cont(z, x) & cont(z, y) & eqdim(z, intersection(x, y)) <-> p(z, intersection(x, y)))).
+
+end_of_list.
+
+%axioms from module codi/p9/ep_ext.p9
+%----------------------------------
+
+% automatically generated from cl/kif
+formulas(sos).
+% Module http://colore.oor.net/multidim_mereotopology_codi/ep-ext.clif
+%imports("http://colore.oor.net/multidim_mereotopology_codi/defs/ep.clif").
+% 'ep-e1: extensionality of parthood'
+ all x all y (( all z ((p(z, x) <-> p(z, y))) -> (x = y))).
+
+end_of_list.
+
+%axioms from module codi/defs/p9/epp.p9
+%----------------------------------
+
+% automatically generated from cl/kif
+formulas(sos).
+% Module http://colore.oor.net/multidim_mereotopology_codi/defs/epp.clif
+%imports("http://colore.oor.net/multidim_mereotopology_codi/defs/ep.clif").
+% 'epp-d: definition of proper parthood'
+ all x all y ((pp(x, y) <-> p(x, y) & -((x = y)))).
+
+end_of_list.
+
+%axioms from module codi/defs/p9/sc.p9
+%----------------------------------
+
+% automatically generated from cl/kif
+formulas(sos).
+% Module http://colore.oor.net/multidim_mereotopology_codi/defs/sc.clif
+% 'sc-d: superficial (weak) contact (contact is of a lesser dimension than either involved entity) - prover9 file needs extra parentheses'
+ all x all y ((sc(x, y) <->  exists z (cont(z, x) & cont(z, y)) &  all z ((cont(z, x) & cont(z, y) -> less(z, x) & less(z, y))))).
+
+end_of_list.
+
+%axioms from module codi/defs/p9/min_max_in_dim.p9
+%----------------------------------
+
+% automatically generated from cl/kif
+formulas(sos).
+% Module http://colore.oor.net/multidim_mereotopology_codi/defs/min_max_in_dim.clif
+%imports("http://colore.oor.net/multidim_mereotopology_codi/defs/epp.clif").
+% 'definitional extension'
+% 'me-d1: defining maximal entities of a dimension'
+ all x ((max(x) <-> -(zex(x)) &  all y (-(pp(x, y))))).
+% 'me-d2: defining minimal entities of a dimension'
+ all x ((min(x) <-> -(zex(x)) &  all y (-(pp(y, x))))).
+
+end_of_list.
+
+%axioms from module codi/p9/codi_linear.p9
+%----------------------------------
+
+% automatically generated from cl/kif
+formulas(sos).
+% Module http://colore.oor.net/multidim_mereotopology_codi/codi.clif
+%imports("http://colore.oor.net/multidim_mereotopology_dim/dim_prime_linear.clif").
+%imports("http://colore.oor.net/multidim_mereotopology_cont/cont_c_ext.clif").
+%imports("http://colore.oor.net/multidim_mereotopology_codi/defs/ep.clif").
+%imports("http://colore.oor.net/multidim_mereotopology_codi/defs/epp.clif").
+%imports("http://colore.oor.net/multidim_mereotopology_codi/defs/po.clif").
+%imports("http://colore.oor.net/multidim_mereotopology_codi/defs/inc.clif").
+%imports("http://colore.oor.net/multidim_mereotopology_codi/defs/sc.clif").
+%imports("http://colore.oor.net/multidim_mereotopology_codi/defs/min_max_in_dim.clif").
+% 'cd-a1: containment requires that the contained entity has a dimension that is lower or equal to the entity containing it'
+ all x all y ((cont(x, y) -> leq(x, y))).
+
+end_of_list.
+
+%axioms from module zex/p9/zex.p9
+%----------------------------------
+
+% automatically generated from cl/kif
+formulas(sos).
+% Module http://colore.oor.net/multidim_mereotopology_dim/zex.clif
+% 'forces a special null region (zex)'
+% 'z-a1: there exists a zex'
+ exists x (zex(x)).
+
+end_of_list.
+
+%axioms from module codi/defs/p9/ep.p9
+%----------------------------------
+
+% automatically generated from cl/kif
+formulas(sos).
+% Module http://colore.oor.net/multidim_mereotopology_codi/defs/ep.clif
+% 'basic axioms of traditional parthood (parthood of equidimensional entities) which is a non-strict partial order'
+% 'parthood holds between two entities of the same spatial dimension'
+% 'ep-d: definition of parthood'
+ all x all y ((p(x, y) <-> cont(x, y) & eqdim(x, y))).
+
+end_of_list.
+
+%axioms from module dim/p9/dim_prime_linear.p9
+%----------------------------------
+
+% automatically generated from cl/kif
+formulas(sos).
+% Module http://colore.oor.net/multidim_mereotopology_dim/dim_prime_linear.clif
+% 'compact axioms for linear relative dimension'
+% 'd-a1: irreflexive'
+ all x (-(less(x, x))).
+% 'd-a2: asymmetric (antisymmetric & irreflexive)'
+ all x all y ((less(x, y) -> -(less(y, x)))).
+% 'd-a3: transitive (corrected from ijcai version: need <= in the second condition to ensure that eqdim is transitive)'
+ all x all y all z ((less(x, y) & leq(y, z) -> less(x, z))).
+% 'd-a4: unique zex'
+ all x all y ((zex(x) & zex(y) -> (x = y))).
+% 'd-a5: zex has dimension lower than anything else'
+ all x all y ((zex(x) & -(zex(y)) -> less(x, y))).
+% 'd-a6: a lowest dimension must exist'
+ exists x (mindim(x)).
+% 'd-d2: define eqdim in terms of <'
+ all x all y ((eqdim(x, y) <-> -(less(x, y)) & -(less(y, x)))).
+% 'd-d3: <='
+ all x all y ((leq(x, y) <-> less(x, y) | eqdim(x, y))).
+% 'd-d4: maximal dimension (codim=0)'
+ all x ((maxdim(x) <->  all y (leq(y, x)))).
+% 'd-d5: minimal dimension (dim=0)'
+ all x ((mindim(x) <-> -(zex(x)) &  all y ((less(y, x) -> zex(y))))).
+% 'd-d6: next highest dimension (covers), x covers y if x>y and no z s.t. x>z>y'
+ all x all y ((covers(x, y) <-> less(y, x) &  all z (-(less(y, z) & less(z, x))))).
+
+end_of_list.
+
+%axioms from module cont/p9/cont_c_ext.p9
+%----------------------------------
+
+% automatically generated from cl/kif
+formulas(sos).
+% Module http://colore.oor.net/multidim_mereotopology_cont/cont_c-ext.clif
+%imports("http://colore.oor.net/multidim_mereotopology_cont/cont_c.clif").
+%imports("http://colore.oor.net/multidim_mereotopology_cont/cont_ext.clif").
+
+end_of_list.
+
+%axioms from module codi/defs/p9/po.p9
+%----------------------------------
+
+% automatically generated from cl/kif
+formulas(sos).
+% Module http://colore.oor.net/multidim_mereotopology_codi/defs/po.clif
+%imports("http://colore.oor.net/multidim_mereotopology_codi/defs/ep.clif").
+% 'po-d: partial overlap (strong contact)'
+ all x all y ((po(x, y) <->  exists z (p(z, x) & p(z, y)))).
+
+end_of_list.
+
+%axioms from module codi/defs/p9/inc.p9
+%----------------------------------
+
+% automatically generated from cl/kif
+formulas(sos).
+% Module http://colore.oor.net/multidim_mereotopology_codi/defs/inc.clif
+% 'basic axioms of incidence (two entities occupy some same space. it is reserved for entities of differing dimensions. it is a variant of contact.'
+%imports("http://colore.oor.net/multidim_mereotopology_codi/defs/ep.clif").
+% 'inc-d: incidence holds if and only if some entity of the dimension as the lower of the two incident entities is shared'
+ all x all y ((inc(x, y) <->  exists z (less(z, x) & cont(z, x) & p(z, y)) |  exists z (less(z, y) & cont(z, y) & p(z, x)))).
+
+end_of_list.
+
+%axioms from module cont/p9/cont_c.p9
+%----------------------------------
+
+% automatically generated from cl/kif
+formulas(sos).
+% Module http://colore.oor.net/multidim_mereotopology_cont/cont_c.clif
+%imports("http://colore.oor.net/multidim_mereotopology_cont/cont_basic.clif").
+% 'c-d: definition of contact in terms of containment'
+ all x all y ((c(x, y) <->  exists z (cont(z, x) & cont(z, y)))).
+
+
+end_of_list.
+
+%axioms from module cont/p9/cont_ext.p9
+%----------------------------------
+
+% automatically generated from cl/kif
+formulas(sos).
+% Module http://colore.oor.net/multidim_mereotopology_cont/cont_ext.clif
+%imports("http://colore.oor.net/multidim_mereotopology_cont/cont_basic.clif").
+% 'c-e1: cont is extensional'
+ all x all y (( all z ((cont(z, x) <-> cont(z, y))) -> (x = y))).
+
+end_of_list.
+
+%axioms from module cont/p9/cont_basic.p9
+%----------------------------------
+
+% automatically generated from cl/kif
+formulas(sos).
+% Module http://colore.oor.net/multidim_mereotopology_cont/cont_basic.clif
+% 'basic axioms of containment (parthood irrespective of dimension) which is a non-strict partial order'
+% 'a possibly existing zero extent zex is included'
+% 'c-a1: reflexive'
+ all x ((-(zex(x)) <-> cont(x, x))).
+% 'c-a2: antisymmetric'
+ all x all y ((cont(x, y) & cont(y, x) -> (x = y))).
+% 'c-a3: transitive'
+ all x all y all z ((cont(x, y) & cont(y, z) -> cont(x, z))).
+% 'c-a4: zexs are not contained in anything and contain nothing'
+ all x all y ((zex(x) -> -(cont(y, x)) & -(cont(x, y)))).
+
+end_of_list.
+

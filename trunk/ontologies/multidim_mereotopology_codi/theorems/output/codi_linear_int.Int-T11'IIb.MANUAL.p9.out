@@ -1,0 +1,923 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 21562 was started by torsten on stl-ws2,
+Thu Sep  1 11:47:22 2011
+The command was "/nfs/stllocal/p9m4-v05/bin/prover9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+assign(report_stderr,2).
+set(ignore_option_dependencies).
+if(Prover9).
+% Conditional input included.
+assign(max_seconds,600).
+end_if.
+if(Mace4).
+% Conditional input omitted.
+end_if.
+
+formulas(assumptions).
+(all x all y (cont(x,y) -> leq(x,y))).
+(exists x zex(x)).
+(all x -less(x,x)).
+(all x all y (less(x,y) -> -less(y,x))).
+(all x all y all z (less(x,y) & leq(y,z) -> less(x,z))).
+(all x all y (zex(x) & zex(y) -> x = y)).
+(all x all y (zex(x) & -zex(y) -> less(x,y))).
+(all x all y (eqdim(x,y) <-> -less(x,y) & -less(y,x))).
+(all x all y (leq(x,y) <-> less(x,y) | eqdim(x,y))).
+(all x (-zex(x) <-> cont(x,x))).
+(all x all y (cont(x,y) & cont(y,x) -> x = y)).
+(all x all y all z (cont(x,y) & cont(y,z) -> cont(x,z))).
+(all x all y (zex(x) -> -cont(y,x) & -cont(x,y))).
+(all x all y ((all z (cont(z,x) <-> cont(z,y))) -> x = y)).
+(all x all y (p(x,y) <-> cont(x,y) & eqdim(x,y))).
+(all x all y ((all z (-cont(z,x) | -cont(z,y))) -> zex(intersection(x,y)))).
+(all x all y intersection(x,y) = intersection(y,x)).
+(all x all y (-zex(intersection(x,y)) -> cont(intersection(x,y),x))).
+(all x all y all z (cont(z,x) & cont(z,y) -> leq(z,intersection(x,y)))).
+(all x all y all z (cont(z,x) & cont(z,y) & eqdim(z,intersection(x,y)) <-> p(z,intersection(x,y)))).
+end_of_list.
+
+formulas(goals).
+(all x all y (-zex(intersection(x,y)) -> cont(intersection(x,intersection(x,y)),intersection(x,y)))).
+end_of_list.
+
+============================== end of input ==========================
+
+% Enabling option dependencies (ignore applies only on input).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x all y (cont(x,y) -> leq(x,y))) # label(non_clause).  [assumption].
+2 (exists x zex(x)) # label(non_clause).  [assumption].
+3 (all x -less(x,x)) # label(non_clause).  [assumption].
+4 (all x all y (less(x,y) -> -less(y,x))) # label(non_clause).  [assumption].
+5 (all x all y all z (less(x,y) & leq(y,z) -> less(x,z))) # label(non_clause).  [assumption].
+6 (all x all y (zex(x) & zex(y) -> x = y)) # label(non_clause).  [assumption].
+7 (all x all y (zex(x) & -zex(y) -> less(x,y))) # label(non_clause).  [assumption].
+8 (all x all y (eqdim(x,y) <-> -less(x,y) & -less(y,x))) # label(non_clause).  [assumption].
+9 (all x all y (leq(x,y) <-> less(x,y) | eqdim(x,y))) # label(non_clause).  [assumption].
+10 (all x (-zex(x) <-> cont(x,x))) # label(non_clause).  [assumption].
+11 (all x all y (cont(x,y) & cont(y,x) -> x = y)) # label(non_clause).  [assumption].
+12 (all x all y all z (cont(x,y) & cont(y,z) -> cont(x,z))) # label(non_clause).  [assumption].
+13 (all x all y (zex(x) -> -cont(y,x) & -cont(x,y))) # label(non_clause).  [assumption].
+14 (all x all y ((all z (cont(z,x) <-> cont(z,y))) -> x = y)) # label(non_clause).  [assumption].
+15 (all x all y (p(x,y) <-> cont(x,y) & eqdim(x,y))) # label(non_clause).  [assumption].
+16 (all x all y ((all z (-cont(z,x) | -cont(z,y))) -> zex(intersection(x,y)))) # label(non_clause).  [assumption].
+17 (all x all y intersection(x,y) = intersection(y,x)) # label(non_clause).  [assumption].
+18 (all x all y (-zex(intersection(x,y)) -> cont(intersection(x,y),x))) # label(non_clause).  [assumption].
+19 (all x all y all z (cont(z,x) & cont(z,y) -> leq(z,intersection(x,y)))) # label(non_clause).  [assumption].
+20 (all x all y all z (cont(z,x) & cont(z,y) & eqdim(z,intersection(x,y)) <-> p(z,intersection(x,y)))) # label(non_clause).  [assumption].
+21 (all x all y (-zex(intersection(x,y)) -> cont(intersection(x,intersection(x,y)),intersection(x,y)))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-cont(x,y) | leq(x,y).  [clausify(1)].
+zex(c1).  [clausify(2)].
+-less(x,x).  [clausify(3)].
+-less(x,y) | -less(y,x).  [clausify(4)].
+-less(x,y) | -leq(y,z) | less(x,z).  [clausify(5)].
+-zex(x) | -zex(y) | y = x.  [clausify(6)].
+-zex(x) | zex(y) | less(x,y).  [clausify(7)].
+-eqdim(x,y) | -less(x,y).  [clausify(8)].
+-eqdim(x,y) | -less(y,x).  [clausify(8)].
+eqdim(x,y) | less(x,y) | less(y,x).  [clausify(8)].
+-leq(x,y) | less(x,y) | eqdim(x,y).  [clausify(9)].
+leq(x,y) | -less(x,y).  [clausify(9)].
+leq(x,y) | -eqdim(x,y).  [clausify(9)].
+zex(x) | cont(x,x).  [clausify(10)].
+-zex(x) | -cont(x,x).  [clausify(10)].
+-cont(x,y) | -cont(y,x) | y = x.  [clausify(11)].
+-cont(x,y) | -cont(y,z) | cont(x,z).  [clausify(12)].
+-zex(x) | -cont(y,x).  [clausify(13)].
+-zex(x) | -cont(x,y).  [clausify(13)].
+cont(f1(x,y),x) | cont(f1(x,y),y) | y = x.  [clausify(14)].
+-cont(f1(x,y),x) | -cont(f1(x,y),y) | y = x.  [clausify(14)].
+-p(x,y) | cont(x,y).  [clausify(15)].
+-p(x,y) | eqdim(x,y).  [clausify(15)].
+p(x,y) | -cont(x,y) | -eqdim(x,y).  [clausify(15)].
+cont(f2(x,y),x) | zex(intersection(x,y)).  [clausify(16)].
+cont(f2(x,y),y) | zex(intersection(x,y)).  [clausify(16)].
+intersection(x,y) = intersection(y,x).  [clausify(17)].
+zex(intersection(x,y)) | cont(intersection(x,y),x).  [clausify(18)].
+-cont(x,y) | -cont(x,z) | leq(x,intersection(y,z)).  [clausify(19)].
+-cont(x,y) | -cont(x,z) | -eqdim(x,intersection(y,z)) | p(x,intersection(y,z)).  [clausify(20)].
+cont(x,y) | -p(x,intersection(y,z)).  [clausify(20)].
+cont(x,y) | -p(x,intersection(z,y)).  [clausify(20)].
+eqdim(x,intersection(y,z)) | -p(x,intersection(y,z)).  [clausify(20)].
+-zex(intersection(c2,c3)).  [deny(21)].
+-cont(intersection(c2,intersection(c2,c3)),intersection(c2,c3)).  [deny(21)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating leq/2
+22 -less(x,y) | -leq(y,z) | less(x,z).  [clausify(5)].
+23 -cont(x,y) | leq(x,y).  [clausify(1)].
+Derived: -less(x,y) | less(x,z) | -cont(y,z).  [resolve(22,b,23,b)].
+24 -leq(x,y) | less(x,y) | eqdim(x,y).  [clausify(9)].
+Derived: less(x,y) | eqdim(x,y) | -cont(x,y).  [resolve(24,a,23,b)].
+25 leq(x,y) | -less(x,y).  [clausify(9)].
+Derived: -less(x,y) | -less(z,x) | less(z,y).  [resolve(25,a,22,b)].
+26 leq(x,y) | -eqdim(x,y).  [clausify(9)].
+Derived: -eqdim(x,y) | -less(z,x) | less(z,y).  [resolve(26,a,22,b)].
+27 -cont(x,y) | -cont(x,z) | leq(x,intersection(y,z)).  [clausify(19)].
+Derived: -cont(x,y) | -cont(x,z) | -less(u,x) | less(u,intersection(y,z)).  [resolve(27,c,22,b)].
+Derived: -cont(x,y) | -cont(x,z) | less(x,intersection(y,z)) | eqdim(x,intersection(y,z)).  [resolve(27,c,24,a)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (non-Horn, no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, zex, cont, less, eqdim, p ]).
+Function symbol precedence:  function_order([ c1, c2, c3, intersection, f1, f2 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+  % set(binary_resolution).  % (non-Horn)
+  % set(neg_ur_resolution).  % (non-Horn, less than 100 clauses)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+kept:      28 zex(c1).  [clausify(2)].
+kept:      29 -less(x,x).  [clausify(3)].
+kept:      30 -less(x,y) | -less(y,x).  [clausify(4)].
+kept:      31 -zex(x) | -zex(y) | y = x.  [clausify(6)].
+kept:      32 -zex(x) | zex(y) | less(x,y).  [clausify(7)].
+kept:      33 -eqdim(x,y) | -less(x,y).  [clausify(8)].
+kept:      34 -eqdim(x,y) | -less(y,x).  [clausify(8)].
+kept:      35 eqdim(x,y) | less(x,y) | less(y,x).  [clausify(8)].
+kept:      36 zex(x) | cont(x,x).  [clausify(10)].
+kept:      37 -zex(x) | -cont(x,x).  [clausify(10)].
+kept:      38 -cont(x,y) | -cont(y,x) | y = x.  [clausify(11)].
+kept:      39 -cont(x,y) | -cont(y,z) | cont(x,z).  [clausify(12)].
+kept:      40 -zex(x) | -cont(y,x).  [clausify(13)].
+kept:      41 -zex(x) | -cont(x,y).  [clausify(13)].
+kept:      42 cont(f1(x,y),x) | cont(f1(x,y),y) | y = x.  [clausify(14)].
+kept:      43 -cont(f1(x,y),x) | -cont(f1(x,y),y) | y = x.  [clausify(14)].
+kept:      44 -p(x,y) | cont(x,y).  [clausify(15)].
+kept:      45 -p(x,y) | eqdim(x,y).  [clausify(15)].
+kept:      46 p(x,y) | -cont(x,y) | -eqdim(x,y).  [clausify(15)].
+kept:      47 cont(f2(x,y),x) | zex(intersection(x,y)).  [clausify(16)].
+kept:      48 cont(f2(x,y),y) | zex(intersection(x,y)).  [clausify(16)].
+
+% Operation intersection is commutative; C redundancy checks enabled.
+kept:      49 intersection(x,y) = intersection(y,x).  [clausify(17)].
+kept:      50 zex(intersection(x,y)) | cont(intersection(x,y),x).  [clausify(18)].
+kept:      51 -cont(x,y) | -cont(x,z) | -eqdim(x,intersection(y,z)) | p(x,intersection(y,z)).  [clausify(20)].
+kept:      52 cont(x,y) | -p(x,intersection(y,z)).  [clausify(20)].
+kept:      53 cont(x,y) | -p(x,intersection(z,y)).  [clausify(20)].
+kept:      54 -zex(intersection(c2,c3)).  [deny(21)].
+kept:      55 -cont(intersection(c2,intersection(c2,c3)),intersection(c2,c3)).  [deny(21)].
+kept:      56 -less(x,y) | less(x,z) | -cont(y,z).  [resolve(22,b,23,b)].
+kept:      57 less(x,y) | eqdim(x,y) | -cont(x,y).  [resolve(24,a,23,b)].
+kept:      58 -less(x,y) | -less(z,x) | less(z,y).  [resolve(25,a,22,b)].
+kept:      59 -eqdim(x,y) | -less(z,x) | less(z,y).  [resolve(26,a,22,b)].
+kept:      60 -cont(x,y) | -cont(x,z) | -less(u,x) | less(u,intersection(y,z)).  [resolve(27,c,22,b)].
+kept:      61 -cont(x,y) | -cont(x,z) | less(x,intersection(y,z)) | eqdim(x,intersection(y,z)).  [resolve(27,c,24,a)].
+kept:      62 eqdim(x,x).  [factor(35,b,c),unit_del(b,29)].
+kept:      63 -cont(x,y) | -eqdim(x,intersection(y,y)) | p(x,intersection(y,y)).  [factor(51,a,b)].
+kept:      64 -cont(x,y) | -less(z,x) | less(z,intersection(y,y)).  [factor(60,a,b)].
+kept:      65 -cont(x,y) | less(x,intersection(y,y)) | eqdim(x,intersection(y,y)).  [factor(61,a,b)].
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+% Clauses after input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+28 zex(c1).  [clausify(2)].
+29 -less(x,x).  [clausify(3)].
+30 -less(x,y) | -less(y,x).  [clausify(4)].
+31 -zex(x) | -zex(y) | y = x.  [clausify(6)].
+32 -zex(x) | zex(y) | less(x,y).  [clausify(7)].
+33 -eqdim(x,y) | -less(x,y).  [clausify(8)].
+34 -eqdim(x,y) | -less(y,x).  [clausify(8)].
+35 eqdim(x,y) | less(x,y) | less(y,x).  [clausify(8)].
+36 zex(x) | cont(x,x).  [clausify(10)].
+38 -cont(x,y) | -cont(y,x) | y = x.  [clausify(11)].
+39 -cont(x,y) | -cont(y,z) | cont(x,z).  [clausify(12)].
+40 -zex(x) | -cont(y,x).  [clausify(13)].
+41 -zex(x) | -cont(x,y).  [clausify(13)].
+42 cont(f1(x,y),x) | cont(f1(x,y),y) | y = x.  [clausify(14)].
+43 -cont(f1(x,y),x) | -cont(f1(x,y),y) | y = x.  [clausify(14)].
+44 -p(x,y) | cont(x,y).  [clausify(15)].
+45 -p(x,y) | eqdim(x,y).  [clausify(15)].
+46 p(x,y) | -cont(x,y) | -eqdim(x,y).  [clausify(15)].
+47 cont(f2(x,y),x) | zex(intersection(x,y)).  [clausify(16)].
+48 cont(f2(x,y),y) | zex(intersection(x,y)).  [clausify(16)].
+49 intersection(x,y) = intersection(y,x).  [clausify(17)].
+50 zex(intersection(x,y)) | cont(intersection(x,y),x).  [clausify(18)].
+51 -cont(x,y) | -cont(x,z) | -eqdim(x,intersection(y,z)) | p(x,intersection(y,z)).  [clausify(20)].
+52 cont(x,y) | -p(x,intersection(y,z)).  [clausify(20)].
+53 cont(x,y) | -p(x,intersection(z,y)).  [clausify(20)].
+54 -zex(intersection(c2,c3)).  [deny(21)].
+55 -cont(intersection(c2,intersection(c2,c3)),intersection(c2,c3)).  [deny(21)].
+56 -less(x,y) | less(x,z) | -cont(y,z).  [resolve(22,b,23,b)].
+57 less(x,y) | eqdim(x,y) | -cont(x,y).  [resolve(24,a,23,b)].
+58 -less(x,y) | -less(z,x) | less(z,y).  [resolve(25,a,22,b)].
+59 -eqdim(x,y) | -less(z,x) | less(z,y).  [resolve(26,a,22,b)].
+60 -cont(x,y) | -cont(x,z) | -less(u,x) | less(u,intersection(y,z)).  [resolve(27,c,22,b)].
+61 -cont(x,y) | -cont(x,z) | less(x,intersection(y,z)) | eqdim(x,intersection(y,z)).  [resolve(27,c,24,a)].
+62 eqdim(x,x).  [factor(35,b,c),unit_del(b,29)].
+63 -cont(x,y) | -eqdim(x,intersection(y,y)) | p(x,intersection(y,y)).  [factor(51,a,b)].
+64 -cont(x,y) | -less(z,x) | less(z,intersection(y,y)).  [factor(60,a,b)].
+65 -cont(x,y) | less(x,intersection(y,y)) | eqdim(x,intersection(y,y)).  [factor(61,a,b)].
+end_of_list.
+
+formulas(demodulators).
+49 intersection(x,y) = intersection(y,x).  [clausify(17)].
+        % (lex-dep)
+end_of_list.
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.01 seconds.
+
+given #1 (I,wt=2): 28 zex(c1).  [clausify(2)].
+
+given #2 (I,wt=3): 29 -less(x,x).  [clausify(3)].
+
+given #3 (I,wt=6): 30 -less(x,y) | -less(y,x).  [clausify(4)].
+
+given #4 (I,wt=7): 31 -zex(x) | -zex(y) | y = x.  [clausify(6)].
+
+given #5 (I,wt=7): 32 -zex(x) | zex(y) | less(x,y).  [clausify(7)].
+
+given #6 (I,wt=6): 33 -eqdim(x,y) | -less(x,y).  [clausify(8)].
+
+given #7 (I,wt=6): 34 -eqdim(x,y) | -less(y,x).  [clausify(8)].
+
+given #8 (I,wt=9): 35 eqdim(x,y) | less(x,y) | less(y,x).  [clausify(8)].
+
+given #9 (I,wt=5): 36 zex(x) | cont(x,x).  [clausify(10)].
+
+given #10 (I,wt=9): 38 -cont(x,y) | -cont(y,x) | y = x.  [clausify(11)].
+
+given #11 (I,wt=9): 39 -cont(x,y) | -cont(y,z) | cont(x,z).  [clausify(12)].
+
+given #12 (I,wt=5): 40 -zex(x) | -cont(y,x).  [clausify(13)].
+
+given #13 (I,wt=5): 41 -zex(x) | -cont(x,y).  [clausify(13)].
+
+given #14 (I,wt=13): 42 cont(f1(x,y),x) | cont(f1(x,y),y) | y = x.  [clausify(14)].
+
+given #15 (I,wt=13): 43 -cont(f1(x,y),x) | -cont(f1(x,y),y) | y = x.  [clausify(14)].
+
+given #16 (I,wt=6): 44 -p(x,y) | cont(x,y).  [clausify(15)].
+
+given #17 (I,wt=6): 45 -p(x,y) | eqdim(x,y).  [clausify(15)].
+
+given #18 (I,wt=9): 46 p(x,y) | -cont(x,y) | -eqdim(x,y).  [clausify(15)].
+
+given #19 (I,wt=9): 47 cont(f2(x,y),x) | zex(intersection(x,y)).  [clausify(16)].
+
+given #20 (I,wt=9): 48 cont(f2(x,y),y) | zex(intersection(x,y)).  [clausify(16)].
+
+given #21 (I,wt=7): 49 intersection(x,y) = intersection(y,x).  [clausify(17)].
+
+given #22 (I,wt=9): 50 zex(intersection(x,y)) | cont(intersection(x,y),x).  [clausify(18)].
+
+given #23 (I,wt=16): 51 -cont(x,y) | -cont(x,z) | -eqdim(x,intersection(y,z)) | p(x,intersection(y,z)).  [clausify(20)].
+
+given #24 (I,wt=8): 52 cont(x,y) | -p(x,intersection(y,z)).  [clausify(20)].
+
+given #25 (I,wt=8): 53 cont(x,y) | -p(x,intersection(z,y)).  [clausify(20)].
+
+given #26 (I,wt=4): 54 -zex(intersection(c2,c3)).  [deny(21)].
+
+given #27 (I,wt=9): 55 -cont(intersection(c2,intersection(c2,c3)),intersection(c2,c3)).  [deny(21)].
+
+given #28 (I,wt=9): 56 -less(x,y) | less(x,z) | -cont(y,z).  [resolve(22,b,23,b)].
+
+given #29 (I,wt=9): 57 less(x,y) | eqdim(x,y) | -cont(x,y).  [resolve(24,a,23,b)].
+
+given #30 (I,wt=9): 58 -less(x,y) | -less(z,x) | less(z,y).  [resolve(25,a,22,b)].
+
+given #31 (I,wt=9): 59 -eqdim(x,y) | -less(z,x) | less(z,y).  [resolve(26,a,22,b)].
+
+given #32 (I,wt=14): 60 -cont(x,y) | -cont(x,z) | -less(u,x) | less(u,intersection(y,z)).  [resolve(27,c,22,b)].
+
+given #33 (I,wt=16): 61 -cont(x,y) | -cont(x,z) | less(x,intersection(y,z)) | eqdim(x,intersection(y,z)).  [resolve(27,c,24,a)].
+
+given #34 (I,wt=3): 62 eqdim(x,x).  [factor(35,b,c),unit_del(b,29)].
+
+given #35 (I,wt=13): 63 -cont(x,y) | -eqdim(x,intersection(y,y)) | p(x,intersection(y,y)).  [factor(51,a,b)].
+
+given #36 (I,wt=11): 64 -cont(x,y) | -less(z,x) | less(z,intersection(y,y)).  [factor(60,a,b)].
+
+given #37 (I,wt=13): 65 -cont(x,y) | less(x,intersection(y,y)) | eqdim(x,intersection(y,y)).  [factor(61,a,b)].
+
+given #38 (A,wt=5): 66 -zex(x) | c1 = x.  [resolve(31,a,28,a),flip(b)].
+
+given #39 (F,wt=3): 68 -cont(x,c1).  [ur(40,a,28,a)].
+
+given #40 (F,wt=3): 69 -cont(c1,x).  [ur(41,a,28,a)].
+
+given #41 (F,wt=3): 135 -p(x,c1).  [ur(44,b,68,a)].
+
+given #42 (F,wt=3): 137 -p(c1,x).  [ur(44,b,69,a)].
+
+given #43 (T,wt=4): 129 zex(intersection(c1,x)).  [resolve(68,a,50,b)].
+
+given #44 (T,wt=4): 130 zex(intersection(x,c1)).  [resolve(68,a,48,a)].
+
+given #45 (T,wt=5): 67 zex(x) | less(c1,x).  [resolve(32,a,28,a)].
+
+given #46 (T,wt=5): 138 intersection(c1,x) = c1.  [resolve(129,a,66,a),flip(a)].
+
+given #47 (A,wt=12): 70 cont(f1(x,y),y) | y = x | -zex(f1(x,y)).  [resolve(42,a,41,b)].
+
+given #48 (F,wt=9): 104 -p(intersection(c2,intersection(c2,c3)),intersection(c2,c3)).  [ur(44,b,55,a)].
+
+given #49 (F,wt=11): 102 -p(intersection(c2,intersection(c2,c3)),intersection(x,intersection(c2,c3))).  [ur(53,a,55,a)].
+
+given #50 (F,wt=11): 103 -p(intersection(c2,intersection(c2,c3)),intersection(intersection(c2,c3),x)).  [ur(52,a,55,a)].
+
+given #51 (F,wt=11): 146 -cont(intersection(c2,intersection(c2,c3)),intersection(c2,intersection(c2,c3))).  [ur(46,a,102,a,c,62,a)].
+
+given #52 (T,wt=5): 139 intersection(x,c1) = c1.  [resolve(130,a,66,a),flip(a)].
+
+given #53 (T,wt=5): 145 zex(x) | -less(x,c1).  [resolve(67,b,30,b)].
+
+given #54 (T,wt=6): 83 p(x,x) | -cont(x,x).  [factor(82,c,d),unit_del(c,29)].
+
+given #55 (T,wt=5): 151 p(x,x) | zex(x).  [resolve(83,b,36,b)].
+
+given #56 (A,wt=10): 71 cont(f1(x,y),y) | y = x | -zex(x).  [resolve(42,a,40,b)].
+
+given #57 (F,wt=5): 150 -less(intersection(c2,c3),c1).  [ur(145,a,54,a)].
+
+given #58 (F,wt=13): 148 -p(intersection(c2,intersection(c2,c3)),intersection(x,intersection(c2,intersection(c2,c3)))).  [ur(53,a,146,a)].
+
+given #59 (F,wt=13): 149 -p(intersection(c2,intersection(c2,c3)),intersection(intersection(c2,intersection(c2,c3)),x)).  [ur(52,a,146,a)].
+
+given #60 (T,wt=6): 85 zex(intersection(x,y)) | -zex(x).  [resolve(47,a,40,b)].
+
+given #61 (T,wt=6): 89 zex(intersection(x,y)) | -zex(y).  [resolve(48,a,40,b)].
+
+given #62 (T,wt=6): 147 zex(intersection(c2,intersection(c2,c3))).  [resolve(146,a,36,b)].
+
+given #63 (T,wt=7): 158 intersection(c2,intersection(c2,c3)) = c1.  [resolve(147,a,66,a),flip(a)].
+
+given #64 (A,wt=16): 72 cont(f1(x,y),y) | y = x | -cont(z,f1(x,y)) | cont(z,x).  [resolve(42,a,39,b)].
+
+given #65 (F,wt=2): 153 -zex(c2).  [ur(85,a,54,a)].
+
+given #66 (F,wt=2): 154 -zex(c3).  [ur(89,a,54,a)].
+
+given #67 (F,wt=3): 167 -less(c2,c1).  [ur(145,a,153,a)].
+
+given #68 (F,wt=3): 168 -less(c3,c1).  [ur(145,a,154,a)].
+
+given #69 (T,wt=8): 84 zex(intersection(x,y)) | -zex(f2(x,y)).  [resolve(47,a,41,b)].
+
+given #70 (T,wt=8): 131 cont(f1(x,c1),x) | c1 = x.  [resolve(68,a,42,b)].
+
+given #71 (T,wt=7): 175 c1 = x | -zex(f1(x,c1)).  [resolve(131,a,41,b)].
+
+given #72 (T,wt=8): 132 cont(f1(c1,x),x) | c1 = x.  [resolve(68,a,42,a),flip(b)].
+
+given #73 (A,wt=16): 73 cont(f1(x,y),y) | y = x | -cont(x,z) | cont(f1(x,y),z).  [resolve(42,a,39,a)].
+
+given #74 (F,wt=4): 169 -zex(f2(c2,c3)).  [ur(84,a,54,a)].
+
+given #75 (F,wt=5): 200 -less(f2(c2,c3),c1).  [ur(145,a,169,a)].
+
+given #76 (F,wt=11): 159 -cont(x,c2) | -cont(x,intersection(c2,c3)) | -eqdim(x,c1).  [para(158(a,1),51(c,2)),rewrite([158(13)]),unit_del(d,135)].
+
+given #77 (T,wt=7): 184 c1 = x | -zex(f1(c1,x)).  [resolve(132,a,41,b)].
+
+given #78 (T,wt=8): 142 zex(x) | -less(x,y) | less(c1,y).  [resolve(67,b,58,b)].
+
+given #79 (T,wt=8): 143 zex(x) | -less(y,c1) | less(y,x).  [resolve(67,b,58,a)].
+
+given #80 (T,wt=8): 144 zex(x) | less(c1,y) | -cont(x,y).  [resolve(67,b,56,a)].
+
+given #81 (A,wt=18): 74 cont(f1(x,y),y) | y = x | -cont(x,f1(x,y)) | f1(x,y) = x.  [resolve(42,a,38,b)].
+
+given #82 (T,wt=7): 204 zex(intersection(x,y)) | less(c1,x).  [resolve(144,c,50,b),merge(c)].
+
+given #83 (T,wt=7): 213 zex(intersection(x,y)) | -less(x,c1).  [resolve(204,b,30,b)].
+
+given #84 (T,wt=9): 96 zex(intersection(x,y)) | cont(intersection(y,x),x).  [para(49(a,1),50(b,1))].
+
+given #85 (T,wt=8): 220 zex(intersection(x,y)) | -zex(intersection(y,x)).  [resolve(96,b,41,b)].
+
+given #86 (A,wt=12): 75 cont(f1(x,y),x) | y = x | -zex(f1(x,y)).  [resolve(42,b,41,b)].
+
+given #87 (T,wt=9): 152 zex(intersection(x,y)) | cont(intersection(x,y),y).  [resolve(151,a,53,b)].
+
+given #88 (T,wt=7): 225 zex(intersection(x,y)) | less(c1,y).  [resolve(152,b,144,c),merge(b)].
+
+given #89 (T,wt=7): 242 zex(intersection(x,y)) | -less(y,c1).  [resolve(225,b,30,b)].
+
+given #90 (T,wt=9): 235 zex(intersection(x,y)) | cont(intersection(y,x),y).  [para(49(a,1),152(b,1))].
+
+given #91 (A,wt=10): 76 cont(f1(x,y),x) | y = x | -zex(y).  [resolve(42,b,40,b)].
+
+given #92 (T,wt=10): 140 zex(x) | -cont(x,y) | less(c1,intersection(y,y)).  [resolve(67,b,64,b)].
+
+given #93 (T,wt=7): 260 zex(x) | less(c1,intersection(x,x)).  [resolve(140,b,36,b),merge(c)].
+
+given #94 (T,wt=7): 266 zex(x) | -less(intersection(x,x),c1).  [resolve(260,b,30,b)].
+
+given #95 (T,wt=9): 254 zex(intersection(x,y)) | less(c1,intersection(y,y)).  [resolve(140,b,152,b),merge(c)].
+
+given #96 (A,wt=16): 77 cont(f1(x,y),x) | y = x | -cont(z,f1(x,y)) | cont(z,y).  [resolve(42,b,39,b)].
+
+given #97 (F,wt=5): 268 -less(intersection(c3,c3),c1).  [ur(266,a,154,a)].
+
+given #98 (F,wt=5): 269 -less(intersection(c2,c2),c1).  [ur(266,a,153,a)].
+
+given #99 (F,wt=9): 267 -less(intersection(f2(c2,c3),f2(c2,c3)),c1).  [ur(266,a,169,a)].
+
+given #100 (F,wt=9): 270 -less(intersection(intersection(c2,c3),intersection(c2,c3)),c1).  [ur(266,a,54,a)].
+
+given #101 (T,wt=9): 257 zex(intersection(x,y)) | less(c1,intersection(x,x)).  [resolve(140,b,50,b),merge(c)].
+
+given #102 (T,wt=9): 276 zex(intersection(x,y)) | -less(intersection(y,y),c1).  [resolve(254,b,30,b)].
+
+given #103 (T,wt=9): 292 zex(intersection(x,y)) | -less(intersection(x,x),c1).  [resolve(257,b,30,b)].
+
+given #104 (T,wt=10): 202 zex(f1(c1,x)) | less(c1,x) | c1 = x.  [resolve(144,c,132,a)].
+
+given #105 (A,wt=16): 78 cont(f1(x,y),x) | y = x | -cont(y,z) | cont(f1(x,y),z).  [resolve(42,b,39,a)].
+
+given #106 (T,wt=10): 203 zex(f1(x,c1)) | less(c1,x) | c1 = x.  [resolve(144,c,131,a)].
+
+given #107 (T,wt=10): 210 zex(intersection(x,y)) | -less(x,z) | less(c1,z).  [resolve(204,b,58,b)].
+
+given #108 (T,wt=10): 211 zex(intersection(x,y)) | -less(z,c1) | less(z,x).  [resolve(204,b,58,a)].
+
+given #109 (T,wt=10): 212 zex(intersection(x,y)) | less(c1,z) | -cont(x,z).  [resolve(204,b,56,a)].
+
+given #110 (A,wt=18): 79 cont(f1(x,y),x) | y = x | -cont(y,f1(x,y)) | f1(x,y) = y.  [resolve(42,b,38,b)].
+
+given #111 (T,wt=10): 239 zex(intersection(x,y)) | -less(y,z) | less(c1,z).  [resolve(225,b,58,b)].
+
+given #112 (T,wt=10): 240 zex(intersection(x,y)) | -less(z,c1) | less(z,y).  [resolve(225,b,58,a)].
+
+given #113 (T,wt=10): 241 zex(intersection(x,y)) | less(c1,z) | -cont(y,z).  [resolve(225,b,56,a)].
+
+given #114 (T,wt=10): 263 zex(x) | -less(intersection(x,x),y) | less(c1,y).  [resolve(260,b,58,b)].
+
+given #115 (A,wt=11): 80 cont(f1(x,y),y) | y = x | -cont(x,y).  [factor(73,a,d)].
+
+given #116 (T,wt=10): 264 zex(x) | -less(y,c1) | less(y,intersection(x,x)).  [resolve(260,b,58,a)].
+
+given #117 (T,wt=10): 265 zex(x) | less(c1,y) | -cont(intersection(x,x),y).  [resolve(260,b,56,a)].
+
+given #118 (T,wt=10): 298 zex(f1(c1,x)) | c1 = x | -less(x,c1).  [resolve(202,b,30,b)].
+
+given #119 (T,wt=10): 320 zex(f1(x,c1)) | c1 = x | -less(x,c1).  [resolve(203,b,30,b)].
+
+given #120 (A,wt=11): 81 cont(f1(x,y),x) | y = x | -cont(y,x).  [factor(78,a,d)].
+
+given #121 (T,wt=11): 176 c1 = x | -cont(y,f1(x,c1)) | cont(y,x).  [resolve(131,a,39,b)].
+
+given #122 (T,wt=11): 177 c1 = x | -cont(x,y) | cont(f1(x,c1),y).  [resolve(131,a,39,a)].
+
+given #123 (T,wt=11): 185 c1 = x | -cont(y,f1(c1,x)) | cont(y,x).  [resolve(132,a,39,b)].
+
+given #124 (T,wt=11): 186 c1 = x | -cont(x,y) | cont(f1(c1,x),y).  [resolve(132,a,39,a)].
+
+given #125 (A,wt=12): 82 p(x,y) | -cont(x,y) | less(x,y) | less(y,x).  [resolve(46,c,35,a)].
+
+given #126 (T,wt=12): 86 zex(intersection(x,y)) | -cont(z,f2(x,y)) | cont(z,x).  [resolve(47,a,39,b)].
+
+given #127 (T,wt=12): 87 zex(intersection(x,y)) | -cont(x,z) | cont(f2(x,y),z).  [resolve(47,a,39,a)].
+
+given #128 (T,wt=12): 90 zex(intersection(x,y)) | -cont(z,f2(x,y)) | cont(z,y).  [resolve(48,a,39,b)].
+
+given #129 (T,wt=12): 91 zex(intersection(x,y)) | -cont(y,z) | cont(f2(x,y),z).  [resolve(48,a,39,a)].
+
+given #130 (A,wt=14): 88 zex(intersection(x,y)) | -cont(x,f2(x,y)) | f2(x,y) = x.  [resolve(47,a,38,b)].
+
+given #131 (T,wt=12): 93 zex(intersection(x,y)) | -cont(z,intersection(x,y)) | cont(z,x).  [resolve(50,b,39,b)].
+
+given #132 (T,wt=12): 94 zex(intersection(x,y)) | -cont(x,z) | cont(intersection(x,y),z).  [resolve(50,b,39,a)].
+
+given #133 (T,wt=12): 101 -cont(intersection(x,x),x) | p(intersection(x,x),intersection(x,x)).  [factor(99,c,d),unit_del(c,29)].
+
+given #134 (T,wt=12): 110 -less(x,y) | less(x,z) | less(y,z) | less(z,y).  [resolve(59,a,35,a)].
+
+given #135 (A,wt=14): 92 zex(intersection(x,y)) | -cont(y,f2(x,y)) | f2(x,y) = y.  [resolve(48,a,38,b)].
+
+given #136 (T,wt=11): 401 less(c1,x) | less(y,x) | less(x,y) | zex(y).  [resolve(110,a,67,b)].
+
+given #137 (T,wt=3): 412 less(c1,c3).  [resolve(401,b,168,a),unit_del(a,29),unit_del(c,154)].
+
+given #138 (T,wt=3): 413 less(c1,c2).  [resolve(401,b,167,a),unit_del(a,29),unit_del(c,153)].
+
+given #139 (T,wt=5): 411 less(c1,f2(c2,c3)).  [resolve(401,b,200,a),unit_del(a,29),unit_del(c,169)].
+
+given #140 (A,wt=14): 95 zex(intersection(x,y)) | -cont(x,intersection(x,y)) | intersection(x,y) = x.  [resolve(50,b,38,b)].
+
+given #141 (F,wt=3): 428 -eqdim(c3,c1).  [ur(59,b,412,a,c,29,a)].
+
+given #142 (F,wt=3): 429 -eqdim(c1,c3).  [ur(33,b,412,a)].
+
+given #143 (F,wt=3): 436 -eqdim(c2,c1).  [ur(59,b,413,a,c,29,a)].
+
+given #144 (F,wt=3): 437 -eqdim(c1,c2).  [ur(33,b,413,a)].
+
+given #145 (T,wt=5): 414 less(c1,intersection(c2,c3)).  [resolve(401,b,150,a),unit_del(a,29),unit_del(c,54)].
+
+given #146 (T,wt=6): 425 -less(c3,x) | less(c1,x).  [resolve(412,a,58,b)].
+
+given #147 (T,wt=6): 426 -less(x,c1) | less(x,c3).  [resolve(412,a,58,a)].
+
+given #148 (T,wt=6): 427 less(c1,x) | -cont(c3,x).  [resolve(412,a,56,a)].
+
+given #149 (A,wt=21): 97 -cont(x,y) | -cont(x,z) | p(x,intersection(y,z)) | less(x,intersection(y,z)) | less(intersection(y,z),x).  [resolve(51,c,35,a)].
+
+given #150 (F,wt=5): 444 -eqdim(f2(c2,c3),c1).  [ur(59,b,411,a,c,29,a)].
+
+given #151 (F,wt=5): 445 -eqdim(c1,f2(c2,c3)).  [ur(33,b,411,a)].
+
+given #152 (F,wt=5): 453 -eqdim(intersection(c2,c3),c1).  [ur(59,b,414,a,c,29,a)].
+
+given #153 (F,wt=5): 454 -eqdim(c1,intersection(c2,c3)).  [ur(33,b,414,a)].
+
+given #154 (T,wt=6): 433 -less(c2,x) | less(c1,x).  [resolve(413,a,58,b)].
+
+given #155 (T,wt=6): 434 -less(x,c1) | less(x,c2).  [resolve(413,a,58,a)].
+
+given #156 (T,wt=6): 435 less(c1,x) | -cont(c2,x).  [resolve(413,a,56,a)].
+
+given #157 (T,wt=8): 415 less(c1,x) | less(x,y) | zex(y).  [resolve(401,b,142,b),merge(d),merge(e)].
+
+given #158 (A,wt=16): 98 -cont(x,y) | -cont(x,z) | -eqdim(x,intersection(z,y)) | p(x,intersection(y,z)).  [para(49(a,1),51(c,2))].
+
+given #159 (T,wt=8): 423 -cont(c3,x) | less(c1,intersection(x,x)).  [resolve(412,a,64,b)].
+
+given #160 (T,wt=5): 492 less(c1,intersection(c3,c3)).  [resolve(423,a,36,b),unit_del(b,154)].
+
+given #161 (T,wt=8): 431 -cont(c2,x) | less(c1,intersection(x,x)).  [resolve(413,a,64,b)].
+
+given #162 (T,wt=5): 501 less(c1,intersection(c2,c2)).  [resolve(431,a,36,b),unit_del(b,153)].
+
+given #163 (A,wt=18): 99 -cont(x,y) | p(x,intersection(y,y)) | less(x,intersection(y,y)) | less(intersection(y,y),x).  [factor(97,a,b)].
+
+given #164 (F,wt=5): 499 -eqdim(intersection(c3,c3),c1).  [ur(59,b,492,a,c,29,a)].
+
+given #165 (F,wt=5): 500 -eqdim(c1,intersection(c3,c3)).  [ur(33,b,492,a)].
+
+given #166 (F,wt=5): 508 -eqdim(intersection(c2,c2),c1).  [ur(59,b,501,a,c,29,a)].
+
+given #167 (F,wt=5): 509 -eqdim(c1,intersection(c2,c2)).  [ur(33,b,501,a)].
+
+given #168 (T,wt=8): 441 -less(f2(c2,c3),x) | less(c1,x).  [resolve(411,a,58,b)].
+
+given #169 (T,wt=8): 442 -less(x,c1) | less(x,f2(c2,c3)).  [resolve(411,a,58,a)].
+
+given #170 (T,wt=8): 443 less(c1,x) | -cont(f2(c2,c3),x).  [resolve(411,a,56,a)].
+
+given #171 (T,wt=8): 450 -less(intersection(c2,c3),x) | less(c1,x).  [resolve(414,a,58,b)].
+
+given #172 (A,wt=17): 100 -cont(intersection(x,y),x) | -cont(intersection(x,y),y) | p(intersection(x,y),intersection(x,y)).  [factor(97,d,e),unit_del(d,29)].
+
+given #173 (T,wt=8): 451 -less(x,c1) | less(x,intersection(c2,c3)).  [resolve(414,a,58,a)].
+
+given #174 (T,wt=8): 452 less(c1,x) | -cont(intersection(c2,c3),x).  [resolve(414,a,56,a)].
+
+given #175 (T,wt=8): 496 -less(intersection(c3,c3),x) | less(c1,x).  [resolve(492,a,58,b)].
+
+given #176 (T,wt=8): 497 -less(x,c1) | less(x,intersection(c3,c3)).  [resolve(492,a,58,a)].
+
+given #177 (A,wt=14): 105 less(intersection(x,y),x) | eqdim(intersection(x,y),x) | zex(intersection(x,y)).  [resolve(57,c,50,b)].
+
+given #178 (T,wt=8): 498 less(c1,x) | -cont(intersection(c3,c3),x).  [resolve(492,a,56,a)].
+
+given #179 (T,wt=8): 505 -less(intersection(c2,c2),x) | less(c1,x).  [resolve(501,a,58,b)].
+
+given #180 (T,wt=8): 506 -less(x,c1) | less(x,intersection(c2,c2)).  [resolve(501,a,58,a)].
+
+given #181 (T,wt=8): 507 less(c1,x) | -cont(intersection(c2,c2),x).  [resolve(501,a,56,a)].
+
+given #182 (A,wt=14): 106 less(f2(x,y),y) | eqdim(f2(x,y),y) | zex(intersection(x,y)).  [resolve(57,c,48,a)].
+
+given #183 (T,wt=9): 422 less(c1,x) | less(c3,x) | less(x,c3).  [resolve(412,a,110,a)].
+
+given #184 (T,wt=6): 536 less(c1,x) | less(x,c3).  [resolve(422,b,425,a),merge(c)].
+
+given #185 (T,wt=9): 430 less(c1,x) | less(c2,x) | less(x,c2).  [resolve(413,a,110,a)].
+
+given #186 (T,wt=6): 554 less(c1,x) | less(x,c2).  [resolve(430,b,433,a),merge(c)].
+
+given #187 (A,wt=14): 107 less(f2(x,y),x) | eqdim(f2(x,y),x) | zex(intersection(x,y)).  [resolve(57,c,47,a)].
+
+given #188 (T,wt=9): 546 less(x,c3) | -less(x,y) | less(c1,y).  [resolve(536,a,58,b)].
+
+given #189 (T,wt=9): 547 less(x,c3) | -less(y,c1) | less(y,x).  [resolve(536,a,58,a)].
+
+given #190 (T,wt=9): 548 less(x,c3) | less(c1,y) | -cont(x,y).  [resolve(536,a,56,a)].
+
+given #191 (T,wt=9): 552 less(c1,x) | -less(c3,y) | less(x,y).  [resolve(536,b,58,b)].
+
+given #192 (A,wt=18): 108 less(f1(x,y),y) | eqdim(f1(x,y),y) | cont(f1(x,y),x) | y = x.  [resolve(57,c,42,b)].
+
+given #193 (T,wt=9): 553 less(c1,x) | less(x,y) | -cont(c3,y).  [resolve(536,b,56,a)].
+
+given #194 (T,wt=9): 564 less(x,c2) | -less(x,y) | less(c1,y).  [resolve(554,a,58,b)].
+
+given #195 (T,wt=9): 565 less(x,c2) | -less(y,c1) | less(y,x).  [resolve(554,a,58,a)].
+
+given #196 (T,wt=9): 566 less(x,c2) | less(c1,y) | -cont(x,y).  [resolve(554,a,56,a)].
+
+given #197 (A,wt=18): 109 less(f1(x,y),x) | eqdim(f1(x,y),x) | cont(f1(x,y),y) | y = x.  [resolve(57,c,42,a)].
+
+given #198 (T,wt=9): 570 less(c1,x) | -less(c2,y) | less(x,y).  [resolve(554,b,58,b)].
+
+given #199 (T,wt=9): 571 less(c1,x) | less(x,y) | -cont(c2,y).  [resolve(554,b,56,a)].
+
+given #200 (T,wt=10): 439 -cont(f2(c2,c3),x) | less(c1,intersection(x,x)).  [resolve(411,a,64,b)].
+
+given #201 (T,wt=9): 598 less(c1,intersection(f2(c2,c3),f2(c2,c3))).  [resolve(439,a,36,b),unit_del(b,169)].
+
+given #202 (A,wt=23): 111 -cont(intersection(x,y),z) | less(intersection(x,y),intersection(x,z)) | eqdim(intersection(x,y),intersection(x,z)) | zex(intersection(x,y)).  [resolve(61,a,50,b)].
+
+given #203 (F,wt=9): 605 -eqdim(intersection(f2(c2,c3),f2(c2,c3)),c1).  [ur(59,b,598,a,c,29,a)].
+
+given #204 (F,wt=9): 606 -eqdim(c1,intersection(f2(c2,c3),f2(c2,c3))).  [ur(33,b,598,a)].
+
+given #205 (T,wt=10): 448 -cont(intersection(c2,c3),x) | less(c1,intersection(x,x)).  [resolve(414,a,64,b)].
+
+given #206 (T,wt=9): 609 less(c1,intersection(intersection(c2,c3),intersection(c2,c3))).  [resolve(448,a,36,b),unit_del(b,54)].
+
+given #207 (T,wt=10): 494 -cont(intersection(c3,c3),x) | less(c1,intersection(x,x)).  [resolve(492,a,64,b)].
+
+given #208 (T,wt=10): 503 -cont(intersection(c2,c2),x) | less(c1,intersection(x,x)).  [resolve(501,a,64,b)].
+
+given #209 (A,wt=23): 112 -cont(f2(x,y),z) | less(f2(x,y),intersection(y,z)) | eqdim(f2(x,y),intersection(y,z)) | zex(intersection(x,y)).  [resolve(61,a,48,a)].
+
+given #210 (F,wt=9): 616 -eqdim(intersection(intersection(c2,c3),intersection(c2,c3)),c1).  [ur(59,b,609,a,c,29,a)].
+
+given #211 (F,wt=9): 617 -eqdim(c1,intersection(intersection(c2,c3),intersection(c2,c3))).  [ur(33,b,609,a)].
+
+given #212 (T,wt=11): 424 -cont(c3,x) | -cont(c3,y) | less(c1,intersection(x,y)).  [resolve(412,a,60,c)].
+
+given #213 (T,wt=8): 620 -cont(c3,x) | less(c1,intersection(c3,x)).  [resolve(424,a,36,b),unit_del(c,154)].
+
+given #214 (T,wt=8): 621 -cont(c3,x) | less(c1,intersection(x,c3)).  [resolve(424,b,36,b),unit_del(c,154)].
+
+given #215 (T,wt=11): 432 -cont(c2,x) | -cont(c2,y) | less(c1,intersection(x,y)).  [resolve(413,a,60,c)].
+
+given #216 (A,wt=23): 113 -cont(f2(x,y),z) | less(f2(x,y),intersection(x,z)) | eqdim(f2(x,y),intersection(x,z)) | zex(intersection(x,y)).  [resolve(61,a,47,a)].
+
+given #217 (T,wt=8): 622 -cont(c2,x) | less(c1,intersection(c2,x)).  [resolve(432,a,36,b),unit_del(c,153)].
+
+given #218 (T,wt=8): 623 -cont(c2,x) | less(c1,intersection(x,c2)).  [resolve(432,b,36,b),unit_del(c,153)].
+
+given #219 (T,wt=11): 482 less(x,y) | zex(y) | -less(x,z) | less(c1,z).  [resolve(415,a,58,b)].
+
+given #220 (T,wt=11): 483 less(x,y) | zex(y) | -less(z,c1) | less(z,x).  [resolve(415,a,58,a)].
+
+given #221 (A,wt=27): 114 -cont(f1(x,y),z) | less(f1(x,y),intersection(y,z)) | eqdim(f1(x,y),intersection(y,z)) | cont(f1(x,y),x) | y = x.  [resolve(61,a,42,b)].
+
+given #222 (T,wt=11): 484 less(x,y) | zex(y) | less(c1,z) | -cont(x,z).  [resolve(415,a,56,a)].
+
+given #223 (T,wt=11): 488 less(c1,x) | zex(y) | -less(y,z) | less(x,z).  [resolve(415,b,58,b)].
+
+given #224 (T,wt=11): 489 less(c1,x) | zex(y) | less(x,z) | -cont(y,z).  [resolve(415,b,56,a)].
+
+given #225 (T,wt=10): 632 less(c1,x) | zex(intersection(y,z)) | less(x,z).  [resolve(489,d,152,b),merge(d)].
+
+given #226 (A,wt=27): 115 -cont(f1(x,y),z) | less(f1(x,y),intersection(x,z)) | eqdim(f1(x,y),intersection(x,z)) | cont(f1(x,y),y) | y = x.  [resolve(61,a,42,a)].
+
+given #227 (T,wt=10): 635 less(c1,x) | zex(intersection(y,z)) | less(x,y).  [resolve(489,d,50,b),merge(d)].
+
+given #228 (T,wt=11): 544 less(x,c3) | -cont(x,y) | less(c1,intersection(y,y)).  [resolve(536,a,64,b)].
+
+given #229 (T,wt=11): 550 less(c1,x) | -cont(c3,y) | less(x,intersection(y,y)).  [resolve(536,b,64,b)].
+
+given #230 (T,wt=8): 665 less(c1,x) | less(x,intersection(c3,c3)).  [resolve(550,b,36,b),unit_del(c,154)].
+
+given #231 (A,wt=15): 116 -cont(x,y) | less(x,intersection(x,y)) | eqdim(x,intersection(x,y)) | zex(x).  [resolve(61,a,36,b)].
+
+given #232 (T,wt=11): 562 less(x,c2) | -cont(x,y) | less(c1,intersection(y,y)).  [resolve(554,a,64,b)].
+
+given #233 (T,wt=11): 568 less(c1,x) | -cont(c2,y) | less(x,intersection(y,y)).  [resolve(554,b,64,b)].
+
+given #234 (T,wt=8): 684 less(c1,x) | less(x,intersection(c2,c2)).  [resolve(568,b,36,b),unit_del(c,153)].
+
+given #235 (T,wt=11): 578 less(f1(c1,x),c3) | less(c1,x) | c1 = x.  [resolve(548,c,132,a)].
+
+given #236 (A,wt=23): 117 -cont(intersection(x,y),z) | less(intersection(x,y),intersection(z,x)) | eqdim(intersection(x,y),intersection(z,x)) | zex(intersection(x,y)).  [resolve(61,b,50,b)].
+
+given #237 (T,wt=11): 579 less(f1(x,c1),c3) | less(c1,x) | c1 = x.  [resolve(548,c,131,a)].
+
+given #238 (T,wt=11): 588 less(f1(c1,x),c2) | less(c1,x) | c1 = x.  [resolve(566,c,132,a)].
+
+given #239 (T,wt=11): 589 less(f1(x,c1),c2) | less(c1,x) | c1 = x.  [resolve(566,c,131,a)].
+
+given #240 (T,wt=11): 669 less(x,intersection(c3,c3)) | -less(x,y) | less(c1,y).  [resolve(665,a,58,b)].
+
+given #241 (A,wt=23): 118 -cont(f2(x,y),z) | less(f2(x,y),intersection(z,y)) | eqdim(f2(x,y),intersection(z,y)) | zex(intersection(x,y)).  [resolve(61,b,48,a)].
+
+given #242 (T,wt=11): 670 less(x,intersection(c3,c3)) | -less(y,c1) | less(y,x).  [resolve(665,a,58,a)].
+
+given #243 (T,wt=11): 671 less(x,intersection(c3,c3)) | less(c1,y) | -cont(x,y).  [resolve(665,a,56,a)].
+
+given #244 (T,wt=11): 675 less(c1,x) | -less(intersection(c3,c3),y) | less(x,y).  [resolve(665,b,58,b)].
+
+given #245 (T,wt=11): 676 less(c1,x) | less(x,y) | -cont(intersection(c3,c3),y).  [resolve(665,b,56,a)].
+
+given #246 (A,wt=23): 119 -cont(f2(x,y),z) | less(f2(x,y),intersection(z,x)) | eqdim(f2(x,y),intersection(z,x)) | zex(intersection(x,y)).  [resolve(61,b,47,a)].
+
+given #247 (T,wt=11): 688 less(x,intersection(c2,c2)) | -less(x,y) | less(c1,y).  [resolve(684,a,58,b)].
+
+given #248 (T,wt=11): 689 less(x,intersection(c2,c2)) | -less(y,c1) | less(y,x).  [resolve(684,a,58,a)].
+
+given #249 (T,wt=11): 690 less(x,intersection(c2,c2)) | less(c1,y) | -cont(x,y).  [resolve(684,a,56,a)].
+
+given #250 (T,wt=11): 694 less(c1,x) | -less(intersection(c2,c2),y) | less(x,y).  [resolve(684,b,58,b)].
+
+given #251 (A,wt=27): 120 -cont(f1(x,y),z) | less(f1(x,y),intersection(z,y)) | eqdim(f1(x,y),intersection(z,y)) | cont(f1(x,y),x) | y = x.  [resolve(61,b,42,b)].
+
+given #252 (T,wt=11): 695 less(c1,x) | less(x,y) | -cont(intersection(c2,c2),y).  [resolve(684,b,56,a)].
+
+given #253 (T,wt=11): 702 less(c1,x) | c1 = x | -less(c3,f1(c1,x)).  [resolve(578,a,30,b)].
+
+given #254 (T,wt=11): 711 less(c1,x) | c1 = x | -less(c3,f1(x,c1)).  [resolve(579,a,30,b)].
+
+given #255 (T,wt=11): 718 less(c1,x) | c1 = x | -less(c2,f1(c1,x)).  [resolve(588,a,30,b)].
+
+given #256 (A,wt=27): 121 -cont(f1(x,y),z) | less(f1(x,y),intersection(z,x)) | eqdim(f1(x,y),intersection(z,x)) | cont(f1(x,y),y) | y = x.  [resolve(61,b,42,a)].
+
+given #257 (T,wt=11): 725 less(c1,x) | c1 = x | -less(c2,f1(x,c1)).  [resolve(589,a,30,b)].
+
+given #258 (T,wt=12): 128 less(x,intersection(x,x)) | eqdim(x,intersection(x,x)) | zex(x).  [resolve(65,a,36,b)].
+
+given #259 (T,wt=12): 208 zex(intersection(x,y)) | -cont(x,z) | less(c1,intersection(z,z)).  [resolve(204,b,64,b)].
+
+given #260 (T,wt=12): 221 zex(intersection(x,y)) | -cont(z,intersection(y,x)) | cont(z,x).  [resolve(96,b,39,b)].
+
+given #261 (A,wt=15): 122 -cont(x,y) | less(x,intersection(y,x)) | eqdim(x,intersection(y,x)) | zex(x).  [resolve(61,b,36,b)].
+
+given #262 (T,wt=12): 222 zex(intersection(x,y)) | -cont(x,z) | cont(intersection(y,x),z).  [resolve(96,b,39,a)].
+
+given #263 (T,wt=12): 232 zex(intersection(x,y)) | -cont(z,intersection(x,y)) | cont(z,y).  [resolve(152,b,39,b)].
+
+given #264 (T,wt=12): 233 zex(intersection(x,y)) | -cont(y,z) | cont(intersection(x,y),z).  [resolve(152,b,39,a)].
+
+given #265 (T,wt=12): 237 zex(intersection(x,y)) | -cont(y,z) | less(c1,intersection(z,z)).  [resolve(225,b,64,b)].
+
+given #266 (A,wt=18): 123 less(intersection(x,y),intersection(x,x)) | eqdim(intersection(x,y),intersection(x,x)) | zex(intersection(x,y)).  [resolve(65,a,50,b)].
+
+given #267 (T,wt=12): 249 zex(intersection(x,y)) | -cont(z,intersection(y,x)) | cont(z,y).  [resolve(235,b,39,b)].
+
+given #268 (T,wt=12): 250 zex(intersection(x,y)) | -cont(y,z) | cont(intersection(y,x),z).  [resolve(235,b,39,a)].
+
+given #269 (T,wt=12): 255 zex(f1(c1,x)) | less(c1,intersection(x,x)) | c1 = x.  [resolve(140,b,132,a)].
+
+given #270 (T,wt=12): 256 zex(f1(x,c1)) | less(c1,intersection(x,x)) | c1 = x.  [resolve(140,b,131,a)].
+
+given #271 (A,wt=18): 124 less(f2(x,y),intersection(y,y)) | eqdim(f2(x,y),intersection(y,y)) | zex(intersection(x,y)).  [resolve(65,a,48,a)].
+
+given #272 (T,wt=12): 261 zex(x) | -cont(intersection(x,x),y) | less(c1,intersection(y,y)).  [resolve(260,b,64,b)].
+
+given #273 (T,wt=12): 273 zex(intersection(x,y)) | -less(intersection(y,y),z) | less(c1,z).  [resolve(254,b,58,b)].
+
+given #274 (T,wt=12): 274 zex(intersection(x,y)) | -less(z,c1) | less(z,intersection(y,y)).  [resolve(254,b,58,a)].
+
+given #275 (T,wt=12): 275 zex(intersection(x,y)) | less(c1,z) | -cont(intersection(y,y),z).  [resolve(254,b,56,a)].
+
+given #276 (A,wt=18): 125 less(f2(x,y),intersection(x,x)) | eqdim(f2(x,y),intersection(x,x)) | zex(intersection(x,y)).  [resolve(65,a,47,a)].
+
+given #277 (T,wt=12): 289 zex(intersection(x,y)) | -less(intersection(x,x),z) | less(c1,z).  [resolve(257,b,58,b)].
+
+given #278 (T,wt=12): 290 zex(intersection(x,y)) | -less(z,c1) | less(z,intersection(x,x)).  [resolve(257,b,58,a)].
+
+given #279 (T,wt=12): 291 zex(intersection(x,y)) | less(c1,z) | -cont(intersection(x,x),z).  [resolve(257,b,56,a)].
+
+given #280 (T,wt=12): 321 zex(intersection(f1(c1,x),y)) | less(c1,x) | c1 = x.  [resolve(212,c,132,a)].
+
+given #281 (A,wt=22): 126 less(f1(x,y),intersection(y,y)) | eqdim(f1(x,y),intersection(y,y)) | cont(f1(x,y),x) | y = x.  [resolve(65,a,42,b)].
+
+given #282 (T,wt=12): 322 zex(intersection(f1(x,c1),y)) | less(c1,x) | c1 = x.  [resolve(212,c,131,a)].
+
+given #283 (T,wt=12): 325 zex(intersection(x,f1(c1,y))) | less(c1,y) | c1 = y.  [resolve(241,c,132,a)].
+
+given #284 (T,wt=12): 326 zex(intersection(x,f1(y,c1))) | less(c1,y) | c1 = y.  [resolve(241,c,131,a)].
+
+given #285 (T,wt=12): 543 less(x,c3) | less(c1,y) | less(x,y) | less(y,x).  [resolve(536,a,110,a)].
+
+given #286 (A,wt=22): 127 less(f1(x,y),intersection(x,x)) | eqdim(f1(x,y),intersection(x,x)) | cont(f1(x,y),y) | y = x.  [resolve(65,a,42,a)].
+
+given #287 (T,wt=9): 829 less(x,c3) | less(c1,y) | less(y,x).  [resolve(543,c,546,b),merge(d),merge(e)].
+
+given #288 (T,wt=12): 561 less(x,c2) | less(c1,y) | less(x,y) | less(y,x).  [resolve(554,a,110,a)].
+
+given #289 (T,wt=9): 870 less(x,c2) | less(c1,y) | less(y,x).  [resolve(561,c,564,b),merge(d),merge(e)].
+
+given #290 (T,wt=12): 602 -less(intersection(f2(c2,c3),f2(c2,c3)),x) | less(c1,x).  [resolve(598,a,58,b)].
+
+given #291 (A,wt=13): 141 zex(x) | -cont(x,y) | -cont(x,z) | less(c1,intersection(y,z)).  [resolve(67,b,60,c)].
+
+given #292 (T,wt=10): 902 zex(x) | -cont(x,y) | less(c1,intersection(x,y)).  [resolve(141,b,36,b),merge(d)].
+
+given #293 (T,wt=10): 912 zex(x) | -cont(x,y) | less(c1,intersection(y,x)).  [resolve(141,c,36,b),merge(d)].
+
+given #294 (T,wt=11): 914 zex(intersection(x,y)) | less(c1,intersection(y,intersection(x,y))).  [resolve(902,b,152,b),rewrite([49(5)]),merge(c)].
+
+given #295 (T,wt=11): 917 zex(intersection(x,y)) | less(c1,intersection(x,intersection(x,y))).  [resolve(902,b,50,b),rewrite([49(5)]),merge(c)].
+
+============================== PROOF =================================
+
+% Proof 1 at 0.06 (+ 0.00) seconds.
+% Length of proof is 39.
+% Level of proof is 6.
+% Maximum clause weight is 14.000.
+% Given clauses 295.
+
+2 (exists x zex(x)) # label(non_clause).  [assumption].
+3 (all x -less(x,x)) # label(non_clause).  [assumption].
+5 (all x all y all z (less(x,y) & leq(y,z) -> less(x,z))) # label(non_clause).  [assumption].
+6 (all x all y (zex(x) & zex(y) -> x = y)) # label(non_clause).  [assumption].
+7 (all x all y (zex(x) & -zex(y) -> less(x,y))) # label(non_clause).  [assumption].
+8 (all x all y (eqdim(x,y) <-> -less(x,y) & -less(y,x))) # label(non_clause).  [assumption].
+10 (all x (-zex(x) <-> cont(x,x))) # label(non_clause).  [assumption].
+15 (all x all y (p(x,y) <-> cont(x,y) & eqdim(x,y))) # label(non_clause).  [assumption].
+17 (all x all y intersection(x,y) = intersection(y,x)) # label(non_clause).  [assumption].
+18 (all x all y (-zex(intersection(x,y)) -> cont(intersection(x,y),x))) # label(non_clause).  [assumption].
+19 (all x all y all z (cont(z,x) & cont(z,y) -> leq(z,intersection(x,y)))) # label(non_clause).  [assumption].
+20 (all x all y all z (cont(z,x) & cont(z,y) & eqdim(z,intersection(x,y)) <-> p(z,intersection(x,y)))) # label(non_clause).  [assumption].
+21 (all x all y (-zex(intersection(x,y)) -> cont(intersection(x,intersection(x,y)),intersection(x,y)))) # label(non_clause) # label(goal).  [goal].
+22 -less(x,y) | -leq(y,z) | less(x,z).  [clausify(5)].
+27 -cont(x,y) | -cont(x,z) | leq(x,intersection(y,z)).  [clausify(19)].
+28 zex(c1).  [clausify(2)].
+29 -less(x,x).  [clausify(3)].
+31 -zex(x) | -zex(y) | y = x.  [clausify(6)].
+32 -zex(x) | zex(y) | less(x,y).  [clausify(7)].
+35 eqdim(x,y) | less(x,y) | less(y,x).  [clausify(8)].
+36 zex(x) | cont(x,x).  [clausify(10)].
+46 p(x,y) | -cont(x,y) | -eqdim(x,y).  [clausify(15)].
+49 intersection(x,y) = intersection(y,x).  [clausify(17)].
+50 zex(intersection(x,y)) | cont(intersection(x,y),x).  [clausify(18)].
+53 cont(x,y) | -p(x,intersection(z,y)).  [clausify(20)].
+54 -zex(intersection(c2,c3)).  [deny(21)].
+55 -cont(intersection(c2,intersection(c2,c3)),intersection(c2,c3)).  [deny(21)].
+60 -cont(x,y) | -cont(x,z) | -less(u,x) | less(u,intersection(y,z)).  [resolve(27,c,22,b)].
+62 eqdim(x,x).  [factor(35,b,c),unit_del(b,29)].
+66 -zex(x) | c1 = x.  [resolve(31,a,28,a),flip(b)].
+67 zex(x) | less(c1,x).  [resolve(32,a,28,a)].
+102 -p(intersection(c2,intersection(c2,c3)),intersection(x,intersection(c2,c3))).  [ur(53,a,55,a)].
+141 zex(x) | -cont(x,y) | -cont(x,z) | less(c1,intersection(y,z)).  [resolve(67,b,60,c)].
+146 -cont(intersection(c2,intersection(c2,c3)),intersection(c2,intersection(c2,c3))).  [ur(46,a,102,a,c,62,a)].
+147 zex(intersection(c2,intersection(c2,c3))).  [resolve(146,a,36,b)].
+158 intersection(c2,intersection(c2,c3)) = c1.  [resolve(147,a,66,a),flip(a)].
+902 zex(x) | -cont(x,y) | less(c1,intersection(x,y)).  [resolve(141,b,36,b),merge(d)].
+917 zex(intersection(x,y)) | less(c1,intersection(x,intersection(x,y))).  [resolve(902,b,50,b),rewrite([49(5)]),merge(c)].
+938 $F.  [para(158(a,1),917(b,2)),unit_del(a,54),unit_del(b,29)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=295. Generated=4485. Kept=910. proofs=1.
+Usable=280. Sos=518. Demods=4. Limbo=8, Disabled=145. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=3574. Back_subsumed=89.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=4 (1 lex), Back_demodulated=15. Back_unit_deleted=0.
+Demod_attempts=38257. Demod_rewrites=558.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=11193. Nonunit_bsub_feature_tests=3525.
+Megabytes=1.19.
+User_CPU=0.06, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 21562 exit (max_proofs) Thu Sep  1 11:47:22 2011
