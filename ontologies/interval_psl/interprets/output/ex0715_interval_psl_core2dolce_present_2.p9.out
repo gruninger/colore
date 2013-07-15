@@ -1,0 +1,1205 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 8190 was started by cchui on stl1.mie.utoronto.ca,
+Mon Jul 15 12:21:34 2013
+The command was "prover9 -t 600 -f test/p9/interval_psl_core.p9 test/p9/interval_psl_core2dolce_present.p9 test/p9/psl_core-ext.p9 test/p9/interval_with_endpoints.p9 test/p9/finite_sim_vc_end.p9 test/p9/lp_infinite_end.p9 test/p9/lp_ordering.p9 test/p9/options.txt test/p9/ex0715_interval_psl_core2dolce_present_2.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file test/p9/interval_psl_core.p9
+
+
+formulas(sos).
+(all x all y (psl_interval(x,y) <-> (activity_occurrence(x) | object(x)) & timeinterval(y) & beginof(x) = beginof(y) & endof(x) = endof(y))).
+(all x all y all z (overlay(x,y,z) <-> (exists i1 exists i2 (psl_interval(x,i1) & psl_interval(y,i2) & beginof(i2) = beginof(z) & endof(i1) = endof(z))))).
+end_of_list.
+
+% Reading from file test/p9/interval_psl_core2dolce_present.p9
+
+
+formulas(sos).
+(all x (ED(x) <-> object(x))).
+(all x (Q(x) <-> object(x))).
+(all x (PD(x) <-> activity_occurrence(x))).
+(all x (T(x) <-> timeinterval(x))).
+(all t1 all t2 (P(t1,t2) <-> timeinterval(t1) & timeinterval(t2) & beforeEq(beginof(t2),beginof(t1)) & beforeEq(endof(t1),endof(t2)))).
+(all x all y all t (PRE(x,t) <-> (object(x) | activity_occurrence(x)) & timeinterval(t) & beforeEq(beginof(x),beginof(t)) & beforeEq(endof(t),endof(x)))).
+(all x all y all z (SUM(z,x,y) <-> timeinterval(x) & timeinterval(y) & timeinterval(z) & (beginof(z) = beginof(x) & endof(z) = endof(y) | beginof(z) = beginof(y) & endof(z) = endof(x)))).
+(all x (object(x) | activity_occurrence(x) -> (exists t psl_interval(x,t)))).
+(all x all y all z (beforeEq(x,y) & beforeEq(y,z) -> beforeEq(x,z))).
+(all x all y all z (P(x,y) & P(y,z) -> P(x,z))).
+(all x all y (psl_interval(x,y) <-> (activity_occurrence(x) | object(x)) & timeinterval(y) & beginof(x) = beginof(y) & endof(x) = endof(y))).
+(all x all y all z (overlay(x,y,z) <-> (exists i1 exists i2 (psl_interval(x,i1) & psl_interval(y,i2) & beginof(i2) = beginof(z) & endof(i1) = endof(z))))).
+end_of_list.
+
+% Reading from file test/p9/psl_core-ext.p9
+
+
+formulas(sos).
+(all t1 all t2 (before(t1,t2) -> timepoint(t1) & timepoint(t2))).
+(all t1 all t2 (timepoint(t1) & timepoint(t2) -> t1 = t2 | before(t1,t2) | before(t2,t1))).
+(all t1 -before(t1,t1)).
+(all t1 all t2 all t3 (before(t1,t2) & before(t2,t3) -> before(t1,t3))).
+(all t (timepoint(t) & t != "inf-" -> before("inf-",t))).
+(all t (timepoint(t) & t != "inf+" -> before(t,"inf+"))).
+(all t (timepoint(t) & t != "inf-" -> (exists u (before("inf-",u) & before(u,t))))).
+(all t (timepoint(t) & t != "inf+" -> (exists u (before(t,u) & before(u,"inf+"))))).
+(all x (activity(x) | activity_occurrence(x) | timepoint(x) | object(x))).
+(all x ((activity(x) -> -(activity_occurrence(x) | object(x) | timepoint(x))) & (activity_occurrence(x) -> -(object(x) | timepoint(x))) & (object(x) -> -timepoint(x)))).
+(all a all occ (occurrence_of(occ,a) -> activity(a) & activity_occurrence(occ))).
+(all occ (activity_occurrence(occ) -> (exists a (activity(a) & occurrence_of(occ,a))))).
+(all occ all a1 all a2 (occurrence_of(occ,a1) & occurrence_of(occ,a2) -> a1 = a2)).
+(all a all x (occurrence_of(x,a) | object(x) -> timepoint(beginof(x)) & timepoint(endof(x)))).
+(all x (activity_occurrence(x) | object(x) -> beforeEq(beginof(x),endof(x)))).
+(all x all occ all t (participates_in(x,occ,t) -> object(x) & activity_occurrence(occ) & timepoint(t))).
+(all x all occ all t (participates_in(x,occ,t) -> exists_at(x,t) & is_occurring_at(occ,t))).
+(all t1 all t2 (beforeEq(t1,t2) <-> timepoint(t1) & timepoint(t2) & (before(t1,t2) | t1 = t2))).
+(all t1 all t2 all t3 (betweenEq(t1,t2,t3) <-> beforeEq(t1,t2) & beforeEq(t2,t3))).
+(all x all t (exists_at(x,t) <-> object(x) & betweenEq(beginof(x),t,endof(x)))).
+(all occ all t (is_occurring_at(occ,t) <-> betweenEq(beginof(occ),t,endof(occ)))).
+end_of_list.
+
+% Reading from file test/p9/interval_with_endpoints.p9
+
+
+formulas(sos).
+end_of_list.
+
+% Reading from file test/p9/finite_sim_vc_end.p9
+
+
+formulas(sos).
+(all x (timepoint(x) <-> -timeinterval(x))).
+(all i all p all q (p = beginof(i) & q = endof(i) -> i = between(p,q))).
+(all i (timeinterval(i) -> timepoint(beginof(i)) & timepoint(endof(i)))).
+(all x all y (before(x,y) -> timeinterval(between(x,y)))).
+(all p all q (before(p,q) -> p = beginof(between(p,q)) & q = endof(between(p,q)))).
+end_of_list.
+
+% Reading from file test/p9/lp_infinite_end.p9
+
+
+formulas(sos).
+(exists t1 (timepoint(t1) & (all t2 (timepoint(t2) & t1 != t2 -> before(t2,t1))) & (all t3 (timepoint(t3) & t1 != t3 -> (exists t4 (before(t3,t4) & before(t4,t1))))))).
+(exists t1 (timepoint(t1) & (all t2 (timepoint(t2) & t1 != t2 -> before(t1,t2))) & (all t3 (timepoint(t3) & t1 != t3 -> (exists t4 (before(t4,t3) & before(t1,t4))))))).
+end_of_list.
+
+% Reading from file test/p9/lp_ordering.p9
+
+
+formulas(sos).
+(all x all y all z (timepoint(x) & timepoint(y) & timepoint(z) & before(x,y) & before(y,z) -> before(x,z))).
+(all x (timepoint(x) -> -before(x,x))).
+(all x all y (timepoint(x) & timepoint(y) -> before(x,y) | before(y,x) | x = y)).
+(all x all y (bbefore(x,y) <-> timepoint(x) & timepoint(y) & (before(x,y) | x = y))).
+end_of_list.
+
+% Reading from file test/p9/options.txt
+
+clear(auto_denials).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+
+% Reading from file test/p9/ex0715_interval_psl_core2dolce_present_2.p9
+
+
+formulas(goals).
+(all x all t all t1 (PRE(x,t) & P(t1,t) -> PRE(x,t1))).
+end_of_list.
+
+============================== end of input ==========================
+
+% From the command line: assign(max_seconds, 600).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x all y (psl_interval(x,y) <-> (activity_occurrence(x) | object(x)) & timeinterval(y) & beginof(x) = beginof(y) & endof(x) = endof(y))) # label(non_clause).  [assumption].
+2 (all x all y all z (overlay(x,y,z) <-> (exists i1 exists i2 (psl_interval(x,i1) & psl_interval(y,i2) & beginof(i2) = beginof(z) & endof(i1) = endof(z))))) # label(non_clause).  [assumption].
+3 (all x (ED(x) <-> object(x))) # label(non_clause).  [assumption].
+4 (all x (Q(x) <-> object(x))) # label(non_clause).  [assumption].
+5 (all x (PD(x) <-> activity_occurrence(x))) # label(non_clause).  [assumption].
+6 (all x (T(x) <-> timeinterval(x))) # label(non_clause).  [assumption].
+7 (all t1 all t2 (P(t1,t2) <-> timeinterval(t1) & timeinterval(t2) & beforeEq(beginof(t2),beginof(t1)) & beforeEq(endof(t1),endof(t2)))) # label(non_clause).  [assumption].
+8 (all x all y all t (PRE(x,t) <-> (object(x) | activity_occurrence(x)) & timeinterval(t) & beforeEq(beginof(x),beginof(t)) & beforeEq(endof(t),endof(x)))) # label(non_clause).  [assumption].
+9 (all x all y all z (SUM(z,x,y) <-> timeinterval(x) & timeinterval(y) & timeinterval(z) & (beginof(z) = beginof(x) & endof(z) = endof(y) | beginof(z) = beginof(y) & endof(z) = endof(x)))) # label(non_clause).  [assumption].
+10 (all x (object(x) | activity_occurrence(x) -> (exists t psl_interval(x,t)))) # label(non_clause).  [assumption].
+11 (all x all y all z (beforeEq(x,y) & beforeEq(y,z) -> beforeEq(x,z))) # label(non_clause).  [assumption].
+12 (all x all y all z (P(x,y) & P(y,z) -> P(x,z))) # label(non_clause).  [assumption].
+13 (all x all y (psl_interval(x,y) <-> (activity_occurrence(x) | object(x)) & timeinterval(y) & beginof(x) = beginof(y) & endof(x) = endof(y))) # label(non_clause).  [assumption].
+14 (all x all y all z (overlay(x,y,z) <-> (exists i1 exists i2 (psl_interval(x,i1) & psl_interval(y,i2) & beginof(i2) = beginof(z) & endof(i1) = endof(z))))) # label(non_clause).  [assumption].
+15 (all t1 all t2 (before(t1,t2) -> timepoint(t1) & timepoint(t2))) # label(non_clause).  [assumption].
+16 (all t1 all t2 (timepoint(t1) & timepoint(t2) -> t1 = t2 | before(t1,t2) | before(t2,t1))) # label(non_clause).  [assumption].
+17 (all t1 -before(t1,t1)) # label(non_clause).  [assumption].
+18 (all t1 all t2 all t3 (before(t1,t2) & before(t2,t3) -> before(t1,t3))) # label(non_clause).  [assumption].
+19 (all t (timepoint(t) & t != "inf-" -> before("inf-",t))) # label(non_clause).  [assumption].
+20 (all t (timepoint(t) & t != "inf+" -> before(t,"inf+"))) # label(non_clause).  [assumption].
+21 (all t (timepoint(t) & t != "inf-" -> (exists u (before("inf-",u) & before(u,t))))) # label(non_clause).  [assumption].
+22 (all t (timepoint(t) & t != "inf+" -> (exists u (before(t,u) & before(u,"inf+"))))) # label(non_clause).  [assumption].
+23 (all x (activity(x) | activity_occurrence(x) | timepoint(x) | object(x))) # label(non_clause).  [assumption].
+24 (all x ((activity(x) -> -(activity_occurrence(x) | object(x) | timepoint(x))) & (activity_occurrence(x) -> -(object(x) | timepoint(x))) & (object(x) -> -timepoint(x)))) # label(non_clause).  [assumption].
+25 (all a all occ (occurrence_of(occ,a) -> activity(a) & activity_occurrence(occ))) # label(non_clause).  [assumption].
+26 (all occ (activity_occurrence(occ) -> (exists a (activity(a) & occurrence_of(occ,a))))) # label(non_clause).  [assumption].
+27 (all occ all a1 all a2 (occurrence_of(occ,a1) & occurrence_of(occ,a2) -> a1 = a2)) # label(non_clause).  [assumption].
+28 (all a all x (occurrence_of(x,a) | object(x) -> timepoint(beginof(x)) & timepoint(endof(x)))) # label(non_clause).  [assumption].
+29 (all x (activity_occurrence(x) | object(x) -> beforeEq(beginof(x),endof(x)))) # label(non_clause).  [assumption].
+30 (all x all occ all t (participates_in(x,occ,t) -> object(x) & activity_occurrence(occ) & timepoint(t))) # label(non_clause).  [assumption].
+31 (all x all occ all t (participates_in(x,occ,t) -> exists_at(x,t) & is_occurring_at(occ,t))) # label(non_clause).  [assumption].
+32 (all t1 all t2 (beforeEq(t1,t2) <-> timepoint(t1) & timepoint(t2) & (before(t1,t2) | t1 = t2))) # label(non_clause).  [assumption].
+33 (all t1 all t2 all t3 (betweenEq(t1,t2,t3) <-> beforeEq(t1,t2) & beforeEq(t2,t3))) # label(non_clause).  [assumption].
+34 (all x all t (exists_at(x,t) <-> object(x) & betweenEq(beginof(x),t,endof(x)))) # label(non_clause).  [assumption].
+35 (all occ all t (is_occurring_at(occ,t) <-> betweenEq(beginof(occ),t,endof(occ)))) # label(non_clause).  [assumption].
+36 (all x (timepoint(x) <-> -timeinterval(x))) # label(non_clause).  [assumption].
+37 (all i all p all q (p = beginof(i) & q = endof(i) -> i = between(p,q))) # label(non_clause).  [assumption].
+38 (all i (timeinterval(i) -> timepoint(beginof(i)) & timepoint(endof(i)))) # label(non_clause).  [assumption].
+39 (all x all y (before(x,y) -> timeinterval(between(x,y)))) # label(non_clause).  [assumption].
+40 (all p all q (before(p,q) -> p = beginof(between(p,q)) & q = endof(between(p,q)))) # label(non_clause).  [assumption].
+41 (exists t1 (timepoint(t1) & (all t2 (timepoint(t2) & t1 != t2 -> before(t2,t1))) & (all t3 (timepoint(t3) & t1 != t3 -> (exists t4 (before(t3,t4) & before(t4,t1))))))) # label(non_clause).  [assumption].
+42 (exists t1 (timepoint(t1) & (all t2 (timepoint(t2) & t1 != t2 -> before(t1,t2))) & (all t3 (timepoint(t3) & t1 != t3 -> (exists t4 (before(t4,t3) & before(t1,t4))))))) # label(non_clause).  [assumption].
+43 (all x all y all z (timepoint(x) & timepoint(y) & timepoint(z) & before(x,y) & before(y,z) -> before(x,z))) # label(non_clause).  [assumption].
+44 (all x (timepoint(x) -> -before(x,x))) # label(non_clause).  [assumption].
+45 (all x all y (timepoint(x) & timepoint(y) -> before(x,y) | before(y,x) | x = y)) # label(non_clause).  [assumption].
+46 (all x all y (bbefore(x,y) <-> timepoint(x) & timepoint(y) & (before(x,y) | x = y))) # label(non_clause).  [assumption].
+47 (all x all t all t1 (PRE(x,t) & P(t1,t) -> PRE(x,t1))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating activity_occurrence/1
+48 psl_interval(x,y) | -activity_occurrence(x) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [clausify(1)].
+49 -psl_interval(x,y) | activity_occurrence(x) | object(x).  [clausify(1)].
+Derived: psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x) | -psl_interval(x,z) | object(x).  [resolve(48,b,49,b)].
+50 -PD(x) | activity_occurrence(x).  [clausify(5)].
+Derived: -PD(x) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [resolve(50,b,48,b)].
+51 PD(x) | -activity_occurrence(x).  [clausify(5)].
+Derived: PD(x) | -psl_interval(x,y) | object(x).  [resolve(51,b,49,b)].
+52 -PRE(x,y) | object(x) | activity_occurrence(x).  [clausify(8)].
+Derived: -PRE(x,y) | object(x) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(52,c,48,b)].
+Derived: -PRE(x,y) | object(x) | PD(x).  [resolve(52,c,51,b)].
+53 PRE(x,y) | -activity_occurrence(x) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).  [clausify(8)].
+Derived: PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | -psl_interval(x,z) | object(x).  [resolve(53,b,49,b)].
+Derived: PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | -PD(x).  [resolve(53,b,50,b)].
+Derived: PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | -PRE(x,z) | object(x).  [resolve(53,b,52,c)].
+54 -activity_occurrence(x) | psl_interval(x,f3(x)).  [clausify(10)].
+Derived: psl_interval(x,f3(x)) | -psl_interval(x,y) | object(x).  [resolve(54,a,49,b)].
+Derived: psl_interval(x,f3(x)) | -PD(x).  [resolve(54,a,50,b)].
+Derived: psl_interval(x,f3(x)) | -PRE(x,y) | object(x).  [resolve(54,a,52,c)].
+55 -psl_interval(x,y) | activity_occurrence(x) | object(x).  [clausify(13)].
+56 psl_interval(x,y) | -activity_occurrence(x) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [clausify(13)].
+57 activity(x) | activity_occurrence(x) | timepoint(x) | object(x).  [clausify(23)].
+Derived: activity(x) | timepoint(x) | object(x) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [resolve(57,b,48,b)].
+Derived: activity(x) | timepoint(x) | object(x) | PD(x).  [resolve(57,b,51,b)].
+Derived: activity(x) | timepoint(x) | object(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).  [resolve(57,b,53,b)].
+Derived: activity(x) | timepoint(x) | object(x) | psl_interval(x,f3(x)).  [resolve(57,b,54,a)].
+58 -activity(x) | -activity_occurrence(x).  [clausify(24)].
+Derived: -activity(x) | -psl_interval(x,y) | object(x).  [resolve(58,b,49,b)].
+Derived: -activity(x) | -PD(x).  [resolve(58,b,50,b)].
+Derived: -activity(x) | -PRE(x,y) | object(x).  [resolve(58,b,52,c)].
+59 -activity_occurrence(x) | -object(x).  [clausify(24)].
+Derived: -object(x) | -PD(x).  [resolve(59,a,50,b)].
+60 -activity_occurrence(x) | -timepoint(x).  [clausify(24)].
+Derived: -timepoint(x) | -psl_interval(x,y) | object(x).  [resolve(60,a,49,b)].
+Derived: -timepoint(x) | -PD(x).  [resolve(60,a,50,b)].
+Derived: -timepoint(x) | -PRE(x,y) | object(x).  [resolve(60,a,52,c)].
+61 -occurrence_of(x,y) | activity_occurrence(x).  [clausify(25)].
+Derived: -occurrence_of(x,y) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(61,b,48,b)].
+Derived: -occurrence_of(x,y) | PD(x).  [resolve(61,b,51,b)].
+Derived: -occurrence_of(x,y) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(61,b,53,b)].
+Derived: -occurrence_of(x,y) | psl_interval(x,f3(x)).  [resolve(61,b,54,a)].
+Derived: -occurrence_of(x,y) | -activity(x).  [resolve(61,b,58,b)].
+Derived: -occurrence_of(x,y) | -object(x).  [resolve(61,b,59,a)].
+Derived: -occurrence_of(x,y) | -timepoint(x).  [resolve(61,b,60,a)].
+62 -activity_occurrence(x) | activity(f8(x)).  [clausify(26)].
+Derived: activity(f8(x)) | -psl_interval(x,y) | object(x).  [resolve(62,a,49,b)].
+Derived: activity(f8(x)) | -PD(x).  [resolve(62,a,50,b)].
+Derived: activity(f8(x)) | -PRE(x,y) | object(x).  [resolve(62,a,52,c)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | object(x).  [resolve(62,a,57,b)].
+Derived: activity(f8(x)) | -occurrence_of(x,y).  [resolve(62,a,61,b)].
+63 -activity_occurrence(x) | occurrence_of(x,f8(x)).  [clausify(26)].
+Derived: occurrence_of(x,f8(x)) | -psl_interval(x,y) | object(x).  [resolve(63,a,49,b)].
+Derived: occurrence_of(x,f8(x)) | -PD(x).  [resolve(63,a,50,b)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | object(x).  [resolve(63,a,52,c)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | object(x).  [resolve(63,a,57,b)].
+Derived: occurrence_of(x,f8(x)) | -occurrence_of(x,y).  [resolve(63,a,61,b)].
+64 -activity_occurrence(x) | beforeEq(beginof(x),endof(x)).  [clausify(29)].
+Derived: beforeEq(beginof(x),endof(x)) | -psl_interval(x,y) | object(x).  [resolve(64,a,49,b)].
+Derived: beforeEq(beginof(x),endof(x)) | -PD(x).  [resolve(64,a,50,b)].
+Derived: beforeEq(beginof(x),endof(x)) | -PRE(x,y) | object(x).  [resolve(64,a,52,c)].
+Derived: beforeEq(beginof(x),endof(x)) | activity(x) | timepoint(x) | object(x).  [resolve(64,a,57,b)].
+Derived: beforeEq(beginof(x),endof(x)) | -occurrence_of(x,y).  [resolve(64,a,61,b)].
+65 -participates_in(x,y,z) | activity_occurrence(y).  [clausify(30)].
+Derived: -participates_in(x,y,z) | psl_interval(y,u) | -timeinterval(u) | beginof(u) != beginof(y) | endof(u) != endof(y).  [resolve(65,b,48,b)].
+Derived: -participates_in(x,y,z) | PD(y).  [resolve(65,b,51,b)].
+Derived: -participates_in(x,y,z) | PRE(y,u) | -timeinterval(u) | -beforeEq(beginof(y),beginof(u)) | -beforeEq(endof(u),endof(y)).  [resolve(65,b,53,b)].
+Derived: -participates_in(x,y,z) | psl_interval(y,f3(y)).  [resolve(65,b,54,a)].
+Derived: -participates_in(x,y,z) | -activity(y).  [resolve(65,b,58,b)].
+Derived: -participates_in(x,y,z) | -object(y).  [resolve(65,b,59,a)].
+Derived: -participates_in(x,y,z) | -timepoint(y).  [resolve(65,b,60,a)].
+Derived: -participates_in(x,y,z) | activity(f8(y)).  [resolve(65,b,62,a)].
+Derived: -participates_in(x,y,z) | occurrence_of(y,f8(y)).  [resolve(65,b,63,a)].
+Derived: -participates_in(x,y,z) | beforeEq(beginof(y),endof(y)).  [resolve(65,b,64,a)].
+
+Eliminating object/1
+66 -ED(x) | object(x).  [clausify(3)].
+67 psl_interval(x,y) | -object(x) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [clausify(1)].
+Derived: -ED(x) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [resolve(66,b,67,b)].
+68 ED(x) | -object(x).  [clausify(3)].
+69 -Q(x) | object(x).  [clausify(4)].
+Derived: -Q(x) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [resolve(69,b,67,b)].
+Derived: -Q(x) | ED(x).  [resolve(69,b,68,b)].
+70 Q(x) | -object(x).  [clausify(4)].
+Derived: Q(x) | -ED(x).  [resolve(70,b,66,b)].
+71 PRE(x,y) | -object(x) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).  [clausify(8)].
+Derived: PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | -ED(x).  [resolve(71,b,66,b)].
+Derived: PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | -Q(x).  [resolve(71,b,69,b)].
+72 -object(x) | psl_interval(x,f3(x)).  [clausify(10)].
+Derived: psl_interval(x,f3(x)) | -ED(x).  [resolve(72,a,66,b)].
+Derived: psl_interval(x,f3(x)) | -Q(x).  [resolve(72,a,69,b)].
+73 psl_interval(x,y) | -object(x) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [clausify(13)].
+74 -activity(x) | -object(x).  [clausify(24)].
+Derived: -activity(x) | -ED(x).  [resolve(74,b,66,b)].
+Derived: -activity(x) | -Q(x).  [resolve(74,b,69,b)].
+75 -object(x) | -timepoint(x).  [clausify(24)].
+Derived: -timepoint(x) | -ED(x).  [resolve(75,a,66,b)].
+Derived: -timepoint(x) | -Q(x).  [resolve(75,a,69,b)].
+76 -object(x) | timepoint(beginof(x)).  [clausify(28)].
+Derived: timepoint(beginof(x)) | -ED(x).  [resolve(76,a,66,b)].
+Derived: timepoint(beginof(x)) | -Q(x).  [resolve(76,a,69,b)].
+77 -object(x) | timepoint(endof(x)).  [clausify(28)].
+Derived: timepoint(endof(x)) | -ED(x).  [resolve(77,a,66,b)].
+Derived: timepoint(endof(x)) | -Q(x).  [resolve(77,a,69,b)].
+78 -object(x) | beforeEq(beginof(x),endof(x)).  [clausify(29)].
+Derived: beforeEq(beginof(x),endof(x)) | -ED(x).  [resolve(78,a,66,b)].
+Derived: beforeEq(beginof(x),endof(x)) | -Q(x).  [resolve(78,a,69,b)].
+79 -participates_in(x,y,z) | object(x).  [clausify(30)].
+Derived: -participates_in(x,y,z) | psl_interval(x,u) | -timeinterval(u) | beginof(u) != beginof(x) | endof(u) != endof(x).  [resolve(79,b,67,b)].
+Derived: -participates_in(x,y,z) | ED(x).  [resolve(79,b,68,b)].
+Derived: -participates_in(x,y,z) | Q(x).  [resolve(79,b,70,b)].
+Derived: -participates_in(x,y,z) | PRE(x,u) | -timeinterval(u) | -beforeEq(beginof(x),beginof(u)) | -beforeEq(endof(u),endof(x)).  [resolve(79,b,71,b)].
+Derived: -participates_in(x,y,z) | psl_interval(x,f3(x)).  [resolve(79,b,72,a)].
+Derived: -participates_in(x,y,z) | -activity(x).  [resolve(79,b,74,b)].
+Derived: -participates_in(x,y,z) | -timepoint(x).  [resolve(79,b,75,a)].
+Derived: -participates_in(x,y,z) | timepoint(beginof(x)).  [resolve(79,b,76,a)].
+Derived: -participates_in(x,y,z) | timepoint(endof(x)).  [resolve(79,b,77,a)].
+Derived: -participates_in(x,y,z) | beforeEq(beginof(x),endof(x)).  [resolve(79,b,78,a)].
+80 -exists_at(x,y) | object(x).  [clausify(34)].
+Derived: -exists_at(x,y) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(80,b,67,b)].
+Derived: -exists_at(x,y) | ED(x).  [resolve(80,b,68,b)].
+Derived: -exists_at(x,y) | Q(x).  [resolve(80,b,70,b)].
+Derived: -exists_at(x,y) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(80,b,71,b)].
+Derived: -exists_at(x,y) | psl_interval(x,f3(x)).  [resolve(80,b,72,a)].
+Derived: -exists_at(x,y) | -activity(x).  [resolve(80,b,74,b)].
+Derived: -exists_at(x,y) | -timepoint(x).  [resolve(80,b,75,a)].
+Derived: -exists_at(x,y) | timepoint(beginof(x)).  [resolve(80,b,76,a)].
+Derived: -exists_at(x,y) | timepoint(endof(x)).  [resolve(80,b,77,a)].
+Derived: -exists_at(x,y) | beforeEq(beginof(x),endof(x)).  [resolve(80,b,78,a)].
+81 exists_at(x,y) | -object(x) | -betweenEq(beginof(x),y,endof(x)).  [clausify(34)].
+Derived: exists_at(x,y) | -betweenEq(beginof(x),y,endof(x)) | -ED(x).  [resolve(81,b,66,b)].
+Derived: exists_at(x,y) | -betweenEq(beginof(x),y,endof(x)) | -Q(x).  [resolve(81,b,69,b)].
+Derived: exists_at(x,y) | -betweenEq(beginof(x),y,endof(x)) | -participates_in(x,z,u).  [resolve(81,b,79,b)].
+Derived: exists_at(x,y) | -betweenEq(beginof(x),y,endof(x)) | -exists_at(x,z).  [resolve(81,b,80,b)].
+82 psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x) | -psl_interval(x,z) | object(x).  [resolve(48,b,49,b)].
+Derived: psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x) | -psl_interval(x,z) | psl_interval(x,u) | -timeinterval(u) | beginof(u) != beginof(x) | endof(u) != endof(x).  [resolve(82,f,67,b)].
+83 PD(x) | -psl_interval(x,y) | object(x).  [resolve(51,b,49,b)].
+Derived: PD(x) | -psl_interval(x,y) | ED(x).  [resolve(83,c,68,b)].
+Derived: PD(x) | -psl_interval(x,y) | Q(x).  [resolve(83,c,70,b)].
+Derived: PD(x) | -psl_interval(x,y) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(83,c,71,b)].
+Derived: PD(x) | -psl_interval(x,y) | psl_interval(x,f3(x)).  [resolve(83,c,72,a)].
+Derived: PD(x) | -psl_interval(x,y) | -activity(x).  [resolve(83,c,74,b)].
+Derived: PD(x) | -psl_interval(x,y) | -timepoint(x).  [resolve(83,c,75,a)].
+Derived: PD(x) | -psl_interval(x,y) | timepoint(beginof(x)).  [resolve(83,c,76,a)].
+Derived: PD(x) | -psl_interval(x,y) | timepoint(endof(x)).  [resolve(83,c,77,a)].
+Derived: PD(x) | -psl_interval(x,y) | beforeEq(beginof(x),endof(x)).  [resolve(83,c,78,a)].
+Derived: PD(x) | -psl_interval(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)).  [resolve(83,c,81,b)].
+84 -PRE(x,y) | object(x) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(52,c,48,b)].
+Derived: -PRE(x,y) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x) | psl_interval(x,u) | -timeinterval(u) | beginof(u) != beginof(x) | endof(u) != endof(x).  [resolve(84,b,67,b)].
+85 -PRE(x,y) | object(x) | PD(x).  [resolve(52,c,51,b)].
+Derived: -PRE(x,y) | PD(x) | ED(x).  [resolve(85,b,68,b)].
+Derived: -PRE(x,y) | PD(x) | Q(x).  [resolve(85,b,70,b)].
+Derived: -PRE(x,y) | PD(x) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(85,b,71,b)].
+Derived: -PRE(x,y) | PD(x) | psl_interval(x,f3(x)).  [resolve(85,b,72,a)].
+Derived: -PRE(x,y) | PD(x) | -activity(x).  [resolve(85,b,74,b)].
+Derived: -PRE(x,y) | PD(x) | -timepoint(x).  [resolve(85,b,75,a)].
+Derived: -PRE(x,y) | PD(x) | timepoint(beginof(x)).  [resolve(85,b,76,a)].
+Derived: -PRE(x,y) | PD(x) | timepoint(endof(x)).  [resolve(85,b,77,a)].
+Derived: -PRE(x,y) | PD(x) | beforeEq(beginof(x),endof(x)).  [resolve(85,b,78,a)].
+Derived: -PRE(x,y) | PD(x) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)).  [resolve(85,b,81,b)].
+86 PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | -psl_interval(x,z) | object(x).  [resolve(53,b,49,b)].
+Derived: PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | -psl_interval(x,z) | ED(x).  [resolve(86,f,68,b)].
+Derived: PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | -psl_interval(x,z) | Q(x).  [resolve(86,f,70,b)].
+Derived: PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | -psl_interval(x,z) | PRE(x,u) | -timeinterval(u) | -beforeEq(beginof(x),beginof(u)) | -beforeEq(endof(u),endof(x)).  [resolve(86,f,71,b)].
+87 PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | -PRE(x,z) | object(x).  [resolve(53,b,52,c)].
+Derived: PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | -PRE(x,z) | ED(x).  [resolve(87,f,68,b)].
+Derived: PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | -PRE(x,z) | Q(x).  [resolve(87,f,70,b)].
+Derived: PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | -PRE(x,z) | PRE(x,u) | -timeinterval(u) | -beforeEq(beginof(x),beginof(u)) | -beforeEq(endof(u),endof(x)).  [resolve(87,f,71,b)].
+88 psl_interval(x,f3(x)) | -psl_interval(x,y) | object(x).  [resolve(54,a,49,b)].
+Derived: psl_interval(x,f3(x)) | -psl_interval(x,y) | ED(x).  [resolve(88,c,68,b)].
+Derived: psl_interval(x,f3(x)) | -psl_interval(x,y) | Q(x).  [resolve(88,c,70,b)].
+Derived: psl_interval(x,f3(x)) | -psl_interval(x,y) | psl_interval(x,f3(x)).  [resolve(88,c,72,a)].
+89 psl_interval(x,f3(x)) | -PRE(x,y) | object(x).  [resolve(54,a,52,c)].
+Derived: psl_interval(x,f3(x)) | -PRE(x,y) | ED(x).  [resolve(89,c,68,b)].
+Derived: psl_interval(x,f3(x)) | -PRE(x,y) | Q(x).  [resolve(89,c,70,b)].
+Derived: psl_interval(x,f3(x)) | -PRE(x,y) | psl_interval(x,f3(x)).  [resolve(89,c,72,a)].
+90 activity(x) | timepoint(x) | object(x) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [resolve(57,b,48,b)].
+Derived: activity(x) | timepoint(x) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(90,c,67,b)].
+91 activity(x) | timepoint(x) | object(x) | PD(x).  [resolve(57,b,51,b)].
+Derived: activity(x) | timepoint(x) | PD(x) | ED(x).  [resolve(91,c,68,b)].
+Derived: activity(x) | timepoint(x) | PD(x) | Q(x).  [resolve(91,c,70,b)].
+Derived: activity(x) | timepoint(x) | PD(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).  [resolve(91,c,71,b)].
+Derived: activity(x) | timepoint(x) | PD(x) | psl_interval(x,f3(x)).  [resolve(91,c,72,a)].
+Derived: activity(x) | timepoint(x) | PD(x) | timepoint(beginof(x)).  [resolve(91,c,76,a)].
+Derived: activity(x) | timepoint(x) | PD(x) | timepoint(endof(x)).  [resolve(91,c,77,a)].
+Derived: activity(x) | timepoint(x) | PD(x) | beforeEq(beginof(x),endof(x)).  [resolve(91,c,78,a)].
+Derived: activity(x) | timepoint(x) | PD(x) | exists_at(x,y) | -betweenEq(beginof(x),y,endof(x)).  [resolve(91,c,81,b)].
+92 activity(x) | timepoint(x) | object(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).  [resolve(57,b,53,b)].
+Derived: activity(x) | timepoint(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | ED(x).  [resolve(92,c,68,b)].
+Derived: activity(x) | timepoint(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | Q(x).  [resolve(92,c,70,b)].
+Derived: activity(x) | timepoint(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(92,c,71,b)].
+93 activity(x) | timepoint(x) | object(x) | psl_interval(x,f3(x)).  [resolve(57,b,54,a)].
+Derived: activity(x) | timepoint(x) | psl_interval(x,f3(x)) | ED(x).  [resolve(93,c,68,b)].
+Derived: activity(x) | timepoint(x) | psl_interval(x,f3(x)) | Q(x).  [resolve(93,c,70,b)].
+Derived: activity(x) | timepoint(x) | psl_interval(x,f3(x)) | psl_interval(x,f3(x)).  [resolve(93,c,72,a)].
+94 -activity(x) | -psl_interval(x,y) | object(x).  [resolve(58,b,49,b)].
+Derived: -activity(x) | -psl_interval(x,y) | ED(x).  [resolve(94,c,68,b)].
+Derived: -activity(x) | -psl_interval(x,y) | Q(x).  [resolve(94,c,70,b)].
+Derived: -activity(x) | -psl_interval(x,y) | -activity(x).  [resolve(94,c,74,b)].
+95 -activity(x) | -PRE(x,y) | object(x).  [resolve(58,b,52,c)].
+Derived: -activity(x) | -PRE(x,y) | ED(x).  [resolve(95,c,68,b)].
+Derived: -activity(x) | -PRE(x,y) | Q(x).  [resolve(95,c,70,b)].
+Derived: -activity(x) | -PRE(x,y) | -activity(x).  [resolve(95,c,74,b)].
+96 -object(x) | -PD(x).  [resolve(59,a,50,b)].
+Derived: -PD(x) | -ED(x).  [resolve(96,a,66,b)].
+Derived: -PD(x) | -Q(x).  [resolve(96,a,69,b)].
+Derived: -PD(x) | -participates_in(x,y,z).  [resolve(96,a,79,b)].
+Derived: -PD(x) | -exists_at(x,y).  [resolve(96,a,80,b)].
+97 -timepoint(x) | -psl_interval(x,y) | object(x).  [resolve(60,a,49,b)].
+Derived: -timepoint(x) | -psl_interval(x,y) | ED(x).  [resolve(97,c,68,b)].
+Derived: -timepoint(x) | -psl_interval(x,y) | Q(x).  [resolve(97,c,70,b)].
+Derived: -timepoint(x) | -psl_interval(x,y) | -timepoint(x).  [resolve(97,c,75,a)].
+98 -timepoint(x) | -PRE(x,y) | object(x).  [resolve(60,a,52,c)].
+Derived: -timepoint(x) | -PRE(x,y) | ED(x).  [resolve(98,c,68,b)].
+Derived: -timepoint(x) | -PRE(x,y) | Q(x).  [resolve(98,c,70,b)].
+Derived: -timepoint(x) | -PRE(x,y) | -timepoint(x).  [resolve(98,c,75,a)].
+99 -occurrence_of(x,y) | -object(x).  [resolve(61,b,59,a)].
+Derived: -occurrence_of(x,y) | -ED(x).  [resolve(99,b,66,b)].
+Derived: -occurrence_of(x,y) | -Q(x).  [resolve(99,b,69,b)].
+Derived: -occurrence_of(x,y) | -participates_in(x,z,u).  [resolve(99,b,79,b)].
+Derived: -occurrence_of(x,y) | -exists_at(x,z).  [resolve(99,b,80,b)].
+Derived: -occurrence_of(x,y) | PD(x) | -psl_interval(x,z).  [resolve(99,b,83,c)].
+Derived: -occurrence_of(x,y) | -PRE(x,z) | PD(x).  [resolve(99,b,85,b)].
+Derived: -occurrence_of(x,y) | activity(x) | timepoint(x) | PD(x).  [resolve(99,b,91,c)].
+100 activity(f8(x)) | -psl_interval(x,y) | object(x).  [resolve(62,a,49,b)].
+Derived: activity(f8(x)) | -psl_interval(x,y) | ED(x).  [resolve(100,c,68,b)].
+Derived: activity(f8(x)) | -psl_interval(x,y) | Q(x).  [resolve(100,c,70,b)].
+Derived: activity(f8(x)) | -psl_interval(x,y) | timepoint(beginof(x)).  [resolve(100,c,76,a)].
+Derived: activity(f8(x)) | -psl_interval(x,y) | timepoint(endof(x)).  [resolve(100,c,77,a)].
+Derived: activity(f8(x)) | -psl_interval(x,y) | beforeEq(beginof(x),endof(x)).  [resolve(100,c,78,a)].
+Derived: activity(f8(x)) | -psl_interval(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)).  [resolve(100,c,81,b)].
+101 activity(f8(x)) | -PRE(x,y) | object(x).  [resolve(62,a,52,c)].
+Derived: activity(f8(x)) | -PRE(x,y) | ED(x).  [resolve(101,c,68,b)].
+Derived: activity(f8(x)) | -PRE(x,y) | Q(x).  [resolve(101,c,70,b)].
+Derived: activity(f8(x)) | -PRE(x,y) | timepoint(beginof(x)).  [resolve(101,c,76,a)].
+Derived: activity(f8(x)) | -PRE(x,y) | timepoint(endof(x)).  [resolve(101,c,77,a)].
+Derived: activity(f8(x)) | -PRE(x,y) | beforeEq(beginof(x),endof(x)).  [resolve(101,c,78,a)].
+Derived: activity(f8(x)) | -PRE(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)).  [resolve(101,c,81,b)].
+Derived: activity(f8(x)) | -PRE(x,y) | -PD(x).  [resolve(101,c,96,a)].
+102 activity(f8(x)) | activity(x) | timepoint(x) | object(x).  [resolve(62,a,57,b)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | ED(x).  [resolve(102,d,68,b)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | Q(x).  [resolve(102,d,70,b)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | timepoint(beginof(x)).  [resolve(102,d,76,a)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | timepoint(endof(x)).  [resolve(102,d,77,a)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | beforeEq(beginof(x),endof(x)).  [resolve(102,d,78,a)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | exists_at(x,y) | -betweenEq(beginof(x),y,endof(x)).  [resolve(102,d,81,b)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | -PD(x).  [resolve(102,d,96,a)].
+103 occurrence_of(x,f8(x)) | -psl_interval(x,y) | object(x).  [resolve(63,a,49,b)].
+Derived: occurrence_of(x,f8(x)) | -psl_interval(x,y) | ED(x).  [resolve(103,c,68,b)].
+Derived: occurrence_of(x,f8(x)) | -psl_interval(x,y) | Q(x).  [resolve(103,c,70,b)].
+Derived: occurrence_of(x,f8(x)) | -psl_interval(x,y) | timepoint(beginof(x)).  [resolve(103,c,76,a)].
+Derived: occurrence_of(x,f8(x)) | -psl_interval(x,y) | timepoint(endof(x)).  [resolve(103,c,77,a)].
+Derived: occurrence_of(x,f8(x)) | -psl_interval(x,y) | beforeEq(beginof(x),endof(x)).  [resolve(103,c,78,a)].
+Derived: occurrence_of(x,f8(x)) | -psl_interval(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)).  [resolve(103,c,81,b)].
+104 occurrence_of(x,f8(x)) | -PRE(x,y) | object(x).  [resolve(63,a,52,c)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | ED(x).  [resolve(104,c,68,b)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | Q(x).  [resolve(104,c,70,b)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | timepoint(beginof(x)).  [resolve(104,c,76,a)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | timepoint(endof(x)).  [resolve(104,c,77,a)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | beforeEq(beginof(x),endof(x)).  [resolve(104,c,78,a)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)).  [resolve(104,c,81,b)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -PD(x).  [resolve(104,c,96,a)].
+105 occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | object(x).  [resolve(63,a,57,b)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | ED(x).  [resolve(105,d,68,b)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | Q(x).  [resolve(105,d,70,b)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | timepoint(beginof(x)).  [resolve(105,d,76,a)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | timepoint(endof(x)).  [resolve(105,d,77,a)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | beforeEq(beginof(x),endof(x)).  [resolve(105,d,78,a)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | exists_at(x,y) | -betweenEq(beginof(x),y,endof(x)).  [resolve(105,d,81,b)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | -PD(x).  [resolve(105,d,96,a)].
+106 beforeEq(beginof(x),endof(x)) | -psl_interval(x,y) | object(x).  [resolve(64,a,49,b)].
+Derived: beforeEq(beginof(x),endof(x)) | -psl_interval(x,y) | ED(x).  [resolve(106,c,68,b)].
+Derived: beforeEq(beginof(x),endof(x)) | -psl_interval(x,y) | Q(x).  [resolve(106,c,70,b)].
+Derived: beforeEq(beginof(x),endof(x)) | -psl_interval(x,y) | timepoint(beginof(x)).  [resolve(106,c,76,a)].
+Derived: beforeEq(beginof(x),endof(x)) | -psl_interval(x,y) | timepoint(endof(x)).  [resolve(106,c,77,a)].
+Derived: beforeEq(beginof(x),endof(x)) | -psl_interval(x,y) | beforeEq(beginof(x),endof(x)).  [resolve(106,c,78,a)].
+107 beforeEq(beginof(x),endof(x)) | -PRE(x,y) | object(x).  [resolve(64,a,52,c)].
+Derived: beforeEq(beginof(x),endof(x)) | -PRE(x,y) | ED(x).  [resolve(107,c,68,b)].
+Derived: beforeEq(beginof(x),endof(x)) | -PRE(x,y) | Q(x).  [resolve(107,c,70,b)].
+Derived: beforeEq(beginof(x),endof(x)) | -PRE(x,y) | timepoint(beginof(x)).  [resolve(107,c,76,a)].
+Derived: beforeEq(beginof(x),endof(x)) | -PRE(x,y) | timepoint(endof(x)).  [resolve(107,c,77,a)].
+Derived: beforeEq(beginof(x),endof(x)) | -PRE(x,y) | beforeEq(beginof(x),endof(x)).  [resolve(107,c,78,a)].
+108 beforeEq(beginof(x),endof(x)) | activity(x) | timepoint(x) | object(x).  [resolve(64,a,57,b)].
+Derived: beforeEq(beginof(x),endof(x)) | activity(x) | timepoint(x) | ED(x).  [resolve(108,d,68,b)].
+Derived: beforeEq(beginof(x),endof(x)) | activity(x) | timepoint(x) | Q(x).  [resolve(108,d,70,b)].
+Derived: beforeEq(beginof(x),endof(x)) | activity(x) | timepoint(x) | timepoint(beginof(x)).  [resolve(108,d,76,a)].
+Derived: beforeEq(beginof(x),endof(x)) | activity(x) | timepoint(x) | timepoint(endof(x)).  [resolve(108,d,77,a)].
+Derived: beforeEq(beginof(x),endof(x)) | activity(x) | timepoint(x) | beforeEq(beginof(x),endof(x)).  [resolve(108,d,78,a)].
+109 -participates_in(x,y,z) | -object(y).  [resolve(65,b,59,a)].
+Derived: -participates_in(x,y,z) | -ED(y).  [resolve(109,b,66,b)].
+Derived: -participates_in(x,y,z) | -Q(y).  [resolve(109,b,69,b)].
+Derived: -participates_in(x,y,z) | -participates_in(y,u,w).  [resolve(109,b,79,b)].
+Derived: -participates_in(x,y,z) | -exists_at(y,u).  [resolve(109,b,80,b)].
+Derived: -participates_in(x,y,z) | PD(y) | -psl_interval(y,u).  [resolve(109,b,83,c)].
+Derived: -participates_in(x,y,z) | -PRE(y,u) | PD(y).  [resolve(109,b,85,b)].
+Derived: -participates_in(x,y,z) | activity(y) | timepoint(y) | PD(y).  [resolve(109,b,91,c)].
+
+Eliminating overlay/3
+110 overlay(x,y,z) | -psl_interval(x,u) | -psl_interval(y,w) | beginof(w) != beginof(z) | endof(u) != endof(z).  [clausify(2)].
+111 -overlay(x,y,z) | psl_interval(x,f1(x,y,z)).  [clausify(2)].
+112 -overlay(x,y,z) | psl_interval(y,f2(x,y,z)).  [clausify(2)].
+113 -overlay(x,y,z) | beginof(f2(x,y,z)) = beginof(z).  [clausify(2)].
+114 -overlay(x,y,z) | endof(f1(x,y,z)) = endof(z).  [clausify(2)].
+Derived: -psl_interval(x,y) | -psl_interval(z,u) | beginof(u) != beginof(w) | endof(y) != endof(w) | psl_interval(x,f1(x,z,w)).  [resolve(110,a,111,a)].
+Derived: -psl_interval(x,y) | -psl_interval(z,u) | beginof(u) != beginof(w) | endof(y) != endof(w) | psl_interval(z,f2(x,z,w)).  [resolve(110,a,112,a)].
+Derived: -psl_interval(x,y) | -psl_interval(z,u) | beginof(u) != beginof(w) | endof(y) != endof(w) | beginof(f2(x,z,w)) = beginof(w).  [resolve(110,a,113,a)].
+Derived: -psl_interval(x,y) | -psl_interval(z,u) | beginof(u) != beginof(w) | endof(y) != endof(w) | endof(f1(x,z,w)) = endof(w).  [resolve(110,a,114,a)].
+115 -overlay(x,y,z) | psl_interval(x,f4(x,y,z)).  [clausify(14)].
+Derived: psl_interval(x,f4(x,y,z)) | -psl_interval(x,u) | -psl_interval(y,w) | beginof(w) != beginof(z) | endof(u) != endof(z).  [resolve(115,a,110,a)].
+116 -overlay(x,y,z) | psl_interval(y,f5(x,y,z)).  [clausify(14)].
+Derived: psl_interval(x,f5(y,x,z)) | -psl_interval(y,u) | -psl_interval(x,w) | beginof(w) != beginof(z) | endof(u) != endof(z).  [resolve(116,a,110,a)].
+117 -overlay(x,y,z) | beginof(f5(x,y,z)) = beginof(z).  [clausify(14)].
+Derived: beginof(f5(x,y,z)) = beginof(z) | -psl_interval(x,u) | -psl_interval(y,w) | beginof(w) != beginof(z) | endof(u) != endof(z).  [resolve(117,a,110,a)].
+118 -overlay(x,y,z) | endof(f4(x,y,z)) = endof(z).  [clausify(14)].
+Derived: endof(f4(x,y,z)) = endof(z) | -psl_interval(x,u) | -psl_interval(y,w) | beginof(w) != beginof(z) | endof(u) != endof(z).  [resolve(118,a,110,a)].
+119 overlay(x,y,z) | -psl_interval(x,u) | -psl_interval(y,w) | beginof(w) != beginof(z) | endof(u) != endof(z).  [clausify(14)].
+
+Eliminating T/1
+120 T(x) | -timeinterval(x).  [clausify(6)].
+121 -T(x) | timeinterval(x).  [clausify(6)].
+
+Eliminating SUM/3
+122 SUM(x,y,z) | -timeinterval(y) | -timeinterval(z) | -timeinterval(x) | beginof(x) != beginof(y) | endof(x) != endof(z).  [clausify(9)].
+123 -SUM(x,y,z) | timeinterval(y).  [clausify(9)].
+124 -SUM(x,y,z) | timeinterval(z).  [clausify(9)].
+125 -SUM(x,y,z) | timeinterval(x).  [clausify(9)].
+126 -SUM(x,y,z) | beginof(x) = beginof(y) | beginof(x) = beginof(z).  [clausify(9)].
+127 -SUM(x,y,z) | beginof(x) = beginof(y) | endof(x) = endof(y).  [clausify(9)].
+128 -SUM(x,y,z) | endof(x) = endof(z) | beginof(x) = beginof(z).  [clausify(9)].
+129 -SUM(x,y,z) | endof(x) = endof(z) | endof(x) = endof(y).  [clausify(9)].
+130 SUM(x,y,z) | -timeinterval(y) | -timeinterval(z) | -timeinterval(x) | beginof(x) != beginof(z) | endof(x) != endof(y).  [clausify(9)].
+
+Eliminating is_occurring_at/2
+131 -is_occurring_at(x,y) | betweenEq(beginof(x),y,endof(x)).  [clausify(35)].
+132 -participates_in(x,y,z) | is_occurring_at(y,z).  [clausify(31)].
+Derived: betweenEq(beginof(x),y,endof(x)) | -participates_in(z,x,y).  [resolve(131,a,132,b)].
+133 is_occurring_at(x,y) | -betweenEq(beginof(x),y,endof(x)).  [clausify(35)].
+
+Eliminating bbefore/2
+134 bbefore(x,y) | -timepoint(x) | -timepoint(y) | -before(x,y).  [clausify(46)].
+135 -bbefore(x,y) | timepoint(x).  [clausify(46)].
+136 -bbefore(x,y) | timepoint(y).  [clausify(46)].
+137 -bbefore(x,y) | before(x,y) | y = x.  [clausify(46)].
+138 bbefore(x,y) | -timepoint(x) | -timepoint(y) | y != x.  [clausify(46)].
+
+Eliminating PD/1
+139 -occurrence_of(x,y) | PD(x).  [resolve(61,b,51,b)].
+140 -PD(x) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [resolve(50,b,48,b)].
+141 PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | -PD(x).  [resolve(53,b,50,b)].
+142 psl_interval(x,f3(x)) | -PD(x).  [resolve(54,a,50,b)].
+143 -activity(x) | -PD(x).  [resolve(58,b,50,b)].
+144 -timepoint(x) | -PD(x).  [resolve(60,a,50,b)].
+Derived: -occurrence_of(x,y) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(139,b,140,a)].
+145 activity(f8(x)) | -PD(x).  [resolve(62,a,50,b)].
+146 occurrence_of(x,f8(x)) | -PD(x).  [resolve(63,a,50,b)].
+147 beforeEq(beginof(x),endof(x)) | -PD(x).  [resolve(64,a,50,b)].
+148 -participates_in(x,y,z) | PD(y).  [resolve(65,b,51,b)].
+Derived: -participates_in(x,y,z) | psl_interval(y,u) | -timeinterval(u) | beginof(u) != beginof(y) | endof(u) != endof(y).  [resolve(148,b,140,a)].
+149 PD(x) | -psl_interval(x,y) | ED(x).  [resolve(83,c,68,b)].
+Derived: -psl_interval(x,y) | ED(x) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(149,a,140,a)].
+150 PD(x) | -psl_interval(x,y) | Q(x).  [resolve(83,c,70,b)].
+Derived: -psl_interval(x,y) | Q(x) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(150,a,140,a)].
+151 PD(x) | -psl_interval(x,y) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(83,c,71,b)].
+152 PD(x) | -psl_interval(x,y) | psl_interval(x,f3(x)).  [resolve(83,c,72,a)].
+153 PD(x) | -psl_interval(x,y) | -activity(x).  [resolve(83,c,74,b)].
+154 PD(x) | -psl_interval(x,y) | -timepoint(x).  [resolve(83,c,75,a)].
+155 PD(x) | -psl_interval(x,y) | timepoint(beginof(x)).  [resolve(83,c,76,a)].
+Derived: -psl_interval(x,y) | timepoint(beginof(x)) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(155,a,140,a)].
+156 PD(x) | -psl_interval(x,y) | timepoint(endof(x)).  [resolve(83,c,77,a)].
+Derived: -psl_interval(x,y) | timepoint(endof(x)) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(156,a,140,a)].
+157 PD(x) | -psl_interval(x,y) | beforeEq(beginof(x),endof(x)).  [resolve(83,c,78,a)].
+158 PD(x) | -psl_interval(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)).  [resolve(83,c,81,b)].
+Derived: -psl_interval(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)) | psl_interval(x,u) | -timeinterval(u) | beginof(u) != beginof(x) | endof(u) != endof(x).  [resolve(158,a,140,a)].
+159 -PRE(x,y) | PD(x) | ED(x).  [resolve(85,b,68,b)].
+Derived: -PRE(x,y) | ED(x) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(159,b,140,a)].
+160 -PRE(x,y) | PD(x) | Q(x).  [resolve(85,b,70,b)].
+Derived: -PRE(x,y) | Q(x) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(160,b,140,a)].
+161 -PRE(x,y) | PD(x) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(85,b,71,b)].
+162 -PRE(x,y) | PD(x) | psl_interval(x,f3(x)).  [resolve(85,b,72,a)].
+163 -PRE(x,y) | PD(x) | -activity(x).  [resolve(85,b,74,b)].
+164 -PRE(x,y) | PD(x) | -timepoint(x).  [resolve(85,b,75,a)].
+165 -PRE(x,y) | PD(x) | timepoint(beginof(x)).  [resolve(85,b,76,a)].
+Derived: -PRE(x,y) | timepoint(beginof(x)) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(165,b,140,a)].
+166 -PRE(x,y) | PD(x) | timepoint(endof(x)).  [resolve(85,b,77,a)].
+Derived: -PRE(x,y) | timepoint(endof(x)) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(166,b,140,a)].
+167 -PRE(x,y) | PD(x) | beforeEq(beginof(x),endof(x)).  [resolve(85,b,78,a)].
+168 -PRE(x,y) | PD(x) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)).  [resolve(85,b,81,b)].
+Derived: -PRE(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)) | psl_interval(x,u) | -timeinterval(u) | beginof(u) != beginof(x) | endof(u) != endof(x).  [resolve(168,b,140,a)].
+169 activity(x) | timepoint(x) | PD(x) | ED(x).  [resolve(91,c,68,b)].
+Derived: activity(x) | timepoint(x) | ED(x) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [resolve(169,c,140,a)].
+170 activity(x) | timepoint(x) | PD(x) | Q(x).  [resolve(91,c,70,b)].
+Derived: activity(x) | timepoint(x) | Q(x) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [resolve(170,c,140,a)].
+171 activity(x) | timepoint(x) | PD(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).  [resolve(91,c,71,b)].
+172 activity(x) | timepoint(x) | PD(x) | psl_interval(x,f3(x)).  [resolve(91,c,72,a)].
+173 activity(x) | timepoint(x) | PD(x) | timepoint(beginof(x)).  [resolve(91,c,76,a)].
+Derived: activity(x) | timepoint(x) | timepoint(beginof(x)) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [resolve(173,c,140,a)].
+174 activity(x) | timepoint(x) | PD(x) | timepoint(endof(x)).  [resolve(91,c,77,a)].
+Derived: activity(x) | timepoint(x) | timepoint(endof(x)) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [resolve(174,c,140,a)].
+175 activity(x) | timepoint(x) | PD(x) | beforeEq(beginof(x),endof(x)).  [resolve(91,c,78,a)].
+176 activity(x) | timepoint(x) | PD(x) | exists_at(x,y) | -betweenEq(beginof(x),y,endof(x)).  [resolve(91,c,81,b)].
+Derived: activity(x) | timepoint(x) | exists_at(x,y) | -betweenEq(beginof(x),y,endof(x)) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(176,c,140,a)].
+177 -PD(x) | -ED(x).  [resolve(96,a,66,b)].
+Derived: -ED(x) | -psl_interval(x,y) | Q(x).  [resolve(177,a,150,a)].
+Derived: -ED(x) | -psl_interval(x,y) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(177,a,151,a)].
+Derived: -ED(x) | -psl_interval(x,y) | psl_interval(x,f3(x)).  [resolve(177,a,152,a)].
+Derived: -ED(x) | -psl_interval(x,y) | -activity(x).  [resolve(177,a,153,a)].
+Derived: -ED(x) | -psl_interval(x,y) | timepoint(beginof(x)).  [resolve(177,a,155,a)].
+Derived: -ED(x) | -psl_interval(x,y) | timepoint(endof(x)).  [resolve(177,a,156,a)].
+Derived: -ED(x) | -psl_interval(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)).  [resolve(177,a,158,a)].
+Derived: -ED(x) | -PRE(x,y) | Q(x).  [resolve(177,a,160,b)].
+Derived: -ED(x) | -PRE(x,y) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(177,a,161,b)].
+Derived: -ED(x) | -PRE(x,y) | psl_interval(x,f3(x)).  [resolve(177,a,162,b)].
+Derived: -ED(x) | -PRE(x,y) | -activity(x).  [resolve(177,a,163,b)].
+Derived: -ED(x) | -PRE(x,y) | timepoint(beginof(x)).  [resolve(177,a,165,b)].
+Derived: -ED(x) | -PRE(x,y) | timepoint(endof(x)).  [resolve(177,a,166,b)].
+Derived: -ED(x) | -PRE(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)).  [resolve(177,a,168,b)].
+Derived: -ED(x) | activity(x) | timepoint(x) | Q(x).  [resolve(177,a,170,c)].
+Derived: -ED(x) | activity(x) | timepoint(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).  [resolve(177,a,171,c)].
+Derived: -ED(x) | activity(x) | timepoint(x) | psl_interval(x,f3(x)).  [resolve(177,a,172,c)].
+Derived: -ED(x) | activity(x) | timepoint(x) | timepoint(beginof(x)).  [resolve(177,a,173,c)].
+Derived: -ED(x) | activity(x) | timepoint(x) | timepoint(endof(x)).  [resolve(177,a,174,c)].
+Derived: -ED(x) | activity(x) | timepoint(x) | exists_at(x,y) | -betweenEq(beginof(x),y,endof(x)).  [resolve(177,a,176,c)].
+178 -PD(x) | -Q(x).  [resolve(96,a,69,b)].
+Derived: -Q(x) | -psl_interval(x,y) | ED(x).  [resolve(178,a,149,a)].
+Derived: -Q(x) | -psl_interval(x,y) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(178,a,151,a)].
+Derived: -Q(x) | -psl_interval(x,y) | psl_interval(x,f3(x)).  [resolve(178,a,152,a)].
+Derived: -Q(x) | -psl_interval(x,y) | -activity(x).  [resolve(178,a,153,a)].
+Derived: -Q(x) | -psl_interval(x,y) | timepoint(beginof(x)).  [resolve(178,a,155,a)].
+Derived: -Q(x) | -psl_interval(x,y) | timepoint(endof(x)).  [resolve(178,a,156,a)].
+Derived: -Q(x) | -psl_interval(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)).  [resolve(178,a,158,a)].
+Derived: -Q(x) | -PRE(x,y) | ED(x).  [resolve(178,a,159,b)].
+Derived: -Q(x) | -PRE(x,y) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(178,a,161,b)].
+Derived: -Q(x) | -PRE(x,y) | psl_interval(x,f3(x)).  [resolve(178,a,162,b)].
+Derived: -Q(x) | -PRE(x,y) | -activity(x).  [resolve(178,a,163,b)].
+Derived: -Q(x) | -PRE(x,y) | timepoint(beginof(x)).  [resolve(178,a,165,b)].
+Derived: -Q(x) | -PRE(x,y) | timepoint(endof(x)).  [resolve(178,a,166,b)].
+Derived: -Q(x) | -PRE(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)).  [resolve(178,a,168,b)].
+Derived: -Q(x) | activity(x) | timepoint(x) | ED(x).  [resolve(178,a,169,c)].
+Derived: -Q(x) | activity(x) | timepoint(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).  [resolve(178,a,171,c)].
+Derived: -Q(x) | activity(x) | timepoint(x) | psl_interval(x,f3(x)).  [resolve(178,a,172,c)].
+Derived: -Q(x) | activity(x) | timepoint(x) | timepoint(beginof(x)).  [resolve(178,a,173,c)].
+Derived: -Q(x) | activity(x) | timepoint(x) | timepoint(endof(x)).  [resolve(178,a,174,c)].
+Derived: -Q(x) | activity(x) | timepoint(x) | exists_at(x,y) | -betweenEq(beginof(x),y,endof(x)).  [resolve(178,a,176,c)].
+179 -PD(x) | -participates_in(x,y,z).  [resolve(96,a,79,b)].
+Derived: -participates_in(x,y,z) | -psl_interval(x,u) | ED(x).  [resolve(179,a,149,a)].
+Derived: -participates_in(x,y,z) | -psl_interval(x,u) | Q(x).  [resolve(179,a,150,a)].
+Derived: -participates_in(x,y,z) | -psl_interval(x,u) | PRE(x,w) | -timeinterval(w) | -beforeEq(beginof(x),beginof(w)) | -beforeEq(endof(w),endof(x)).  [resolve(179,a,151,a)].
+Derived: -participates_in(x,y,z) | -psl_interval(x,u) | psl_interval(x,f3(x)).  [resolve(179,a,152,a)].
+Derived: -participates_in(x,y,z) | -psl_interval(x,u) | -activity(x).  [resolve(179,a,153,a)].
+Derived: -participates_in(x,y,z) | -psl_interval(x,u) | timepoint(beginof(x)).  [resolve(179,a,155,a)].
+Derived: -participates_in(x,y,z) | -psl_interval(x,u) | timepoint(endof(x)).  [resolve(179,a,156,a)].
+Derived: -participates_in(x,y,z) | -psl_interval(x,u) | exists_at(x,w) | -betweenEq(beginof(x),w,endof(x)).  [resolve(179,a,158,a)].
+Derived: -participates_in(x,y,z) | -PRE(x,u) | ED(x).  [resolve(179,a,159,b)].
+Derived: -participates_in(x,y,z) | -PRE(x,u) | Q(x).  [resolve(179,a,160,b)].
+Derived: -participates_in(x,y,z) | -PRE(x,u) | PRE(x,w) | -timeinterval(w) | -beforeEq(beginof(x),beginof(w)) | -beforeEq(endof(w),endof(x)).  [resolve(179,a,161,b)].
+Derived: -participates_in(x,y,z) | -PRE(x,u) | psl_interval(x,f3(x)).  [resolve(179,a,162,b)].
+Derived: -participates_in(x,y,z) | -PRE(x,u) | -activity(x).  [resolve(179,a,163,b)].
+Derived: -participates_in(x,y,z) | -PRE(x,u) | timepoint(beginof(x)).  [resolve(179,a,165,b)].
+Derived: -participates_in(x,y,z) | -PRE(x,u) | timepoint(endof(x)).  [resolve(179,a,166,b)].
+Derived: -participates_in(x,y,z) | -PRE(x,u) | exists_at(x,w) | -betweenEq(beginof(x),w,endof(x)).  [resolve(179,a,168,b)].
+Derived: -participates_in(x,y,z) | activity(x) | timepoint(x) | ED(x).  [resolve(179,a,169,c)].
+Derived: -participates_in(x,y,z) | activity(x) | timepoint(x) | Q(x).  [resolve(179,a,170,c)].
+Derived: -participates_in(x,y,z) | activity(x) | timepoint(x) | PRE(x,u) | -timeinterval(u) | -beforeEq(beginof(x),beginof(u)) | -beforeEq(endof(u),endof(x)).  [resolve(179,a,171,c)].
+Derived: -participates_in(x,y,z) | activity(x) | timepoint(x) | psl_interval(x,f3(x)).  [resolve(179,a,172,c)].
+Derived: -participates_in(x,y,z) | activity(x) | timepoint(x) | timepoint(beginof(x)).  [resolve(179,a,173,c)].
+Derived: -participates_in(x,y,z) | activity(x) | timepoint(x) | timepoint(endof(x)).  [resolve(179,a,174,c)].
+Derived: -participates_in(x,y,z) | activity(x) | timepoint(x) | exists_at(x,u) | -betweenEq(beginof(x),u,endof(x)).  [resolve(179,a,176,c)].
+180 -PD(x) | -exists_at(x,y).  [resolve(96,a,80,b)].
+Derived: -exists_at(x,y) | -psl_interval(x,z) | ED(x).  [resolve(180,a,149,a)].
+Derived: -exists_at(x,y) | -psl_interval(x,z) | Q(x).  [resolve(180,a,150,a)].
+Derived: -exists_at(x,y) | -psl_interval(x,z) | PRE(x,u) | -timeinterval(u) | -beforeEq(beginof(x),beginof(u)) | -beforeEq(endof(u),endof(x)).  [resolve(180,a,151,a)].
+Derived: -exists_at(x,y) | -psl_interval(x,z) | psl_interval(x,f3(x)).  [resolve(180,a,152,a)].
+Derived: -exists_at(x,y) | -psl_interval(x,z) | -activity(x).  [resolve(180,a,153,a)].
+Derived: -exists_at(x,y) | -psl_interval(x,z) | timepoint(beginof(x)).  [resolve(180,a,155,a)].
+Derived: -exists_at(x,y) | -psl_interval(x,z) | timepoint(endof(x)).  [resolve(180,a,156,a)].
+Derived: -exists_at(x,y) | -psl_interval(x,z) | exists_at(x,u) | -betweenEq(beginof(x),u,endof(x)).  [resolve(180,a,158,a)].
+Derived: -exists_at(x,y) | -PRE(x,z) | ED(x).  [resolve(180,a,159,b)].
+Derived: -exists_at(x,y) | -PRE(x,z) | Q(x).  [resolve(180,a,160,b)].
+Derived: -exists_at(x,y) | -PRE(x,z) | PRE(x,u) | -timeinterval(u) | -beforeEq(beginof(x),beginof(u)) | -beforeEq(endof(u),endof(x)).  [resolve(180,a,161,b)].
+Derived: -exists_at(x,y) | -PRE(x,z) | psl_interval(x,f3(x)).  [resolve(180,a,162,b)].
+Derived: -exists_at(x,y) | -PRE(x,z) | -activity(x).  [resolve(180,a,163,b)].
+Derived: -exists_at(x,y) | -PRE(x,z) | timepoint(beginof(x)).  [resolve(180,a,165,b)].
+Derived: -exists_at(x,y) | -PRE(x,z) | timepoint(endof(x)).  [resolve(180,a,166,b)].
+Derived: -exists_at(x,y) | -PRE(x,z) | exists_at(x,u) | -betweenEq(beginof(x),u,endof(x)).  [resolve(180,a,168,b)].
+Derived: -exists_at(x,y) | activity(x) | timepoint(x) | ED(x).  [resolve(180,a,169,c)].
+Derived: -exists_at(x,y) | activity(x) | timepoint(x) | Q(x).  [resolve(180,a,170,c)].
+Derived: -exists_at(x,y) | activity(x) | timepoint(x) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(180,a,171,c)].
+Derived: -exists_at(x,y) | activity(x) | timepoint(x) | psl_interval(x,f3(x)).  [resolve(180,a,172,c)].
+Derived: -exists_at(x,y) | activity(x) | timepoint(x) | timepoint(beginof(x)).  [resolve(180,a,173,c)].
+Derived: -exists_at(x,y) | activity(x) | timepoint(x) | timepoint(endof(x)).  [resolve(180,a,174,c)].
+Derived: -exists_at(x,y) | activity(x) | timepoint(x) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)).  [resolve(180,a,176,c)].
+181 -occurrence_of(x,y) | PD(x) | -psl_interval(x,z).  [resolve(99,b,83,c)].
+Derived: -occurrence_of(x,y) | -psl_interval(x,z) | PRE(x,u) | -timeinterval(u) | -beforeEq(beginof(x),beginof(u)) | -beforeEq(endof(u),endof(x)).  [resolve(181,b,141,e)].
+Derived: -occurrence_of(x,y) | -psl_interval(x,z) | psl_interval(x,f3(x)).  [resolve(181,b,142,b)].
+Derived: -occurrence_of(x,y) | -psl_interval(x,z) | -activity(x).  [resolve(181,b,143,b)].
+Derived: -occurrence_of(x,y) | -psl_interval(x,z) | -timepoint(x).  [resolve(181,b,144,b)].
+Derived: -occurrence_of(x,y) | -psl_interval(x,z) | activity(f8(x)).  [resolve(181,b,145,b)].
+Derived: -occurrence_of(x,y) | -psl_interval(x,z) | occurrence_of(x,f8(x)).  [resolve(181,b,146,b)].
+Derived: -occurrence_of(x,y) | -psl_interval(x,z) | -ED(x).  [resolve(181,b,177,a)].
+Derived: -occurrence_of(x,y) | -psl_interval(x,z) | -Q(x).  [resolve(181,b,178,a)].
+Derived: -occurrence_of(x,y) | -psl_interval(x,z) | -participates_in(x,u,w).  [resolve(181,b,179,a)].
+Derived: -occurrence_of(x,y) | -psl_interval(x,z) | -exists_at(x,u).  [resolve(181,b,180,a)].
+182 -occurrence_of(x,y) | -PRE(x,z) | PD(x).  [resolve(99,b,85,b)].
+Derived: -occurrence_of(x,y) | -PRE(x,z) | PRE(x,u) | -timeinterval(u) | -beforeEq(beginof(x),beginof(u)) | -beforeEq(endof(u),endof(x)).  [resolve(182,c,141,e)].
+Derived: -occurrence_of(x,y) | -PRE(x,z) | psl_interval(x,f3(x)).  [resolve(182,c,142,b)].
+Derived: -occurrence_of(x,y) | -PRE(x,z) | -activity(x).  [resolve(182,c,143,b)].
+Derived: -occurrence_of(x,y) | -PRE(x,z) | -timepoint(x).  [resolve(182,c,144,b)].
+Derived: -occurrence_of(x,y) | -PRE(x,z) | activity(f8(x)).  [resolve(182,c,145,b)].
+Derived: -occurrence_of(x,y) | -PRE(x,z) | occurrence_of(x,f8(x)).  [resolve(182,c,146,b)].
+Derived: -occurrence_of(x,y) | -PRE(x,z) | -ED(x).  [resolve(182,c,177,a)].
+Derived: -occurrence_of(x,y) | -PRE(x,z) | -Q(x).  [resolve(182,c,178,a)].
+Derived: -occurrence_of(x,y) | -PRE(x,z) | -participates_in(x,u,w).  [resolve(182,c,179,a)].
+Derived: -occurrence_of(x,y) | -PRE(x,z) | -exists_at(x,u).  [resolve(182,c,180,a)].
+183 -occurrence_of(x,y) | activity(x) | timepoint(x) | PD(x).  [resolve(99,b,91,c)].
+Derived: -occurrence_of(x,y) | activity(x) | timepoint(x) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(183,d,141,e)].
+Derived: -occurrence_of(x,y) | activity(x) | timepoint(x) | psl_interval(x,f3(x)).  [resolve(183,d,142,b)].
+Derived: -occurrence_of(x,y) | activity(x) | timepoint(x) | activity(f8(x)).  [resolve(183,d,145,b)].
+Derived: -occurrence_of(x,y) | activity(x) | timepoint(x) | occurrence_of(x,f8(x)).  [resolve(183,d,146,b)].
+Derived: -occurrence_of(x,y) | activity(x) | timepoint(x) | -ED(x).  [resolve(183,d,177,a)].
+Derived: -occurrence_of(x,y) | activity(x) | timepoint(x) | -Q(x).  [resolve(183,d,178,a)].
+Derived: -occurrence_of(x,y) | activity(x) | timepoint(x) | -participates_in(x,z,u).  [resolve(183,d,179,a)].
+Derived: -occurrence_of(x,y) | activity(x) | timepoint(x) | -exists_at(x,z).  [resolve(183,d,180,a)].
+184 activity(f8(x)) | -PRE(x,y) | -PD(x).  [resolve(101,c,96,a)].
+Derived: activity(f8(x)) | -PRE(x,y) | -participates_in(z,x,u).  [resolve(184,c,148,b)].
+Derived: activity(f8(x)) | -PRE(x,y) | -psl_interval(x,z) | ED(x).  [resolve(184,c,149,a)].
+Derived: activity(f8(x)) | -PRE(x,y) | -psl_interval(x,z) | Q(x).  [resolve(184,c,150,a)].
+Derived: activity(f8(x)) | -PRE(x,y) | -psl_interval(x,z) | PRE(x,u) | -timeinterval(u) | -beforeEq(beginof(x),beginof(u)) | -beforeEq(endof(u),endof(x)).  [resolve(184,c,151,a)].
+Derived: activity(f8(x)) | -PRE(x,y) | -psl_interval(x,z) | psl_interval(x,f3(x)).  [resolve(184,c,152,a)].
+Derived: activity(f8(x)) | -PRE(x,y) | -psl_interval(x,z) | -activity(x).  [resolve(184,c,153,a)].
+Derived: activity(f8(x)) | -PRE(x,y) | -psl_interval(x,z) | -timepoint(x).  [resolve(184,c,154,a)].
+Derived: activity(f8(x)) | -PRE(x,y) | -psl_interval(x,z) | timepoint(beginof(x)).  [resolve(184,c,155,a)].
+Derived: activity(f8(x)) | -PRE(x,y) | -psl_interval(x,z) | timepoint(endof(x)).  [resolve(184,c,156,a)].
+Derived: activity(f8(x)) | -PRE(x,y) | -psl_interval(x,z) | exists_at(x,u) | -betweenEq(beginof(x),u,endof(x)).  [resolve(184,c,158,a)].
+Derived: activity(f8(x)) | -PRE(x,y) | -PRE(x,z) | ED(x).  [resolve(184,c,159,b)].
+Derived: activity(f8(x)) | -PRE(x,y) | -PRE(x,z) | Q(x).  [resolve(184,c,160,b)].
+Derived: activity(f8(x)) | -PRE(x,y) | -PRE(x,z) | PRE(x,u) | -timeinterval(u) | -beforeEq(beginof(x),beginof(u)) | -beforeEq(endof(u),endof(x)).  [resolve(184,c,161,b)].
+Derived: activity(f8(x)) | -PRE(x,y) | -PRE(x,z) | psl_interval(x,f3(x)).  [resolve(184,c,162,b)].
+Derived: activity(f8(x)) | -PRE(x,y) | -PRE(x,z) | -activity(x).  [resolve(184,c,163,b)].
+Derived: activity(f8(x)) | -PRE(x,y) | -PRE(x,z) | -timepoint(x).  [resolve(184,c,164,b)].
+Derived: activity(f8(x)) | -PRE(x,y) | -PRE(x,z) | timepoint(beginof(x)).  [resolve(184,c,165,b)].
+Derived: activity(f8(x)) | -PRE(x,y) | -PRE(x,z) | timepoint(endof(x)).  [resolve(184,c,166,b)].
+Derived: activity(f8(x)) | -PRE(x,y) | -PRE(x,z) | exists_at(x,u) | -betweenEq(beginof(x),u,endof(x)).  [resolve(184,c,168,b)].
+185 activity(f8(x)) | activity(x) | timepoint(x) | -PD(x).  [resolve(102,d,96,a)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | -participates_in(y,x,z).  [resolve(185,d,148,b)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | -psl_interval(x,y) | ED(x).  [resolve(185,d,149,a)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | -psl_interval(x,y) | Q(x).  [resolve(185,d,150,a)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | -psl_interval(x,y) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(185,d,151,a)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | -psl_interval(x,y) | psl_interval(x,f3(x)).  [resolve(185,d,152,a)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | -psl_interval(x,y) | timepoint(beginof(x)).  [resolve(185,d,155,a)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | -psl_interval(x,y) | timepoint(endof(x)).  [resolve(185,d,156,a)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | -psl_interval(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)).  [resolve(185,d,158,a)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | ED(x).  [resolve(185,d,169,c)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | Q(x).  [resolve(185,d,170,c)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).  [resolve(185,d,171,c)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | psl_interval(x,f3(x)).  [resolve(185,d,172,c)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | timepoint(beginof(x)).  [resolve(185,d,173,c)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | timepoint(endof(x)).  [resolve(185,d,174,c)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | exists_at(x,y) | -betweenEq(beginof(x),y,endof(x)).  [resolve(185,d,176,c)].
+186 occurrence_of(x,f8(x)) | -PRE(x,y) | -PD(x).  [resolve(104,c,96,a)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -participates_in(z,x,u).  [resolve(186,c,148,b)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -psl_interval(x,z) | ED(x).  [resolve(186,c,149,a)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -psl_interval(x,z) | Q(x).  [resolve(186,c,150,a)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -psl_interval(x,z) | PRE(x,u) | -timeinterval(u) | -beforeEq(beginof(x),beginof(u)) | -beforeEq(endof(u),endof(x)).  [resolve(186,c,151,a)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -psl_interval(x,z) | psl_interval(x,f3(x)).  [resolve(186,c,152,a)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -psl_interval(x,z) | -activity(x).  [resolve(186,c,153,a)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -psl_interval(x,z) | -timepoint(x).  [resolve(186,c,154,a)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -psl_interval(x,z) | timepoint(beginof(x)).  [resolve(186,c,155,a)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -psl_interval(x,z) | timepoint(endof(x)).  [resolve(186,c,156,a)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -psl_interval(x,z) | exists_at(x,u) | -betweenEq(beginof(x),u,endof(x)).  [resolve(186,c,158,a)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -PRE(x,z) | ED(x).  [resolve(186,c,159,b)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -PRE(x,z) | Q(x).  [resolve(186,c,160,b)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -PRE(x,z) | PRE(x,u) | -timeinterval(u) | -beforeEq(beginof(x),beginof(u)) | -beforeEq(endof(u),endof(x)).  [resolve(186,c,161,b)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -PRE(x,z) | psl_interval(x,f3(x)).  [resolve(186,c,162,b)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -PRE(x,z) | -activity(x).  [resolve(186,c,163,b)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -PRE(x,z) | -timepoint(x).  [resolve(186,c,164,b)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -PRE(x,z) | timepoint(beginof(x)).  [resolve(186,c,165,b)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -PRE(x,z) | timepoint(endof(x)).  [resolve(186,c,166,b)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -PRE(x,z) | exists_at(x,u) | -betweenEq(beginof(x),u,endof(x)).  [resolve(186,c,168,b)].
+187 occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | -PD(x).  [resolve(105,d,96,a)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | -participates_in(y,x,z).  [resolve(187,d,148,b)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | -psl_interval(x,y) | ED(x).  [resolve(187,d,149,a)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | -psl_interval(x,y) | Q(x).  [resolve(187,d,150,a)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | -psl_interval(x,y) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(187,d,151,a)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | -psl_interval(x,y) | psl_interval(x,f3(x)).  [resolve(187,d,152,a)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | -psl_interval(x,y) | timepoint(beginof(x)).  [resolve(187,d,155,a)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | -psl_interval(x,y) | timepoint(endof(x)).  [resolve(187,d,156,a)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | -psl_interval(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)).  [resolve(187,d,158,a)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | ED(x).  [resolve(187,d,169,c)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | Q(x).  [resolve(187,d,170,c)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).  [resolve(187,d,171,c)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | psl_interval(x,f3(x)).  [resolve(187,d,172,c)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | timepoint(beginof(x)).  [resolve(187,d,173,c)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | timepoint(endof(x)).  [resolve(187,d,174,c)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | exists_at(x,y) | -betweenEq(beginof(x),y,endof(x)).  [resolve(187,d,176,c)].
+188 -participates_in(x,y,z) | PD(y) | -psl_interval(y,u).  [resolve(109,b,83,c)].
+Derived: -participates_in(x,y,z) | -psl_interval(y,u) | PRE(y,w) | -timeinterval(w) | -beforeEq(beginof(y),beginof(w)) | -beforeEq(endof(w),endof(y)).  [resolve(188,b,141,e)].
+Derived: -participates_in(x,y,z) | -psl_interval(y,u) | psl_interval(y,f3(y)).  [resolve(188,b,142,b)].
+Derived: -participates_in(x,y,z) | -psl_interval(y,u) | -activity(y).  [resolve(188,b,143,b)].
+Derived: -participates_in(x,y,z) | -psl_interval(y,u) | -timepoint(y).  [resolve(188,b,144,b)].
+Derived: -participates_in(x,y,z) | -psl_interval(y,u) | activity(f8(y)).  [resolve(188,b,145,b)].
+Derived: -participates_in(x,y,z) | -psl_interval(y,u) | occurrence_of(y,f8(y)).  [resolve(188,b,146,b)].
+Derived: -participates_in(x,y,z) | -psl_interval(y,u) | beforeEq(beginof(y),endof(y)).  [resolve(188,b,147,b)].
+Derived: -participates_in(x,y,z) | -psl_interval(y,u) | -ED(y).  [resolve(188,b,177,a)].
+Derived: -participates_in(x,y,z) | -psl_interval(y,u) | -Q(y).  [resolve(188,b,178,a)].
+Derived: -participates_in(x,y,z) | -psl_interval(y,u) | -participates_in(y,w,v5).  [resolve(188,b,179,a)].
+Derived: -participates_in(x,y,z) | -psl_interval(y,u) | -exists_at(y,w).  [resolve(188,b,180,a)].
+189 -participates_in(x,y,z) | -PRE(y,u) | PD(y).  [resolve(109,b,85,b)].
+Derived: -participates_in(x,y,z) | -PRE(y,u) | PRE(y,w) | -timeinterval(w) | -beforeEq(beginof(y),beginof(w)) | -beforeEq(endof(w),endof(y)).  [resolve(189,c,141,e)].
+Derived: -participates_in(x,y,z) | -PRE(y,u) | psl_interval(y,f3(y)).  [resolve(189,c,142,b)].
+Derived: -participates_in(x,y,z) | -PRE(y,u) | -activity(y).  [resolve(189,c,143,b)].
+Derived: -participates_in(x,y,z) | -PRE(y,u) | -timepoint(y).  [resolve(189,c,144,b)].
+Derived: -participates_in(x,y,z) | -PRE(y,u) | beforeEq(beginof(y),endof(y)).  [resolve(189,c,147,b)].
+Derived: -participates_in(x,y,z) | -PRE(y,u) | -ED(y).  [resolve(189,c,177,a)].
+Derived: -participates_in(x,y,z) | -PRE(y,u) | -Q(y).  [resolve(189,c,178,a)].
+Derived: -participates_in(x,y,z) | -PRE(y,u) | -participates_in(y,w,v5).  [resolve(189,c,179,a)].
+Derived: -participates_in(x,y,z) | -PRE(y,u) | -exists_at(y,w).  [resolve(189,c,180,a)].
+190 -participates_in(x,y,z) | activity(y) | timepoint(y) | PD(y).  [resolve(109,b,91,c)].
+Derived: -participates_in(x,y,z) | activity(y) | timepoint(y) | PRE(y,u) | -timeinterval(u) | -beforeEq(beginof(y),beginof(u)) | -beforeEq(endof(u),endof(y)).  [resolve(190,d,141,e)].
+Derived: -participates_in(x,y,z) | activity(y) | timepoint(y) | psl_interval(y,f3(y)).  [resolve(190,d,142,b)].
+Derived: -participates_in(x,y,z) | activity(y) | timepoint(y) | beforeEq(beginof(y),endof(y)).  [resolve(190,d,147,b)].
+Derived: -participates_in(x,y,z) | activity(y) | timepoint(y) | -ED(y).  [resolve(190,d,177,a)].
+Derived: -participates_in(x,y,z) | activity(y) | timepoint(y) | -Q(y).  [resolve(190,d,178,a)].
+Derived: -participates_in(x,y,z) | activity(y) | timepoint(y) | -participates_in(y,u,w).  [resolve(190,d,179,a)].
+Derived: -participates_in(x,y,z) | activity(y) | timepoint(y) | -exists_at(y,u).  [resolve(190,d,180,a)].
+
+Eliminating ED/1
+191 -Q(x) | ED(x).  [resolve(69,b,68,b)].
+192 -ED(x) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [resolve(66,b,67,b)].
+Derived: -Q(x) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [resolve(191,b,192,a)].
+193 Q(x) | -ED(x).  [resolve(70,b,66,b)].
+194 PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | -ED(x).  [resolve(71,b,66,b)].
+195 psl_interval(x,f3(x)) | -ED(x).  [resolve(72,a,66,b)].
+196 -activity(x) | -ED(x).  [resolve(74,b,66,b)].
+197 -timepoint(x) | -ED(x).  [resolve(75,a,66,b)].
+198 timepoint(beginof(x)) | -ED(x).  [resolve(76,a,66,b)].
+199 timepoint(endof(x)) | -ED(x).  [resolve(77,a,66,b)].
+200 beforeEq(beginof(x),endof(x)) | -ED(x).  [resolve(78,a,66,b)].
+201 -participates_in(x,y,z) | ED(x).  [resolve(79,b,68,b)].
+Derived: -participates_in(x,y,z) | psl_interval(x,u) | -timeinterval(u) | beginof(u) != beginof(x) | endof(u) != endof(x).  [resolve(201,b,192,a)].
+202 -exists_at(x,y) | ED(x).  [resolve(80,b,68,b)].
+Derived: -exists_at(x,y) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(202,b,192,a)].
+203 exists_at(x,y) | -betweenEq(beginof(x),y,endof(x)) | -ED(x).  [resolve(81,b,66,b)].
+204 PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | -psl_interval(x,z) | ED(x).  [resolve(86,f,68,b)].
+205 PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | -PRE(x,z) | ED(x).  [resolve(87,f,68,b)].
+206 psl_interval(x,f3(x)) | -psl_interval(x,y) | ED(x).  [resolve(88,c,68,b)].
+207 psl_interval(x,f3(x)) | -PRE(x,y) | ED(x).  [resolve(89,c,68,b)].
+208 activity(x) | timepoint(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | ED(x).  [resolve(92,c,68,b)].
+209 activity(x) | timepoint(x) | psl_interval(x,f3(x)) | ED(x).  [resolve(93,c,68,b)].
+210 -activity(x) | -psl_interval(x,y) | ED(x).  [resolve(94,c,68,b)].
+211 -activity(x) | -PRE(x,y) | ED(x).  [resolve(95,c,68,b)].
+212 -timepoint(x) | -psl_interval(x,y) | ED(x).  [resolve(97,c,68,b)].
+213 -timepoint(x) | -PRE(x,y) | ED(x).  [resolve(98,c,68,b)].
+214 -occurrence_of(x,y) | -ED(x).  [resolve(99,b,66,b)].
+215 activity(f8(x)) | -psl_interval(x,y) | ED(x).  [resolve(100,c,68,b)].
+Derived: activity(f8(x)) | -psl_interval(x,y) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(215,c,192,a)].
+Derived: activity(f8(x)) | -psl_interval(x,y) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(215,c,194,e)].
+Derived: activity(f8(x)) | -psl_interval(x,y) | psl_interval(x,f3(x)).  [resolve(215,c,195,b)].
+Derived: activity(f8(x)) | -psl_interval(x,y) | -activity(x).  [resolve(215,c,196,b)].
+Derived: activity(f8(x)) | -psl_interval(x,y) | -timepoint(x).  [resolve(215,c,197,b)].
+216 activity(f8(x)) | -PRE(x,y) | ED(x).  [resolve(101,c,68,b)].
+Derived: activity(f8(x)) | -PRE(x,y) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(216,c,192,a)].
+217 activity(f8(x)) | activity(x) | timepoint(x) | ED(x).  [resolve(102,d,68,b)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [resolve(217,d,192,a)].
+218 occurrence_of(x,f8(x)) | -psl_interval(x,y) | ED(x).  [resolve(103,c,68,b)].
+Derived: occurrence_of(x,f8(x)) | -psl_interval(x,y) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(218,c,192,a)].
+Derived: occurrence_of(x,f8(x)) | -psl_interval(x,y) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(218,c,194,e)].
+Derived: occurrence_of(x,f8(x)) | -psl_interval(x,y) | psl_interval(x,f3(x)).  [resolve(218,c,195,b)].
+Derived: occurrence_of(x,f8(x)) | -psl_interval(x,y) | -activity(x).  [resolve(218,c,196,b)].
+Derived: occurrence_of(x,f8(x)) | -psl_interval(x,y) | -timepoint(x).  [resolve(218,c,197,b)].
+219 occurrence_of(x,f8(x)) | -PRE(x,y) | ED(x).  [resolve(104,c,68,b)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(219,c,192,a)].
+220 occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | ED(x).  [resolve(105,d,68,b)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [resolve(220,d,192,a)].
+221 beforeEq(beginof(x),endof(x)) | -psl_interval(x,y) | ED(x).  [resolve(106,c,68,b)].
+222 beforeEq(beginof(x),endof(x)) | -PRE(x,y) | ED(x).  [resolve(107,c,68,b)].
+223 beforeEq(beginof(x),endof(x)) | activity(x) | timepoint(x) | ED(x).  [resolve(108,d,68,b)].
+224 -participates_in(x,y,z) | -ED(y).  [resolve(109,b,66,b)].
+225 -psl_interval(x,y) | ED(x) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(149,a,140,a)].
+Derived: -psl_interval(x,y) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x) | psl_interval(x,u) | -timeinterval(u) | beginof(u) != beginof(x) | endof(u) != endof(x).  [resolve(225,b,192,a)].
+226 -PRE(x,y) | ED(x) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(159,b,140,a)].
+Derived: -PRE(x,y) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x) | psl_interval(x,u) | -timeinterval(u) | beginof(u) != beginof(x) | endof(u) != endof(x).  [resolve(226,b,192,a)].
+227 activity(x) | timepoint(x) | ED(x) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [resolve(169,c,140,a)].
+Derived: activity(x) | timepoint(x) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(227,c,192,a)].
+228 -ED(x) | -psl_interval(x,y) | Q(x).  [resolve(177,a,150,a)].
+Derived: -psl_interval(x,y) | Q(x) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)) | -psl_interval(x,u).  [resolve(228,a,204,f)].
+Derived: -psl_interval(x,y) | Q(x) | psl_interval(x,f3(x)) | -psl_interval(x,z).  [resolve(228,a,206,c)].
+Derived: -psl_interval(x,y) | Q(x) | -activity(x) | -psl_interval(x,z).  [resolve(228,a,210,c)].
+Derived: -psl_interval(x,y) | Q(x) | -timepoint(x) | -psl_interval(x,z).  [resolve(228,a,212,c)].
+Derived: -psl_interval(x,y) | Q(x) | activity(f8(x)) | -psl_interval(x,z).  [resolve(228,a,215,c)].
+Derived: -psl_interval(x,y) | Q(x) | occurrence_of(x,f8(x)) | -psl_interval(x,z).  [resolve(228,a,218,c)].
+Derived: -psl_interval(x,y) | Q(x) | beforeEq(beginof(x),endof(x)) | -psl_interval(x,z).  [resolve(228,a,221,c)].
+229 -ED(x) | -psl_interval(x,y) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(177,a,151,a)].
+Derived: -psl_interval(x,y) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)) | PRE(x,u) | -timeinterval(u) | -beforeEq(beginof(x),beginof(u)) | -beforeEq(endof(u),endof(x)) | -psl_interval(x,w).  [resolve(229,a,204,f)].
+230 -ED(x) | -psl_interval(x,y) | psl_interval(x,f3(x)).  [resolve(177,a,152,a)].
+Derived: -psl_interval(x,y) | psl_interval(x,f3(x)) | psl_interval(x,f3(x)) | -psl_interval(x,z).  [resolve(230,a,206,c)].
+231 -ED(x) | -psl_interval(x,y) | -activity(x).  [resolve(177,a,153,a)].
+Derived: -psl_interval(x,y) | -activity(x) | -activity(x) | -psl_interval(x,z).  [resolve(231,a,210,c)].
+232 -ED(x) | -psl_interval(x,y) | timepoint(beginof(x)).  [resolve(177,a,155,a)].
+Derived: -psl_interval(x,y) | timepoint(beginof(x)) | -timepoint(x) | -psl_interval(x,z).  [resolve(232,a,212,c)].
+Derived: -psl_interval(x,y) | timepoint(beginof(x)) | activity(f8(x)) | -psl_interval(x,z).  [resolve(232,a,215,c)].
+Derived: -psl_interval(x,y) | timepoint(beginof(x)) | occurrence_of(x,f8(x)) | -psl_interval(x,z).  [resolve(232,a,218,c)].
+Derived: -psl_interval(x,y) | timepoint(beginof(x)) | beforeEq(beginof(x),endof(x)) | -psl_interval(x,z).  [resolve(232,a,221,c)].
+233 -ED(x) | -psl_interval(x,y) | timepoint(endof(x)).  [resolve(177,a,156,a)].
+Derived: -psl_interval(x,y) | timepoint(endof(x)) | -timepoint(x) | -psl_interval(x,z).  [resolve(233,a,212,c)].
+Derived: -psl_interval(x,y) | timepoint(endof(x)) | activity(f8(x)) | -psl_interval(x,z).  [resolve(233,a,215,c)].
+Derived: -psl_interval(x,y) | timepoint(endof(x)) | occurrence_of(x,f8(x)) | -psl_interval(x,z).  [resolve(233,a,218,c)].
+Derived: -psl_interval(x,y) | timepoint(endof(x)) | beforeEq(beginof(x),endof(x)) | -psl_interval(x,z).  [resolve(233,a,221,c)].
+234 -ED(x) | -psl_interval(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)).  [resolve(177,a,158,a)].
+Derived: -psl_interval(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)) | -timepoint(x) | -psl_interval(x,u).  [resolve(234,a,212,c)].
+Derived: -psl_interval(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)) | activity(f8(x)) | -psl_interval(x,u).  [resolve(234,a,215,c)].
+Derived: -psl_interval(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)) | occurrence_of(x,f8(x)) | -psl_interval(x,u).  [resolve(234,a,218,c)].
+Derived: -psl_interval(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)) | beforeEq(beginof(x),endof(x)) | -psl_interval(x,u).  [resolve(234,a,221,c)].
+235 -ED(x) | -PRE(x,y) | Q(x).  [resolve(177,a,160,b)].
+Derived: -PRE(x,y) | Q(x) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)) | -PRE(x,u).  [resolve(235,a,205,f)].
+Derived: -PRE(x,y) | Q(x) | psl_interval(x,f3(x)) | -PRE(x,z).  [resolve(235,a,207,c)].
+Derived: -PRE(x,y) | Q(x) | -activity(x) | -PRE(x,z).  [resolve(235,a,211,c)].
+Derived: -PRE(x,y) | Q(x) | -timepoint(x) | -PRE(x,z).  [resolve(235,a,213,c)].
+Derived: -PRE(x,y) | Q(x) | beforeEq(beginof(x),endof(x)) | -PRE(x,z).  [resolve(235,a,222,c)].
+236 -ED(x) | -PRE(x,y) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(177,a,161,b)].
+Derived: -PRE(x,y) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)) | PRE(x,u) | -timeinterval(u) | -beforeEq(beginof(x),beginof(u)) | -beforeEq(endof(u),endof(x)) | -PRE(x,w).  [resolve(236,a,205,f)].
+237 -ED(x) | -PRE(x,y) | psl_interval(x,f3(x)).  [resolve(177,a,162,b)].
+Derived: -PRE(x,y) | psl_interval(x,f3(x)) | psl_interval(x,f3(x)) | -PRE(x,z).  [resolve(237,a,207,c)].
+238 -ED(x) | -PRE(x,y) | -activity(x).  [resolve(177,a,163,b)].
+Derived: -PRE(x,y) | -activity(x) | -activity(x) | -PRE(x,z).  [resolve(238,a,211,c)].
+239 -ED(x) | -PRE(x,y) | timepoint(beginof(x)).  [resolve(177,a,165,b)].
+Derived: -PRE(x,y) | timepoint(beginof(x)) | -timepoint(x) | -PRE(x,z).  [resolve(239,a,213,c)].
+Derived: -PRE(x,y) | timepoint(beginof(x)) | beforeEq(beginof(x),endof(x)) | -PRE(x,z).  [resolve(239,a,222,c)].
+240 -ED(x) | -PRE(x,y) | timepoint(endof(x)).  [resolve(177,a,166,b)].
+Derived: -PRE(x,y) | timepoint(endof(x)) | -timepoint(x) | -PRE(x,z).  [resolve(240,a,213,c)].
+Derived: -PRE(x,y) | timepoint(endof(x)) | beforeEq(beginof(x),endof(x)) | -PRE(x,z).  [resolve(240,a,222,c)].
+241 -ED(x) | -PRE(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)).  [resolve(177,a,168,b)].
+Derived: -PRE(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)) | -timepoint(x) | -PRE(x,u).  [resolve(241,a,213,c)].
+Derived: -PRE(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)) | beforeEq(beginof(x),endof(x)) | -PRE(x,u).  [resolve(241,a,222,c)].
+242 -ED(x) | activity(x) | timepoint(x) | Q(x).  [resolve(177,a,170,c)].
+Derived: activity(x) | timepoint(x) | Q(x) | activity(x) | timepoint(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).  [resolve(242,a,208,g)].
+Derived: activity(x) | timepoint(x) | Q(x) | activity(x) | timepoint(x) | psl_interval(x,f3(x)).  [resolve(242,a,209,d)].
+Derived: activity(x) | timepoint(x) | Q(x) | beforeEq(beginof(x),endof(x)) | activity(x) | timepoint(x).  [resolve(242,a,223,d)].
+243 -ED(x) | activity(x) | timepoint(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).  [resolve(177,a,171,c)].
+Derived: activity(x) | timepoint(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | activity(x) | timepoint(x) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(243,a,208,g)].
+244 -ED(x) | activity(x) | timepoint(x) | psl_interval(x,f3(x)).  [resolve(177,a,172,c)].
+Derived: activity(x) | timepoint(x) | psl_interval(x,f3(x)) | activity(x) | timepoint(x) | psl_interval(x,f3(x)).  [resolve(244,a,209,d)].
+245 -ED(x) | activity(x) | timepoint(x) | timepoint(beginof(x)).  [resolve(177,a,173,c)].
+Derived: activity(x) | timepoint(x) | timepoint(beginof(x)) | beforeEq(beginof(x),endof(x)) | activity(x) | timepoint(x).  [resolve(245,a,223,d)].
+246 -ED(x) | activity(x) | timepoint(x) | timepoint(endof(x)).  [resolve(177,a,174,c)].
+Derived: activity(x) | timepoint(x) | timepoint(endof(x)) | beforeEq(beginof(x),endof(x)) | activity(x) | timepoint(x).  [resolve(246,a,223,d)].
+247 -ED(x) | activity(x) | timepoint(x) | exists_at(x,y) | -betweenEq(beginof(x),y,endof(x)).  [resolve(177,a,176,c)].
+Derived: activity(x) | timepoint(x) | exists_at(x,y) | -betweenEq(beginof(x),y,endof(x)) | beforeEq(beginof(x),endof(x)) | activity(x) | timepoint(x).  [resolve(247,a,223,d)].
+248 -Q(x) | -psl_interval(x,y) | ED(x).  [resolve(178,a,149,a)].
+Derived: -Q(x) | -psl_interval(x,y) | -timepoint(x).  [resolve(248,c,197,b)].
+Derived: -Q(x) | -psl_interval(x,y) | beforeEq(beginof(x),endof(x)).  [resolve(248,c,200,b)].
+249 -Q(x) | -PRE(x,y) | ED(x).  [resolve(178,a,159,b)].
+Derived: -Q(x) | -PRE(x,y) | -timepoint(x).  [resolve(249,c,197,b)].
+Derived: -Q(x) | -PRE(x,y) | beforeEq(beginof(x),endof(x)).  [resolve(249,c,200,b)].
+250 -Q(x) | activity(x) | timepoint(x) | ED(x).  [resolve(178,a,169,c)].
+Derived: -Q(x) | activity(x) | timepoint(x) | beforeEq(beginof(x),endof(x)).  [resolve(250,d,200,b)].
+251 -participates_in(x,y,z) | -psl_interval(x,u) | ED(x).  [resolve(179,a,149,a)].
+Derived: -participates_in(x,y,z) | -psl_interval(x,u) | -timepoint(x).  [resolve(251,c,197,b)].
+Derived: -participates_in(x,y,z) | -psl_interval(x,u) | beforeEq(beginof(x),endof(x)).  [resolve(251,c,200,b)].
+252 -participates_in(x,y,z) | -PRE(x,u) | ED(x).  [resolve(179,a,159,b)].
+Derived: -participates_in(x,y,z) | -PRE(x,u) | -timepoint(x).  [resolve(252,c,197,b)].
+Derived: -participates_in(x,y,z) | -PRE(x,u) | beforeEq(beginof(x),endof(x)).  [resolve(252,c,200,b)].
+253 -participates_in(x,y,z) | activity(x) | timepoint(x) | ED(x).  [resolve(179,a,169,c)].
+Derived: -participates_in(x,y,z) | activity(x) | timepoint(x) | beforeEq(beginof(x),endof(x)).  [resolve(253,d,200,b)].
+254 -exists_at(x,y) | -psl_interval(x,z) | ED(x).  [resolve(180,a,149,a)].
+Derived: -exists_at(x,y) | -psl_interval(x,z) | -timepoint(x).  [resolve(254,c,197,b)].
+Derived: -exists_at(x,y) | -psl_interval(x,z) | beforeEq(beginof(x),endof(x)).  [resolve(254,c,200,b)].
+255 -exists_at(x,y) | -PRE(x,z) | ED(x).  [resolve(180,a,159,b)].
+Derived: -exists_at(x,y) | -PRE(x,z) | -timepoint(x).  [resolve(255,c,197,b)].
+Derived: -exists_at(x,y) | -PRE(x,z) | beforeEq(beginof(x),endof(x)).  [resolve(255,c,200,b)].
+256 -exists_at(x,y) | activity(x) | timepoint(x) | ED(x).  [resolve(180,a,169,c)].
+Derived: -exists_at(x,y) | activity(x) | timepoint(x) | beforeEq(beginof(x),endof(x)).  [resolve(256,d,200,b)].
+257 -occurrence_of(x,y) | -psl_interval(x,z) | -ED(x).  [resolve(181,b,177,a)].
+Derived: -occurrence_of(x,y) | -psl_interval(x,z) | -timepoint(x) | -psl_interval(x,u).  [resolve(257,c,212,c)].
+Derived: -occurrence_of(x,y) | -psl_interval(x,z) | activity(f8(x)) | -psl_interval(x,u).  [resolve(257,c,215,c)].
+Derived: -occurrence_of(x,y) | -psl_interval(x,z) | occurrence_of(x,f8(x)) | -psl_interval(x,u).  [resolve(257,c,218,c)].
+Derived: -occurrence_of(x,y) | -psl_interval(x,z) | beforeEq(beginof(x),endof(x)) | -psl_interval(x,u).  [resolve(257,c,221,c)].
+258 -occurrence_of(x,y) | -PRE(x,z) | -ED(x).  [resolve(182,c,177,a)].
+Derived: -occurrence_of(x,y) | -PRE(x,z) | -timepoint(x) | -PRE(x,u).  [resolve(258,c,213,c)].
+Derived: -occurrence_of(x,y) | -PRE(x,z) | activity(f8(x)) | -PRE(x,u).  [resolve(258,c,216,c)].
+Derived: -occurrence_of(x,y) | -PRE(x,z) | occurrence_of(x,f8(x)) | -PRE(x,u).  [resolve(258,c,219,c)].
+Derived: -occurrence_of(x,y) | -PRE(x,z) | beforeEq(beginof(x),endof(x)) | -PRE(x,u).  [resolve(258,c,222,c)].
+259 -occurrence_of(x,y) | activity(x) | timepoint(x) | -ED(x).  [resolve(183,d,177,a)].
+Derived: -occurrence_of(x,y) | activity(x) | timepoint(x) | activity(f8(x)) | activity(x) | timepoint(x).  [resolve(259,d,217,d)].
+Derived: -occurrence_of(x,y) | activity(x) | timepoint(x) | occurrence_of(x,f8(x)) | activity(x) | timepoint(x).  [resolve(259,d,220,d)].
+Derived: -occurrence_of(x,y) | activity(x) | timepoint(x) | beforeEq(beginof(x),endof(x)) | activity(x) | timepoint(x).  [resolve(259,d,223,d)].
+260 activity(f8(x)) | -PRE(x,y) | -psl_interval(x,z) | ED(x).  [resolve(184,c,149,a)].
+Derived: activity(f8(x)) | -PRE(x,y) | -psl_interval(x,z) | beforeEq(beginof(x),endof(x)).  [resolve(260,d,200,b)].
+261 activity(f8(x)) | -PRE(x,y) | -PRE(x,z) | ED(x).  [resolve(184,c,159,b)].
+Derived: activity(f8(x)) | -PRE(x,y) | -PRE(x,z) | beforeEq(beginof(x),endof(x)).  [resolve(261,d,200,b)].
+Derived: activity(f8(x)) | -PRE(x,y) | -PRE(x,z) | -participates_in(u,x,w).  [resolve(261,d,224,b)].
+262 activity(f8(x)) | activity(x) | timepoint(x) | -psl_interval(x,y) | ED(x).  [resolve(185,d,149,a)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | -psl_interval(x,y) | beforeEq(beginof(x),endof(x)).  [resolve(262,e,200,b)].
+263 activity(f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | ED(x).  [resolve(185,d,169,c)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | beforeEq(beginof(x),endof(x)).  [resolve(263,f,200,b)].
+Derived: activity(f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | -participates_in(y,x,z).  [resolve(263,f,224,b)].
+264 occurrence_of(x,f8(x)) | -PRE(x,y) | -psl_interval(x,z) | ED(x).  [resolve(186,c,149,a)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -psl_interval(x,z) | beforeEq(beginof(x),endof(x)).  [resolve(264,d,200,b)].
+265 occurrence_of(x,f8(x)) | -PRE(x,y) | -PRE(x,z) | ED(x).  [resolve(186,c,159,b)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -PRE(x,z) | beforeEq(beginof(x),endof(x)).  [resolve(265,d,200,b)].
+Derived: occurrence_of(x,f8(x)) | -PRE(x,y) | -PRE(x,z) | -participates_in(u,x,w).  [resolve(265,d,224,b)].
+266 occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | -psl_interval(x,y) | ED(x).  [resolve(187,d,149,a)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | -psl_interval(x,y) | beforeEq(beginof(x),endof(x)).  [resolve(266,e,200,b)].
+267 occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | ED(x).  [resolve(187,d,169,c)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | beforeEq(beginof(x),endof(x)).  [resolve(267,f,200,b)].
+Derived: occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | -participates_in(y,x,z).  [resolve(267,f,224,b)].
+268 -participates_in(x,y,z) | -psl_interval(y,u) | -ED(y).  [resolve(188,b,177,a)].
+Derived: -participates_in(x,y,z) | -psl_interval(y,u) | -timepoint(y) | -psl_interval(y,w).  [resolve(268,c,212,c)].
+Derived: -participates_in(x,y,z) | -psl_interval(y,u) | activity(f8(y)) | -psl_interval(y,w).  [resolve(268,c,215,c)].
+Derived: -participates_in(x,y,z) | -psl_interval(y,u) | occurrence_of(y,f8(y)) | -psl_interval(y,w).  [resolve(268,c,218,c)].
+Derived: -participates_in(x,y,z) | -psl_interval(y,u) | beforeEq(beginof(y),endof(y)) | -psl_interval(y,w).  [resolve(268,c,221,c)].
+269 -participates_in(x,y,z) | -PRE(y,u) | -ED(y).  [resolve(189,c,177,a)].
+Derived: -participates_in(x,y,z) | -PRE(y,u) | -timepoint(y) | -PRE(y,w).  [resolve(269,c,213,c)].
+Derived: -participates_in(x,y,z) | -PRE(y,u) | beforeEq(beginof(y),endof(y)) | -PRE(y,w).  [resolve(269,c,222,c)].
+270 -participates_in(x,y,z) | activity(y) | timepoint(y) | -ED(y).  [resolve(190,d,177,a)].
+Derived: -participates_in(x,y,z) | activity(y) | timepoint(y) | beforeEq(beginof(y),endof(y)) | activity(y) | timepoint(y).  [resolve(270,d,223,d)].
+
+Eliminating Q/1
+271 -participates_in(x,y,z) | Q(x).  [resolve(79,b,70,b)].
+272 -Q(x) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [resolve(69,b,67,b)].
+273 PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | -Q(x).  [resolve(71,b,69,b)].
+274 psl_interval(x,f3(x)) | -Q(x).  [resolve(72,a,69,b)].
+275 -activity(x) | -Q(x).  [resolve(74,b,69,b)].
+276 -timepoint(x) | -Q(x).  [resolve(75,a,69,b)].
+277 timepoint(beginof(x)) | -Q(x).  [resolve(76,a,69,b)].
+278 timepoint(endof(x)) | -Q(x).  [resolve(77,a,69,b)].
+279 beforeEq(beginof(x),endof(x)) | -Q(x).  [resolve(78,a,69,b)].
+280 -exists_at(x,y) | Q(x).  [resolve(80,b,70,b)].
+281 exists_at(x,y) | -betweenEq(beginof(x),y,endof(x)) | -Q(x).  [resolve(81,b,69,b)].
+282 PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | -psl_interval(x,z) | Q(x).  [resolve(86,f,70,b)].
+283 PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | -PRE(x,z) | Q(x).  [resolve(87,f,70,b)].
+284 psl_interval(x,f3(x)) | -psl_interval(x,y) | Q(x).  [resolve(88,c,70,b)].
+285 psl_interval(x,f3(x)) | -PRE(x,y) | Q(x).  [resolve(89,c,70,b)].
+286 activity(x) | timepoint(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | Q(x).  [resolve(92,c,70,b)].
+287 activity(x) | timepoint(x) | psl_interval(x,f3(x)) | Q(x).  [resolve(93,c,70,b)].
+288 -activity(x) | -psl_interval(x,y) | Q(x).  [resolve(94,c,70,b)].
+289 -activity(x) | -PRE(x,y) | Q(x).  [resolve(95,c,70,b)].
+290 -timepoint(x) | -psl_interval(x,y) | Q(x).  [resolve(97,c,70,b)].
+291 -timepoint(x) | -PRE(x,y) | Q(x).  [resolve(98,c,70,b)].
+292 -occurrence_of(x,y) | -Q(x).  [resolve(99,b,69,b)].
+293 activity(f8(x)) | -psl_interval(x,y) | Q(x).  [resolve(100,c,70,b)].
+294 activity(f8(x)) | -PRE(x,y) | Q(x).  [resolve(101,c,70,b)].
+295 activity(f8(x)) | activity(x) | timepoint(x) | Q(x).  [resolve(102,d,70,b)].
+296 occurrence_of(x,f8(x)) | -psl_interval(x,y) | Q(x).  [resolve(103,c,70,b)].
+297 occurrence_of(x,f8(x)) | -PRE(x,y) | Q(x).  [resolve(104,c,70,b)].
+298 occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | Q(x).  [resolve(105,d,70,b)].
+299 beforeEq(beginof(x),endof(x)) | -psl_interval(x,y) | Q(x).  [resolve(106,c,70,b)].
+300 beforeEq(beginof(x),endof(x)) | -PRE(x,y) | Q(x).  [resolve(107,c,70,b)].
+301 beforeEq(beginof(x),endof(x)) | activity(x) | timepoint(x) | Q(x).  [resolve(108,d,70,b)].
+302 -participates_in(x,y,z) | -Q(y).  [resolve(109,b,69,b)].
+303 -psl_interval(x,y) | Q(x) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(150,a,140,a)].
+304 -PRE(x,y) | Q(x) | psl_interval(x,z) | -timeinterval(z) | beginof(z) != beginof(x) | endof(z) != endof(x).  [resolve(160,b,140,a)].
+305 activity(x) | timepoint(x) | Q(x) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [resolve(170,c,140,a)].
+306 -Q(x) | -psl_interval(x,y) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(178,a,151,a)].
+307 -Q(x) | -psl_interval(x,y) | psl_interval(x,f3(x)).  [resolve(178,a,152,a)].
+308 -Q(x) | -psl_interval(x,y) | -activity(x).  [resolve(178,a,153,a)].
+309 -Q(x) | -psl_interval(x,y) | timepoint(beginof(x)).  [resolve(178,a,155,a)].
+310 -Q(x) | -psl_interval(x,y) | timepoint(endof(x)).  [resolve(178,a,156,a)].
+311 -Q(x) | -psl_interval(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)).  [resolve(178,a,158,a)].
+312 -Q(x) | -PRE(x,y) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(178,a,161,b)].
+313 -Q(x) | -PRE(x,y) | psl_interval(x,f3(x)).  [resolve(178,a,162,b)].
+314 -Q(x) | -PRE(x,y) | -activity(x).  [resolve(178,a,163,b)].
+315 -Q(x) | -PRE(x,y) | timepoint(beginof(x)).  [resolve(178,a,165,b)].
+316 -Q(x) | -PRE(x,y) | timepoint(endof(x)).  [resolve(178,a,166,b)].
+317 -Q(x) | -PRE(x,y) | exists_at(x,z) | -betweenEq(beginof(x),z,endof(x)).  [resolve(178,a,168,b)].
+318 -Q(x) | activity(x) | timepoint(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).  [resolve(178,a,171,c)].
+319 -Q(x) | activity(x) | timepoint(x) | psl_interval(x,f3(x)).  [resolve(178,a,172,c)].
+320 -Q(x) | activity(x) | timepoint(x) | timepoint(beginof(x)).  [resolve(178,a,173,c)].
+321 -Q(x) | activity(x) | timepoint(x) | timepoint(endof(x)).  [resolve(178,a,174,c)].
+322 -Q(x) | activity(x) | timepoint(x) | exists_at(x,y) | -betweenEq(beginof(x),y,endof(x)).  [resolve(178,a,176,c)].
+323 -participates_in(x,y,z) | -psl_interval(x,u) | Q(x).  [resolve(179,a,150,a)].
+324 -participates_in(x,y,z) | -PRE(x,u) | Q(x).  [resolve(179,a,160,b)].
+325 -participates_in(x,y,z) | activity(x) | timepoint(x) | Q(x).  [resolve(179,a,170,c)].
+326 -exists_at(x,y) | -psl_interval(x,z) | Q(x).  [resolve(180,a,150,a)].
+327 -exists_at(x,y) | -PRE(x,z) | Q(x).  [resolve(180,a,160,b)].
+328 -exists_at(x,y) | activity(x) | timepoint(x) | Q(x).  [resolve(180,a,170,c)].
+329 -occurrence_of(x,y) | -psl_interval(x,z) | -Q(x).  [resolve(181,b,178,a)].
+330 -occurrence_of(x,y) | -PRE(x,z) | -Q(x).  [resolve(182,c,178,a)].
+331 -occurrence_of(x,y) | activity(x) | timepoint(x) | -Q(x).  [resolve(183,d,178,a)].
+332 activity(f8(x)) | -PRE(x,y) | -psl_interval(x,z) | Q(x).  [resolve(184,c,150,a)].
+333 activity(f8(x)) | -PRE(x,y) | -PRE(x,z) | Q(x).  [resolve(184,c,160,b)].
+334 activity(f8(x)) | activity(x) | timepoint(x) | -psl_interval(x,y) | Q(x).  [resolve(185,d,150,a)].
+335 activity(f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | Q(x).  [resolve(185,d,170,c)].
+336 occurrence_of(x,f8(x)) | -PRE(x,y) | -psl_interval(x,z) | Q(x).  [resolve(186,c,150,a)].
+337 occurrence_of(x,f8(x)) | -PRE(x,y) | -PRE(x,z) | Q(x).  [resolve(186,c,160,b)].
+338 occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | -psl_interval(x,y) | Q(x).  [resolve(187,d,150,a)].
+339 occurrence_of(x,f8(x)) | activity(x) | timepoint(x) | activity(x) | timepoint(x) | Q(x).  [resolve(187,d,170,c)].
+340 -participates_in(x,y,z) | -psl_interval(y,u) | -Q(y).  [resolve(188,b,178,a)].
+341 -participates_in(x,y,z) | -PRE(y,u) | -Q(y).  [resolve(189,c,178,a)].
+342 -participates_in(x,y,z) | activity(y) | timepoint(y) | -Q(y).  [resolve(190,d,178,a)].
+343 -Q(x) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [resolve(191,b,192,a)].
+344 -psl_interval(x,y) | Q(x) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)) | -psl_interval(x,u).  [resolve(228,a,204,f)].
+345 -psl_interval(x,y) | Q(x) | psl_interval(x,f3(x)) | -psl_interval(x,z).  [resolve(228,a,206,c)].
+346 -psl_interval(x,y) | Q(x) | -activity(x) | -psl_interval(x,z).  [resolve(228,a,210,c)].
+347 -psl_interval(x,y) | Q(x) | -timepoint(x) | -psl_interval(x,z).  [resolve(228,a,212,c)].
+Derived: -psl_interval(x,y) | -timepoint(x) | -psl_interval(x,z) | psl_interval(x,u) | -timeinterval(u) | beginof(u) != beginof(x) | endof(u) != endof(x).  [resolve(347,b,272,a)].
+Derived: -psl_interval(x,y) | -timepoint(x) | -psl_interval(x,z) | -timepoint(x).  [resolve(347,b,276,b)].
+348 -psl_interval(x,y) | Q(x) | activity(f8(x)) | -psl_interval(x,z).  [resolve(228,a,215,c)].
+Derived: -psl_interval(x,y) | activity(f8(x)) | -psl_interval(x,z) | psl_interval(x,u) | -timeinterval(u) | beginof(u) != beginof(x) | endof(u) != endof(x).  [resolve(348,b,272,a)].
+Derived: -psl_interval(x,y) | activity(f8(x)) | -psl_interval(x,z) | beforeEq(beginof(x),endof(x)).  [resolve(348,b,279,b)].
+349 -psl_interval(x,y) | Q(x) | occurrence_of(x,f8(x)) | -psl_interval(x,z).  [resolve(228,a,218,c)].
+Derived: -psl_interval(x,y) | occurrence_of(x,f8(x)) | -psl_interval(x,z) | psl_interval(x,u) | -timeinterval(u) | beginof(u) != beginof(x) | endof(u) != endof(x).  [resolve(349,b,272,a)].
+Derived: -psl_interval(x,y) | occurrence_of(x,f8(x)) | -psl_interval(x,z) | beforeEq(beginof(x),endof(x)).  [resolve(349,b,279,b)].
+350 -psl_interval(x,y) | Q(x) | beforeEq(beginof(x),endof(x)) | -psl_interval(x,z).  [resolve(228,a,221,c)].
+Derived: -psl_interval(x,y) | beforeEq(beginof(x),endof(x)) | -psl_interval(x,z) | psl_interval(x,u) | -timeinterval(u) | beginof(u) != beginof(x) | endof(u) != endof(x).  [resolve(350,b,272,a)].
+Derived: -psl_interval(x,y) | beforeEq(beginof(x),endof(x)) | -psl_interval(x,z) | beforeEq(beginof(x),endof(x)).  [resolve(350,b,279,b)].
+351 -PRE(x,y) | Q(x) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)) | -PRE(x,u).  [resolve(235,a,205,f)].
+352 -PRE(x,y) | Q(x) | psl_interval(x,f3(x)) | -PRE(x,z).  [resolve(235,a,207,c)].
+353 -PRE(x,y) | Q(x) | -activity(x) | -PRE(x,z).  [resolve(235,a,211,c)].
+354 -PRE(x,y) | Q(x) | -timepoint(x) | -PRE(x,z).  [resolve(235,a,213,c)].
+Derived: -PRE(x,y) | -timepoint(x) | -PRE(x,z) | psl_interval(x,u) | -timeinterval(u) | beginof(u) != beginof(x) | endof(u) != endof(x).  [resolve(354,b,272,a)].
+Derived: -PRE(x,y) | -timepoint(x) | -PRE(x,z) | -timepoint(x).  [resolve(354,b,276,b)].
+355 -PRE(x,y) | Q(x) | beforeEq(beginof(x),endof(x)) | -PRE(x,z).  [resolve(235,a,222,c)].
+Derived: -PRE(x,y) | beforeEq(beginof(x),endof(x)) | -PRE(x,z) | psl_interval(x,u) | -timeinterval(u) | beginof(u) != beginof(x) | endof(u) != endof(x).  [resolve(355,b,272,a)].
+Derived: -PRE(x,y) | beforeEq(beginof(x),endof(x)) | -PRE(x,z) | beforeEq(beginof(x),endof(x)).  [resolve(355,b,279,b)].
+356 activity(x) | timepoint(x) | Q(x) | activity(x) | timepoint(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).  [resolve(242,a,208,g)].
+357 activity(x) | timepoint(x) | Q(x) | activity(x) | timepoint(x) | psl_interval(x,f3(x)).  [resolve(242,a,209,d)].
+358 activity(x) | timepoint(x) | Q(x) | beforeEq(beginof(x),endof(x)) | activity(x) | timepoint(x).  [resolve(242,a,223,d)].
+Derived: activity(x) | timepoint(x) | beforeEq(beginof(x),endof(x)) | activity(x) | timepoint(x) | psl_interval(x,y) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).  [resolve(358,c,272,a)].
+Derived: activity(x) | timepoint(x) | beforeEq(beginof(x),endof(x)) | activity(x) | timepoint(x) | beforeEq(beginof(x),endof(x)).  [resolve(358,c,279,b)].
+359 -Q(x) | -psl_interval(x,y) | -timepoint(x).  [resolve(248,c,197,b)].
+360 -Q(x) | -psl_interval(x,y) | beforeEq(beginof(x),endof(x)).  [resolve(248,c,200,b)].
+361 -Q(x) | -PRE(x,y) | -timepoint(x).  [resolve(249,c,197,b)].
+362 -Q(x) | -PRE(x,y) | beforeEq(beginof(x),endof(x)).  [resolve(249,c,200,b)].
+363 -Q(x) | activity(x) | timepoint(x) | beforeEq(beginof(x),endof(x)).  [resolve(250,d,200,b)].
+
+============================== end predicate elimination =============
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, timepoint, activity, timeinterval, psl_interval, PRE, beforeEq, occurrence_of, exists_at, before, P, participates_in, betweenEq ]).
+Function symbol precedence:  function_order([ "inf+", "inf-", c1, c2, c3, c4, c5, between, beginof, endof, f3, f6, f7, f8, f9, f10, f1, f2, f4, f5 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+  % set(binary_resolution).  % (non-Horn)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.17 seconds.
+
+============================== PROOF =================================
+
+% Proof 1 at 0.19 (+ 0.01) seconds.
+% Length of proof is 49.
+% Level of proof is 9.
+% Maximum clause weight is 34.000.
+% Given clauses 213.
+
+7 (all t1 all t2 (P(t1,t2) <-> timeinterval(t1) & timeinterval(t2) & beforeEq(beginof(t2),beginof(t1)) & beforeEq(endof(t1),endof(t2)))) # label(non_clause).  [assumption].
+8 (all x all y all t (PRE(x,t) <-> (object(x) | activity_occurrence(x)) & timeinterval(t) & beforeEq(beginof(x),beginof(t)) & beforeEq(endof(t),endof(x)))) # label(non_clause).  [assumption].
+12 (all x all y all z (P(x,y) & P(y,z) -> P(x,z))) # label(non_clause).  [assumption].
+23 (all x (activity(x) | activity_occurrence(x) | timepoint(x) | object(x))) # label(non_clause).  [assumption].
+24 (all x ((activity(x) -> -(activity_occurrence(x) | object(x) | timepoint(x))) & (activity_occurrence(x) -> -(object(x) | timepoint(x))) & (object(x) -> -timepoint(x)))) # label(non_clause).  [assumption].
+36 (all x (timepoint(x) <-> -timeinterval(x))) # label(non_clause).  [assumption].
+47 (all x all t all t1 (PRE(x,t) & P(t1,t) -> PRE(x,t1))) # label(non_clause) # label(goal).  [goal].
+52 -PRE(x,y) | object(x) | activity_occurrence(x).  [clausify(8)].
+53 PRE(x,y) | -activity_occurrence(x) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).  [clausify(8)].
+57 activity(x) | activity_occurrence(x) | timepoint(x) | object(x).  [clausify(23)].
+58 -activity(x) | -activity_occurrence(x).  [clausify(24)].
+60 -activity_occurrence(x) | -timepoint(x).  [clausify(24)].
+71 PRE(x,y) | -object(x) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).  [clausify(8)].
+74 -activity(x) | -object(x).  [clausify(24)].
+75 -object(x) | -timepoint(x).  [clausify(24)].
+92 activity(x) | timepoint(x) | object(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).  [resolve(57,b,53,b)].
+95 -activity(x) | -PRE(x,y) | object(x).  [resolve(58,b,52,c)].
+98 -timepoint(x) | -PRE(x,y) | object(x).  [resolve(60,a,52,c)].
+367 -P(x,y) | timeinterval(x).  [clausify(7)].
+369 -P(x,y) | beforeEq(beginof(y),beginof(x)).  [clausify(7)].
+370 -P(x,y) | beforeEq(endof(x),endof(y)).  [clausify(7)].
+371 P(x,y) | -timeinterval(x) | -timeinterval(y) | -beforeEq(beginof(y),beginof(x)) | -beforeEq(endof(x),endof(y)).  [clausify(7)].
+372 -PRE(x,y) | timeinterval(y).  [clausify(8)].
+373 -PRE(x,y) | beforeEq(beginof(x),beginof(y)).  [clausify(8)].
+374 -PRE(x,y) | beforeEq(endof(y),endof(x)).  [clausify(8)].
+376 -P(x,y) | -P(y,z) | P(x,z).  [clausify(12)].
+405 timepoint(x) | timeinterval(x).  [clausify(36)].
+426 PRE(c3,c4).  [deny(47)].
+427 P(c5,c4).  [deny(47)].
+428 -PRE(c3,c5).  [deny(47)].
+472 activity(x) | timepoint(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)) | PRE(x,z) | -timeinterval(z) | -beforeEq(beginof(x),beginof(z)) | -beforeEq(endof(z),endof(x)).  [resolve(92,c,71,b)].
+477 -activity(x) | -PRE(x,y) | -activity(x).  [resolve(95,c,74,b)].
+478 -activity(x) | -PRE(x,y).  [copy(477),merge(c)].
+481 -timepoint(x) | -PRE(x,y) | -timepoint(x).  [resolve(98,c,75,a)].
+482 -timepoint(x) | -PRE(x,y).  [copy(481),merge(c)].
+598 activity(x) | timepoint(x) | PRE(x,y) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).  [factor(472,c,g),merge(g),merge(h),merge(i)].
+633 beforeEq(endof(c4),endof(c3)).  [resolve(426,a,374,a)].
+634 beforeEq(beginof(c3),beginof(c4)).  [resolve(426,a,373,a)].
+635 timeinterval(c4).  [resolve(426,a,372,a)].
+637 -P(c4,x) | P(c5,x).  [resolve(427,a,376,a)].
+640 timeinterval(c5).  [resolve(427,a,367,a)].
+645 -activity(c3).  [resolve(478,b,426,a)].
+646 -timepoint(c3).  [resolve(482,b,426,a)].
+889 P(c4,c3) | -timeinterval(c3).  [resolve(633,a,371,e),unit_del(b,635),unit_del(d,634)].
+967 P(c4,c3).  [resolve(889,b,405,b),unit_del(b,646)].
+1088 P(c5,c3).  [resolve(637,a,967,a)].
+1091 beforeEq(endof(c5),endof(c3)).  [resolve(1088,a,370,a)].
+1092 beforeEq(beginof(c3),beginof(c5)).  [resolve(1088,a,369,a)].
+1093 $F.  [resolve(1091,a,598,f),unit_del(a,645),unit_del(b,646),unit_del(c,428),unit_del(d,640),unit_del(e,1092)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=213. Generated=1184. Kept=680. proofs=1.
+Usable=212. Sos=385. Demods=3. Limbo=0, Disabled=799. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=503. Back_subsumed=57.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=3 (0 lex), Back_demodulated=24. Back_unit_deleted=2.
+Demod_attempts=5280. Demod_rewrites=37.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=670. Nonunit_bsub_feature_tests=947.
+Megabytes=4.52.
+User_CPU=0.19, System_CPU=0.01, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 8190 exit (max_proofs) Mon Jul 15 12:21:34 2013

@@ -1,0 +1,196 @@
+============================== Mace4 =================================
+Mace4 (64) version 2009-11A, November 2009.
+Process 8063 was started by cchui on stl1.mie.utoronto.ca,
+Mon Jul 15 12:05:32 2013
+The command was "mace4 -c -t 600 -s 600 -n 2 -N 20 -f test/p9/interval_psl_core2dolce_present.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file test/p9/interval_psl_core2dolce_present.p9
+
+
+formulas(sos).
+(all x (ED(x) <-> object(x))).
+(all x (Q(x) <-> object(x))).
+(all x (PD(x) <-> activity_occurrence(x))).
+(all x (T(x) <-> timeinterval(x))).
+(all t1 all t2 (P(t1,t2) <-> timeinterval(t1) & timeinterval(t2) & beforeEq(beginof(t2),beginof(t1)) & beforeEq(endof(t1),endof(t2)))).
+(all x all y all t (PRE(x,t) <-> (object(x) | activity_occurrence(x)) & timeinterval(t) & beforeEq(beginof(x),beginof(t)) & beforeEq(endof(t),endof(x)))).
+(all x all y all z (sum(z,x,y) <-> timeinterval(x) & timeinterval(y) & timeinterval(z) & (beginof(z) = beginof(x) & endof(z) = endof(y) | beginof(z) = beginof(y) & endof(z) = endof(x)))).
+(all x (object(x) | activity_occurrence(x) -> (exists t psl_interval(x,t)))).
+(all x all y all z (beforeEq(x,y) & beforeEq(y,z) -> beforeEq(x,z))).
+(all x all y all z (P(x,y) & P(y,z) -> P(x,z))).
+(all x all y (psl_interval(x,y) <-> (activity_occurrence(x) | object(x)) & timeinterval(y) & beginof(x) = beginof(y) & endof(x) = endof(y))).
+(all x all y all z (overlay(x,y,z) <-> (exists i1 exists i2 (psl_interval(x,i1) & psl_interval(y,i2) & beginof(i2) = beginof(z) & endof(i1) = endof(z))))).
+end_of_list.
+
+% From the command line: assign(max_seconds, 600).
+
+% From the command line: assign(max_seconds_per, 600).
+    % assign(domain_size, 2) -> assign(start_size, 2).
+    % assign(domain_size, 2) -> assign(end_size, 2).
+
+% From the command line: assign(domain_size, 2).
+
+% From the command line: assign(end_size, 20).
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (ED(x) <-> object(x))) # label(non_clause).  [assumption].
+2 (all x (Q(x) <-> object(x))) # label(non_clause).  [assumption].
+3 (all x (PD(x) <-> activity_occurrence(x))) # label(non_clause).  [assumption].
+4 (all x (T(x) <-> timeinterval(x))) # label(non_clause).  [assumption].
+5 (all t1 all t2 (P(t1,t2) <-> timeinterval(t1) & timeinterval(t2) & beforeEq(beginof(t2),beginof(t1)) & beforeEq(endof(t1),endof(t2)))) # label(non_clause).  [assumption].
+6 (all x all y all t (PRE(x,t) <-> (object(x) | activity_occurrence(x)) & timeinterval(t) & beforeEq(beginof(x),beginof(t)) & beforeEq(endof(t),endof(x)))) # label(non_clause).  [assumption].
+7 (all x all y all z (sum(z,x,y) <-> timeinterval(x) & timeinterval(y) & timeinterval(z) & (beginof(z) = beginof(x) & endof(z) = endof(y) | beginof(z) = beginof(y) & endof(z) = endof(x)))) # label(non_clause).  [assumption].
+8 (all x (object(x) | activity_occurrence(x) -> (exists t psl_interval(x,t)))) # label(non_clause).  [assumption].
+9 (all x all y all z (beforeEq(x,y) & beforeEq(y,z) -> beforeEq(x,z))) # label(non_clause).  [assumption].
+10 (all x all y all z (P(x,y) & P(y,z) -> P(x,z))) # label(non_clause).  [assumption].
+11 (all x all y (psl_interval(x,y) <-> (activity_occurrence(x) | object(x)) & timeinterval(y) & beginof(x) = beginof(y) & endof(x) = endof(y))) # label(non_clause).  [assumption].
+12 (all x all y all z (overlay(x,y,z) <-> (exists i1 exists i2 (psl_interval(x,i1) & psl_interval(y,i2) & beginof(i2) = beginof(z) & endof(i1) = endof(z))))) # label(non_clause).  [assumption].
+
+============================== end of process non-clausal formulas ===
+
+============================== CLAUSES FOR SEARCH ====================
+
+formulas(mace4_clauses).
+-ED(x) | object(x).
+ED(x) | -object(x).
+-Q(x) | object(x).
+Q(x) | -object(x).
+-PD(x) | activity_occurrence(x).
+PD(x) | -activity_occurrence(x).
+-T(x) | timeinterval(x).
+T(x) | -timeinterval(x).
+-P(x,y) | timeinterval(x).
+-P(x,y) | timeinterval(y).
+-P(x,y) | beforeEq(beginof(y),beginof(x)).
+-P(x,y) | beforeEq(endof(x),endof(y)).
+P(x,y) | -timeinterval(x) | -timeinterval(y) | -beforeEq(beginof(y),beginof(x)) | -beforeEq(endof(x),endof(y)).
+-PRE(x,y) | object(x) | activity_occurrence(x).
+-PRE(x,y) | timeinterval(y).
+-PRE(x,y) | beforeEq(beginof(x),beginof(y)).
+-PRE(x,y) | beforeEq(endof(y),endof(x)).
+PRE(x,y) | -object(x) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).
+PRE(x,y) | -activity_occurrence(x) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).
+-sum(x,y,z) | timeinterval(y).
+-sum(x,y,z) | timeinterval(z).
+-sum(x,y,z) | timeinterval(x).
+-sum(x,y,z) | beginof(x) = beginof(y) | beginof(x) = beginof(z).
+-sum(x,y,z) | beginof(x) = beginof(y) | endof(x) = endof(y).
+-sum(x,y,z) | endof(x) = endof(z) | beginof(x) = beginof(z).
+-sum(x,y,z) | endof(x) = endof(z) | endof(x) = endof(y).
+sum(x,y,z) | -timeinterval(y) | -timeinterval(z) | -timeinterval(x) | beginof(x) != beginof(y) | endof(x) != endof(z).
+sum(x,y,z) | -timeinterval(y) | -timeinterval(z) | -timeinterval(x) | beginof(x) != beginof(z) | endof(x) != endof(y).
+-object(x) | psl_interval(x,f1(x)).
+-activity_occurrence(x) | psl_interval(x,f1(x)).
+-beforeEq(x,y) | -beforeEq(y,z) | beforeEq(x,z).
+-P(x,y) | -P(y,z) | P(x,z).
+-psl_interval(x,y) | activity_occurrence(x) | object(x).
+-psl_interval(x,y) | timeinterval(y).
+-psl_interval(x,y) | beginof(y) = beginof(x).
+-psl_interval(x,y) | endof(y) = endof(x).
+psl_interval(x,y) | -activity_occurrence(x) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).
+psl_interval(x,y) | -object(x) | -timeinterval(y) | beginof(y) != beginof(x) | endof(y) != endof(x).
+-overlay(x,y,z) | psl_interval(x,f2(x,y,z)).
+-overlay(x,y,z) | psl_interval(y,f3(x,y,z)).
+-overlay(x,y,z) | beginof(f3(x,y,z)) = beginof(z).
+-overlay(x,y,z) | endof(f2(x,y,z)) = endof(z).
+overlay(x,y,z) | -psl_interval(x,u) | -psl_interval(y,w) | beginof(w) != beginof(z) | endof(u) != endof(z).
+end_of_list.
+
+============================== end of clauses for search =============
+
+% There are no natural numbers in the input.
+
+============================== DOMAIN SIZE 2 =========================
+
+============================== MODEL =================================
+
+interpretation( 2, [number=1, seconds=0], [
+
+        function(beginof(_), [ 0, 0 ]),
+
+        function(endof(_), [ 0, 0 ]),
+
+        function(f1(_), [ 0, 0 ]),
+
+        function(f2(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f3(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        relation(ED(_), [ 0, 0 ]),
+
+        relation(PD(_), [ 0, 0 ]),
+
+        relation(Q(_), [ 0, 0 ]),
+
+        relation(T(_), [ 0, 0 ]),
+
+        relation(activity_occurrence(_), [ 0, 0 ]),
+
+        relation(object(_), [ 0, 0 ]),
+
+        relation(timeinterval(_), [ 0, 0 ]),
+
+        relation(P(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(PRE(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(beforeEq(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(psl_interval(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(overlay(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        relation(sum(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ])
+]).
+
+============================== end of model ==========================
+
+============================== STATISTICS ============================
+
+For domain size 2.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.00 seconds).
+Ground clauses: seen=240, kept=240.
+Selections=30, assignments=30, propagations=38, current_models=1.
+Rewrite_terms=500, rewrite_bools=343, indexes=14.
+Rules_from_neg_clauses=0, cross_offs=0.
+
+============================== end of statistics =====================
+
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+Exiting with 1 model.
+
+Process 8063 exit (max_models) Mon Jul 15 12:05:32 2013
+The process finished Mon Jul 15 12:05:32 2013
