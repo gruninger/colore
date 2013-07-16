@@ -1,0 +1,475 @@
+============================== Mace4 =================================
+Mace4 (64) version 2009-11A, November 2009.
+Process 11935 was started by cchui on stl1.mie.utoronto.ca,
+Tue Jul 16 10:29:46 2013
+The command was "mace4 -c -t 600 -s 600 -n 2 -N 20 -f test/p9/taxonomy.p9 test/p9/ideal_cem_wmg.p9 test/p9/dolce_present_reduction.p9 test/p9/ideal_mg.p9 test/p9/cem_wmg.p9 test/p9/lower_mg.p9 test/p9/mereology_def_point.p9 test/p9/wmg.p9 test/p9/expanded_cem_mereology_point.p9 test/p9/ex0715_present_reduction_4.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file test/p9/taxonomy.p9
+
+
+formulas(sos).
+(all x (L_1(x) -> -L_2(x))).
+(all x (L_1(x) -> -L_3(x))).
+(all x (L_2(x) -> -L_3(x))).
+(all x (L_4(x) -> L_1(x))).
+(all x (L_5(x) -> L_1(x))).
+(all x (L_4(x) -> -L_5(x))).
+end_of_list.
+
+% Reading from file test/p9/ideal_cem_wmg.p9
+
+
+formulas(sos).
+end_of_list.
+
+% Reading from file test/p9/dolce_present_reduction.p9
+
+
+formulas(sos).
+(all x all y (PRE(x,y) <-> in(y,x) & line(x) & point(y))).
+(all x (T(x) <-> point(x))).
+(all x (ED(x) <-> line(x) & L_1(x))).
+(all x (PD(x) <-> line(x) & L_2(x))).
+(all x (Q(x) <-> line(x) & L_3(x))).
+(all x all y (P(x,y) <-> part(x,y))).
+(all x all y (PP(x,y) <-> ppart(x,y))).
+(all x all y (O(x,y) <-> overlaps(x,y))).
+(all x all y (U(x,y) <-> underlaps(x,y))).
+(all x all y (DJ(x,y) <-> disjoint(x,y))).
+(all x all y all z (SUM(z,x,y) <-> sum(x,y,z))).
+(all x all y all z (T(x) & T(y) & T(z) -> (SUM(z,x,y) <-> (all w (T(w) -> (O(w,z) <-> O(w,x) | O(w,y))))))).
+end_of_list.
+
+% Reading from file test/p9/ideal_mg.p9
+
+
+formulas(sos).
+(all x all y all z all l (point(x) & point(y) & line(l) & in(x,l) & in(y,l) & sum(x,y,z) -> in(z,l))).
+end_of_list.
+
+% Reading from file test/p9/cem_wmg.p9
+
+
+formulas(sos).
+end_of_list.
+
+% Reading from file test/p9/lower_mg.p9
+
+
+formulas(sos).
+(all x all y all l (point(x) & point(y) & line(l) & in(x,l) & part(y,x) -> in(y,l))).
+end_of_list.
+
+% Reading from file test/p9/mereology_def_point.p9
+
+
+formulas(sos).
+(all x (point(x) -> part(x,x))).
+(all x all y (point(x) & point(y) -> (part(x,y) & part(y,x) -> x = y))).
+(all x all y all z (point(x) & point(y) & point(z) -> (part(x,y) & part(y,z) -> part(x,z)))).
+(all x all y (point(x) & point(y) -> (ppart(x,y) <-> part(x,y) & -part(y,x)))).
+(all x all y (point(x) & point(y) -> (overlaps(x,y) <-> (exists z (point(z) & part(z,x) & part(z,y)))))).
+(all x all y (point(x) & point(y) -> (disjoint(x,y) <-> -overlaps(x,y)))).
+(all x all y (point(x) & point(y) -> (underlaps(x,y) <-> (exists z (point(z) & part(x,z) & part(y,z)))))).
+(all x (point(x) -> (atomic_part(x) <-> (all y (point(y) & part(y,x) -> y = x))))).
+(all x all y all z (point(x) & point(y) & point(z) -> (sum(x,y,z) <-> (all w (point(w) -> (overlaps(w,z) <-> overlaps(w,x) | overlaps(w,y))))))).
+(all x all y all z (point(x) & point(y) & point(z) -> (prod(x,y,z) <-> (all w (point(w) -> (part(w,z) <-> part(w,x) | part(w,y))))))).
+end_of_list.
+
+% Reading from file test/p9/wmg.p9
+
+
+formulas(sos).
+(all x all y (in(x,y) -> in(y,x))).
+(all x (point(x) | line(x) -> in(x,x))).
+(all x (point(x) -> -line(x))).
+(all x all y (in(x,y) & point(x) & point(y) -> x = y)).
+(all x all y (in(x,y) & line(x) & line(y) -> x = y)).
+(all x (line(x) -> (exists y (point(x) & in(x,y))))).
+(all x all l (point(x) & line(l) & in(x,l) -> part(x,x))).
+(all x all y all l (line(l) & in(x,l) & in(y,l) & part(x,y) & part(y,x) -> x = y)).
+(all x all y all z all l (line(l) & in(x,l) & in(y,l) & in(z,l) & part(x,y) & part(y,z) -> part(x,z))).
+(all x all y (part(x,y) -> point(x) & point(y))).
+end_of_list.
+
+% Reading from file test/p9/expanded_cem_mereology_point.p9
+
+
+formulas(sos).
+(all x all y (point(x) & point(y) & underlaps(x,y) -> (exists z (point(z) & (all v (overlaps(v,z) <-> overlaps(v,x) | overlaps(v,y))))))).
+(all x all y (point(x) & point(y) & overlaps(x,y) -> (exists z (point(z) & (all v (ppart(v,z) <-> ppart(v,x) & ppart(v,y))))))).
+(all x all y (point(x) & point(y) & -part(x,y) -> (exists z (point(z) & part(z,x) & disjoint(z,y))))).
+(all x (point(x) -> part(x,x))).
+(all x all y (point(x) & point(y) & part(x,y) & part(y,x) -> x = y)).
+(all x all y all z (point(x) & point(y) & point(z) & part(x,y) & part(y,z) -> part(x,z))).
+(all x all y (point(x) & point(y) -> (ppart(x,y) <-> part(x,y) & -part(y,x)))).
+(all x all y (point(x) & point(y) -> (overlaps(x,y) <-> (exists z (point(z) & part(z,x) & part(z,y)))))).
+(all x all y (point(x) & point(y) -> (disjoint(x,y) <-> -overlaps(x,y)))).
+(all x all y (point(x) & point(y) -> (underlaps(x,y) <-> (exists z (point(z) & part(x,z) & part(y,z)))))).
+(all x (point(x) -> (atomic_part(x) <-> (all y (point(y) & part(y,x) -> y = x))))).
+(all x all y all z (point(x) & point(y) & point(z) -> (sum(x,y,z) <-> (all w (point(w) -> (overlaps(w,z) <-> overlaps(w,x) | overlaps(w,y))))))).
+(all x all y all z (point(x) & point(y) & point(z) -> (prod(x,y,z) <-> (all w (point(w) -> (part(w,z) <-> part(w,x) | part(w,y))))))).
+end_of_list.
+
+% Reading from file test/p9/ex0715_present_reduction_4.p9
+
+
+formulas(goals).
+(all x all t all t1 all t2 (PRE(x,t1) & PRE(x,t2) & SUM(t,t1,t2) -> PRE(x,t))).
+end_of_list.
+
+% From the command line: assign(max_seconds, 600).
+
+% From the command line: assign(max_seconds_per, 600).
+    % assign(domain_size, 2) -> assign(start_size, 2).
+    % assign(domain_size, 2) -> assign(end_size, 2).
+
+% From the command line: assign(domain_size, 2).
+
+% From the command line: assign(end_size, 20).
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (L_1(x) -> -L_2(x))) # label(non_clause).  [assumption].
+2 (all x (L_1(x) -> -L_3(x))) # label(non_clause).  [assumption].
+3 (all x (L_2(x) -> -L_3(x))) # label(non_clause).  [assumption].
+4 (all x (L_4(x) -> L_1(x))) # label(non_clause).  [assumption].
+5 (all x (L_5(x) -> L_1(x))) # label(non_clause).  [assumption].
+6 (all x (L_4(x) -> -L_5(x))) # label(non_clause).  [assumption].
+7 (all x all y (PRE(x,y) <-> in(y,x) & line(x) & point(y))) # label(non_clause).  [assumption].
+8 (all x (T(x) <-> point(x))) # label(non_clause).  [assumption].
+9 (all x (ED(x) <-> line(x) & L_1(x))) # label(non_clause).  [assumption].
+10 (all x (PD(x) <-> line(x) & L_2(x))) # label(non_clause).  [assumption].
+11 (all x (Q(x) <-> line(x) & L_3(x))) # label(non_clause).  [assumption].
+12 (all x all y (P(x,y) <-> part(x,y))) # label(non_clause).  [assumption].
+13 (all x all y (PP(x,y) <-> ppart(x,y))) # label(non_clause).  [assumption].
+14 (all x all y (O(x,y) <-> overlaps(x,y))) # label(non_clause).  [assumption].
+15 (all x all y (U(x,y) <-> underlaps(x,y))) # label(non_clause).  [assumption].
+16 (all x all y (DJ(x,y) <-> disjoint(x,y))) # label(non_clause).  [assumption].
+17 (all x all y all z (SUM(z,x,y) <-> sum(x,y,z))) # label(non_clause).  [assumption].
+18 (all x all y all z (T(x) & T(y) & T(z) -> (SUM(z,x,y) <-> (all w (T(w) -> (O(w,z) <-> O(w,x) | O(w,y))))))) # label(non_clause).  [assumption].
+19 (all x all y all z all l (point(x) & point(y) & line(l) & in(x,l) & in(y,l) & sum(x,y,z) -> in(z,l))) # label(non_clause).  [assumption].
+20 (all x all y all l (point(x) & point(y) & line(l) & in(x,l) & part(y,x) -> in(y,l))) # label(non_clause).  [assumption].
+21 (all x (point(x) -> part(x,x))) # label(non_clause).  [assumption].
+22 (all x all y (point(x) & point(y) -> (part(x,y) & part(y,x) -> x = y))) # label(non_clause).  [assumption].
+23 (all x all y all z (point(x) & point(y) & point(z) -> (part(x,y) & part(y,z) -> part(x,z)))) # label(non_clause).  [assumption].
+24 (all x all y (point(x) & point(y) -> (ppart(x,y) <-> part(x,y) & -part(y,x)))) # label(non_clause).  [assumption].
+25 (all x all y (point(x) & point(y) -> (overlaps(x,y) <-> (exists z (point(z) & part(z,x) & part(z,y)))))) # label(non_clause).  [assumption].
+26 (all x all y (point(x) & point(y) -> (disjoint(x,y) <-> -overlaps(x,y)))) # label(non_clause).  [assumption].
+27 (all x all y (point(x) & point(y) -> (underlaps(x,y) <-> (exists z (point(z) & part(x,z) & part(y,z)))))) # label(non_clause).  [assumption].
+28 (all x (point(x) -> (atomic_part(x) <-> (all y (point(y) & part(y,x) -> y = x))))) # label(non_clause).  [assumption].
+29 (all x all y all z (point(x) & point(y) & point(z) -> (sum(x,y,z) <-> (all w (point(w) -> (overlaps(w,z) <-> overlaps(w,x) | overlaps(w,y))))))) # label(non_clause).  [assumption].
+30 (all x all y all z (point(x) & point(y) & point(z) -> (prod(x,y,z) <-> (all w (point(w) -> (part(w,z) <-> part(w,x) | part(w,y))))))) # label(non_clause).  [assumption].
+31 (all x all y (in(x,y) -> in(y,x))) # label(non_clause).  [assumption].
+32 (all x (point(x) | line(x) -> in(x,x))) # label(non_clause).  [assumption].
+33 (all x (point(x) -> -line(x))) # label(non_clause).  [assumption].
+34 (all x all y (in(x,y) & point(x) & point(y) -> x = y)) # label(non_clause).  [assumption].
+35 (all x all y (in(x,y) & line(x) & line(y) -> x = y)) # label(non_clause).  [assumption].
+36 (all x (line(x) -> (exists y (point(x) & in(x,y))))) # label(non_clause).  [assumption].
+37 (all x all l (point(x) & line(l) & in(x,l) -> part(x,x))) # label(non_clause).  [assumption].
+38 (all x all y all l (line(l) & in(x,l) & in(y,l) & part(x,y) & part(y,x) -> x = y)) # label(non_clause).  [assumption].
+39 (all x all y all z all l (line(l) & in(x,l) & in(y,l) & in(z,l) & part(x,y) & part(y,z) -> part(x,z))) # label(non_clause).  [assumption].
+40 (all x all y (part(x,y) -> point(x) & point(y))) # label(non_clause).  [assumption].
+41 (all x all y (point(x) & point(y) & underlaps(x,y) -> (exists z (point(z) & (all v (overlaps(v,z) <-> overlaps(v,x) | overlaps(v,y))))))) # label(non_clause).  [assumption].
+42 (all x all y (point(x) & point(y) & overlaps(x,y) -> (exists z (point(z) & (all v (ppart(v,z) <-> ppart(v,x) & ppart(v,y))))))) # label(non_clause).  [assumption].
+43 (all x all y (point(x) & point(y) & -part(x,y) -> (exists z (point(z) & part(z,x) & disjoint(z,y))))) # label(non_clause).  [assumption].
+44 (all x (point(x) -> part(x,x))) # label(non_clause).  [assumption].
+45 (all x all y (point(x) & point(y) & part(x,y) & part(y,x) -> x = y)) # label(non_clause).  [assumption].
+46 (all x all y all z (point(x) & point(y) & point(z) & part(x,y) & part(y,z) -> part(x,z))) # label(non_clause).  [assumption].
+47 (all x all y (point(x) & point(y) -> (ppart(x,y) <-> part(x,y) & -part(y,x)))) # label(non_clause).  [assumption].
+48 (all x all y (point(x) & point(y) -> (overlaps(x,y) <-> (exists z (point(z) & part(z,x) & part(z,y)))))) # label(non_clause).  [assumption].
+49 (all x all y (point(x) & point(y) -> (disjoint(x,y) <-> -overlaps(x,y)))) # label(non_clause).  [assumption].
+50 (all x all y (point(x) & point(y) -> (underlaps(x,y) <-> (exists z (point(z) & part(x,z) & part(y,z)))))) # label(non_clause).  [assumption].
+51 (all x (point(x) -> (atomic_part(x) <-> (all y (point(y) & part(y,x) -> y = x))))) # label(non_clause).  [assumption].
+52 (all x all y all z (point(x) & point(y) & point(z) -> (sum(x,y,z) <-> (all w (point(w) -> (overlaps(w,z) <-> overlaps(w,x) | overlaps(w,y))))))) # label(non_clause).  [assumption].
+53 (all x all y all z (point(x) & point(y) & point(z) -> (prod(x,y,z) <-> (all w (point(w) -> (part(w,z) <-> part(w,x) | part(w,y))))))) # label(non_clause).  [assumption].
+54 (all x all t all t1 all t2 (PRE(x,t1) & PRE(x,t2) & SUM(t,t1,t2) -> PRE(x,t))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== CLAUSES FOR SEARCH ====================
+
+formulas(mace4_clauses).
+-L_1(x) | -L_2(x).
+-L_1(x) | -L_3(x).
+-L_2(x) | -L_3(x).
+-L_4(x) | L_1(x).
+-L_5(x) | L_1(x).
+-L_4(x) | -L_5(x).
+-PRE(x,y) | in(y,x).
+-PRE(x,y) | line(x).
+-PRE(x,y) | point(y).
+PRE(x,y) | -in(y,x) | -line(x) | -point(y).
+-T(x) | point(x).
+T(x) | -point(x).
+-ED(x) | line(x).
+-ED(x) | L_1(x).
+ED(x) | -line(x) | -L_1(x).
+-PD(x) | line(x).
+-PD(x) | L_2(x).
+PD(x) | -line(x) | -L_2(x).
+-Q(x) | line(x).
+-Q(x) | L_3(x).
+Q(x) | -line(x) | -L_3(x).
+-P(x,y) | part(x,y).
+P(x,y) | -part(x,y).
+-PP(x,y) | ppart(x,y).
+PP(x,y) | -ppart(x,y).
+-O(x,y) | overlaps(x,y).
+O(x,y) | -overlaps(x,y).
+-U(x,y) | underlaps(x,y).
+U(x,y) | -underlaps(x,y).
+-DJ(x,y) | disjoint(x,y).
+DJ(x,y) | -disjoint(x,y).
+-SUM(x,y,z) | sum(y,z,x).
+SUM(x,y,z) | -sum(y,z,x).
+-T(x) | -T(y) | -T(z) | -SUM(z,x,y) | -T(u) | -O(u,z) | O(u,x) | O(u,y).
+-T(x) | -T(y) | -T(z) | -SUM(z,x,y) | -T(u) | O(u,z) | -O(u,x).
+-T(x) | -T(y) | -T(z) | -SUM(z,x,y) | -T(u) | O(u,z) | -O(u,y).
+-T(x) | -T(y) | -T(z) | SUM(z,x,y) | T(f1(x,y,z)).
+-T(x) | -T(y) | -T(z) | SUM(z,x,y) | O(f1(x,y,z),z) | O(f1(x,y,z),x) | O(f1(x,y,z),y).
+-T(x) | -T(y) | -T(z) | SUM(z,x,y) | -O(f1(x,y,z),z) | -O(f1(x,y,z),x).
+-T(x) | -T(y) | -T(z) | SUM(z,x,y) | -O(f1(x,y,z),z) | -O(f1(x,y,z),y).
+-point(x) | -point(y) | -line(z) | -in(x,z) | -in(y,z) | -sum(x,y,u) | in(u,z).
+-point(x) | -point(y) | -line(z) | -in(x,z) | -part(y,x) | in(y,z).
+-point(x) | part(x,x).
+-point(x) | -point(y) | -part(x,y) | -part(y,x) | y = x.
+-point(x) | -point(y) | -point(z) | -part(x,y) | -part(y,z) | part(x,z).
+-point(x) | -point(y) | -ppart(x,y) | part(x,y).
+-point(x) | -point(y) | -ppart(x,y) | -part(y,x).
+-point(x) | -point(y) | ppart(x,y) | -part(x,y) | part(y,x).
+-point(x) | -point(y) | -overlaps(x,y) | point(f2(x,y)).
+-point(x) | -point(y) | -overlaps(x,y) | part(f2(x,y),x).
+-point(x) | -point(y) | -overlaps(x,y) | part(f2(x,y),y).
+-point(x) | -point(y) | overlaps(x,y) | -point(z) | -part(z,x) | -part(z,y).
+-point(x) | -point(y) | -disjoint(x,y) | -overlaps(x,y).
+-point(x) | -point(y) | disjoint(x,y) | overlaps(x,y).
+-point(x) | -point(y) | -underlaps(x,y) | point(f3(x,y)).
+-point(x) | -point(y) | -underlaps(x,y) | part(x,f3(x,y)).
+-point(x) | -point(y) | -underlaps(x,y) | part(y,f3(x,y)).
+-point(x) | -point(y) | underlaps(x,y) | -point(z) | -part(x,z) | -part(y,z).
+-point(x) | -atomic_part(x) | -point(y) | -part(y,x) | y = x.
+-point(x) | atomic_part(x) | point(f4(x)).
+-point(x) | atomic_part(x) | part(f4(x),x).
+-point(x) | atomic_part(x) | f4(x) != x.
+-point(x) | -point(y) | -point(z) | -sum(x,y,z) | -point(u) | -overlaps(u,z) | overlaps(u,x) | overlaps(u,y).
+-point(x) | -point(y) | -point(z) | -sum(x,y,z) | -point(u) | overlaps(u,z) | -overlaps(u,x).
+-point(x) | -point(y) | -point(z) | -sum(x,y,z) | -point(u) | overlaps(u,z) | -overlaps(u,y).
+-point(x) | -point(y) | -point(z) | sum(x,y,z) | point(f5(x,y,z)).
+-point(x) | -point(y) | -point(z) | sum(x,y,z) | overlaps(f5(x,y,z),z) | overlaps(f5(x,y,z),x) | overlaps(f5(x,y,z),y).
+-point(x) | -point(y) | -point(z) | sum(x,y,z) | -overlaps(f5(x,y,z),z) | -overlaps(f5(x,y,z),x).
+-point(x) | -point(y) | -point(z) | sum(x,y,z) | -overlaps(f5(x,y,z),z) | -overlaps(f5(x,y,z),y).
+-point(x) | -point(y) | -point(z) | -prod(x,y,z) | -point(u) | -part(u,z) | part(u,x) | part(u,y).
+-point(x) | -point(y) | -point(z) | -prod(x,y,z) | -point(u) | part(u,z) | -part(u,x).
+-point(x) | -point(y) | -point(z) | -prod(x,y,z) | -point(u) | part(u,z) | -part(u,y).
+-point(x) | -point(y) | -point(z) | prod(x,y,z) | point(f6(x,y,z)).
+-point(x) | -point(y) | -point(z) | prod(x,y,z) | part(f6(x,y,z),z) | part(f6(x,y,z),x) | part(f6(x,y,z),y).
+-point(x) | -point(y) | -point(z) | prod(x,y,z) | -part(f6(x,y,z),z) | -part(f6(x,y,z),x).
+-point(x) | -point(y) | -point(z) | prod(x,y,z) | -part(f6(x,y,z),z) | -part(f6(x,y,z),y).
+-in(x,y) | in(y,x).
+-point(x) | in(x,x).
+-line(x) | in(x,x).
+-point(x) | -line(x).
+-in(x,y) | -point(x) | -point(y) | y = x.
+-in(x,y) | -line(x) | -line(y) | y = x.
+-line(x) | point(x).
+-line(x) | in(x,f7(x)).
+-point(x) | -line(y) | -in(x,y) | part(x,x).
+-line(x) | -in(y,x) | -in(z,x) | -part(y,z) | -part(z,y) | z = y.
+-line(x) | -in(y,x) | -in(z,x) | -in(u,x) | -part(y,z) | -part(z,u) | part(y,u).
+-part(x,y) | point(x).
+-part(x,y) | point(y).
+-point(x) | -point(y) | -underlaps(x,y) | point(f8(x,y)).
+-point(x) | -point(y) | -underlaps(x,y) | -overlaps(z,f8(x,y)) | overlaps(z,x) | overlaps(z,y).
+-point(x) | -point(y) | -underlaps(x,y) | overlaps(z,f8(x,y)) | -overlaps(z,x).
+-point(x) | -point(y) | -underlaps(x,y) | overlaps(z,f8(x,y)) | -overlaps(z,y).
+-point(x) | -point(y) | -overlaps(x,y) | point(f9(x,y)).
+-point(x) | -point(y) | -overlaps(x,y) | -ppart(z,f9(x,y)) | ppart(z,x).
+-point(x) | -point(y) | -overlaps(x,y) | -ppart(z,f9(x,y)) | ppart(z,y).
+-point(x) | -point(y) | -overlaps(x,y) | ppart(z,f9(x,y)) | -ppart(z,x) | -ppart(z,y).
+-point(x) | -point(y) | part(x,y) | point(f10(x,y)).
+-point(x) | -point(y) | part(x,y) | part(f10(x,y),x).
+-point(x) | -point(y) | part(x,y) | disjoint(f10(x,y),y).
+-point(x) | part(x,x).
+-point(x) | -point(y) | -part(x,y) | -part(y,x) | y = x.
+-point(x) | -point(y) | -point(z) | -part(x,y) | -part(y,z) | part(x,z).
+-point(x) | -point(y) | -ppart(x,y) | part(x,y).
+-point(x) | -point(y) | -ppart(x,y) | -part(y,x).
+-point(x) | -point(y) | ppart(x,y) | -part(x,y) | part(y,x).
+-point(x) | -point(y) | -overlaps(x,y) | point(f11(x,y)).
+-point(x) | -point(y) | -overlaps(x,y) | part(f11(x,y),x).
+-point(x) | -point(y) | -overlaps(x,y) | part(f11(x,y),y).
+-point(x) | -point(y) | overlaps(x,y) | -point(z) | -part(z,x) | -part(z,y).
+-point(x) | -point(y) | -disjoint(x,y) | -overlaps(x,y).
+-point(x) | -point(y) | disjoint(x,y) | overlaps(x,y).
+-point(x) | -point(y) | -underlaps(x,y) | point(f12(x,y)).
+-point(x) | -point(y) | -underlaps(x,y) | part(x,f12(x,y)).
+-point(x) | -point(y) | -underlaps(x,y) | part(y,f12(x,y)).
+-point(x) | -point(y) | underlaps(x,y) | -point(z) | -part(x,z) | -part(y,z).
+-point(x) | -atomic_part(x) | -point(y) | -part(y,x) | y = x.
+-point(x) | atomic_part(x) | point(f13(x)).
+-point(x) | atomic_part(x) | part(f13(x),x).
+-point(x) | atomic_part(x) | f13(x) != x.
+-point(x) | -point(y) | -point(z) | -sum(x,y,z) | -point(u) | -overlaps(u,z) | overlaps(u,x) | overlaps(u,y).
+-point(x) | -point(y) | -point(z) | -sum(x,y,z) | -point(u) | overlaps(u,z) | -overlaps(u,x).
+-point(x) | -point(y) | -point(z) | -sum(x,y,z) | -point(u) | overlaps(u,z) | -overlaps(u,y).
+-point(x) | -point(y) | -point(z) | sum(x,y,z) | point(f14(x,y,z)).
+-point(x) | -point(y) | -point(z) | sum(x,y,z) | overlaps(f14(x,y,z),z) | overlaps(f14(x,y,z),x) | overlaps(f14(x,y,z),y).
+-point(x) | -point(y) | -point(z) | sum(x,y,z) | -overlaps(f14(x,y,z),z) | -overlaps(f14(x,y,z),x).
+-point(x) | -point(y) | -point(z) | sum(x,y,z) | -overlaps(f14(x,y,z),z) | -overlaps(f14(x,y,z),y).
+-point(x) | -point(y) | -point(z) | -prod(x,y,z) | -point(u) | -part(u,z) | part(u,x) | part(u,y).
+-point(x) | -point(y) | -point(z) | -prod(x,y,z) | -point(u) | part(u,z) | -part(u,x).
+-point(x) | -point(y) | -point(z) | -prod(x,y,z) | -point(u) | part(u,z) | -part(u,y).
+-point(x) | -point(y) | -point(z) | prod(x,y,z) | point(f15(x,y,z)).
+-point(x) | -point(y) | -point(z) | prod(x,y,z) | part(f15(x,y,z),z) | part(f15(x,y,z),x) | part(f15(x,y,z),y).
+-point(x) | -point(y) | -point(z) | prod(x,y,z) | -part(f15(x,y,z),z) | -part(f15(x,y,z),x).
+-point(x) | -point(y) | -point(z) | prod(x,y,z) | -part(f15(x,y,z),z) | -part(f15(x,y,z),y).
+PRE(c1,c3).
+PRE(c1,c4).
+SUM(c2,c3,c4).
+-PRE(c1,c2).
+end_of_list.
+
+============================== end of clauses for search =============
+
+% There are no natural numbers in the input.
+
+============================== DOMAIN SIZE 2 =========================
+
+============================== STATISTICS ============================
+
+For domain size 2.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.01 seconds).
+Ground clauses: seen=828, kept=812.
+Selections=2, assignments=3, propagations=17, current_models=0.
+Rewrite_terms=11, rewrite_bools=128, indexes=4.
+Rules_from_neg_clauses=4, cross_offs=4.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 3 =========================
+
+============================== STATISTICS ============================
+
+For domain size 3.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.02 seconds).
+Ground clauses: seen=2902, kept=2875.
+Selections=4, assignments=8, propagations=20, current_models=0.
+Rewrite_terms=17, rewrite_bools=420, indexes=5.
+Rules_from_neg_clauses=0, cross_offs=4.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 4 =========================
+
+============================== STATISTICS ============================
+
+For domain size 4.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.05 seconds).
+Ground clauses: seen=7596, kept=7556.
+Selections=4, assignments=8, propagations=20, current_models=0.
+Rewrite_terms=17, rewrite_bools=758, indexes=5.
+Rules_from_neg_clauses=0, cross_offs=4.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 5 =========================
+
+============================== STATISTICS ============================
+
+For domain size 5.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.11 seconds).
+Ground clauses: seen=16554, kept=16499.
+Selections=4, assignments=8, propagations=20, current_models=0.
+Rewrite_terms=17, rewrite_bools=1234, indexes=5.
+Rules_from_neg_clauses=0, cross_offs=4.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 6 =========================
+
+============================== STATISTICS ============================
+
+For domain size 6.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.24 seconds).
+Ground clauses: seen=31828, kept=31756.
+Selections=4, assignments=8, propagations=20, current_models=0.
+Rewrite_terms=17, rewrite_bools=1866, indexes=5.
+Rules_from_neg_clauses=0, cross_offs=4.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 7 =========================
+
+============================== STATISTICS ============================
+
+For domain size 7.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.48 seconds).
+Ground clauses: seen=55878, kept=55787.
+Selections=4, assignments=8, propagations=20, current_models=0.
+Rewrite_terms=17, rewrite_bools=2672, indexes=5.
+Rules_from_neg_clauses=0, cross_offs=4.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 8 =========================
+
+============================== STATISTICS ============================
+
+For domain size 8.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.90 seconds).
+Ground clauses: seen=91572, kept=91460.
+Selections=4, assignments=8, propagations=20, current_models=0.
+Rewrite_terms=17, rewrite_bools=3670, indexes=5.
+Rules_from_neg_clauses=0, cross_offs=4.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 9 =========================
+
+============================== STATISTICS ============================
+
+For domain size 9.
+
+Current CPU time: 0.00 seconds (total CPU time: 1.57 seconds).
+Ground clauses: seen=142186, kept=142051.
+Selections=4, assignments=8, propagations=20, current_models=0.
+Rewrite_terms=17, rewrite_bools=4878, indexes=5.
+Rules_from_neg_clauses=0, cross_offs=4.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 10 ========================
+
+mace4_sig_handler: condition 2
+============================== STATISTICS ============================
+
+For domain size 10.
+
+Current CPU time: 0.00 seconds (total CPU time: 1.93 seconds).
+Ground clauses: seen=85054, kept=85034.
+Selections=0, assignments=0, propagations=0, current_models=0.
+Rewrite_terms=0, rewrite_bools=0, indexes=0.
+Rules_from_neg_clauses=0, cross_offs=0.
+
+============================== end of statistics =====================
+
+User_CPU=1.93, System_CPU=0.05, Wall_clock=2.
+
+Exiting with failure.
+
+Process 11935 exit (mace_sigint) Tue Jul 16 10:29:48 2013
+The process finished Tue Jul 16 10:29:48 2013
