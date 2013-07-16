@@ -1,0 +1,340 @@
+============================== Mace4 =================================
+Mace4 (64) version 2009-11A, November 2009.
+Process 11772 was started by cchui on stl1.mie.utoronto.ca,
+Tue Jul 16 10:14:01 2013
+The command was "mace4 -c -t 600 -s 600 -n 2 -N 20 -f test/p9/ex0715_reduction.p9 test/p9/cem_mereology.p9 test/p9/dolce_time_mereology_reduction.p9 test/p9/cm_mereology.p9 test/p9/em_mereology.p9 test/p9/mereology_def.p9 test/p9/sum_mereology.p9 test/p9/prod_mereology.p9 test/p9/m_mereology.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file test/p9/ex0715_reduction.p9
+
+
+formulas(sos).
+(all x all y (P(x,y) -> T(y) & T(y))).
+(all x all y (P(x,y) -> (T(x) <-> T(y)))).
+(all x all y (T(x) -> P(x,x))).
+(all x all y (T(x) & T(y) & P(x,y) & P(y,x) -> x = y)).
+(all x all y all z (T(x) & T(y) & P(x,y) & P(y,z) -> P(x,z))).
+(all x all y (T(x) & T(y) & -P(x,y) -> (exists z (T(z) & P(z,x) & -O(z,y))))).
+(all x all y (T(x) & T(y) & -P(x,y) -> (exists z (P(z,x) & disjoint(z,y) & T(z))))).
+(all x all y (T(x) & T(y) & U(x,y) -> (exists z (T(z) & (all w (T(w) -> (O(w,z) <-> O(w,x) | O(w,y)))))))).
+(all x all y (T(x) & T(y) & O(x,y) -> (exists z (T(z) & (all w (T(w) -> (PP(w,z) <-> PP(w,x) & PP(w,y)))))))).
+end_of_list.
+
+% Reading from file test/p9/cem_mereology.p9
+
+
+formulas(sos).
+end_of_list.
+
+% Reading from file test/p9/dolce_time_mereology_reduction.p9
+
+
+formulas(sos).
+(all x (T(x) <-> x = x)).
+(all x all y (P(x,y) <-> part(x,y))).
+(all x all y (PP(x,y) <-> ppart(x,y))).
+(all x all y (O(x,y) <-> overlaps(x,y))).
+(all x all y (U(x,y) <-> underlaps(x,y))).
+end_of_list.
+
+% Reading from file test/p9/cm_mereology.p9
+
+
+formulas(sos).
+end_of_list.
+
+% Reading from file test/p9/em_mereology.p9
+
+
+formulas(sos).
+(all x all y (-part(x,y) -> (exists z (part(z,x) & disjoint(z,y))))).
+end_of_list.
+
+% Reading from file test/p9/mereology_def.p9
+
+
+formulas(sos).
+(all x all y (ppart(x,y) <-> part(x,y) & -part(y,x))).
+(all x all y (overlaps(x,y) <-> (exists z (part(z,x) & part(z,y))))).
+(all x all y (disjoint(x,y) <-> -overlaps(x,y))).
+(all x all y (underlaps(x,y) <-> (exists z (part(x,z) & part(y,z))))).
+(all x (atomic_part(x) <-> (all y (part(y,x) -> y = x)))).
+(all x all y all z (sum(x,y,z) <-> (all w (overlaps(w,z) <-> overlaps(w,x) | overlaps(w,y))))).
+(all x all y all z (prod(x,y,z) <-> (all w (part(w,z) <-> part(w,x) | part(w,y))))).
+end_of_list.
+
+% Reading from file test/p9/sum_mereology.p9
+
+
+formulas(sos).
+(all x all y (underlaps(x,y) -> (exists z all v (overlaps(v,z) <-> overlaps(v,x) | overlaps(v,y))))).
+end_of_list.
+
+% Reading from file test/p9/prod_mereology.p9
+
+
+formulas(sos).
+(all x all y (overlaps(x,y) -> (exists z all v (ppart(v,z) <-> ppart(v,x) & ppart(v,y))))).
+end_of_list.
+
+% Reading from file test/p9/m_mereology.p9
+
+
+formulas(sos).
+(all x part(x,x)).
+(all x all y (part(x,y) & part(y,x) -> x = y)).
+(all x all y all z (part(x,y) & part(y,z) -> part(x,z))).
+end_of_list.
+
+% From the command line: assign(max_seconds, 600).
+
+% From the command line: assign(max_seconds_per, 600).
+    % assign(domain_size, 2) -> assign(start_size, 2).
+    % assign(domain_size, 2) -> assign(end_size, 2).
+
+% From the command line: assign(domain_size, 2).
+
+% From the command line: assign(end_size, 20).
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x all y (P(x,y) -> T(y) & T(y))) # label(non_clause).  [assumption].
+2 (all x all y (P(x,y) -> (T(x) <-> T(y)))) # label(non_clause).  [assumption].
+3 (all x all y (T(x) -> P(x,x))) # label(non_clause).  [assumption].
+4 (all x all y (T(x) & T(y) & P(x,y) & P(y,x) -> x = y)) # label(non_clause).  [assumption].
+5 (all x all y all z (T(x) & T(y) & P(x,y) & P(y,z) -> P(x,z))) # label(non_clause).  [assumption].
+6 (all x all y (T(x) & T(y) & -P(x,y) -> (exists z (T(z) & P(z,x) & -O(z,y))))) # label(non_clause).  [assumption].
+7 (all x all y (T(x) & T(y) & -P(x,y) -> (exists z (P(z,x) & disjoint(z,y) & T(z))))) # label(non_clause).  [assumption].
+8 (all x all y (T(x) & T(y) & U(x,y) -> (exists z (T(z) & (all w (T(w) -> (O(w,z) <-> O(w,x) | O(w,y)))))))) # label(non_clause).  [assumption].
+9 (all x all y (T(x) & T(y) & O(x,y) -> (exists z (T(z) & (all w (T(w) -> (PP(w,z) <-> PP(w,x) & PP(w,y)))))))) # label(non_clause).  [assumption].
+10 (all x (T(x) <-> x = x)) # label(non_clause).  [assumption].
+11 (all x all y (P(x,y) <-> part(x,y))) # label(non_clause).  [assumption].
+12 (all x all y (PP(x,y) <-> ppart(x,y))) # label(non_clause).  [assumption].
+13 (all x all y (O(x,y) <-> overlaps(x,y))) # label(non_clause).  [assumption].
+14 (all x all y (U(x,y) <-> underlaps(x,y))) # label(non_clause).  [assumption].
+15 (all x all y (-part(x,y) -> (exists z (part(z,x) & disjoint(z,y))))) # label(non_clause).  [assumption].
+16 (all x all y (ppart(x,y) <-> part(x,y) & -part(y,x))) # label(non_clause).  [assumption].
+17 (all x all y (overlaps(x,y) <-> (exists z (part(z,x) & part(z,y))))) # label(non_clause).  [assumption].
+18 (all x all y (disjoint(x,y) <-> -overlaps(x,y))) # label(non_clause).  [assumption].
+19 (all x all y (underlaps(x,y) <-> (exists z (part(x,z) & part(y,z))))) # label(non_clause).  [assumption].
+20 (all x (atomic_part(x) <-> (all y (part(y,x) -> y = x)))) # label(non_clause).  [assumption].
+21 (all x all y all z (sum(x,y,z) <-> (all w (overlaps(w,z) <-> overlaps(w,x) | overlaps(w,y))))) # label(non_clause).  [assumption].
+22 (all x all y all z (prod(x,y,z) <-> (all w (part(w,z) <-> part(w,x) | part(w,y))))) # label(non_clause).  [assumption].
+23 (all x all y (underlaps(x,y) -> (exists z all v (overlaps(v,z) <-> overlaps(v,x) | overlaps(v,y))))) # label(non_clause).  [assumption].
+24 (all x all y (overlaps(x,y) -> (exists z all v (ppart(v,z) <-> ppart(v,x) & ppart(v,y))))) # label(non_clause).  [assumption].
+25 (all x part(x,x)) # label(non_clause).  [assumption].
+26 (all x all y (part(x,y) & part(y,x) -> x = y)) # label(non_clause).  [assumption].
+27 (all x all y all z (part(x,y) & part(y,z) -> part(x,z))) # label(non_clause).  [assumption].
+
+============================== end of process non-clausal formulas ===
+
+============================== CLAUSES FOR SEARCH ====================
+
+formulas(mace4_clauses).
+-P(x,y) | T(y).
+-P(x,y) | -T(x) | T(y).
+-P(x,y) | T(x) | -T(y).
+-T(x) | P(x,x).
+-T(x) | -T(y) | -P(x,y) | -P(y,x) | y = x.
+-T(x) | -T(y) | -P(x,y) | -P(y,z) | P(x,z).
+-T(x) | -T(y) | P(x,y) | T(f1(x,y)).
+-T(x) | -T(y) | P(x,y) | P(f1(x,y),x).
+-T(x) | -T(y) | P(x,y) | -O(f1(x,y),y).
+-T(x) | -T(y) | P(x,y) | P(f2(x,y),x).
+-T(x) | -T(y) | P(x,y) | disjoint(f2(x,y),y).
+-T(x) | -T(y) | P(x,y) | T(f2(x,y)).
+-T(x) | -T(y) | -U(x,y) | T(f3(x,y)).
+-T(x) | -T(y) | -U(x,y) | -T(z) | -O(z,f3(x,y)) | O(z,x) | O(z,y).
+-T(x) | -T(y) | -U(x,y) | -T(z) | O(z,f3(x,y)) | -O(z,x).
+-T(x) | -T(y) | -U(x,y) | -T(z) | O(z,f3(x,y)) | -O(z,y).
+-T(x) | -T(y) | -O(x,y) | T(f4(x,y)).
+-T(x) | -T(y) | -O(x,y) | -T(z) | -PP(z,f4(x,y)) | PP(z,x).
+-T(x) | -T(y) | -O(x,y) | -T(z) | -PP(z,f4(x,y)) | PP(z,y).
+-T(x) | -T(y) | -O(x,y) | -T(z) | PP(z,f4(x,y)) | -PP(z,x) | -PP(z,y).
+-T(x) | x = x.
+T(x) | x != x.
+-P(x,y) | part(x,y).
+P(x,y) | -part(x,y).
+-PP(x,y) | ppart(x,y).
+PP(x,y) | -ppart(x,y).
+-O(x,y) | overlaps(x,y).
+O(x,y) | -overlaps(x,y).
+-U(x,y) | underlaps(x,y).
+U(x,y) | -underlaps(x,y).
+part(x,y) | part(f5(x,y),x).
+part(x,y) | disjoint(f5(x,y),y).
+-ppart(x,y) | part(x,y).
+-ppart(x,y) | -part(y,x).
+ppart(x,y) | -part(x,y) | part(y,x).
+-overlaps(x,y) | part(f6(x,y),x).
+-overlaps(x,y) | part(f6(x,y),y).
+overlaps(x,y) | -part(z,x) | -part(z,y).
+-disjoint(x,y) | -overlaps(x,y).
+disjoint(x,y) | overlaps(x,y).
+-underlaps(x,y) | part(x,f7(x,y)).
+-underlaps(x,y) | part(y,f7(x,y)).
+underlaps(x,y) | -part(x,z) | -part(y,z).
+-atomic_part(x) | -part(y,x) | y = x.
+atomic_part(x) | part(f8(x),x).
+atomic_part(x) | f8(x) != x.
+-sum(x,y,z) | -overlaps(u,z) | overlaps(u,x) | overlaps(u,y).
+-sum(x,y,z) | overlaps(u,z) | -overlaps(u,x).
+-sum(x,y,z) | overlaps(u,z) | -overlaps(u,y).
+sum(x,y,z) | overlaps(f9(x,y,z),z) | overlaps(f9(x,y,z),x) | overlaps(f9(x,y,z),y).
+sum(x,y,z) | -overlaps(f9(x,y,z),z) | -overlaps(f9(x,y,z),x).
+sum(x,y,z) | -overlaps(f9(x,y,z),z) | -overlaps(f9(x,y,z),y).
+-prod(x,y,z) | -part(u,z) | part(u,x) | part(u,y).
+-prod(x,y,z) | part(u,z) | -part(u,x).
+-prod(x,y,z) | part(u,z) | -part(u,y).
+prod(x,y,z) | part(f10(x,y,z),z) | part(f10(x,y,z),x) | part(f10(x,y,z),y).
+prod(x,y,z) | -part(f10(x,y,z),z) | -part(f10(x,y,z),x).
+prod(x,y,z) | -part(f10(x,y,z),z) | -part(f10(x,y,z),y).
+-underlaps(x,y) | -overlaps(z,f11(x,y)) | overlaps(z,x) | overlaps(z,y).
+-underlaps(x,y) | overlaps(z,f11(x,y)) | -overlaps(z,x).
+-underlaps(x,y) | overlaps(z,f11(x,y)) | -overlaps(z,y).
+-overlaps(x,y) | -ppart(z,f12(x,y)) | ppart(z,x).
+-overlaps(x,y) | -ppart(z,f12(x,y)) | ppart(z,y).
+-overlaps(x,y) | ppart(z,f12(x,y)) | -ppart(z,x) | -ppart(z,y).
+part(x,x).
+-part(x,y) | -part(y,x) | y = x.
+-part(x,y) | -part(y,z) | part(x,z).
+end_of_list.
+
+============================== end of clauses for search =============
+
+% There are no natural numbers in the input.
+
+============================== DOMAIN SIZE 2 =========================
+
+============================== MODEL =================================
+
+interpretation( 2, [number=1, seconds=0], [
+
+        function(f8(_), [ 0, 0 ]),
+
+        function(f1(_,_), [
+			   0, 0,
+			   1, 0 ]),
+
+        function(f2(_,_), [
+			   0, 0,
+			   1, 0 ]),
+
+        function(f3(_,_), [
+			   0, 0,
+			   0, 1 ]),
+
+        function(f4(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        function(f5(_,_), [
+			   0, 0,
+			   1, 0 ]),
+
+        function(f6(_,_), [
+			   0, 0,
+			   0, 1 ]),
+
+        function(f7(_,_), [
+			   0, 0,
+			   0, 1 ]),
+
+        function(f11(_,_), [
+			   0, 0,
+			   0, 1 ]),
+
+        function(f12(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        function(f9(_,_,_), [
+			   0, 0,
+			   1, 0,
+			   1, 0,
+			   0, 0 ]),
+
+        function(f10(_,_,_), [
+			   0, 0,
+			   1, 0,
+			   1, 0,
+			   0, 0 ]),
+
+        relation(T(_), [ 1, 1 ]),
+
+        relation(atomic_part(_), [ 1, 1 ]),
+
+        relation(O(_,_), [
+			   1, 0,
+			   0, 1 ]),
+
+        relation(P(_,_), [
+			   1, 0,
+			   0, 1 ]),
+
+        relation(PP(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(U(_,_), [
+			   1, 0,
+			   0, 1 ]),
+
+        relation(disjoint(_,_), [
+			   0, 1,
+			   1, 0 ]),
+
+        relation(overlaps(_,_), [
+			   1, 0,
+			   0, 1 ]),
+
+        relation(part(_,_), [
+			   1, 0,
+			   0, 1 ]),
+
+        relation(ppart(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(underlaps(_,_), [
+			   1, 0,
+			   0, 1 ]),
+
+        relation(prod(_,_,_), [
+			   1, 0,
+			   0, 0,
+			   0, 0,
+			   0, 1 ]),
+
+        relation(sum(_,_,_), [
+			   1, 0,
+			   0, 0,
+			   0, 0,
+			   0, 1 ])
+]).
+
+============================== end of model ==========================
+
+============================== STATISTICS ============================
+
+For domain size 2.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.01 seconds).
+Ground clauses: seen=416, kept=320.
+Selections=32, assignments=32, propagations=78, current_models=1.
+Rewrite_terms=216, rewrite_bools=672, indexes=8.
+Rules_from_neg_clauses=22, cross_offs=22.
+
+============================== end of statistics =====================
+
+User_CPU=0.01, System_CPU=0.00, Wall_clock=0.
+
+Exiting with 1 model.
+
+Process 11772 exit (max_models) Tue Jul 16 10:14:01 2013
+The process finished Tue Jul 16 10:14:01 2013
