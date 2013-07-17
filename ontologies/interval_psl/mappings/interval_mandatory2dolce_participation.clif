@@ -8,16 +8,27 @@
  *    Michael Gruninger, Carmen Chui
  *******************************************************************************/
  
-(cl-text http://colore.oor.net/interval_psl/mappings/interval_mandatory2dolce_participation.clif
+(cl-text interval_mandatory2dolce_participation
 
-(cl-comment "Translation definition for interval_mandatory into dolce_participates.")
+(cl-comment "Translation definitions for interval_mandatory into dolce_participates.")
 
 (cl-comment "All x and y that participate in z is equivalent to a time interval z that overlays two psl_intervals x and y.")
 (forall (x y z t)
 	(iff (PC x y z)
-		(if (and
-				(or (overlay x y z)(overlay y x z))
-					(and (beforeEq (beginof z) t)
-						(beforeEq t (endof z))))
-			(participates_in x y t))))
+		(and
+			(object x)
+			(activity_occurrence y)
+			(timeinterval z)
+			(if
+				(and (beforeEq (beginof z) t)
+					(beforeEq t (endof z)))
+					(participates_in x y t)))))
+
+(cl-comment "The concept of parthood in DOLCE is equivalent to the inclusion of time intervals in Interval PSL Core.")
+(forall (t1 t2)
+	(iff (P t1 t2)
+		(and (timeinterval t1)(timeinterval t2)
+			(beforeEq (beginof t2) (beginof t1))
+			(beforeEq (endof t1) (endof t2)))))
+
 )
