@@ -1,0 +1,567 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 7914 was started by cchui on stl-ws4.mie.utoronto.ca,
+Fri Jul 19 01:15:50 2013
+The command was "prover9 -t 600 -f test/p9/taxonomy.p9 test/p9/ideal_cem_wmg.p9 test/p9/dolce_present_reduction.p9 test/p9/ideal_mg.p9 test/p9/cem_wmg.p9 test/p9/lower_mg.p9 test/p9/mereology_def_point.p9 test/p9/wmg.p9 test/p9/expanded_cem_mereology_point.p9 test/p9/options.txt test/p9/ex0718_present_reduction_1.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file test/p9/taxonomy.p9
+
+
+formulas(sos).
+(all x (L_1(x) -> -L_2(x))).
+(all x (L_1(x) -> -L_3(x))).
+(all x (L_2(x) -> -L_3(x))).
+(all x (L_4(x) -> L_1(x))).
+(all x (L_5(x) -> L_1(x))).
+(all x (L_4(x) -> -L_5(x))).
+end_of_list.
+
+% Reading from file test/p9/ideal_cem_wmg.p9
+
+
+formulas(sos).
+end_of_list.
+
+% Reading from file test/p9/dolce_present_reduction.p9
+
+
+formulas(sos).
+(all x all y (PRE(x,y) <-> in(y,x) & line(x) & point(y))).
+(all x (T(x) <-> point(x))).
+(all x (ED(x) <-> line(x) & L_1(x))).
+(all x (PD(x) <-> line(x) & L_2(x))).
+(all x (Q(x) <-> line(x) & L_3(x))).
+(all x all y (P(x,y) <-> part(x,y))).
+(all x all y (PP(x,y) <-> ppart(x,y))).
+(all x all y (O(x,y) <-> overlaps(x,y))).
+(all x all y (U(x,y) <-> underlaps(x,y))).
+(all x all y (DJ(x,y) <-> disjoint(x,y))).
+(all x all y all z (SUM(z,x,y) <-> sum(x,y,z))).
+(all x all y all z (T(x) & T(y) & T(z) -> (SUM(z,x,y) <-> (all w (T(w) -> (O(w,z) <-> O(w,x) | O(w,y))))))).
+end_of_list.
+
+% Reading from file test/p9/ideal_mg.p9
+
+
+formulas(sos).
+(all x all y all z all l (point(x) & point(y) & line(l) & in(x,l) & in(y,l) & sum(x,y,z) -> in(z,l))).
+end_of_list.
+
+% Reading from file test/p9/cem_wmg.p9
+
+
+formulas(sos).
+end_of_list.
+
+% Reading from file test/p9/lower_mg.p9
+
+
+formulas(sos).
+(all x all y all l (point(x) & point(y) & line(l) & in(x,l) & part(y,x) -> in(y,l))).
+end_of_list.
+
+% Reading from file test/p9/mereology_def_point.p9
+
+
+formulas(sos).
+(all x (point(x) -> part(x,x))).
+(all x all y (point(x) & point(y) -> (part(x,y) & part(y,x) -> x = y))).
+(all x all y all z (point(x) & point(y) & point(z) -> (part(x,y) & part(y,z) -> part(x,z)))).
+(all x all y (point(x) & point(y) -> (ppart(x,y) <-> part(x,y) & -part(y,x)))).
+(all x all y (point(x) & point(y) -> (overlaps(x,y) <-> (exists z (point(z) & part(z,x) & part(z,y)))))).
+(all x all y (point(x) & point(y) -> (disjoint(x,y) <-> -overlaps(x,y)))).
+(all x all y (point(x) & point(y) -> (underlaps(x,y) <-> (exists z (point(z) & part(x,z) & part(y,z)))))).
+(all x (point(x) -> (atomic_part(x) <-> (all y (point(y) & part(y,x) -> y = x))))).
+(all x all y all z (point(x) & point(y) & point(z) -> (sum(x,y,z) <-> (all w (point(w) -> (overlaps(w,z) <-> overlaps(w,x) | overlaps(w,y))))))).
+(all x all y all z (point(x) & point(y) & point(z) -> (prod(x,y,z) <-> (all w (point(w) -> (part(w,z) <-> part(w,x) | part(w,y))))))).
+end_of_list.
+
+% Reading from file test/p9/wmg.p9
+
+
+formulas(sos).
+(all x all y (in(x,y) -> in(y,x))).
+(all x (point(x) | line(x) -> in(x,x))).
+(all x (point(x) -> -line(x))).
+(all x all y (in(x,y) & point(x) & point(y) -> x = y)).
+(all x all y (in(x,y) & line(x) & line(y) -> x = y)).
+(all x (line(x) -> (exists y (point(x) & in(x,y))))).
+(all x all l (point(x) & line(l) & in(x,l) -> part(x,x))).
+(all x all y all l (line(l) & in(x,l) & in(y,l) & part(x,y) & part(y,x) -> x = y)).
+(all x all y all z all l (line(l) & in(x,l) & in(y,l) & in(z,l) & part(x,y) & part(y,z) -> part(x,z))).
+(all x all y (part(x,y) -> point(x) & point(y))).
+end_of_list.
+
+% Reading from file test/p9/expanded_cem_mereology_point.p9
+
+
+formulas(sos).
+(all x all y (point(x) & point(y) & underlaps(x,y) -> (exists z (point(z) & (all v (overlaps(v,z) <-> overlaps(v,x) | overlaps(v,y))))))).
+(all x all y (point(x) & point(y) & overlaps(x,y) -> (exists z (point(z) & (all v (ppart(v,z) <-> ppart(v,x) & ppart(v,y))))))).
+(all x all y (point(x) & point(y) & -part(x,y) -> (exists z (point(z) & part(z,x) & disjoint(z,y))))).
+(all x (point(x) -> part(x,x))).
+(all x all y (point(x) & point(y) & part(x,y) & part(y,x) -> x = y)).
+(all x all y all z (point(x) & point(y) & point(z) & part(x,y) & part(y,z) -> part(x,z))).
+(all x all y (point(x) & point(y) -> (ppart(x,y) <-> part(x,y) & -part(y,x)))).
+(all x all y (point(x) & point(y) -> (overlaps(x,y) <-> (exists z (point(z) & part(z,x) & part(z,y)))))).
+(all x all y (point(x) & point(y) -> (disjoint(x,y) <-> -overlaps(x,y)))).
+(all x all y (point(x) & point(y) -> (underlaps(x,y) <-> (exists z (point(z) & part(x,z) & part(y,z)))))).
+(all x (point(x) -> (atomic_part(x) <-> (all y (point(y) & part(y,x) -> y = x))))).
+(all x all y all z (point(x) & point(y) & point(z) -> (sum(x,y,z) <-> (all w (point(w) -> (overlaps(w,z) <-> overlaps(w,x) | overlaps(w,y))))))).
+(all x all y all z (point(x) & point(y) & point(z) -> (prod(x,y,z) <-> (all w (point(w) -> (part(w,z) <-> part(w,x) | part(w,y))))))).
+end_of_list.
+
+% Reading from file test/p9/options.txt
+
+clear(auto_denials).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+
+% Reading from file test/p9/ex0718_present_reduction_1.p9
+
+
+formulas(goals).
+(all x (ED(x) | PD(x) | Q(x) -> (exists t PRE(x,t)))).
+end_of_list.
+
+============================== end of input ==========================
+
+% From the command line: assign(max_seconds, 600).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (L_1(x) -> -L_2(x))) # label(non_clause).  [assumption].
+2 (all x (L_1(x) -> -L_3(x))) # label(non_clause).  [assumption].
+3 (all x (L_2(x) -> -L_3(x))) # label(non_clause).  [assumption].
+4 (all x (L_4(x) -> L_1(x))) # label(non_clause).  [assumption].
+5 (all x (L_5(x) -> L_1(x))) # label(non_clause).  [assumption].
+6 (all x (L_4(x) -> -L_5(x))) # label(non_clause).  [assumption].
+7 (all x all y (PRE(x,y) <-> in(y,x) & line(x) & point(y))) # label(non_clause).  [assumption].
+8 (all x (T(x) <-> point(x))) # label(non_clause).  [assumption].
+9 (all x (ED(x) <-> line(x) & L_1(x))) # label(non_clause).  [assumption].
+10 (all x (PD(x) <-> line(x) & L_2(x))) # label(non_clause).  [assumption].
+11 (all x (Q(x) <-> line(x) & L_3(x))) # label(non_clause).  [assumption].
+12 (all x all y (P(x,y) <-> part(x,y))) # label(non_clause).  [assumption].
+13 (all x all y (PP(x,y) <-> ppart(x,y))) # label(non_clause).  [assumption].
+14 (all x all y (O(x,y) <-> overlaps(x,y))) # label(non_clause).  [assumption].
+15 (all x all y (U(x,y) <-> underlaps(x,y))) # label(non_clause).  [assumption].
+16 (all x all y (DJ(x,y) <-> disjoint(x,y))) # label(non_clause).  [assumption].
+17 (all x all y all z (SUM(z,x,y) <-> sum(x,y,z))) # label(non_clause).  [assumption].
+18 (all x all y all z (T(x) & T(y) & T(z) -> (SUM(z,x,y) <-> (all w (T(w) -> (O(w,z) <-> O(w,x) | O(w,y))))))) # label(non_clause).  [assumption].
+19 (all x all y all z all l (point(x) & point(y) & line(l) & in(x,l) & in(y,l) & sum(x,y,z) -> in(z,l))) # label(non_clause).  [assumption].
+20 (all x all y all l (point(x) & point(y) & line(l) & in(x,l) & part(y,x) -> in(y,l))) # label(non_clause).  [assumption].
+21 (all x (point(x) -> part(x,x))) # label(non_clause).  [assumption].
+22 (all x all y (point(x) & point(y) -> (part(x,y) & part(y,x) -> x = y))) # label(non_clause).  [assumption].
+23 (all x all y all z (point(x) & point(y) & point(z) -> (part(x,y) & part(y,z) -> part(x,z)))) # label(non_clause).  [assumption].
+24 (all x all y (point(x) & point(y) -> (ppart(x,y) <-> part(x,y) & -part(y,x)))) # label(non_clause).  [assumption].
+25 (all x all y (point(x) & point(y) -> (overlaps(x,y) <-> (exists z (point(z) & part(z,x) & part(z,y)))))) # label(non_clause).  [assumption].
+26 (all x all y (point(x) & point(y) -> (disjoint(x,y) <-> -overlaps(x,y)))) # label(non_clause).  [assumption].
+27 (all x all y (point(x) & point(y) -> (underlaps(x,y) <-> (exists z (point(z) & part(x,z) & part(y,z)))))) # label(non_clause).  [assumption].
+28 (all x (point(x) -> (atomic_part(x) <-> (all y (point(y) & part(y,x) -> y = x))))) # label(non_clause).  [assumption].
+29 (all x all y all z (point(x) & point(y) & point(z) -> (sum(x,y,z) <-> (all w (point(w) -> (overlaps(w,z) <-> overlaps(w,x) | overlaps(w,y))))))) # label(non_clause).  [assumption].
+30 (all x all y all z (point(x) & point(y) & point(z) -> (prod(x,y,z) <-> (all w (point(w) -> (part(w,z) <-> part(w,x) | part(w,y))))))) # label(non_clause).  [assumption].
+31 (all x all y (in(x,y) -> in(y,x))) # label(non_clause).  [assumption].
+32 (all x (point(x) | line(x) -> in(x,x))) # label(non_clause).  [assumption].
+33 (all x (point(x) -> -line(x))) # label(non_clause).  [assumption].
+34 (all x all y (in(x,y) & point(x) & point(y) -> x = y)) # label(non_clause).  [assumption].
+35 (all x all y (in(x,y) & line(x) & line(y) -> x = y)) # label(non_clause).  [assumption].
+36 (all x (line(x) -> (exists y (point(x) & in(x,y))))) # label(non_clause).  [assumption].
+37 (all x all l (point(x) & line(l) & in(x,l) -> part(x,x))) # label(non_clause).  [assumption].
+38 (all x all y all l (line(l) & in(x,l) & in(y,l) & part(x,y) & part(y,x) -> x = y)) # label(non_clause).  [assumption].
+39 (all x all y all z all l (line(l) & in(x,l) & in(y,l) & in(z,l) & part(x,y) & part(y,z) -> part(x,z))) # label(non_clause).  [assumption].
+40 (all x all y (part(x,y) -> point(x) & point(y))) # label(non_clause).  [assumption].
+41 (all x all y (point(x) & point(y) & underlaps(x,y) -> (exists z (point(z) & (all v (overlaps(v,z) <-> overlaps(v,x) | overlaps(v,y))))))) # label(non_clause).  [assumption].
+42 (all x all y (point(x) & point(y) & overlaps(x,y) -> (exists z (point(z) & (all v (ppart(v,z) <-> ppart(v,x) & ppart(v,y))))))) # label(non_clause).  [assumption].
+43 (all x all y (point(x) & point(y) & -part(x,y) -> (exists z (point(z) & part(z,x) & disjoint(z,y))))) # label(non_clause).  [assumption].
+44 (all x (point(x) -> part(x,x))) # label(non_clause).  [assumption].
+45 (all x all y (point(x) & point(y) & part(x,y) & part(y,x) -> x = y)) # label(non_clause).  [assumption].
+46 (all x all y all z (point(x) & point(y) & point(z) & part(x,y) & part(y,z) -> part(x,z))) # label(non_clause).  [assumption].
+47 (all x all y (point(x) & point(y) -> (ppart(x,y) <-> part(x,y) & -part(y,x)))) # label(non_clause).  [assumption].
+48 (all x all y (point(x) & point(y) -> (overlaps(x,y) <-> (exists z (point(z) & part(z,x) & part(z,y)))))) # label(non_clause).  [assumption].
+49 (all x all y (point(x) & point(y) -> (disjoint(x,y) <-> -overlaps(x,y)))) # label(non_clause).  [assumption].
+50 (all x all y (point(x) & point(y) -> (underlaps(x,y) <-> (exists z (point(z) & part(x,z) & part(y,z)))))) # label(non_clause).  [assumption].
+51 (all x (point(x) -> (atomic_part(x) <-> (all y (point(y) & part(y,x) -> y = x))))) # label(non_clause).  [assumption].
+52 (all x all y all z (point(x) & point(y) & point(z) -> (sum(x,y,z) <-> (all w (point(w) -> (overlaps(w,z) <-> overlaps(w,x) | overlaps(w,y))))))) # label(non_clause).  [assumption].
+53 (all x all y all z (point(x) & point(y) & point(z) -> (prod(x,y,z) <-> (all w (point(w) -> (part(w,z) <-> part(w,x) | part(w,y))))))) # label(non_clause).  [assumption].
+54 (all x (ED(x) | PD(x) | Q(x) -> (exists t PRE(x,t)))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating L_1/1
+55 -L_4(x) | L_1(x).  [clausify(4)].
+56 -L_1(x) | -L_2(x).  [clausify(1)].
+57 -L_1(x) | -L_3(x).  [clausify(2)].
+Derived: -L_4(x) | -L_2(x).  [resolve(55,b,56,a)].
+Derived: -L_4(x) | -L_3(x).  [resolve(55,b,57,a)].
+58 -L_5(x) | L_1(x).  [clausify(5)].
+Derived: -L_5(x) | -L_2(x).  [resolve(58,b,56,a)].
+Derived: -L_5(x) | -L_3(x).  [resolve(58,b,57,a)].
+59 -ED(x) | L_1(x).  [clausify(9)].
+Derived: -ED(x) | -L_2(x).  [resolve(59,b,56,a)].
+Derived: -ED(x) | -L_3(x).  [resolve(59,b,57,a)].
+60 ED(x) | -line(x) | -L_1(x).  [clausify(9)].
+Derived: ED(x) | -line(x) | -L_4(x).  [resolve(60,c,55,b)].
+Derived: ED(x) | -line(x) | -L_5(x).  [resolve(60,c,58,b)].
+
+Eliminating L_2/1
+61 -PD(x) | L_2(x).  [clausify(10)].
+62 -L_2(x) | -L_3(x).  [clausify(3)].
+Derived: -PD(x) | -L_3(x).  [resolve(61,b,62,a)].
+63 PD(x) | -line(x) | -L_2(x).  [clausify(10)].
+64 -L_4(x) | -L_2(x).  [resolve(55,b,56,a)].
+Derived: -L_4(x) | -PD(x).  [resolve(64,b,61,b)].
+65 -L_5(x) | -L_2(x).  [resolve(58,b,56,a)].
+Derived: -L_5(x) | -PD(x).  [resolve(65,b,61,b)].
+66 -ED(x) | -L_2(x).  [resolve(59,b,56,a)].
+Derived: -ED(x) | -PD(x).  [resolve(66,b,61,b)].
+
+Eliminating L_4/1
+
+Eliminating ED/1
+67 ED(c1) | PD(c1) | Q(c1).  [deny(54)].
+68 -ED(x) | line(x).  [clausify(9)].
+Derived: PD(c1) | Q(c1) | line(c1).  [resolve(67,a,68,a)].
+69 -ED(x) | -L_3(x).  [resolve(59,b,57,a)].
+Derived: -L_3(c1) | PD(c1) | Q(c1).  [resolve(69,a,67,a)].
+70 ED(x) | -line(x) | -L_5(x).  [resolve(60,c,58,b)].
+Derived: -line(x) | -L_5(x) | -L_3(x).  [resolve(70,a,69,a)].
+71 -ED(x) | -PD(x).  [resolve(66,b,61,b)].
+Derived: -PD(x) | -line(x) | -L_5(x).  [resolve(71,a,70,a)].
+
+Eliminating PD/1
+72 PD(c1) | Q(c1) | line(c1).  [resolve(67,a,68,a)].
+73 -PD(x) | line(x).  [clausify(10)].
+74 -PD(x) | -L_3(x).  [resolve(61,b,62,a)].
+75 -L_5(x) | -PD(x).  [resolve(65,b,61,b)].
+Derived: Q(c1) | line(c1) | line(c1).  [resolve(72,a,73,a)].
+76 -L_3(c1) | PD(c1) | Q(c1).  [resolve(69,a,67,a)].
+Derived: -L_3(c1) | Q(c1) | -L_3(c1).  [resolve(76,b,74,a)].
+77 -PD(x) | -line(x) | -L_5(x).  [resolve(71,a,70,a)].
+
+Eliminating Q/1
+78 Q(x) | -line(x) | -L_3(x).  [clausify(11)].
+79 -Q(x) | line(x).  [clausify(11)].
+80 -Q(x) | L_3(x).  [clausify(11)].
+81 Q(c1) | line(c1) | line(c1).  [resolve(72,a,73,a)].
+Derived: line(c1) | line(c1) | line(c1).  [resolve(81,a,79,a)].
+82 -L_3(c1) | Q(c1) | -L_3(c1).  [resolve(76,b,74,a)].
+
+Eliminating P/2
+83 P(x,y) | -part(x,y).  [clausify(12)].
+84 -P(x,y) | part(x,y).  [clausify(12)].
+
+Eliminating PP/2
+85 PP(x,y) | -ppart(x,y).  [clausify(13)].
+86 -PP(x,y) | ppart(x,y).  [clausify(13)].
+
+Eliminating U/2
+87 U(x,y) | -underlaps(x,y).  [clausify(15)].
+88 -U(x,y) | underlaps(x,y).  [clausify(15)].
+
+Eliminating DJ/2
+89 DJ(x,y) | -disjoint(x,y).  [clausify(16)].
+90 -DJ(x,y) | disjoint(x,y).  [clausify(16)].
+
+Eliminating SUM/3
+91 SUM(x,y,z) | -sum(y,z,x).  [clausify(17)].
+92 -SUM(x,y,z) | sum(y,z,x).  [clausify(17)].
+93 -T(x) | -T(y) | -T(z) | -SUM(z,x,y) | -T(u) | -O(u,z) | O(u,x) | O(u,y).  [clausify(18)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | -O(u,z) | O(u,x) | O(u,y) | -sum(x,y,z).  [resolve(93,d,91,a)].
+94 -T(x) | -T(y) | -T(z) | -SUM(z,x,y) | -T(u) | O(u,z) | -O(u,x).  [clausify(18)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,x) | -sum(x,y,z).  [resolve(94,d,91,a)].
+95 -T(x) | -T(y) | -T(z) | -SUM(z,x,y) | -T(u) | O(u,z) | -O(u,y).  [clausify(18)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,y) | -sum(x,y,z).  [resolve(95,d,91,a)].
+96 -T(x) | -T(y) | -T(z) | SUM(z,x,y) | T(f1(x,y,z)).  [clausify(18)].
+Derived: -T(x) | -T(y) | -T(z) | T(f1(x,y,z)) | sum(x,y,z).  [resolve(96,d,92,a)].
+Derived: -T(x) | -T(y) | -T(z) | T(f1(x,y,z)) | -T(x) | -T(y) | -T(z) | -T(u) | -O(u,z) | O(u,x) | O(u,y).  [resolve(96,d,93,d)].
+Derived: -T(x) | -T(y) | -T(z) | T(f1(x,y,z)) | -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,x).  [resolve(96,d,94,d)].
+Derived: -T(x) | -T(y) | -T(z) | T(f1(x,y,z)) | -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,y).  [resolve(96,d,95,d)].
+97 -T(x) | -T(y) | -T(z) | SUM(z,x,y) | O(f1(x,y,z),z) | O(f1(x,y,z),x) | O(f1(x,y,z),y).  [clausify(18)].
+Derived: -T(x) | -T(y) | -T(z) | O(f1(x,y,z),z) | O(f1(x,y,z),x) | O(f1(x,y,z),y) | sum(x,y,z).  [resolve(97,d,92,a)].
+Derived: -T(x) | -T(y) | -T(z) | O(f1(x,y,z),z) | O(f1(x,y,z),x) | O(f1(x,y,z),y) | -T(x) | -T(y) | -T(z) | -T(u) | -O(u,z) | O(u,x) | O(u,y).  [resolve(97,d,93,d)].
+Derived: -T(x) | -T(y) | -T(z) | O(f1(x,y,z),z) | O(f1(x,y,z),x) | O(f1(x,y,z),y) | -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,x).  [resolve(97,d,94,d)].
+Derived: -T(x) | -T(y) | -T(z) | O(f1(x,y,z),z) | O(f1(x,y,z),x) | O(f1(x,y,z),y) | -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,y).  [resolve(97,d,95,d)].
+98 -T(x) | -T(y) | -T(z) | SUM(z,x,y) | -O(f1(x,y,z),z) | -O(f1(x,y,z),x).  [clausify(18)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f1(x,y,z),z) | -O(f1(x,y,z),x) | sum(x,y,z).  [resolve(98,d,92,a)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f1(x,y,z),z) | -O(f1(x,y,z),x) | -T(x) | -T(y) | -T(z) | -T(u) | -O(u,z) | O(u,x) | O(u,y).  [resolve(98,d,93,d)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f1(x,y,z),z) | -O(f1(x,y,z),x) | -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,x).  [resolve(98,d,94,d)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f1(x,y,z),z) | -O(f1(x,y,z),x) | -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,y).  [resolve(98,d,95,d)].
+99 -T(x) | -T(y) | -T(z) | SUM(z,x,y) | -O(f1(x,y,z),z) | -O(f1(x,y,z),y).  [clausify(18)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f1(x,y,z),z) | -O(f1(x,y,z),y) | sum(x,y,z).  [resolve(99,d,92,a)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f1(x,y,z),z) | -O(f1(x,y,z),y) | -T(x) | -T(y) | -T(z) | -T(u) | -O(u,z) | O(u,x) | O(u,y).  [resolve(99,d,93,d)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f1(x,y,z),z) | -O(f1(x,y,z),y) | -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,x).  [resolve(99,d,94,d)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f1(x,y,z),z) | -O(f1(x,y,z),y) | -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,y).  [resolve(99,d,95,d)].
+
+Eliminating sum/3
+100 -point(x) | -point(y) | -point(z) | sum(x,y,z) | point(f5(x,y,z)).  [clausify(29)].
+101 -point(x) | -point(y) | -line(z) | -in(x,z) | -in(y,z) | -sum(x,y,u) | in(u,z).  [clausify(19)].
+102 -point(x) | -point(y) | -point(z) | -sum(x,y,z) | -point(u) | -overlaps(u,z) | overlaps(u,x) | overlaps(u,y).  [clausify(29)].
+103 -point(x) | -point(y) | -point(z) | -sum(x,y,z) | -point(u) | overlaps(u,z) | -overlaps(u,x).  [clausify(29)].
+104 -point(x) | -point(y) | -point(z) | -sum(x,y,z) | -point(u) | overlaps(u,z) | -overlaps(u,y).  [clausify(29)].
+Derived: -point(x) | -point(y) | -point(z) | point(f5(x,y,z)) | -point(x) | -point(y) | -line(u) | -in(x,u) | -in(y,u) | in(z,u).  [resolve(100,d,101,f)].
+Derived: -point(x) | -point(y) | -point(z) | point(f5(x,y,z)) | -point(x) | -point(y) | -point(z) | -point(u) | -overlaps(u,z) | overlaps(u,x) | overlaps(u,y).  [resolve(100,d,102,d)].
+Derived: -point(x) | -point(y) | -point(z) | point(f5(x,y,z)) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,x).  [resolve(100,d,103,d)].
+Derived: -point(x) | -point(y) | -point(z) | point(f5(x,y,z)) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,y).  [resolve(100,d,104,d)].
+105 -point(x) | -point(y) | -point(z) | sum(x,y,z) | overlaps(f5(x,y,z),z) | overlaps(f5(x,y,z),x) | overlaps(f5(x,y,z),y).  [clausify(29)].
+Derived: -point(x) | -point(y) | -point(z) | overlaps(f5(x,y,z),z) | overlaps(f5(x,y,z),x) | overlaps(f5(x,y,z),y) | -point(x) | -point(y) | -line(u) | -in(x,u) | -in(y,u) | in(z,u).  [resolve(105,d,101,f)].
+Derived: -point(x) | -point(y) | -point(z) | overlaps(f5(x,y,z),z) | overlaps(f5(x,y,z),x) | overlaps(f5(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | -overlaps(u,z) | overlaps(u,x) | overlaps(u,y).  [resolve(105,d,102,d)].
+Derived: -point(x) | -point(y) | -point(z) | overlaps(f5(x,y,z),z) | overlaps(f5(x,y,z),x) | overlaps(f5(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,x).  [resolve(105,d,103,d)].
+Derived: -point(x) | -point(y) | -point(z) | overlaps(f5(x,y,z),z) | overlaps(f5(x,y,z),x) | overlaps(f5(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,y).  [resolve(105,d,104,d)].
+106 -point(x) | -point(y) | -point(z) | sum(x,y,z) | -overlaps(f5(x,y,z),z) | -overlaps(f5(x,y,z),x).  [clausify(29)].
+Derived: -point(x) | -point(y) | -point(z) | -overlaps(f5(x,y,z),z) | -overlaps(f5(x,y,z),x) | -point(x) | -point(y) | -line(u) | -in(x,u) | -in(y,u) | in(z,u).  [resolve(106,d,101,f)].
+Derived: -point(x) | -point(y) | -point(z) | -overlaps(f5(x,y,z),z) | -overlaps(f5(x,y,z),x) | -point(x) | -point(y) | -point(z) | -point(u) | -overlaps(u,z) | overlaps(u,x) | overlaps(u,y).  [resolve(106,d,102,d)].
+Derived: -point(x) | -point(y) | -point(z) | -overlaps(f5(x,y,z),z) | -overlaps(f5(x,y,z),x) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,x).  [resolve(106,d,103,d)].
+Derived: -point(x) | -point(y) | -point(z) | -overlaps(f5(x,y,z),z) | -overlaps(f5(x,y,z),x) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,y).  [resolve(106,d,104,d)].
+107 -point(x) | -point(y) | -point(z) | sum(x,y,z) | -overlaps(f5(x,y,z),z) | -overlaps(f5(x,y,z),y).  [clausify(29)].
+Derived: -point(x) | -point(y) | -point(z) | -overlaps(f5(x,y,z),z) | -overlaps(f5(x,y,z),y) | -point(x) | -point(y) | -line(u) | -in(x,u) | -in(y,u) | in(z,u).  [resolve(107,d,101,f)].
+Derived: -point(x) | -point(y) | -point(z) | -overlaps(f5(x,y,z),z) | -overlaps(f5(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | -overlaps(u,z) | overlaps(u,x) | overlaps(u,y).  [resolve(107,d,102,d)].
+Derived: -point(x) | -point(y) | -point(z) | -overlaps(f5(x,y,z),z) | -overlaps(f5(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,x).  [resolve(107,d,103,d)].
+Derived: -point(x) | -point(y) | -point(z) | -overlaps(f5(x,y,z),z) | -overlaps(f5(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,y).  [resolve(107,d,104,d)].
+108 -point(x) | -point(y) | -point(z) | -sum(x,y,z) | -point(u) | -overlaps(u,z) | overlaps(u,x) | overlaps(u,y).  [clausify(52)].
+109 -point(x) | -point(y) | -point(z) | -sum(x,y,z) | -point(u) | overlaps(u,z) | -overlaps(u,x).  [clausify(52)].
+110 -point(x) | -point(y) | -point(z) | -sum(x,y,z) | -point(u) | overlaps(u,z) | -overlaps(u,y).  [clausify(52)].
+111 -point(x) | -point(y) | -point(z) | sum(x,y,z) | point(f14(x,y,z)).  [clausify(52)].
+Derived: -point(x) | -point(y) | -point(z) | point(f14(x,y,z)) | -point(x) | -point(y) | -line(u) | -in(x,u) | -in(y,u) | in(z,u).  [resolve(111,d,101,f)].
+Derived: -point(x) | -point(y) | -point(z) | point(f14(x,y,z)) | -point(x) | -point(y) | -point(z) | -point(u) | -overlaps(u,z) | overlaps(u,x) | overlaps(u,y).  [resolve(111,d,102,d)].
+Derived: -point(x) | -point(y) | -point(z) | point(f14(x,y,z)) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,x).  [resolve(111,d,103,d)].
+Derived: -point(x) | -point(y) | -point(z) | point(f14(x,y,z)) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,y).  [resolve(111,d,104,d)].
+112 -point(x) | -point(y) | -point(z) | sum(x,y,z) | overlaps(f14(x,y,z),z) | overlaps(f14(x,y,z),x) | overlaps(f14(x,y,z),y).  [clausify(52)].
+Derived: -point(x) | -point(y) | -point(z) | overlaps(f14(x,y,z),z) | overlaps(f14(x,y,z),x) | overlaps(f14(x,y,z),y) | -point(x) | -point(y) | -line(u) | -in(x,u) | -in(y,u) | in(z,u).  [resolve(112,d,101,f)].
+Derived: -point(x) | -point(y) | -point(z) | overlaps(f14(x,y,z),z) | overlaps(f14(x,y,z),x) | overlaps(f14(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | -overlaps(u,z) | overlaps(u,x) | overlaps(u,y).  [resolve(112,d,102,d)].
+Derived: -point(x) | -point(y) | -point(z) | overlaps(f14(x,y,z),z) | overlaps(f14(x,y,z),x) | overlaps(f14(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,x).  [resolve(112,d,103,d)].
+Derived: -point(x) | -point(y) | -point(z) | overlaps(f14(x,y,z),z) | overlaps(f14(x,y,z),x) | overlaps(f14(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,y).  [resolve(112,d,104,d)].
+113 -point(x) | -point(y) | -point(z) | sum(x,y,z) | -overlaps(f14(x,y,z),z) | -overlaps(f14(x,y,z),x).  [clausify(52)].
+Derived: -point(x) | -point(y) | -point(z) | -overlaps(f14(x,y,z),z) | -overlaps(f14(x,y,z),x) | -point(x) | -point(y) | -line(u) | -in(x,u) | -in(y,u) | in(z,u).  [resolve(113,d,101,f)].
+Derived: -point(x) | -point(y) | -point(z) | -overlaps(f14(x,y,z),z) | -overlaps(f14(x,y,z),x) | -point(x) | -point(y) | -point(z) | -point(u) | -overlaps(u,z) | overlaps(u,x) | overlaps(u,y).  [resolve(113,d,102,d)].
+Derived: -point(x) | -point(y) | -point(z) | -overlaps(f14(x,y,z),z) | -overlaps(f14(x,y,z),x) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,x).  [resolve(113,d,103,d)].
+Derived: -point(x) | -point(y) | -point(z) | -overlaps(f14(x,y,z),z) | -overlaps(f14(x,y,z),x) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,y).  [resolve(113,d,104,d)].
+114 -point(x) | -point(y) | -point(z) | sum(x,y,z) | -overlaps(f14(x,y,z),z) | -overlaps(f14(x,y,z),y).  [clausify(52)].
+Derived: -point(x) | -point(y) | -point(z) | -overlaps(f14(x,y,z),z) | -overlaps(f14(x,y,z),y) | -point(x) | -point(y) | -line(u) | -in(x,u) | -in(y,u) | in(z,u).  [resolve(114,d,101,f)].
+Derived: -point(x) | -point(y) | -point(z) | -overlaps(f14(x,y,z),z) | -overlaps(f14(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | -overlaps(u,z) | overlaps(u,x) | overlaps(u,y).  [resolve(114,d,102,d)].
+Derived: -point(x) | -point(y) | -point(z) | -overlaps(f14(x,y,z),z) | -overlaps(f14(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,x).  [resolve(114,d,103,d)].
+Derived: -point(x) | -point(y) | -point(z) | -overlaps(f14(x,y,z),z) | -overlaps(f14(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,y).  [resolve(114,d,104,d)].
+115 -T(x) | -T(y) | -T(z) | -T(u) | -O(u,z) | O(u,x) | O(u,y) | -sum(x,y,z).  [resolve(93,d,91,a)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | -O(u,z) | O(u,x) | O(u,y) | -point(x) | -point(y) | -point(z) | point(f5(x,y,z)).  [resolve(115,h,100,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | -O(u,z) | O(u,x) | O(u,y) | -point(x) | -point(y) | -point(z) | overlaps(f5(x,y,z),z) | overlaps(f5(x,y,z),x) | overlaps(f5(x,y,z),y).  [resolve(115,h,105,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | -O(u,z) | O(u,x) | O(u,y) | -point(x) | -point(y) | -point(z) | -overlaps(f5(x,y,z),z) | -overlaps(f5(x,y,z),x).  [resolve(115,h,106,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | -O(u,z) | O(u,x) | O(u,y) | -point(x) | -point(y) | -point(z) | -overlaps(f5(x,y,z),z) | -overlaps(f5(x,y,z),y).  [resolve(115,h,107,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | -O(u,z) | O(u,x) | O(u,y) | -point(x) | -point(y) | -point(z) | point(f14(x,y,z)).  [resolve(115,h,111,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | -O(u,z) | O(u,x) | O(u,y) | -point(x) | -point(y) | -point(z) | overlaps(f14(x,y,z),z) | overlaps(f14(x,y,z),x) | overlaps(f14(x,y,z),y).  [resolve(115,h,112,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | -O(u,z) | O(u,x) | O(u,y) | -point(x) | -point(y) | -point(z) | -overlaps(f14(x,y,z),z) | -overlaps(f14(x,y,z),x).  [resolve(115,h,113,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | -O(u,z) | O(u,x) | O(u,y) | -point(x) | -point(y) | -point(z) | -overlaps(f14(x,y,z),z) | -overlaps(f14(x,y,z),y).  [resolve(115,h,114,d)].
+116 -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,x) | -sum(x,y,z).  [resolve(94,d,91,a)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,x) | -point(x) | -point(y) | -point(z) | point(f5(x,y,z)).  [resolve(116,g,100,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,x) | -point(x) | -point(y) | -point(z) | overlaps(f5(x,y,z),z) | overlaps(f5(x,y,z),x) | overlaps(f5(x,y,z),y).  [resolve(116,g,105,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,x) | -point(x) | -point(y) | -point(z) | -overlaps(f5(x,y,z),z) | -overlaps(f5(x,y,z),x).  [resolve(116,g,106,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,x) | -point(x) | -point(y) | -point(z) | -overlaps(f5(x,y,z),z) | -overlaps(f5(x,y,z),y).  [resolve(116,g,107,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,x) | -point(x) | -point(y) | -point(z) | point(f14(x,y,z)).  [resolve(116,g,111,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,x) | -point(x) | -point(y) | -point(z) | overlaps(f14(x,y,z),z) | overlaps(f14(x,y,z),x) | overlaps(f14(x,y,z),y).  [resolve(116,g,112,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,x) | -point(x) | -point(y) | -point(z) | -overlaps(f14(x,y,z),z) | -overlaps(f14(x,y,z),x).  [resolve(116,g,113,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,x) | -point(x) | -point(y) | -point(z) | -overlaps(f14(x,y,z),z) | -overlaps(f14(x,y,z),y).  [resolve(116,g,114,d)].
+117 -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,y) | -sum(x,y,z).  [resolve(95,d,91,a)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,y) | -point(x) | -point(y) | -point(z) | point(f5(x,y,z)).  [resolve(117,g,100,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,y) | -point(x) | -point(y) | -point(z) | overlaps(f5(x,y,z),z) | overlaps(f5(x,y,z),x) | overlaps(f5(x,y,z),y).  [resolve(117,g,105,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,y) | -point(x) | -point(y) | -point(z) | -overlaps(f5(x,y,z),z) | -overlaps(f5(x,y,z),x).  [resolve(117,g,106,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,y) | -point(x) | -point(y) | -point(z) | -overlaps(f5(x,y,z),z) | -overlaps(f5(x,y,z),y).  [resolve(117,g,107,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,y) | -point(x) | -point(y) | -point(z) | point(f14(x,y,z)).  [resolve(117,g,111,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,y) | -point(x) | -point(y) | -point(z) | overlaps(f14(x,y,z),z) | overlaps(f14(x,y,z),x) | overlaps(f14(x,y,z),y).  [resolve(117,g,112,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,y) | -point(x) | -point(y) | -point(z) | -overlaps(f14(x,y,z),z) | -overlaps(f14(x,y,z),x).  [resolve(117,g,113,d)].
+Derived: -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,y) | -point(x) | -point(y) | -point(z) | -overlaps(f14(x,y,z),z) | -overlaps(f14(x,y,z),y).  [resolve(117,g,114,d)].
+118 -T(x) | -T(y) | -T(z) | T(f1(x,y,z)) | sum(x,y,z).  [resolve(96,d,92,a)].
+Derived: -T(x) | -T(y) | -T(z) | T(f1(x,y,z)) | -point(x) | -point(y) | -line(u) | -in(x,u) | -in(y,u) | in(z,u).  [resolve(118,e,101,f)].
+Derived: -T(x) | -T(y) | -T(z) | T(f1(x,y,z)) | -point(x) | -point(y) | -point(z) | -point(u) | -overlaps(u,z) | overlaps(u,x) | overlaps(u,y).  [resolve(118,e,102,d)].
+Derived: -T(x) | -T(y) | -T(z) | T(f1(x,y,z)) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,x).  [resolve(118,e,103,d)].
+Derived: -T(x) | -T(y) | -T(z) | T(f1(x,y,z)) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,y).  [resolve(118,e,104,d)].
+119 -T(x) | -T(y) | -T(z) | O(f1(x,y,z),z) | O(f1(x,y,z),x) | O(f1(x,y,z),y) | sum(x,y,z).  [resolve(97,d,92,a)].
+Derived: -T(x) | -T(y) | -T(z) | O(f1(x,y,z),z) | O(f1(x,y,z),x) | O(f1(x,y,z),y) | -point(x) | -point(y) | -line(u) | -in(x,u) | -in(y,u) | in(z,u).  [resolve(119,g,101,f)].
+Derived: -T(x) | -T(y) | -T(z) | O(f1(x,y,z),z) | O(f1(x,y,z),x) | O(f1(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | -overlaps(u,z) | overlaps(u,x) | overlaps(u,y).  [resolve(119,g,102,d)].
+Derived: -T(x) | -T(y) | -T(z) | O(f1(x,y,z),z) | O(f1(x,y,z),x) | O(f1(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,x).  [resolve(119,g,103,d)].
+Derived: -T(x) | -T(y) | -T(z) | O(f1(x,y,z),z) | O(f1(x,y,z),x) | O(f1(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,y).  [resolve(119,g,104,d)].
+120 -T(x) | -T(y) | -T(z) | -O(f1(x,y,z),z) | -O(f1(x,y,z),x) | sum(x,y,z).  [resolve(98,d,92,a)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f1(x,y,z),z) | -O(f1(x,y,z),x) | -point(x) | -point(y) | -line(u) | -in(x,u) | -in(y,u) | in(z,u).  [resolve(120,f,101,f)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f1(x,y,z),z) | -O(f1(x,y,z),x) | -point(x) | -point(y) | -point(z) | -point(u) | -overlaps(u,z) | overlaps(u,x) | overlaps(u,y).  [resolve(120,f,102,d)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f1(x,y,z),z) | -O(f1(x,y,z),x) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,x).  [resolve(120,f,103,d)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f1(x,y,z),z) | -O(f1(x,y,z),x) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,y).  [resolve(120,f,104,d)].
+121 -T(x) | -T(y) | -T(z) | -O(f1(x,y,z),z) | -O(f1(x,y,z),y) | sum(x,y,z).  [resolve(99,d,92,a)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f1(x,y,z),z) | -O(f1(x,y,z),y) | -point(x) | -point(y) | -line(u) | -in(x,u) | -in(y,u) | in(z,u).  [resolve(121,f,101,f)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f1(x,y,z),z) | -O(f1(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | -overlaps(u,z) | overlaps(u,x) | overlaps(u,y).  [resolve(121,f,102,d)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f1(x,y,z),z) | -O(f1(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,x).  [resolve(121,f,103,d)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f1(x,y,z),z) | -O(f1(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | overlaps(u,z) | -overlaps(u,y).  [resolve(121,f,104,d)].
+
+Eliminating disjoint/2
+122 -point(x) | -point(y) | disjoint(x,y) | overlaps(x,y).  [clausify(26)].
+123 -point(x) | -point(y) | -disjoint(x,y) | -overlaps(x,y).  [clausify(26)].
+124 -point(x) | -point(y) | part(x,y) | disjoint(f10(x,y),y).  [clausify(43)].
+Derived: -point(x) | -point(y) | part(x,y) | -point(f10(x,y)) | -point(y) | -overlaps(f10(x,y),y).  [resolve(124,d,123,c)].
+125 -point(x) | -point(y) | -disjoint(x,y) | -overlaps(x,y).  [clausify(49)].
+126 -point(x) | -point(y) | disjoint(x,y) | overlaps(x,y).  [clausify(49)].
+
+Eliminating underlaps/2
+127 -point(x) | -point(y) | underlaps(x,y) | -point(z) | -part(x,z) | -part(y,z).  [clausify(27)].
+128 -point(x) | -point(y) | -underlaps(x,y) | point(f3(x,y)).  [clausify(27)].
+129 -point(x) | -point(y) | -underlaps(x,y) | part(x,f3(x,y)).  [clausify(27)].
+130 -point(x) | -point(y) | -underlaps(x,y) | part(y,f3(x,y)).  [clausify(27)].
+Derived: -point(x) | -point(y) | -point(z) | -part(x,z) | -part(y,z) | -point(x) | -point(y) | point(f3(x,y)).  [resolve(127,c,128,c)].
+Derived: -point(x) | -point(y) | -point(z) | -part(x,z) | -part(y,z) | -point(x) | -point(y) | part(x,f3(x,y)).  [resolve(127,c,129,c)].
+Derived: -point(x) | -point(y) | -point(z) | -part(x,z) | -part(y,z) | -point(x) | -point(y) | part(y,f3(x,y)).  [resolve(127,c,130,c)].
+131 -point(x) | -point(y) | -underlaps(x,y) | point(f8(x,y)).  [clausify(41)].
+Derived: -point(x) | -point(y) | point(f8(x,y)) | -point(x) | -point(y) | -point(z) | -part(x,z) | -part(y,z).  [resolve(131,c,127,c)].
+132 -point(x) | -point(y) | -underlaps(x,y) | -overlaps(z,f8(x,y)) | overlaps(z,x) | overlaps(z,y).  [clausify(41)].
+Derived: -point(x) | -point(y) | -overlaps(z,f8(x,y)) | overlaps(z,x) | overlaps(z,y) | -point(x) | -point(y) | -point(u) | -part(x,u) | -part(y,u).  [resolve(132,c,127,c)].
+133 -point(x) | -point(y) | -underlaps(x,y) | overlaps(z,f8(x,y)) | -overlaps(z,x).  [clausify(41)].
+Derived: -point(x) | -point(y) | overlaps(z,f8(x,y)) | -overlaps(z,x) | -point(x) | -point(y) | -point(u) | -part(x,u) | -part(y,u).  [resolve(133,c,127,c)].
+134 -point(x) | -point(y) | -underlaps(x,y) | overlaps(z,f8(x,y)) | -overlaps(z,y).  [clausify(41)].
+Derived: -point(x) | -point(y) | overlaps(z,f8(x,y)) | -overlaps(z,y) | -point(x) | -point(y) | -point(u) | -part(x,u) | -part(y,u).  [resolve(134,c,127,c)].
+135 -point(x) | -point(y) | -underlaps(x,y) | point(f12(x,y)).  [clausify(50)].
+Derived: -point(x) | -point(y) | point(f12(x,y)) | -point(x) | -point(y) | -point(z) | -part(x,z) | -part(y,z).  [resolve(135,c,127,c)].
+136 -point(x) | -point(y) | -underlaps(x,y) | part(x,f12(x,y)).  [clausify(50)].
+Derived: -point(x) | -point(y) | part(x,f12(x,y)) | -point(x) | -point(y) | -point(z) | -part(x,z) | -part(y,z).  [resolve(136,c,127,c)].
+137 -point(x) | -point(y) | -underlaps(x,y) | part(y,f12(x,y)).  [clausify(50)].
+Derived: -point(x) | -point(y) | part(y,f12(x,y)) | -point(x) | -point(y) | -point(z) | -part(x,z) | -part(y,z).  [resolve(137,c,127,c)].
+138 -point(x) | -point(y) | underlaps(x,y) | -point(z) | -part(x,z) | -part(y,z).  [clausify(50)].
+
+Eliminating atomic_part/1
+139 -point(x) | atomic_part(x) | point(f4(x)).  [clausify(28)].
+140 -point(x) | -atomic_part(x) | -point(y) | -part(y,x) | y = x.  [clausify(28)].
+Derived: -point(x) | point(f4(x)) | -point(x) | -point(y) | -part(y,x) | y = x.  [resolve(139,b,140,b)].
+141 -point(x) | atomic_part(x) | part(f4(x),x).  [clausify(28)].
+Derived: -point(x) | part(f4(x),x) | -point(x) | -point(y) | -part(y,x) | y = x.  [resolve(141,b,140,b)].
+142 -point(x) | atomic_part(x) | f4(x) != x.  [clausify(28)].
+Derived: -point(x) | f4(x) != x | -point(x) | -point(y) | -part(y,x) | y = x.  [resolve(142,b,140,b)].
+143 -point(x) | -atomic_part(x) | -point(y) | -part(y,x) | y = x.  [clausify(51)].
+144 -point(x) | atomic_part(x) | point(f13(x)).  [clausify(51)].
+Derived: -point(x) | point(f13(x)) | -point(x) | -point(y) | -part(y,x) | y = x.  [resolve(144,b,140,b)].
+145 -point(x) | atomic_part(x) | part(f13(x),x).  [clausify(51)].
+Derived: -point(x) | part(f13(x),x) | -point(x) | -point(y) | -part(y,x) | y = x.  [resolve(145,b,140,b)].
+146 -point(x) | atomic_part(x) | f13(x) != x.  [clausify(51)].
+Derived: -point(x) | f13(x) != x | -point(x) | -point(y) | -part(y,x) | y = x.  [resolve(146,b,140,b)].
+
+Eliminating prod/3
+147 -point(x) | -point(y) | -point(z) | prod(x,y,z) | point(f6(x,y,z)).  [clausify(30)].
+148 -point(x) | -point(y) | -point(z) | -prod(x,y,z) | -point(u) | -part(u,z) | part(u,x) | part(u,y).  [clausify(30)].
+149 -point(x) | -point(y) | -point(z) | -prod(x,y,z) | -point(u) | part(u,z) | -part(u,x).  [clausify(30)].
+150 -point(x) | -point(y) | -point(z) | -prod(x,y,z) | -point(u) | part(u,z) | -part(u,y).  [clausify(30)].
+Derived: -point(x) | -point(y) | -point(z) | point(f6(x,y,z)) | -point(x) | -point(y) | -point(z) | -point(u) | -part(u,z) | part(u,x) | part(u,y).  [resolve(147,d,148,d)].
+Derived: -point(x) | -point(y) | -point(z) | point(f6(x,y,z)) | -point(x) | -point(y) | -point(z) | -point(u) | part(u,z) | -part(u,x).  [resolve(147,d,149,d)].
+Derived: -point(x) | -point(y) | -point(z) | point(f6(x,y,z)) | -point(x) | -point(y) | -point(z) | -point(u) | part(u,z) | -part(u,y).  [resolve(147,d,150,d)].
+151 -point(x) | -point(y) | -point(z) | prod(x,y,z) | part(f6(x,y,z),z) | part(f6(x,y,z),x) | part(f6(x,y,z),y).  [clausify(30)].
+Derived: -point(x) | -point(y) | -point(z) | part(f6(x,y,z),z) | part(f6(x,y,z),x) | part(f6(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | -part(u,z) | part(u,x) | part(u,y).  [resolve(151,d,148,d)].
+Derived: -point(x) | -point(y) | -point(z) | part(f6(x,y,z),z) | part(f6(x,y,z),x) | part(f6(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | part(u,z) | -part(u,x).  [resolve(151,d,149,d)].
+Derived: -point(x) | -point(y) | -point(z) | part(f6(x,y,z),z) | part(f6(x,y,z),x) | part(f6(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | part(u,z) | -part(u,y).  [resolve(151,d,150,d)].
+152 -point(x) | -point(y) | -point(z) | prod(x,y,z) | -part(f6(x,y,z),z) | -part(f6(x,y,z),x).  [clausify(30)].
+Derived: -point(x) | -point(y) | -point(z) | -part(f6(x,y,z),z) | -part(f6(x,y,z),x) | -point(x) | -point(y) | -point(z) | -point(u) | -part(u,z) | part(u,x) | part(u,y).  [resolve(152,d,148,d)].
+Derived: -point(x) | -point(y) | -point(z) | -part(f6(x,y,z),z) | -part(f6(x,y,z),x) | -point(x) | -point(y) | -point(z) | -point(u) | part(u,z) | -part(u,x).  [resolve(152,d,149,d)].
+Derived: -point(x) | -point(y) | -point(z) | -part(f6(x,y,z),z) | -part(f6(x,y,z),x) | -point(x) | -point(y) | -point(z) | -point(u) | part(u,z) | -part(u,y).  [resolve(152,d,150,d)].
+153 -point(x) | -point(y) | -point(z) | prod(x,y,z) | -part(f6(x,y,z),z) | -part(f6(x,y,z),y).  [clausify(30)].
+Derived: -point(x) | -point(y) | -point(z) | -part(f6(x,y,z),z) | -part(f6(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | -part(u,z) | part(u,x) | part(u,y).  [resolve(153,d,148,d)].
+Derived: -point(x) | -point(y) | -point(z) | -part(f6(x,y,z),z) | -part(f6(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | part(u,z) | -part(u,x).  [resolve(153,d,149,d)].
+Derived: -point(x) | -point(y) | -point(z) | -part(f6(x,y,z),z) | -part(f6(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | part(u,z) | -part(u,y).  [resolve(153,d,150,d)].
+154 -point(x) | -point(y) | -point(z) | -prod(x,y,z) | -point(u) | -part(u,z) | part(u,x) | part(u,y).  [clausify(53)].
+155 -point(x) | -point(y) | -point(z) | -prod(x,y,z) | -point(u) | part(u,z) | -part(u,x).  [clausify(53)].
+156 -point(x) | -point(y) | -point(z) | -prod(x,y,z) | -point(u) | part(u,z) | -part(u,y).  [clausify(53)].
+157 -point(x) | -point(y) | -point(z) | prod(x,y,z) | point(f15(x,y,z)).  [clausify(53)].
+Derived: -point(x) | -point(y) | -point(z) | point(f15(x,y,z)) | -point(x) | -point(y) | -point(z) | -point(u) | -part(u,z) | part(u,x) | part(u,y).  [resolve(157,d,148,d)].
+Derived: -point(x) | -point(y) | -point(z) | point(f15(x,y,z)) | -point(x) | -point(y) | -point(z) | -point(u) | part(u,z) | -part(u,x).  [resolve(157,d,149,d)].
+Derived: -point(x) | -point(y) | -point(z) | point(f15(x,y,z)) | -point(x) | -point(y) | -point(z) | -point(u) | part(u,z) | -part(u,y).  [resolve(157,d,150,d)].
+158 -point(x) | -point(y) | -point(z) | prod(x,y,z) | part(f15(x,y,z),z) | part(f15(x,y,z),x) | part(f15(x,y,z),y).  [clausify(53)].
+Derived: -point(x) | -point(y) | -point(z) | part(f15(x,y,z),z) | part(f15(x,y,z),x) | part(f15(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | -part(u,z) | part(u,x) | part(u,y).  [resolve(158,d,148,d)].
+Derived: -point(x) | -point(y) | -point(z) | part(f15(x,y,z),z) | part(f15(x,y,z),x) | part(f15(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | part(u,z) | -part(u,x).  [resolve(158,d,149,d)].
+Derived: -point(x) | -point(y) | -point(z) | part(f15(x,y,z),z) | part(f15(x,y,z),x) | part(f15(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | part(u,z) | -part(u,y).  [resolve(158,d,150,d)].
+159 -point(x) | -point(y) | -point(z) | prod(x,y,z) | -part(f15(x,y,z),z) | -part(f15(x,y,z),x).  [clausify(53)].
+Derived: -point(x) | -point(y) | -point(z) | -part(f15(x,y,z),z) | -part(f15(x,y,z),x) | -point(x) | -point(y) | -point(z) | -point(u) | -part(u,z) | part(u,x) | part(u,y).  [resolve(159,d,148,d)].
+Derived: -point(x) | -point(y) | -point(z) | -part(f15(x,y,z),z) | -part(f15(x,y,z),x) | -point(x) | -point(y) | -point(z) | -point(u) | part(u,z) | -part(u,x).  [resolve(159,d,149,d)].
+Derived: -point(x) | -point(y) | -point(z) | -part(f15(x,y,z),z) | -part(f15(x,y,z),x) | -point(x) | -point(y) | -point(z) | -point(u) | part(u,z) | -part(u,y).  [resolve(159,d,150,d)].
+160 -point(x) | -point(y) | -point(z) | prod(x,y,z) | -part(f15(x,y,z),z) | -part(f15(x,y,z),y).  [clausify(53)].
+Derived: -point(x) | -point(y) | -point(z) | -part(f15(x,y,z),z) | -part(f15(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | -part(u,z) | part(u,x) | part(u,y).  [resolve(160,d,148,d)].
+Derived: -point(x) | -point(y) | -point(z) | -part(f15(x,y,z),z) | -part(f15(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | part(u,z) | -part(u,x).  [resolve(160,d,149,d)].
+Derived: -point(x) | -point(y) | -point(z) | -part(f15(x,y,z),z) | -part(f15(x,y,z),y) | -point(x) | -point(y) | -point(z) | -point(u) | part(u,z) | -part(u,y).  [resolve(160,d,150,d)].
+
+Eliminating L_5/1
+
+============================== end predicate elimination =============
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, point, T, line, overlaps, part, O, in, ppart, PRE ]).
+Function symbol precedence:  function_order([ c1, f2, f3, f8, f9, f10, f11, f12, f4, f7, f13, f1, f5, f6, f14, f15 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+  % set(binary_resolution).  % (non-Horn)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.41 seconds.
+
+============================== PROOF =================================
+
+% Proof 1 at 0.41 (+ 0.01) seconds.
+% Length of proof is 18.
+% Level of proof is 7.
+% Maximum clause weight is 4.000.
+% Given clauses 42.
+
+9 (all x (ED(x) <-> line(x) & L_1(x))) # label(non_clause).  [assumption].
+10 (all x (PD(x) <-> line(x) & L_2(x))) # label(non_clause).  [assumption].
+11 (all x (Q(x) <-> line(x) & L_3(x))) # label(non_clause).  [assumption].
+33 (all x (point(x) -> -line(x))) # label(non_clause).  [assumption].
+36 (all x (line(x) -> (exists y (point(x) & in(x,y))))) # label(non_clause).  [assumption].
+54 (all x (ED(x) | PD(x) | Q(x) -> (exists t PRE(x,t)))) # label(non_clause) # label(goal).  [goal].
+67 ED(c1) | PD(c1) | Q(c1).  [deny(54)].
+68 -ED(x) | line(x).  [clausify(9)].
+72 PD(c1) | Q(c1) | line(c1).  [resolve(67,a,68,a)].
+73 -PD(x) | line(x).  [clausify(10)].
+79 -Q(x) | line(x).  [clausify(11)].
+81 Q(c1) | line(c1) | line(c1).  [resolve(72,a,73,a)].
+183 -point(x) | -line(x).  [clausify(33)].
+186 -line(x) | point(x).  [clausify(36)].
+202 line(c1) | line(c1) | line(c1).  [resolve(81,a,79,a)].
+203 line(c1).  [copy(202),merge(b),merge(c)].
+1013 point(c1).  [resolve(203,a,186,a)].
+1014 $F.  [resolve(203,a,183,b),unit_del(a,1013)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=42. Generated=3692. Kept=767. proofs=1.
+Usable=42. Sos=701. Demods=0. Limbo=2, Disabled=309. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=2924. Back_subsumed=22.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=7078. Nonunit_bsub_feature_tests=11372.
+Megabytes=1.67.
+User_CPU=0.41, System_CPU=0.01, Wall_clock=1.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 7914 exit (max_proofs) Fri Jul 19 01:15:51 2013
