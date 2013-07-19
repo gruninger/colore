@@ -1,8 +1,8 @@
 ============================== Prover9 ===============================
 Prover9 (64) version 2009-11A, November 2009.
-Process 11814 was started by cchui on stl1.mie.utoronto.ca,
-Tue Jul 16 10:14:39 2013
-The command was "prover9 -t 600 -f test/p9/cem_mereology.p9 test/p9/dolce_time_mereology_reduction.p9 test/p9/cm_mereology.p9 test/p9/em_mereology.p9 test/p9/mereology_def.p9 test/p9/sum_mereology.p9 test/p9/prod_mereology.p9 test/p9/m_mereology.p9 test/p9/options.txt test/p9/ex0715_reduction_6.p9".
+Process 30317 was started by cchui on stl-ws2,
+Fri Jul 19 00:47:48 2013
+The command was "prover9 -t 600 -f test/p9/cem_mereology.p9 test/p9/dolce_time_mereology_reduction.p9 test/p9/cm_mereology.p9 test/p9/em_mereology.p9 test/p9/mereology_def.p9 test/p9/sum_mereology.p9 test/p9/prod_mereology.p9 test/p9/m_mereology.p9 test/p9/options.txt test/p9/ex0718_reduction_4.p9".
 ============================== end of head ===========================
 
 ============================== INPUT =================================
@@ -80,11 +80,11 @@ clear(print_initial_clauses).
 clear(print_kept).
 clear(print_given).
 
-% Reading from file test/p9/ex0715_reduction_6.p9
+% Reading from file test/p9/ex0718_reduction_4.p9
 
 
 formulas(goals).
-(all x all y (T(x) & T(y) & -P(x,y) -> (exists z (T(z) & P(z,x) & -O(z,y))))).
+(all x all y (T(x) & T(y) & P(x,y) & P(y,x) -> x = y)).
 end_of_list.
 
 ============================== end of input ==========================
@@ -112,7 +112,7 @@ end_of_list.
 16 (all x part(x,x)) # label(non_clause).  [assumption].
 17 (all x all y (part(x,y) & part(y,x) -> x = y)) # label(non_clause).  [assumption].
 18 (all x all y all z (part(x,y) & part(y,z) -> part(x,z))) # label(non_clause).  [assumption].
-19 (all x all y (T(x) & T(y) & -P(x,y) -> (exists z (T(z) & P(z,x) & -O(z,y))))) # label(non_clause) # label(goal).  [goal].
+19 (all x all y (T(x) & T(y) & P(x,y) & P(y,x) -> x = y)) # label(non_clause) # label(goal).  [goal].
 
 ============================== end of process non-clausal formulas ===
 
@@ -127,24 +127,22 @@ Eliminating T/1
 Derived: c1 = c1.  [resolve(22,a,21,a)].
 23 T(c2).  [deny(19)].
 Derived: c2 = c2.  [resolve(23,a,21,a)].
-24 -T(x) | -P(x,c1) | O(x,c2).  [deny(19)].
-Derived: -P(x,c1) | O(x,c2) | x != x.  [resolve(24,a,20,a)].
-Derived: -P(c1,c1) | O(c1,c2).  [resolve(24,a,22,a)].
-Derived: -P(c2,c1) | O(c2,c2).  [resolve(24,a,23,a)].
+
+Eliminating P/2
+24 P(x,y) | -part(x,y).  [clausify(2)].
+25 -P(x,y) | part(x,y).  [clausify(2)].
+26 P(c1,c2).  [deny(19)].
+Derived: part(c1,c2).  [resolve(26,a,25,a)].
+27 P(c2,c1).  [deny(19)].
+Derived: part(c2,c1).  [resolve(27,a,25,a)].
 
 Eliminating PP/2
-25 PP(x,y) | -ppart(x,y).  [clausify(3)].
-26 -PP(x,y) | ppart(x,y).  [clausify(3)].
+28 PP(x,y) | -ppart(x,y).  [clausify(3)].
+29 -PP(x,y) | ppart(x,y).  [clausify(3)].
 
 Eliminating O/2
-27 O(x,y) | -overlaps(x,y).  [clausify(4)].
-28 -O(x,y) | overlaps(x,y).  [clausify(4)].
-29 -P(x,c1) | O(x,c2) | x != x.  [resolve(24,a,20,a)].
-Derived: -P(x,c1) | x != x | overlaps(x,c2).  [resolve(29,b,28,a)].
-30 -P(c1,c1) | O(c1,c2).  [resolve(24,a,22,a)].
-Derived: -P(c1,c1) | overlaps(c1,c2).  [resolve(30,b,28,a)].
-31 -P(c2,c1) | O(c2,c2).  [resolve(24,a,23,a)].
-Derived: -P(c2,c1) | overlaps(c2,c2).  [resolve(31,b,28,a)].
+30 O(x,y) | -overlaps(x,y).  [clausify(4)].
+31 -O(x,y) | overlaps(x,y).  [clausify(4)].
 
 Eliminating U/2
 32 U(x,y) | -underlaps(x,y).  [clausify(5)].
@@ -213,7 +211,7 @@ Derived: -part(f6(x,y,z),z) | -part(f6(x,y,z),y) | part(u,z) | -part(u,y).  [res
 ============================== end predicate elimination =============
 
 Term ordering decisions:
-Predicate symbol precedence:  predicate_order([ =, part, overlaps, ppart, P ]).
+Predicate symbol precedence:  predicate_order([ =, part, overlaps, ppart ]).
 Function symbol precedence:  function_order([ c1, c2, f1, f2, f3, f7, f8, f4, f5, f6 ]).
 After inverse_order:  (no changes).
 Unfolding symbols: (none).
@@ -235,55 +233,43 @@ Auto_process settings:
 
 ============================== SEARCH ================================
 
-% Starting search at 0.01 seconds.
+% Starting search at 0.02 seconds.
 
 ============================== PROOF =================================
 
-% Proof 1 at 0.01 (+ 0.00) seconds.
-% Length of proof is 23.
-% Level of proof is 6.
-% Maximum clause weight is 8.000.
-% Given clauses 72.
+% Proof 1 at 0.02 (+ 0.01) seconds.
+% Length of proof is 11.
+% Level of proof is 3.
+% Maximum clause weight is 9.000.
+% Given clauses 15.
 
-1 (all x (T(x) <-> x = x)) # label(non_clause).  [assumption].
 2 (all x all y (P(x,y) <-> part(x,y))) # label(non_clause).  [assumption].
-4 (all x all y (O(x,y) <-> overlaps(x,y))) # label(non_clause).  [assumption].
-6 (all x all y (-part(x,y) -> (exists z (part(z,x) & disjoint(z,y))))) # label(non_clause).  [assumption].
-9 (all x all y (disjoint(x,y) <-> -overlaps(x,y))) # label(non_clause).  [assumption].
-19 (all x all y (T(x) & T(y) & -P(x,y) -> (exists z (T(z) & P(z,x) & -O(z,y))))) # label(non_clause) # label(goal).  [goal].
-20 T(x) | x != x.  [clausify(1)].
-24 -T(x) | -P(x,c1) | O(x,c2).  [deny(19)].
-28 -O(x,y) | overlaps(x,y).  [clausify(4)].
-29 -P(x,c1) | O(x,c2) | x != x.  [resolve(24,a,20,a)].
-34 -disjoint(x,y) | -overlaps(x,y).  [clausify(9)].
-35 part(x,y) | disjoint(f1(x,y),y).  [clausify(6)].
-59 P(x,y) | -part(x,y).  [clausify(2)].
-60 part(x,y) | part(f1(x,y),x).  [clausify(6)].
-73 -P(c1,c2).  [deny(19)].
-74 -P(x,c1) | x != x | overlaps(x,c2).  [resolve(29,b,28,a)].
-75 -P(x,c1) | overlaps(x,c2).  [copy(74),xx(b)].
-76 -overlaps(f1(x,y),y) | part(x,y).  [resolve(34,a,35,b)].
-121 part(x,y) | P(f1(x,y),x).  [resolve(60,b,59,b)].
-132 -part(c1,c2).  [ur(59,a,73,a)].
-181 -overlaps(f1(c1,c2),c2).  [ur(76,b,132,a)].
-184 -P(f1(c1,c2),c1).  [ur(75,b,181,a)].
-274 $F.  [resolve(184,a,121,b),unit_del(a,132)].
+17 (all x all y (part(x,y) & part(y,x) -> x = y)) # label(non_clause).  [assumption].
+19 (all x all y (T(x) & T(y) & P(x,y) & P(y,x) -> x = y)) # label(non_clause) # label(goal).  [goal].
+25 -P(x,y) | part(x,y).  [clausify(2)].
+26 P(c1,c2).  [deny(19)].
+27 P(c2,c1).  [deny(19)].
+69 -part(x,y) | -part(y,x) | y = x.  [clausify(17)].
+71 c2 != c1.  [deny(19)].
+72 part(c1,c2).  [resolve(26,a,25,a)].
+73 part(c2,c1).  [resolve(27,a,25,a)].
+130 $F.  [resolve(72,a,69,b),flip(b),unit_del(a,73),unit_del(b,71)].
 
 ============================== end of proof ==========================
 
 ============================== STATISTICS ============================
 
-Given=72. Generated=478. Kept=215. proofs=1.
-Usable=70. Sos=142. Demods=0. Limbo=0, Disabled=88. Hints=0.
+Given=15. Generated=191. Kept=72. proofs=1.
+Usable=15. Sos=55. Demods=0. Limbo=2, Disabled=82. Hints=0.
 Kept_by_rule=0, Deleted_by_rule=0.
-Forward_subsumed=262. Back_subsumed=2.
+Forward_subsumed=118. Back_subsumed=0.
 Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
-New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=1.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
 Demod_attempts=0. Demod_rewrites=0.
 Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
-Nonunit_fsub_feature_tests=1138. Nonunit_bsub_feature_tests=1117.
-Megabytes=0.43.
-User_CPU=0.01, System_CPU=0.00, Wall_clock=0.
+Nonunit_fsub_feature_tests=87. Nonunit_bsub_feature_tests=295.
+Megabytes=0.21.
+User_CPU=0.02, System_CPU=0.01, Wall_clock=1.
 
 ============================== end of statistics =====================
 
@@ -293,4 +279,4 @@ THEOREM PROVED
 
 Exiting with 1 proof.
 
-Process 11814 exit (max_proofs) Tue Jul 16 10:14:39 2013
+Process 30317 exit (max_proofs) Fri Jul 19 00:47:49 2013
