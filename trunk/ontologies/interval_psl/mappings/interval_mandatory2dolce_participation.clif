@@ -31,4 +31,58 @@
 			(beforeEq (beginof t2) (beginof t1))
 			(beforeEq (endof t1) (endof t2)))))
 
+(cl-comment "Lemmas")
+
+(forall (x)
+	(if (object x)
+		(exists (t) (PRE x t))))
+
+(forall (x)
+	(if (activity_occurrence x)
+		(exists (t) (PRE x t))))
+
+(forall (x)
+	(if (activity_occurrence x)
+		(PRE x (between (beginof x)(endof x)))))
+
+(forall (x)
+	(if (object x)
+		(PRE x (between (beginof x)(endof x)))))
+
+(forall (x t)
+	(if (is_occurring_at x t)
+		(exists (z)
+			(and (beforeEq (beginof z) t)
+				(beforeEq t (endof z))
+				(PRE x z)))))
+
+(forall (x t)
+	(if (exists_at x t)
+		(exists (z)
+			(and (beforeEq (beginof z) t)
+				(beforeEq t (endof z))
+				(PRE x z)))))
+
+(forall (x y t)
+	(if (participates_in x y t)
+		(exists (z)
+			(and (beforeEq (beginof z) t)
+				(beforeEq t (endof z))
+				(PRE x z)
+				(PRE y z)))))
+
+(forall (x y t)
+	(if (PC x y t)
+		(exists (z)
+			(and (exists_at x z)
+				(beforeEq (beginof t) z)
+				(beforeEq z (endof t))))))
+
+(forall (x y t)
+	(if (PC x y t)
+		(exists (z)
+			(and (is_occurring_at y z)
+				(beforeEq (beginof t) z)
+				(beforeEq z (endof t))))))
+
 )

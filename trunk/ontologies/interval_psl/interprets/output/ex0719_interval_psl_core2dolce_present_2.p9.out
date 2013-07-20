@@ -1,0 +1,344 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 16791 was started by cchui on stl-ws4.mie.utoronto.ca,
+Fri Jul 19 16:30:19 2013
+The command was "prover9 -t 600 -f test/p9/interval_psl_core.p9 test/p9/interval_psl_core2dolce_present.p9 test/p9/psl_core_root-ext.p9 test/p9/interval_with_endpoints.p9 test/p9/finite_sim_vc_end.p9 test/p9/lp_infinite_end.p9 test/p9/lp_ordering.p9 test/p9/options.txt test/p9/ex0719_interval_psl_core2dolce_present_2.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file test/p9/interval_psl_core.p9
+
+
+formulas(sos).
+(all x (timeinterval(x) -> -(activity(x) | activity_occurrence(x) | timepoint(x) | object(x)))).
+(all x all y (psl_interval(x,y) <-> (activity_occurrence(x) | object(x)) & timeinterval(y) & beginof(x) = beginof(y) & endof(x) = endof(y))).
+(all x all y all z (overlay(x,y,z) <-> (exists i1 exists i2 (psl_interval(x,i1) & psl_interval(y,i2) & beginof(i2) = beginof(z) & endof(i1) = endof(z))))).
+end_of_list.
+
+% Reading from file test/p9/interval_psl_core2dolce_present.p9
+
+
+formulas(sos).
+(all x (ED(x) <-> object(x))).
+(all x (PD(x) <-> activity_occurrence(x))).
+(all x (T(x) <-> timeinterval(x))).
+(all t1 all t2 (P(t1,t2) <-> timeinterval(t1) & timeinterval(t2) & beforeEq(beginof(t2),beginof(t1)) & beforeEq(endof(t1),endof(t2)))).
+(all x all y all t (PRE(x,t) <-> (object(x) | activity_occurrence(x)) & timeinterval(t) & beforeEq(beginof(x),beginof(t)) & beforeEq(endof(t),endof(x)))).
+(all x all y all z (SUM(z,x,y) <-> timeinterval(x) & timeinterval(y) & timeinterval(z) & (beginof(z) = beginof(x) & endof(z) = endof(y) | beginof(z) = beginof(y) & endof(z) = endof(x)))).
+(all x (object(x) | activity_occurrence(x) -> (exists t psl_interval(x,t)))).
+(all x all y all z (beforeEq(x,y) & beforeEq(y,z) -> beforeEq(x,z))).
+(all x all y all z (P(x,y) & P(y,z) -> P(x,z))).
+(all x all y (psl_interval(x,y) <-> (activity_occurrence(x) | object(x)) & timeinterval(y) & beginof(x) = beginof(y) & endof(x) = endof(y))).
+(all x all y all z (overlay(x,y,z) <-> (exists i1 exists i2 (psl_interval(x,i1) & psl_interval(y,i2) & beginof(i2) = beginof(z) & endof(i1) = endof(z))))).
+end_of_list.
+
+% Reading from file test/p9/psl_core_root-ext.p9
+
+
+formulas(sos).
+(all t1 all t2 (before(t1,t2) -> timepoint(t1) & timepoint(t2))).
+(all t1 all t2 (timepoint(t1) & timepoint(t2) -> t1 = t2 | before(t1,t2) | before(t2,t1))).
+(all t1 -before(t1,t1)).
+(all t1 all t2 all t3 (before(t1,t2) & before(t2,t3) -> before(t1,t3))).
+(all t (timepoint(t) & t != "inf-" -> before("inf-",t))).
+(all t (timepoint(t) & t != "inf+" -> before(t,"inf+"))).
+(all t (timepoint(t) & t != "inf-" -> (exists u (before("inf-",u) & before(u,t))))).
+(all t (timepoint(t) & t != "inf+" -> (exists u (before(t,u) & before(u,"inf+"))))).
+(all x ((activity(x) -> -(activity_occurrence(x) | object(x) | timepoint(x))) & (activity_occurrence(x) -> -(object(x) | timepoint(x))) & (object(x) -> -timepoint(x)))).
+(all a all occ (occurrence_of(occ,a) -> activity(a) & activity_occurrence(occ))).
+(all occ (activity_occurrence(occ) -> (exists a (activity(a) & occurrence_of(occ,a))))).
+(all occ all a1 all a2 (occurrence_of(occ,a1) & occurrence_of(occ,a2) -> a1 = a2)).
+(all a all x (occurrence_of(x,a) | object(x) -> timepoint(beginof(x)) & timepoint(endof(x)))).
+(all x (activity_occurrence(x) | object(x) -> beforeEq(beginof(x),endof(x)))).
+(all x all occ all t (participates_in(x,occ,t) -> object(x) & activity_occurrence(occ) & timepoint(t))).
+(all x all occ all t (participates_in(x,occ,t) -> exists_at(x,t) & is_occurring_at(occ,t))).
+(all t1 all t2 (beforeEq(t1,t2) <-> timepoint(t1) & timepoint(t2) & (before(t1,t2) | t1 = t2))).
+(all t1 all t2 all t3 (betweenEq(t1,t2,t3) <-> beforeEq(t1,t2) & beforeEq(t2,t3))).
+(all x all t (exists_at(x,t) <-> object(x) & betweenEq(beginof(x),t,endof(x)))).
+(all occ all t (is_occurring_at(occ,t) <-> betweenEq(beginof(occ),t,endof(occ)))).
+end_of_list.
+
+% Reading from file test/p9/interval_with_endpoints.p9
+
+
+formulas(sos).
+end_of_list.
+
+% Reading from file test/p9/finite_sim_vc_end.p9
+
+
+formulas(sos).
+(all x (timepoint(x) -> -timeinterval(x))).
+(all i all p all q (timeinterval(i) & p = beginof(i) & q = endof(i) -> i = between(p,q))).
+(all i (timeinterval(i) -> timepoint(beginof(i)) & timepoint(endof(i)))).
+(all x all y (before(x,y) -> timeinterval(between(x,y)))).
+(all p all q (before(p,q) -> p = beginof(between(p,q)) & q = endof(between(p,q)))).
+end_of_list.
+
+% Reading from file test/p9/lp_infinite_end.p9
+
+
+formulas(sos).
+(exists t1 (timepoint(t1) & (all t2 (timepoint(t2) & t1 != t2 -> before(t2,t1))) & (all t3 (timepoint(t3) & t1 != t3 -> (exists t4 (before(t3,t4) & before(t4,t1))))))).
+(exists t1 (timepoint(t1) & (all t2 (timepoint(t2) & t1 != t2 -> before(t1,t2))) & (all t3 (timepoint(t3) & t1 != t3 -> (exists t4 (before(t4,t3) & before(t1,t4))))))).
+end_of_list.
+
+% Reading from file test/p9/lp_ordering.p9
+
+
+formulas(sos).
+(all x all y all z (timepoint(x) & timepoint(y) & timepoint(z) & before(x,y) & before(y,z) -> before(x,z))).
+(all x (timepoint(x) -> -before(x,x))).
+(all x all y (timepoint(x) & timepoint(y) -> before(x,y) | before(y,x) | x = y)).
+(all x all y (bbefore(x,y) <-> timepoint(x) & timepoint(y) & (before(x,y) | x = y))).
+end_of_list.
+
+% Reading from file test/p9/options.txt
+
+clear(auto_denials).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+
+% Reading from file test/p9/ex0719_interval_psl_core2dolce_present_2.p9
+
+
+formulas(goals).
+(all x all t all t1 (PRE(x,t) & P(t1,t) -> PRE(x,t1))).
+end_of_list.
+
+============================== end of input ==========================
+
+% From the command line: assign(max_seconds, 600).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (timeinterval(x) -> -(activity(x) | activity_occurrence(x) | timepoint(x) | object(x)))) # label(non_clause).  [assumption].
+2 (all x all y (psl_interval(x,y) <-> (activity_occurrence(x) | object(x)) & timeinterval(y) & beginof(x) = beginof(y) & endof(x) = endof(y))) # label(non_clause).  [assumption].
+3 (all x all y all z (overlay(x,y,z) <-> (exists i1 exists i2 (psl_interval(x,i1) & psl_interval(y,i2) & beginof(i2) = beginof(z) & endof(i1) = endof(z))))) # label(non_clause).  [assumption].
+4 (all x (ED(x) <-> object(x))) # label(non_clause).  [assumption].
+5 (all x (PD(x) <-> activity_occurrence(x))) # label(non_clause).  [assumption].
+6 (all x (T(x) <-> timeinterval(x))) # label(non_clause).  [assumption].
+7 (all t1 all t2 (P(t1,t2) <-> timeinterval(t1) & timeinterval(t2) & beforeEq(beginof(t2),beginof(t1)) & beforeEq(endof(t1),endof(t2)))) # label(non_clause).  [assumption].
+8 (all x all y all t (PRE(x,t) <-> (object(x) | activity_occurrence(x)) & timeinterval(t) & beforeEq(beginof(x),beginof(t)) & beforeEq(endof(t),endof(x)))) # label(non_clause).  [assumption].
+9 (all x all y all z (SUM(z,x,y) <-> timeinterval(x) & timeinterval(y) & timeinterval(z) & (beginof(z) = beginof(x) & endof(z) = endof(y) | beginof(z) = beginof(y) & endof(z) = endof(x)))) # label(non_clause).  [assumption].
+10 (all x (object(x) | activity_occurrence(x) -> (exists t psl_interval(x,t)))) # label(non_clause).  [assumption].
+11 (all x all y all z (beforeEq(x,y) & beforeEq(y,z) -> beforeEq(x,z))) # label(non_clause).  [assumption].
+12 (all x all y all z (P(x,y) & P(y,z) -> P(x,z))) # label(non_clause).  [assumption].
+13 (all x all y (psl_interval(x,y) <-> (activity_occurrence(x) | object(x)) & timeinterval(y) & beginof(x) = beginof(y) & endof(x) = endof(y))) # label(non_clause).  [assumption].
+14 (all x all y all z (overlay(x,y,z) <-> (exists i1 exists i2 (psl_interval(x,i1) & psl_interval(y,i2) & beginof(i2) = beginof(z) & endof(i1) = endof(z))))) # label(non_clause).  [assumption].
+15 (all t1 all t2 (before(t1,t2) -> timepoint(t1) & timepoint(t2))) # label(non_clause).  [assumption].
+16 (all t1 all t2 (timepoint(t1) & timepoint(t2) -> t1 = t2 | before(t1,t2) | before(t2,t1))) # label(non_clause).  [assumption].
+17 (all t1 -before(t1,t1)) # label(non_clause).  [assumption].
+18 (all t1 all t2 all t3 (before(t1,t2) & before(t2,t3) -> before(t1,t3))) # label(non_clause).  [assumption].
+19 (all t (timepoint(t) & t != "inf-" -> before("inf-",t))) # label(non_clause).  [assumption].
+20 (all t (timepoint(t) & t != "inf+" -> before(t,"inf+"))) # label(non_clause).  [assumption].
+21 (all t (timepoint(t) & t != "inf-" -> (exists u (before("inf-",u) & before(u,t))))) # label(non_clause).  [assumption].
+22 (all t (timepoint(t) & t != "inf+" -> (exists u (before(t,u) & before(u,"inf+"))))) # label(non_clause).  [assumption].
+23 (all x ((activity(x) -> -(activity_occurrence(x) | object(x) | timepoint(x))) & (activity_occurrence(x) -> -(object(x) | timepoint(x))) & (object(x) -> -timepoint(x)))) # label(non_clause).  [assumption].
+24 (all a all occ (occurrence_of(occ,a) -> activity(a) & activity_occurrence(occ))) # label(non_clause).  [assumption].
+25 (all occ (activity_occurrence(occ) -> (exists a (activity(a) & occurrence_of(occ,a))))) # label(non_clause).  [assumption].
+26 (all occ all a1 all a2 (occurrence_of(occ,a1) & occurrence_of(occ,a2) -> a1 = a2)) # label(non_clause).  [assumption].
+27 (all a all x (occurrence_of(x,a) | object(x) -> timepoint(beginof(x)) & timepoint(endof(x)))) # label(non_clause).  [assumption].
+28 (all x (activity_occurrence(x) | object(x) -> beforeEq(beginof(x),endof(x)))) # label(non_clause).  [assumption].
+29 (all x all occ all t (participates_in(x,occ,t) -> object(x) & activity_occurrence(occ) & timepoint(t))) # label(non_clause).  [assumption].
+30 (all x all occ all t (participates_in(x,occ,t) -> exists_at(x,t) & is_occurring_at(occ,t))) # label(non_clause).  [assumption].
+31 (all t1 all t2 (beforeEq(t1,t2) <-> timepoint(t1) & timepoint(t2) & (before(t1,t2) | t1 = t2))) # label(non_clause).  [assumption].
+32 (all t1 all t2 all t3 (betweenEq(t1,t2,t3) <-> beforeEq(t1,t2) & beforeEq(t2,t3))) # label(non_clause).  [assumption].
+33 (all x all t (exists_at(x,t) <-> object(x) & betweenEq(beginof(x),t,endof(x)))) # label(non_clause).  [assumption].
+34 (all occ all t (is_occurring_at(occ,t) <-> betweenEq(beginof(occ),t,endof(occ)))) # label(non_clause).  [assumption].
+35 (all x (timepoint(x) -> -timeinterval(x))) # label(non_clause).  [assumption].
+36 (all i all p all q (timeinterval(i) & p = beginof(i) & q = endof(i) -> i = between(p,q))) # label(non_clause).  [assumption].
+37 (all i (timeinterval(i) -> timepoint(beginof(i)) & timepoint(endof(i)))) # label(non_clause).  [assumption].
+38 (all x all y (before(x,y) -> timeinterval(between(x,y)))) # label(non_clause).  [assumption].
+39 (all p all q (before(p,q) -> p = beginof(between(p,q)) & q = endof(between(p,q)))) # label(non_clause).  [assumption].
+40 (exists t1 (timepoint(t1) & (all t2 (timepoint(t2) & t1 != t2 -> before(t2,t1))) & (all t3 (timepoint(t3) & t1 != t3 -> (exists t4 (before(t3,t4) & before(t4,t1))))))) # label(non_clause).  [assumption].
+41 (exists t1 (timepoint(t1) & (all t2 (timepoint(t2) & t1 != t2 -> before(t1,t2))) & (all t3 (timepoint(t3) & t1 != t3 -> (exists t4 (before(t4,t3) & before(t1,t4))))))) # label(non_clause).  [assumption].
+42 (all x all y all z (timepoint(x) & timepoint(y) & timepoint(z) & before(x,y) & before(y,z) -> before(x,z))) # label(non_clause).  [assumption].
+43 (all x (timepoint(x) -> -before(x,x))) # label(non_clause).  [assumption].
+44 (all x all y (timepoint(x) & timepoint(y) -> before(x,y) | before(y,x) | x = y)) # label(non_clause).  [assumption].
+45 (all x all y (bbefore(x,y) <-> timepoint(x) & timepoint(y) & (before(x,y) | x = y))) # label(non_clause).  [assumption].
+46 (all x all t all t1 (PRE(x,t) & P(t1,t) -> PRE(x,t1))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating activity/1
+47 -occurrence_of(x,y) | activity(y).  [clausify(24)].
+48 -timeinterval(x) | -activity(x).  [clausify(1)].
+49 -activity(x) | -activity_occurrence(x).  [clausify(23)].
+50 -activity(x) | -object(x).  [clausify(23)].
+51 -activity(x) | -timepoint(x).  [clausify(23)].
+Derived: -occurrence_of(x,y) | -timeinterval(y).  [resolve(47,b,48,b)].
+Derived: -occurrence_of(x,y) | -activity_occurrence(y).  [resolve(47,b,49,a)].
+Derived: -occurrence_of(x,y) | -object(y).  [resolve(47,b,50,a)].
+Derived: -occurrence_of(x,y) | -timepoint(y).  [resolve(47,b,51,a)].
+52 -activity_occurrence(x) | activity(f8(x)).  [clausify(25)].
+Derived: -activity_occurrence(x) | -timeinterval(f8(x)).  [resolve(52,b,48,b)].
+Derived: -activity_occurrence(x) | -activity_occurrence(f8(x)).  [resolve(52,b,49,a)].
+Derived: -activity_occurrence(x) | -object(f8(x)).  [resolve(52,b,50,a)].
+Derived: -activity_occurrence(x) | -timepoint(f8(x)).  [resolve(52,b,51,a)].
+
+Eliminating overlay/3
+53 overlay(x,y,z) | -psl_interval(x,u) | -psl_interval(y,w) | beginof(w) != beginof(z) | endof(u) != endof(z).  [clausify(3)].
+54 -overlay(x,y,z) | psl_interval(x,f1(x,y,z)).  [clausify(3)].
+55 -overlay(x,y,z) | psl_interval(y,f2(x,y,z)).  [clausify(3)].
+56 -overlay(x,y,z) | beginof(f2(x,y,z)) = beginof(z).  [clausify(3)].
+57 -overlay(x,y,z) | endof(f1(x,y,z)) = endof(z).  [clausify(3)].
+Derived: -psl_interval(x,y) | -psl_interval(z,u) | beginof(u) != beginof(w) | endof(y) != endof(w) | psl_interval(x,f1(x,z,w)).  [resolve(53,a,54,a)].
+Derived: -psl_interval(x,y) | -psl_interval(z,u) | beginof(u) != beginof(w) | endof(y) != endof(w) | psl_interval(z,f2(x,z,w)).  [resolve(53,a,55,a)].
+Derived: -psl_interval(x,y) | -psl_interval(z,u) | beginof(u) != beginof(w) | endof(y) != endof(w) | beginof(f2(x,z,w)) = beginof(w).  [resolve(53,a,56,a)].
+Derived: -psl_interval(x,y) | -psl_interval(z,u) | beginof(u) != beginof(w) | endof(y) != endof(w) | endof(f1(x,z,w)) = endof(w).  [resolve(53,a,57,a)].
+58 -overlay(x,y,z) | psl_interval(x,f4(x,y,z)).  [clausify(14)].
+Derived: psl_interval(x,f4(x,y,z)) | -psl_interval(x,u) | -psl_interval(y,w) | beginof(w) != beginof(z) | endof(u) != endof(z).  [resolve(58,a,53,a)].
+59 -overlay(x,y,z) | psl_interval(y,f5(x,y,z)).  [clausify(14)].
+Derived: psl_interval(x,f5(y,x,z)) | -psl_interval(y,u) | -psl_interval(x,w) | beginof(w) != beginof(z) | endof(u) != endof(z).  [resolve(59,a,53,a)].
+60 -overlay(x,y,z) | beginof(f5(x,y,z)) = beginof(z).  [clausify(14)].
+Derived: beginof(f5(x,y,z)) = beginof(z) | -psl_interval(x,u) | -psl_interval(y,w) | beginof(w) != beginof(z) | endof(u) != endof(z).  [resolve(60,a,53,a)].
+61 -overlay(x,y,z) | endof(f4(x,y,z)) = endof(z).  [clausify(14)].
+Derived: endof(f4(x,y,z)) = endof(z) | -psl_interval(x,u) | -psl_interval(y,w) | beginof(w) != beginof(z) | endof(u) != endof(z).  [resolve(61,a,53,a)].
+62 overlay(x,y,z) | -psl_interval(x,u) | -psl_interval(y,w) | beginof(w) != beginof(z) | endof(u) != endof(z).  [clausify(14)].
+
+Eliminating ED/1
+63 ED(x) | -object(x).  [clausify(4)].
+64 -ED(x) | object(x).  [clausify(4)].
+
+Eliminating PD/1
+65 PD(x) | -activity_occurrence(x).  [clausify(5)].
+66 -PD(x) | activity_occurrence(x).  [clausify(5)].
+
+Eliminating T/1
+67 T(x) | -timeinterval(x).  [clausify(6)].
+68 -T(x) | timeinterval(x).  [clausify(6)].
+
+Eliminating SUM/3
+69 SUM(x,y,z) | -timeinterval(y) | -timeinterval(z) | -timeinterval(x) | beginof(x) != beginof(y) | endof(x) != endof(z).  [clausify(9)].
+70 -SUM(x,y,z) | timeinterval(y).  [clausify(9)].
+71 -SUM(x,y,z) | timeinterval(z).  [clausify(9)].
+72 -SUM(x,y,z) | timeinterval(x).  [clausify(9)].
+73 -SUM(x,y,z) | beginof(x) = beginof(y) | beginof(x) = beginof(z).  [clausify(9)].
+74 -SUM(x,y,z) | beginof(x) = beginof(y) | endof(x) = endof(y).  [clausify(9)].
+75 -SUM(x,y,z) | endof(x) = endof(z) | beginof(x) = beginof(z).  [clausify(9)].
+76 -SUM(x,y,z) | endof(x) = endof(z) | endof(x) = endof(y).  [clausify(9)].
+77 SUM(x,y,z) | -timeinterval(y) | -timeinterval(z) | -timeinterval(x) | beginof(x) != beginof(z) | endof(x) != endof(y).  [clausify(9)].
+
+Eliminating participates_in/3
+
+Eliminating exists_at/2
+78 exists_at(x,y) | -object(x) | -betweenEq(beginof(x),y,endof(x)).  [clausify(33)].
+79 -exists_at(x,y) | object(x).  [clausify(33)].
+80 -exists_at(x,y) | betweenEq(beginof(x),y,endof(x)).  [clausify(33)].
+
+Eliminating is_occurring_at/2
+81 is_occurring_at(x,y) | -betweenEq(beginof(x),y,endof(x)).  [clausify(34)].
+82 -is_occurring_at(x,y) | betweenEq(beginof(x),y,endof(x)).  [clausify(34)].
+
+Eliminating betweenEq/3
+83 betweenEq(x,y,z) | -beforeEq(x,y) | -beforeEq(y,z).  [clausify(32)].
+84 -betweenEq(x,y,z) | beforeEq(x,y).  [clausify(32)].
+85 -betweenEq(x,y,z) | beforeEq(y,z).  [clausify(32)].
+
+Eliminating bbefore/2
+86 bbefore(x,y) | -timepoint(x) | -timepoint(y) | -before(x,y).  [clausify(45)].
+87 -bbefore(x,y) | timepoint(x).  [clausify(45)].
+88 -bbefore(x,y) | timepoint(y).  [clausify(45)].
+89 -bbefore(x,y) | before(x,y) | y = x.  [clausify(45)].
+90 bbefore(x,y) | -timepoint(x) | -timepoint(y) | y != x.  [clausify(45)].
+
+============================== end predicate elimination =============
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, timepoint, timeinterval, activity_occurrence, object, psl_interval, before, beforeEq, P, PRE, occurrence_of ]).
+Function symbol precedence:  function_order([ "inf+", "inf-", c1, c2, c3, c4, c5, between, beginof, endof, f3, f6, f7, f8, f9, f10, f1, f2, f4, f5 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+  % set(binary_resolution).  % (non-Horn)
+  % set(neg_ur_resolution).  % (non-Horn, less than 100 clauses)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.02 seconds.
+
+============================== PROOF =================================
+
+% Proof 1 at 0.08 (+ 0.00) seconds.
+% Length of proof is 31.
+% Level of proof is 7.
+% Maximum clause weight is 17.000.
+% Given clauses 428.
+
+7 (all t1 all t2 (P(t1,t2) <-> timeinterval(t1) & timeinterval(t2) & beforeEq(beginof(t2),beginof(t1)) & beforeEq(endof(t1),endof(t2)))) # label(non_clause).  [assumption].
+8 (all x all y all t (PRE(x,t) <-> (object(x) | activity_occurrence(x)) & timeinterval(t) & beforeEq(beginof(x),beginof(t)) & beforeEq(endof(t),endof(x)))) # label(non_clause).  [assumption].
+11 (all x all y all z (beforeEq(x,y) & beforeEq(y,z) -> beforeEq(x,z))) # label(non_clause).  [assumption].
+46 (all x all t all t1 (PRE(x,t) & P(t1,t) -> PRE(x,t1))) # label(non_clause) # label(goal).  [goal].
+100 -P(x,y) | timeinterval(x).  [clausify(7)].
+102 -P(x,y) | beforeEq(beginof(y),beginof(x)).  [clausify(7)].
+103 -P(x,y) | beforeEq(endof(x),endof(y)).  [clausify(7)].
+105 -PRE(x,y) | object(x) | activity_occurrence(x).  [clausify(8)].
+107 -PRE(x,y) | beforeEq(beginof(x),beginof(y)).  [clausify(8)].
+108 -PRE(x,y) | beforeEq(endof(y),endof(x)).  [clausify(8)].
+109 PRE(x,y) | -object(x) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).  [clausify(8)].
+110 PRE(x,y) | -activity_occurrence(x) | -timeinterval(y) | -beforeEq(beginof(x),beginof(y)) | -beforeEq(endof(y),endof(x)).  [clausify(8)].
+113 -beforeEq(x,y) | -beforeEq(y,z) | beforeEq(x,z).  [clausify(11)].
+163 PRE(c3,c4).  [deny(46)].
+164 P(c5,c4).  [deny(46)].
+165 -PRE(c3,c5).  [deny(46)].
+219 beforeEq(endof(c4),endof(c3)).  [resolve(163,a,108,a)].
+220 beforeEq(beginof(c3),beginof(c4)).  [resolve(163,a,107,a)].
+222 object(c3) | activity_occurrence(c3).  [resolve(163,a,105,a)].
+225 beforeEq(endof(c5),endof(c4)).  [resolve(164,a,103,a)].
+226 beforeEq(beginof(c4),beginof(c5)).  [resolve(164,a,102,a)].
+227 timeinterval(c5).  [resolve(164,a,100,a)].
+381 -beforeEq(x,endof(c4)) | beforeEq(x,endof(c3)).  [resolve(219,a,113,b)].
+415 -beforeEq(beginof(c4),x) | beforeEq(beginof(c3),x).  [resolve(220,a,113,a)].
+1393 beforeEq(endof(c5),endof(c3)).  [resolve(381,a,225,a)].
+1397 -activity_occurrence(c3) | -beforeEq(beginof(c3),beginof(c5)).  [resolve(1393,a,110,e),unit_del(a,165),unit_del(c,227)].
+1398 -object(c3) | -beforeEq(beginof(c3),beginof(c5)).  [resolve(1393,a,109,e),unit_del(a,165),unit_del(c,227)].
+1521 beforeEq(beginof(c3),beginof(c5)).  [resolve(415,a,226,a)].
+1523 -object(c3).  [back_unit_del(1398),unit_del(b,1521)].
+1524 -activity_occurrence(c3).  [back_unit_del(1397),unit_del(b,1521)].
+1525 $F.  [back_unit_del(222),unit_del(a,1523),unit_del(b,1524)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=428. Generated=2313. Kept=1428. proofs=1.
+Usable=416. Sos=961. Demods=0. Limbo=2, Disabled=193. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=884. Back_subsumed=45.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=4.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=1391. Nonunit_bsub_feature_tests=1939.
+Megabytes=2.99.
+User_CPU=0.08, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 16791 exit (max_proofs) Fri Jul 19 16:30:20 2013
