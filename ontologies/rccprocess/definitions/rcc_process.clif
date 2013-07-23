@@ -1,0 +1,35 @@
+(cl-text http://colore.oor.net/rcc_continuous_process/definitions/rcc_process.clif
+
+(cl-imports http://colore.oor.net/rcc_continuous_process/rcc_state.clif)
+
+
+(forall (o)  
+		(if (arboreal o)  
+			(or		(exists (x) (changes o (region x))) 
+					(exists (x y) (changes o (connect x y))))))
+	 
+	 
+(forall (a) (iff 	(preserve_region a) 
+					(forall (o x)
+							(if (occurrence_of o a) 
+								(not (changes o (region x)))))))
+
+(forall (a) (iff 	(change_region a) 
+					(forall (o)
+							(if (occurrence_of o a) 
+								(exists (x) 
+										(changes o (region x)))))))
+
+(forall (a) (iff 	(preserve_connect a) 
+					(forall (o x y)
+							(if (occurrence_of o a) 
+								(not (changes o (connect x y)))))))
+
+								
+(forall (a) (iff 	(change_connect a) 
+					(forall (o)
+							(if (occurrence_of o a) 
+								(exists (x y) 
+										(changes o (connect x y)))))))
+
+)

@@ -1,0 +1,161 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, -1).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%psl_core.th:ax12
+all occ
+        (activity_occurrence(occ)
+        ->      
+        (exists a
+                (activity(a)
+                & occurrence_of(occ,a)))).
+
+%occtree.th:ax1
+all s 
+        (arboreal(s)
+        ->
+        activity_occurrence(s)).
+
+%occtree.th:ax9
+all s all a
+        (occurrence_of(s,a)
+        ->
+        (arboreal(s)
+        <->
+        generator(a))).
+
+%occtree.th:ax10
+all a all o
+        (occurrence_of(successor(a,o),a)
+        <->
+        (generator(a)
+        & arboreal(o))).
+
+%disc_state.th:ax3
+all f all occ
+	(prior(f,occ)
+	->
+	(state(f)
+	& arboreal(occ))).
+
+%disc_state.th:ax5
+all a all occ all f	
+	(prior(f, successor(a,occ))
+	<->
+	(holds(f,occ)
+	& generator(a))).
+
+all f all o
+	(falsifies(o,f)
+	<->
+	(state(f)
+	& arboreal(o)
+	& prior(f,o)
+	& -holds(f,o))).
+
+all f all o
+	(achieves(o,f)
+	<->
+	(state(f)
+	& arboreal(o)
+	& -prior(f,o)
+	& holds(f,o))).
+
+all f all o
+	(changes(o,f)
+	<->
+	(achieves(o,f)
+	| falsifies(o,f))).
+
+%rcc_state.th:ax1 
+all x all y all o ((arboreal(o) & prior(connect(x,y),o)) ->  (prior(region(x),o) & prior(region(y),o))).
+
+%rcc_state.th:ax2
+all x all o ((arboreal(o) & prior(region(x),o)) ->  prior(connect(x,x),o)).
+
+%rcc_state.th:ax3
+all x all y all o 
+		((arboreal(o) & prior(connect(x,y),o)) 
+       						-> prior(connect(y,x),o)).
+%rcc_state.th:ax4
+all x all y all o 
+	(prior(Ps(x,y),o) <-> 
+		(arboreal(o) & prior(region(x),o) & prior(region(y),o) & (all z ( prior(connect(z,x),o)
+						    -> prior(connect(z,y),o))))).
+%rcc_state.th:ax6
+all x all y all o 
+	(prior(Os(x,y),o) <-> (arboreal(o)  & 
+	    (exists z( prior(Ps(z,x),o) & prior(Ps(z,y),o))))).
+
+%rcc_state.th:ax8
+all x all y all o 
+	(prior(PPs(x,y),o) <-> (arboreal(o)  &
+	 	 prior(Ps(x,y),o)& -prior(Ps(y,x),o))).
+
+%rcc_state.th:ax9
+all x all y all o 
+	(prior(NTPPs(x,y),o) <-> (arboreal(o) & prior(PPs(x,y),o) & 
+	     -(exists z  (prior(ECs(z,x),o) & prior(ECs(z,y),o))))).
+
+%rcc_state.th:ax12
+all x all y all o 
+	(prior(POs(x,y),o) <-> (arboreal(o)  & prior(Os(x,y),o) 
+			& -prior(Ps(x,y),o) & -prior(Ps(y,x),o))).
+
+%rcc_state.th:ax22
+all x all y all o (arboreal(o) & prior(region(x),o) & prior(region(y),o) -> ( prior(connect(y,compl(x)),o) <-> -prior(NTPPs(y,x),o) )).
+
+%rcc_state.th:ax23
+all x all y all o (arboreal(o) & prior(region(x),o) -> prior(region(compl(x)),o) ).
+
+%continuous.th:ax1
+all o all x all y 
+	((changes(o,connect(x,y)) &
+                 (  changes(o,connect(x,compl(y))) | changes(o,connect(compl(x),y))  
+                  | changes(o,Os(x,y)) | changes(o,Ps(x,y)) | changes(o,Ps(y,x)) )) 
+                                        -> (changes(o,region(x)) | changes(o,region(y))) ).
+
+%continuous.th:ax2
+all o all x all y 
+	((changes(o,connect(x,compl(y))) &
+                 (   changes(o,connect(compl(x),y)) | changes(o,Os(x,y)) 
+                   | changes(o,Ps(x,y)) | changes(o,Ps(y,x)) )) 
+                                              -> (changes(o,region(x)) | changes(o,region(y))) ).
+
+%continuous.th:ax3
+all o all x all y 
+	(( changes(o,connect(compl(x),y)) & 
+                  (  changes(o,Os(x,y)) | changes(o,Ps(x,y)) | changes(o,Ps(y,x)) )) 
+                                                       -> (changes(o,region(x)) | changes(o,region(y))) ).
+
+%continuous.th:ax4
+all o all x all y 
+	(( changes(o,Os(x,y)) & ( changes(o,Ps(x,y)) | changes(o,Ps(y,x)) )) 
+                                                       -> (changes(o,region(x)) | changes(o,region(y))) ).
+
+%continuous.th:ax5
+all o all x all y 
+	((  changes(o,Ps(x,y)) & changes(o,Ps(y,x)) ) -> (changes(o,region(x)) | changes(o,region(y)) ) ).
+
+%NTPP.lemma:2
+all x all y all o 
+	(prior(NTPPs(x,y),o) <-> (arboreal(o)  & prior(PPs(x,y),o) & -prior(connect(x,compl(y)),o) )).
+
+end_of_list.
+
+formulas(goals).
+
+all x all y all o (falsifies(o,POs(x,y)) -> -achieves(o,NTPPs(x,y))).
+
+end_of_list.
+
