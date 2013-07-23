@@ -1,0 +1,51 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 9964 was started by Bahar on Bahar-THINK,
+Thu May  2 01:13:54 2013
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 1.42 (+ 0.16) seconds.
+% Length of proof is 31.
+% Level of proof is 10.
+% Maximum clause weight is 21.
+% Given clauses 941.
+
+28 (all f all occ (prior(f,occ) -> state(f) & arboreal(occ))) # label(non_clause).  [assumption].
+40 (all x all y all o (prior(Ps(x,y),o) <-> arboreal(o) & prior(region(x),o) & prior(region(y),o) & (all z (prior(connect(z,x),o) -> prior(connect(z,y),o))))) # label(non_clause).  [assumption].
+44 (all x all y all o (prior(PPs(x,y),o) <-> arboreal(o) & prior(Ps(x,y),o) & -prior(Ps(y,x),o))) # label(non_clause).  [assumption].
+45 (all x all y all o (prior(NTPPs(x,y),o) <-> arboreal(o) & prior(PPs(x,y),o) & -(exists z (prior(ECs(z,x),o) & prior(ECs(z,y),o))))) # label(non_clause).  [assumption].
+58 (all x all y all o (arboreal(o) & prior(region(x),o) & prior(region(y),o) -> (prior(connect(y,compl(x)),o) <-> -prior(NTPPs(y,x),o)) & (prior(Os(y,compl(x)),o) <-> -prior(Ps(y,x),o)))) # label(non_clause).  [assumption].
+60 (all x all y all o (prior(NTPPs(x,y),o) <-> arboreal(o) & prior(PPs(x,y),o) & -prior(connect(x,compl(y)),o))) # label(non_clause) # label(goal).  [goal].
+166 -prior(x,y) | arboreal(y).  [clausify(28)].
+180 -prior(Ps(x,y),z) | prior(region(x),z).  [clausify(40)].
+181 -prior(Ps(x,y),z) | prior(region(y),z).  [clausify(40)].
+195 -prior(PPs(x,y),z) | prior(Ps(x,y),z).  [clausify(44)].
+198 -prior(NTPPs(x,y),z) | prior(PPs(x,y),z).  [clausify(45)].
+240 -arboreal(x) | -prior(region(y),x) | -prior(region(z),x) | -prior(connect(z,compl(y)),x) | -prior(NTPPs(z,y),x).  [clausify(58)].
+241 -arboreal(x) | -prior(region(y),x) | -prior(region(z),x) | prior(connect(z,compl(y)),x) | prior(NTPPs(z,y),x).  [clausify(58)].
+245 prior(NTPPs(c1,c2),c3) | arboreal(c3).  [deny(60)].
+246 prior(NTPPs(c1,c2),c3) | prior(PPs(c1,c2),c3).  [deny(60)].
+247 prior(NTPPs(c1,c2),c3) | -prior(connect(c1,compl(c2)),c3).  [deny(60)].
+248 -prior(NTPPs(c1,c2),c3) | -arboreal(c3) | -prior(PPs(c1,c2),c3) | prior(connect(c1,compl(c2)),c3).  [deny(60)].
+314 arboreal(c3).  [resolve(245,a,166,a),merge(b)].
+315 -prior(NTPPs(c1,c2),c3) | -prior(PPs(c1,c2),c3) | prior(connect(c1,compl(c2)),c3).  [back_unit_del(248),unit_del(b,314)].
+320 prior(NTPPs(c1,c2),c3) | prior(Ps(c1,c2),c3).  [resolve(246,b,195,a)].
+437 prior(Ps(c1,c2),c3) | prior(PPs(c1,c2),c3).  [resolve(320,a,198,a)].
+700 prior(Ps(c1,c2),c3).  [resolve(437,b,195,a),merge(b)].
+711 prior(region(c2),c3).  [resolve(700,a,181,a)].
+712 prior(region(c1),c3).  [resolve(700,a,180,a)].
+726 -prior(region(x),c3) | prior(connect(x,compl(c2)),c3) | prior(NTPPs(x,c2),c3).  [resolve(711,a,241,b),unit_del(a,314)].
+3583 prior(connect(c1,compl(c2)),c3) | prior(NTPPs(c1,c2),c3).  [resolve(726,a,712,a)].
+3812 prior(NTPPs(c1,c2),c3).  [resolve(3583,a,247,b),merge(b)].
+3818 -prior(PPs(c1,c2),c3) | prior(connect(c1,compl(c2)),c3).  [back_unit_del(315),unit_del(a,3812)].
+3822 -prior(connect(c1,compl(c2)),c3).  [resolve(3812,a,240,e),unit_del(a,314),unit_del(b,711),unit_del(c,712)].
+3825 prior(PPs(c1,c2),c3).  [resolve(3812,a,198,a)].
+3827 $F.  [back_unit_del(3818),unit_del(a,3825),unit_del(b,3822)].
+
+============================== end of proof ==========================

@@ -1,0 +1,117 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 11032 was started by Bahar on Bahar-THINK,
+Thu May  2 03:09:29 2013
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.14 (+ 0.03) seconds.
+% Length of proof is 97.
+% Level of proof is 14.
+% Maximum clause weight is 21.
+% Given clauses 193.
+
+1 (all occ (activity_occurrence(occ) -> (exists a (activity(a) & occurrence_of(occ,a))))) # label(non_clause).  [assumption].
+2 (all s (arboreal(s) -> activity_occurrence(s))) # label(non_clause).  [assumption].
+3 (all s all a (occurrence_of(s,a) -> (arboreal(s) <-> generator(a)))) # label(non_clause).  [assumption].
+4 (all a all o (occurrence_of(successor(a,o),a) <-> generator(a) & arboreal(o))) # label(non_clause).  [assumption].
+5 (all f all occ (prior(f,occ) -> state(f) & arboreal(occ))) # label(non_clause).  [assumption].
+6 (all a all occ all f (prior(f,successor(a,occ)) <-> holds(f,occ) & generator(a))) # label(non_clause).  [assumption].
+7 (all f all o (falsifies(o,f) <-> state(f) & arboreal(o) & prior(f,o) & -holds(f,o))) # label(non_clause).  [assumption].
+8 (all f all o (achieves(o,f) <-> state(f) & arboreal(o) & -prior(f,o) & holds(f,o))) # label(non_clause).  [assumption].
+9 (all f all o (changes(o,f) <-> achieves(o,f) | falsifies(o,f))) # label(non_clause).  [assumption].
+13 (all x all y all o (prior(Ps(x,y),o) <-> arboreal(o) & prior(region(x),o) & prior(region(y),o) & (all z (prior(connect(z,x),o) -> prior(connect(z,y),o))))) # label(non_clause).  [assumption].
+14 (all x all y all o (prior(Os(x,y),o) <-> arboreal(o) & (exists z (prior(Ps(z,x),o) & prior(Ps(z,y),o))))) # label(non_clause).  [assumption].
+15 (all x all y all o (prior(PPs(x,y),o) <-> arboreal(o) & prior(Ps(x,y),o) & -prior(Ps(y,x),o))) # label(non_clause).  [assumption].
+16 (all x all y all o (prior(NTPPs(x,y),o) <-> arboreal(o) & prior(PPs(x,y),o) & -(exists z (prior(ECs(z,x),o) & prior(ECs(z,y),o))))) # label(non_clause).  [assumption].
+17 (all x all y all o (prior(POs(x,y),o) <-> arboreal(o) & prior(Os(x,y),o) & -prior(Ps(x,y),o) & -prior(Ps(y,x),o))) # label(non_clause).  [assumption].
+18 (all x all y all o (arboreal(o) & prior(region(x),o) & prior(region(y),o) -> (prior(connect(y,compl(x)),o) <-> -prior(NTPPs(y,x),o)))) # label(non_clause).  [assumption].
+21 (all o all x all y (changes(o,connect(x,compl(y))) & (changes(o,connect(compl(x),y)) | changes(o,Os(x,y)) | changes(o,Ps(x,y)) | changes(o,Ps(y,x))) -> changes(o,region(x)) | changes(o,region(y)))) # label(non_clause).  [assumption].
+25 (all x all y all o (prior(NTPPs(x,y),o) <-> arboreal(o) & prior(PPs(x,y),o) & -prior(connect(x,compl(y)),o))) # label(non_clause).  [assumption].
+26 (all x all y all o (falsifies(o,POs(x,y)) -> -achieves(o,NTPPs(x,y)))) # label(non_clause) # label(goal).  [goal].
+27 -arboreal(x) | activity_occurrence(x).  [clausify(2)].
+29 -activity_occurrence(x) | occurrence_of(x,f1(x)).  [clausify(1)].
+30 occurrence_of(successor(x,y),x) | -generator(x) | -arboreal(y).  [clausify(4)].
+31 -occurrence_of(x,y) | -arboreal(x) | generator(y).  [clausify(3)].
+32 -occurrence_of(x,y) | arboreal(x) | -generator(y).  [clausify(3)].
+35 -arboreal(x) | occurrence_of(x,f1(x)).  [resolve(27,b,29,a)].
+36 falsifies(x,y) | -state(y) | -arboreal(x) | -prior(y,x) | holds(y,x).  [clausify(7)].
+37 -prior(x,y) | state(x).  [clausify(5)].
+40 achieves(x,y) | -state(y) | -arboreal(x) | prior(y,x) | -holds(y,x).  [clausify(8)].
+41 prior(x,successor(y,z)) | -holds(x,z) | -generator(y).  [clausify(6)].
+42 -prior(x,successor(y,z)) | holds(x,z).  [clausify(6)].
+43 -falsifies(x,y) | -holds(y,x).  [clausify(7)].
+44 -achieves(x,y) | holds(y,x).  [clausify(8)].
+45 falsifies(x,y) | -arboreal(x) | -prior(y,x) | holds(y,x) | -prior(y,z).  [resolve(36,b,37,b)].
+46 achieves(x,y) | -arboreal(x) | prior(y,x) | -holds(y,x) | -prior(y,z).  [resolve(40,b,37,b)].
+49 -changes(x,y) | achieves(x,y) | falsifies(x,y).  [clausify(9)].
+50 -falsifies(x,y) | arboreal(x).  [clausify(7)].
+51 -falsifies(x,y) | prior(y,x).  [clausify(7)].
+52 changes(x,y) | -falsifies(x,y).  [clausify(9)].
+53 falsifies(c3,POs(c1,c2)).  [deny(26)].
+54 -falsifies(x,y) | -prior(y,successor(z,x)).  [resolve(43,b,42,b)].
+56 falsifies(x,y) | -arboreal(x) | -prior(y,x) | -prior(y,z) | prior(y,successor(u,x)) | -generator(u).  [resolve(45,d,41,b)].
+57 achieves(c3,NTPPs(c1,c2)).  [deny(26)].
+59 -achieves(x,y) | -prior(y,x).  [clausify(8)].
+60 changes(x,y) | -achieves(x,y).  [clausify(9)].
+61 -achieves(x,y) | prior(y,successor(z,x)) | -generator(z).  [resolve(44,b,41,b)].
+62 achieves(x,y) | -arboreal(x) | prior(y,x) | -prior(y,z) | -prior(y,successor(u,x)).  [resolve(46,d,42,b)].
+65 -prior(x,successor(y,z)) | -changes(z,x) | achieves(z,x).  [resolve(54,a,49,c)].
+74 -prior(Ps(x,y),z) | prior(region(x),z).  [clausify(13)].
+75 -prior(Ps(x,y),z) | prior(region(y),z).  [clausify(13)].
+79 -prior(Os(x,y),z) | prior(Ps(f3(x,y,z),x),z).  [clausify(14)].
+80 -prior(Os(x,y),z) | prior(Ps(f3(x,y,z),y),z).  [clausify(14)].
+82 -prior(PPs(x,y),z) | prior(Ps(x,y),z).  [clausify(15)].
+85 -prior(NTPPs(x,y),z) | prior(PPs(x,y),z).  [clausify(16)].
+89 -prior(POs(x,y),z) | prior(Os(x,y),z).  [clausify(17)].
+90 -prior(POs(x,y),z) | -prior(Ps(x,y),z).  [clausify(17)].
+94 -arboreal(x) | -prior(region(y),x) | -prior(region(z),x) | prior(connect(z,compl(y)),x) | prior(NTPPs(z,y),x).  [clausify(18)].
+103 -changes(x,connect(y,compl(z))) | -changes(x,Ps(y,z)) | changes(x,region(y)) | changes(x,region(z)).  [clausify(21)].
+111 -prior(NTPPs(x,y),z) | -prior(connect(x,compl(y)),z).  [clausify(25)].
+113 -generator(x) | -arboreal(y) | arboreal(successor(x,y)) | -generator(x).  [resolve(30,a,32,a)].
+114 -generator(x) | -arboreal(y) | arboreal(successor(x,y)).  [copy(113),merge(d)].
+115 -arboreal(x) | -arboreal(x) | generator(f1(x)).  [resolve(35,b,31,a)].
+116 -arboreal(x) | generator(f1(x)).  [copy(115),merge(b)].
+117 prior(x,successor(y,z)) | -generator(y) | -prior(x,successor(u,z)).  [resolve(41,b,42,b)].
+118 arboreal(c3).  [resolve(53,a,50,a)].
+119 prior(POs(c1,c2),c3).  [resolve(53,a,51,a)].
+122 -arboreal(x) | -prior(y,x) | -prior(y,z) | prior(y,successor(u,x)) | -generator(u) | changes(x,y).  [resolve(56,a,52,b)].
+123 -prior(NTPPs(c1,c2),c3).  [resolve(57,a,59,a)].
+125 prior(NTPPs(c1,c2),successor(x,c3)) | -generator(x).  [resolve(61,a,57,a)].
+126 -arboreal(x) | prior(y,x) | -prior(y,z) | -prior(y,successor(u,x)) | changes(x,y).  [resolve(62,a,60,b)].
+130 -prior(x,successor(y,z)) | -changes(z,x) | -prior(x,z).  [resolve(65,c,59,a)].
+151 -arboreal(x) | -prior(y,x) | prior(y,successor(z,x)) | -generator(z) | changes(x,y).  [factor(122,b,c)].
+152 -arboreal(x) | prior(y,x) | -prior(y,successor(z,x)) | changes(x,y).  [factor(126,c,d)].
+153 generator(f1(c3)).  [resolve(118,a,116,a)].
+155 -prior(Ps(c1,c2),c3).  [resolve(119,a,90,a)].
+156 prior(Os(c1,c2),c3).  [resolve(119,a,89,a)].
+157 prior(NTPPs(c1,c2),successor(f1(c3),c3)).  [resolve(153,a,125,b)].
+158 -arboreal(x) | arboreal(successor(f1(c3),x)).  [resolve(153,a,114,a)].
+163 prior(Ps(f3(c1,c2,c3),c2),c3).  [resolve(156,a,80,a)].
+164 prior(Ps(f3(c1,c2,c3),c1),c3).  [resolve(156,a,79,a)].
+165 arboreal(successor(f1(c3),c3)).  [resolve(158,a,118,a)].
+166 arboreal(successor(f1(c3),successor(f1(c3),c3))).  [resolve(165,a,158,a)].
+171 -prior(connect(c1,compl(c2)),successor(f1(c3),c3)).  [resolve(157,a,111,a)].
+173 prior(PPs(c1,c2),successor(f1(c3),c3)).  [resolve(157,a,85,a)].
+174 -prior(connect(c1,compl(c2)),successor(x,c3)).  [ur(117,a,171,a,b,153,a)].
+183 prior(region(c2),c3).  [resolve(163,a,75,a)].
+241 prior(region(c1),c3).  [resolve(164,a,75,a)].
+271 generator(f1(successor(f1(c3),successor(f1(c3),c3)))).  [resolve(166,a,116,a)].
+319 prior(Ps(c1,c2),successor(f1(c3),c3)).  [resolve(173,a,82,a)].
+401 changes(c3,Ps(c1,c2)).  [resolve(319,a,152,c),unit_del(a,118),unit_del(b,155)].
+408 prior(region(c2),successor(f1(c3),c3)).  [resolve(319,a,75,a)].
+409 prior(region(c1),successor(f1(c3),c3)).  [resolve(319,a,74,a)].
+414 -changes(c3,connect(c1,compl(c2))) | changes(c3,region(c1)) | changes(c3,region(c2)).  [resolve(401,a,103,b)].
+428 -changes(c3,region(c2)).  [ur(130,a,408,a,c,183,a)].
+431 -changes(c3,connect(c1,compl(c2))) | changes(c3,region(c1)).  [back_unit_del(414),unit_del(c,428)].
+445 -changes(c3,region(c1)).  [ur(130,a,409,a,c,241,a)].
+450 -changes(c3,connect(c1,compl(c2))).  [back_unit_del(431),unit_del(b,445)].
+566 -prior(connect(c1,compl(c2)),c3).  [ur(151,a,118,a,c,174,a,d,271,a,e,450,a)].
+571 $F.  [ur(94,b,183,a,c,241,a,d,566,a,e,123,a),unit_del(a,118)].
+
+============================== end of proof ==========================
