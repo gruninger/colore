@@ -1,0 +1,122 @@
+ /*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger, Carmen Chui
+ *******************************************************************************/
+ 
+(cl-text dolce_temporary_parthood_reduction
+
+(cl-comment "Translation definition for ideal_cem_downward_m_foliation, ideal_cem_wmg, taxonomy into dolce_temporary_parthood.")
+
+(forall (x y z)
+	(iff (tP x y z)
+		(or (tpart1 x y z)(tpart2 x y z))))
+
+(forall (x y)
+	(iff (PRE x y)
+		(or (and (in1 y x)(point1 y)(line1 x))
+			(and (in2 y x)(point2 y)(line2 x)))))
+
+(forall (x)
+	(iff (T x)(point1 x)))
+
+(forall (x)
+	(iff (T x)(point2 x)))
+
+(forall (x)
+	(iff (T x)(point3 x)))
+
+(forall (x)
+	(iff (ED x)
+		(or (line1 x)(line2 x))))
+
+(forall (x)
+	(iff (PD x)
+		(and (line3 x)(L_2 x))))
+
+(forall (x)
+	(iff (Q x)
+		(and (line3 x)(L_3 x))))
+
+(forall (x)
+	(iff (PED x)(line1 x)))
+
+(forall (x)
+	(iff (NPED x)(line2 x)))
+
+(forall (x y)
+	(iff (P x y)(part1 x y)))
+
+(forall (x y)
+	(iff (P x y)(part2 x y)))
+
+(forall (x y)
+	(iff (P x y)(part3 x y)))
+
+(forall (x)
+	(iff (ED x)(L_1 x)))
+
+(forall (x)
+	(iff (PED x)(L_4 x)))
+
+(forall (x)
+	(iff (NPED x)(L_5 x)))
+
+(cl-comment "Additional translation definitions for relations")
+(forall (x y)
+	(iff (PP x y)
+		(ppart x y)))
+
+(forall (x y)
+	(iff (O x y)
+		(overlaps x y)))
+
+(forall (x y)
+	(iff (U x y)
+		(underlaps x y)))
+
+(forall (x y)
+	(iff (DJ x y)
+		(disjoint x y)))
+
+(forall (x y z)
+	(iff (SUM z x y)
+		(sum x y z)))
+
+(cl-comment "Mereological Definitions from cm_mereology in COLORE")
+(cl-comment "Source: mereology_def in COLORE with added time argument")
+(forall (x y t)
+	(iff	(tPP x y t)
+		(and	(tP x y t)
+			(not (tP y x t)))))
+
+(cl-comment "not sure to comment")
+(forall (x y t)
+	(iff    (tO x y t)
+		(exists (z)
+			(and (tP z x t)
+				(tP z y t)))))
+
+(forall (x y t)
+	(iff    (tU x y t)
+		(exists (z)
+			(and (tP x z t)
+				(tP y z t)))))
+
+(forall (x t)
+	(iff	(tAtP x t)
+		(forall (y)
+			(if	(tP y x t)
+				(= y x)))))
+				
+(cl-comment "Additional lemmas")
+
+(forall (x y t)
+	(iff    (tO x y t)
+		(toverlaps x y t)))
+
+)
