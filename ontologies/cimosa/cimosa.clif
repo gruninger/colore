@@ -1,0 +1,212 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *   Carmen Chui, Michael Gruninger
+ *******************************************************************************/
+ 
+(cl-text cimosa
+
+(cl-comment "Sources: ISO 19439:2006, ISO 19440:2007, Vernadat1998.")
+(cl-comment "Comment: The following ontology is created to describe the behavioural rule set found in CIMOSA.")
+
+(cl-comment "Import the PSL Core ontology since the CIMOSA ontology uses PSL constructs.")
+(cl-imports psl-core)
+
+(cl-comment "Import the complex subtheory of the PSL ontology since the CIMOSA ontology uses PSL constructs.")
+(cl-imports complex)
+
+(cl-comment "---------------------------------------------------Mappings---------------------------------------------------")
+(cl-comment "Map between CIMOSA and PSL constructs.")
+(cl-comment "A business process in CIMOSA is an activity in PSL.")
+(forall (x)
+	(if (business_process x)(activity x)))
+
+(cl-comment "An enterprise activity in CIMOSA is an activity in PSL.")
+(forall (x)
+	(if (enterprise_activity x)(activity x)))
+
+(cl-comment "An enterprise function in CIMOSA is an activity in PSL.")
+(forall (x)
+	(if (enterprise_function x)(activity x)))
+
+(cl-comment "An enterprise object in CIMOSA is an object in PSL.")
+(forall (x)
+	(if (enterprise_object x)(object x)))
+
+(cl-comment "An event in CIMOSA is an activity in PSL.")
+(forall (x)
+	(if (event x)(activity x)))
+
+(cl-comment "An occurrence in CIMOSA is an activity occurrence in PSL.")
+(forall (x)
+	(if (occurrence x)(activity_occurrence x)))
+
+(cl-comment "All enterprise functions are business processes or enterprise activities.")
+
+(forall (x)
+	(if (enterprise_function x)
+		(or (business_process x)(enterprise_activity x))))
+
+(cl-comment "------------------------------------------Behavioural Rule Set------------------------------------------")
+(cl-comment "Ending Status (ES) Values")
+(cl-comment "end_stat_1 is a constant/value")
+(forall (o x)
+	(if (occurrence_of o (enterprise_function x))
+		(holds end_stat_1 o)))
+
+(cl-comment "Process Triggering Rules")
+(cl-comment "WHEN (START WITH event-i AND event-j) DO EF1")
+(forall (o1 o2 x f)
+	(if (and (occurrence_of o1 (domain_process x))
+			(root o2 o1) (occurrence_of o2 (enterprise_function f)))
+			(exists (o3 o4 i j)
+				(and (precedes o3 o2)(precedes o4 o2)
+					(occurrence_of o3 (activity i))(occurrence_of o4 (activity j))))))
+
+(cl-comment "WHEN (START) DO EF1")
+(cl-comment "not sure about this one - all business processes have a parent process (?)")
+(cl-comment "OR for all business processes, there exist a parent process - implicit that o precedes o1 because of root")
+(forall (o1 x)
+	(if (occurrence_of o1 (business_process x))
+		(exists (o y)
+			(and (root o o1)(occurrence_of o (business process y))(precedes o o1)))))
+
+
+(cl-comment "Forced Sequential Rules")
+(cl-comment "WHEN (ES(EFx) = ANY) DO EFy")
+(cl-comment "Note: ANY is a reserved key word.")
+(forall (o1 x)
+	(if (and (holds "ANY" o1)
+		(occurrence_of o1 (enterprise_function x)))
+		(exists (o2 y)
+			(and (occurrence_of o2 (enterprise_function y))
+				(precedes o1 o2)))))
+
+(cl-comment "Conditional Sequential Rules")
+(cl-comment "WHEN (ES(EF1) = end_stat_1) DO EF2")
+(cl-comment "If the enterprise function x has an ending status value of end_stat_1, and o1 is an occurrence of x, then there exists an o2 which is an occurrence of enterprise function y that occurs after o1.")
+(cl-comment "end_stat_1, end_stat_2, etc. are values.")
+(forall (o1 x)
+	(if (and (holds end_stat_1 o1)
+		(occurrence_of o1 (enterprise_function x)))
+		(exists (o2 y)
+			(and (occurrence_of o2 (enterprise_function y))
+				(precedes o1 o2)))))
+
+(cl-comment "WHEN (ES(EF1) = end_stat_2) DO EF3")
+(forall (o2 x)
+	(if (and (holds end_stat_2 o2)
+		(occurrence_of o2 (enterprise_function x)))
+		(exists (o3 y)
+			(and (occurrence_of o3 (enterprise_function y))
+				(precedes o2 o3)))))
+
+(cl-comment "WHEN (ES(EF1) = end_stat_3) DO EF4")
+(forall (o3 x)
+	(if (and (holds end_stat_3 o3)
+		(occurrence_of o3 (enterprise_function x)))
+		(exists (o4 y)
+			(and (occurrence_of o4 (enterprise_function y))
+				(precedes o3 o4)))))
+
+(cl-comment "Spawning Rules")
+(cl-comment "Asynchronous Spawning")
+(cl-comment "WHEN (ES(EF1) = value) DO EF2 & EF3 & EF4")
+(cl-comment "value is a specific ending status. We do not know in which order EF2, EF3, and EF4 occurs.")
+(forall (o1 x)
+	(if (and (holds value o1)
+		(occurrence_of o1 (enterprise_function x)))
+		(exists (o2 o3 o4 t y z)
+			(and (occurrence_of o2 (enterprise_function t))
+				(occurrence_of o3 (enterprise_function y))
+				(occurrence_of o4 (enterprise_function z))
+				(precedes o1 o2)
+				(precedes o1 o3)
+				(precedes o1 o4)))))
+
+(cl-comment "Synchronous Spawning")
+(cl-comment "WHEN (ES(EF1) = value) DO SYNC (EF2 & EF3 & EF4)")
+(cl-comment "Note: EF2, EF3 and EF4 start at the same time point.")
+(forall (o1 x)
+	(if (and (holds value o1)
+		(occurrence_of o1 (enterprise_function x)))
+		(exists (o2 o3 o4 t y z)
+			(and (occurrence_of o2 (enterprise_function t))
+				(occurrence_of o3 (enterprise_function y))
+				(occurrence_of o4 (enterprise_function z))
+				(precedes o1 o2)
+				(precedes o1 o3)
+				(precedes o1 o4)
+				(= (beginof o2) (beginof o3))
+				(= (beginof o2) (beginof o4))))))
+
+(cl-comment "Rendez-vous Rules")
+(cl-comment "WHEN (ES(EF2) = value_2 AND ES(EF3) = value_3 AND ES(EF4) = value_4) DO EF5")
+(forall (o2 o3 o4 x y z)
+	(if (and
+			(holds value_2 o2)(holds value_3 o3)(holds value_4 o4)
+			(occurrence_of o2 (enterprise_function x))
+			(occurrence_of o3 (enterprise_function y))
+			(occurrence_of o4 (enterprise_function z)))
+			(exists (o5 t)
+				(and (occurrence_of o5 (enterprise_function t))
+					(precedes o2 o5)
+					(precedes o3 o5)
+					(precedes o4 o5)))))
+
+(cl-comment "Loop Rules")
+(cl-comment "WHEN (ES(EF1) = loop_value) DO EF1")
+(cl-comment "not sure about this one - repeating the occurrence of the activity...?")
+(forall (o1 x)
+	(if (and (holds loop_value o1)
+		(occurrence_of o1 (enterprise_function x)))
+		(occurrence_of o1 (enterprise_function x))))
+
+(cl-comment "Process Completion Rules")
+(cl-comment "WHEN (ES(EF1) = end_stat_x AND ES(EF2) = end_stat_y) DO FINISH")
+(cl-comment "use leaf node to represent the end of a process/occurrence tree")
+(cl-comment "if EF(f) is leaf node, then it must mean EF1 and EF2 reached their specific end states o3 and o4, respectively"...?)
+(forall (s a o1 o2 f)
+	(if (and (leaf_occ o2 o1)
+			(occurrence_of o2 (enterprise_function f)))
+			(exists (o3 o4 g i j)
+				(and (precedes o3 o2)(precedes o4 o2)
+					(occurrence_of o3 (enterprise_function f))(occurrence_of o4 (enterprise_function g))
+					(holds end_stat_x o3)(holds end_stat_x o4)))))
+
+(cl-comment "Run-Time Choice Rules")
+(cl-comment "WHEN (ES(EF1) = end_stat_1) DO S = (EF2 XOR EF3 XOR EF4)")
+(cl-comment "use disjunctive clauses to model XOR")
+(cl-comment "XOR is defined as (p xor q = (p ^ not q) v (not p ^ q))")
+(cl-comment "for simplicity's sake, we assume there is an alternative between TWO different enterprise functions")
+(forall (o1 x)
+	(if (and (holds end_stat_1 o1)
+		(occurrence_of o1 (enterprise_function x)))
+		(exists (o2 o3 y)
+			(or
+				(and
+					(and (occurrence_of o2 (enterprise_function y))(precedes o1 o2))
+					(not (and (occurrence_of o3 (enterprise_function y))(precedes o1 o3))))
+				(and
+					(and (occurrence_of o3 (enterprise_function y))(precedes o1 o3))
+					(not (and (occurrence_of o2 (enterprise_function y))(precedes o1 o2))))))))
+
+(cl-comment "Unordered Set Rules")
+(cl-comment "WHEN (ES(EF1) = end_stat_1) DO S = {EF2, EF3, EF4}")
+(cl-comment "set of execution is unknown - AND - all EF need to be repeated at least once")
+(forall (o1 x)
+	(if (and (holds value o1)
+		(occurrence_of o1 (enterprise_function x)))
+		(exists (o2 o3 o4 t y z)
+			(and (occurrence_of o2 (enterprise_function t))
+				(occurrence_of o3 (enterprise_function y))
+				(occurrence_of o4 (enterprise_function z))
+				(precedes o1 o2)
+				(precedes o1 o3)
+				(precedes o1 o4)))))
+
+)
