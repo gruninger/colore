@@ -1,4 +1,3 @@
-
 /*******************************************************************************
  * Copyright (c) University of Toronto and others. All rights reserved. 
  * The content of this file is licensed under the Creative Commons Attribution-
@@ -9,18 +8,21 @@
  *    Torsten Hahmann - initial implementation
  *******************************************************************************/
 
-(cl-text multidim_mereotopology_codi/definitions/epp.clif
 
-(cl-imports multidim_mereotopology_codi/definitions/ep.clif)
+(cl-text multidim_mereotopology_codi/definitions/voluminous_region.clif
 
-(cl-comment 'EPP-D: definition of proper parthood')
+(cl-imports multidim_mereotopology_codi/definitions/areal_region.clif)
 
-(forall (x y)
-	(iff 	
-		(PP x y)
-		(and 
-			(P x y) 
-			(not (= x y))
+(cl-comment 'Definition of an voluminous_region as something that is of exactly one dimension greater than an areal_region')
+
+(forall (x)
+	(iff
+		(VoluminousRegion x)
+		(forall (y)
+			(if
+				(ArealRegion y)
+				(Covers x y)
+			)
 		)
 	)
 )
