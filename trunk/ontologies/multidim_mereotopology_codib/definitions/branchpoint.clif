@@ -1,0 +1,68 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text multidim_mereotopology_codib/definitions/branchpoint.clif
+
+(cl-imports multidim_mereotopology_codib/definitions/endpoint.clif)
+
+(cl-imports multidim_mereotopology_codib/definitions/atomic_curve.clif)
+
+(cl-imports multidim_mereotopology_codi/definitions/point.clif)
+
+(cl-imports multidim_mereotopology_codi/definitions/curve.clif)
+
+(cl-imports multidim_mereotopology_codi/codi_atomic_points.clif)
+
+(cl-imports multidim_mereotopology_codib/codib.clif)
+
+
+(cl-comment 'A branch point of a curve is a point that is contained in two or more atomic curves of which at least one is an atomic loop curve segment or in three or more distinct, i.e. non-overlapping, atomic curve segments.')
+
+(forall (x y)
+	(iff
+		(Branchpoint x y)
+		(and
+			(Point x)
+			(Curve y)
+			(Cont x y)
+			(or
+				(exists (s1 s2)
+					(and
+						(AtomicCurveSegment s1)
+						(AtomicLoopCurve s2)
+						(Cont s1 y)
+						(Cont s2 y)
+						(not (= s1 s2))
+						(Cont x s1)
+						(Cont x s2)
+					)
+				)	
+				(exists (s1 s2 s3)
+					(and
+						(AtomicCurveSegment s1)
+						(AtomicCurveSegment s2)
+						(AtomicCurveSegment s3)
+						(Cont s1 y)
+						(Cont s2 y)
+						(Cont s3 y)
+						(not (= s1 s2))
+						(not (= s1 s3))
+						(not (= s2 s3))
+						(Cont x s1)
+						(Cont x s2)
+						(Cont x s3)
+					)
+				)	
+			)
+		)
+	)
+)
+
+)

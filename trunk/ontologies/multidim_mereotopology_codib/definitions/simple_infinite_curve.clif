@@ -1,0 +1,53 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text multidim_mereotopology_codib/definitions/simple_infinite_curve.clif
+
+(cl-imports multidim_mereotopology_codib/definitions/atomic_ray_curve.clif)
+
+(cl-imports multidim_mereotopology_codi/definitions/curve.clif)
+
+(cl-imports multidim_mereotopology_codib/definitions/endpoint.clif)
+
+(cl-imports multidim_mereotopology_codib/codib_curve_endpoints.clif)
+
+
+(cl-comment 'A simple infinite curve is a curve that contains two non-overlapping simple ray curves with the same endpoint and every part of the curve overlaps one of these rays.')
+
+(forall (x)
+	(iff
+		(SimpleInfiniteCurve x)
+		(and
+			(Curve x)
+			(exists (r1 r2 e)
+				(and
+					(AtomicRayCurve r1)
+					(AtomicRayCurve r2)
+					(not (PO r1 r2))
+					(Endpoint e r1)
+					(Endpoint e r2)
+					(PP r1 x)
+					(PP r2 x)
+					(forall (y)
+						(if
+							(PP y x)
+							(or
+								(PO y r1)
+								(PO y r2)
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+)
+
+)
