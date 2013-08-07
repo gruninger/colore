@@ -1,0 +1,45 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text multidim_mereotopology_codib/definitions/curve_segment.clif
+
+(cl-imports multidim_mereotopology_codib/definitions/atomic_curve_segment.clif)
+
+(cl-imports multidim_mereotopology_codi/definitions/curve.clif)
+
+(cl-imports multidim_mereotopology_codib/codib_curve_endpoints.clif)
+
+
+
+(cl-comment 'A curve segment is a curve of which each part overlaps some atomic curve segment.')
+
+
+(forall (x)
+	(iff
+        (CurveSegment x)
+		(and
+            (Curve x)
+			(forall (y)
+                (if
+                    (P y x)
+                    (exists (z)
+                        (and
+                            (AtomicCurveSegment z)
+                            (PO y z)
+                        )
+                    )
+                )
+            )
+		)
+	)
+)
+
+
+)
