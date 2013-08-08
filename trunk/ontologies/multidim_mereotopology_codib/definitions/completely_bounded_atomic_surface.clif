@@ -1,0 +1,35 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text multidim_mereotopology_codib/definitions/completely_bounded_atomic_surface.clif
+
+(cl-imports multidim_mereotopology_codib/definitions/completely_bounded_surface.clif)
+
+(cl-imports multidim_mereotopology_codib/codib_boundary.clif)
+
+(cl-comment 'A completely bounded atomic surface x is a completely bounded surface that contains no completely bounded surface as proper part.')
+
+
+(forall (x)
+	(iff
+		(CompletelyBoundedAtomicSurface x)
+		(and
+            (CompletelyBoundedSurface x)
+            (forall (y)
+                (if
+                    (PP y x)
+                    (not (CompletelyBoundedSurface y))
+                )
+            )
+		)
+	)
+)
+
+)
