@@ -1,0 +1,39 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/multidim_mereotopology_omt/definitions/ononeside.clif
+
+(cl-imports http://colore.oor.net/multidim_mereotopology_omt/omt_down.clif)
+
+(cl-imports http://colore.oor.net/multidim_mereotopology_omt/definitions/separates.clif)
+
+(cl-comment 'OnOneSide: within a given region r, an entity x is on one side of y if y does not separate two parts of x.')
+
+(forall (r x y)
+	(iff
+		(OnOneSide r x y)
+        (and
+            (exists (w)
+                (Separates r x y w)
+            )
+            (forall (u v)
+                (if
+                    (and
+                        (P u x)
+                        (P v x)
+                    )
+                    (not (Separates r u y v))
+                )
+            )
+        )
+	)
+)
+			
+)
