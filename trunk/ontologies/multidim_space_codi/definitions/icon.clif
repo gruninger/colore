@@ -1,0 +1,82 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/multidim_space_codi/definitions/icon.clif
+
+(cl-imports http://colore.oor.net/multidim_space_codi/codi_down.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codi/definitions/min_max_in_dim.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codi/definitions/connected.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codi/definitions/epp.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codi/definitions/sc.clif)
+
+(cl-imports http://colore.oor.net/multidim_mereotopology_dim/definitions/covers.clif)
+
+
+(cl-comment 'Defining when an entity is self-connected')
+
+(cl-comment 'ICon-D: interior connectedness')
+
+(forall (x)
+	(iff
+		(ICon x)
+		(and
+			(Con x)
+			(forall (y)
+				(if
+					(PP y x)
+					(Covers x (intersection y (difference x y)))
+				)
+			)
+		)
+	)
+)
+
+
+(cl-comment 'UCon-D: uniform connectedness (everything in both x and y is in the intersection)')
+
+(forall (x)
+	(iff
+		(UCon x)
+		(and
+			(Con x)
+			(forall (y z)
+				(if
+					(and
+						(PP y x)
+						(Cont z y)
+						(Cont z (difference x y))
+					)
+					(Cont z (intersection y (difference x y)))
+				)
+			)
+		)
+	)
+)
+
+
+
+(cl-comment 'C-S-D: s-connectedness')
+
+(forall (x y)
+	(iff
+		(StrongC x y)
+		(and
+			(SC x y)
+			(EqDim x y)
+			(Covers x (intersection x y))
+		)
+	)
+)
+
+)
