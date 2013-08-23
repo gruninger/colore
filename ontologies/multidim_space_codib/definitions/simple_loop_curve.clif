@@ -1,0 +1,58 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/multidim_space_codib/definitions/simple_loop_curve.clif
+
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/atomic_loop_curve.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/atomic_curve_segment.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/simple_curve_segment.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codib/codib_curve_endpoints.clif)
+
+(cl-comment 'A simple loop curve x is a (unbounded) curve that is either an atomic loop curve or a simple curve segment y connected at its endpoints to an atomic curve segment z such that any other proper part v of x (i.e. any other curve v that is contained in x) is either z or part of y.')
+
+
+(forall (x)
+	(iff
+		(SimpleLoopCurve x)
+		(or
+			(AtomicLoopCurve x)
+			(exists (y z e1 e2)
+				(and
+					(not (= y z))
+					(SimpleCurveSegment y)
+					(PP y x)
+					(AtomicCurveSegment z)
+					(PP z x)
+					(Endpoint e1 y)
+					(Endpoint e2 y)
+					(Endpoint e1 z)
+					(Endpoint e2 z)
+					(not (= e1 e2))
+					(not (PO y z))
+					(forall (v)
+						(if 
+							(and
+								(PP v x)
+								(not (= v z))
+							)
+							(P v y)
+						)
+					)
+				)
+			)
+		)
+	)
+)
+
+
+)

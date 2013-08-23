@@ -1,0 +1,56 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/multidim_space_codib/definitions/simple_ray_curve.clif
+
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/atomic_ray_curve.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/simple_curve_segment.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codib/codib_curve_endpoints.clif)
+
+
+(cl-comment 'A simple ray curve x is either an atomic ray curve or a simple curve segment y connected at exactly one of its endpoints to an atomic ray curve z such that any other curve v that is a proper part of x is either z or part of y.')
+
+
+(forall (x)
+	(iff
+		(SimpleRayCurve x)
+		(or
+			(AtomicRayCurve x)
+			(exists (y z e1 e2)
+				(and
+					(not (= y z))
+					(SimpleCurveSegment y)
+					(Endpoint e1 y)
+					(Endpoint e2 y)
+					(PP y x)
+					(AtomicRayCurve z)
+					(Endpoint e1 z)
+					(Endpoint e2 z)
+					(PP z x)
+					(not (PO y z))
+					(forall (v)
+						(if 
+							(and
+								(PP v x)
+								(not (= v z))
+							)
+							(P v y)
+						)
+					)
+				)
+			)
+		)
+	)
+)
+
+
+)
