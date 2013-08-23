@@ -1,0 +1,74 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/multidim_space_codib/definitions/closed surface.clif
+
+(cl-imports http://colore.oor.net/multidim_space_codi/definitions/areal_region.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/atomic_plane.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/closed.clif)
+
+
+(cl-comment 'A closed surface (in the sense of a manifold without boundary) x is a (closed) areal_region that is either an atomic plane (more precisely an atomic sphere, but we cannot distinguish it from an atomic plane) or that contains only proper parts s1 that are completely bounded surfaces and whose boundary partially overlaps the boundary of exactly one other (and no more) proper part s2 of the areal region.')
+
+
+(forall (x)
+	(iff
+		(ClosedSurface x)
+		(and
+			(ArealRegion x)
+			(Closed x)
+			(or
+				(AtomicPlane x)
+				(and
+					(forall (s1)
+						(if
+							(PP s1 x)
+							(and
+								(CompletelyBoundedSurface s1)
+								(forall (y)
+									(if
+										(BCont y s1)
+										(exists (s2)
+											(and
+												(PP s2 x)
+												(not (PO s1 s2))
+												(PO y (boundary s2))
+												(if
+													(Curve y)
+													(forall (s3)
+														(if
+															(and
+																(PP s3 x)
+																(BCont y s3)
+															)
+															(or
+																(PO s1 s3)
+																(PO s2 s3)
+															)
+														)
+													)
+												)
+											)
+										)
+									)
+								)
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+)
+
+)
+								

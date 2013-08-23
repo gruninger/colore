@@ -1,0 +1,54 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/multidim_space_codib/definitions/simple_curve_segment.clif
+
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/atomic_curve_segment.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/atomic_loop_curve.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/atomic_ray_curve.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/branchpoint.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codib/codib_curve_endpoints.clif)
+
+
+(cl-comment 'A simple curve segment is a curve that contains exactly two distinct endpoints and no branch points.')
+
+(forall (x)
+	(iff
+		(SimpleCurveSegment x)
+		(and
+			(Curve x)
+			(exists (p1 p2)
+				(and
+					(not (= p1 p2))
+					(Endpoint p1 x)
+					(Endpoint p2 x)
+					(forall (p3)
+						(if
+							(Endpoint p3 x)
+							(or
+								(= p1 p3)
+								(= p2 p3)
+							)
+						)
+					)
+				)
+			)
+			(not (exists (p3)
+				(Branchpoint p3 x)
+			))
+		)
+	)
+)
+
+)
