@@ -1,0 +1,36 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+ 
+(cl-text multidim_mereotopology_codib/definitions/outer_boundary.clif
+
+(cl-imports multidim_mereotopology_codib/definitions/stp.clif)
+
+(cl-imports multidim_mereotopology_codib/definitions/completely_bounded_volume.clif)
+
+(cl-imports multidim_mereotopology_codib/definitions/closed_surface.clif)
+
+(cl-imports multidim_mereotopology_codib/codib_boundary.clif)
+
+(cl-comment 'The outer boundary of a part x with respect to the whole y as the portion of the boundary of the whole that is within the part.')
+
+
+(forall (x y z)
+	(iff 
+		(= (OuterBoundary x y) z)
+		(and
+            (STP x y)
+			(CompletelyBoundedVolume y)
+            (= z (intersection x (boundary y)))
+		)
+	)
+)
+
+)
