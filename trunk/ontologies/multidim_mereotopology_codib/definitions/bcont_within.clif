@@ -1,0 +1,35 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+ 
+(cl-text multidim_mereotopology_codib/definitions/bcont_within.clif
+
+(cl-imports multidim_mereotopology_codib/definitions/stp.clif)
+
+(cl-imports multidim_mereotopology_codib/definitions/completely_bounded_volume.clif)
+
+(cl-imports multidim_mereotopology_codib/codib_boundary.clif)
+
+(cl-comment 'z is boundary contained in x within y: z is within the boundary of x that is also a boundary of y where x is a part of the whole y.')
+
+
+(forall (x y z)
+	(iff 
+		(BContWithin z x y)
+		(and
+            (STP x y)
+			(VoluminousRegion y)
+            (Cont z (intersection x (boundary y)))
+		)
+	)
+)
+
+
+)
