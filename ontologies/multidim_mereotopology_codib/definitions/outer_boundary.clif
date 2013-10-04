@@ -11,26 +11,54 @@
  
 (cl-text multidim_mereotopology_codib/definitions/outer_boundary.clif
 
+(cl-imports multidim_mereotopology_codi/definitions/voluminous_region.clif)
+
 (cl-imports multidim_mereotopology_codib/definitions/stp.clif)
-
-(cl-imports multidim_mereotopology_codib/definitions/completely_bounded_volume.clif)
-
-(cl-imports multidim_mereotopology_codib/definitions/closed_surface.clif)
 
 (cl-imports multidim_mereotopology_codib/codib_boundary.clif)
 
-(cl-comment 'The outer boundary z of a part x with respect to the whole y as the portion of the boundary of the whole that is within the part.')
+(cl-comment 'For non-voluminous regions, the outer surface is defined as zero.')
 
-
-(forall (x y z)
-	(iff 
-		(OuterBoundary x y z)
-		(and
-            (STP x y)
-			(CompletelyBoundedVolume y)
-            (= z (intersection x (boundary y)))
-		)
-	)
+(forall (x y)
+    (if
+        (not (VoluminousRegion x))
+        (ZEX (outerBoundary x y))
+    )
 )
+
+(cl-comment 'The outer surface is not defined with respect to a non-voluminous whole.')
+
+(forall (x y)
+    (if
+        (not (VoluminousRegion y))
+        (ZEX (outerBoundary x y))
+    )
+)
+
+
+(cl-comment 'The outer surface is zero if the part is not a strong tangential part (STP) of the whole.')
+
+(forall (x y)
+    (if
+        (not (STP x y))
+        (ZEX (outerBoundary x y))
+    )
+)
+
+        
+
+(cl-comment 'The outer surface of x (with respect to a whole y) is a functional representation of the outer boundary z for entities x that have an outer boundary.')
+
+(forall (x y)
+    (if
+        (and
+            (VoluminousRegion x)
+            (VoluminousRegion y)
+            (STP x y)
+        )
+        (= (outerBoundary x y) (intersection x (boundary y)))
+    )
+)
+
 
 )
