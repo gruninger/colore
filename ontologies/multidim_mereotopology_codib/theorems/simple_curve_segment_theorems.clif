@@ -1,0 +1,89 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-module multidim_mereotopology_codib/theorems/simple_curve_segment_theorems.clif
+
+(cl-imports multidim_mereotopology_codib/definitions/simple_curve_segment.clif)
+
+(cl-imports multidim_mereotopology_codib/definitions/simple_ray_curve.clif)
+
+(cl-imports multidim_mereotopology_codib/definitions/simple_loop_curve.clif)
+
+(cl-imports multidim_mereotopology_codib/definitions/simple_infinite_curve.clif)
+
+(cl-imports multidim_mereotopology_codi/definitions/icon.clif)
+
+(cl-imports multidim_mereotopology_codib/curve_endpoints.clif)
+
+
+
+(cl-comment 'Any atomic curve segment is a simple curve segment.')
+
+(forall (x)
+	(if
+		(AtomicCurveSegment x)
+		(SimpleCurveSegment x)
+	)
+)
+
+
+(cl-comment 'Any part of a simple curve segment overlaps some atomic curve segment.')
+
+(forall (x y)
+	(if
+		(and
+			(SimpleCurveSegment x)
+			(P y x)
+		)
+		(exists (z)
+			(and
+				(AtomicCurveSegment z)
+				(P z x)
+				(PO y z)
+			)
+		)
+	)
+)
+
+
+(cl-comment 'A simple curve segment has no simple ray, loop, or infinite curves as parts.')
+
+(forall (x y)
+	(if
+		(and
+			(SimpleCurveSegment x)
+			(P y x)
+		)
+		(not (SimpleRayCurve y)
+	)
+)
+
+(forall (x y)
+	(if
+		(and
+			(SimpleCurveSegment x)
+			(P y x)
+		)
+		(not (SimpleLoopCurve y)
+	)
+)
+
+(forall (x y)
+	(if
+		(and
+			(SimpleCurveSegment x)
+			(P y x)
+		)
+		(not (SimpleInfiniteCurve y)
+	)
+)
+
+
+)
