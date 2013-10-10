@@ -1,0 +1,47 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text multidim_mereotopology_codib/theorems/endpoint_theorems.clif
+
+(cl-imports multidim_mereotopology_codib/definitions/endpoint.clif)
+
+(cl-imports multidim_mereotopology_codib/codib.clif)
+
+
+(cl-comment 'An endpoint is boundary contained')
+
+(forall (x y)
+    (if 
+        (Endpoint x y)
+        (BCont x y)
+    )
+)
+
+(cl-comment 'A point that is an endpoint of two non-overlapping proper parts of a curve cannot be an endpoint of the curve itself.')
+
+(forall (x e)
+	(if
+		(and
+			(Curve x)
+			(exists (y z)
+				(and
+					(PP y x)
+					(PP z x)
+					(not (PO y z))
+					(Endpoint e y)
+					(Endpoint e z)
+				)
+			)
+		)
+		(not (Endpoint e x))
+	)
+)
+
+)
