@@ -20,6 +20,25 @@
 
 (cl-imports multidim_mereotopology_codib/codib_atomic_curves.clif)
 
+(cl-comment 'We need the closure under intersections and differences in order to ensure that (atomic) curve parts have complements.')
+
+(cl-imports multidim_mereotopology_codi/codi_down.clif)
+
+
+(cl-comment 'Every Curve has an atomic part. Together with the existence of complements, this ensures that all curves are entirely constituted of atomic parts.')
+
+(forall (x)
+    (if
+        (Curve x)
+        (exists (y)
+            (and
+                (P y x)
+                (AtomicCurve y)
+            )
+        )
+    )
+)
+
 
 (cl-comment 'A point is boundary contained in a non-atomic curve segment iff it is boundary contained in exactly one constituent atomic curve.')
 
