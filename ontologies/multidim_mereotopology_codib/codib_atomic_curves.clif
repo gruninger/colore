@@ -16,9 +16,13 @@
 
 (cl-imports multidim_mereotopology_codib/definitions/atomic_loop_curve.clif)
 
+(cl-imports multidim_mereotopology_codib/definitions/atomic_curve_segment.clif)
+
 (cl-imports multidim_mereotopology_codib/definitions/closed.clif)
 
 (cl-imports multidim_mereotopology_codi/codi_atomic_point_regions.clif)
+
+(cl-imports multidim_mereotopology_codib/codib.clif)
 
 (cl-comment 'Restrict atomic curves.')
 
@@ -79,13 +83,52 @@
 	)
 )
 
-(cl-comment 'Atomic loop curves are closed.')
+
+(cl-comment 'Every curve has an atomic part. Together with the existence of complements, this ensures that all curves are entirely constituted of atomic parts.')
 
 (forall (x)
     (if
-        (AtomicLoopCurve x)
-        (Closed x)
+        (Curve x)
+        (exists (y)
+            (and
+                (P y x)
+                (AtomicCurve y)
+            )
+        )
     )
+)
+
+
+(cl-comment 'A point is boundary contained in a non-atomic curve segment iff it is boundary contained in exactly one constituent atomic curve.')
+
+(forall (x y)
+	(if
+        (and
+            (Point x)
+            (Curve y)
+            (not (AtomicCurveSegment y))
+        )
+		(iff
+			(BCont x y)
+			(exists (s1)
+				(and
+					(AtomicCurve s1)
+					(P s1 y)
+					(BCont x s1)
+					(forall (s2)
+						(if
+							(and
+								(P s2 y)
+								(AtomicCurve s2)
+								(BCont x s2)
+							)
+							(= s1 s2)
+						)
+					)
+				)
+			)		
+		)
+	)
 )
 
 )
