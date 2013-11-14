@@ -1,0 +1,493 @@
+(cl-text standard-units
+
+(cl-comment "Standard Units page: http://ksl-web.stanford.edu/knowledge-sharing/ontologies/html/standard-units/index.html")
+(cl-comment "KIF to CLIF translation of http://ksl-web.stanford.edu/knowledge-sharing/ontologies/html/standard-units/standard-units.lisp.html")
+
+(cl-imports standard-dimensions)
+
+(cl-comment "This theory defines a set of basic units of measure.  The associated physical dimensions are defined in the standard-dimensions theory.  Each unit-of-measure is defined with its relationship to SI units for the fundamental dimensions.  It is intended that this theory represent enough information to convert among any pair of units of the same dimension that are either defined as basic units here or built up from the basic units using the composition operators * and EXPT.")
+
+(cl-comment "ISSUES: (c) 1993, 1994 Greg R. Olsen, Thomas R. Gruber, and Yves Peligry. This theory used to be combined with standard-units in a theory called standard-units-and-dimensions.  We divided them because commitments to one are often independent of commitments to the other.")
+(cl-comment "see-also The EngMath paper on line))) (in-theory 'standard-units)")
+
+(cl-comment "SI (Systeme International) units")
+
+(cl-comment "class SI-unit")
+(cl-comment "The class of Systeme International units.")
+
+(cl-comment "define-class SI-unit (?unit)
+  The class of Systeme International units.
+  :def (unit-of-measure ?unit) redundant but helpful
+  :axiom-def (and (system-of-units SI-unit)
+                  (= (base-units SI-unit)
+                     (setof meter kilogram second-of-time ampere
+                            degree-kelvin mole candela
+                            identity-unit)))")
+
+(forall (?unit)
+	(iff (SI-unit ?unit)
+		(unit-of-measure ?unit)))
+
+(forall (?unit)
+   (iff (SI-unit ?unit)
+   	(and (system-of-units SI-unit)
+   		(= (base-units SI-unit)
+   			(setof meter kilogram second-of-time ampere degree-kelvin mole candela identity-unit)))))
+
+(cl-comment "BASIC UNITS")
+
+(cl-comment "The IDENTITY-UNIT is defined in the PHYSICAL-QUANTITIES theory")
+(cl-comment "The SI standard unit of time.  It is not called 'second' to distinguish it from the function second (from the KIF-lists ontology) that denotes the second element of a sequence.")
+
+(cl-comment "
+define-instance SECOND-OF-TIME (unit-of-measure)
+  :axiom-def (and (= (quantity.dimension second-of-time) time-dimension)
+                  (SI-unit second-of-time))
+")
+
+(unit-of-measure SECOND-OF-TIME)
+
+(iff (unit-of-measure SECOND-OF-TIME)
+	(and (= (quantity.dimension second-of-time) time-dimension)
+		(SI-unit second-of-time)))
+
+
+(cl-comment "
+(define-instance MINUTE (unit-of-measure)
+  Time unit.
+  := (* second-of-time 60)
+  :axiom-def (= (quantity.dimension minute) time-dimension))
+")
+
+(unit-of-measure MINUTE)
+
+(= MINUTE (* second-of-time 60))
+
+(iff (unit-of-measure MINUTE)
+	(= (quantity.dimension minute) time-dimension)
+)
+  
+(cl-comment "
+(define-instance HOUR (unit-of-measure)
+  Time unit.
+  := (* minute 60)
+  :axiom-def (= (quantity.dimension hour) time-dimension))
+")
+
+(unit-of-measure HOUR)
+
+(= HOUR (* minute 60))
+
+(iff (unit-of-measure HOUR)
+	(= (quantity.dimension hour) time-dimension)
+)
+
+(cl-comment "
+(define-instance METER (unit-of-measure)
+  SI length unit.  No conversion function is given
+because this is a standard.
+  :axiom-def (and (= (quantity.dimension meter) length-dimension)
+                  (SI-unit meter)))
+")
+
+(unit-of-measure METER)
+
+(iff (unit-of-measure METER)
+	(and (= (quantity.dimension meter) length-dimension)(SI-unit meter))
+)
+
+(cl-comment "
+(define-instance KILOMETER (unit-of-measure)
+  := (* meter 1000)
+  :axiom-def (= (quantity.dimension kilometer) length-dimension))
+")
+
+(unit-of-measure KILOMETER)
+
+(= KILOMETER (* meter 1000))
+
+(iff (unit-of-measure KILOMETER)
+	(= (quantity.dimension kilometer) length-dimension)
+)
+
+(cl-comment "
+(define-instance INCH (unit-of-measure)
+  English length unit.
+  := (/ meter 39.37)
+  :axiom-def (= (quantity.dimension inch) length-dimension))
+")
+
+(unit-of-measure INCH)
+
+(= INCH (/ meter 39.37))
+
+(iff (unit-of-measure INCH)
+	(= (quantity.dimension inch) length-dimension)
+)
+
+(cl-comment "
+(define-instance FOOT (unit-of-measure)
+  English length unit of feet.
+  := (* inch 12)
+  :axiom-def (= (quantity.dimension foot) length-dimension))
+")
+
+(unit-of-measure FOOT)
+
+(= FOOT (* inch 12))
+
+(iff (unit-of-measure FOOT)
+	(= (quantity.dimension foot) length-dimension)
+)
+
+(cl-comment "
+(define-instance MILE (unit-of-measure)
+  English length unit.
+  := (* foot 5280)
+  :axiom-def (= (quantity.dimension mile) length-dimension))
+")
+
+(unit-of-measure MILE)
+
+(= MILE (* foot 5280))
+
+(iff (unit-of-measure MILE)
+	(= (quantity.dimension mile) length-dimension)
+)
+
+(cl-comment "
+(define-instance ANGSTROM (unit-of-measure)
+  ang.strom (1897)
+ [Anders J. <A^o>ngstr<o:>m]
+    :a unit of length equal to one ten-billionth of a meters -- used esp. 
+    for wavelengths of light.
+  := (/ meter (expt 10 10))
+  :axiom-def (= (quantity.dimension angstrom) length-dimension))
+")
+
+(unit-of-measure ANGSTROM)
+
+(= ANGSTROM (/ meter (expt 10 10))
+
+(iff (unit-of-measure ANGSTROM)
+	(= (quantity.dimension angstrom) length-dimension)
+)
+
+(cl-comment "
+(define-instance KILOGRAM (unit-of-measure)
+  SI mass unit of kilogram.
+  :axiom-def (and (= (quantity.dimension kilogram) mass-dimension)
+                  (SI-unit kilogram)))
+")
+
+(unit-of-measure KILOGRAM)
+
+(iff (unit-of-measure KILOGRAM)
+	(and (= (quantity.dimension kilogram) mass-dimension)(SI-unit kilogram))
+)
+
+(cl-comment "
+(define-instance POUND-MASS (unit-of-measure)
+  English pound of mass.
+  :axiom-def (= (quantity.dimension pound-mass) mass-dimension)
+  := (/ kilogram 2.2046))
+")
+
+(unit-of-measure POUND-MASS)
+
+(= POUND-MASS (/ kilogram 2.2046))
+
+(iff (unit-of-measure POUND-MASS)
+	(= (quantity.dimension pound-mass) mass-dimension)
+)
+
+(cl-comment "
+(define-instance SLUG (unit-of-measure)
+  English mass unit.
+  := (/ pound-mass 1000)
+  :axiom-def (= (quantity.dimension slug) mass-dimension))
+")
+
+(unit-of-measure SLUG)
+
+(= SLUG (/ pound-mass 1000))
+
+(iff (unit-of-measure SLUG)
+	(= (quantity.dimension slug) mass-dimension)
+)
+
+(cl-comment "
+(define-instance NEWTON (unit-of-measure)
+  SI force unit.
+  := (* (* kilogram meter) (expt second-of-time -2))
+  :axiom-def (and (= (quantity.dimension newton) force-dimension)
+                  (SI-unit newton)))
+")
+
+(unit-of-measure NEWTON)
+
+(= NEWTON (* (* kilogram meter) (expt second-of-time -2)))
+
+(iff (unit-of-measure NEWTON)
+	(and (= (quantity.dimension newton) force-dimension)(SI-unit newton))
+)
+
+(cl-comment "
+(define-instance AMPERE (unit-of-measure)
+  SI electrical current unit.
+  :axiom-def (and (= (quantity.dimension ampere)
+                     electrical-current-dimension)
+                  (SI-unit ampere)))
+")
+
+(unit-of-measure AMPERE)
+
+(iff (unit-of-measure AMPERE)
+	(and (= (quantity.dimension ampere) electrical-current-dimension)(SI-unit ampere))
+)
+
+(cl-comment "
+(define-instance POUND-FORCE (unit-of-measure)
+  English pound of force.
+  :axiom-def (= (quantity.dimension pound-force) force-dimension)
+  := (/ newton 4.448))
+")
+
+(unit-of-measure POUND-FORCE)
+
+(= POUND-FORCE (/ newton 4.448))
+
+(iff (unit-of-measure POUND-FORCE)
+	(= (quantity.dimension pound-force) force-dimension)
+)
+
+(cl-comment "
+(define-instance JOULE (unit-of-measure)
+  SI energy unit.
+  := (* newton meter)
+  :axiom-def (and (SI-unit joule)
+                  (= (quantity.dimension joule) energy-dimension)))
+")
+
+(unit-of-measure JOULE)
+
+(= JOULE (* newton meter))
+
+(iff (unit-of-measure JOULE)
+	(and (SI-unit joule)(= (quantity.dimension joule) energy-dimension))
+)
+
+(cl-comment "
+(define-instance BTU (unit-of-measure)
+  British thermal unit, a unit of energy.
+  := (* 1055.0 joule)
+  :axiom-def (= (quantity.dimension btu) energy-dimension))
+")
+
+(unit-of-measure BTU)
+
+(= BTU (* 1055.0 joule))
+
+(iff (unit-of-measure BTU)
+	(= (quantity.dimension btu) energy-dimension)
+)
+
+(cl-comment "
+(define-instance PASCAL (unit-of-measure)
+  SI pressure unit.
+  := (* newton (expt meter -2))
+  :axiom-def (and (SI-unit pascal)
+                  (= (quantity.dimension pascal)
+                               (* force-dimension
+                                  (expt length-dimension -2)))))
+")
+
+(unit-of-measure PASCAL)
+
+(= PASCAL (* newton (expt meter -2)))
+
+(iff (unit-of-measure PASCAL)
+	(and (SI-unit pascal)
+		(= (quantity.dimension pascal)
+			(* force-dimension (expt length-dimension -2))))
+)
+
+(cl-comment "
+(define-instance DEGREE-KELVIN (unit-of-measure)
+A unit of thermodynamic temperature.  The degree-Kelvin 
+differs from the Celcius scale ...
+  :axiom-def (and (= (quantity.dimension degree-kelvin) 
+                               thermodynamic-temperature-dimension)
+                  (SI-unit degree-kelvin)))
+")
+
+(unit-of-measure DEGREE-KELVIN)
+
+(iff (unit-of-measure DEGREE-KELVIN)
+	(and (= (quantity.dimension degree-kelvin) thermodynamic-temperature-dimension)
+		(SI-unit degree-kelvin))
+)
+
+(cl-comment "
+(define-instance DEGREE-RANKINE (unit-of-measure)
+Being, according to, or relating to an absolute-temperature scale on
+which the unit of measurement equals a Fahrenheit degree and on which
+the freezing point of water is 491.67<^o> and the boiling point
+671.67<^o>. [Webster]
+  := (* degree-kelvin (/ 5 9))
+  :axiom-def (= (quantity.dimension degree-rankine)
+                thermodynamic-temperature-dimension))
+")
+
+(unit-of-measure DEGREE-RANKINE)
+
+(= DEGREE-RANKINE (* degree-kelvin (/ 5 9)))
+
+(iff (unit-of-measure DEGREE-RANKINE)
+	(= (quantity.dimension degree-rankine) thermodynamic-temperature-dimension)
+)
+
+(cl-comment "
+(define-instance RADIAN (unit-of-measure)
+  Angular measurement unit.
+  := identity-unit
+  :axiom-def (= (quantity.dimension radian) identity-dimension))
+")
+
+(unit-of-measure RADIAN)
+
+(= RADIAN identity-unit)
+
+(iff (unit-of-measure RADIAN)
+	(= (quantity.dimension radian) identity-dimension)
+)
+
+(cl-comment "
+(define-instance THE-NUMBER-PI (real-number)
+  THE-NUMBER-PI is an approximation of the real number that is the ratio
+of the perimeter of a circle to its diameter.
+  := 3.1415926535897936
+  :issues (Should be defined as part of kif-numbers?
+	   (:formerly-called PI)
+	   Renamed from PI because PI is a common abbreviation.  In a general
+            ontology (one that will be included and extended, it's probably
+            a good idea to avoid short, ambiguous names.))
+")
+
+(real-number THE-NUMBER-PI)
+
+(= THE-NUMBER-PI 3.1415926535897936)
+
+(cl-comment "
+(define-instance ANGULAR-DEGREE (unit-of-measure)
+  Angular measurement unit.
+  := (* radian (/ the-number-pi 180))
+  :axiom-def (= (quantity.dimension angular-degree) identity-dimension)
+  :issues ((:formerly-called degree)))
+")
+
+(unit-of-measure ANGULAR-DEGREE)
+
+(= ANGULAR-DEGREE identity-unit)
+
+(iff (unit-of-measure ANGULAR-DEGREE)
+	(= (quantity.dimension radian) identity-dimension)
+)
+
+(cl-comment "
+(define-instance US-DOLLAR (unit-of-measure)
+  An example currency unit.
+  :axiom-def (= (quantity.dimension us-dollar) currency-dimension))
+")
+
+(unit-of-measure US-DOLLAR)
+
+(iff (unit-of-measure US-DOLLAR)
+	(= (quantity.dimension us-dollar) currency-dimension)
+)
+
+(cl-comment "
+(define-instance US-CENT (unit-of-measure)
+  Currency measurement unit.
+  := (/ US-DOLLAR 100)
+  :axiom-def (= (quantity.dimension us-cent) currency-dimension))
+")
+
+(unit-of-measure US-CENT)
+
+(= US-CENT (/ US-DOLLAR 100))
+
+(iff (unit-of-measure US-CENT)
+	(= (quantity.dimension us-cent) currency-dimension)
+)
+
+(cl-comment "
+(define-instance MOLE (unit-of-measure)
+  SI unit for amount of substance.  A mole of a substance is the
+amount of that substance that contains 6.02252 x 10^23 elementary
+entities.  Those entities may be atoms, molecules, ions, electrons,
+other particles, or specified groups of such particles.  One mole
+of carbon atoms (the C^12 isotope) is exactly 12 grams [Halliday
+and Resnick].  In this ontology we say that the specified unit
+is the molecule, so that the MOLE stands by itself as a unit.
+  :axiom-def (and (= (quantity.dimension MOLE)
+                     amount-of-substance-dimension)
+                  (SI-unit MOLE)))
+")
+
+(unit-of-measure MOLE)
+
+(iff (unit-of-measure MOLE)
+	(and (= (quantity.dimension MOLE) amount-of-substance-dimension)
+		(SI-unit MOLE))
+)
+
+(cl-comment "
+(define-instance CANDELA (unit-of-measure)
+  The CANDELA is the SI unit for luminous intensity.
+
+  :axiom-def (and (= (quantity.dimension CANDELA)
+                     luminous-intensity-dimension)
+                  (SI-unit CANDELA)))
+")
+
+(unit-of-measure CANDELA)
+
+(iff (unit-of-measure CANDELA)
+	(and (= (quantity.dimension CANDELA) luminous-intensity-dimension)
+		(SI-unit CANDELA))
+)
+
+
+(cl-comment "
+(define-instance megapascal (unit-of-measure)
+   1 megapascal = 10^6 pascal
+  := (* pascal 1000000)
+  :axiom-def (quantity.dimension megapascal pressure-dimension)
+  :issues (Provided by Bernd Bachmann, DFKI))
+")
+
+(unit-of-measure megapascal)
+
+(= megapascal (* pascal 1000000))
+
+(iff (unit-of-measure megapascal)
+	(quantity.dimension megapascal pressure-dimension)
+)
+
+(cl-comment "
+(define-instance watt (unit-of-measure)
+  unit of measure for measuring physical work
+  := (* newton meter)
+  :axiom-def (quantity.dimension watt work-dimension)
+")
+
+(unit-of-measure watt)
+
+(= watt (* newton meter))
+
+(iff (unit-of-measure watt)
+	(quantity.dimension watt work-dimension)
+)
+
+)
