@@ -1,0 +1,762 @@
+============================== Mace4 =================================
+Mace4 (64) version 2009-11A, November 2009.
+Process 15243 was started by cchui on stl-ws4.mie.utoronto.ca,
+Mon Nov 18 13:36:03 2013
+The command was "mace4 -c -t 120 -s 120 -n 2 -N 20 -f test/p9/commonsense_psychology.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file test/p9/commonsense_psychology.p9
+
+
+formulas(sos).
+(all x (p(x) <-> (exists e (p_prime(e,x) & Rexist(e))))).
+(all e1 all x (p_prime(e1,x) -> (exists e2 (q_prime(e2,x) & cause(e1,e2))))).
+(all e1 all x (p_prime(e1,x) -> (exists e2 (q_prime(e2,x) & enable(e1,e2))))).
+(all a all e1 all e2 (goal(e2,a) & cause(e1,e2) -> goal(e1,a))).
+(all a all e0 all e1 all e2 (goal(e2,a) & cause_prime(e0,e1,e2) & believe(a,e0) -> goal(e1,a))).
+(all a all e0 all e1 all e2 all g2 (goal_prime(g2,e2,a) & cause_prime(e0,e1,e2) & believe(a,e0) -> (exists g1 (goal_prime(g1,e1,a) & cause(g2,g1))))).
+(all a all e0 all e1 all e2 all g2 (goal_prime(g2,e2,a) & cause_prime(e0,e1,e2) & believe(a,e0) -> (exists g1 (goal_prime(g1,e1,a) & cause(g2,g1) & subgoal3(e1,e2,a))))).
+(all a all e0 all e1 all e2 all g2 (goal_prime(g2,e2,a) & cause_prime(e0,e1,e2) & believe(a,e0) & "etc" -> (exists g1 (goal_prime(g1,e1,a) & cause(g2,g1) & subgoal3(e1,e2,a))))).
+(all e1 all e2 all a (subgoal3(e1,e2,a) -> goal(e2,a) & goal(e1,a) & (exists e3 exists e4 exists e5 exists s (causalComplex_prime(e3,s,e2) & member1(e4,e2,s) & and_conjunction(e5,e3,e4) & believe(a,e5))))).
+(all e1 all e2 all e3 all a (subgoal3(e1,e2,a) & subgoal3(e2,e3,a) -> subgoal3(e1,e3,a))).
+(all e all e1 all a (goal_prime(e,e1,a) & believe(a,e) -> Rexist(e))).
+(all e all a (knowledgeGoal(e,a) <-> (exists e1 (goal(e1,a) & know_prime(e1,a,e))))).
+(all e all s all e1 (sharedGoal_prime(e,e1,s) <-> (exists e0 (goal_prime(e0,e1,s) & mb(s,e0) & gen(e,e0) & (all x (member(x,s) -> agent(x))))))).
+(all e all a all e1 (try_prime(e,a,e1) <-> (exists e0 exists e2 exists e3 exists e4 (goal(e1,a) & subgoal_prime(e3,e2,e1,a) & instanceOf(e4,e2) & Rexist_prime(e0,e4) & agentOf(a,e4) & cause(e3,e0) & gen(e,e0))))).
+(all a all e1 (try(a,e1) -> (exists s exists e2 exists e3 (instanceOf(e3,e1) & causalComplex(s,e3) & member(e2,s) & agentOf(a,e2) & Rexist(e2))))).
+(all e all a all e1 (succeed_prime(e,a,e1) <-> (exists e0 exists e2 exists e3 (try_prime(e2,a,e1) & instanceOf(e3,e1) & cause(e2,e3) & Rexist_prime(e0,e3) & gen(e,e0))))).
+(all a all e1 (fail(a,e1) <-> try(a,e1) & -(exists e2 (instanceOf(e2,e1) & Rexist(e2))))).
+(all x all e (compositeEntity(x) & changeIn_prime(e,x) -> (functionality0(e,x) <-> (exists e2 exists e3 exists a (goal_prime(e2,e,a) & agent_prime(e3,a) & imply(e3,e2)))))).
+(all e1 all y all e all x (functionality(e1,y,e,x) <-> (exists s (functionality0(e,x) & causalComplex(s,e1) & member(e1,s) & arg_star(y,e1) & componentOf(y,x))))).
+(all x (intact(x) <-> (all e1 all y all e (functionality(e1,y,e,x) -> -(exists e2 exists e3 (arg_star(y,e2) & not_prime(e3,e1) & cause(e2,e3))))))).
+(all a (agent(a) -> (exists e (goal(e,a) & thrive_prime(e,a))))).
+(all x1 all x2 all a (moreImportant(x1,x2,a) -> neq(x1,x2) & agent(a))).
+(all x1 all x2 all x3 all a (moreImportant(x1,x2,a) & moreImportant(x2,x3,a) -> moreImportant(x1,x3,a))).
+(all e1 all s all a (ubSupergoal(e1,s,a) <-> agent(a) & goal(e1,a) & (all e2 (member(e2,s) -> subgoal3(e2,e1,a))) & (all e2 all e (member(e2,s) & subgoal3(e2,e,a) -> subgoal3(e,e1,a) | eq(e,e1) | subgoal3(e1,e,a))))).
+(all e1 all s all a (lubSupergoal(e1,s,a) <-> ubSupergoal(e1,s,a) & (all e (ubSupergoal(e,s,a) -> eq(e,e1) | subgoal2(e1,e))))).
+(all s all e1 all e2 all a (singleton(s,e2) & lubSupergoal(e1,s,a) -> moreImportant(e1,e2,a))).
+(all s all e all a (lubSupergoal(e,s,a) -> moreImportant(e,s,a))).
+(all e all a (goalRelevant(e,a) <-> (exists e1 (goal(e1,a) & (imply(e,e1) | (exists e2 (not_prime(e2,e1) & imply(e,e2)))))))).
+(all s all e all a (goalConsequences(s,e,a) <-> (all e1 (member(e1,s) <-> goal(e1,a) & (imply(e,e1) | (exists e2 (not_prime(e2,e1) & imply(e,e2)))))))).
+(all x all s all e all a (moreImportant(x,s,a) & goalConsequences(s,e,a) -> moreImportant(x,e,a))).
+(all x all s all e all a (moreImportant(s,x,a) & goalConsequences(s,e,a) -> moreImportant(e,x,a))).
+(all s all x all a (grProps(s,x,a) <-> (all e (member(e,s) <-> arg_star(x,e) & goalRelevant(e,a))))).
+(all s all x all a (moreImportant("x1",s,a) & grProps(s,"x2",a) -> moreImportant("x1","x2",a))).
+(all s all x all a (moreImportant(s,"x1",a) & grProps(s,"x2",a) -> moreImportant("x2","x1",a))).
+end_of_list.
+
+% From the command line: assign(max_seconds, 120).
+
+% From the command line: assign(max_seconds_per, 120).
+    % assign(domain_size, 2) -> assign(start_size, 2).
+    % assign(domain_size, 2) -> assign(end_size, 2).
+
+% From the command line: assign(domain_size, 2).
+
+% From the command line: assign(end_size, 20).
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (p(x) <-> (exists e (p_prime(e,x) & Rexist(e))))) # label(non_clause).  [assumption].
+2 (all e1 all x (p_prime(e1,x) -> (exists e2 (q_prime(e2,x) & cause(e1,e2))))) # label(non_clause).  [assumption].
+3 (all e1 all x (p_prime(e1,x) -> (exists e2 (q_prime(e2,x) & enable(e1,e2))))) # label(non_clause).  [assumption].
+4 (all a all e1 all e2 (goal(e2,a) & cause(e1,e2) -> goal(e1,a))) # label(non_clause).  [assumption].
+5 (all a all e0 all e1 all e2 (goal(e2,a) & cause_prime(e0,e1,e2) & believe(a,e0) -> goal(e1,a))) # label(non_clause).  [assumption].
+6 (all a all e0 all e1 all e2 all g2 (goal_prime(g2,e2,a) & cause_prime(e0,e1,e2) & believe(a,e0) -> (exists g1 (goal_prime(g1,e1,a) & cause(g2,g1))))) # label(non_clause).  [assumption].
+7 (all a all e0 all e1 all e2 all g2 (goal_prime(g2,e2,a) & cause_prime(e0,e1,e2) & believe(a,e0) -> (exists g1 (goal_prime(g1,e1,a) & cause(g2,g1) & subgoal3(e1,e2,a))))) # label(non_clause).  [assumption].
+8 (all a all e0 all e1 all e2 all g2 (goal_prime(g2,e2,a) & cause_prime(e0,e1,e2) & believe(a,e0) & "etc" -> (exists g1 (goal_prime(g1,e1,a) & cause(g2,g1) & subgoal3(e1,e2,a))))) # label(non_clause).  [assumption].
+9 (all e1 all e2 all a (subgoal3(e1,e2,a) -> goal(e2,a) & goal(e1,a) & (exists e3 exists e4 exists e5 exists s (causalComplex_prime(e3,s,e2) & member1(e4,e2,s) & and_conjunction(e5,e3,e4) & believe(a,e5))))) # label(non_clause).  [assumption].
+10 (all e1 all e2 all e3 all a (subgoal3(e1,e2,a) & subgoal3(e2,e3,a) -> subgoal3(e1,e3,a))) # label(non_clause).  [assumption].
+11 (all e all e1 all a (goal_prime(e,e1,a) & believe(a,e) -> Rexist(e))) # label(non_clause).  [assumption].
+12 (all e all a (knowledgeGoal(e,a) <-> (exists e1 (goal(e1,a) & know_prime(e1,a,e))))) # label(non_clause).  [assumption].
+13 (all e all s all e1 (sharedGoal_prime(e,e1,s) <-> (exists e0 (goal_prime(e0,e1,s) & mb(s,e0) & gen(e,e0) & (all x (member(x,s) -> agent(x))))))) # label(non_clause).  [assumption].
+14 (all e all a all e1 (try_prime(e,a,e1) <-> (exists e0 exists e2 exists e3 exists e4 (goal(e1,a) & subgoal_prime(e3,e2,e1,a) & instanceOf(e4,e2) & Rexist_prime(e0,e4) & agentOf(a,e4) & cause(e3,e0) & gen(e,e0))))) # label(non_clause).  [assumption].
+15 (all a all e1 (try(a,e1) -> (exists s exists e2 exists e3 (instanceOf(e3,e1) & causalComplex(s,e3) & member(e2,s) & agentOf(a,e2) & Rexist(e2))))) # label(non_clause).  [assumption].
+16 (all e all a all e1 (succeed_prime(e,a,e1) <-> (exists e0 exists e2 exists e3 (try_prime(e2,a,e1) & instanceOf(e3,e1) & cause(e2,e3) & Rexist_prime(e0,e3) & gen(e,e0))))) # label(non_clause).  [assumption].
+17 (all a all e1 (fail(a,e1) <-> try(a,e1) & -(exists e2 (instanceOf(e2,e1) & Rexist(e2))))) # label(non_clause).  [assumption].
+18 (all x all e (compositeEntity(x) & changeIn_prime(e,x) -> (functionality0(e,x) <-> (exists e2 exists e3 exists a (goal_prime(e2,e,a) & agent_prime(e3,a) & imply(e3,e2)))))) # label(non_clause).  [assumption].
+19 (all e1 all y all e all x (functionality(e1,y,e,x) <-> (exists s (functionality0(e,x) & causalComplex(s,e1) & member(e1,s) & arg_star(y,e1) & componentOf(y,x))))) # label(non_clause).  [assumption].
+20 (all x (intact(x) <-> (all e1 all y all e (functionality(e1,y,e,x) -> -(exists e2 exists e3 (arg_star(y,e2) & not_prime(e3,e1) & cause(e2,e3))))))) # label(non_clause).  [assumption].
+21 (all a (agent(a) -> (exists e (goal(e,a) & thrive_prime(e,a))))) # label(non_clause).  [assumption].
+22 (all x1 all x2 all a (moreImportant(x1,x2,a) -> neq(x1,x2) & agent(a))) # label(non_clause).  [assumption].
+23 (all x1 all x2 all x3 all a (moreImportant(x1,x2,a) & moreImportant(x2,x3,a) -> moreImportant(x1,x3,a))) # label(non_clause).  [assumption].
+24 (all e1 all s all a (ubSupergoal(e1,s,a) <-> agent(a) & goal(e1,a) & (all e2 (member(e2,s) -> subgoal3(e2,e1,a))) & (all e2 all e (member(e2,s) & subgoal3(e2,e,a) -> subgoal3(e,e1,a) | eq(e,e1) | subgoal3(e1,e,a))))) # label(non_clause).  [assumption].
+25 (all e1 all s all a (lubSupergoal(e1,s,a) <-> ubSupergoal(e1,s,a) & (all e (ubSupergoal(e,s,a) -> eq(e,e1) | subgoal2(e1,e))))) # label(non_clause).  [assumption].
+26 (all s all e1 all e2 all a (singleton(s,e2) & lubSupergoal(e1,s,a) -> moreImportant(e1,e2,a))) # label(non_clause).  [assumption].
+27 (all s all e all a (lubSupergoal(e,s,a) -> moreImportant(e,s,a))) # label(non_clause).  [assumption].
+28 (all e all a (goalRelevant(e,a) <-> (exists e1 (goal(e1,a) & (imply(e,e1) | (exists e2 (not_prime(e2,e1) & imply(e,e2)))))))) # label(non_clause).  [assumption].
+29 (all s all e all a (goalConsequences(s,e,a) <-> (all e1 (member(e1,s) <-> goal(e1,a) & (imply(e,e1) | (exists e2 (not_prime(e2,e1) & imply(e,e2)))))))) # label(non_clause).  [assumption].
+30 (all x all s all e all a (moreImportant(x,s,a) & goalConsequences(s,e,a) -> moreImportant(x,e,a))) # label(non_clause).  [assumption].
+31 (all x all s all e all a (moreImportant(s,x,a) & goalConsequences(s,e,a) -> moreImportant(e,x,a))) # label(non_clause).  [assumption].
+32 (all s all x all a (grProps(s,x,a) <-> (all e (member(e,s) <-> arg_star(x,e) & goalRelevant(e,a))))) # label(non_clause).  [assumption].
+33 (all s all x all a (moreImportant("x1",s,a) & grProps(s,"x2",a) -> moreImportant("x1","x2",a))) # label(non_clause).  [assumption].
+34 (all s all x all a (moreImportant(s,"x1",a) & grProps(s,"x2",a) -> moreImportant("x2","x1",a))) # label(non_clause).  [assumption].
+
+============================== end of process non-clausal formulas ===
+
+============================== CLAUSES FOR SEARCH ====================
+
+formulas(mace4_clauses).
+-p(x) | p_prime(f1(x),x).
+-p(x) | Rexist(f1(x)).
+p(x) | -p_prime(y,x) | -Rexist(y).
+-p_prime(x,y) | q_prime(f2(x,y),y).
+-p_prime(x,y) | cause(x,f2(x,y)).
+-p_prime(x,y) | q_prime(f3(x,y),y).
+-p_prime(x,y) | enable(x,f3(x,y)).
+-goal(x,y) | -cause(z,x) | goal(z,y).
+-goal(x,y) | -cause_prime(z,u,x) | -believe(y,z) | goal(u,y).
+-goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | goal_prime(f4(z,u,w,y,x),w,z).
+-goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | cause(x,f4(z,u,w,y,x)).
+-goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | goal_prime(f5(z,u,w,y,x),w,z).
+-goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | cause(x,f5(z,u,w,y,x)).
+-goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | subgoal3(w,y,z).
+-goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | -"etc" | goal_prime(f6(z,u,w,y,x),w,z).
+-goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | -"etc" | cause(x,f6(z,u,w,y,x)).
+-goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | -"etc" | subgoal3(w,y,z).
+-subgoal3(x,y,z) | goal(y,z).
+-subgoal3(x,y,z) | goal(x,z).
+-subgoal3(x,y,z) | causalComplex_prime(f7(x,y,z),f10(x,y,z),y).
+-subgoal3(x,y,z) | member1(f8(x,y,z),y,f10(x,y,z)).
+-subgoal3(x,y,z) | and_conjunction(f9(x,y,z),f7(x,y,z),f8(x,y,z)).
+-subgoal3(x,y,z) | believe(z,f9(x,y,z)).
+-subgoal3(x,y,z) | -subgoal3(y,u,z) | subgoal3(x,u,z).
+-goal_prime(x,y,z) | -believe(z,x) | Rexist(x).
+-knowledgeGoal(x,y) | goal(f11(x,y),y).
+-knowledgeGoal(x,y) | know_prime(f11(x,y),y,x).
+knowledgeGoal(x,y) | -goal(z,y) | -know_prime(z,y,x).
+-sharedGoal_prime(x,y,z) | goal_prime(f12(x,z,y),y,z).
+-sharedGoal_prime(x,y,z) | mb(z,f12(x,z,y)).
+-sharedGoal_prime(x,y,z) | gen(x,f12(x,z,y)).
+-sharedGoal_prime(x,y,z) | -member(u,z) | agent(u).
+sharedGoal_prime(x,y,z) | -goal_prime(u,y,z) | -mb(z,u) | -gen(x,u) | member(f13(x,z,y,u),z).
+sharedGoal_prime(x,y,z) | -goal_prime(u,y,z) | -mb(z,u) | -gen(x,u) | -agent(f13(x,z,y,u)).
+-try_prime(x,y,z) | goal(z,y).
+-try_prime(x,y,z) | subgoal_prime(f16(x,y,z),f15(x,y,z),z,y).
+-try_prime(x,y,z) | instanceOf(f17(x,y,z),f15(x,y,z)).
+-try_prime(x,y,z) | Rexist_prime(f14(x,y,z),f17(x,y,z)).
+-try_prime(x,y,z) | agentOf(y,f17(x,y,z)).
+-try_prime(x,y,z) | cause(f16(x,y,z),f14(x,y,z)).
+-try_prime(x,y,z) | gen(x,f14(x,y,z)).
+try_prime(x,y,z) | -goal(z,y) | -subgoal_prime(u,w,z,y) | -instanceOf(v5,w) | -Rexist_prime(v6,v5) | -agentOf(y,v5) | -cause(u,v6) | -gen(x,v6).
+-try(x,y) | instanceOf(f20(x,y),y).
+-try(x,y) | causalComplex(f18(x,y),f20(x,y)).
+-try(x,y) | member(f19(x,y),f18(x,y)).
+-try(x,y) | agentOf(x,f19(x,y)).
+-try(x,y) | Rexist(f19(x,y)).
+-succeed_prime(x,y,z) | try_prime(f22(x,y,z),y,z).
+-succeed_prime(x,y,z) | instanceOf(f23(x,y,z),z).
+-succeed_prime(x,y,z) | cause(f22(x,y,z),f23(x,y,z)).
+-succeed_prime(x,y,z) | Rexist_prime(f21(x,y,z),f23(x,y,z)).
+-succeed_prime(x,y,z) | gen(x,f21(x,y,z)).
+succeed_prime(x,y,z) | -try_prime(u,y,z) | -instanceOf(w,z) | -cause(u,w) | -Rexist_prime(v5,w) | -gen(x,v5).
+-fail(x,y) | try(x,y).
+-fail(x,y) | -instanceOf(z,y) | -Rexist(z).
+fail(x,y) | -try(x,y) | instanceOf(f24(x,y),y).
+fail(x,y) | -try(x,y) | Rexist(f24(x,y)).
+-compositeEntity(x) | -changeIn_prime(y,x) | -functionality0(y,x) | goal_prime(f25(x,y),y,f27(x,y)).
+-compositeEntity(x) | -changeIn_prime(y,x) | -functionality0(y,x) | agent_prime(f26(x,y),f27(x,y)).
+-compositeEntity(x) | -changeIn_prime(y,x) | -functionality0(y,x) | imply(f26(x,y),f25(x,y)).
+-compositeEntity(x) | -changeIn_prime(y,x) | functionality0(y,x) | -goal_prime(z,y,u) | -agent_prime(w,u) | -imply(w,z).
+-functionality(x,y,z,u) | functionality0(z,u).
+-functionality(x,y,z,u) | causalComplex(f28(x,y,z,u),x).
+-functionality(x,y,z,u) | member(x,f28(x,y,z,u)).
+-functionality(x,y,z,u) | arg_star(y,x).
+-functionality(x,y,z,u) | componentOf(y,u).
+functionality(x,y,z,u) | -functionality0(z,u) | -causalComplex(w,x) | -member(x,w) | -arg_star(y,x) | -componentOf(y,u).
+-intact(x) | -functionality(y,z,u,x) | -arg_star(z,w) | -not_prime(v5,y) | -cause(w,v5).
+intact(x) | functionality(f29(x),f30(x),f31(x),x).
+intact(x) | arg_star(f30(x),f32(x)).
+intact(x) | not_prime(f33(x),f29(x)).
+intact(x) | cause(f32(x),f33(x)).
+-agent(x) | goal(f34(x),x).
+-agent(x) | thrive_prime(f34(x),x).
+-moreImportant(x,y,z) | neq(x,y).
+-moreImportant(x,y,z) | agent(z).
+-moreImportant(x,y,z) | -moreImportant(y,u,z) | moreImportant(x,u,z).
+-ubSupergoal(x,y,z) | agent(z).
+-ubSupergoal(x,y,z) | goal(x,z).
+-ubSupergoal(x,y,z) | -member(u,y) | subgoal3(u,x,z).
+-ubSupergoal(x,y,z) | -member(u,y) | -subgoal3(u,w,z) | subgoal3(w,x,z) | eq(w,x) | subgoal3(x,w,z).
+ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | member(f36(x,y,z),y).
+ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | subgoal3(f36(x,y,z),f37(x,y,z),z).
+ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | -subgoal3(f37(x,y,z),x,z).
+ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | -eq(f37(x,y,z),x).
+ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | -subgoal3(x,f37(x,y,z),z).
+ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | member(f36(x,y,z),y).
+ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | subgoal3(f36(x,y,z),f37(x,y,z),z).
+ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | -subgoal3(f37(x,y,z),x,z).
+ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | -eq(f37(x,y,z),x).
+ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | -subgoal3(x,f37(x,y,z),z).
+-lubSupergoal(x,y,z) | ubSupergoal(x,y,z).
+-lubSupergoal(x,y,z) | -ubSupergoal(u,y,z) | eq(u,x) | subgoal2(x,u).
+lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | ubSupergoal(f38(x,y,z),y,z).
+lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | -eq(f38(x,y,z),x).
+lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | -subgoal2(x,f38(x,y,z)).
+-singleton(x,y) | -lubSupergoal(z,x,u) | moreImportant(z,y,u).
+-lubSupergoal(x,y,z) | moreImportant(x,y,z).
+-goalRelevant(x,y) | goal(f39(x,y),y).
+-goalRelevant(x,y) | imply(x,f39(x,y)) | not_prime(f40(x,y),f39(x,y)).
+-goalRelevant(x,y) | imply(x,f39(x,y)) | imply(x,f40(x,y)).
+goalRelevant(x,y) | -goal(z,y) | -imply(x,z).
+goalRelevant(x,y) | -goal(z,y) | -not_prime(u,z) | -imply(x,u).
+-goalConsequences(x,y,z) | -member(u,x) | goal(u,z).
+-goalConsequences(x,y,z) | -member(u,x) | imply(y,u) | not_prime(f41(x,y,z,u),u).
+-goalConsequences(x,y,z) | -member(u,x) | imply(y,u) | imply(y,f41(x,y,z,u)).
+-goalConsequences(x,y,z) | member(u,x) | -goal(u,z) | -imply(y,u).
+-goalConsequences(x,y,z) | member(u,x) | -goal(u,z) | -not_prime(w,u) | -imply(y,w).
+goalConsequences(x,y,z) | member(f42(x,y,z),x) | goal(f42(x,y,z),z).
+goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | not_prime(f43(x,y,z),f42(x,y,z)).
+goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | imply(y,f43(x,y,z)).
+goalConsequences(x,y,z) | -member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f42(x,y,z)).
+goalConsequences(x,y,z) | -member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -not_prime(u,f42(x,y,z)) | -imply(y,u).
+-moreImportant(x,y,z) | -goalConsequences(y,u,z) | moreImportant(x,u,z).
+-moreImportant(x,y,z) | -goalConsequences(x,u,z) | moreImportant(u,y,z).
+-grProps(x,y,z) | -member(u,x) | arg_star(y,u).
+-grProps(x,y,z) | -member(u,x) | goalRelevant(u,z).
+-grProps(x,y,z) | member(u,x) | -arg_star(y,u) | -goalRelevant(u,z).
+grProps(x,y,z) | member(f44(x,y,z),x) | arg_star(y,f44(x,y,z)).
+grProps(x,y,z) | member(f44(x,y,z),x) | goalRelevant(f44(x,y,z),z).
+grProps(x,y,z) | -member(f44(x,y,z),x) | -arg_star(y,f44(x,y,z)) | -goalRelevant(f44(x,y,z),z).
+-moreImportant("x1",x,y) | -grProps(x,"x2",y) | moreImportant("x1","x2",y).
+-moreImportant(x,"x1",y) | -grProps(x,"x2",y) | moreImportant("x2","x1",y).
+end_of_list.
+
+============================== end of clauses for search =============
+
+% There are no natural numbers in the input.
+
+============================== DOMAIN SIZE 2 =========================
+
+============================== MODEL =================================
+
+interpretation( 2, [number=1, seconds=0], [
+
+        function("x1", [ 0 ]),
+
+        function("x2", [ 0 ]),
+
+        function(f1(_), [ 0, 0 ]),
+
+        function(f29(_), [ 0, 0 ]),
+
+        function(f30(_), [ 0, 0 ]),
+
+        function(f31(_), [ 0, 0 ]),
+
+        function(f32(_), [ 0, 0 ]),
+
+        function(f33(_), [ 0, 0 ]),
+
+        function(f34(_), [ 0, 0 ]),
+
+        function(f2(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        function(f3(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        function(f11(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        function(f18(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        function(f19(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        function(f20(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        function(f24(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        function(f25(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        function(f26(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        function(f27(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        function(f39(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        function(f40(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        function(f7(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f8(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f9(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f10(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f12(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f14(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f15(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f16(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f17(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f21(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f22(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f23(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f35(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f36(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f37(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f38(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f42(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f43(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f44(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f13(_,_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f28(_,_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f41(_,_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f4(_,_,_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f5(_,_,_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        function(f6(_,_,_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        relation("etc", [ 0 ]),
+
+        relation(Rexist(_), [ 0, 0 ]),
+
+        relation(agent(_), [ 0, 0 ]),
+
+        relation(compositeEntity(_), [ 0, 0 ]),
+
+        relation(intact(_), [ 0, 0 ]),
+
+        relation(p(_), [ 0, 0 ]),
+
+        relation(Rexist_prime(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(agentOf(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(agent_prime(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(arg_star(_,_), [
+			   1, 0,
+			   0, 0 ]),
+
+        relation(believe(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(causalComplex(_,_), [
+			   1, 0,
+			   0, 0 ]),
+
+        relation(cause(_,_), [
+			   1, 0,
+			   0, 0 ]),
+
+        relation(changeIn_prime(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(componentOf(_,_), [
+			   1, 1,
+			   0, 0 ]),
+
+        relation(enable(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(eq(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(fail(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(functionality0(_,_), [
+			   1, 1,
+			   0, 0 ]),
+
+        relation(gen(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(goal(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(goalRelevant(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(imply(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(instanceOf(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(knowledgeGoal(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(mb(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(member(_,_), [
+			   1, 0,
+			   0, 0 ]),
+
+        relation(neq(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(not_prime(_,_), [
+			   1, 0,
+			   0, 0 ]),
+
+        relation(p_prime(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(q_prime(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(singleton(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(subgoal2(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(thrive_prime(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(try(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(and_conjunction(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        relation(causalComplex_prime(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        relation(cause_prime(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        relation(goalConsequences(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   1, 1,
+			   1, 1 ]),
+
+        relation(goal_prime(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        relation(grProps(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   1, 1,
+			   1, 1 ]),
+
+        relation(know_prime(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        relation(lubSupergoal(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        relation(member1(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        relation(moreImportant(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        relation(sharedGoal_prime(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        relation(subgoal3(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        relation(succeed_prime(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        relation(try_prime(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        relation(ubSupergoal(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        relation(functionality(_,_,_,_), [
+			   1, 1,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        relation(subgoal_prime(_,_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ])
+]).
+
+============================== end of model ==========================
+
+============================== STATISTICS ============================
+
+For domain size 2.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.02 seconds).
+Ground clauses: seen=1564, kept=1564.
+Selections=519, assignments=519, propagations=120, current_models=1.
+Rewrite_terms=1078, rewrite_bools=2239, indexes=500.
+Rules_from_neg_clauses=0, cross_offs=0.
+
+============================== end of statistics =====================
+
+User_CPU=0.02, System_CPU=0.00, Wall_clock=1.
+
+Exiting with 1 model.
+
+Process 15243 exit (max_models) Mon Nov 18 13:36:04 2013
+The process finished Mon Nov 18 13:36:04 2013
