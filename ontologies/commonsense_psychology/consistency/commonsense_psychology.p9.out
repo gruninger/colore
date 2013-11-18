@@ -1,0 +1,1003 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 15242 was started by cchui on stl-ws4.mie.utoronto.ca,
+Mon Nov 18 13:36:03 2013
+The command was "prover9 -t 120 -f test/p9/commonsense_psychology.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file test/p9/commonsense_psychology.p9
+
+
+formulas(sos).
+(all x (p(x) <-> (exists e (p_prime(e,x) & Rexist(e))))).
+(all e1 all x (p_prime(e1,x) -> (exists e2 (q_prime(e2,x) & cause(e1,e2))))).
+(all e1 all x (p_prime(e1,x) -> (exists e2 (q_prime(e2,x) & enable(e1,e2))))).
+(all a all e1 all e2 (goal(e2,a) & cause(e1,e2) -> goal(e1,a))).
+(all a all e0 all e1 all e2 (goal(e2,a) & cause_prime(e0,e1,e2) & believe(a,e0) -> goal(e1,a))).
+(all a all e0 all e1 all e2 all g2 (goal_prime(g2,e2,a) & cause_prime(e0,e1,e2) & believe(a,e0) -> (exists g1 (goal_prime(g1,e1,a) & cause(g2,g1))))).
+(all a all e0 all e1 all e2 all g2 (goal_prime(g2,e2,a) & cause_prime(e0,e1,e2) & believe(a,e0) -> (exists g1 (goal_prime(g1,e1,a) & cause(g2,g1) & subgoal3(e1,e2,a))))).
+(all a all e0 all e1 all e2 all g2 (goal_prime(g2,e2,a) & cause_prime(e0,e1,e2) & believe(a,e0) & "etc" -> (exists g1 (goal_prime(g1,e1,a) & cause(g2,g1) & subgoal3(e1,e2,a))))).
+(all e1 all e2 all a (subgoal3(e1,e2,a) -> goal(e2,a) & goal(e1,a) & (exists e3 exists e4 exists e5 exists s (causalComplex_prime(e3,s,e2) & member1(e4,e2,s) & and_conjunction(e5,e3,e4) & believe(a,e5))))).
+(all e1 all e2 all e3 all a (subgoal3(e1,e2,a) & subgoal3(e2,e3,a) -> subgoal3(e1,e3,a))).
+(all e all e1 all a (goal_prime(e,e1,a) & believe(a,e) -> Rexist(e))).
+(all e all a (knowledgeGoal(e,a) <-> (exists e1 (goal(e1,a) & know_prime(e1,a,e))))).
+(all e all s all e1 (sharedGoal_prime(e,e1,s) <-> (exists e0 (goal_prime(e0,e1,s) & mb(s,e0) & gen(e,e0) & (all x (member(x,s) -> agent(x))))))).
+(all e all a all e1 (try_prime(e,a,e1) <-> (exists e0 exists e2 exists e3 exists e4 (goal(e1,a) & subgoal_prime(e3,e2,e1,a) & instanceOf(e4,e2) & Rexist_prime(e0,e4) & agentOf(a,e4) & cause(e3,e0) & gen(e,e0))))).
+(all a all e1 (try(a,e1) -> (exists s exists e2 exists e3 (instanceOf(e3,e1) & causalComplex(s,e3) & member(e2,s) & agentOf(a,e2) & Rexist(e2))))).
+(all e all a all e1 (succeed_prime(e,a,e1) <-> (exists e0 exists e2 exists e3 (try_prime(e2,a,e1) & instanceOf(e3,e1) & cause(e2,e3) & Rexist_prime(e0,e3) & gen(e,e0))))).
+(all a all e1 (fail(a,e1) <-> try(a,e1) & -(exists e2 (instanceOf(e2,e1) & Rexist(e2))))).
+(all x all e (compositeEntity(x) & changeIn_prime(e,x) -> (functionality0(e,x) <-> (exists e2 exists e3 exists a (goal_prime(e2,e,a) & agent_prime(e3,a) & imply(e3,e2)))))).
+(all e1 all y all e all x (functionality(e1,y,e,x) <-> (exists s (functionality0(e,x) & causalComplex(s,e1) & member(e1,s) & arg_star(y,e1) & componentOf(y,x))))).
+(all x (intact(x) <-> (all e1 all y all e (functionality(e1,y,e,x) -> -(exists e2 exists e3 (arg_star(y,e2) & not_prime(e3,e1) & cause(e2,e3))))))).
+(all a (agent(a) -> (exists e (goal(e,a) & thrive_prime(e,a))))).
+(all x1 all x2 all a (moreImportant(x1,x2,a) -> neq(x1,x2) & agent(a))).
+(all x1 all x2 all x3 all a (moreImportant(x1,x2,a) & moreImportant(x2,x3,a) -> moreImportant(x1,x3,a))).
+(all e1 all s all a (ubSupergoal(e1,s,a) <-> agent(a) & goal(e1,a) & (all e2 (member(e2,s) -> subgoal3(e2,e1,a))) & (all e2 all e (member(e2,s) & subgoal3(e2,e,a) -> subgoal3(e,e1,a) | eq(e,e1) | subgoal3(e1,e,a))))).
+(all e1 all s all a (lubSupergoal(e1,s,a) <-> ubSupergoal(e1,s,a) & (all e (ubSupergoal(e,s,a) -> eq(e,e1) | subgoal2(e1,e))))).
+(all s all e1 all e2 all a (singleton(s,e2) & lubSupergoal(e1,s,a) -> moreImportant(e1,e2,a))).
+(all s all e all a (lubSupergoal(e,s,a) -> moreImportant(e,s,a))).
+(all e all a (goalRelevant(e,a) <-> (exists e1 (goal(e1,a) & (imply(e,e1) | (exists e2 (not_prime(e2,e1) & imply(e,e2)))))))).
+(all s all e all a (goalConsequences(s,e,a) <-> (all e1 (member(e1,s) <-> goal(e1,a) & (imply(e,e1) | (exists e2 (not_prime(e2,e1) & imply(e,e2)))))))).
+(all x all s all e all a (moreImportant(x,s,a) & goalConsequences(s,e,a) -> moreImportant(x,e,a))).
+(all x all s all e all a (moreImportant(s,x,a) & goalConsequences(s,e,a) -> moreImportant(e,x,a))).
+(all s all x all a (grProps(s,x,a) <-> (all e (member(e,s) <-> arg_star(x,e) & goalRelevant(e,a))))).
+(all s all x all a (moreImportant("x1",s,a) & grProps(s,"x2",a) -> moreImportant("x1","x2",a))).
+(all s all x all a (moreImportant(s,"x1",a) & grProps(s,"x2",a) -> moreImportant("x2","x1",a))).
+end_of_list.
+
+============================== end of input ==========================
+
+% From the command line: assign(max_seconds, 120).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (p(x) <-> (exists e (p_prime(e,x) & Rexist(e))))) # label(non_clause).  [assumption].
+2 (all e1 all x (p_prime(e1,x) -> (exists e2 (q_prime(e2,x) & cause(e1,e2))))) # label(non_clause).  [assumption].
+3 (all e1 all x (p_prime(e1,x) -> (exists e2 (q_prime(e2,x) & enable(e1,e2))))) # label(non_clause).  [assumption].
+4 (all a all e1 all e2 (goal(e2,a) & cause(e1,e2) -> goal(e1,a))) # label(non_clause).  [assumption].
+5 (all a all e0 all e1 all e2 (goal(e2,a) & cause_prime(e0,e1,e2) & believe(a,e0) -> goal(e1,a))) # label(non_clause).  [assumption].
+6 (all a all e0 all e1 all e2 all g2 (goal_prime(g2,e2,a) & cause_prime(e0,e1,e2) & believe(a,e0) -> (exists g1 (goal_prime(g1,e1,a) & cause(g2,g1))))) # label(non_clause).  [assumption].
+7 (all a all e0 all e1 all e2 all g2 (goal_prime(g2,e2,a) & cause_prime(e0,e1,e2) & believe(a,e0) -> (exists g1 (goal_prime(g1,e1,a) & cause(g2,g1) & subgoal3(e1,e2,a))))) # label(non_clause).  [assumption].
+8 (all a all e0 all e1 all e2 all g2 (goal_prime(g2,e2,a) & cause_prime(e0,e1,e2) & believe(a,e0) & "etc" -> (exists g1 (goal_prime(g1,e1,a) & cause(g2,g1) & subgoal3(e1,e2,a))))) # label(non_clause).  [assumption].
+9 (all e1 all e2 all a (subgoal3(e1,e2,a) -> goal(e2,a) & goal(e1,a) & (exists e3 exists e4 exists e5 exists s (causalComplex_prime(e3,s,e2) & member1(e4,e2,s) & and_conjunction(e5,e3,e4) & believe(a,e5))))) # label(non_clause).  [assumption].
+10 (all e1 all e2 all e3 all a (subgoal3(e1,e2,a) & subgoal3(e2,e3,a) -> subgoal3(e1,e3,a))) # label(non_clause).  [assumption].
+11 (all e all e1 all a (goal_prime(e,e1,a) & believe(a,e) -> Rexist(e))) # label(non_clause).  [assumption].
+12 (all e all a (knowledgeGoal(e,a) <-> (exists e1 (goal(e1,a) & know_prime(e1,a,e))))) # label(non_clause).  [assumption].
+13 (all e all s all e1 (sharedGoal_prime(e,e1,s) <-> (exists e0 (goal_prime(e0,e1,s) & mb(s,e0) & gen(e,e0) & (all x (member(x,s) -> agent(x))))))) # label(non_clause).  [assumption].
+14 (all e all a all e1 (try_prime(e,a,e1) <-> (exists e0 exists e2 exists e3 exists e4 (goal(e1,a) & subgoal_prime(e3,e2,e1,a) & instanceOf(e4,e2) & Rexist_prime(e0,e4) & agentOf(a,e4) & cause(e3,e0) & gen(e,e0))))) # label(non_clause).  [assumption].
+15 (all a all e1 (try(a,e1) -> (exists s exists e2 exists e3 (instanceOf(e3,e1) & causalComplex(s,e3) & member(e2,s) & agentOf(a,e2) & Rexist(e2))))) # label(non_clause).  [assumption].
+16 (all e all a all e1 (succeed_prime(e,a,e1) <-> (exists e0 exists e2 exists e3 (try_prime(e2,a,e1) & instanceOf(e3,e1) & cause(e2,e3) & Rexist_prime(e0,e3) & gen(e,e0))))) # label(non_clause).  [assumption].
+17 (all a all e1 (fail(a,e1) <-> try(a,e1) & -(exists e2 (instanceOf(e2,e1) & Rexist(e2))))) # label(non_clause).  [assumption].
+18 (all x all e (compositeEntity(x) & changeIn_prime(e,x) -> (functionality0(e,x) <-> (exists e2 exists e3 exists a (goal_prime(e2,e,a) & agent_prime(e3,a) & imply(e3,e2)))))) # label(non_clause).  [assumption].
+19 (all e1 all y all e all x (functionality(e1,y,e,x) <-> (exists s (functionality0(e,x) & causalComplex(s,e1) & member(e1,s) & arg_star(y,e1) & componentOf(y,x))))) # label(non_clause).  [assumption].
+20 (all x (intact(x) <-> (all e1 all y all e (functionality(e1,y,e,x) -> -(exists e2 exists e3 (arg_star(y,e2) & not_prime(e3,e1) & cause(e2,e3))))))) # label(non_clause).  [assumption].
+21 (all a (agent(a) -> (exists e (goal(e,a) & thrive_prime(e,a))))) # label(non_clause).  [assumption].
+22 (all x1 all x2 all a (moreImportant(x1,x2,a) -> neq(x1,x2) & agent(a))) # label(non_clause).  [assumption].
+23 (all x1 all x2 all x3 all a (moreImportant(x1,x2,a) & moreImportant(x2,x3,a) -> moreImportant(x1,x3,a))) # label(non_clause).  [assumption].
+24 (all e1 all s all a (ubSupergoal(e1,s,a) <-> agent(a) & goal(e1,a) & (all e2 (member(e2,s) -> subgoal3(e2,e1,a))) & (all e2 all e (member(e2,s) & subgoal3(e2,e,a) -> subgoal3(e,e1,a) | eq(e,e1) | subgoal3(e1,e,a))))) # label(non_clause).  [assumption].
+25 (all e1 all s all a (lubSupergoal(e1,s,a) <-> ubSupergoal(e1,s,a) & (all e (ubSupergoal(e,s,a) -> eq(e,e1) | subgoal2(e1,e))))) # label(non_clause).  [assumption].
+26 (all s all e1 all e2 all a (singleton(s,e2) & lubSupergoal(e1,s,a) -> moreImportant(e1,e2,a))) # label(non_clause).  [assumption].
+27 (all s all e all a (lubSupergoal(e,s,a) -> moreImportant(e,s,a))) # label(non_clause).  [assumption].
+28 (all e all a (goalRelevant(e,a) <-> (exists e1 (goal(e1,a) & (imply(e,e1) | (exists e2 (not_prime(e2,e1) & imply(e,e2)))))))) # label(non_clause).  [assumption].
+29 (all s all e all a (goalConsequences(s,e,a) <-> (all e1 (member(e1,s) <-> goal(e1,a) & (imply(e,e1) | (exists e2 (not_prime(e2,e1) & imply(e,e2)))))))) # label(non_clause).  [assumption].
+30 (all x all s all e all a (moreImportant(x,s,a) & goalConsequences(s,e,a) -> moreImportant(x,e,a))) # label(non_clause).  [assumption].
+31 (all x all s all e all a (moreImportant(s,x,a) & goalConsequences(s,e,a) -> moreImportant(e,x,a))) # label(non_clause).  [assumption].
+32 (all s all x all a (grProps(s,x,a) <-> (all e (member(e,s) <-> arg_star(x,e) & goalRelevant(e,a))))) # label(non_clause).  [assumption].
+33 (all s all x all a (moreImportant("x1",s,a) & grProps(s,"x2",a) -> moreImportant("x1","x2",a))) # label(non_clause).  [assumption].
+34 (all s all x all a (moreImportant(s,"x1",a) & grProps(s,"x2",a) -> moreImportant("x2","x1",a))) # label(non_clause).  [assumption].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-p(x) | p_prime(f1(x),x).  [clausify(1)].
+-p(x) | Rexist(f1(x)).  [clausify(1)].
+p(x) | -p_prime(y,x) | -Rexist(y).  [clausify(1)].
+-p_prime(x,y) | q_prime(f2(x,y),y).  [clausify(2)].
+-p_prime(x,y) | cause(x,f2(x,y)).  [clausify(2)].
+-p_prime(x,y) | q_prime(f3(x,y),y).  [clausify(3)].
+-p_prime(x,y) | enable(x,f3(x,y)).  [clausify(3)].
+-goal(x,y) | -cause(z,x) | goal(z,y).  [clausify(4)].
+-goal(x,y) | -cause_prime(z,u,x) | -believe(y,z) | goal(u,y).  [clausify(5)].
+-goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | goal_prime(f4(z,u,w,y,x),w,z).  [clausify(6)].
+-goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | cause(x,f4(z,u,w,y,x)).  [clausify(6)].
+-goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | goal_prime(f5(z,u,w,y,x),w,z).  [clausify(7)].
+-goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | cause(x,f5(z,u,w,y,x)).  [clausify(7)].
+-goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | subgoal3(w,y,z).  [clausify(7)].
+-goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | -"etc" | goal_prime(f6(z,u,w,y,x),w,z).  [clausify(8)].
+-goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | -"etc" | cause(x,f6(z,u,w,y,x)).  [clausify(8)].
+-goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | -"etc" | subgoal3(w,y,z).  [clausify(8)].
+-subgoal3(x,y,z) | goal(y,z).  [clausify(9)].
+-subgoal3(x,y,z) | goal(x,z).  [clausify(9)].
+-subgoal3(x,y,z) | causalComplex_prime(f7(x,y,z),f10(x,y,z),y).  [clausify(9)].
+-subgoal3(x,y,z) | member1(f8(x,y,z),y,f10(x,y,z)).  [clausify(9)].
+-subgoal3(x,y,z) | and_conjunction(f9(x,y,z),f7(x,y,z),f8(x,y,z)).  [clausify(9)].
+-subgoal3(x,y,z) | believe(z,f9(x,y,z)).  [clausify(9)].
+-subgoal3(x,y,z) | -subgoal3(y,u,z) | subgoal3(x,u,z).  [clausify(10)].
+-goal_prime(x,y,z) | -believe(z,x) | Rexist(x).  [clausify(11)].
+-knowledgeGoal(x,y) | goal(f11(x,y),y).  [clausify(12)].
+-knowledgeGoal(x,y) | know_prime(f11(x,y),y,x).  [clausify(12)].
+knowledgeGoal(x,y) | -goal(z,y) | -know_prime(z,y,x).  [clausify(12)].
+-sharedGoal_prime(x,y,z) | goal_prime(f12(x,z,y),y,z).  [clausify(13)].
+-sharedGoal_prime(x,y,z) | mb(z,f12(x,z,y)).  [clausify(13)].
+-sharedGoal_prime(x,y,z) | gen(x,f12(x,z,y)).  [clausify(13)].
+-sharedGoal_prime(x,y,z) | -member(u,z) | agent(u).  [clausify(13)].
+sharedGoal_prime(x,y,z) | -goal_prime(u,y,z) | -mb(z,u) | -gen(x,u) | member(f13(x,z,y,u),z).  [clausify(13)].
+sharedGoal_prime(x,y,z) | -goal_prime(u,y,z) | -mb(z,u) | -gen(x,u) | -agent(f13(x,z,y,u)).  [clausify(13)].
+-try_prime(x,y,z) | goal(z,y).  [clausify(14)].
+-try_prime(x,y,z) | subgoal_prime(f16(x,y,z),f15(x,y,z),z,y).  [clausify(14)].
+-try_prime(x,y,z) | instanceOf(f17(x,y,z),f15(x,y,z)).  [clausify(14)].
+-try_prime(x,y,z) | Rexist_prime(f14(x,y,z),f17(x,y,z)).  [clausify(14)].
+-try_prime(x,y,z) | agentOf(y,f17(x,y,z)).  [clausify(14)].
+-try_prime(x,y,z) | cause(f16(x,y,z),f14(x,y,z)).  [clausify(14)].
+-try_prime(x,y,z) | gen(x,f14(x,y,z)).  [clausify(14)].
+try_prime(x,y,z) | -goal(z,y) | -subgoal_prime(u,w,z,y) | -instanceOf(v5,w) | -Rexist_prime(v6,v5) | -agentOf(y,v5) | -cause(u,v6) | -gen(x,v6).  [clausify(14)].
+-try(x,y) | instanceOf(f20(x,y),y).  [clausify(15)].
+-try(x,y) | causalComplex(f18(x,y),f20(x,y)).  [clausify(15)].
+-try(x,y) | member(f19(x,y),f18(x,y)).  [clausify(15)].
+-try(x,y) | agentOf(x,f19(x,y)).  [clausify(15)].
+-try(x,y) | Rexist(f19(x,y)).  [clausify(15)].
+-succeed_prime(x,y,z) | try_prime(f22(x,y,z),y,z).  [clausify(16)].
+-succeed_prime(x,y,z) | instanceOf(f23(x,y,z),z).  [clausify(16)].
+-succeed_prime(x,y,z) | cause(f22(x,y,z),f23(x,y,z)).  [clausify(16)].
+-succeed_prime(x,y,z) | Rexist_prime(f21(x,y,z),f23(x,y,z)).  [clausify(16)].
+-succeed_prime(x,y,z) | gen(x,f21(x,y,z)).  [clausify(16)].
+succeed_prime(x,y,z) | -try_prime(u,y,z) | -instanceOf(w,z) | -cause(u,w) | -Rexist_prime(v5,w) | -gen(x,v5).  [clausify(16)].
+-fail(x,y) | try(x,y).  [clausify(17)].
+-fail(x,y) | -instanceOf(z,y) | -Rexist(z).  [clausify(17)].
+fail(x,y) | -try(x,y) | instanceOf(f24(x,y),y).  [clausify(17)].
+fail(x,y) | -try(x,y) | Rexist(f24(x,y)).  [clausify(17)].
+-compositeEntity(x) | -changeIn_prime(y,x) | -functionality0(y,x) | goal_prime(f25(x,y),y,f27(x,y)).  [clausify(18)].
+-compositeEntity(x) | -changeIn_prime(y,x) | -functionality0(y,x) | agent_prime(f26(x,y),f27(x,y)).  [clausify(18)].
+-compositeEntity(x) | -changeIn_prime(y,x) | -functionality0(y,x) | imply(f26(x,y),f25(x,y)).  [clausify(18)].
+-compositeEntity(x) | -changeIn_prime(y,x) | functionality0(y,x) | -goal_prime(z,y,u) | -agent_prime(w,u) | -imply(w,z).  [clausify(18)].
+-functionality(x,y,z,u) | functionality0(z,u).  [clausify(19)].
+-functionality(x,y,z,u) | causalComplex(f28(x,y,z,u),x).  [clausify(19)].
+-functionality(x,y,z,u) | member(x,f28(x,y,z,u)).  [clausify(19)].
+-functionality(x,y,z,u) | arg_star(y,x).  [clausify(19)].
+-functionality(x,y,z,u) | componentOf(y,u).  [clausify(19)].
+functionality(x,y,z,u) | -functionality0(z,u) | -causalComplex(w,x) | -member(x,w) | -arg_star(y,x) | -componentOf(y,u).  [clausify(19)].
+-intact(x) | -functionality(y,z,u,x) | -arg_star(z,w) | -not_prime(v5,y) | -cause(w,v5).  [clausify(20)].
+intact(x) | functionality(f29(x),f30(x),f31(x),x).  [clausify(20)].
+intact(x) | arg_star(f30(x),f32(x)).  [clausify(20)].
+intact(x) | not_prime(f33(x),f29(x)).  [clausify(20)].
+intact(x) | cause(f32(x),f33(x)).  [clausify(20)].
+-agent(x) | goal(f34(x),x).  [clausify(21)].
+-agent(x) | thrive_prime(f34(x),x).  [clausify(21)].
+-moreImportant(x,y,z) | neq(x,y).  [clausify(22)].
+-moreImportant(x,y,z) | agent(z).  [clausify(22)].
+-moreImportant(x,y,z) | -moreImportant(y,u,z) | moreImportant(x,u,z).  [clausify(23)].
+-ubSupergoal(x,y,z) | agent(z).  [clausify(24)].
+-ubSupergoal(x,y,z) | goal(x,z).  [clausify(24)].
+-ubSupergoal(x,y,z) | -member(u,y) | subgoal3(u,x,z).  [clausify(24)].
+-ubSupergoal(x,y,z) | -member(u,y) | -subgoal3(u,w,z) | subgoal3(w,x,z) | eq(w,x) | subgoal3(x,w,z).  [clausify(24)].
+ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | member(f36(x,y,z),y).  [clausify(24)].
+ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | subgoal3(f36(x,y,z),f37(x,y,z),z).  [clausify(24)].
+ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | -subgoal3(f37(x,y,z),x,z).  [clausify(24)].
+ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | -eq(f37(x,y,z),x).  [clausify(24)].
+ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | -subgoal3(x,f37(x,y,z),z).  [clausify(24)].
+ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | member(f36(x,y,z),y).  [clausify(24)].
+ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | subgoal3(f36(x,y,z),f37(x,y,z),z).  [clausify(24)].
+ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | -subgoal3(f37(x,y,z),x,z).  [clausify(24)].
+ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | -eq(f37(x,y,z),x).  [clausify(24)].
+ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | -subgoal3(x,f37(x,y,z),z).  [clausify(24)].
+-lubSupergoal(x,y,z) | ubSupergoal(x,y,z).  [clausify(25)].
+-lubSupergoal(x,y,z) | -ubSupergoal(u,y,z) | eq(u,x) | subgoal2(x,u).  [clausify(25)].
+lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | ubSupergoal(f38(x,y,z),y,z).  [clausify(25)].
+lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | -eq(f38(x,y,z),x).  [clausify(25)].
+lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | -subgoal2(x,f38(x,y,z)).  [clausify(25)].
+-singleton(x,y) | -lubSupergoal(z,x,u) | moreImportant(z,y,u).  [clausify(26)].
+-lubSupergoal(x,y,z) | moreImportant(x,y,z).  [clausify(27)].
+-goalRelevant(x,y) | goal(f39(x,y),y).  [clausify(28)].
+-goalRelevant(x,y) | imply(x,f39(x,y)) | not_prime(f40(x,y),f39(x,y)).  [clausify(28)].
+-goalRelevant(x,y) | imply(x,f39(x,y)) | imply(x,f40(x,y)).  [clausify(28)].
+goalRelevant(x,y) | -goal(z,y) | -imply(x,z).  [clausify(28)].
+goalRelevant(x,y) | -goal(z,y) | -not_prime(u,z) | -imply(x,u).  [clausify(28)].
+-goalConsequences(x,y,z) | -member(u,x) | goal(u,z).  [clausify(29)].
+-goalConsequences(x,y,z) | -member(u,x) | imply(y,u) | not_prime(f41(x,y,z,u),u).  [clausify(29)].
+-goalConsequences(x,y,z) | -member(u,x) | imply(y,u) | imply(y,f41(x,y,z,u)).  [clausify(29)].
+-goalConsequences(x,y,z) | member(u,x) | -goal(u,z) | -imply(y,u).  [clausify(29)].
+-goalConsequences(x,y,z) | member(u,x) | -goal(u,z) | -not_prime(w,u) | -imply(y,w).  [clausify(29)].
+goalConsequences(x,y,z) | member(f42(x,y,z),x) | goal(f42(x,y,z),z).  [clausify(29)].
+goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | not_prime(f43(x,y,z),f42(x,y,z)).  [clausify(29)].
+goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | imply(y,f43(x,y,z)).  [clausify(29)].
+goalConsequences(x,y,z) | -member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f42(x,y,z)).  [clausify(29)].
+goalConsequences(x,y,z) | -member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -not_prime(u,f42(x,y,z)) | -imply(y,u).  [clausify(29)].
+-moreImportant(x,y,z) | -goalConsequences(y,u,z) | moreImportant(x,u,z).  [clausify(30)].
+-moreImportant(x,y,z) | -goalConsequences(x,u,z) | moreImportant(u,y,z).  [clausify(31)].
+-grProps(x,y,z) | -member(u,x) | arg_star(y,u).  [clausify(32)].
+-grProps(x,y,z) | -member(u,x) | goalRelevant(u,z).  [clausify(32)].
+-grProps(x,y,z) | member(u,x) | -arg_star(y,u) | -goalRelevant(u,z).  [clausify(32)].
+grProps(x,y,z) | member(f44(x,y,z),x) | arg_star(y,f44(x,y,z)).  [clausify(32)].
+grProps(x,y,z) | member(f44(x,y,z),x) | goalRelevant(f44(x,y,z),z).  [clausify(32)].
+grProps(x,y,z) | -member(f44(x,y,z),x) | -arg_star(y,f44(x,y,z)) | -goalRelevant(f44(x,y,z),z).  [clausify(32)].
+-moreImportant("x1",x,y) | -grProps(x,"x2",y) | moreImportant("x1","x2",y).  [clausify(33)].
+-moreImportant(x,"x1",y) | -grProps(x,"x2",y) | moreImportant("x2","x1",y).  [clausify(34)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating p/1
+35 p(x) | -p_prime(y,x) | -Rexist(y).  [clausify(1)].
+36 -p(x) | p_prime(f1(x),x).  [clausify(1)].
+37 -p(x) | Rexist(f1(x)).  [clausify(1)].
+Derived: -p_prime(x,y) | -Rexist(x) | p_prime(f1(y),y).  [resolve(35,a,36,a)].
+Derived: -p_prime(x,y) | -Rexist(x) | Rexist(f1(y)).  [resolve(35,a,37,a)].
+
+Eliminating q_prime/2
+
+Eliminating cause/2
+38 -goal(x,y) | -cause(z,x) | goal(z,y).  [clausify(4)].
+39 -p_prime(x,y) | cause(x,f2(x,y)).  [clausify(2)].
+Derived: -goal(f2(x,y),z) | goal(x,z) | -p_prime(x,y).  [resolve(38,b,39,b)].
+40 -goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | cause(x,f4(z,u,w,y,x)).  [clausify(6)].
+Derived: -goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | -goal(f4(z,u,w,y,x),v5) | goal(x,v5).  [resolve(40,d,38,b)].
+41 -goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | cause(x,f5(z,u,w,y,x)).  [clausify(7)].
+Derived: -goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | -goal(f5(z,u,w,y,x),v5) | goal(x,v5).  [resolve(41,d,38,b)].
+42 -goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | -"etc" | cause(x,f6(z,u,w,y,x)).  [clausify(8)].
+Derived: -goal_prime(x,y,z) | -cause_prime(u,w,y) | -believe(z,u) | -"etc" | -goal(f6(z,u,w,y,x),v5) | goal(x,v5).  [resolve(42,e,38,b)].
+43 -try_prime(x,y,z) | cause(f16(x,y,z),f14(x,y,z)).  [clausify(14)].
+Derived: -try_prime(x,y,z) | -goal(f14(x,y,z),u) | goal(f16(x,y,z),u).  [resolve(43,b,38,b)].
+44 try_prime(x,y,z) | -goal(z,y) | -subgoal_prime(u,w,z,y) | -instanceOf(v5,w) | -Rexist_prime(v6,v5) | -agentOf(y,v5) | -cause(u,v6) | -gen(x,v6).  [clausify(14)].
+Derived: try_prime(x,y,z) | -goal(z,y) | -subgoal_prime(u,w,z,y) | -instanceOf(v5,w) | -Rexist_prime(f2(u,v6),v5) | -agentOf(y,v5) | -gen(x,f2(u,v6)) | -p_prime(u,v6).  [resolve(44,g,39,b)].
+Derived: try_prime(x,y,z) | -goal(z,y) | -subgoal_prime(u,w,z,y) | -instanceOf(v5,w) | -Rexist_prime(f4(v6,v7,v8,v9,u),v5) | -agentOf(y,v5) | -gen(x,f4(v6,v7,v8,v9,u)) | -goal_prime(u,v9,v6) | -cause_prime(v7,v8,v9) | -believe(v6,v7).  [resolve(44,g,40,d)].
+Derived: try_prime(x,y,z) | -goal(z,y) | -subgoal_prime(u,w,z,y) | -instanceOf(v5,w) | -Rexist_prime(f5(v6,v7,v8,v9,u),v5) | -agentOf(y,v5) | -gen(x,f5(v6,v7,v8,v9,u)) | -goal_prime(u,v9,v6) | -cause_prime(v7,v8,v9) | -believe(v6,v7).  [resolve(44,g,41,d)].
+Derived: try_prime(x,y,z) | -goal(z,y) | -subgoal_prime(u,w,z,y) | -instanceOf(v5,w) | -Rexist_prime(f6(v6,v7,v8,v9,u),v5) | -agentOf(y,v5) | -gen(x,f6(v6,v7,v8,v9,u)) | -goal_prime(u,v9,v6) | -cause_prime(v7,v8,v9) | -believe(v6,v7) | -"etc".  [resolve(44,g,42,e)].
+Derived: try_prime(x,y,z) | -goal(z,y) | -subgoal_prime(f16(u,w,v5),v6,z,y) | -instanceOf(v7,v6) | -Rexist_prime(f14(u,w,v5),v7) | -agentOf(y,v7) | -gen(x,f14(u,w,v5)) | -try_prime(u,w,v5).  [resolve(44,g,43,b)].
+45 -succeed_prime(x,y,z) | cause(f22(x,y,z),f23(x,y,z)).  [clausify(16)].
+Derived: -succeed_prime(x,y,z) | -goal(f23(x,y,z),u) | goal(f22(x,y,z),u).  [resolve(45,b,38,b)].
+Derived: -succeed_prime(x,y,z) | try_prime(u,w,v5) | -goal(v5,w) | -subgoal_prime(f22(x,y,z),v6,v5,w) | -instanceOf(v7,v6) | -Rexist_prime(f23(x,y,z),v7) | -agentOf(w,v7) | -gen(u,f23(x,y,z)).  [resolve(45,b,44,g)].
+46 succeed_prime(x,y,z) | -try_prime(u,y,z) | -instanceOf(w,z) | -cause(u,w) | -Rexist_prime(v5,w) | -gen(x,v5).  [clausify(16)].
+Derived: succeed_prime(x,y,z) | -try_prime(u,y,z) | -instanceOf(f2(u,w),z) | -Rexist_prime(v5,f2(u,w)) | -gen(x,v5) | -p_prime(u,w).  [resolve(46,d,39,b)].
+Derived: succeed_prime(x,y,z) | -try_prime(u,y,z) | -instanceOf(f4(w,v5,v6,v7,u),z) | -Rexist_prime(v8,f4(w,v5,v6,v7,u)) | -gen(x,v8) | -goal_prime(u,v7,w) | -cause_prime(v5,v6,v7) | -believe(w,v5).  [resolve(46,d,40,d)].
+Derived: succeed_prime(x,y,z) | -try_prime(u,y,z) | -instanceOf(f5(w,v5,v6,v7,u),z) | -Rexist_prime(v8,f5(w,v5,v6,v7,u)) | -gen(x,v8) | -goal_prime(u,v7,w) | -cause_prime(v5,v6,v7) | -believe(w,v5).  [resolve(46,d,41,d)].
+Derived: succeed_prime(x,y,z) | -try_prime(u,y,z) | -instanceOf(f6(w,v5,v6,v7,u),z) | -Rexist_prime(v8,f6(w,v5,v6,v7,u)) | -gen(x,v8) | -goal_prime(u,v7,w) | -cause_prime(v5,v6,v7) | -believe(w,v5) | -"etc".  [resolve(46,d,42,e)].
+Derived: succeed_prime(x,y,z) | -try_prime(f16(u,w,v5),y,z) | -instanceOf(f14(u,w,v5),z) | -Rexist_prime(v6,f14(u,w,v5)) | -gen(x,v6) | -try_prime(u,w,v5).  [resolve(46,d,43,b)].
+Derived: succeed_prime(x,y,z) | -try_prime(f22(u,w,v5),y,z) | -instanceOf(f23(u,w,v5),z) | -Rexist_prime(v6,f23(u,w,v5)) | -gen(x,v6) | -succeed_prime(u,w,v5).  [resolve(46,d,45,b)].
+47 -intact(x) | -functionality(y,z,u,x) | -arg_star(z,w) | -not_prime(v5,y) | -cause(w,v5).  [clausify(20)].
+Derived: -intact(x) | -functionality(y,z,u,x) | -arg_star(z,w) | -not_prime(f2(w,v5),y) | -p_prime(w,v5).  [resolve(47,e,39,b)].
+Derived: -intact(x) | -functionality(y,z,u,x) | -arg_star(z,w) | -not_prime(f4(v5,v6,v7,v8,w),y) | -goal_prime(w,v8,v5) | -cause_prime(v6,v7,v8) | -believe(v5,v6).  [resolve(47,e,40,d)].
+Derived: -intact(x) | -functionality(y,z,u,x) | -arg_star(z,w) | -not_prime(f5(v5,v6,v7,v8,w),y) | -goal_prime(w,v8,v5) | -cause_prime(v6,v7,v8) | -believe(v5,v6).  [resolve(47,e,41,d)].
+Derived: -intact(x) | -functionality(y,z,u,x) | -arg_star(z,w) | -not_prime(f6(v5,v6,v7,v8,w),y) | -goal_prime(w,v8,v5) | -cause_prime(v6,v7,v8) | -believe(v5,v6) | -"etc".  [resolve(47,e,42,e)].
+Derived: -intact(x) | -functionality(y,z,u,x) | -arg_star(z,f16(w,v5,v6)) | -not_prime(f14(w,v5,v6),y) | -try_prime(w,v5,v6).  [resolve(47,e,43,b)].
+Derived: -intact(x) | -functionality(y,z,u,x) | -arg_star(z,f22(w,v5,v6)) | -not_prime(f23(w,v5,v6),y) | -succeed_prime(w,v5,v6).  [resolve(47,e,45,b)].
+48 intact(x) | cause(f32(x),f33(x)).  [clausify(20)].
+Derived: intact(x) | -goal(f33(x),y) | goal(f32(x),y).  [resolve(48,b,38,b)].
+Derived: intact(x) | try_prime(y,z,u) | -goal(u,z) | -subgoal_prime(f32(x),w,u,z) | -instanceOf(v5,w) | -Rexist_prime(f33(x),v5) | -agentOf(z,v5) | -gen(y,f33(x)).  [resolve(48,b,44,g)].
+Derived: intact(x) | succeed_prime(y,z,u) | -try_prime(f32(x),z,u) | -instanceOf(f33(x),u) | -Rexist_prime(w,f33(x)) | -gen(y,w).  [resolve(48,b,46,d)].
+Derived: intact(x) | -intact(y) | -functionality(z,u,w,y) | -arg_star(u,f32(x)) | -not_prime(f33(x),z).  [resolve(48,b,47,e)].
+
+Eliminating enable/2
+
+Eliminating cause_prime/3
+
+Eliminating causalComplex_prime/3
+
+Eliminating member1/3
+
+Eliminating and_conjunction/3
+
+Eliminating believe/2
+49 -goal_prime(x,y,z) | -believe(z,x) | Rexist(x).  [clausify(11)].
+50 -subgoal3(x,y,z) | believe(z,f9(x,y,z)).  [clausify(9)].
+Derived: -goal_prime(f9(x,y,z),u,z) | Rexist(f9(x,y,z)) | -subgoal3(x,y,z).  [resolve(49,b,50,b)].
+
+Eliminating knowledgeGoal/2
+51 knowledgeGoal(x,y) | -goal(z,y) | -know_prime(z,y,x).  [clausify(12)].
+52 -knowledgeGoal(x,y) | goal(f11(x,y),y).  [clausify(12)].
+53 -knowledgeGoal(x,y) | know_prime(f11(x,y),y,x).  [clausify(12)].
+Derived: -goal(x,y) | -know_prime(x,y,z) | goal(f11(z,y),y).  [resolve(51,a,52,a)].
+Derived: -goal(x,y) | -know_prime(x,y,z) | know_prime(f11(z,y),y,z).  [resolve(51,a,53,a)].
+
+Eliminating sharedGoal_prime/3
+54 sharedGoal_prime(x,y,z) | -goal_prime(u,y,z) | -mb(z,u) | -gen(x,u) | member(f13(x,z,y,u),z).  [clausify(13)].
+55 -sharedGoal_prime(x,y,z) | goal_prime(f12(x,z,y),y,z).  [clausify(13)].
+56 -sharedGoal_prime(x,y,z) | mb(z,f12(x,z,y)).  [clausify(13)].
+57 -sharedGoal_prime(x,y,z) | gen(x,f12(x,z,y)).  [clausify(13)].
+58 -sharedGoal_prime(x,y,z) | -member(u,z) | agent(u).  [clausify(13)].
+Derived: -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | member(f13(u,z,y,x),z) | goal_prime(f12(u,z,y),y,z).  [resolve(54,a,55,a)].
+Derived: -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | member(f13(u,z,y,x),z) | mb(z,f12(u,z,y)).  [resolve(54,a,56,a)].
+Derived: -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | member(f13(u,z,y,x),z) | gen(u,f12(u,z,y)).  [resolve(54,a,57,a)].
+Derived: -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | member(f13(u,z,y,x),z) | -member(w,z) | agent(w).  [resolve(54,a,58,a)].
+59 sharedGoal_prime(x,y,z) | -goal_prime(u,y,z) | -mb(z,u) | -gen(x,u) | -agent(f13(x,z,y,u)).  [clausify(13)].
+Derived: -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | -agent(f13(u,z,y,x)) | goal_prime(f12(u,z,y),y,z).  [resolve(59,a,55,a)].
+Derived: -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | -agent(f13(u,z,y,x)) | mb(z,f12(u,z,y)).  [resolve(59,a,56,a)].
+Derived: -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | -agent(f13(u,z,y,x)) | gen(u,f12(u,z,y)).  [resolve(59,a,57,a)].
+Derived: -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | -agent(f13(u,z,y,x)) | -member(w,z) | agent(w).  [resolve(59,a,58,a)].
+
+Eliminating subgoal_prime/4
+60 try_prime(x,y,z) | -goal(z,y) | -subgoal_prime(u,w,z,y) | -instanceOf(v5,w) | -Rexist_prime(f2(u,v6),v5) | -agentOf(y,v5) | -gen(x,f2(u,v6)) | -p_prime(u,v6).  [resolve(44,g,39,b)].
+61 -try_prime(x,y,z) | subgoal_prime(f16(x,y,z),f15(x,y,z),z,y).  [clausify(14)].
+Derived: try_prime(x,y,z) | -goal(z,y) | -instanceOf(u,f15(w,y,z)) | -Rexist_prime(f2(f16(w,y,z),v5),u) | -agentOf(y,u) | -gen(x,f2(f16(w,y,z),v5)) | -p_prime(f16(w,y,z),v5) | -try_prime(w,y,z).  [resolve(60,c,61,b)].
+62 try_prime(x,y,z) | -goal(z,y) | -subgoal_prime(f16(u,w,v5),v6,z,y) | -instanceOf(v7,v6) | -Rexist_prime(f14(u,w,v5),v7) | -agentOf(y,v7) | -gen(x,f14(u,w,v5)) | -try_prime(u,w,v5).  [resolve(44,g,43,b)].
+Derived: try_prime(x,y,z) | -goal(z,y) | -instanceOf(u,f15(w,y,z)) | -Rexist_prime(f14(w,y,z),u) | -agentOf(y,u) | -gen(x,f14(w,y,z)) | -try_prime(w,y,z) | -try_prime(w,y,z).  [resolve(62,c,61,b)].
+63 -succeed_prime(x,y,z) | try_prime(u,w,v5) | -goal(v5,w) | -subgoal_prime(f22(x,y,z),v6,v5,w) | -instanceOf(v7,v6) | -Rexist_prime(f23(x,y,z),v7) | -agentOf(w,v7) | -gen(u,f23(x,y,z)).  [resolve(45,b,44,g)].
+64 intact(x) | try_prime(y,z,u) | -goal(u,z) | -subgoal_prime(f32(x),w,u,z) | -instanceOf(v5,w) | -Rexist_prime(f33(x),v5) | -agentOf(z,v5) | -gen(y,f33(x)).  [resolve(48,b,44,g)].
+
+Eliminating instanceOf/2
+65 -fail(x,y) | -instanceOf(z,y) | -Rexist(z).  [clausify(17)].
+66 -try_prime(x,y,z) | instanceOf(f17(x,y,z),f15(x,y,z)).  [clausify(14)].
+67 -try(x,y) | instanceOf(f20(x,y),y).  [clausify(15)].
+68 -succeed_prime(x,y,z) | instanceOf(f23(x,y,z),z).  [clausify(16)].
+Derived: -fail(x,f15(y,z,u)) | -Rexist(f17(y,z,u)) | -try_prime(y,z,u).  [resolve(65,b,66,b)].
+Derived: -fail(x,y) | -Rexist(f20(z,y)) | -try(z,y).  [resolve(65,b,67,b)].
+Derived: -fail(x,y) | -Rexist(f23(z,u,y)) | -succeed_prime(z,u,y).  [resolve(65,b,68,b)].
+69 fail(x,y) | -try(x,y) | instanceOf(f24(x,y),y).  [clausify(17)].
+Derived: fail(x,y) | -try(x,y) | -fail(z,y) | -Rexist(f24(x,y)).  [resolve(69,c,65,b)].
+70 succeed_prime(x,y,z) | -try_prime(u,y,z) | -instanceOf(f2(u,w),z) | -Rexist_prime(v5,f2(u,w)) | -gen(x,v5) | -p_prime(u,w).  [resolve(46,d,39,b)].
+71 succeed_prime(x,y,z) | -try_prime(f16(u,w,v5),y,z) | -instanceOf(f14(u,w,v5),z) | -Rexist_prime(v6,f14(u,w,v5)) | -gen(x,v6) | -try_prime(u,w,v5).  [resolve(46,d,43,b)].
+72 succeed_prime(x,y,z) | -try_prime(f22(u,w,v5),y,z) | -instanceOf(f23(u,w,v5),z) | -Rexist_prime(v6,f23(u,w,v5)) | -gen(x,v6) | -succeed_prime(u,w,v5).  [resolve(46,d,45,b)].
+Derived: succeed_prime(x,y,z) | -try_prime(f22(u,w,z),y,z) | -Rexist_prime(v5,f23(u,w,z)) | -gen(x,v5) | -succeed_prime(u,w,z) | -succeed_prime(u,w,z).  [resolve(72,c,68,b)].
+73 intact(x) | succeed_prime(y,z,u) | -try_prime(f32(x),z,u) | -instanceOf(f33(x),u) | -Rexist_prime(w,f33(x)) | -gen(y,w).  [resolve(48,b,46,d)].
+74 try_prime(x,y,z) | -goal(z,y) | -instanceOf(u,f15(w,y,z)) | -Rexist_prime(f2(f16(w,y,z),v5),u) | -agentOf(y,u) | -gen(x,f2(f16(w,y,z),v5)) | -p_prime(f16(w,y,z),v5) | -try_prime(w,y,z).  [resolve(60,c,61,b)].
+Derived: try_prime(x,y,z) | -goal(z,y) | -Rexist_prime(f2(f16(u,y,z),w),f17(u,y,z)) | -agentOf(y,f17(u,y,z)) | -gen(x,f2(f16(u,y,z),w)) | -p_prime(f16(u,y,z),w) | -try_prime(u,y,z) | -try_prime(u,y,z).  [resolve(74,c,66,b)].
+Derived: try_prime(x,y,z) | -goal(z,y) | -Rexist_prime(f2(f16(u,y,z),w),f20(v5,f15(u,y,z))) | -agentOf(y,f20(v5,f15(u,y,z))) | -gen(x,f2(f16(u,y,z),w)) | -p_prime(f16(u,y,z),w) | -try_prime(u,y,z) | -try(v5,f15(u,y,z)).  [resolve(74,c,67,b)].
+Derived: try_prime(x,y,z) | -goal(z,y) | -Rexist_prime(f2(f16(u,y,z),w),f23(v5,v6,f15(u,y,z))) | -agentOf(y,f23(v5,v6,f15(u,y,z))) | -gen(x,f2(f16(u,y,z),w)) | -p_prime(f16(u,y,z),w) | -try_prime(u,y,z) | -succeed_prime(v5,v6,f15(u,y,z)).  [resolve(74,c,68,b)].
+Derived: try_prime(x,y,z) | -goal(z,y) | -Rexist_prime(f2(f16(u,y,z),w),f24(v5,f15(u,y,z))) | -agentOf(y,f24(v5,f15(u,y,z))) | -gen(x,f2(f16(u,y,z),w)) | -p_prime(f16(u,y,z),w) | -try_prime(u,y,z) | fail(v5,f15(u,y,z)) | -try(v5,f15(u,y,z)).  [resolve(74,c,69,c)].
+75 try_prime(x,y,z) | -goal(z,y) | -instanceOf(u,f15(w,y,z)) | -Rexist_prime(f14(w,y,z),u) | -agentOf(y,u) | -gen(x,f14(w,y,z)) | -try_prime(w,y,z) | -try_prime(w,y,z).  [resolve(62,c,61,b)].
+Derived: try_prime(x,y,z) | -goal(z,y) | -Rexist_prime(f14(u,y,z),f17(u,y,z)) | -agentOf(y,f17(u,y,z)) | -gen(x,f14(u,y,z)) | -try_prime(u,y,z) | -try_prime(u,y,z) | -try_prime(u,y,z).  [resolve(75,c,66,b)].
+Derived: try_prime(x,y,z) | -goal(z,y) | -Rexist_prime(f14(u,y,z),f20(w,f15(u,y,z))) | -agentOf(y,f20(w,f15(u,y,z))) | -gen(x,f14(u,y,z)) | -try_prime(u,y,z) | -try_prime(u,y,z) | -try(w,f15(u,y,z)).  [resolve(75,c,67,b)].
+Derived: try_prime(x,y,z) | -goal(z,y) | -Rexist_prime(f14(u,y,z),f23(w,v5,f15(u,y,z))) | -agentOf(y,f23(w,v5,f15(u,y,z))) | -gen(x,f14(u,y,z)) | -try_prime(u,y,z) | -try_prime(u,y,z) | -succeed_prime(w,v5,f15(u,y,z)).  [resolve(75,c,68,b)].
+Derived: try_prime(x,y,z) | -goal(z,y) | -Rexist_prime(f14(u,y,z),f24(w,f15(u,y,z))) | -agentOf(y,f24(w,f15(u,y,z))) | -gen(x,f14(u,y,z)) | -try_prime(u,y,z) | -try_prime(u,y,z) | fail(w,f15(u,y,z)) | -try(w,f15(u,y,z)).  [resolve(75,c,69,c)].
+
+Eliminating Rexist_prime/2
+76 succeed_prime(x,y,z) | -try_prime(f22(u,w,z),y,z) | -Rexist_prime(v5,f23(u,w,z)) | -gen(x,v5) | -succeed_prime(u,w,z) | -succeed_prime(u,w,z).  [resolve(72,c,68,b)].
+77 -try_prime(x,y,z) | Rexist_prime(f14(x,y,z),f17(x,y,z)).  [clausify(14)].
+78 -succeed_prime(x,y,z) | Rexist_prime(f21(x,y,z),f23(x,y,z)).  [clausify(16)].
+Derived: succeed_prime(x,y,z) | -try_prime(f22(u,w,z),y,z) | -gen(x,f21(u,w,z)) | -succeed_prime(u,w,z) | -succeed_prime(u,w,z) | -succeed_prime(u,w,z).  [resolve(76,c,78,b)].
+79 try_prime(x,y,z) | -goal(z,y) | -Rexist_prime(f2(f16(u,y,z),w),f17(u,y,z)) | -agentOf(y,f17(u,y,z)) | -gen(x,f2(f16(u,y,z),w)) | -p_prime(f16(u,y,z),w) | -try_prime(u,y,z) | -try_prime(u,y,z).  [resolve(74,c,66,b)].
+80 try_prime(x,y,z) | -goal(z,y) | -Rexist_prime(f2(f16(u,y,z),w),f20(v5,f15(u,y,z))) | -agentOf(y,f20(v5,f15(u,y,z))) | -gen(x,f2(f16(u,y,z),w)) | -p_prime(f16(u,y,z),w) | -try_prime(u,y,z) | -try(v5,f15(u,y,z)).  [resolve(74,c,67,b)].
+81 try_prime(x,y,z) | -goal(z,y) | -Rexist_prime(f2(f16(u,y,z),w),f23(v5,v6,f15(u,y,z))) | -agentOf(y,f23(v5,v6,f15(u,y,z))) | -gen(x,f2(f16(u,y,z),w)) | -p_prime(f16(u,y,z),w) | -try_prime(u,y,z) | -succeed_prime(v5,v6,f15(u,y,z)).  [resolve(74,c,68,b)].
+82 try_prime(x,y,z) | -goal(z,y) | -Rexist_prime(f2(f16(u,y,z),w),f24(v5,f15(u,y,z))) | -agentOf(y,f24(v5,f15(u,y,z))) | -gen(x,f2(f16(u,y,z),w)) | -p_prime(f16(u,y,z),w) | -try_prime(u,y,z) | fail(v5,f15(u,y,z)) | -try(v5,f15(u,y,z)).  [resolve(74,c,69,c)].
+83 try_prime(x,y,z) | -goal(z,y) | -Rexist_prime(f14(u,y,z),f17(u,y,z)) | -agentOf(y,f17(u,y,z)) | -gen(x,f14(u,y,z)) | -try_prime(u,y,z) | -try_prime(u,y,z) | -try_prime(u,y,z).  [resolve(75,c,66,b)].
+Derived: try_prime(x,y,z) | -goal(z,y) | -agentOf(y,f17(u,y,z)) | -gen(x,f14(u,y,z)) | -try_prime(u,y,z) | -try_prime(u,y,z) | -try_prime(u,y,z) | -try_prime(u,y,z).  [resolve(83,c,77,b)].
+84 try_prime(x,y,z) | -goal(z,y) | -Rexist_prime(f14(u,y,z),f20(w,f15(u,y,z))) | -agentOf(y,f20(w,f15(u,y,z))) | -gen(x,f14(u,y,z)) | -try_prime(u,y,z) | -try_prime(u,y,z) | -try(w,f15(u,y,z)).  [resolve(75,c,67,b)].
+85 try_prime(x,y,z) | -goal(z,y) | -Rexist_prime(f14(u,y,z),f23(w,v5,f15(u,y,z))) | -agentOf(y,f23(w,v5,f15(u,y,z))) | -gen(x,f14(u,y,z)) | -try_prime(u,y,z) | -try_prime(u,y,z) | -succeed_prime(w,v5,f15(u,y,z)).  [resolve(75,c,68,b)].
+86 try_prime(x,y,z) | -goal(z,y) | -Rexist_prime(f14(u,y,z),f24(w,f15(u,y,z))) | -agentOf(y,f24(w,f15(u,y,z))) | -gen(x,f14(u,y,z)) | -try_prime(u,y,z) | -try_prime(u,y,z) | fail(w,f15(u,y,z)) | -try(w,f15(u,y,z)).  [resolve(75,c,69,c)].
+
+Eliminating agentOf/2
+87 try_prime(x,y,z) | -goal(z,y) | -agentOf(y,f17(u,y,z)) | -gen(x,f14(u,y,z)) | -try_prime(u,y,z) | -try_prime(u,y,z) | -try_prime(u,y,z) | -try_prime(u,y,z).  [resolve(83,c,77,b)].
+88 -try_prime(x,y,z) | agentOf(y,f17(x,y,z)).  [clausify(14)].
+89 -try(x,y) | agentOf(x,f19(x,y)).  [clausify(15)].
+Derived: try_prime(x,y,z) | -goal(z,y) | -gen(x,f14(u,y,z)) | -try_prime(u,y,z) | -try_prime(u,y,z) | -try_prime(u,y,z) | -try_prime(u,y,z) | -try_prime(u,y,z).  [resolve(87,c,88,b)].
+
+Eliminating try/2
+90 -fail(x,y) | try(x,y).  [clausify(17)].
+91 -try(x,y) | causalComplex(f18(x,y),f20(x,y)).  [clausify(15)].
+92 -try(x,y) | member(f19(x,y),f18(x,y)).  [clausify(15)].
+93 -try(x,y) | Rexist(f19(x,y)).  [clausify(15)].
+Derived: -fail(x,y) | causalComplex(f18(x,y),f20(x,y)).  [resolve(90,b,91,a)].
+Derived: -fail(x,y) | member(f19(x,y),f18(x,y)).  [resolve(90,b,92,a)].
+Derived: -fail(x,y) | Rexist(f19(x,y)).  [resolve(90,b,93,a)].
+94 fail(x,y) | -try(x,y) | Rexist(f24(x,y)).  [clausify(17)].
+95 -fail(x,y) | -Rexist(f20(z,y)) | -try(z,y).  [resolve(65,b,67,b)].
+Derived: -fail(x,y) | -Rexist(f20(z,y)) | -fail(z,y).  [resolve(95,c,90,b)].
+96 fail(x,y) | -try(x,y) | -fail(z,y) | -Rexist(f24(x,y)).  [resolve(69,c,65,b)].
+
+Eliminating compositeEntity/1
+
+Eliminating functionality/4
+97 functionality(x,y,z,u) | -functionality0(z,u) | -causalComplex(w,x) | -member(x,w) | -arg_star(y,x) | -componentOf(y,u).  [clausify(19)].
+98 -functionality(x,y,z,u) | functionality0(z,u).  [clausify(19)].
+99 -functionality(x,y,z,u) | causalComplex(f28(x,y,z,u),x).  [clausify(19)].
+100 -functionality(x,y,z,u) | member(x,f28(x,y,z,u)).  [clausify(19)].
+101 -functionality(x,y,z,u) | arg_star(y,x).  [clausify(19)].
+102 -functionality(x,y,z,u) | componentOf(y,u).  [clausify(19)].
+Derived: -functionality0(x,y) | -causalComplex(z,u) | -member(u,z) | -arg_star(w,u) | -componentOf(w,y) | causalComplex(f28(u,w,x,y),u).  [resolve(97,a,99,a)].
+Derived: -functionality0(x,y) | -causalComplex(z,u) | -member(u,z) | -arg_star(w,u) | -componentOf(w,y) | member(u,f28(u,w,x,y)).  [resolve(97,a,100,a)].
+103 intact(x) | functionality(f29(x),f30(x),f31(x),x).  [clausify(20)].
+Derived: intact(x) | functionality0(f31(x),x).  [resolve(103,b,98,a)].
+Derived: intact(x) | causalComplex(f28(f29(x),f30(x),f31(x),x),f29(x)).  [resolve(103,b,99,a)].
+Derived: intact(x) | member(f29(x),f28(f29(x),f30(x),f31(x),x)).  [resolve(103,b,100,a)].
+Derived: intact(x) | arg_star(f30(x),f29(x)).  [resolve(103,b,101,a)].
+Derived: intact(x) | componentOf(f30(x),x).  [resolve(103,b,102,a)].
+104 -intact(x) | -functionality(y,z,u,x) | -arg_star(z,w) | -not_prime(f2(w,v5),y) | -p_prime(w,v5).  [resolve(47,e,39,b)].
+Derived: -intact(x) | -arg_star(y,z) | -not_prime(f2(z,u),w) | -p_prime(z,u) | -functionality0(v5,x) | -causalComplex(v6,w) | -member(w,v6) | -arg_star(y,w) | -componentOf(y,x).  [resolve(104,b,97,a)].
+105 -intact(x) | -functionality(y,z,u,x) | -arg_star(z,f16(w,v5,v6)) | -not_prime(f14(w,v5,v6),y) | -try_prime(w,v5,v6).  [resolve(47,e,43,b)].
+Derived: -intact(x) | -arg_star(y,f16(z,u,w)) | -not_prime(f14(z,u,w),v5) | -try_prime(z,u,w) | -functionality0(v6,x) | -causalComplex(v7,v5) | -member(v5,v7) | -arg_star(y,v5) | -componentOf(y,x).  [resolve(105,b,97,a)].
+106 -intact(x) | -functionality(y,z,u,x) | -arg_star(z,f22(w,v5,v6)) | -not_prime(f23(w,v5,v6),y) | -succeed_prime(w,v5,v6).  [resolve(47,e,45,b)].
+Derived: -intact(x) | -arg_star(y,f22(z,u,w)) | -not_prime(f23(z,u,w),v5) | -succeed_prime(z,u,w) | -functionality0(v6,x) | -causalComplex(v7,v5) | -member(v5,v7) | -arg_star(y,v5) | -componentOf(y,x).  [resolve(106,b,97,a)].
+107 intact(x) | -intact(y) | -functionality(z,u,w,y) | -arg_star(u,f32(x)) | -not_prime(f33(x),z).  [resolve(48,b,47,e)].
+Derived: intact(x) | -intact(y) | -arg_star(z,f32(x)) | -not_prime(f33(x),u) | -functionality0(w,y) | -causalComplex(v5,u) | -member(u,v5) | -arg_star(z,u) | -componentOf(z,y).  [resolve(107,c,97,a)].
+
+Eliminating not_prime/2
+108 goalRelevant(x,y) | -goal(z,y) | -not_prime(u,z) | -imply(x,u).  [clausify(28)].
+109 intact(x) | not_prime(f33(x),f29(x)).  [clausify(20)].
+110 -goalRelevant(x,y) | imply(x,f39(x,y)) | not_prime(f40(x,y),f39(x,y)).  [clausify(28)].
+Derived: goalRelevant(x,y) | -goal(f29(z),y) | -imply(x,f33(z)) | intact(z).  [resolve(108,c,109,b)].
+Derived: goalRelevant(x,y) | -goal(f39(z,u),y) | -imply(x,f40(z,u)) | -goalRelevant(z,u) | imply(z,f39(z,u)).  [resolve(108,c,110,c)].
+111 -goalConsequences(x,y,z) | -member(u,x) | imply(y,u) | not_prime(f41(x,y,z,u),u).  [clausify(29)].
+Derived: -goalConsequences(x,y,z) | -member(u,x) | imply(y,u) | goalRelevant(w,v5) | -goal(u,v5) | -imply(w,f41(x,y,z,u)).  [resolve(111,d,108,c)].
+112 -goalConsequences(x,y,z) | member(u,x) | -goal(u,z) | -not_prime(w,u) | -imply(y,w).  [clausify(29)].
+Derived: -goalConsequences(x,y,z) | member(f29(u),x) | -goal(f29(u),z) | -imply(y,f33(u)) | intact(u).  [resolve(112,d,109,b)].
+Derived: -goalConsequences(x,y,z) | member(f39(u,w),x) | -goal(f39(u,w),z) | -imply(y,f40(u,w)) | -goalRelevant(u,w) | imply(u,f39(u,w)).  [resolve(112,d,110,c)].
+Derived: -goalConsequences(x,y,z) | member(u,x) | -goal(u,z) | -imply(y,f41(w,v5,v6,u)) | -goalConsequences(w,v5,v6) | -member(u,w) | imply(v5,u).  [resolve(112,d,111,d)].
+113 goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | not_prime(f43(x,y,z),f42(x,y,z)).  [clausify(29)].
+Derived: goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | goalRelevant(u,w) | -goal(f42(x,y,z),w) | -imply(u,f43(x,y,z)).  [resolve(113,d,108,c)].
+Derived: goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | -goalConsequences(u,w,v5) | member(f42(x,y,z),u) | -goal(f42(x,y,z),v5) | -imply(w,f43(x,y,z)).  [resolve(113,d,112,d)].
+114 goalConsequences(x,y,z) | -member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -not_prime(u,f42(x,y,z)) | -imply(y,u).  [clausify(29)].
+Derived: goalConsequences(x,y,z) | -member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f41(u,w,v5,f42(x,y,z))) | -goalConsequences(u,w,v5) | -member(f42(x,y,z),u) | imply(w,f42(x,y,z)).  [resolve(114,d,111,d)].
+115 -intact(x) | -arg_star(y,z) | -not_prime(f2(z,u),w) | -p_prime(z,u) | -functionality0(v5,x) | -causalComplex(v6,w) | -member(w,v6) | -arg_star(y,w) | -componentOf(y,x).  [resolve(104,b,97,a)].
+116 -intact(x) | -arg_star(y,f16(z,u,w)) | -not_prime(f14(z,u,w),v5) | -try_prime(z,u,w) | -functionality0(v6,x) | -causalComplex(v7,v5) | -member(v5,v7) | -arg_star(y,v5) | -componentOf(y,x).  [resolve(105,b,97,a)].
+117 -intact(x) | -arg_star(y,f22(z,u,w)) | -not_prime(f23(z,u,w),v5) | -succeed_prime(z,u,w) | -functionality0(v6,x) | -causalComplex(v7,v5) | -member(v5,v7) | -arg_star(y,v5) | -componentOf(y,x).  [resolve(106,b,97,a)].
+118 intact(x) | -intact(y) | -arg_star(z,f32(x)) | -not_prime(f33(x),u) | -functionality0(w,y) | -causalComplex(v5,u) | -member(u,v5) | -arg_star(z,u) | -componentOf(z,y).  [resolve(107,c,97,a)].
+Derived: intact(x) | -intact(y) | -arg_star(z,f32(x)) | -functionality0(u,y) | -causalComplex(w,f29(x)) | -member(f29(x),w) | -arg_star(z,f29(x)) | -componentOf(z,y) | intact(x).  [resolve(118,d,109,b)].
+
+Eliminating thrive_prime/2
+
+Eliminating neq/2
+
+Eliminating eq/2
+119 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | -eq(f37(x,y,z),x).  [clausify(24)].
+120 -ubSupergoal(x,y,z) | -member(u,y) | -subgoal3(u,w,z) | subgoal3(w,x,z) | eq(w,x) | subgoal3(x,w,z).  [clausify(24)].
+Derived: ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | -ubSupergoal(x,u,w) | -member(v5,u) | -subgoal3(v5,f37(x,y,z),w) | subgoal3(f37(x,y,z),x,w) | subgoal3(x,f37(x,y,z),w).  [resolve(119,e,120,e)].
+121 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | -eq(f37(x,y,z),x).  [clausify(24)].
+Derived: ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | -ubSupergoal(x,u,w) | -member(v5,u) | -subgoal3(v5,f37(x,y,z),w) | subgoal3(f37(x,y,z),x,w) | subgoal3(x,f37(x,y,z),w).  [resolve(121,e,120,e)].
+122 -lubSupergoal(x,y,z) | -ubSupergoal(u,y,z) | eq(u,x) | subgoal2(x,u).  [clausify(25)].
+Derived: -lubSupergoal(x,y,z) | -ubSupergoal(f37(x,u,w),y,z) | subgoal2(x,f37(x,u,w)) | ubSupergoal(x,u,w) | -agent(w) | -goal(x,w) | member(f35(x,u,w),u).  [resolve(122,c,119,e)].
+Derived: -lubSupergoal(x,y,z) | -ubSupergoal(f37(x,u,w),y,z) | subgoal2(x,f37(x,u,w)) | ubSupergoal(x,u,w) | -agent(w) | -goal(x,w) | -subgoal3(f35(x,u,w),x,w).  [resolve(122,c,121,e)].
+123 lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | -eq(f38(x,y,z),x).  [clausify(25)].
+Derived: lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | -ubSupergoal(x,u,w) | -member(v5,u) | -subgoal3(v5,f38(x,y,z),w) | subgoal3(f38(x,y,z),x,w) | subgoal3(x,f38(x,y,z),w).  [resolve(123,c,120,e)].
+Derived: lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | -lubSupergoal(x,u,w) | -ubSupergoal(f38(x,y,z),u,w) | subgoal2(x,f38(x,y,z)).  [resolve(123,c,122,c)].
+
+Eliminating subgoal2/2
+124 -lubSupergoal(x,y,z) | -ubSupergoal(f37(x,u,w),y,z) | subgoal2(x,f37(x,u,w)) | ubSupergoal(x,u,w) | -agent(w) | -goal(x,w) | member(f35(x,u,w),u).  [resolve(122,c,119,e)].
+125 lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | -subgoal2(x,f38(x,y,z)).  [clausify(25)].
+126 -lubSupergoal(x,y,z) | -ubSupergoal(f37(x,u,w),y,z) | subgoal2(x,f37(x,u,w)) | ubSupergoal(x,u,w) | -agent(w) | -goal(x,w) | -subgoal3(f35(x,u,w),x,w).  [resolve(122,c,121,e)].
+127 lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | -lubSupergoal(x,u,w) | -ubSupergoal(f38(x,y,z),u,w) | subgoal2(x,f38(x,y,z)).  [resolve(123,c,122,c)].
+Derived: lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | -lubSupergoal(x,u,w) | -ubSupergoal(f38(x,y,z),u,w) | lubSupergoal(x,y,z) | -ubSupergoal(x,y,z).  [resolve(127,e,125,c)].
+
+Eliminating singleton/2
+
+Eliminating grProps/3
+128 grProps(x,y,z) | member(f44(x,y,z),x) | arg_star(y,f44(x,y,z)).  [clausify(32)].
+129 -grProps(x,y,z) | -member(u,x) | arg_star(y,u).  [clausify(32)].
+130 -grProps(x,y,z) | -member(u,x) | goalRelevant(u,z).  [clausify(32)].
+131 -grProps(x,y,z) | member(u,x) | -arg_star(y,u) | -goalRelevant(u,z).  [clausify(32)].
+Derived: member(f44(x,y,z),x) | arg_star(y,f44(x,y,z)) | -member(u,x) | arg_star(y,u).  [resolve(128,a,129,a)].
+Derived: member(f44(x,y,z),x) | arg_star(y,f44(x,y,z)) | -member(u,x) | goalRelevant(u,z).  [resolve(128,a,130,a)].
+Derived: member(f44(x,y,z),x) | arg_star(y,f44(x,y,z)) | member(u,x) | -arg_star(y,u) | -goalRelevant(u,z).  [resolve(128,a,131,a)].
+132 grProps(x,y,z) | member(f44(x,y,z),x) | goalRelevant(f44(x,y,z),z).  [clausify(32)].
+Derived: member(f44(x,y,z),x) | goalRelevant(f44(x,y,z),z) | -member(u,x) | arg_star(y,u).  [resolve(132,a,129,a)].
+Derived: member(f44(x,y,z),x) | goalRelevant(f44(x,y,z),z) | -member(u,x) | goalRelevant(u,z).  [resolve(132,a,130,a)].
+Derived: member(f44(x,y,z),x) | goalRelevant(f44(x,y,z),z) | member(u,x) | -arg_star(y,u) | -goalRelevant(u,z).  [resolve(132,a,131,a)].
+133 grProps(x,y,z) | -member(f44(x,y,z),x) | -arg_star(y,f44(x,y,z)) | -goalRelevant(f44(x,y,z),z).  [clausify(32)].
+Derived: -member(f44(x,y,z),x) | -arg_star(y,f44(x,y,z)) | -goalRelevant(f44(x,y,z),z) | -member(u,x) | arg_star(y,u).  [resolve(133,a,129,a)].
+Derived: -member(f44(x,y,z),x) | -arg_star(y,f44(x,y,z)) | -goalRelevant(f44(x,y,z),z) | -member(u,x) | goalRelevant(u,z).  [resolve(133,a,130,a)].
+Derived: -member(f44(x,y,z),x) | -arg_star(y,f44(x,y,z)) | -goalRelevant(f44(x,y,z),z) | member(u,x) | -arg_star(y,u) | -goalRelevant(u,z).  [resolve(133,a,131,a)].
+134 -moreImportant("x1",x,y) | -grProps(x,"x2",y) | moreImportant("x1","x2",y).  [clausify(33)].
+Derived: -moreImportant("x1",x,y) | moreImportant("x1","x2",y) | member(f44(x,"x2",y),x) | arg_star("x2",f44(x,"x2",y)).  [resolve(134,b,128,a)].
+Derived: -moreImportant("x1",x,y) | moreImportant("x1","x2",y) | member(f44(x,"x2",y),x) | goalRelevant(f44(x,"x2",y),y).  [resolve(134,b,132,a)].
+Derived: -moreImportant("x1",x,y) | moreImportant("x1","x2",y) | -member(f44(x,"x2",y),x) | -arg_star("x2",f44(x,"x2",y)) | -goalRelevant(f44(x,"x2",y),y).  [resolve(134,b,133,a)].
+135 -moreImportant(x,"x1",y) | -grProps(x,"x2",y) | moreImportant("x2","x1",y).  [clausify(34)].
+Derived: -moreImportant(x,"x1",y) | moreImportant("x2","x1",y) | member(f44(x,"x2",y),x) | arg_star("x2",f44(x,"x2",y)).  [resolve(135,b,128,a)].
+Derived: -moreImportant(x,"x1",y) | moreImportant("x2","x1",y) | member(f44(x,"x2",y),x) | goalRelevant(f44(x,"x2",y),y).  [resolve(135,b,132,a)].
+Derived: -moreImportant(x,"x1",y) | moreImportant("x2","x1",y) | -member(f44(x,"x2",y),x) | -arg_star("x2",f44(x,"x2",y)) | -goalRelevant(f44(x,"x2",y),y).  [resolve(135,b,133,a)].
+
+Eliminating functionality0/2
+136 intact(x) | functionality0(f31(x),x).  [resolve(103,b,98,a)].
+137 -functionality0(x,y) | -causalComplex(z,u) | -member(u,z) | -arg_star(w,u) | -componentOf(w,y) | causalComplex(f28(u,w,x,y),u).  [resolve(97,a,99,a)].
+138 -functionality0(x,y) | -causalComplex(z,u) | -member(u,z) | -arg_star(w,u) | -componentOf(w,y) | member(u,f28(u,w,x,y)).  [resolve(97,a,100,a)].
+Derived: intact(x) | -causalComplex(y,z) | -member(z,y) | -arg_star(u,z) | -componentOf(u,x) | causalComplex(f28(z,u,f31(x),x),z).  [resolve(136,b,137,a)].
+Derived: intact(x) | -causalComplex(y,z) | -member(z,y) | -arg_star(u,z) | -componentOf(u,x) | member(z,f28(z,u,f31(x),x)).  [resolve(136,b,138,a)].
+139 intact(x) | -intact(y) | -arg_star(z,f32(x)) | -functionality0(u,y) | -causalComplex(w,f29(x)) | -member(f29(x),w) | -arg_star(z,f29(x)) | -componentOf(z,y) | intact(x).  [resolve(118,d,109,b)].
+
+Eliminating intact/1
+
+Eliminating causalComplex/2
+
+============================== end predicate elimination =============
+
+Auto_denials:  (non-Horn, no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ agent, Rexist, member, goal, goalRelevant, imply, arg_star, gen, mb, p_prime, fail, subgoal3, ubSupergoal, moreImportant, goalConsequences, goal_prime, try_prime, lubSupergoal, succeed_prime, know_prime ]).
+Function symbol precedence:  function_order([ "x2", "x1", f2, f11, f18, f19, f20, f39, f40, f1, f34, f9, f12, f14, f15, f16, f17, f21, f22, f23, f35, f36, f37, f38, f42, f43, f44, f13, f41 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(binary_resolution).  % (non-Horn)
+  % set(neg_ur_resolution).  % (non-Horn, less than 100 clauses)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+kept:      140 -subgoal3(x,y,z) | goal(y,z).  [clausify(9)].
+kept:      141 -subgoal3(x,y,z) | goal(x,z).  [clausify(9)].
+kept:      142 -subgoal3(x,y,z) | -subgoal3(y,u,z) | subgoal3(x,u,z).  [clausify(10)].
+kept:      143 -try_prime(x,y,z) | goal(z,y).  [clausify(14)].
+kept:      144 -try_prime(x,y,z) | gen(x,f14(x,y,z)).  [clausify(14)].
+kept:      145 -succeed_prime(x,y,z) | try_prime(f22(x,y,z),y,z).  [clausify(16)].
+kept:      146 -succeed_prime(x,y,z) | gen(x,f21(x,y,z)).  [clausify(16)].
+kept:      147 -agent(x) | goal(f34(x),x).  [clausify(21)].
+kept:      148 -moreImportant(x,y,z) | agent(z).  [clausify(22)].
+kept:      149 -moreImportant(x,y,z) | -moreImportant(y,u,z) | moreImportant(x,u,z).  [clausify(23)].
+kept:      150 -ubSupergoal(x,y,z) | agent(z).  [clausify(24)].
+kept:      151 -ubSupergoal(x,y,z) | goal(x,z).  [clausify(24)].
+kept:      152 -ubSupergoal(x,y,z) | -member(u,y) | subgoal3(u,x,z).  [clausify(24)].
+kept:      153 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | member(f36(x,y,z),y).  [clausify(24)].
+kept:      154 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | subgoal3(f36(x,y,z),f37(x,y,z),z).  [clausify(24)].
+kept:      155 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | -subgoal3(f37(x,y,z),x,z).  [clausify(24)].
+kept:      156 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | -subgoal3(x,f37(x,y,z),z).  [clausify(24)].
+kept:      157 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | member(f36(x,y,z),y).  [clausify(24)].
+kept:      158 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | subgoal3(f36(x,y,z),f37(x,y,z),z).  [clausify(24)].
+kept:      159 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | -subgoal3(f37(x,y,z),x,z).  [clausify(24)].
+kept:      160 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | -subgoal3(x,f37(x,y,z),z).  [clausify(24)].
+kept:      161 -lubSupergoal(x,y,z) | ubSupergoal(x,y,z).  [clausify(25)].
+kept:      162 lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | ubSupergoal(f38(x,y,z),y,z).  [clausify(25)].
+kept:      163 -lubSupergoal(x,y,z) | moreImportant(x,y,z).  [clausify(27)].
+kept:      164 -goalRelevant(x,y) | goal(f39(x,y),y).  [clausify(28)].
+kept:      165 -goalRelevant(x,y) | imply(x,f39(x,y)) | imply(x,f40(x,y)).  [clausify(28)].
+kept:      166 goalRelevant(x,y) | -goal(z,y) | -imply(x,z).  [clausify(28)].
+kept:      167 -goalConsequences(x,y,z) | -member(u,x) | goal(u,z).  [clausify(29)].
+kept:      168 -goalConsequences(x,y,z) | -member(u,x) | imply(y,u) | imply(y,f41(x,y,z,u)).  [clausify(29)].
+kept:      169 -goalConsequences(x,y,z) | member(u,x) | -goal(u,z) | -imply(y,u).  [clausify(29)].
+kept:      170 goalConsequences(x,y,z) | member(f42(x,y,z),x) | goal(f42(x,y,z),z).  [clausify(29)].
+kept:      171 goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | imply(y,f43(x,y,z)).  [clausify(29)].
+kept:      172 goalConsequences(x,y,z) | -member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f42(x,y,z)).  [clausify(29)].
+kept:      173 -moreImportant(x,y,z) | -goalConsequences(y,u,z) | moreImportant(x,u,z).  [clausify(30)].
+kept:      174 -moreImportant(x,y,z) | -goalConsequences(x,u,z) | moreImportant(u,y,z).  [clausify(31)].
+kept:      175 -p_prime(x,y) | -Rexist(x) | p_prime(f1(y),y).  [resolve(35,a,36,a)].
+kept:      176 -p_prime(x,y) | -Rexist(x) | Rexist(f1(y)).  [resolve(35,a,37,a)].
+kept:      177 -goal(f2(x,y),z) | goal(x,z) | -p_prime(x,y).  [resolve(38,b,39,b)].
+kept:      178 -try_prime(x,y,z) | -goal(f14(x,y,z),u) | goal(f16(x,y,z),u).  [resolve(43,b,38,b)].
+kept:      179 -succeed_prime(x,y,z) | -goal(f23(x,y,z),u) | goal(f22(x,y,z),u).  [resolve(45,b,38,b)].
+kept:      180 -goal_prime(f9(x,y,z),u,z) | Rexist(f9(x,y,z)) | -subgoal3(x,y,z).  [resolve(49,b,50,b)].
+kept:      181 -goal(x,y) | -know_prime(x,y,z) | goal(f11(z,y),y).  [resolve(51,a,52,a)].
+kept:      182 -goal(x,y) | -know_prime(x,y,z) | know_prime(f11(z,y),y,z).  [resolve(51,a,53,a)].
+kept:      183 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | member(f13(u,z,y,x),z) | goal_prime(f12(u,z,y),y,z).  [resolve(54,a,55,a)].
+kept:      184 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | member(f13(u,z,y,x),z) | mb(z,f12(u,z,y)).  [resolve(54,a,56,a)].
+kept:      185 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | member(f13(u,z,y,x),z) | gen(u,f12(u,z,y)).  [resolve(54,a,57,a)].
+kept:      186 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | member(f13(u,z,y,x),z) | -member(w,z) | agent(w).  [resolve(54,a,58,a)].
+kept:      187 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | -agent(f13(u,z,y,x)) | goal_prime(f12(u,z,y),y,z).  [resolve(59,a,55,a)].
+kept:      188 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | -agent(f13(u,z,y,x)) | mb(z,f12(u,z,y)).  [resolve(59,a,56,a)].
+kept:      189 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | -agent(f13(u,z,y,x)) | gen(u,f12(u,z,y)).  [resolve(59,a,57,a)].
+kept:      190 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | -agent(f13(u,z,y,x)) | -member(w,z) | agent(w).  [resolve(59,a,58,a)].
+kept:      191 -fail(x,f15(y,z,u)) | -Rexist(f17(y,z,u)) | -try_prime(y,z,u).  [resolve(65,b,66,b)].
+kept:      192 -fail(x,y) | -Rexist(f23(z,u,y)) | -succeed_prime(z,u,y).  [resolve(65,b,68,b)].
+           193 succeed_prime(x,y,z) | -try_prime(f22(u,w,z),y,z) | -gen(x,f21(u,w,z)) | -succeed_prime(u,w,z) | -succeed_prime(u,w,z) | -succeed_prime(u,w,z).  [resolve(76,c,78,b)].
+kept:      194 succeed_prime(x,y,z) | -try_prime(f22(u,w,z),y,z) | -gen(x,f21(u,w,z)) | -succeed_prime(u,w,z).  [copy(193),merge(e),merge(f)].
+           195 try_prime(x,y,z) | -goal(z,y) | -gen(x,f14(u,y,z)) | -try_prime(u,y,z) | -try_prime(u,y,z) | -try_prime(u,y,z) | -try_prime(u,y,z) | -try_prime(u,y,z).  [resolve(87,c,88,b)].
+kept:      196 try_prime(x,y,z) | -goal(z,y) | -gen(x,f14(u,y,z)) | -try_prime(u,y,z).  [copy(195),merge(e),merge(f),merge(g),merge(h)].
+kept:      197 -fail(x,y) | member(f19(x,y),f18(x,y)).  [resolve(90,b,92,a)].
+kept:      198 -fail(x,y) | Rexist(f19(x,y)).  [resolve(90,b,93,a)].
+kept:      199 -fail(x,y) | -Rexist(f20(z,y)) | -fail(z,y).  [resolve(95,c,90,b)].
+kept:      200 goalRelevant(x,y) | -goal(f39(z,u),y) | -imply(x,f40(z,u)) | -goalRelevant(z,u) | imply(z,f39(z,u)).  [resolve(108,c,110,c)].
+kept:      201 -goalConsequences(x,y,z) | -member(u,x) | imply(y,u) | goalRelevant(w,v5) | -goal(u,v5) | -imply(w,f41(x,y,z,u)).  [resolve(111,d,108,c)].
+kept:      202 -goalConsequences(x,y,z) | member(f39(u,w),x) | -goal(f39(u,w),z) | -imply(y,f40(u,w)) | -goalRelevant(u,w) | imply(u,f39(u,w)).  [resolve(112,d,110,c)].
+kept:      203 -goalConsequences(x,y,z) | member(u,x) | -goal(u,z) | -imply(y,f41(w,v5,v6,u)) | -goalConsequences(w,v5,v6) | -member(u,w) | imply(v5,u).  [resolve(112,d,111,d)].
+kept:      204 goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | goalRelevant(u,w) | -goal(f42(x,y,z),w) | -imply(u,f43(x,y,z)).  [resolve(113,d,108,c)].
+kept:      205 goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | -goalConsequences(u,w,v5) | member(f42(x,y,z),u) | -goal(f42(x,y,z),v5) | -imply(w,f43(x,y,z)).  [resolve(113,d,112,d)].
+kept:      206 goalConsequences(x,y,z) | -member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f41(u,w,v5,f42(x,y,z))) | -goalConsequences(u,w,v5) | -member(f42(x,y,z),u) | imply(w,f42(x,y,z)).  [resolve(114,d,111,d)].
+kept:      207 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | -ubSupergoal(x,u,w) | -member(v5,u) | -subgoal3(v5,f37(x,y,z),w) | subgoal3(f37(x,y,z),x,w) | subgoal3(x,f37(x,y,z),w).  [resolve(119,e,120,e)].
+kept:      208 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | -ubSupergoal(x,u,w) | -member(v5,u) | -subgoal3(v5,f37(x,y,z),w) | subgoal3(f37(x,y,z),x,w) | subgoal3(x,f37(x,y,z),w).  [resolve(121,e,120,e)].
+kept:      209 lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | -ubSupergoal(x,u,w) | -member(v5,u) | -subgoal3(v5,f38(x,y,z),w) | subgoal3(f38(x,y,z),x,w) | subgoal3(x,f38(x,y,z),w).  [resolve(123,c,120,e)].
+           210 lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | -lubSupergoal(x,u,w) | -ubSupergoal(f38(x,y,z),u,w) | lubSupergoal(x,y,z) | -ubSupergoal(x,y,z).  [resolve(127,e,125,c)].
+kept:      211 lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | -lubSupergoal(x,u,w) | -ubSupergoal(f38(x,y,z),u,w).  [copy(210),merge(e),merge(f)].
+kept:      212 member(f44(x,y,z),x) | arg_star(y,f44(x,y,z)) | -member(u,x) | arg_star(y,u).  [resolve(128,a,129,a)].
+kept:      213 member(f44(x,y,z),x) | arg_star(y,f44(x,y,z)) | -member(u,x) | goalRelevant(u,z).  [resolve(128,a,130,a)].
+kept:      214 member(f44(x,y,z),x) | arg_star(y,f44(x,y,z)) | member(u,x) | -arg_star(y,u) | -goalRelevant(u,z).  [resolve(128,a,131,a)].
+kept:      215 member(f44(x,y,z),x) | goalRelevant(f44(x,y,z),z) | -member(u,x) | arg_star(y,u).  [resolve(132,a,129,a)].
+kept:      216 member(f44(x,y,z),x) | goalRelevant(f44(x,y,z),z) | -member(u,x) | goalRelevant(u,z).  [resolve(132,a,130,a)].
+kept:      217 member(f44(x,y,z),x) | goalRelevant(f44(x,y,z),z) | member(u,x) | -arg_star(y,u) | -goalRelevant(u,z).  [resolve(132,a,131,a)].
+kept:      218 -member(f44(x,y,z),x) | -arg_star(y,f44(x,y,z)) | -goalRelevant(f44(x,y,z),z) | -member(u,x) | arg_star(y,u).  [resolve(133,a,129,a)].
+kept:      219 -member(f44(x,y,z),x) | -arg_star(y,f44(x,y,z)) | -goalRelevant(f44(x,y,z),z) | -member(u,x) | goalRelevant(u,z).  [resolve(133,a,130,a)].
+kept:      220 -member(f44(x,y,z),x) | -arg_star(y,f44(x,y,z)) | -goalRelevant(f44(x,y,z),z) | member(u,x) | -arg_star(y,u) | -goalRelevant(u,z).  [resolve(133,a,131,a)].
+kept:      221 -moreImportant("x1",x,y) | moreImportant("x1","x2",y) | member(f44(x,"x2",y),x) | arg_star("x2",f44(x,"x2",y)).  [resolve(134,b,128,a)].
+kept:      222 -moreImportant("x1",x,y) | moreImportant("x1","x2",y) | member(f44(x,"x2",y),x) | goalRelevant(f44(x,"x2",y),y).  [resolve(134,b,132,a)].
+kept:      223 -moreImportant("x1",x,y) | moreImportant("x1","x2",y) | -member(f44(x,"x2",y),x) | -arg_star("x2",f44(x,"x2",y)) | -goalRelevant(f44(x,"x2",y),y).  [resolve(134,b,133,a)].
+kept:      224 -moreImportant(x,"x1",y) | moreImportant("x2","x1",y) | member(f44(x,"x2",y),x) | arg_star("x2",f44(x,"x2",y)).  [resolve(135,b,128,a)].
+kept:      225 -moreImportant(x,"x1",y) | moreImportant("x2","x1",y) | member(f44(x,"x2",y),x) | goalRelevant(f44(x,"x2",y),y).  [resolve(135,b,132,a)].
+kept:      226 -moreImportant(x,"x1",y) | moreImportant("x2","x1",y) | -member(f44(x,"x2",y),x) | -arg_star("x2",f44(x,"x2",y)) | -goalRelevant(f44(x,"x2",y),y).  [resolve(135,b,133,a)].
+kept:      227 -fail(x,y) | -Rexist(f20(x,y)).  [factor(199,a,c)].
+kept:      228 goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | -goalConsequences(x,u,w) | -goal(f42(x,y,z),w) | -imply(u,f43(x,y,z)).  [factor(205,b,e)].
+kept:      229 goalConsequences(x,y,z) | -member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f41(x,u,w,f42(x,y,z))) | -goalConsequences(x,u,w) | imply(u,f42(x,y,z)).  [factor(206,b,f)].
+kept:      230 lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | -member(u,y) | -subgoal3(u,f38(x,y,z),z) | subgoal3(f38(x,y,z),x,z) | subgoal3(x,f38(x,y,z),z).  [factor(209,b,c)].
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+% Clauses after input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+140 -subgoal3(x,y,z) | goal(y,z).  [clausify(9)].
+141 -subgoal3(x,y,z) | goal(x,z).  [clausify(9)].
+142 -subgoal3(x,y,z) | -subgoal3(y,u,z) | subgoal3(x,u,z).  [clausify(10)].
+143 -try_prime(x,y,z) | goal(z,y).  [clausify(14)].
+144 -try_prime(x,y,z) | gen(x,f14(x,y,z)).  [clausify(14)].
+145 -succeed_prime(x,y,z) | try_prime(f22(x,y,z),y,z).  [clausify(16)].
+146 -succeed_prime(x,y,z) | gen(x,f21(x,y,z)).  [clausify(16)].
+147 -agent(x) | goal(f34(x),x).  [clausify(21)].
+148 -moreImportant(x,y,z) | agent(z).  [clausify(22)].
+149 -moreImportant(x,y,z) | -moreImportant(y,u,z) | moreImportant(x,u,z).  [clausify(23)].
+150 -ubSupergoal(x,y,z) | agent(z).  [clausify(24)].
+151 -ubSupergoal(x,y,z) | goal(x,z).  [clausify(24)].
+152 -ubSupergoal(x,y,z) | -member(u,y) | subgoal3(u,x,z).  [clausify(24)].
+153 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | member(f36(x,y,z),y).  [clausify(24)].
+154 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | subgoal3(f36(x,y,z),f37(x,y,z),z).  [clausify(24)].
+155 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | -subgoal3(f37(x,y,z),x,z).  [clausify(24)].
+156 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | -subgoal3(x,f37(x,y,z),z).  [clausify(24)].
+157 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | member(f36(x,y,z),y).  [clausify(24)].
+158 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | subgoal3(f36(x,y,z),f37(x,y,z),z).  [clausify(24)].
+159 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | -subgoal3(f37(x,y,z),x,z).  [clausify(24)].
+160 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | -subgoal3(x,f37(x,y,z),z).  [clausify(24)].
+161 -lubSupergoal(x,y,z) | ubSupergoal(x,y,z).  [clausify(25)].
+162 lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | ubSupergoal(f38(x,y,z),y,z).  [clausify(25)].
+163 -lubSupergoal(x,y,z) | moreImportant(x,y,z).  [clausify(27)].
+164 -goalRelevant(x,y) | goal(f39(x,y),y).  [clausify(28)].
+165 -goalRelevant(x,y) | imply(x,f39(x,y)) | imply(x,f40(x,y)).  [clausify(28)].
+166 goalRelevant(x,y) | -goal(z,y) | -imply(x,z).  [clausify(28)].
+167 -goalConsequences(x,y,z) | -member(u,x) | goal(u,z).  [clausify(29)].
+168 -goalConsequences(x,y,z) | -member(u,x) | imply(y,u) | imply(y,f41(x,y,z,u)).  [clausify(29)].
+169 -goalConsequences(x,y,z) | member(u,x) | -goal(u,z) | -imply(y,u).  [clausify(29)].
+170 goalConsequences(x,y,z) | member(f42(x,y,z),x) | goal(f42(x,y,z),z).  [clausify(29)].
+171 goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | imply(y,f43(x,y,z)).  [clausify(29)].
+172 goalConsequences(x,y,z) | -member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f42(x,y,z)).  [clausify(29)].
+173 -moreImportant(x,y,z) | -goalConsequences(y,u,z) | moreImportant(x,u,z).  [clausify(30)].
+174 -moreImportant(x,y,z) | -goalConsequences(x,u,z) | moreImportant(u,y,z).  [clausify(31)].
+175 -p_prime(x,y) | -Rexist(x) | p_prime(f1(y),y).  [resolve(35,a,36,a)].
+176 -p_prime(x,y) | -Rexist(x) | Rexist(f1(y)).  [resolve(35,a,37,a)].
+177 -goal(f2(x,y),z) | goal(x,z) | -p_prime(x,y).  [resolve(38,b,39,b)].
+178 -try_prime(x,y,z) | -goal(f14(x,y,z),u) | goal(f16(x,y,z),u).  [resolve(43,b,38,b)].
+179 -succeed_prime(x,y,z) | -goal(f23(x,y,z),u) | goal(f22(x,y,z),u).  [resolve(45,b,38,b)].
+180 -goal_prime(f9(x,y,z),u,z) | Rexist(f9(x,y,z)) | -subgoal3(x,y,z).  [resolve(49,b,50,b)].
+181 -goal(x,y) | -know_prime(x,y,z) | goal(f11(z,y),y).  [resolve(51,a,52,a)].
+182 -goal(x,y) | -know_prime(x,y,z) | know_prime(f11(z,y),y,z).  [resolve(51,a,53,a)].
+183 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | member(f13(u,z,y,x),z) | goal_prime(f12(u,z,y),y,z).  [resolve(54,a,55,a)].
+184 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | member(f13(u,z,y,x),z) | mb(z,f12(u,z,y)).  [resolve(54,a,56,a)].
+185 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | member(f13(u,z,y,x),z) | gen(u,f12(u,z,y)).  [resolve(54,a,57,a)].
+186 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | member(f13(u,z,y,x),z) | -member(w,z) | agent(w).  [resolve(54,a,58,a)].
+187 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | -agent(f13(u,z,y,x)) | goal_prime(f12(u,z,y),y,z).  [resolve(59,a,55,a)].
+188 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | -agent(f13(u,z,y,x)) | mb(z,f12(u,z,y)).  [resolve(59,a,56,a)].
+189 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | -agent(f13(u,z,y,x)) | gen(u,f12(u,z,y)).  [resolve(59,a,57,a)].
+190 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | -agent(f13(u,z,y,x)) | -member(w,z) | agent(w).  [resolve(59,a,58,a)].
+191 -fail(x,f15(y,z,u)) | -Rexist(f17(y,z,u)) | -try_prime(y,z,u).  [resolve(65,b,66,b)].
+192 -fail(x,y) | -Rexist(f23(z,u,y)) | -succeed_prime(z,u,y).  [resolve(65,b,68,b)].
+194 succeed_prime(x,y,z) | -try_prime(f22(u,w,z),y,z) | -gen(x,f21(u,w,z)) | -succeed_prime(u,w,z).  [copy(193),merge(e),merge(f)].
+196 try_prime(x,y,z) | -goal(z,y) | -gen(x,f14(u,y,z)) | -try_prime(u,y,z).  [copy(195),merge(e),merge(f),merge(g),merge(h)].
+197 -fail(x,y) | member(f19(x,y),f18(x,y)).  [resolve(90,b,92,a)].
+198 -fail(x,y) | Rexist(f19(x,y)).  [resolve(90,b,93,a)].
+200 goalRelevant(x,y) | -goal(f39(z,u),y) | -imply(x,f40(z,u)) | -goalRelevant(z,u) | imply(z,f39(z,u)).  [resolve(108,c,110,c)].
+201 -goalConsequences(x,y,z) | -member(u,x) | imply(y,u) | goalRelevant(w,v5) | -goal(u,v5) | -imply(w,f41(x,y,z,u)).  [resolve(111,d,108,c)].
+202 -goalConsequences(x,y,z) | member(f39(u,w),x) | -goal(f39(u,w),z) | -imply(y,f40(u,w)) | -goalRelevant(u,w) | imply(u,f39(u,w)).  [resolve(112,d,110,c)].
+203 -goalConsequences(x,y,z) | member(u,x) | -goal(u,z) | -imply(y,f41(w,v5,v6,u)) | -goalConsequences(w,v5,v6) | -member(u,w) | imply(v5,u).  [resolve(112,d,111,d)].
+204 goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | goalRelevant(u,w) | -goal(f42(x,y,z),w) | -imply(u,f43(x,y,z)).  [resolve(113,d,108,c)].
+205 goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | -goalConsequences(u,w,v5) | member(f42(x,y,z),u) | -goal(f42(x,y,z),v5) | -imply(w,f43(x,y,z)).  [resolve(113,d,112,d)].
+206 goalConsequences(x,y,z) | -member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f41(u,w,v5,f42(x,y,z))) | -goalConsequences(u,w,v5) | -member(f42(x,y,z),u) | imply(w,f42(x,y,z)).  [resolve(114,d,111,d)].
+207 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | -ubSupergoal(x,u,w) | -member(v5,u) | -subgoal3(v5,f37(x,y,z),w) | subgoal3(f37(x,y,z),x,w) | subgoal3(x,f37(x,y,z),w).  [resolve(119,e,120,e)].
+208 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | -ubSupergoal(x,u,w) | -member(v5,u) | -subgoal3(v5,f37(x,y,z),w) | subgoal3(f37(x,y,z),x,w) | subgoal3(x,f37(x,y,z),w).  [resolve(121,e,120,e)].
+209 lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | -ubSupergoal(x,u,w) | -member(v5,u) | -subgoal3(v5,f38(x,y,z),w) | subgoal3(f38(x,y,z),x,w) | subgoal3(x,f38(x,y,z),w).  [resolve(123,c,120,e)].
+211 lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | -lubSupergoal(x,u,w) | -ubSupergoal(f38(x,y,z),u,w).  [copy(210),merge(e),merge(f)].
+212 member(f44(x,y,z),x) | arg_star(y,f44(x,y,z)) | -member(u,x) | arg_star(y,u).  [resolve(128,a,129,a)].
+213 member(f44(x,y,z),x) | arg_star(y,f44(x,y,z)) | -member(u,x) | goalRelevant(u,z).  [resolve(128,a,130,a)].
+214 member(f44(x,y,z),x) | arg_star(y,f44(x,y,z)) | member(u,x) | -arg_star(y,u) | -goalRelevant(u,z).  [resolve(128,a,131,a)].
+215 member(f44(x,y,z),x) | goalRelevant(f44(x,y,z),z) | -member(u,x) | arg_star(y,u).  [resolve(132,a,129,a)].
+216 member(f44(x,y,z),x) | goalRelevant(f44(x,y,z),z) | -member(u,x) | goalRelevant(u,z).  [resolve(132,a,130,a)].
+217 member(f44(x,y,z),x) | goalRelevant(f44(x,y,z),z) | member(u,x) | -arg_star(y,u) | -goalRelevant(u,z).  [resolve(132,a,131,a)].
+218 -member(f44(x,y,z),x) | -arg_star(y,f44(x,y,z)) | -goalRelevant(f44(x,y,z),z) | -member(u,x) | arg_star(y,u).  [resolve(133,a,129,a)].
+219 -member(f44(x,y,z),x) | -arg_star(y,f44(x,y,z)) | -goalRelevant(f44(x,y,z),z) | -member(u,x) | goalRelevant(u,z).  [resolve(133,a,130,a)].
+220 -member(f44(x,y,z),x) | -arg_star(y,f44(x,y,z)) | -goalRelevant(f44(x,y,z),z) | member(u,x) | -arg_star(y,u) | -goalRelevant(u,z).  [resolve(133,a,131,a)].
+221 -moreImportant("x1",x,y) | moreImportant("x1","x2",y) | member(f44(x,"x2",y),x) | arg_star("x2",f44(x,"x2",y)).  [resolve(134,b,128,a)].
+222 -moreImportant("x1",x,y) | moreImportant("x1","x2",y) | member(f44(x,"x2",y),x) | goalRelevant(f44(x,"x2",y),y).  [resolve(134,b,132,a)].
+223 -moreImportant("x1",x,y) | moreImportant("x1","x2",y) | -member(f44(x,"x2",y),x) | -arg_star("x2",f44(x,"x2",y)) | -goalRelevant(f44(x,"x2",y),y).  [resolve(134,b,133,a)].
+224 -moreImportant(x,"x1",y) | moreImportant("x2","x1",y) | member(f44(x,"x2",y),x) | arg_star("x2",f44(x,"x2",y)).  [resolve(135,b,128,a)].
+225 -moreImportant(x,"x1",y) | moreImportant("x2","x1",y) | member(f44(x,"x2",y),x) | goalRelevant(f44(x,"x2",y),y).  [resolve(135,b,132,a)].
+226 -moreImportant(x,"x1",y) | moreImportant("x2","x1",y) | -member(f44(x,"x2",y),x) | -arg_star("x2",f44(x,"x2",y)) | -goalRelevant(f44(x,"x2",y),y).  [resolve(135,b,133,a)].
+227 -fail(x,y) | -Rexist(f20(x,y)).  [factor(199,a,c)].
+228 goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | -goalConsequences(x,u,w) | -goal(f42(x,y,z),w) | -imply(u,f43(x,y,z)).  [factor(205,b,e)].
+229 goalConsequences(x,y,z) | -member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f41(x,u,w,f42(x,y,z))) | -goalConsequences(x,u,w) | imply(u,f42(x,y,z)).  [factor(206,b,f)].
+230 lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | -member(u,y) | -subgoal3(u,f38(x,y,z),z) | subgoal3(f38(x,y,z),x,z) | subgoal3(x,f38(x,y,z),z).  [factor(209,b,c)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.04 seconds.
+
+given #1 (I,wt=7): 140 -subgoal3(x,y,z) | goal(y,z).  [clausify(9)].
+
+given #2 (I,wt=7): 141 -subgoal3(x,y,z) | goal(x,z).  [clausify(9)].
+
+given #3 (I,wt=12): 142 -subgoal3(x,y,z) | -subgoal3(y,u,z) | subgoal3(x,u,z).  [clausify(10)].
+
+given #4 (I,wt=7): 143 -try_prime(x,y,z) | goal(z,y).  [clausify(14)].
+
+given #5 (I,wt=10): 144 -try_prime(x,y,z) | gen(x,f14(x,y,z)).  [clausify(14)].
+
+given #6 (I,wt=11): 145 -succeed_prime(x,y,z) | try_prime(f22(x,y,z),y,z).  [clausify(16)].
+
+given #7 (I,wt=10): 146 -succeed_prime(x,y,z) | gen(x,f21(x,y,z)).  [clausify(16)].
+
+given #8 (I,wt=6): 147 -agent(x) | goal(f34(x),x).  [clausify(21)].
+
+given #9 (I,wt=6): 148 -moreImportant(x,y,z) | agent(z).  [clausify(22)].
+
+given #10 (I,wt=12): 149 -moreImportant(x,y,z) | -moreImportant(y,u,z) | moreImportant(x,u,z).  [clausify(23)].
+
+given #11 (I,wt=6): 150 -ubSupergoal(x,y,z) | agent(z).  [clausify(24)].
+
+given #12 (I,wt=7): 151 -ubSupergoal(x,y,z) | goal(x,z).  [clausify(24)].
+
+given #13 (I,wt=11): 152 -ubSupergoal(x,y,z) | -member(u,y) | subgoal3(u,x,z).  [clausify(24)].
+
+given #14 (I,wt=21): 153 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | member(f36(x,y,z),y).  [clausify(24)].
+
+given #15 (I,wt=25): 154 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | subgoal3(f36(x,y,z),f37(x,y,z),z).  [clausify(24)].
+
+given #16 (I,wt=22): 155 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | -subgoal3(f37(x,y,z),x,z).  [clausify(24)].
+
+given #17 (I,wt=22): 156 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | -subgoal3(x,f37(x,y,z),z).  [clausify(24)].
+
+given #18 (I,wt=22): 157 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | member(f36(x,y,z),y).  [clausify(24)].
+
+given #19 (I,wt=26): 158 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | subgoal3(f36(x,y,z),f37(x,y,z),z).  [clausify(24)].
+
+given #20 (I,wt=23): 159 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | -subgoal3(f37(x,y,z),x,z).  [clausify(24)].
+
+given #21 (I,wt=23): 160 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | -subgoal3(x,f37(x,y,z),z).  [clausify(24)].
+
+given #22 (I,wt=8): 161 -lubSupergoal(x,y,z) | ubSupergoal(x,y,z).  [clausify(25)].
+
+given #23 (I,wt=15): 162 lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | ubSupergoal(f38(x,y,z),y,z).  [clausify(25)].
+
+given #24 (I,wt=8): 163 -lubSupergoal(x,y,z) | moreImportant(x,y,z).  [clausify(27)].
+
+given #25 (I,wt=8): 164 -goalRelevant(x,y) | goal(f39(x,y),y).  [clausify(28)].
+
+given #26 (I,wt=13): 165 -goalRelevant(x,y) | imply(x,f39(x,y)) | imply(x,f40(x,y)).  [clausify(28)].
+
+given #27 (I,wt=9): 166 goalRelevant(x,y) | -goal(z,y) | -imply(x,z).  [clausify(28)].
+
+given #28 (I,wt=10): 167 -goalConsequences(x,y,z) | -member(u,x) | goal(u,z).  [clausify(29)].
+
+given #29 (I,wt=17): 168 -goalConsequences(x,y,z) | -member(u,x) | imply(y,u) | imply(y,f41(x,y,z,u)).  [clausify(29)].
+
+given #30 (I,wt=13): 169 -goalConsequences(x,y,z) | member(u,x) | -goal(u,z) | -imply(y,u).  [clausify(29)].
+
+given #31 (I,wt=16): 170 goalConsequences(x,y,z) | member(f42(x,y,z),x) | goal(f42(x,y,z),z).  [clausify(29)].
+
+given #32 (I,wt=22): 171 goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | imply(y,f43(x,y,z)).  [clausify(29)].
+
+given #33 (I,wt=22): 172 goalConsequences(x,y,z) | -member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f42(x,y,z)).  [clausify(29)].
+
+given #34 (I,wt=12): 173 -moreImportant(x,y,z) | -goalConsequences(y,u,z) | moreImportant(x,u,z).  [clausify(30)].
+
+given #35 (I,wt=12): 174 -moreImportant(x,y,z) | -goalConsequences(x,u,z) | moreImportant(u,y,z).  [clausify(31)].
+
+given #36 (I,wt=9): 175 -p_prime(x,y) | -Rexist(x) | p_prime(f1(y),y).  [resolve(35,a,36,a)].
+
+given #37 (I,wt=8): 176 -p_prime(x,y) | -Rexist(x) | Rexist(f1(y)).  [resolve(35,a,37,a)].
+
+given #38 (I,wt=11): 177 -goal(f2(x,y),z) | goal(x,z) | -p_prime(x,y).  [resolve(38,b,39,b)].
+
+given #39 (I,wt=16): 178 -try_prime(x,y,z) | -goal(f14(x,y,z),u) | goal(f16(x,y,z),u).  [resolve(43,b,38,b)].
+
+given #40 (I,wt=16): 179 -succeed_prime(x,y,z) | -goal(f23(x,y,z),u) | goal(f22(x,y,z),u).  [resolve(45,b,38,b)].
+
+given #41 (I,wt=16): 180 -goal_prime(f9(x,y,z),u,z) | Rexist(f9(x,y,z)) | -subgoal3(x,y,z).  [resolve(49,b,50,b)].
+
+given #42 (I,wt=12): 181 -goal(x,y) | -know_prime(x,y,z) | goal(f11(z,y),y).  [resolve(51,a,52,a)].
+
+given #43 (I,wt=13): 182 -goal(x,y) | -know_prime(x,y,z) | know_prime(f11(z,y),y,z).  [resolve(51,a,53,a)].
+
+given #44 (I,wt=24): 183 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | member(f13(u,z,y,x),z) | goal_prime(f12(u,z,y),y,z).  [resolve(54,a,55,a)].
+
+given #45 (I,wt=23): 184 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | member(f13(u,z,y,x),z) | mb(z,f12(u,z,y)).  [resolve(54,a,56,a)].
+
+given #46 (I,wt=23): 185 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | member(f13(u,z,y,x),z) | gen(u,f12(u,z,y)).  [resolve(54,a,57,a)].
+
+given #47 (I,wt=22): 186 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | member(f13(u,z,y,x),z) | -member(w,z) | agent(w).  [resolve(54,a,58,a)].
+
+given #48 (I,wt=23): 187 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | -agent(f13(u,z,y,x)) | goal_prime(f12(u,z,y),y,z).  [resolve(59,a,55,a)].
+
+given #49 (I,wt=22): 188 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | -agent(f13(u,z,y,x)) | mb(z,f12(u,z,y)).  [resolve(59,a,56,a)].
+
+given #50 (I,wt=22): 189 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | -agent(f13(u,z,y,x)) | gen(u,f12(u,z,y)).  [resolve(59,a,57,a)].
+
+given #51 (I,wt=21): 190 -goal_prime(x,y,z) | -mb(z,x) | -gen(u,x) | -agent(f13(u,z,y,x)) | -member(w,z) | agent(w).  [resolve(59,a,58,a)].
+
+given #52 (I,wt=15): 191 -fail(x,f15(y,z,u)) | -Rexist(f17(y,z,u)) | -try_prime(y,z,u).  [resolve(65,b,66,b)].
+
+given #53 (I,wt=12): 192 -fail(x,y) | -Rexist(f23(z,u,y)) | -succeed_prime(z,u,y).  [resolve(65,b,68,b)].
+
+given #54 (I,wt=21): 194 succeed_prime(x,y,z) | -try_prime(f22(u,w,z),y,z) | -gen(x,f21(u,w,z)) | -succeed_prime(u,w,z).  [copy(193),merge(e),merge(f)].
+
+given #55 (I,wt=17): 196 try_prime(x,y,z) | -goal(z,y) | -gen(x,f14(u,y,z)) | -try_prime(u,y,z).  [copy(195),merge(e),merge(f),merge(g),merge(h)].
+
+given #56 (I,wt=10): 197 -fail(x,y) | member(f19(x,y),f18(x,y)).  [resolve(90,b,92,a)].
+
+given #57 (I,wt=7): 198 -fail(x,y) | Rexist(f19(x,y)).  [resolve(90,b,93,a)].
+
+given #58 (I,wt=21): 200 goalRelevant(x,y) | -goal(f39(z,u),y) | -imply(x,f40(z,u)) | -goalRelevant(z,u) | imply(z,f39(z,u)).  [resolve(108,c,110,c)].
+
+given #59 (I,wt=23): 201 -goalConsequences(x,y,z) | -member(u,x) | imply(y,u) | goalRelevant(w,v5) | -goal(u,v5) | -imply(w,f41(x,y,z,u)).  [resolve(111,d,108,c)].
+
+given #60 (I,wt=27): 202 -goalConsequences(x,y,z) | member(f39(u,w),x) | -goal(f39(u,w),z) | -imply(y,f40(u,w)) | -goalRelevant(u,w) | imply(u,f39(u,w)).  [resolve(112,d,110,c)].
+
+given #61 (I,wt=27): 203 -goalConsequences(x,y,z) | member(u,x) | -goal(u,z) | -imply(y,f41(w,v5,v6,u)) | -goalConsequences(w,v5,v6) | -member(u,w) | imply(v5,u).  [resolve(112,d,111,d)].
+
+given #62 (I,wt=31): 204 goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | goalRelevant(u,w) | -goal(f42(x,y,z),w) | -imply(u,f43(x,y,z)).  [resolve(113,d,108,c)].
+
+given #63 (I,wt=38): 205 goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | -goalConsequences(u,w,v5) | member(f42(x,y,z),u) | -goal(f42(x,y,z),v5) | -imply(w,f43(x,y,z)).  [resolve(113,d,112,d)].
+
+given #64 (I,wt=42): 206 goalConsequences(x,y,z) | -member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f41(u,w,v5,f42(x,y,z))) | -goalConsequences(u,w,v5) | -member(f42(x,y,z),u) | imply(w,f42(x,y,z)).  [resolve(114,d,111,d)].
+
+given #65 (I,wt=43): 207 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | member(f35(x,y,z),y) | -ubSupergoal(x,u,w) | -member(v5,u) | -subgoal3(v5,f37(x,y,z),w) | subgoal3(f37(x,y,z),x,w) | subgoal3(x,f37(x,y,z),w).  [resolve(119,e,120,e)].
+
+given #66 (I,wt=44): 208 ubSupergoal(x,y,z) | -agent(z) | -goal(x,z) | -subgoal3(f35(x,y,z),x,z) | -ubSupergoal(x,u,w) | -member(v5,u) | -subgoal3(v5,f37(x,y,z),w) | subgoal3(f37(x,y,z),x,w) | subgoal3(x,f37(x,y,z),w).  [resolve(121,e,120,e)].
+
+given #67 (I,wt=36): 209 lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | -ubSupergoal(x,u,w) | -member(v5,u) | -subgoal3(v5,f38(x,y,z),w) | subgoal3(f38(x,y,z),x,w) | subgoal3(x,f38(x,y,z),w).  [resolve(123,c,120,e)].
+
+given #68 (I,wt=19): 211 lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | -lubSupergoal(x,u,w) | -ubSupergoal(f38(x,y,z),u,w).  [copy(210),merge(e),merge(f)].
+
+given #69 (I,wt=18): 212 member(f44(x,y,z),x) | arg_star(y,f44(x,y,z)) | -member(u,x) | arg_star(y,u).  [resolve(128,a,129,a)].
+
+given #70 (I,wt=18): 213 member(f44(x,y,z),x) | arg_star(y,f44(x,y,z)) | -member(u,x) | goalRelevant(u,z).  [resolve(128,a,130,a)].
+
+given #71 (I,wt=21): 214 member(f44(x,y,z),x) | arg_star(y,f44(x,y,z)) | member(u,x) | -arg_star(y,u) | -goalRelevant(u,z).  [resolve(128,a,131,a)].
+
+given #72 (I,wt=18): 215 member(f44(x,y,z),x) | goalRelevant(f44(x,y,z),z) | -member(u,x) | arg_star(y,u).  [resolve(132,a,129,a)].
+
+given #73 (I,wt=18): 216 member(f44(x,y,z),x) | goalRelevant(f44(x,y,z),z) | -member(u,x) | goalRelevant(u,z).  [resolve(132,a,130,a)].
+
+given #74 (I,wt=21): 217 member(f44(x,y,z),x) | goalRelevant(f44(x,y,z),z) | member(u,x) | -arg_star(y,u) | -goalRelevant(u,z).  [resolve(132,a,131,a)].
+
+given #75 (I,wt=24): 218 -member(f44(x,y,z),x) | -arg_star(y,f44(x,y,z)) | -goalRelevant(f44(x,y,z),z) | -member(u,x) | arg_star(y,u).  [resolve(133,a,129,a)].
+
+given #76 (I,wt=24): 219 -member(f44(x,y,z),x) | -arg_star(y,f44(x,y,z)) | -goalRelevant(f44(x,y,z),z) | -member(u,x) | goalRelevant(u,z).  [resolve(133,a,130,a)].
+
+given #77 (I,wt=27): 220 -member(f44(x,y,z),x) | -arg_star(y,f44(x,y,z)) | -goalRelevant(f44(x,y,z),z) | member(u,x) | -arg_star(y,u) | -goalRelevant(u,z).  [resolve(133,a,131,a)].
+
+given #78 (I,wt=20): 221 -moreImportant("x1",x,y) | moreImportant("x1","x2",y) | member(f44(x,"x2",y),x) | arg_star("x2",f44(x,"x2",y)).  [resolve(134,b,128,a)].
+
+given #79 (I,wt=20): 222 -moreImportant("x1",x,y) | moreImportant("x1","x2",y) | member(f44(x,"x2",y),x) | goalRelevant(f44(x,"x2",y),y).  [resolve(134,b,132,a)].
+
+given #80 (I,wt=26): 223 -moreImportant("x1",x,y) | moreImportant("x1","x2",y) | -member(f44(x,"x2",y),x) | -arg_star("x2",f44(x,"x2",y)) | -goalRelevant(f44(x,"x2",y),y).  [resolve(134,b,133,a)].
+
+given #81 (I,wt=20): 224 -moreImportant(x,"x1",y) | moreImportant("x2","x1",y) | member(f44(x,"x2",y),x) | arg_star("x2",f44(x,"x2",y)).  [resolve(135,b,128,a)].
+
+given #82 (I,wt=20): 225 -moreImportant(x,"x1",y) | moreImportant("x2","x1",y) | member(f44(x,"x2",y),x) | goalRelevant(f44(x,"x2",y),y).  [resolve(135,b,132,a)].
+
+given #83 (I,wt=26): 226 -moreImportant(x,"x1",y) | moreImportant("x2","x1",y) | -member(f44(x,"x2",y),x) | -arg_star("x2",f44(x,"x2",y)) | -goalRelevant(f44(x,"x2",y),y).  [resolve(135,b,133,a)].
+
+given #84 (I,wt=7): 227 -fail(x,y) | -Rexist(f20(x,y)).  [factor(199,a,c)].
+
+given #85 (I,wt=32): 228 goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | -goalConsequences(x,u,w) | -goal(f42(x,y,z),w) | -imply(u,f43(x,y,z)).  [factor(205,b,e)].
+
+given #86 (I,wt=36): 229 goalConsequences(x,y,z) | -member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f41(x,u,w,f42(x,y,z))) | -goalConsequences(x,u,w) | imply(u,f42(x,y,z)).  [factor(206,b,f)].
+
+given #87 (I,wt=32): 230 lubSupergoal(x,y,z) | -ubSupergoal(x,y,z) | -member(u,y) | -subgoal3(u,f38(x,y,z),z) | subgoal3(f38(x,y,z),x,z) | subgoal3(x,f38(x,y,z),z).  [factor(209,b,c)].
+
+given #88 (A,wt=21): 231 member(f42(x,y,z),x) | goal(f42(x,y,z),z) | member(u,x) | -goal(u,z) | -imply(y,u).  [resolve(170,a,169,a)].
+
+given #89 (T,wt=18): 233 member(f42(x,y,z),x) | goal(f42(x,y,z),z) | -member(u,x) | goal(u,z).  [resolve(170,a,167,a)].
+
+given #90 (T,wt=20): 239 -moreImportant(x,y,z) | moreImportant(x,u,z) | member(f42(y,u,z),y) | goal(f42(y,u,z),z).  [resolve(173,b,170,a)].
+
+given #91 (T,wt=20): 241 -moreImportant(x,y,z) | moreImportant(u,y,z) | member(f42(x,u,z),x) | goal(f42(x,u,z),z).  [resolve(174,b,170,a)].
+
+given #92 (T,wt=24): 236 member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | imply(y,f43(x,y,z)) | -member(u,x) | goal(u,z).  [resolve(171,a,167,a)].
+
+given #93 (A,wt=25): 232 member(f42(x,y,z),x) | goal(f42(x,y,z),z) | -member(u,x) | imply(y,u) | imply(y,f41(x,y,z,u)).  [resolve(170,a,168,a)].
+
+given #94 (T,wt=26): 238 -moreImportant(x,y,z) | moreImportant(x,u,z) | member(f42(y,u,z),y) | imply(u,f42(y,u,z)) | imply(u,f43(y,u,z)).  [resolve(173,b,171,a)].
+
+given #95 (T,wt=26): 240 -moreImportant(x,y,z) | moreImportant(u,y,z) | member(f42(x,u,z),x) | imply(u,f42(x,u,z)) | imply(u,f43(x,u,z)).  [resolve(174,b,171,a)].
+
+given #96 (T,wt=27): 234 member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | imply(y,f43(x,y,z)) | member(u,x) | -goal(u,z) | -imply(y,u).  [resolve(171,a,169,a)].
+
+given #97 (T,wt=31): 235 member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | imply(y,f43(x,y,z)) | -member(u,x) | imply(y,u) | imply(y,f41(x,y,z,u)).  [resolve(171,a,168,a)].
+
+given #98 (A,wt=34): 237 member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | imply(y,f43(x,y,z)) | -member(f43(x,y,z),x) | imply(y,f41(x,y,z,f43(x,y,z))).  [factor(235,c,e)].
+
+given #99 (T,wt=31): 243 -member(x,y) | imply(z,x) | goalRelevant(u,w) | -goal(x,w) | -imply(u,f41(y,z,v5,x)) | member(f42(y,z,v5),y) | goal(f42(y,z,v5),v5).  [resolve(201,a,170,a)].
+
+given #100 (T,wt=35): 246 member(f39(x,y),z) | -goal(f39(x,y),u) | -imply(w,f40(x,y)) | -goalRelevant(x,y) | imply(x,f39(x,y)) | member(f42(z,w,u),z) | goal(f42(z,w,u),u).  [resolve(202,a,170,a)].
+
+given #101 (T,wt=35): 248 member(x,y) | -goal(x,z) | -imply(u,f41(w,v5,v6,x)) | -goalConsequences(w,v5,v6) | -member(x,w) | imply(v5,x) | member(f42(y,u,z),y) | goal(f42(y,u,z),z).  [resolve(203,a,170,a)].
+
+given #102 (T,wt=35): 250 -goalConsequences(x,y,z) | member(u,x) | -goal(u,z) | -imply(y,f41(w,v5,v6,u)) | -member(u,w) | imply(v5,u) | member(f42(w,v5,v6),w) | goal(f42(w,v5,v6),v6).  [resolve(203,e,170,a)].
+
+given #103 (A,wt=37): 242 -member(x,y) | imply(z,x) | goalRelevant(u,w) | -goal(x,w) | -imply(u,f41(y,z,v5,x)) | member(f42(y,z,v5),y) | imply(z,f42(y,z,v5)) | imply(z,f43(y,z,v5)).  [resolve(201,a,171,a)].
+
+given #104 (T,wt=40): 258 goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | -goal(f42(x,y,z),u) | -imply(w,f43(x,y,z)) | member(f42(x,w,u),x) | goal(f42(x,w,u),u).  [factor(256,b,d)].
+
+given #105 (T,wt=41): 245 member(f39(x,y),z) | -goal(f39(x,y),u) | -imply(w,f40(x,y)) | -goalRelevant(x,y) | imply(x,f39(x,y)) | member(f42(z,w,u),z) | imply(w,f42(z,w,u)) | imply(w,f43(z,w,u)).  [resolve(202,a,171,a)].
+
+given #106 (T,wt=41): 247 member(x,y) | -goal(x,z) | -imply(u,f41(w,v5,v6,x)) | -goalConsequences(w,v5,v6) | -member(x,w) | imply(v5,x) | member(f42(y,u,z),y) | imply(u,f42(y,u,z)) | imply(u,f43(y,u,z)).  [resolve(203,a,171,a)].
+
+given #107 (T,wt=41): 249 -goalConsequences(x,y,z) | member(u,x) | -goal(u,z) | -imply(y,f41(w,v5,v6,u)) | -member(u,w) | imply(v5,u) | member(f42(w,v5,v6),w) | imply(v5,f42(w,v5,v6)) | imply(v5,f43(w,v5,v6)).  [resolve(203,e,171,a)].
+
+given #108 (A,wt=43): 244 -member(f43(x,y,z),x) | imply(y,f43(x,y,z)) | goalRelevant(u,w) | -goal(f43(x,y,z),w) | -imply(u,f41(x,y,z,f43(x,y,z))) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)).  [factor(242,b,h)].
+
+given #109 (T,wt=43): 264 member(x,y) | -goal(x,z) | -imply(u,f41(w,v5,v6,x)) | -member(x,w) | imply(v5,x) | member(f42(y,u,z),y) | goal(f42(y,u,z),z) | member(f42(w,v5,v6),w) | goal(f42(w,v5,v6),v6).  [resolve(248,d,170,a)].
+
+given #110 (T,wt=44): 252 member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f41(u,y,w,f42(x,y,z))) | -goalConsequences(u,y,w) | -member(f42(x,y,z),u) | imply(y,f42(x,y,z)) | imply(y,f43(x,y,z)).  [factor(247,f,h),merge(g)].
+
+given #111 (T,wt=44): 262 goalConsequences(x,y,z) | -member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f41(x,u,w,f42(x,y,z))) | imply(u,f42(x,y,z)) | member(f42(x,u,w),x) | goal(f42(x,u,w),w).  [factor(260,b,e)].
+
+given #112 (T,wt=46): 256 goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | member(f42(x,y,z),u) | -goal(f42(x,y,z),w) | -imply(v5,f43(x,y,z)) | member(f42(u,v5,w),u) | goal(f42(u,v5,w),w).  [resolve(205,d,170,a)].
+
+given #113 (A,wt=50): 251 member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f41(u,w,v5,f42(x,y,z))) | -goalConsequences(u,w,v5) | -member(f42(x,y,z),u) | imply(w,f42(x,y,z)) | imply(y,f42(x,y,z)) | imply(y,f43(x,y,z)).  [factor(247,a,g)].
+
+given #114 (T,wt=46): 257 goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | -goal(f42(x,y,z),u) | -imply(w,f43(x,y,z)) | member(f42(x,w,u),x) | imply(w,f42(x,w,u)) | imply(w,f43(x,w,u)).  [factor(255,b,d)].
+
+given #115 (T,wt=49): 263 member(x,y) | -goal(x,z) | -imply(u,f41(w,v5,v6,x)) | -member(x,w) | imply(v5,x) | member(f42(y,u,z),y) | goal(f42(y,u,z),z) | member(f42(w,v5,v6),w) | imply(v5,f42(w,v5,v6)) | imply(v5,f43(w,v5,v6)).  [resolve(248,d,171,a)].
+
+given #116 (T,wt=49): 266 member(x,y) | -goal(x,z) | -imply(u,f41(w,v5,v6,x)) | -member(x,w) | imply(v5,x) | member(f42(w,v5,v6),w) | goal(f42(w,v5,v6),v6) | member(f42(y,u,z),y) | imply(u,f42(y,u,z)) | imply(u,f43(y,u,z)).  [resolve(250,a,171,a)].
+
+given #117 (T,wt=50): 253 member(f43(x,y,z),x) | -goal(f43(x,y,z),z) | -imply(y,f41(u,y,w,f43(x,y,z))) | -goalConsequences(u,y,w) | -member(f43(x,y,z),u) | imply(y,f43(x,y,z)) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)).  [factor(247,f,i)].
+
+given #118 (A,wt=50): 254 -goalConsequences(x,y,z) | member(f43(u,w,v5),x) | -goal(f43(u,w,v5),z) | -imply(y,f41(u,w,v5,f43(u,w,v5))) | -member(f43(u,w,v5),u) | imply(w,f43(u,w,v5)) | member(f42(u,w,v5),u) | imply(w,f42(u,w,v5)).  [factor(249,f,i)].
+
+given #119 (T,wt=50): 260 goalConsequences(x,y,z) | -member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f41(u,w,v5,f42(x,y,z))) | -member(f42(x,y,z),u) | imply(w,f42(x,y,z)) | member(f42(u,w,v5),u) | goal(f42(u,w,v5),v5).  [resolve(206,e,170,a)].
+
+given #120 (T,wt=50): 261 goalConsequences(x,y,z) | -member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f41(x,u,w,f42(x,y,z))) | imply(u,f42(x,y,z)) | member(f42(x,u,w),x) | imply(u,f42(x,u,w)) | imply(u,f43(x,u,w)).  [factor(259,b,e)].
+
+given #121 (T,wt=52): 255 goalConsequences(x,y,z) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | member(f42(x,y,z),u) | -goal(f42(x,y,z),w) | -imply(v5,f43(x,y,z)) | member(f42(u,v5,w),u) | imply(v5,f42(u,v5,w)) | imply(v5,f43(u,v5,w)).  [resolve(205,d,171,a)].
+
+given #122 (T,wt=52): 268 member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f41(u,y,w,f42(x,y,z))) | -member(f42(x,y,z),u) | imply(y,f42(x,y,z)) | member(f42(u,y,w),u) | goal(f42(u,y,w),w) | imply(y,f43(x,y,z)).  [factor(266,e,i),merge(h)].
+
+given #123 (A,wt=56): 259 goalConsequences(x,y,z) | -member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f41(u,w,v5,f42(x,y,z))) | -member(f42(x,y,z),u) | imply(w,f42(x,y,z)) | member(f42(u,w,v5),u) | imply(w,f42(u,w,v5)) | imply(w,f43(u,w,v5)).  [resolve(206,e,171,a)].
+
+given #124 (T,wt=55): 270 member(x,y) | -goal(x,z) | -imply(u,f41(w,v5,v6,x)) | -member(x,w) | imply(v5,x) | member(f42(y,u,z),y) | imply(u,f42(y,u,z)) | imply(u,f43(y,u,z)) | member(f42(w,v5,v6),w) | imply(v5,f42(w,v5,v6)) | imply(v5,f43(w,v5,v6)).  [resolve(247,d,171,a)].
+
+given #125 (T,wt=58): 265 member(f43(x,y,z),u) | -goal(f43(x,y,z),w) | -imply(v5,f41(x,y,z,f43(x,y,z))) | -member(f43(x,y,z),x) | imply(y,f43(x,y,z)) | member(f42(u,v5,w),u) | goal(f42(u,v5,w),w) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)).  [factor(263,e,j)].
+
+given #126 (T,wt=58): 267 member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f41(u,w,v5,f42(x,y,z))) | -member(f42(x,y,z),u) | imply(w,f42(x,y,z)) | member(f42(u,w,v5),u) | goal(f42(u,w,v5),v5) | imply(y,f42(x,y,z)) | imply(y,f43(x,y,z)).  [factor(266,a,h)].
+
+given #127 (T,wt=58): 269 member(f43(x,y,z),x) | -goal(f43(x,y,z),z) | -imply(y,f41(u,y,w,f43(x,y,z))) | -member(f43(x,y,z),u) | imply(y,f43(x,y,z)) | member(f42(u,y,w),u) | goal(f42(u,y,w),w) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)).  [factor(266,e,j)].
+
+given #128 (A,wt=64): 271 member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f41(u,w,v5,f42(x,y,z))) | -member(f42(x,y,z),u) | imply(w,f42(x,y,z)) | imply(y,f42(x,y,z)) | imply(y,f43(x,y,z)) | member(f42(u,w,v5),u) | imply(w,f42(u,w,v5)) | imply(w,f43(u,w,v5)).  [factor(270,a,f)].
+
+given #129 (T,wt=58): 272 member(f42(x,y,z),x) | -goal(f42(x,y,z),z) | -imply(y,f41(u,y,w,f42(x,y,z))) | -member(f42(x,y,z),u) | imply(y,f42(x,y,z)) | imply(y,f43(x,y,z)) | member(f42(u,y,w),u) | imply(y,f42(u,y,w)) | imply(y,f43(u,y,w)).  [factor(270,e,g),merge(f)].
+
+given #130 (T,wt=64): 273 member(f43(x,y,z),x) | -goal(f43(x,y,z),z) | -imply(y,f41(u,y,w,f43(x,y,z))) | -member(f43(x,y,z),u) | imply(y,f43(x,y,z)) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)) | member(f42(u,y,w),u) | imply(y,f42(u,y,w)) | imply(y,f43(u,y,w)).  [factor(270,e,h)].
+
+given #131 (T,wt=64): 274 member(f43(x,y,z),u) | -goal(f43(x,y,z),w) | -imply(v5,f41(x,y,z,f43(x,y,z))) | -member(f43(x,y,z),x) | imply(y,f43(x,y,z)) | member(f42(u,v5,w),u) | imply(v5,f42(u,v5,w)) | imply(v5,f43(u,v5,w)) | member(f42(x,y,z),x) | imply(y,f42(x,y,z)).  [factor(270,e,k)].
+
+============================== STATISTICS ============================
+
+Given=131. Generated=213. Kept=132. proofs=0.
+Usable=131. Sos=0. Demods=0. Limbo=0, Disabled=232. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=81. Back_subsumed=1.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=160. Nonunit_bsub_feature_tests=187.
+Megabytes=1.00.
+User_CPU=0.05, System_CPU=0.00, Wall_clock=1.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+SEARCH FAILED
+
+Exiting with failure.
+
+Process 15242 exit (sos_empty) Mon Nov 18 13:36:04 2013
