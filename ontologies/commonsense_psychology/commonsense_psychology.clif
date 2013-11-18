@@ -18,20 +18,20 @@
 (forall (x)
 	(iff (p x)
 		(exists (e)
-			(and (p1 e x)(Rexist e)))))
+			(and (p_prime e x)(Rexist e)))))
 
 (cl-comment "Goals, Subgoals, and Plans")
 (cl-comment "The key concept in modeling intentional behavior is that of an agent a having some eventuality type e as a goal. The expression (goal e a) says that eventuality e is a goal of agent a. Normally, e will be an eventuality type that can be satisfied by any number of specific eventuality tokens, but it is entirely possible in principle for an agent to have an eventuality token as a goal, where there is only one satisfactory way for things to work out. We won't belabor the distinction here. Agents know facts about what causes or enables what in the world, in most cases, facts of the form")
 
 (forall (e1 x)
-	(if (p1 e1 x)
+	(if (p_prime e1 x)
 		(exists (e2)
-			(and (q1 e2 x)(cause e1 e2)))))
+			(and (q_prime e2 x)(cause e1 e2)))))
 
 (forall (e1 x)
-	(if (p1 e1 x)
+	(if (p_prime e1 x)
 		(exists (e2)
-			(and (q1 e2 x)(enable e1 e2)))))
+			(and (q_prime e2 x)(enable e1 e2)))))
 
 (cl-comment "We will work step by step toward a characterization of the planning process. The first version of the axiom we need says that if agent a has a goal e2 and e1 causes e2, then a will also have e1 as a goal.")
 
@@ -42,32 +42,32 @@
 (cl-comment "This is not a bad rule, and certainly is defeasibly true, but it is of course necessary for the agent to actually believe in the causality, and if the agent believes a causal relation that does not hold, e1 may nevertheless be adopted as a goal. The causal relation needn't be true.")
 
 (forall (a e0 e1 e2)
-	(if (and (goal e2 a)(cause1 e0 e1 e2)(believe a e0))
+	(if (and (goal e2 a)(cause_prime e0 e1 e2)(believe a e0))
 		(goal e1 a)))
 
 (cl-comment "We can say furthermore that the very fact that a has goal e2 causes a to have goal e1. We do this by reifying the eventuality g2 that e2 is a goal of a's, and similarly g1. (The e's in this axiom are the eventualities of having something; the g's are the eventualities of wanting it.)")
 
 (forall (a e0 e1 e2 g2)
-	(if (and (goal1 g2 e2 a)(cause1 e0 e1 e2)(believe a e0))
+	(if (and (goal_prime g2 e2 a)(cause_prime e0 e1 e2)(believe a e0))
 		(exists (g1)
-			(and (goal1 g1 e1 a)(cause g2 g1)))))
+			(and (goal_prime g1 e1 a)(cause g2 g1)))))
 
 (cl-comment "That is, if agent a wants e2 and believes e1 causes e2, that wanting will cause a to want e1. (The belief is also in g1's causal complex, but that would not normally be thought of as the cause: Why do you want e2? Because I want e1.)")
 
 (cl-comment "Note that while the antecedent and the consequent no longer assert the real existence of having the goal (i.e., g2 and g1), if we know that g2 really exists, then the real existence of g1 follows from the properties of "cause". Note also that the predicate goal reverses causality. For example, because flipping a light switch causes a light to go on, having the goal of the light being on causes one to want to flip the switch. The eventuality e1 is a "subgoal" of e2 for a, and we can encode this in the axiom.")
 
 (forall (a e0 e1 e2 g2)
-	(if (and (goal1 g2 e2 a)(cause1 e0 e1 e2)(believe a e0))
+	(if (and (goal_prime g2 e2 a)(cause_prime e0 e1 e2)(believe a e0))
 		(exists (g1)
-			(and (goal1 g1 e1 a)(cause g2 g1)(subgoal e1 e2 a)))))
+			(and (goal_prime g1 e1 a)(cause g2 g1)(subgoal e1 e2 a)))))
 
 (cl-comment "Finally, this axiom is not always true. There may be many ways to cause the goal condition to come about, and the mystery of the agent free choice intervenes. The axiom is only defeasible. We can represent this by means of an "et cetera" proposition in the
 antecedent.")
 
 (forall (a e0 e1 e2 g2)
-	(if (and (goal1 g2 e2 a)(cause1 e0 e1 e2)(believe a e0)(etc))
+	(if (and (goal_prime g2 e2 a)(cause_prime e0 e1 e2)(believe a e0)(etc))
 		(exists (g1)
-			(and (goal1 g1 e1 a)(cause g2 g1)(subgoal e1 e2 a)))))
+			(and (goal_prime g1 e1 a)(cause g2 g1)(subgoal e1 e2 a)))))
 
 (cl-comment "Enablement")
 
@@ -75,15 +75,14 @@ antecedent.")
 
 (cl-comment "A similar succession of axioms can be written for enablement.")
 
-
 (cl-comment "In the STRIPS terminology of Fikes and Nilsson [4], the enabling conditions are the prerequisites of the plan operator, and the cause is the body. The “subgoal” relation is a relation between two goals, and implies the agent’s belief that the subgoal is in a causal complex for the goal.")
 
 (forall (e1 e2 a)
 	(if (subgoal e1 e2 a)
 		(and (goal e2 a)(goal e1 a)
 			(exists (e3 e4 e5 s)
-				(and (causalComplex1 e3 s e2)(member1 e4 e2 s)
-					(and’ e5 e3 e4)(believe a e5))))))
+				(and (causalComplex_prime e3 s e2)(member1 e4 e2 s)
+					(and_conjunction e5 e3 e4)(believe a e5))))))
 
 (cl-comment "CARMEN: NEED TO FIGURE OUT HOW TO EXPRESS CONJUNCTION OF PROPOSITIONS")
 
@@ -96,7 +95,7 @@ antecedent.")
 (cl-comment "It will be useful below to state that if one believes he or she has a goal, then defeasibly he or she really does have the goal. Though not always true, we are usually pretty reliable about knowing what we want.")
 
 (forall (e e1 a)
-	(if (and (goal1 e e1 a)(believe a e))
+	(if (and (goal_prime e e1 a)(believe a e))
 		(Rexist e)))
 
 (cl-comment "However, it is possible for an agent to have a goal without knowing it.
@@ -110,7 +109,7 @@ successful plans have to bottom out in such actions or in states or events that 
 (forall (e a)
 	(iff (knowledgeGoal e a)
 		(exists (e1) 
-			(and (goal e1 a)(know1 e1 a e)))))
+			(and (goal e1 a)(know_prime e1 a e)))))
 
 (cl-comment "Similarly, you can have a goal to envision a situation in a certain manner, a goal to plan in a certain manner, or a goal to execute a plan in a certain manner. Using our theory of time, we are also able to define goals to preserve situations, violations of such goals, goals that persist over time, goals that are achieved by a particular time, goals that are not achieved by some particular time, and goals that are never achieved. We are able to define conflicting goals and auxilliary goals that may be given up in the face of conflicts.")
 
@@ -119,9 +118,9 @@ successful plans have to bottom out in such actions or in states or events that 
 (cl-comment "A shared or collaborative goal is a goal where the agent having the goal is a collective (cf. [24,12]). Moreover, the members of the collective mutually believe the collective has the goal.")
 
 (forall (e s e1)
-	(iff (sharedGoal1 e e1 s)
+	(iff (sharedGoal_prime e e1 s)
 		(exists (e0)
-			(and (goal1 e0 e1 s)(mb s e0)(gen e e0)
+			(and (goal_prime e0 e1 s)(mb s e0)(gen e e0)
 				(forall (x)(if (member x s)(agent x)))))))
 
 (cl-comment "Since mutual belief implies belief and since if you believe you have a goal then you do really do have the goal, it follows that the individual members of s have e1 as a goal. We can similarly define competitive goals and adversarial goals.")
@@ -131,10 +130,10 @@ successful plans have to bottom out in such actions or in states or events that 
 (cl-comment "When we try to bring about some goal, we devise at least a partial plan to achieve it, including subgoals of the original goal which are actions on our part, and we execute some of those subgoals. Moreover, our executing those actions is a direct result of our having those actions as subgoals. We can take this as a definition of “trying”.")
 
 (forall (e a e1)
-	(iff (try1 e a e1)
+	(iff (try_prime e a e1)
 		(exists (e0 e2 e3 e4)
-			(and (goal e1 a)(subgoal1 e3 e2 e1 a)
-				(instanceOf e4 e2)(Rexist1 e0 e4)
+			(and (goal e1 a)(subgoal_prime e3 e2 e1 a)
+				(instanceOf e4 e2)(Rexist_prime e0 e4)
 				(agentOf a e4)(cause e3 e0)(gen e e0)))))
 
 (cl-comment "In this definition, e is the eventuality of an agent a trying to do e1. The eventuality (or eventuality type) e1 is a goal of a’s; it’s what a tries to do. The eventuality type e2 is a subgoal of e1, and a is the agent in action e4 which is an instance of e2. In the expression (Rexist’ e0 e4), e0 refers to the actual occurrence or execution of the action e4 by a. The expression (cause e3 e0) says that a’s having the subgoal e2 causes a to actually do e2. The expression (gen e e0) says that the actual doing (e0) constitutes the trying (e). That is, a tries to do e1 exactly when a executes a subgoal e2 of e1 precisely because it is a subgoal.")
@@ -152,10 +151,10 @@ successful plans have to bottom out in such actions or in states or events that 
 (cl-comment "We can talk about trying and failing at a seemingly executable action, as in “He tried to lift his arm.” But we are refining the granularity and viewing the action as a composite, e.g., in which the first subaction is willing the motion. Note that this explication of trying allows for an agent to try to achieve conflicting goals. The student who studies for a final and then goes out drinking the whole night before the final may be doing just that. To succeed at some goal is to try to do it and to have that trying cause the goal to actually occur.")
 
 (forall (e a e1)
-	(iff (succeed1 e a e1)
+	(iff (succeed_prime e a e1)
 		(exists (e0 e2 e3)
-			(and (try1 e2 a e1)(instanceOf e3 e1)(cause e2 e3)
-				(Rexist1 e0 e3)(gen e e0)))))
+			(and (try_prime e2 a e1)(instanceOf e3 e1)(cause e2 e3)
+				(Rexist_prime e0 e3)(gen e e0)))))
 
 (cl-comment "Here, e2 is the attempt, e1 is ultimate goal, e3 is the specific instance of e1 that occurs, e is the success in achieving the goal, and e0 is the actual occurrence of the instance of the goal. The expression (gen e e0) says that the actual occurrence e0 constitutes the event e of succeeding. Succeeding implies trying. The converse, sadly, is not true. To fail at some goal is to try to do it and for it not to actually occur.")
 
@@ -175,10 +174,10 @@ successful plans have to bottom out in such actions or in states or events that 
 (cl-comment "A composite entity that goes through changes can be viewed as having as a goal some element or subset of those changes. We will define that “goal” as the functionality of the whole.We call this predicate functionality0 because it is absolute functionality, not the functionality of a component relative to the behavior of the whole.")
 
 (forall (x e)
-	(if (and (compositeEntity x)(changeIn1 e x))
+	(if (and (compositeEntity x)(changeIn_prime e x))
 		(iff (functionality0 e x)
 			(exists (e2 e3 a))
-			(and (goal1 e2 e a)(agent1 e3 a)(imply e3 e2)))))
+			(and (goal_prime e2 e a)(agent_prime e3 a)(imply e3 e2)))))
 
 (cl-comment "Line 2 says that x is a composite entity and e is one of x’s behaviors. Under these conditions, e is a functionality of x if and only if there is some possible agent a whose existence would imply that e is a goal of a’s. The roundabout formulation in line 5 is a way of allowing hypothetical agents. In any positive modality in which a exists, a will have goal e.")
 (cl-comment "If a component has some property or engages in some behavior that is in a causal complex for the functionality of the composite entity as a whole, we can say that property or behavior is the functionality of the component with respect to the functionality0 of the whole.")
@@ -187,8 +186,7 @@ successful plans have to bottom out in such actions or in states or events that 
 	(iff (functionality e1 y e x)
 		(exists (s)
 			(and (functionality0 e x)(causalComplex s e1)
-				(member e1 s)(arg1 y e1)(componentOf y x)))))
-
+				(member e1 s)(arg_star y e1)(componentOf y x)))))
 
 (cl-comment "The expression (functionality e1 y e x) says that e1 is the functionality of y with respect to behavior e by composite entity x, of which y is a component. Because of the close connection between the subgoal relation and causal complexes, functionality can be viewed as a close analog of the subgoal relation. A component is “intact” if it is able to fulfill its functionality. That is, there are no properties of the component that would cause the functionality not to occur.")
 
@@ -197,7 +195,7 @@ successful plans have to bottom out in such actions or in states or events that 
 		(forall (e1 y e)
 			(if (functionality e1 y e x)
 				(not (exists (e2 e3)
-					(and (arg1 y e2)(not1 e3 e1)
+					(and (arg_star y e2)(not_prime e3 e1)
 						(cause e2 e3))))))))
 
 (cl-comment "Thriving")
@@ -207,7 +205,7 @@ successful plans have to bottom out in such actions or in states or events that 
 (forall (a)
 	(if (agent a)
 		(exists (e)
-			(and (goal e a)(thrive1 e a)))))
+			(and (goal e a)(thrive_prime e a)))))
 
 (cl-comment "More specific goals arise out of the planning process using the agents’ beliefs about what will cause them to thrive.")
 (cl-comment "The main reason for positing this top-level goal is that now instead of worrying about the mysterious process by which an agent comes to have goals, we can address the planning problems of what eventualities the agent believes cause other eventualities, including the eventuality of thriving, and of what alternative subgoals the agent should choose to achieve particular goals. We are still left with the problem of when one goal should be given priority over another, but this is now a plan construction issue.")
@@ -270,9 +268,7 @@ successful plans have to bottom out in such actions or in states or events that 
 			(and (goal e1 a)
 				(or (imply e e1)
 					(exists (e2)
-						(and (not’ e2 e1)(imply e e2))))))))
-
-(cl-comment "CARMEN: NEED TO FIGURE OUT HOW TO EXPRESS THE NOT")
+						(and (not_prime e2 e1)(imply e e2))))))))
 
 (cl-comment "The “goal consequences” of an eventuality are those goals of the agent’s whose existence or nonexistence is implied by by the eventuality.")
 
@@ -283,7 +279,7 @@ successful plans have to bottom out in such actions or in states or events that 
 				(and (goal e1 a)
 					(or (imply e e1)
 						(exists (e2)
-							(and (not’ e2 e1)(imply e e2))))))))
+							(and (not_prime e2 e1)(imply e e2))))))))
 
 (cl-comment "Then we can say the importance of an eventuality depends on the importance of its goal consequences. The first of the following axioms says that if something x is more important than the goal consequences of eventuality e, then it is more important than e. The second axiom says the opposite.")
 
@@ -301,7 +297,7 @@ successful plans have to bottom out in such actions or in states or events that 
 	(iff (grProps s x a)
 		(forall (e)
 			(iff (member e s)
-				(and (arg1 x e)(goalRelevant e a))))))
+				(and (arg_star x e)(goalRelevant e a))))))
 
 (cl-comment "The expression (grProps s x a) says that the set s of properties of x are relevant to a goal of a’s. The next two axioms say that the importance of an entity depends on the importance of its goal-relevant properties.")
 
