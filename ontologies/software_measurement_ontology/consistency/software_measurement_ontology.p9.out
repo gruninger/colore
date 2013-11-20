@@ -1,0 +1,131 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 25725 was started by cchui on stl-ws4.mie.utoronto.ca,
+Wed Nov 20 15:47:32 2013
+The command was "prover9 -t 120 -f test/p9/software_measurement_ontology.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file test/p9/software_measurement_ontology.p9
+
+
+formulas(sos).
+(all men all t all mel (MeasurableEntity(men) & MeasurableEntityType(t) & MeasurableElement(mel) & instanceOf(men,t) & characterizes(mel,t) -> characterizes(mel,men))).
+(all men all ime (MeasurableEntity(men) & IndirectlyMeasurableElement(ime) & subelement("mel",ime) -> (exists t (MeasurableEntityType(t) -> characterizes("mel",t) & characterizes(ime,t))))).
+(all ime1 all ime2 all mel (MeasurableElement(mel) & IndirectlyMeasurableElement(ime1) & IndirectlyMeasurableElement(ime2) & subelement(mel,ime1) & subelement(ime1,ime2) -> subelement(mel,ime1))).
+(all dme all m all ime (DerivedMeasure(dme) & Measure(m) & IndirectlyMeasurableElement(ime) & quantifies(dme,ime) & derivesFrom(dme,m) -> (exists me (MeasurableElement(me) -> quantifies(m,me) & subElement(me,ime))))).
+(all dme all m all mcf (DerivedMeasure(dme) & Measure(m) & MeasureCalculationFormula(mcf) & calculatedBy(dme,mcf) & measureForCalc(m,mcf) -> derivesFrom(dme,m))).
+(all dme all m all mcf (DerivedMeasure(dme) & Measure(m) & MeasureCalculationFormula(mcf) & calculatedBy(dme,mcf) & measureForCalc(m,mcf) -> correlatedMeasure(m,dme))).
+(all dme all mcf (DerivedMeasure(dme) & MeasureCalculationFormula(mcf) & calculatedBy(dme,mcf) -> (exists mp (MeasurementProcedure(mp) -> appliedTo(mp,dme) & partOf(mcf,mp))))).
+end_of_list.
+
+============================== end of input ==========================
+
+% From the command line: assign(max_seconds, 120).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all men all t all mel (MeasurableEntity(men) & MeasurableEntityType(t) & MeasurableElement(mel) & instanceOf(men,t) & characterizes(mel,t) -> characterizes(mel,men))) # label(non_clause).  [assumption].
+2 (all men all ime (MeasurableEntity(men) & IndirectlyMeasurableElement(ime) & subelement("mel",ime) -> (exists t (MeasurableEntityType(t) -> characterizes("mel",t) & characterizes(ime,t))))) # label(non_clause).  [assumption].
+3 (all ime1 all ime2 all mel (MeasurableElement(mel) & IndirectlyMeasurableElement(ime1) & IndirectlyMeasurableElement(ime2) & subelement(mel,ime1) & subelement(ime1,ime2) -> subelement(mel,ime1))) # label(non_clause).  [assumption].
+4 (all dme all m all ime (DerivedMeasure(dme) & Measure(m) & IndirectlyMeasurableElement(ime) & quantifies(dme,ime) & derivesFrom(dme,m) -> (exists me (MeasurableElement(me) -> quantifies(m,me) & subElement(me,ime))))) # label(non_clause).  [assumption].
+5 (all dme all m all mcf (DerivedMeasure(dme) & Measure(m) & MeasureCalculationFormula(mcf) & calculatedBy(dme,mcf) & measureForCalc(m,mcf) -> derivesFrom(dme,m))) # label(non_clause).  [assumption].
+6 (all dme all m all mcf (DerivedMeasure(dme) & Measure(m) & MeasureCalculationFormula(mcf) & calculatedBy(dme,mcf) & measureForCalc(m,mcf) -> correlatedMeasure(m,dme))) # label(non_clause).  [assumption].
+7 (all dme all mcf (DerivedMeasure(dme) & MeasureCalculationFormula(mcf) & calculatedBy(dme,mcf) -> (exists mp (MeasurementProcedure(mp) -> appliedTo(mp,dme) & partOf(mcf,mp))))) # label(non_clause).  [assumption].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-MeasurableEntity(x) | -MeasurableEntityType(y) | -MeasurableElement(z) | -instanceOf(x,y) | -characterizes(z,y) | characterizes(z,x).  [clausify(1)].
+-MeasurableEntity(x) | -IndirectlyMeasurableElement(y) | -subelement("mel",y) | -MeasurableEntityType(f1(x,y)) | characterizes("mel",f1(x,y)).  [clausify(2)].
+-MeasurableEntity(x) | -IndirectlyMeasurableElement(y) | -subelement("mel",y) | -MeasurableEntityType(f1(x,y)) | characterizes(y,f1(x,y)).  [clausify(2)].
+-DerivedMeasure(x) | -Measure(y) | -IndirectlyMeasurableElement(z) | -quantifies(x,z) | -derivesFrom(x,y) | -MeasurableElement(f2(x,y,z)) | quantifies(y,f2(x,y,z)).  [clausify(4)].
+-DerivedMeasure(x) | -Measure(y) | -IndirectlyMeasurableElement(z) | -quantifies(x,z) | -derivesFrom(x,y) | -MeasurableElement(f2(x,y,z)) | subElement(f2(x,y,z),z).  [clausify(4)].
+-DerivedMeasure(x) | -Measure(y) | -MeasureCalculationFormula(z) | -calculatedBy(x,z) | -measureForCalc(y,z) | derivesFrom(x,y).  [clausify(5)].
+-DerivedMeasure(x) | -Measure(y) | -MeasureCalculationFormula(z) | -calculatedBy(x,z) | -measureForCalc(y,z) | correlatedMeasure(y,x).  [clausify(6)].
+-DerivedMeasure(x) | -MeasureCalculationFormula(y) | -calculatedBy(x,y) | -MeasurementProcedure(f3(x,y)) | appliedTo(f3(x,y),x).  [clausify(7)].
+-DerivedMeasure(x) | -MeasureCalculationFormula(y) | -calculatedBy(x,y) | -MeasurementProcedure(f3(x,y)) | partOf(y,f3(x,y)).  [clausify(7)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating MeasurableEntity/1
+
+Eliminating DerivedMeasure/1
+
+============================== end predicate elimination =============
+
+Auto_denials:  (no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ ]).
+Function symbol precedence:  function_order([ ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=0)
+  % clear(ordered_res).  % (HNE depth_diff=0)
+  % set(ur_resolution).  % (HNE depth_diff=0)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:  (no changes).
+
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+% Clauses after input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.00 seconds.
+
+============================== STATISTICS ============================
+
+Given=0. Generated=0. Kept=0. proofs=0.
+Usable=0. Sos=0. Demods=0. Limbo=0, Disabled=9. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=0.
+Megabytes=0.05.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+SEARCH FAILED
+
+Exiting with failure.
+
+Process 25725 exit (sos_empty) Wed Nov 20 15:47:32 2013
