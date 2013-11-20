@@ -1,0 +1,168 @@
+============================== Mace4 =================================
+Mace4 (64) version 2009-11A, November 2009.
+Process 25726 was started by cchui on stl-ws4.mie.utoronto.ca,
+Wed Nov 20 15:47:32 2013
+The command was "mace4 -c -t 120 -s 120 -n 2 -N 20 -f test/p9/software_measurement_ontology.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file test/p9/software_measurement_ontology.p9
+
+
+formulas(sos).
+(all men all t all mel (MeasurableEntity(men) & MeasurableEntityType(t) & MeasurableElement(mel) & instanceOf(men,t) & characterizes(mel,t) -> characterizes(mel,men))).
+(all men all ime (MeasurableEntity(men) & IndirectlyMeasurableElement(ime) & subelement("mel",ime) -> (exists t (MeasurableEntityType(t) -> characterizes("mel",t) & characterizes(ime,t))))).
+(all ime1 all ime2 all mel (MeasurableElement(mel) & IndirectlyMeasurableElement(ime1) & IndirectlyMeasurableElement(ime2) & subelement(mel,ime1) & subelement(ime1,ime2) -> subelement(mel,ime1))).
+(all dme all m all ime (DerivedMeasure(dme) & Measure(m) & IndirectlyMeasurableElement(ime) & quantifies(dme,ime) & derivesFrom(dme,m) -> (exists me (MeasurableElement(me) -> quantifies(m,me) & subElement(me,ime))))).
+(all dme all m all mcf (DerivedMeasure(dme) & Measure(m) & MeasureCalculationFormula(mcf) & calculatedBy(dme,mcf) & measureForCalc(m,mcf) -> derivesFrom(dme,m))).
+(all dme all m all mcf (DerivedMeasure(dme) & Measure(m) & MeasureCalculationFormula(mcf) & calculatedBy(dme,mcf) & measureForCalc(m,mcf) -> correlatedMeasure(m,dme))).
+(all dme all mcf (DerivedMeasure(dme) & MeasureCalculationFormula(mcf) & calculatedBy(dme,mcf) -> (exists mp (MeasurementProcedure(mp) -> appliedTo(mp,dme) & partOf(mcf,mp))))).
+end_of_list.
+
+% From the command line: assign(max_seconds, 120).
+
+% From the command line: assign(max_seconds_per, 120).
+    % assign(domain_size, 2) -> assign(start_size, 2).
+    % assign(domain_size, 2) -> assign(end_size, 2).
+
+% From the command line: assign(domain_size, 2).
+
+% From the command line: assign(end_size, 20).
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all men all t all mel (MeasurableEntity(men) & MeasurableEntityType(t) & MeasurableElement(mel) & instanceOf(men,t) & characterizes(mel,t) -> characterizes(mel,men))) # label(non_clause).  [assumption].
+2 (all men all ime (MeasurableEntity(men) & IndirectlyMeasurableElement(ime) & subelement("mel",ime) -> (exists t (MeasurableEntityType(t) -> characterizes("mel",t) & characterizes(ime,t))))) # label(non_clause).  [assumption].
+3 (all ime1 all ime2 all mel (MeasurableElement(mel) & IndirectlyMeasurableElement(ime1) & IndirectlyMeasurableElement(ime2) & subelement(mel,ime1) & subelement(ime1,ime2) -> subelement(mel,ime1))) # label(non_clause).  [assumption].
+4 (all dme all m all ime (DerivedMeasure(dme) & Measure(m) & IndirectlyMeasurableElement(ime) & quantifies(dme,ime) & derivesFrom(dme,m) -> (exists me (MeasurableElement(me) -> quantifies(m,me) & subElement(me,ime))))) # label(non_clause).  [assumption].
+5 (all dme all m all mcf (DerivedMeasure(dme) & Measure(m) & MeasureCalculationFormula(mcf) & calculatedBy(dme,mcf) & measureForCalc(m,mcf) -> derivesFrom(dme,m))) # label(non_clause).  [assumption].
+6 (all dme all m all mcf (DerivedMeasure(dme) & Measure(m) & MeasureCalculationFormula(mcf) & calculatedBy(dme,mcf) & measureForCalc(m,mcf) -> correlatedMeasure(m,dme))) # label(non_clause).  [assumption].
+7 (all dme all mcf (DerivedMeasure(dme) & MeasureCalculationFormula(mcf) & calculatedBy(dme,mcf) -> (exists mp (MeasurementProcedure(mp) -> appliedTo(mp,dme) & partOf(mcf,mp))))) # label(non_clause).  [assumption].
+
+============================== end of process non-clausal formulas ===
+
+============================== CLAUSES FOR SEARCH ====================
+
+formulas(mace4_clauses).
+-MeasurableEntity(x) | -MeasurableEntityType(y) | -MeasurableElement(z) | -instanceOf(x,y) | -characterizes(z,y) | characterizes(z,x).
+-MeasurableEntity(x) | -IndirectlyMeasurableElement(y) | -subelement("mel",y) | -MeasurableEntityType(f1(x,y)) | characterizes("mel",f1(x,y)).
+-MeasurableEntity(x) | -IndirectlyMeasurableElement(y) | -subelement("mel",y) | -MeasurableEntityType(f1(x,y)) | characterizes(y,f1(x,y)).
+-DerivedMeasure(x) | -Measure(y) | -IndirectlyMeasurableElement(z) | -quantifies(x,z) | -derivesFrom(x,y) | -MeasurableElement(f2(x,y,z)) | quantifies(y,f2(x,y,z)).
+-DerivedMeasure(x) | -Measure(y) | -IndirectlyMeasurableElement(z) | -quantifies(x,z) | -derivesFrom(x,y) | -MeasurableElement(f2(x,y,z)) | subElement(f2(x,y,z),z).
+-DerivedMeasure(x) | -Measure(y) | -MeasureCalculationFormula(z) | -calculatedBy(x,z) | -measureForCalc(y,z) | derivesFrom(x,y).
+-DerivedMeasure(x) | -Measure(y) | -MeasureCalculationFormula(z) | -calculatedBy(x,z) | -measureForCalc(y,z) | correlatedMeasure(y,x).
+-DerivedMeasure(x) | -MeasureCalculationFormula(y) | -calculatedBy(x,y) | -MeasurementProcedure(f3(x,y)) | appliedTo(f3(x,y),x).
+-DerivedMeasure(x) | -MeasureCalculationFormula(y) | -calculatedBy(x,y) | -MeasurementProcedure(f3(x,y)) | partOf(y,f3(x,y)).
+end_of_list.
+
+============================== end of clauses for search =============
+
+% There are no natural numbers in the input.
+
+============================== DOMAIN SIZE 2 =========================
+
+============================== MODEL =================================
+
+interpretation( 2, [number=1, seconds=0], [
+
+        function("mel", [ 0 ]),
+
+        function(f1(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        function(f3(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        function(f2(_,_,_), [
+			   0, 0,
+			   0, 0,
+			   0, 0,
+			   0, 0 ]),
+
+        relation(DerivedMeasure(_), [ 0, 0 ]),
+
+        relation(IndirectlyMeasurableElement(_), [ 0, 0 ]),
+
+        relation(MeasurableElement(_), [ 0, 0 ]),
+
+        relation(MeasurableEntity(_), [ 0, 0 ]),
+
+        relation(MeasurableEntityType(_), [ 0, 0 ]),
+
+        relation(Measure(_), [ 0, 0 ]),
+
+        relation(MeasureCalculationFormula(_), [ 0, 0 ]),
+
+        relation(MeasurementProcedure(_), [ 0, 0 ]),
+
+        relation(appliedTo(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(calculatedBy(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(characterizes(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(correlatedMeasure(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(derivesFrom(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(instanceOf(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(measureForCalc(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(partOf(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(quantifies(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(subElement(_,_), [
+			   0, 0,
+			   0, 0 ]),
+
+        relation(subelement(_,_), [
+			   0, 0,
+			   0, 0 ])
+]).
+
+============================== end of model ==========================
+
+============================== STATISTICS ============================
+
+For domain size 2.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.01 seconds).
+Ground clauses: seen=56, kept=56.
+Selections=77, assignments=77, propagations=0, current_models=1.
+Rewrite_terms=76, rewrite_bools=57, indexes=34.
+Rules_from_neg_clauses=0, cross_offs=0.
+
+============================== end of statistics =====================
+
+User_CPU=0.01, System_CPU=0.00, Wall_clock=0.
+
+Exiting with 1 model.
+
+Process 25726 exit (max_models) Wed Nov 20 15:47:32 2013
+The process finished Wed Nov 20 15:47:32 2013
