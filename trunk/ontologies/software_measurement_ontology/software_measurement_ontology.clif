@@ -1,0 +1,87 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Carmen Chui
+ *******************************************************************************/
+ 
+(cl-text software_measurement_ontology
+
+(cl-comment "Source: A Well-Founded Software Measurement Ontology by Monalessa Perini Barcellos and Ricardo de Almeida Falbo and Rodrigo Dal Moro")
+
+(cl-comment "A1")
+(forall (men t mel)
+	(if (and (MeasurableEntity men)
+		(MeasurableEntityType t)
+		(MeasurableElement mel)
+		(instanceOf men t)
+		(characterizes mel t))
+		(characterizes mel men)))
+
+(cl-comment "A2")
+(forall (men ime)
+	(if (and (MeasurableEntity men)
+		(IndirectlyMeasurableElement ime)
+		(subelement mel ime))
+		(exists (t)
+			(if (MeasurableEntityType t)
+				(and
+					(characterizes mel t)
+					(characterizes ime t))))))
+
+(cl-comment "A3")
+(forall (ime1 ime2 mel)
+	(if (and (MeasurableElement mel)
+		(IndirectlyMeasurableElement ime1)
+		(IndirectlyMeasurableElement ime2)
+		(subelement mel ime1)
+		(subelement ime1 ime2))
+		(subelement mel ime1)))
+
+(cl-comment "A4")
+(forall (dme m ime)
+	(if (and
+		(DerivedMeasure dme)
+		(Measure m)
+		(IndirectlyMeasurableElement ime)
+		(quantifies dme ime)
+		(derivesFrom dme m))
+		(exists (me)
+			(if (MeasurableElement me)
+				(and (quantifies m me)(subElement me ime))))))
+
+(cl-comment "A5")
+(forall (dme m mcf)
+	(if (and
+		(DerivedMeasure dme)
+		(Measure m)
+		(MeasureCalculationFormula mcf)
+		(calculatedBy dme mcf)
+		(measureForCalc m mcf))
+		(derivesFrom dme m)))
+
+(cl-comment "A6")
+(forall (dme m mcf)
+	(if (and
+		(DerivedMeasure dme)
+		(Measure m)
+		(MeasureCalculationFormula mcf)
+		(calculatedBy dme mcf)
+		(measureForCalc m mcf))
+		(correlatedMeasure m dme)))
+
+(cl-comment "A7")
+(forall (dme mcf)
+	(if (and
+		(DerivedMeasure dme)
+		(MeasureCalculationFormula mcf)
+		(calculatedBy dme mcf))
+		(exists (mp)
+			(if (MeasurementProcedure mp)
+				(and (appliedTo mp dme)
+					(partOf mcf mp))))))
+
+)
