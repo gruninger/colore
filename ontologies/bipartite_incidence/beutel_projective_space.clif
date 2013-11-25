@@ -1,0 +1,65 @@
+
+(cl-text http://colore.oor.net/bipartite_incidence/beutel_projective_space.clif
+
+(cl-imports http://colore.oor.net/bipartite_incidence/weak_bipartite.clif)
+
+(cl-comment "Beutelspacher and Rosenbaum p6-7")
+
+(cl-comment "Axiom 1: For any two distinct points P and Q, there is exactly one line that is incident with both P and Q")
+
+(forall (p q)
+	(if	(and	(point p)
+			(point q)
+			(not (= p q)))
+		(exists (l)
+			(and	(line l)
+				(in p l)
+				(in q l)))))
+
+(forall (p q l1 l2)
+	(if	(and	(point p)
+			(point q)
+			(not (= p q))
+			(line l1)
+			(line l2)
+			(in p l1)
+			(in q l1)
+			(in p l2)
+			(in q l2))
+		(= l1 l2)))
+
+(cl-comment "Axiom 2: Let A,B,C,D be four points such that (the line) AB intersects with the line CD. Then AC intersects the line BD.")
+
+(forall (a b c d l1 l2 l3 l4)
+	(if	(and	(point a)
+			(point b)
+			(point c)
+			(point d)
+			(line l1)
+			(line l2)
+			(line l3)
+			(line l4)
+			(in a l1)
+			(in b l1)
+			(in c l2)
+			(in d l2)
+			(intersect l1 l2)
+			(in a l3)
+			(in c l3)
+			(in b l4)
+			(in d l4))
+		(intersect l3 l4)))
+
+(cl-comment "Axiom 3: Any line is incident with at least three points.")
+
+(forall (l)
+	(if	(line l)
+		(exists (p1 p2 p3)
+			(and	(point p1)
+				(point p2)
+				(point p3)
+				(not (= p1 p2))
+				(not (= p1 p3))
+				(not (= p2 p3))))))
+
+)
