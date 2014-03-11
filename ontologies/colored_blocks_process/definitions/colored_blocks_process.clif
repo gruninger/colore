@@ -1,0 +1,45 @@
+(cl-text http://colore.oor.net/colored_blocks_process/definitions/colored_blocks_process.clif
+
+(cl-imports http://colore.oor.net/colored_blocks_process/colored_blocks_state.clif)
+	 
+(forall (a) (iff 	(change_block a) 
+					(forall (o)
+							(if (occurrence_of o a) 
+								(exists (x) 
+										(changes o (block x)))))))
+
+
+(forall (a) (iff 	(change_on a) 
+					(forall (o)
+							(if (occurrence_of o a) 
+								(exists (x y) 
+										(changes o (on x y)))))))
+
+								
+(forall (a) (iff 	(new_pile a) 
+					((and 	(change_on a)
+							(forall (o)
+									(if (and 	(occurrence_of o a) 
+												(changes o (on x y)))
+										(changes o (comparable x y))))))))
+
+(forall (a) (iff 	(rearrange_pile a) 
+					((and 	(change_on a)
+							(forall (o)
+									(if (and 	(occurrence_of o a) 
+												(changes o (on x y)))
+										(not (changes o (comparable x y)))))))))
+								
+(forall (a) (iff 	(change_colors a) 
+					(forall (o)
+							(if (occurrence_of o a) 
+								(exists (l) 
+										(changes o (color l)))))))
+								
+(forall (a) (iff 	(change_block_color a) 
+					(forall (o)
+							(if 	(occurrence_of o a) 
+									(exists (x y) 
+											(changes o (colored_as x y)))))))
+														
+)
