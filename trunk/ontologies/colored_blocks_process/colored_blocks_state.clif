@@ -1,0 +1,128 @@
+(cl-text http://colore.oor.net/colored_blocks_process/colored_blocks_state.clif
+
+(cl-imports http://colore.oor.net/psl_disc_state/disc_state.clif)
+
+
+(forall (o x y) 
+		(if		(prior (on x y) o)
+				(and 	(prior (block x) o) 
+						(prior (block y) o) )))
+
+
+(forall (x o)
+		(if		(arboreal o) 
+				(not (prior (on x x) o))))
+
+(forall (x y z o) 
+		(if (and	(arboreal o) 
+					(prior (on x y) o)
+					(prior (on y z) o))
+			(prior (on x z) o)))
+
+(forall (x y z o) 
+		(if (and	(arboreal o) 
+					(prior (on x y) o)
+					(prior (on x z) o))
+			(or		(prior (on y z) o)
+					(prior (on z y) o)
+					(= y z))))			
+			
+(forall (x y z o) 
+		(if (and	(arboreal o) 
+					(prior (on y x) o)
+					(prior (on z x) o))
+			(or		(prior (on y z) o)
+					(prior (on z y) o)
+					(= y z))))			
+					
+(forall (x y o)	
+		(iff	(prior (comparable x y) o) 
+				(and	(arboreal o) 
+						(or		(prior (on x y) o) 
+								(prior (on y x) o)))))
+
+(forall (x o)
+		(iff	(prior (minimal x) o)
+				(not	(exists (y)
+								(prior (lt y x) o))))
+								
+(forall (x o)
+		(iff	(prior (maximal x) o)
+				(not	(exists (y)
+								(prior (lt x y) o))))								
+
+(forall (x o) 
+		(or		(prior (minimal x) o)
+				(exists (y)		
+						(and 	(prior (minimal y) o)
+								(prior (lt y x) o)))))								
+								
+
+(forall (x o) 
+		(or		(prior (maximal x) o)
+				(exists (y)		
+						(and 	(prior (maximal y) o)
+								(prior (lt x y) o)))))								
+								
+(forall (o x y) 
+		(if		(and 	(arboreal o)
+						(prior (colored_as x y) o))
+				(prior (colored_as y x) o)))
+
+
+(forall (x o) 
+		(if 	(and	(arboreal o) 
+						(or	(prior (block x) o)
+							(prior (color x) o)))
+				(prior (colored_as x x) o)))
+
+(forall (o p) 
+		(if		(and 	(arboreal o)
+						(prior (block p) o))
+				(not (prior (color p) o))))
+
+
+		
+(forall (x y o) 
+		(if (and	(arboreal o) 
+					(prior (colored_as x y) o)
+					(prior (block x) o)
+					(prior (block y) o))
+			(= x y)))			
+					
+(forall (x y o) 
+		(if (and	(arboreal o) 
+					(prior (colored_as x y) o)
+					(prior (color x) o)
+					(prior (color y) o))
+			(= x y)))			
+
+
+(forall (p o) 
+		(if (and	(arboreal o) 
+					(prior (block p) o))
+			(exists (l) 
+					(and 	(prior (color l) o)
+							(prior (colored_as p l) o)))))			
+
+		
+(forall (l1 l2 p o) 
+		(if (and	(arboreal o) 
+					(prior (color l1) o)
+					(prior (color l2) o)
+					(prior (block p) o)
+					(prior (colored_as p l1) o)
+					(prior (colored_as p l2) o))
+			(= l1 l2)))							
+
+
+(forall (p1 p2 l o) 
+		(if (and	(arboreal o) 
+					(prior (block p1) o)
+					(prior (block p2) o)
+					(prior (color l) o)
+					(prior (colored_as p1 l) o)
+					(prior (colored_as p1 l) o))
+			(= p1 p2)))																		
+					
+)

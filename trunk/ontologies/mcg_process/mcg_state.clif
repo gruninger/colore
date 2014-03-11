@@ -1,0 +1,57 @@
+(cl-text http://colore.oor.net/mcg_process/mcg_state.clif
+
+(cl-imports http://colore.oor.net/psl_disc_state/disc_state.clif)
+
+(forall (o x y z) 
+		(if		(prior (C x y) o)
+				(and 	(prior (point x) o) 
+						(prior (point y) o)
+						(prior (point z) o))))
+		
+
+(forall (x y z o) 
+		(if (and	(arboreal o) 
+					(prior (C x y z) o))
+			(prior (C y z x) o)))
+			
+(forall (x y z o)	
+		(iff	(prior (cmp x y z) o) 
+				(and	(arboreal o) 
+						(or		(prior (C x y z) o) 
+								(prior (C z y x) o)))))
+
+
+(forall (o x y) 
+		(if		(and 	(arboreal o)
+						(prior (in x y) o))
+				(prior (in y x) o)))
+
+
+(forall (x o) 
+		(if 	(and	(arboreal o) 
+						(or	(prior (point x) o)
+							(prior (line x) o)))
+				(prior (in x x) o)))
+
+(forall (o p) 
+		(if		(and 	(arboreal o)
+						(prior (point p) o))
+				(not (prior (line p) o))))
+
+
+		
+(forall (x y o) 
+		(if (and	(arboreal o) 
+					(prior (in x y) o)
+					(prior (point x) o)
+					(prior (point y) o))
+			(= x y)))			
+					
+(forall (x y o) 
+		(if (and	(arboreal o) 
+					(prior (in x y) o)
+					(prior (line x) o)
+					(prior (line y) o))
+			(= x y)))			
+										
+)
