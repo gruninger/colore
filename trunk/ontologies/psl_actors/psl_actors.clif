@@ -1,0 +1,73 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * PSL_actors:  Extension of PSL's actocc theory to define the concept of actors
+ * Independent actor theory (for combination) not possible
+ * 
+ *
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/psl_actors/psl_actors
+(cl-imports http://colore.oor.net/psl_actocc/actocc.clif)
+
+(cl-comment "ax1: an actor is a type of object")
+(forall (x)
+	(if	(actor x)
+		(object x)))
+
+(cl-comment "ax2: performed_in is a specialization of the participates_in relation")
+(forall (x o)
+	(if	(performed_in x o)
+		(exists t)
+			(participates x o t)))
+
+(cl-comment "ax3: performs defines the relationship between actors and activities, where an actor performs the activity")
+(forall (x a)
+	(if	(performs x a)
+		(and	(actor x)
+			(activity a))))
+
+(cl-comment "ax4: performed_in defines the relationship between actors and occurrences, where an actor performed_in an occurrence of an activity")
+(cl-comment "technically the last term is unnecessary as we can infer it based on axiom 2")
+(forall (x o)
+	(if	(performed_in x o)
+		(and	(actor x)
+			(activity_occurrence o))))
+
+(cl-comment "ax5: if an actor performed in some occ, then it performed in any occurrences that the occ is a subocc of")
+(forall (x o1 o2)
+	(if	(and	(performed_in x o1)
+			(subactivity_occurrence o1 o2))
+		(performed_in x o2)))
+
+(cl-comment "ax6: if an actor performed in som occ, then that occ has a subactivity in which the actor performed in")
+(cl-comment "do we want to assert that it performed in some occ of an atomic activity?"
+(forall (x o1)
+	(if	(performs x o1)
+		(exists (o2)	(and	(subactivity_occurrence o2 o1)
+					(performed_in x o2)))))
+
+(cl-comment "are ax5 and ax6 consequences of ax7 ax8 and ax9? is there a reason not to define ax7, ax8?")
+(cl-comment "ax7: if an actor performs some activity, then it performs in all activities that the activity is a subactivity of")
+(forall (x a1 a2)
+	(if	(and	(performs x a1)
+			(subactivity a1 a2))
+		(performs x a2)))
+
+(cl-comment "ax8: if an actor performs some activity, then there must be an atomic? subactivity that the actor performs")
+(forall (x a1)
+	(if	(performs x a1)
+		(exists (a2)	(and	(subactivity a2 a1)
+					(atomic a2)
+					(performs x a2)))))
+
+(cl-comment "ax9: performs indicates the planned or intended occurrences of an activity")
+(forall (x a o)
+	(if	(and	(performs x a)
+			(occurrence_of o a))
+		(perfomed_in x o)))
+
+)
