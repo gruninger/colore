@@ -1,0 +1,89 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/psl_locations/psl_locations
+
+(cl-imports  http://colore.oor.net/codi/codi_unbounded)
+(cl-imports http://colore.oor.net/psl_actocc/actocc.clif)
+
+(cl-comment "ax1: sort axioms for location relations from codi")
+(cl-comment "< region ordering relation sort")
+(forall (x y)	(if	(< x y)
+			(and	(location x)
+				(location y))))
+
+(cl-comment "ax2: <= region ordering relation sort")
+ (forall (x y)	(if	(<= x y)
+			(and	(location x)
+				(location y))))
+
+(cl-comment "ax3: ZEX zero region sort")
+(forall (x)	(if	(ZEX x)
+			(location x)))
+
+
+
+(cl-comment "ax4: grafting axioms to link activities and locations")
+(cl-comment "occurred_at an activity_occurrence occurred_at a location")
+(forall (x y)	(if	(occurred_at x y)
+			(and	(activity_occurrence x)
+				(location y))))
+						
+(cl-comment "ax5: occurs_at an activity occurs at a location")
+(forall (x y)	(if	(occurs_at x y)
+			(and	(activity x)
+				(location y))))
+
+(cl-comment "ax6: basic relations between the different mereologies")
+(cl-comment "occurred_at and locations - containment (parthood irrespective of dimension)")
+(forall (occ loc1 loc2)
+	(if	(and	(occurred_at occ loc1)
+			(Cont loc1 loc2))
+		(occurred_at occ loc2)))
+
+(cl-comment "ax7: occurs_at and locations")
+(forall (a loc1 loc2)
+	(if	(and	(occurs_at a loc1)
+			(Cont loc1 loc2))
+		(occurs_at a loc2)))
+
+(cl-comment "ax8: locations and suboccs - if an activity occurrence occurs at some location, then at least one of its subactivity occurrences also occur in that location")
+(cl-comment "MK modified - both ways too strong since we are allowing the super-occ to occur at multiple locatins")
+(forall (occ1 loc)
+	(if	(occurred_at occ1 loc)
+		(exists (occ2)
+			(and	(subactivity_occurrence occ2 occ1)
+				(occurred_at occ2 loc)))))
+
+(cl-comment "ax9: conversely, if an activity occurrence occurs at some location, then all occurrences that it is a subocc of also occur in that location")
+(forall (occ1 occ2 loc)
+	(if	(and	(occurred_at occ1 loc)
+			(subactivity_occurrence occ1 occ2))
+		(occurred_at occ2 loc)))
+
+(cl-comment "ax10: MK addition similarly for occurs_at")
+(forall (a1 loc)
+	(if	(occurs_at a1 loc)
+		(exists (a2)
+			(and	(subactivity a2 a1)
+				(occurs_at a2 loc)))))
+
+(cl-comment "ax11: MK addition similarly for occurs_at")
+(forall (a1 a2 loc)
+	(if	(and	(occurs_at a1 loc)
+			(subactivity a1 a2))
+		(occurs_at a2 loc)))
+
+(cl-comment "ax12: MK addition to allow for distinction between planned and deviant occurrence locations, as specified with actors")
+(cl-comment "are ax8 and ax9 consequences of this axiom and ax10 ax11?")
+(forall (a o loc)
+	(if	(and	(occurs_at a loc)
+			(occurrence_of o a))
+		(occurred_at o loc)))
+
+)
