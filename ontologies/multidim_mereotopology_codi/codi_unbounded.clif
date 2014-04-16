@@ -10,9 +10,13 @@
 
 (cl-text http://colore.oor.net/multidim_mereotopology_codi/codi_unbounded.clif
 
+(cl-comment 'codi_unbounded is CODI except that D-A6 (a lowest dimension must exist) is not enforced. Since D-A6 is part of dim_prime_linear, imported by codi_linear, we cannot import codi_linear here.')
+
 (cl-imports http://colore.oor.net/multidim_mereotopology_dim/dim_prime_linear_unbounded.clif)
 
-(cl-imports http://colore.oor.net/multidim_mereotopology_cont/cont_c.clif)
+(cl-imports http://colore.oor.net/multidim_mereotopology_cont/cont_basic.clif)
+
+(cl-imports http://colore.oor.net/multidim_mereotopology_cont/definitions/c.clif)
 
 (cl-imports http://colore.oor.net/multidim_mereotopology_codi/definitions/ep.clif)
 
@@ -25,5 +29,22 @@
 (cl-imports http://colore.oor.net/multidim_mereotopology_codi/definitions/sc.clif)
 
 (cl-imports http://colore.oor.net/multidim_mereotopology_codi/definitions/min_max_in_dim.clif)
+
+
+(cl-comment 'relationship between dimension and containment')
+
+(cl-comment 'CD-A1: containment requires that the contained entity has a dimension that is lower or equal to the entity containing it')
+
+
+(forall (x y)
+	(if
+        (Cont x y)
+		(or
+            (< x y)
+            (EqDim x y)
+        )
+	)
+)
+
 
 )
