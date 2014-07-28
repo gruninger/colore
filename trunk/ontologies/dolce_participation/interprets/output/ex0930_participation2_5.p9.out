@@ -1,0 +1,1164 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 3468 was started by cchui on stl-ws4.mie.utoronto.ca,
+Tue Oct  1 09:32:11 2013
+The command was "prover9 -t 120 -f test/p9/dolce_participation.p9 test/p9/dolce_participation2ideal_cem_line_downward_in_foliation.p9 test/p9/dolce_present.p9 test/p9/dolce_time_mereology.p9 test/p9/dolce_taxonomy.p9 test/p9/options.txt test/p9/ex0930_participation2_5.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file test/p9/dolce_participation.p9
+
+
+formulas(sos).
+(all x all y all t (PC(x,y,t) -> ED(x) & PD(y) & T(t))).
+(all x all t (PD(x) & PRE(x,t) -> (exists y PC(y,x,t)))).
+(all x (ED(x) -> (exists y exists t PC(x,y,t)))).
+(all x all y all t (PC(x,y,t) -> PRE(x,t) & PRE(y,t))).
+(all x all y all t (PC(x,y,t) <-> (all t1 (P(t1,t) -> PC(x,y,t1))))).
+end_of_list.
+
+% Reading from file test/p9/dolce_participation2ideal_cem_line_downward_in_foliation.p9
+
+
+formulas(sos).
+(all x (point2(x) <-> T(x))).
+(all x (line2(x) <-> ED(x))).
+(all x (plane2(x) <-> PD(x))).
+(all x all y (in2(x,y) <-> PRE(x,y) & T(y) & (ED(x) | PD(x) | Q(x)) | PRE(y,x) & T(x) & (ED(y) | PD(y) | Q(y)) | x = y & (ED(y) | PD(y) | Q(y) | T(y)))).
+(all x all y all z (tin2(x,y,z) <-> PC(x,y,z))).
+(all x all y (part2(x,y) <-> P(x,y) & T(x) & T(y))).
+(all x (L_1(x) <-> ED(x))).
+(all x (L_2(x) <-> PD(x))).
+(all x (L_3(x) <-> Q(x))).
+(all x (atomic_part(x) <-> AtP(x) & T(x))).
+(all x all y (ppart(x,y) <-> PP(x,y) & T(x) & T(y))).
+(all x all y (overlaps(x,y) <-> O(x,y) & T(x) & T(y))).
+(all x all y (underlaps(x,y) <-> U(x,y) & T(x) & T(y))).
+(all x all y (disjoint(x,y) <-> DJ(x,y) & T(x) & T(y))).
+(all x all y all z (sum(x,y,z) <-> SUM(z,x,y) & T(z) & T(x) & T(y))).
+end_of_list.
+
+% Reading from file test/p9/dolce_present.p9
+
+
+formulas(sos).
+(all x (ED(x) | PD(x) | Q(x) -> (exists t PRE(x,t)))).
+(all x all t all t1 (PRE(x,t) & P(t1,t) -> PRE(x,t1))).
+(all x all t (PRE(x,t) -> T(t))).
+(all x all t all t1 all t2 (PRE(x,t1) & PRE(x,t2) & SUM(t,t1,t2) -> PRE(x,t))).
+end_of_list.
+
+% Reading from file test/p9/dolce_time_mereology.p9
+
+
+formulas(sos).
+(all x all y (P(x,y) -> T(y) & T(y))).
+(all x all y (P(x,y) -> (T(x) <-> T(y)))).
+(all x all y (T(x) -> P(x,x))).
+(all x all y (T(x) & T(y) & P(x,y) & P(y,x) -> x = y)).
+(all x all y all z (T(x) & T(y) & P(x,y) & P(y,z) -> P(x,z))).
+(all x all y (T(x) & T(y) & -P(x,y) -> (exists z (T(z) & P(z,x) & -O(z,y))))).
+(all x all y (T(x) & T(y) & -P(x,y) -> (exists z (P(z,x) & DJ(z,y) & T(z))))).
+(all x all y (T(x) & T(y) -> (PP(x,y) <-> P(x,y) & -P(y,x)))).
+(all x all y (T(x) & T(y) -> (O(x,y) <-> (exists z (P(z,x) & P(z,y) & T(z)))))).
+(all x all y (T(x) & T(y) -> (DJ(x,y) <-> -O(x,y)))).
+(all x all y (T(x) & T(y) -> (U(x,y) <-> (exists z (P(x,z) & P(y,z) & T(z)))))).
+(all x (AtP(x) <-> T(x) & (all y (T(y) & P(y,x) -> y = x)))).
+(all x all y (T(x) & T(y) & U(x,y) -> (exists z (T(z) & (all w (T(w) -> (O(w,z) <-> O(w,x) | O(w,y)))))))).
+(all x all y (T(x) & T(y) & O(x,y) -> (exists z (T(z) & (all w (T(w) -> (PP(w,z) <-> PP(w,x) & PP(w,y)))))))).
+(all x all y all z (T(x) & T(y) & T(z) -> (SUM(z,x,y) <-> (all w (T(w) -> (O(w,z) <-> O(w,x) | O(w,y))))))).
+end_of_list.
+
+% Reading from file test/p9/dolce_taxonomy.p9
+
+
+formulas(sos).
+(all x (ED(x) | PD(x) | Q(x) | AB(x) -> PT(x))).
+(all x (PED(x) | NPED(x) | AS(x) -> ED(x))).
+(all x (EV(x) | STV(x) -> PD(x))).
+(all x (TQ(x) | PQ(x) | AQ(x) -> Q(x))).
+(all x (R(x) -> AB(x))).
+(all x (M(x) | F(x) | POB(x) -> PED(x))).
+(all x (NPOB(x) -> NPED(x))).
+(all x (ACH(x) | ACC(x) -> EV(x))).
+(all x (ST(x) | PRO(x) -> STV(x))).
+(all x (TL(x) -> TQ(x))).
+(all x (SL(x) -> PQ(x))).
+(all x (TR(x) | PR(x) | AR(x) -> R(x))).
+(all x (APO(x) | NAPO(x) -> POB(x))).
+(all x (MOB(x) | SOB(x) -> NPOB(x))).
+(all x (T(x) -> TR(x))).
+(all x (S(x) -> PR(x))).
+(all x (ASO(x) | NASO(x) -> SOB(x))).
+(all x (SAG(x) | SC(x) -> ASO(x))).
+(all x (PT(x) <-> ED(x) | PD(x) | Q(x) | AB(x))).
+(all x (ED(x) -> -PD(x) & -Q(x) & -AB(x))).
+(all x (PD(x) -> -Q(x) & -AB(x))).
+(all x (Q(x) -> -AB(x))).
+(all x (ED(x) <-> PED(x) | NPED(x) | AS(x))).
+(all x (PED(x) -> -NPED(x) & -AS(x))).
+(all x (NPED(x) -> -AS(x))).
+(all x (PD(x) <-> EV(x) | STV(x))).
+(all x (EV(x) -> -STV(x))).
+(all x (Q(x) <-> TQ(x) | PQ(x) | AQ(x))).
+(all x (TQ(x) -> -PQ(x) & -AQ(x))).
+(all x (PQ(x) -> -AQ(x))).
+(all x (PED(x) <-> M(x) | F(x) | POB(x))).
+(all x (M(x) -> -F(x) & -POB(x))).
+(all x (F(x) -> -POB(x))).
+(all x (EV(x) <-> ACH(x) | ACC(x))).
+(all x (ACH(x) -> -ACC(x))).
+(all x (STV(x) <-> ST(x) | PRO(x))).
+(all x (ST(x) -> -PRO(x))).
+(all x (R(x) <-> TR(x) | PR(x) | AR(x))).
+(all x (TR(x) -> -PR(x) & -AR(x))).
+(all x (PR(x) -> -AR(x))).
+(all x (POB(x) <-> APO(x) | NAPO(x))).
+(all x (APO(x) -> -NAPO(x))).
+(all x (NPOB(x) <-> MOB(x) | SOB(x))).
+(all x (MOB(x) -> -SOB(x))).
+(all x (SOB(x) <-> ASO(x) | NASO(x))).
+(all x (ASO(x) -> -NASO(x))).
+(all x (ASO(x) <-> SAG(x) | SC(x))).
+(all x (SAG(x) -> -SC(x))).
+end_of_list.
+
+% Reading from file test/p9/options.txt
+
+clear(auto_denials).
+clear(print_initial_clauses).
+clear(print_kept).
+clear(print_given).
+
+% Reading from file test/p9/ex0930_participation2_5.p9
+
+
+formulas(goals).
+(all x all p (plane2(x) & in2(p,x) & point2(p) -> (exists y tin2(y,x,p)))).
+end_of_list.
+
+============================== end of input ==========================
+
+% From the command line: assign(max_seconds, 120).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x all y all t (PC(x,y,t) -> ED(x) & PD(y) & T(t))) # label(non_clause).  [assumption].
+2 (all x all t (PD(x) & PRE(x,t) -> (exists y PC(y,x,t)))) # label(non_clause).  [assumption].
+3 (all x (ED(x) -> (exists y exists t PC(x,y,t)))) # label(non_clause).  [assumption].
+4 (all x all y all t (PC(x,y,t) -> PRE(x,t) & PRE(y,t))) # label(non_clause).  [assumption].
+5 (all x all y all t (PC(x,y,t) <-> (all t1 (P(t1,t) -> PC(x,y,t1))))) # label(non_clause).  [assumption].
+6 (all x (point2(x) <-> T(x))) # label(non_clause).  [assumption].
+7 (all x (line2(x) <-> ED(x))) # label(non_clause).  [assumption].
+8 (all x (plane2(x) <-> PD(x))) # label(non_clause).  [assumption].
+9 (all x all y (in2(x,y) <-> PRE(x,y) & T(y) & (ED(x) | PD(x) | Q(x)) | PRE(y,x) & T(x) & (ED(y) | PD(y) | Q(y)) | x = y & (ED(y) | PD(y) | Q(y) | T(y)))) # label(non_clause).  [assumption].
+10 (all x all y all z (tin2(x,y,z) <-> PC(x,y,z))) # label(non_clause).  [assumption].
+11 (all x all y (part2(x,y) <-> P(x,y) & T(x) & T(y))) # label(non_clause).  [assumption].
+12 (all x (L_1(x) <-> ED(x))) # label(non_clause).  [assumption].
+13 (all x (L_2(x) <-> PD(x))) # label(non_clause).  [assumption].
+14 (all x (L_3(x) <-> Q(x))) # label(non_clause).  [assumption].
+15 (all x (atomic_part(x) <-> AtP(x) & T(x))) # label(non_clause).  [assumption].
+16 (all x all y (ppart(x,y) <-> PP(x,y) & T(x) & T(y))) # label(non_clause).  [assumption].
+17 (all x all y (overlaps(x,y) <-> O(x,y) & T(x) & T(y))) # label(non_clause).  [assumption].
+18 (all x all y (underlaps(x,y) <-> U(x,y) & T(x) & T(y))) # label(non_clause).  [assumption].
+19 (all x all y (disjoint(x,y) <-> DJ(x,y) & T(x) & T(y))) # label(non_clause).  [assumption].
+20 (all x all y all z (sum(x,y,z) <-> SUM(z,x,y) & T(z) & T(x) & T(y))) # label(non_clause).  [assumption].
+21 (all x (ED(x) | PD(x) | Q(x) -> (exists t PRE(x,t)))) # label(non_clause).  [assumption].
+22 (all x all t all t1 (PRE(x,t) & P(t1,t) -> PRE(x,t1))) # label(non_clause).  [assumption].
+23 (all x all t (PRE(x,t) -> T(t))) # label(non_clause).  [assumption].
+24 (all x all t all t1 all t2 (PRE(x,t1) & PRE(x,t2) & SUM(t,t1,t2) -> PRE(x,t))) # label(non_clause).  [assumption].
+25 (all x all y (P(x,y) -> T(y) & T(y))) # label(non_clause).  [assumption].
+26 (all x all y (P(x,y) -> (T(x) <-> T(y)))) # label(non_clause).  [assumption].
+27 (all x all y (T(x) -> P(x,x))) # label(non_clause).  [assumption].
+28 (all x all y (T(x) & T(y) & P(x,y) & P(y,x) -> x = y)) # label(non_clause).  [assumption].
+29 (all x all y all z (T(x) & T(y) & P(x,y) & P(y,z) -> P(x,z))) # label(non_clause).  [assumption].
+30 (all x all y (T(x) & T(y) & -P(x,y) -> (exists z (T(z) & P(z,x) & -O(z,y))))) # label(non_clause).  [assumption].
+31 (all x all y (T(x) & T(y) & -P(x,y) -> (exists z (P(z,x) & DJ(z,y) & T(z))))) # label(non_clause).  [assumption].
+32 (all x all y (T(x) & T(y) -> (PP(x,y) <-> P(x,y) & -P(y,x)))) # label(non_clause).  [assumption].
+33 (all x all y (T(x) & T(y) -> (O(x,y) <-> (exists z (P(z,x) & P(z,y) & T(z)))))) # label(non_clause).  [assumption].
+34 (all x all y (T(x) & T(y) -> (DJ(x,y) <-> -O(x,y)))) # label(non_clause).  [assumption].
+35 (all x all y (T(x) & T(y) -> (U(x,y) <-> (exists z (P(x,z) & P(y,z) & T(z)))))) # label(non_clause).  [assumption].
+36 (all x (AtP(x) <-> T(x) & (all y (T(y) & P(y,x) -> y = x)))) # label(non_clause).  [assumption].
+37 (all x all y (T(x) & T(y) & U(x,y) -> (exists z (T(z) & (all w (T(w) -> (O(w,z) <-> O(w,x) | O(w,y)))))))) # label(non_clause).  [assumption].
+38 (all x all y (T(x) & T(y) & O(x,y) -> (exists z (T(z) & (all w (T(w) -> (PP(w,z) <-> PP(w,x) & PP(w,y)))))))) # label(non_clause).  [assumption].
+39 (all x all y all z (T(x) & T(y) & T(z) -> (SUM(z,x,y) <-> (all w (T(w) -> (O(w,z) <-> O(w,x) | O(w,y))))))) # label(non_clause).  [assumption].
+40 (all x (ED(x) | PD(x) | Q(x) | AB(x) -> PT(x))) # label(non_clause).  [assumption].
+41 (all x (PED(x) | NPED(x) | AS(x) -> ED(x))) # label(non_clause).  [assumption].
+42 (all x (EV(x) | STV(x) -> PD(x))) # label(non_clause).  [assumption].
+43 (all x (TQ(x) | PQ(x) | AQ(x) -> Q(x))) # label(non_clause).  [assumption].
+44 (all x (R(x) -> AB(x))) # label(non_clause).  [assumption].
+45 (all x (M(x) | F(x) | POB(x) -> PED(x))) # label(non_clause).  [assumption].
+46 (all x (NPOB(x) -> NPED(x))) # label(non_clause).  [assumption].
+47 (all x (ACH(x) | ACC(x) -> EV(x))) # label(non_clause).  [assumption].
+48 (all x (ST(x) | PRO(x) -> STV(x))) # label(non_clause).  [assumption].
+49 (all x (TL(x) -> TQ(x))) # label(non_clause).  [assumption].
+50 (all x (SL(x) -> PQ(x))) # label(non_clause).  [assumption].
+51 (all x (TR(x) | PR(x) | AR(x) -> R(x))) # label(non_clause).  [assumption].
+52 (all x (APO(x) | NAPO(x) -> POB(x))) # label(non_clause).  [assumption].
+53 (all x (MOB(x) | SOB(x) -> NPOB(x))) # label(non_clause).  [assumption].
+54 (all x (T(x) -> TR(x))) # label(non_clause).  [assumption].
+55 (all x (S(x) -> PR(x))) # label(non_clause).  [assumption].
+56 (all x (ASO(x) | NASO(x) -> SOB(x))) # label(non_clause).  [assumption].
+57 (all x (SAG(x) | SC(x) -> ASO(x))) # label(non_clause).  [assumption].
+58 (all x (PT(x) <-> ED(x) | PD(x) | Q(x) | AB(x))) # label(non_clause).  [assumption].
+59 (all x (ED(x) -> -PD(x) & -Q(x) & -AB(x))) # label(non_clause).  [assumption].
+60 (all x (PD(x) -> -Q(x) & -AB(x))) # label(non_clause).  [assumption].
+61 (all x (Q(x) -> -AB(x))) # label(non_clause).  [assumption].
+62 (all x (ED(x) <-> PED(x) | NPED(x) | AS(x))) # label(non_clause).  [assumption].
+63 (all x (PED(x) -> -NPED(x) & -AS(x))) # label(non_clause).  [assumption].
+64 (all x (NPED(x) -> -AS(x))) # label(non_clause).  [assumption].
+65 (all x (PD(x) <-> EV(x) | STV(x))) # label(non_clause).  [assumption].
+66 (all x (EV(x) -> -STV(x))) # label(non_clause).  [assumption].
+67 (all x (Q(x) <-> TQ(x) | PQ(x) | AQ(x))) # label(non_clause).  [assumption].
+68 (all x (TQ(x) -> -PQ(x) & -AQ(x))) # label(non_clause).  [assumption].
+69 (all x (PQ(x) -> -AQ(x))) # label(non_clause).  [assumption].
+70 (all x (PED(x) <-> M(x) | F(x) | POB(x))) # label(non_clause).  [assumption].
+71 (all x (M(x) -> -F(x) & -POB(x))) # label(non_clause).  [assumption].
+72 (all x (F(x) -> -POB(x))) # label(non_clause).  [assumption].
+73 (all x (EV(x) <-> ACH(x) | ACC(x))) # label(non_clause).  [assumption].
+74 (all x (ACH(x) -> -ACC(x))) # label(non_clause).  [assumption].
+75 (all x (STV(x) <-> ST(x) | PRO(x))) # label(non_clause).  [assumption].
+76 (all x (ST(x) -> -PRO(x))) # label(non_clause).  [assumption].
+77 (all x (R(x) <-> TR(x) | PR(x) | AR(x))) # label(non_clause).  [assumption].
+78 (all x (TR(x) -> -PR(x) & -AR(x))) # label(non_clause).  [assumption].
+79 (all x (PR(x) -> -AR(x))) # label(non_clause).  [assumption].
+80 (all x (POB(x) <-> APO(x) | NAPO(x))) # label(non_clause).  [assumption].
+81 (all x (APO(x) -> -NAPO(x))) # label(non_clause).  [assumption].
+82 (all x (NPOB(x) <-> MOB(x) | SOB(x))) # label(non_clause).  [assumption].
+83 (all x (MOB(x) -> -SOB(x))) # label(non_clause).  [assumption].
+84 (all x (SOB(x) <-> ASO(x) | NASO(x))) # label(non_clause).  [assumption].
+85 (all x (ASO(x) -> -NASO(x))) # label(non_clause).  [assumption].
+86 (all x (ASO(x) <-> SAG(x) | SC(x))) # label(non_clause).  [assumption].
+87 (all x (SAG(x) -> -SC(x))) # label(non_clause).  [assumption].
+88 (all x all p (plane2(x) & in2(p,x) & point2(p) -> (exists y tin2(y,x,p)))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating point2/1
+89 point2(x) | -T(x).  [clausify(6)].
+90 -point2(x) | T(x).  [clausify(6)].
+91 point2(c2).  [deny(88)].
+Derived: T(c2).  [resolve(91,a,90,a)].
+
+Eliminating line2/1
+92 line2(x) | -ED(x).  [clausify(7)].
+93 -line2(x) | ED(x).  [clausify(7)].
+
+Eliminating plane2/1
+94 plane2(x) | -PD(x).  [clausify(8)].
+95 -plane2(x) | PD(x).  [clausify(8)].
+96 plane2(c1).  [deny(88)].
+Derived: PD(c1).  [resolve(96,a,95,a)].
+
+Eliminating in2/2
+97 in2(x,y) | -PRE(x,y) | -T(y) | -ED(x).  [clausify(9)].
+98 -in2(x,y) | PRE(x,y) | PRE(y,x) | y = x.  [clausify(9)].
+99 -in2(x,y) | PRE(x,y) | T(x) | y = x.  [clausify(9)].
+100 -in2(x,y) | PRE(x,y) | ED(y) | PD(y) | Q(y) | y = x.  [clausify(9)].
+101 -in2(x,y) | T(y) | PRE(y,x) | y = x.  [clausify(9)].
+102 -in2(x,y) | T(y) | T(x) | y = x.  [clausify(9)].
+103 -in2(x,y) | T(y) | ED(y) | PD(y) | Q(y).  [clausify(9)].
+104 -in2(x,y) | ED(x) | PD(x) | Q(x) | PRE(y,x) | y = x.  [clausify(9)].
+105 -in2(x,y) | ED(x) | PD(x) | Q(x) | T(x) | y = x.  [clausify(9)].
+106 -in2(x,y) | ED(x) | PD(x) | Q(x) | ED(y) | PD(y) | Q(y) | y = x.  [clausify(9)].
+107 in2(x,y) | -PRE(x,y) | -T(y) | -PD(x).  [clausify(9)].
+108 in2(x,y) | -PRE(x,y) | -T(y) | -Q(x).  [clausify(9)].
+109 in2(x,y) | -PRE(y,x) | -T(x) | -ED(y).  [clausify(9)].
+110 in2(x,y) | -PRE(y,x) | -T(x) | -PD(y).  [clausify(9)].
+111 in2(x,y) | -PRE(y,x) | -T(x) | -Q(y).  [clausify(9)].
+112 in2(x,y) | y != x | -ED(y).  [clausify(9)].
+113 in2(x,y) | y != x | -PD(y).  [clausify(9)].
+114 in2(x,y) | y != x | -Q(y).  [clausify(9)].
+115 in2(x,y) | y != x | -T(y).  [clausify(9)].
+116 in2(c2,c1).  [deny(88)].
+Derived: PRE(c2,c1) | PRE(c1,c2) | c1 = c2.  [resolve(116,a,98,a)].
+Derived: T(c1) | PRE(c1,c2) | c1 = c2.  [resolve(116,a,101,a)].
+Derived: ED(c2) | PD(c2) | Q(c2) | PRE(c1,c2) | c1 = c2.  [resolve(116,a,104,a)].
+
+Eliminating ED/1
+117 -ED(x) | PC(x,f2(x),f3(x)).  [clausify(3)].
+118 -PC(x,y,z) | ED(x).  [clausify(1)].
+Derived: PC(x,f2(x),f3(x)) | -PC(x,y,z).  [resolve(117,a,118,b)].
+119 -L_1(x) | ED(x).  [clausify(12)].
+Derived: -L_1(x) | PC(x,f2(x),f3(x)).  [resolve(119,b,117,a)].
+120 L_1(x) | -ED(x).  [clausify(12)].
+Derived: L_1(x) | -PC(x,y,z).  [resolve(120,b,118,b)].
+121 -ED(x) | PRE(x,f5(x)).  [clausify(21)].
+Derived: PRE(x,f5(x)) | -PC(x,y,z).  [resolve(121,a,118,b)].
+Derived: PRE(x,f5(x)) | -L_1(x).  [resolve(121,a,119,b)].
+122 -ED(x) | PT(x).  [clausify(40)].
+Derived: PT(x) | -PC(x,y,z).  [resolve(122,a,118,b)].
+Derived: PT(x) | -L_1(x).  [resolve(122,a,119,b)].
+123 -PED(x) | ED(x).  [clausify(41)].
+Derived: -PED(x) | PC(x,f2(x),f3(x)).  [resolve(123,b,117,a)].
+Derived: -PED(x) | L_1(x).  [resolve(123,b,120,b)].
+Derived: -PED(x) | PRE(x,f5(x)).  [resolve(123,b,121,a)].
+Derived: -PED(x) | PT(x).  [resolve(123,b,122,a)].
+124 -NPED(x) | ED(x).  [clausify(41)].
+Derived: -NPED(x) | PC(x,f2(x),f3(x)).  [resolve(124,b,117,a)].
+Derived: -NPED(x) | L_1(x).  [resolve(124,b,120,b)].
+Derived: -NPED(x) | PRE(x,f5(x)).  [resolve(124,b,121,a)].
+Derived: -NPED(x) | PT(x).  [resolve(124,b,122,a)].
+125 -AS(x) | ED(x).  [clausify(41)].
+Derived: -AS(x) | PC(x,f2(x),f3(x)).  [resolve(125,b,117,a)].
+Derived: -AS(x) | L_1(x).  [resolve(125,b,120,b)].
+Derived: -AS(x) | PRE(x,f5(x)).  [resolve(125,b,121,a)].
+Derived: -AS(x) | PT(x).  [resolve(125,b,122,a)].
+126 -PT(x) | ED(x) | PD(x) | Q(x) | AB(x).  [clausify(58)].
+Derived: -PT(x) | PD(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)).  [resolve(126,b,117,a)].
+Derived: -PT(x) | PD(x) | Q(x) | AB(x) | L_1(x).  [resolve(126,b,120,b)].
+Derived: -PT(x) | PD(x) | Q(x) | AB(x) | PRE(x,f5(x)).  [resolve(126,b,121,a)].
+127 PT(x) | -ED(x).  [clausify(58)].
+128 -ED(x) | -PD(x).  [clausify(59)].
+Derived: -PD(x) | -PC(x,y,z).  [resolve(128,a,118,b)].
+Derived: -PD(x) | -L_1(x).  [resolve(128,a,119,b)].
+Derived: -PD(x) | -PED(x).  [resolve(128,a,123,b)].
+Derived: -PD(x) | -NPED(x).  [resolve(128,a,124,b)].
+Derived: -PD(x) | -AS(x).  [resolve(128,a,125,b)].
+129 -ED(x) | -Q(x).  [clausify(59)].
+Derived: -Q(x) | -PC(x,y,z).  [resolve(129,a,118,b)].
+Derived: -Q(x) | -L_1(x).  [resolve(129,a,119,b)].
+Derived: -Q(x) | -PED(x).  [resolve(129,a,123,b)].
+Derived: -Q(x) | -NPED(x).  [resolve(129,a,124,b)].
+Derived: -Q(x) | -AS(x).  [resolve(129,a,125,b)].
+130 -ED(x) | -AB(x).  [clausify(59)].
+Derived: -AB(x) | -PC(x,y,z).  [resolve(130,a,118,b)].
+Derived: -AB(x) | -L_1(x).  [resolve(130,a,119,b)].
+Derived: -AB(x) | -PED(x).  [resolve(130,a,123,b)].
+Derived: -AB(x) | -NPED(x).  [resolve(130,a,124,b)].
+Derived: -AB(x) | -AS(x).  [resolve(130,a,125,b)].
+131 -ED(x) | PED(x) | NPED(x) | AS(x).  [clausify(62)].
+Derived: PED(x) | NPED(x) | AS(x) | -PC(x,y,z).  [resolve(131,a,118,b)].
+Derived: PED(x) | NPED(x) | AS(x) | -L_1(x).  [resolve(131,a,119,b)].
+Derived: PED(x) | NPED(x) | AS(x) | -PT(x) | PD(x) | Q(x) | AB(x).  [resolve(131,a,126,b)].
+132 ED(x) | -PED(x).  [clausify(62)].
+133 ED(x) | -NPED(x).  [clausify(62)].
+134 ED(x) | -AS(x).  [clausify(62)].
+135 ED(c2) | PD(c2) | Q(c2) | PRE(c1,c2) | c1 = c2.  [resolve(116,a,104,a)].
+Derived: PD(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)).  [resolve(135,a,117,a)].
+Derived: PD(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2).  [resolve(135,a,120,b)].
+Derived: PD(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PRE(c2,f5(c2)).  [resolve(135,a,121,a)].
+Derived: PD(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PT(c2).  [resolve(135,a,122,a)].
+Derived: PD(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | -AB(c2).  [resolve(135,a,130,a)].
+Derived: PD(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2).  [resolve(135,a,131,a)].
+
+Eliminating PD/1
+136 -PD(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [clausify(2)].
+137 -PC(x,y,z) | PD(y).  [clausify(1)].
+Derived: -PRE(x,y) | PC(f1(x,y),x,y) | -PC(z,x,u).  [resolve(136,a,137,b)].
+138 -L_2(x) | PD(x).  [clausify(13)].
+Derived: -L_2(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(138,b,136,a)].
+139 L_2(x) | -PD(x).  [clausify(13)].
+Derived: L_2(x) | -PC(y,x,z).  [resolve(139,b,137,b)].
+140 -PD(x) | PRE(x,f5(x)).  [clausify(21)].
+Derived: PRE(x,f5(x)) | -PC(y,x,z).  [resolve(140,a,137,b)].
+Derived: PRE(x,f5(x)) | -L_2(x).  [resolve(140,a,138,b)].
+141 -PD(x) | PT(x).  [clausify(40)].
+Derived: PT(x) | -PC(y,x,z).  [resolve(141,a,137,b)].
+Derived: PT(x) | -L_2(x).  [resolve(141,a,138,b)].
+142 -EV(x) | PD(x).  [clausify(42)].
+Derived: -EV(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(142,b,136,a)].
+Derived: -EV(x) | L_2(x).  [resolve(142,b,139,b)].
+Derived: -EV(x) | PRE(x,f5(x)).  [resolve(142,b,140,a)].
+Derived: -EV(x) | PT(x).  [resolve(142,b,141,a)].
+143 -STV(x) | PD(x).  [clausify(42)].
+Derived: -STV(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(143,b,136,a)].
+Derived: -STV(x) | L_2(x).  [resolve(143,b,139,b)].
+Derived: -STV(x) | PRE(x,f5(x)).  [resolve(143,b,140,a)].
+Derived: -STV(x) | PT(x).  [resolve(143,b,141,a)].
+144 PT(x) | -PD(x).  [clausify(58)].
+145 -PD(x) | -Q(x).  [clausify(60)].
+Derived: -Q(x) | -PC(y,x,z).  [resolve(145,a,137,b)].
+Derived: -Q(x) | -L_2(x).  [resolve(145,a,138,b)].
+Derived: -Q(x) | -EV(x).  [resolve(145,a,142,b)].
+Derived: -Q(x) | -STV(x).  [resolve(145,a,143,b)].
+146 -PD(x) | -AB(x).  [clausify(60)].
+Derived: -AB(x) | -PC(y,x,z).  [resolve(146,a,137,b)].
+Derived: -AB(x) | -L_2(x).  [resolve(146,a,138,b)].
+Derived: -AB(x) | -EV(x).  [resolve(146,a,142,b)].
+Derived: -AB(x) | -STV(x).  [resolve(146,a,143,b)].
+147 -PD(x) | EV(x) | STV(x).  [clausify(65)].
+Derived: EV(x) | STV(x) | -PC(y,x,z).  [resolve(147,a,137,b)].
+Derived: EV(x) | STV(x) | -L_2(x).  [resolve(147,a,138,b)].
+148 PD(x) | -EV(x).  [clausify(65)].
+149 PD(x) | -STV(x).  [clausify(65)].
+150 PD(c1).  [resolve(96,a,95,a)].
+Derived: -PRE(c1,x) | PC(f1(c1,x),c1,x).  [resolve(150,a,136,a)].
+Derived: L_2(c1).  [resolve(150,a,139,b)].
+Derived: PRE(c1,f5(c1)).  [resolve(150,a,140,a)].
+Derived: PT(c1).  [resolve(150,a,141,a)].
+Derived: -Q(c1).  [resolve(150,a,145,a)].
+Derived: -AB(c1).  [resolve(150,a,146,a)].
+Derived: EV(c1) | STV(c1).  [resolve(150,a,147,a)].
+151 -PT(x) | PD(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)).  [resolve(126,b,117,a)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(151,b,136,a)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | L_2(x).  [resolve(151,b,139,b)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | PRE(x,f5(x)).  [resolve(151,b,140,a)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | EV(x) | STV(x).  [resolve(151,b,147,a)].
+152 -PT(x) | PD(x) | Q(x) | AB(x) | L_1(x).  [resolve(126,b,120,b)].
+Derived: -PT(x) | Q(x) | AB(x) | L_1(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(152,b,136,a)].
+Derived: -PT(x) | Q(x) | AB(x) | L_1(x) | L_2(x).  [resolve(152,b,139,b)].
+Derived: -PT(x) | Q(x) | AB(x) | L_1(x) | PRE(x,f5(x)).  [resolve(152,b,140,a)].
+Derived: -PT(x) | Q(x) | AB(x) | L_1(x) | EV(x) | STV(x).  [resolve(152,b,147,a)].
+153 -PT(x) | PD(x) | Q(x) | AB(x) | PRE(x,f5(x)).  [resolve(126,b,121,a)].
+Derived: -PT(x) | Q(x) | AB(x) | PRE(x,f5(x)) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(153,b,136,a)].
+Derived: -PT(x) | Q(x) | AB(x) | PRE(x,f5(x)) | L_2(x).  [resolve(153,b,139,b)].
+Derived: -PT(x) | Q(x) | AB(x) | PRE(x,f5(x)) | PRE(x,f5(x)).  [resolve(153,b,140,a)].
+154 -PD(x) | -PC(x,y,z).  [resolve(128,a,118,b)].
+Derived: -PC(x,y,z) | -PC(u,x,w).  [resolve(154,a,137,b)].
+Derived: -PC(x,y,z) | -L_2(x).  [resolve(154,a,138,b)].
+Derived: -PC(x,y,z) | -EV(x).  [resolve(154,a,142,b)].
+Derived: -PC(x,y,z) | -STV(x).  [resolve(154,a,143,b)].
+Derived: -PC(c1,x,y).  [resolve(154,a,150,a)].
+Derived: -PC(x,y,z) | -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)).  [resolve(154,a,151,b)].
+Derived: -PC(x,y,z) | -PT(x) | Q(x) | AB(x) | L_1(x).  [resolve(154,a,152,b)].
+155 -PD(x) | -L_1(x).  [resolve(128,a,119,b)].
+Derived: -L_1(x) | -PC(y,x,z).  [resolve(155,a,137,b)].
+Derived: -L_1(x) | -L_2(x).  [resolve(155,a,138,b)].
+Derived: -L_1(x) | -EV(x).  [resolve(155,a,142,b)].
+Derived: -L_1(x) | -STV(x).  [resolve(155,a,143,b)].
+Derived: -L_1(c1).  [resolve(155,a,150,a)].
+Derived: -L_1(x) | -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)).  [resolve(155,a,151,b)].
+156 -PD(x) | -PED(x).  [resolve(128,a,123,b)].
+Derived: -PED(x) | -PC(y,x,z).  [resolve(156,a,137,b)].
+Derived: -PED(x) | -L_2(x).  [resolve(156,a,138,b)].
+Derived: -PED(x) | -EV(x).  [resolve(156,a,142,b)].
+Derived: -PED(x) | -STV(x).  [resolve(156,a,143,b)].
+Derived: -PED(c1).  [resolve(156,a,150,a)].
+Derived: -PED(x) | -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)).  [resolve(156,a,151,b)].
+Derived: -PED(x) | -PT(x) | Q(x) | AB(x) | L_1(x).  [resolve(156,a,152,b)].
+157 -PD(x) | -NPED(x).  [resolve(128,a,124,b)].
+Derived: -NPED(x) | -PC(y,x,z).  [resolve(157,a,137,b)].
+Derived: -NPED(x) | -L_2(x).  [resolve(157,a,138,b)].
+Derived: -NPED(x) | -EV(x).  [resolve(157,a,142,b)].
+Derived: -NPED(x) | -STV(x).  [resolve(157,a,143,b)].
+Derived: -NPED(c1).  [resolve(157,a,150,a)].
+Derived: -NPED(x) | -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)).  [resolve(157,a,151,b)].
+Derived: -NPED(x) | -PT(x) | Q(x) | AB(x) | L_1(x).  [resolve(157,a,152,b)].
+158 -PD(x) | -AS(x).  [resolve(128,a,125,b)].
+Derived: -AS(x) | -PC(y,x,z).  [resolve(158,a,137,b)].
+Derived: -AS(x) | -L_2(x).  [resolve(158,a,138,b)].
+Derived: -AS(x) | -EV(x).  [resolve(158,a,142,b)].
+Derived: -AS(x) | -STV(x).  [resolve(158,a,143,b)].
+Derived: -AS(c1).  [resolve(158,a,150,a)].
+Derived: -AS(x) | -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)).  [resolve(158,a,151,b)].
+Derived: -AS(x) | -PT(x) | Q(x) | AB(x) | L_1(x).  [resolve(158,a,152,b)].
+159 PED(x) | NPED(x) | AS(x) | -PT(x) | PD(x) | Q(x) | AB(x).  [resolve(131,a,126,b)].
+Derived: PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(159,e,136,a)].
+Derived: PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x) | L_2(x).  [resolve(159,e,139,b)].
+Derived: PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x) | EV(x) | STV(x).  [resolve(159,e,147,a)].
+Derived: PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x) | -PC(x,y,z).  [resolve(159,e,154,a)].
+Derived: PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x) | -L_1(x).  [resolve(159,e,155,a)].
+160 PD(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)).  [resolve(135,a,117,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(160,a,136,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | L_2(c2).  [resolve(160,a,139,b)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | PRE(c2,f5(c2)).  [resolve(160,a,140,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | PT(c2).  [resolve(160,a,141,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | -AB(c2).  [resolve(160,a,146,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | EV(c2) | STV(c2).  [resolve(160,a,147,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | -PC(c2,x,y).  [resolve(160,a,154,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | -L_1(c2).  [resolve(160,a,155,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | -PED(c2).  [resolve(160,a,156,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | -NPED(c2).  [resolve(160,a,157,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | -AS(c2).  [resolve(160,a,158,a)].
+161 PD(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2).  [resolve(135,a,120,b)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(161,a,136,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | L_2(c2).  [resolve(161,a,139,b)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | PRE(c2,f5(c2)).  [resolve(161,a,140,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | PT(c2).  [resolve(161,a,141,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | -AB(c2).  [resolve(161,a,146,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | EV(c2) | STV(c2).  [resolve(161,a,147,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | -PC(c2,x,y).  [resolve(161,a,154,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | -PED(c2).  [resolve(161,a,156,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | -NPED(c2).  [resolve(161,a,157,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | -AS(c2).  [resolve(161,a,158,a)].
+162 PD(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PRE(c2,f5(c2)).  [resolve(135,a,121,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PRE(c2,f5(c2)) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(162,a,136,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PRE(c2,f5(c2)) | L_2(c2).  [resolve(162,a,139,b)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PRE(c2,f5(c2)) | PRE(c2,f5(c2)).  [resolve(162,a,140,a)].
+163 PD(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PT(c2).  [resolve(135,a,122,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PT(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(163,a,136,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PT(c2) | L_2(c2).  [resolve(163,a,139,b)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PT(c2) | PT(c2).  [resolve(163,a,141,a)].
+164 PD(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | -AB(c2).  [resolve(135,a,130,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | -AB(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(164,a,136,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | -AB(c2) | L_2(c2).  [resolve(164,a,139,b)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | -AB(c2) | -AB(c2).  [resolve(164,a,146,a)].
+165 PD(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2).  [resolve(135,a,131,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(165,a,136,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | L_2(c2).  [resolve(165,a,139,b)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | EV(c2) | STV(c2).  [resolve(165,a,147,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | -PC(c2,x,y).  [resolve(165,a,154,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | -L_1(c2).  [resolve(165,a,155,a)].
+
+Eliminating part2/2
+166 part2(x,y) | -P(x,y) | -T(x) | -T(y).  [clausify(11)].
+167 -part2(x,y) | P(x,y).  [clausify(11)].
+168 -part2(x,y) | T(x).  [clausify(11)].
+169 -part2(x,y) | T(y).  [clausify(11)].
+
+Eliminating L_3/1
+170 L_3(x) | -Q(x).  [clausify(14)].
+171 -L_3(x) | Q(x).  [clausify(14)].
+
+Eliminating atomic_part/1
+172 atomic_part(x) | -AtP(x) | -T(x).  [clausify(15)].
+173 -atomic_part(x) | AtP(x).  [clausify(15)].
+174 -atomic_part(x) | T(x).  [clausify(15)].
+
+Eliminating ppart/2
+175 ppart(x,y) | -PP(x,y) | -T(x) | -T(y).  [clausify(16)].
+176 -ppart(x,y) | PP(x,y).  [clausify(16)].
+177 -ppart(x,y) | T(x).  [clausify(16)].
+178 -ppart(x,y) | T(y).  [clausify(16)].
+
+Eliminating overlaps/2
+179 overlaps(x,y) | -O(x,y) | -T(x) | -T(y).  [clausify(17)].
+180 -overlaps(x,y) | O(x,y).  [clausify(17)].
+181 -overlaps(x,y) | T(x).  [clausify(17)].
+182 -overlaps(x,y) | T(y).  [clausify(17)].
+
+Eliminating underlaps/2
+183 underlaps(x,y) | -U(x,y) | -T(x) | -T(y).  [clausify(18)].
+184 -underlaps(x,y) | U(x,y).  [clausify(18)].
+185 -underlaps(x,y) | T(x).  [clausify(18)].
+186 -underlaps(x,y) | T(y).  [clausify(18)].
+
+Eliminating disjoint/2
+187 disjoint(x,y) | -DJ(x,y) | -T(x) | -T(y).  [clausify(19)].
+188 -disjoint(x,y) | DJ(x,y).  [clausify(19)].
+189 -disjoint(x,y) | T(x).  [clausify(19)].
+190 -disjoint(x,y) | T(y).  [clausify(19)].
+
+Eliminating sum/3
+191 sum(x,y,z) | -SUM(z,x,y) | -T(z) | -T(x) | -T(y).  [clausify(20)].
+192 -sum(x,y,z) | SUM(z,x,y).  [clausify(20)].
+193 -sum(x,y,z) | T(z).  [clausify(20)].
+194 -sum(x,y,z) | T(x).  [clausify(20)].
+195 -sum(x,y,z) | T(y).  [clausify(20)].
+
+Eliminating SUM/3
+196 -T(x) | -T(y) | -T(z) | SUM(z,x,y) | T(f13(x,y,z)).  [clausify(39)].
+197 -PRE(x,y) | -PRE(x,z) | -SUM(u,y,z) | PRE(x,u).  [clausify(24)].
+198 -T(x) | -T(y) | -T(z) | -SUM(z,x,y) | -T(u) | -O(u,z) | O(u,x) | O(u,y).  [clausify(39)].
+199 -T(x) | -T(y) | -T(z) | -SUM(z,x,y) | -T(u) | O(u,z) | -O(u,x).  [clausify(39)].
+200 -T(x) | -T(y) | -T(z) | -SUM(z,x,y) | -T(u) | O(u,z) | -O(u,y).  [clausify(39)].
+Derived: -T(x) | -T(y) | -T(z) | T(f13(x,y,z)) | -PRE(u,x) | -PRE(u,y) | PRE(u,z).  [resolve(196,d,197,c)].
+Derived: -T(x) | -T(y) | -T(z) | T(f13(x,y,z)) | -T(x) | -T(y) | -T(z) | -T(u) | -O(u,z) | O(u,x) | O(u,y).  [resolve(196,d,198,d)].
+Derived: -T(x) | -T(y) | -T(z) | T(f13(x,y,z)) | -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,x).  [resolve(196,d,199,d)].
+Derived: -T(x) | -T(y) | -T(z) | T(f13(x,y,z)) | -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,y).  [resolve(196,d,200,d)].
+201 -T(x) | -T(y) | -T(z) | SUM(z,x,y) | O(f13(x,y,z),z) | O(f13(x,y,z),x) | O(f13(x,y,z),y).  [clausify(39)].
+Derived: -T(x) | -T(y) | -T(z) | O(f13(x,y,z),z) | O(f13(x,y,z),x) | O(f13(x,y,z),y) | -PRE(u,x) | -PRE(u,y) | PRE(u,z).  [resolve(201,d,197,c)].
+Derived: -T(x) | -T(y) | -T(z) | O(f13(x,y,z),z) | O(f13(x,y,z),x) | O(f13(x,y,z),y) | -T(x) | -T(y) | -T(z) | -T(u) | -O(u,z) | O(u,x) | O(u,y).  [resolve(201,d,198,d)].
+Derived: -T(x) | -T(y) | -T(z) | O(f13(x,y,z),z) | O(f13(x,y,z),x) | O(f13(x,y,z),y) | -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,x).  [resolve(201,d,199,d)].
+Derived: -T(x) | -T(y) | -T(z) | O(f13(x,y,z),z) | O(f13(x,y,z),x) | O(f13(x,y,z),y) | -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,y).  [resolve(201,d,200,d)].
+202 -T(x) | -T(y) | -T(z) | SUM(z,x,y) | -O(f13(x,y,z),z) | -O(f13(x,y,z),x).  [clausify(39)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f13(x,y,z),z) | -O(f13(x,y,z),x) | -PRE(u,x) | -PRE(u,y) | PRE(u,z).  [resolve(202,d,197,c)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f13(x,y,z),z) | -O(f13(x,y,z),x) | -T(x) | -T(y) | -T(z) | -T(u) | -O(u,z) | O(u,x) | O(u,y).  [resolve(202,d,198,d)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f13(x,y,z),z) | -O(f13(x,y,z),x) | -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,x).  [resolve(202,d,199,d)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f13(x,y,z),z) | -O(f13(x,y,z),x) | -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,y).  [resolve(202,d,200,d)].
+203 -T(x) | -T(y) | -T(z) | SUM(z,x,y) | -O(f13(x,y,z),z) | -O(f13(x,y,z),y).  [clausify(39)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f13(x,y,z),z) | -O(f13(x,y,z),y) | -PRE(u,x) | -PRE(u,y) | PRE(u,z).  [resolve(203,d,197,c)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f13(x,y,z),z) | -O(f13(x,y,z),y) | -T(x) | -T(y) | -T(z) | -T(u) | -O(u,z) | O(u,x) | O(u,y).  [resolve(203,d,198,d)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f13(x,y,z),z) | -O(f13(x,y,z),y) | -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,x).  [resolve(203,d,199,d)].
+Derived: -T(x) | -T(y) | -T(z) | -O(f13(x,y,z),z) | -O(f13(x,y,z),y) | -T(x) | -T(y) | -T(z) | -T(u) | O(u,z) | -O(u,y).  [resolve(203,d,200,d)].
+
+Eliminating DJ/2
+204 -T(x) | -T(y) | -DJ(x,y) | -O(x,y).  [clausify(34)].
+205 -T(x) | -T(y) | P(x,y) | DJ(f7(x,y),y).  [clausify(31)].
+Derived: -T(f7(x,y)) | -T(y) | -O(f7(x,y),y) | -T(x) | -T(y) | P(x,y).  [resolve(204,c,205,d)].
+206 -T(x) | -T(y) | DJ(x,y) | O(x,y).  [clausify(34)].
+
+Eliminating U/2
+207 -T(x) | -T(y) | U(x,y) | -P(x,z) | -P(y,z) | -T(z).  [clausify(35)].
+208 -T(x) | -T(y) | -U(x,y) | P(x,f9(x,y)).  [clausify(35)].
+209 -T(x) | -T(y) | -U(x,y) | P(y,f9(x,y)).  [clausify(35)].
+210 -T(x) | -T(y) | -U(x,y) | T(f9(x,y)).  [clausify(35)].
+Derived: -T(x) | -T(y) | -P(x,z) | -P(y,z) | -T(z) | -T(x) | -T(y) | P(x,f9(x,y)).  [resolve(207,c,208,c)].
+Derived: -T(x) | -T(y) | -P(x,z) | -P(y,z) | -T(z) | -T(x) | -T(y) | P(y,f9(x,y)).  [resolve(207,c,209,c)].
+Derived: -T(x) | -T(y) | -P(x,z) | -P(y,z) | -T(z) | -T(x) | -T(y) | T(f9(x,y)).  [resolve(207,c,210,c)].
+211 -T(x) | -T(y) | -U(x,y) | T(f11(x,y)).  [clausify(37)].
+Derived: -T(x) | -T(y) | T(f11(x,y)) | -T(x) | -T(y) | -P(x,z) | -P(y,z) | -T(z).  [resolve(211,c,207,c)].
+212 -T(x) | -T(y) | -U(x,y) | -T(z) | -O(z,f11(x,y)) | O(z,x) | O(z,y).  [clausify(37)].
+Derived: -T(x) | -T(y) | -T(z) | -O(z,f11(x,y)) | O(z,x) | O(z,y) | -T(x) | -T(y) | -P(x,u) | -P(y,u) | -T(u).  [resolve(212,c,207,c)].
+213 -T(x) | -T(y) | -U(x,y) | -T(z) | O(z,f11(x,y)) | -O(z,x).  [clausify(37)].
+Derived: -T(x) | -T(y) | -T(z) | O(z,f11(x,y)) | -O(z,x) | -T(x) | -T(y) | -P(x,u) | -P(y,u) | -T(u).  [resolve(213,c,207,c)].
+214 -T(x) | -T(y) | -U(x,y) | -T(z) | O(z,f11(x,y)) | -O(z,y).  [clausify(37)].
+Derived: -T(x) | -T(y) | -T(z) | O(z,f11(x,y)) | -O(z,y) | -T(x) | -T(y) | -P(x,u) | -P(y,u) | -T(u).  [resolve(214,c,207,c)].
+
+Eliminating AtP/1
+215 AtP(x) | -T(x) | T(f10(x)).  [clausify(36)].
+216 -AtP(x) | T(x).  [clausify(36)].
+217 -AtP(x) | -T(y) | -P(y,x) | y = x.  [clausify(36)].
+Derived: -T(x) | T(f10(x)) | -T(y) | -P(y,x) | y = x.  [resolve(215,a,217,a)].
+218 AtP(x) | -T(x) | P(f10(x),x).  [clausify(36)].
+Derived: -T(x) | P(f10(x),x) | -T(y) | -P(y,x) | y = x.  [resolve(218,a,217,a)].
+219 AtP(x) | -T(x) | f10(x) != x.  [clausify(36)].
+Derived: -T(x) | f10(x) != x | -T(y) | -P(y,x) | y = x.  [resolve(219,a,217,a)].
+
+Eliminating TQ/1
+220 -TL(x) | TQ(x).  [clausify(49)].
+221 -TQ(x) | Q(x).  [clausify(43)].
+Derived: -TL(x) | Q(x).  [resolve(220,b,221,a)].
+222 -Q(x) | TQ(x) | PQ(x) | AQ(x).  [clausify(67)].
+223 Q(x) | -TQ(x).  [clausify(67)].
+224 -TQ(x) | -PQ(x).  [clausify(68)].
+Derived: -PQ(x) | -TL(x).  [resolve(224,a,220,b)].
+225 -TQ(x) | -AQ(x).  [clausify(68)].
+Derived: -AQ(x) | -TL(x).  [resolve(225,a,220,b)].
+
+Eliminating PQ/1
+226 -SL(x) | PQ(x).  [clausify(50)].
+227 -PQ(x) | Q(x).  [clausify(43)].
+Derived: -SL(x) | Q(x).  [resolve(226,b,227,a)].
+228 Q(x) | -PQ(x).  [clausify(67)].
+229 -PQ(x) | -AQ(x).  [clausify(69)].
+Derived: -AQ(x) | -SL(x).  [resolve(229,a,226,b)].
+230 -PQ(x) | -TL(x).  [resolve(224,a,220,b)].
+Derived: -TL(x) | -SL(x).  [resolve(230,a,226,b)].
+
+Eliminating AQ/1
+
+Eliminating R/1
+231 -TR(x) | R(x).  [clausify(51)].
+232 -R(x) | AB(x).  [clausify(44)].
+Derived: -TR(x) | AB(x).  [resolve(231,b,232,a)].
+233 -PR(x) | R(x).  [clausify(51)].
+Derived: -PR(x) | AB(x).  [resolve(233,b,232,a)].
+234 -AR(x) | R(x).  [clausify(51)].
+Derived: -AR(x) | AB(x).  [resolve(234,b,232,a)].
+235 -R(x) | TR(x) | PR(x) | AR(x).  [clausify(77)].
+236 R(x) | -TR(x).  [clausify(77)].
+237 R(x) | -PR(x).  [clausify(77)].
+238 R(x) | -AR(x).  [clausify(77)].
+
+Eliminating M/1
+239 -PED(x) | M(x) | F(x) | POB(x).  [clausify(70)].
+240 -M(x) | PED(x).  [clausify(45)].
+241 PED(x) | -M(x).  [clausify(70)].
+242 -M(x) | -F(x).  [clausify(71)].
+243 -M(x) | -POB(x).  [clausify(71)].
+
+Eliminating F/1
+
+Eliminating POB/1
+244 -APO(x) | POB(x).  [clausify(52)].
+245 -POB(x) | PED(x).  [clausify(45)].
+Derived: -APO(x) | PED(x).  [resolve(244,b,245,a)].
+246 -NAPO(x) | POB(x).  [clausify(52)].
+Derived: -NAPO(x) | PED(x).  [resolve(246,b,245,a)].
+247 PED(x) | -POB(x).  [clausify(70)].
+248 -POB(x) | APO(x) | NAPO(x).  [clausify(80)].
+249 POB(x) | -APO(x).  [clausify(80)].
+250 POB(x) | -NAPO(x).  [clausify(80)].
+
+Eliminating NPOB/1
+251 -MOB(x) | NPOB(x).  [clausify(53)].
+252 -NPOB(x) | NPED(x).  [clausify(46)].
+Derived: -MOB(x) | NPED(x).  [resolve(251,b,252,a)].
+253 -SOB(x) | NPOB(x).  [clausify(53)].
+Derived: -SOB(x) | NPED(x).  [resolve(253,b,252,a)].
+254 -NPOB(x) | MOB(x) | SOB(x).  [clausify(82)].
+255 NPOB(x) | -MOB(x).  [clausify(82)].
+256 NPOB(x) | -SOB(x).  [clausify(82)].
+
+Eliminating ACH/1
+257 -EV(x) | ACH(x) | ACC(x).  [clausify(73)].
+258 -ACH(x) | EV(x).  [clausify(47)].
+259 EV(x) | -ACH(x).  [clausify(73)].
+260 -ACH(x) | -ACC(x).  [clausify(74)].
+
+Eliminating ACC/1
+
+Eliminating ST/1
+261 -STV(x) | ST(x) | PRO(x).  [clausify(75)].
+262 -ST(x) | STV(x).  [clausify(48)].
+263 STV(x) | -ST(x).  [clausify(75)].
+264 -ST(x) | -PRO(x).  [clausify(76)].
+
+Eliminating PRO/1
+
+Eliminating TR/1
+265 -TR(x) | -PR(x).  [clausify(78)].
+266 -T(x) | TR(x).  [clausify(54)].
+Derived: -PR(x) | -T(x).  [resolve(265,a,266,b)].
+267 -TR(x) | -AR(x).  [clausify(78)].
+Derived: -AR(x) | -T(x).  [resolve(267,a,266,b)].
+268 -TR(x) | AB(x).  [resolve(231,b,232,a)].
+Derived: AB(x) | -T(x).  [resolve(268,a,266,b)].
+
+Eliminating S/1
+
+Eliminating ASO/1
+269 -SAG(x) | ASO(x).  [clausify(57)].
+270 -ASO(x) | SOB(x).  [clausify(56)].
+Derived: -SAG(x) | SOB(x).  [resolve(269,b,270,a)].
+271 -SC(x) | ASO(x).  [clausify(57)].
+Derived: -SC(x) | SOB(x).  [resolve(271,b,270,a)].
+272 -SOB(x) | ASO(x) | NASO(x).  [clausify(84)].
+273 SOB(x) | -ASO(x).  [clausify(84)].
+274 -ASO(x) | -NASO(x).  [clausify(85)].
+Derived: -NASO(x) | -SAG(x).  [resolve(274,a,269,b)].
+Derived: -NASO(x) | -SC(x).  [resolve(274,a,271,b)].
+275 -ASO(x) | SAG(x) | SC(x).  [clausify(86)].
+Derived: SAG(x) | SC(x) | -SOB(x) | NASO(x).  [resolve(275,a,272,b)].
+276 ASO(x) | -SAG(x).  [clausify(86)].
+277 ASO(x) | -SC(x).  [clausify(86)].
+
+Eliminating NASO/1
+278 SAG(x) | SC(x) | -SOB(x) | NASO(x).  [resolve(275,a,272,b)].
+279 -NASO(x) | SOB(x).  [clausify(56)].
+280 SOB(x) | -NASO(x).  [clausify(84)].
+281 -NASO(x) | -SAG(x).  [resolve(274,a,269,b)].
+282 -NASO(x) | -SC(x).  [resolve(274,a,271,b)].
+
+Eliminating EV/1
+283 EV(x) | STV(x) | -PC(y,x,z).  [resolve(147,a,137,b)].
+284 -EV(x) | -STV(x).  [clausify(66)].
+285 -EV(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(142,b,136,a)].
+286 -EV(x) | L_2(x).  [resolve(142,b,139,b)].
+287 -EV(x) | PRE(x,f5(x)).  [resolve(142,b,140,a)].
+288 -EV(x) | PT(x).  [resolve(142,b,141,a)].
+289 -Q(x) | -EV(x).  [resolve(145,a,142,b)].
+290 -AB(x) | -EV(x).  [resolve(146,a,142,b)].
+Derived: STV(x) | -PC(y,x,z) | -PRE(x,u) | PC(f1(x,u),x,u).  [resolve(283,a,285,a)].
+Derived: STV(x) | -PC(y,x,z) | L_2(x).  [resolve(283,a,286,a)].
+Derived: STV(x) | -PC(y,x,z) | PRE(x,f5(x)).  [resolve(283,a,287,a)].
+Derived: STV(x) | -PC(y,x,z) | PT(x).  [resolve(283,a,288,a)].
+Derived: STV(x) | -PC(y,x,z) | -Q(x).  [resolve(283,a,289,b)].
+Derived: STV(x) | -PC(y,x,z) | -AB(x).  [resolve(283,a,290,b)].
+291 EV(x) | STV(x) | -L_2(x).  [resolve(147,a,138,b)].
+Derived: STV(x) | -L_2(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(291,a,285,a)].
+Derived: STV(x) | -L_2(x) | PRE(x,f5(x)).  [resolve(291,a,287,a)].
+Derived: STV(x) | -L_2(x) | PT(x).  [resolve(291,a,288,a)].
+Derived: STV(x) | -L_2(x) | -Q(x).  [resolve(291,a,289,b)].
+Derived: STV(x) | -L_2(x) | -AB(x).  [resolve(291,a,290,b)].
+292 EV(c1) | STV(c1).  [resolve(150,a,147,a)].
+Derived: STV(c1) | -PRE(c1,x) | PC(f1(c1,x),c1,x).  [resolve(292,a,285,a)].
+Derived: STV(c1) | L_2(c1).  [resolve(292,a,286,a)].
+Derived: STV(c1) | PRE(c1,f5(c1)).  [resolve(292,a,287,a)].
+Derived: STV(c1) | PT(c1).  [resolve(292,a,288,a)].
+Derived: STV(c1) | -Q(c1).  [resolve(292,a,289,b)].
+Derived: STV(c1) | -AB(c1).  [resolve(292,a,290,b)].
+293 -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | EV(x) | STV(x).  [resolve(151,b,147,a)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | STV(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(293,e,285,a)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | STV(x) | L_2(x).  [resolve(293,e,286,a)].
+294 -PT(x) | Q(x) | AB(x) | L_1(x) | EV(x) | STV(x).  [resolve(152,b,147,a)].
+Derived: -PT(x) | Q(x) | AB(x) | L_1(x) | STV(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(294,e,285,a)].
+Derived: -PT(x) | Q(x) | AB(x) | L_1(x) | STV(x) | L_2(x).  [resolve(294,e,286,a)].
+295 -PC(x,y,z) | -EV(x).  [resolve(154,a,142,b)].
+Derived: -PC(x,y,z) | STV(x) | -PC(u,x,w).  [resolve(295,b,283,a)].
+Derived: -PC(x,y,z) | STV(x) | -L_2(x).  [resolve(295,b,291,a)].
+296 -L_1(x) | -EV(x).  [resolve(155,a,142,b)].
+Derived: -L_1(x) | STV(x) | -PC(y,x,z).  [resolve(296,b,283,a)].
+Derived: -L_1(x) | STV(x) | -L_2(x).  [resolve(296,b,291,a)].
+297 -PED(x) | -EV(x).  [resolve(156,a,142,b)].
+Derived: -PED(x) | STV(x) | -PC(y,x,z).  [resolve(297,b,283,a)].
+Derived: -PED(x) | STV(x) | -L_2(x).  [resolve(297,b,291,a)].
+298 -NPED(x) | -EV(x).  [resolve(157,a,142,b)].
+Derived: -NPED(x) | STV(x) | -PC(y,x,z).  [resolve(298,b,283,a)].
+Derived: -NPED(x) | STV(x) | -L_2(x).  [resolve(298,b,291,a)].
+299 -AS(x) | -EV(x).  [resolve(158,a,142,b)].
+Derived: -AS(x) | STV(x) | -PC(y,x,z).  [resolve(299,b,283,a)].
+Derived: -AS(x) | STV(x) | -L_2(x).  [resolve(299,b,291,a)].
+300 PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x) | EV(x) | STV(x).  [resolve(159,e,147,a)].
+Derived: PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x) | STV(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(300,g,285,a)].
+Derived: PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x) | STV(x) | L_2(x).  [resolve(300,g,286,a)].
+Derived: PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x) | STV(x) | PRE(x,f5(x)).  [resolve(300,g,287,a)].
+301 Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | EV(c2) | STV(c2).  [resolve(160,a,147,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | STV(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(301,e,285,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | STV(c2) | L_2(c2).  [resolve(301,e,286,a)].
+302 Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | EV(c2) | STV(c2).  [resolve(161,a,147,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | STV(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(302,e,285,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | STV(c2) | L_2(c2).  [resolve(302,e,286,a)].
+303 Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | EV(c2) | STV(c2).  [resolve(165,a,147,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | STV(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(303,g,285,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | STV(c2) | L_2(c2).  [resolve(303,g,286,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | STV(c2) | PRE(c2,f5(c2)).  [resolve(303,g,287,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | STV(c2) | PT(c2).  [resolve(303,g,288,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | STV(c2) | -AB(c2).  [resolve(303,g,290,b)].
+
+Eliminating PR/1
+
+Eliminating APO/1
+
+Eliminating MOB/1
+
+Eliminating SAG/1
+
+Eliminating L_2/1
+304 L_2(x) | -PC(y,x,z).  [resolve(139,b,137,b)].
+305 -L_2(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(138,b,136,a)].
+Derived: -PC(x,y,z) | -PRE(y,u) | PC(f1(y,u),y,u).  [resolve(304,a,305,a)].
+306 PRE(x,f5(x)) | -L_2(x).  [resolve(140,a,138,b)].
+Derived: PRE(x,f5(x)) | -PC(y,x,z).  [resolve(306,b,304,a)].
+307 PT(x) | -L_2(x).  [resolve(141,a,138,b)].
+Derived: PT(x) | -PC(y,x,z).  [resolve(307,b,304,a)].
+308 -STV(x) | L_2(x).  [resolve(143,b,139,b)].
+Derived: -STV(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(308,b,305,a)].
+309 -Q(x) | -L_2(x).  [resolve(145,a,138,b)].
+Derived: -Q(x) | -PC(y,x,z).  [resolve(309,b,304,a)].
+310 -AB(x) | -L_2(x).  [resolve(146,a,138,b)].
+Derived: -AB(x) | -PC(y,x,z).  [resolve(310,b,304,a)].
+311 L_2(c1).  [resolve(150,a,139,b)].
+Derived: -PRE(c1,x) | PC(f1(c1,x),c1,x).  [resolve(311,a,305,a)].
+312 -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | L_2(x).  [resolve(151,b,139,b)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(312,e,305,a)].
+313 -PT(x) | Q(x) | AB(x) | L_1(x) | L_2(x).  [resolve(152,b,139,b)].
+Derived: -PT(x) | Q(x) | AB(x) | L_1(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(313,e,305,a)].
+314 -PT(x) | Q(x) | AB(x) | PRE(x,f5(x)) | L_2(x).  [resolve(153,b,139,b)].
+315 -PC(x,y,z) | -L_2(x).  [resolve(154,a,138,b)].
+Derived: -PC(x,y,z) | -PC(u,x,w).  [resolve(315,b,304,a)].
+Derived: -PC(x,y,z) | -PT(x) | Q(x) | AB(x) | PRE(x,f5(x)).  [resolve(315,b,314,e)].
+316 -L_1(x) | -L_2(x).  [resolve(155,a,138,b)].
+Derived: -L_1(x) | -PC(y,x,z).  [resolve(316,b,304,a)].
+Derived: -L_1(x) | -PT(x) | Q(x) | AB(x) | PRE(x,f5(x)).  [resolve(316,b,314,e)].
+317 -PED(x) | -L_2(x).  [resolve(156,a,138,b)].
+Derived: -PED(x) | -PC(y,x,z).  [resolve(317,b,304,a)].
+Derived: -PED(x) | -PT(x) | Q(x) | AB(x) | PRE(x,f5(x)).  [resolve(317,b,314,e)].
+318 -NPED(x) | -L_2(x).  [resolve(157,a,138,b)].
+Derived: -NPED(x) | -PC(y,x,z).  [resolve(318,b,304,a)].
+Derived: -NPED(x) | -PT(x) | Q(x) | AB(x) | PRE(x,f5(x)).  [resolve(318,b,314,e)].
+319 -AS(x) | -L_2(x).  [resolve(158,a,138,b)].
+Derived: -AS(x) | -PC(y,x,z).  [resolve(319,b,304,a)].
+Derived: -AS(x) | -PT(x) | Q(x) | AB(x) | PRE(x,f5(x)).  [resolve(319,b,314,e)].
+320 PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x) | L_2(x).  [resolve(159,e,139,b)].
+Derived: PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(320,g,305,a)].
+Derived: PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x) | PRE(x,f5(x)).  [resolve(320,g,306,b)].
+321 Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | L_2(c2).  [resolve(160,a,139,b)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(321,e,305,a)].
+322 Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | L_2(c2).  [resolve(161,a,139,b)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(322,e,305,a)].
+323 Q(c2) | PRE(c1,c2) | c1 = c2 | PRE(c2,f5(c2)) | L_2(c2).  [resolve(162,a,139,b)].
+324 Q(c2) | PRE(c1,c2) | c1 = c2 | PT(c2) | L_2(c2).  [resolve(163,a,139,b)].
+325 Q(c2) | PRE(c1,c2) | c1 = c2 | -AB(c2) | L_2(c2).  [resolve(164,a,139,b)].
+326 Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | L_2(c2).  [resolve(165,a,139,b)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(326,g,305,a)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | PRE(c2,f5(c2)).  [resolve(326,g,306,b)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | PT(c2).  [resolve(326,g,307,b)].
+Derived: Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | -AB(c2).  [resolve(326,g,310,b)].
+327 STV(x) | -PC(y,x,z) | L_2(x).  [resolve(283,a,286,a)].
+328 STV(x) | -L_2(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(291,a,285,a)].
+Derived: STV(x) | -PRE(x,y) | PC(f1(x,y),x,y) | -PT(x) | Q(x) | AB(x) | PRE(x,f5(x)).  [resolve(328,b,314,e)].
+Derived: STV(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x) | Q(c2) | PRE(c1,c2) | c1 = c2 | PRE(c2,f5(c2)).  [resolve(328,b,323,e)].
+Derived: STV(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x) | Q(c2) | PRE(c1,c2) | c1 = c2 | PT(c2).  [resolve(328,b,324,e)].
+Derived: STV(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x) | Q(c2) | PRE(c1,c2) | c1 = c2 | -AB(c2).  [resolve(328,b,325,e)].
+329 STV(x) | -L_2(x) | PRE(x,f5(x)).  [resolve(291,a,287,a)].
+Derived: STV(x) | PRE(x,f5(x)) | -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)).  [resolve(329,b,312,e)].
+Derived: STV(x) | PRE(x,f5(x)) | -PT(x) | Q(x) | AB(x) | L_1(x).  [resolve(329,b,313,e)].
+Derived: STV(x) | PRE(x,f5(x)) | -PT(x) | Q(x) | AB(x) | PRE(x,f5(x)).  [resolve(329,b,314,e)].
+Derived: STV(c2) | PRE(c2,f5(c2)) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)).  [resolve(329,b,321,e)].
+Derived: STV(c2) | PRE(c2,f5(c2)) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2).  [resolve(329,b,322,e)].
+Derived: STV(c2) | PRE(c2,f5(c2)) | Q(c2) | PRE(c1,c2) | c1 = c2 | PRE(c2,f5(c2)).  [resolve(329,b,323,e)].
+330 STV(x) | -L_2(x) | PT(x).  [resolve(291,a,288,a)].
+Derived: STV(c2) | PT(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)).  [resolve(330,b,321,e)].
+Derived: STV(c2) | PT(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2).  [resolve(330,b,322,e)].
+Derived: STV(c2) | PT(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PT(c2).  [resolve(330,b,324,e)].
+331 STV(x) | -L_2(x) | -Q(x).  [resolve(291,a,289,b)].
+332 STV(x) | -L_2(x) | -AB(x).  [resolve(291,a,290,b)].
+Derived: STV(c2) | -AB(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)).  [resolve(332,b,321,e)].
+Derived: STV(c2) | -AB(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2).  [resolve(332,b,322,e)].
+Derived: STV(c2) | -AB(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | -AB(c2).  [resolve(332,b,325,e)].
+333 STV(c1) | L_2(c1).  [resolve(292,a,286,a)].
+Derived: STV(c1) | -PC(c1,x,y).  [resolve(333,b,315,b)].
+Derived: STV(c1) | -L_1(c1).  [resolve(333,b,316,b)].
+Derived: STV(c1) | -PED(c1).  [resolve(333,b,317,b)].
+Derived: STV(c1) | -NPED(c1).  [resolve(333,b,318,b)].
+Derived: STV(c1) | -AS(c1).  [resolve(333,b,319,b)].
+334 -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | STV(x) | L_2(x).  [resolve(293,e,286,a)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | STV(x) | -PC(x,y,z).  [resolve(334,f,315,b)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | STV(x) | -L_1(x).  [resolve(334,f,316,b)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | STV(x) | -PED(x).  [resolve(334,f,317,b)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | STV(x) | -NPED(x).  [resolve(334,f,318,b)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | STV(x) | -AS(x).  [resolve(334,f,319,b)].
+335 -PT(x) | Q(x) | AB(x) | L_1(x) | STV(x) | L_2(x).  [resolve(294,e,286,a)].
+Derived: -PT(x) | Q(x) | AB(x) | L_1(x) | STV(x) | -PC(x,y,z).  [resolve(335,f,315,b)].
+Derived: -PT(x) | Q(x) | AB(x) | L_1(x) | STV(x) | -PED(x).  [resolve(335,f,317,b)].
+Derived: -PT(x) | Q(x) | AB(x) | L_1(x) | STV(x) | -NPED(x).  [resolve(335,f,318,b)].
+Derived: -PT(x) | Q(x) | AB(x) | L_1(x) | STV(x) | -AS(x).  [resolve(335,f,319,b)].
+336 -PC(x,y,z) | STV(x) | -L_2(x).  [resolve(295,b,291,a)].
+Derived: -PC(x,y,z) | STV(x) | PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x).  [resolve(336,c,320,g)].
+Derived: -PC(c2,x,y) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)).  [resolve(336,c,321,e)].
+Derived: -PC(c2,x,y) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2).  [resolve(336,c,322,e)].
+Derived: -PC(c2,x,y) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2).  [resolve(336,c,326,g)].
+337 -L_1(x) | STV(x) | -L_2(x).  [resolve(296,b,291,a)].
+Derived: -L_1(x) | STV(x) | PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x).  [resolve(337,c,320,g)].
+Derived: -L_1(c2) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)).  [resolve(337,c,321,e)].
+Derived: -L_1(c2) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2).  [resolve(337,c,326,g)].
+338 -PED(x) | STV(x) | -L_2(x).  [resolve(297,b,291,a)].
+Derived: -PED(c2) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)).  [resolve(338,c,321,e)].
+Derived: -PED(c2) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2).  [resolve(338,c,322,e)].
+339 -NPED(x) | STV(x) | -L_2(x).  [resolve(298,b,291,a)].
+Derived: -NPED(c2) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)).  [resolve(339,c,321,e)].
+Derived: -NPED(c2) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2).  [resolve(339,c,322,e)].
+340 -AS(x) | STV(x) | -L_2(x).  [resolve(299,b,291,a)].
+Derived: -AS(c2) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)).  [resolve(340,c,321,e)].
+Derived: -AS(c2) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2).  [resolve(340,c,322,e)].
+341 PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x) | STV(x) | L_2(x).  [resolve(300,g,286,a)].
+342 Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | STV(c2) | L_2(c2).  [resolve(301,e,286,a)].
+343 Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | STV(c2) | L_2(c2).  [resolve(302,e,286,a)].
+344 Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | STV(c2) | L_2(c2).  [resolve(303,g,286,a)].
+
+Eliminating STV/1
+345 STV(x) | -PC(y,x,z) | -PRE(x,u) | PC(f1(x,u),x,u).  [resolve(283,a,285,a)].
+346 -STV(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(143,b,136,a)].
+347 -STV(x) | PRE(x,f5(x)).  [resolve(143,b,140,a)].
+348 -STV(x) | PT(x).  [resolve(143,b,141,a)].
+349 -Q(x) | -STV(x).  [resolve(145,a,143,b)].
+350 -AB(x) | -STV(x).  [resolve(146,a,143,b)].
+351 -PC(x,y,z) | -STV(x).  [resolve(154,a,143,b)].
+352 -L_1(x) | -STV(x).  [resolve(155,a,143,b)].
+353 -PED(x) | -STV(x).  [resolve(156,a,143,b)].
+354 -NPED(x) | -STV(x).  [resolve(157,a,143,b)].
+355 -AS(x) | -STV(x).  [resolve(158,a,143,b)].
+356 STV(x) | -PC(y,x,z) | PRE(x,f5(x)).  [resolve(283,a,287,a)].
+357 STV(x) | -PC(y,x,z) | PT(x).  [resolve(283,a,288,a)].
+358 STV(x) | -PC(y,x,z) | -Q(x).  [resolve(283,a,289,b)].
+359 STV(x) | -PC(y,x,z) | -AB(x).  [resolve(283,a,290,b)].
+360 STV(c1) | -PRE(c1,x) | PC(f1(c1,x),c1,x).  [resolve(292,a,285,a)].
+361 STV(c1) | PRE(c1,f5(c1)).  [resolve(292,a,287,a)].
+Derived: PRE(c1,f5(c1)) | PRE(c1,f5(c1)).  [resolve(361,a,347,a)].
+362 STV(c1) | PT(c1).  [resolve(292,a,288,a)].
+Derived: PT(c1) | PT(c1).  [resolve(362,a,348,a)].
+363 STV(c1) | -Q(c1).  [resolve(292,a,289,b)].
+Derived: -Q(c1) | -Q(c1).  [resolve(363,a,349,b)].
+364 STV(c1) | -AB(c1).  [resolve(292,a,290,b)].
+Derived: -AB(c1) | -AB(c1).  [resolve(364,a,350,b)].
+365 -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | STV(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(293,e,285,a)].
+366 -PT(x) | Q(x) | AB(x) | L_1(x) | STV(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(294,e,285,a)].
+367 -PC(x,y,z) | STV(x) | -PC(u,x,w).  [resolve(295,b,283,a)].
+368 -L_1(x) | STV(x) | -PC(y,x,z).  [resolve(296,b,283,a)].
+369 -PED(x) | STV(x) | -PC(y,x,z).  [resolve(297,b,283,a)].
+370 -NPED(x) | STV(x) | -PC(y,x,z).  [resolve(298,b,283,a)].
+371 -AS(x) | STV(x) | -PC(y,x,z).  [resolve(299,b,283,a)].
+372 PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x) | STV(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(300,g,285,a)].
+373 PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x) | STV(x) | PRE(x,f5(x)).  [resolve(300,g,287,a)].
+374 Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | STV(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(301,e,285,a)].
+375 Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | STV(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(302,e,285,a)].
+376 Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | STV(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(303,g,285,a)].
+377 Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | STV(c2) | PRE(c2,f5(c2)).  [resolve(303,g,287,a)].
+378 Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | STV(c2) | PT(c2).  [resolve(303,g,288,a)].
+379 Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | STV(c2) | -AB(c2).  [resolve(303,g,290,b)].
+380 -STV(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(308,b,305,a)].
+Derived: -PRE(x,y) | PC(f1(x,y),x,y) | -PC(z,x,u) | -PRE(x,w) | PC(f1(x,w),x,w).  [resolve(380,a,345,a)].
+381 STV(x) | -PRE(x,y) | PC(f1(x,y),x,y) | -PT(x) | Q(x) | AB(x) | PRE(x,f5(x)).  [resolve(328,b,314,e)].
+Derived: -PRE(x,y) | PC(f1(x,y),x,y) | -PT(x) | Q(x) | AB(x) | PRE(x,f5(x)) | -PRE(x,z) | PC(f1(x,z),x,z).  [resolve(381,a,346,a)].
+382 STV(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x) | Q(c2) | PRE(c1,c2) | c1 = c2 | PRE(c2,f5(c2)).  [resolve(328,b,323,e)].
+Derived: -PRE(c2,x) | PC(f1(c2,x),c2,x) | Q(c2) | PRE(c1,c2) | c1 = c2 | PRE(c2,f5(c2)) | -PRE(c2,y) | PC(f1(c2,y),c2,y).  [resolve(382,a,346,a)].
+383 STV(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x) | Q(c2) | PRE(c1,c2) | c1 = c2 | PT(c2).  [resolve(328,b,324,e)].
+Derived: -PRE(c2,x) | PC(f1(c2,x),c2,x) | Q(c2) | PRE(c1,c2) | c1 = c2 | PT(c2) | -PRE(c2,y) | PC(f1(c2,y),c2,y).  [resolve(383,a,346,a)].
+384 STV(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x) | Q(c2) | PRE(c1,c2) | c1 = c2 | -AB(c2).  [resolve(328,b,325,e)].
+Derived: -PRE(c2,x) | PC(f1(c2,x),c2,x) | Q(c2) | PRE(c1,c2) | c1 = c2 | -AB(c2) | -PRE(c2,y) | PC(f1(c2,y),c2,y).  [resolve(384,a,346,a)].
+385 STV(x) | PRE(x,f5(x)) | -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)).  [resolve(329,b,312,e)].
+Derived: PRE(x,f5(x)) | -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | PRE(x,f5(x)).  [resolve(385,a,347,a)].
+386 STV(x) | PRE(x,f5(x)) | -PT(x) | Q(x) | AB(x) | L_1(x).  [resolve(329,b,313,e)].
+Derived: PRE(x,f5(x)) | -PT(x) | Q(x) | AB(x) | L_1(x) | PRE(x,f5(x)).  [resolve(386,a,347,a)].
+387 STV(x) | PRE(x,f5(x)) | -PT(x) | Q(x) | AB(x) | PRE(x,f5(x)).  [resolve(329,b,314,e)].
+Derived: PRE(x,f5(x)) | -PT(x) | Q(x) | AB(x) | PRE(x,f5(x)) | PRE(x,f5(x)).  [resolve(387,a,347,a)].
+388 STV(c2) | PRE(c2,f5(c2)) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)).  [resolve(329,b,321,e)].
+Derived: PRE(c2,f5(c2)) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | PRE(c2,f5(c2)).  [resolve(388,a,347,a)].
+389 STV(c2) | PRE(c2,f5(c2)) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2).  [resolve(329,b,322,e)].
+Derived: PRE(c2,f5(c2)) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | PRE(c2,f5(c2)).  [resolve(389,a,347,a)].
+390 STV(c2) | PRE(c2,f5(c2)) | Q(c2) | PRE(c1,c2) | c1 = c2 | PRE(c2,f5(c2)).  [resolve(329,b,323,e)].
+Derived: PRE(c2,f5(c2)) | Q(c2) | PRE(c1,c2) | c1 = c2 | PRE(c2,f5(c2)) | PRE(c2,f5(c2)).  [resolve(390,a,347,a)].
+391 STV(c2) | PT(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)).  [resolve(330,b,321,e)].
+Derived: PT(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | PT(c2).  [resolve(391,a,348,a)].
+392 STV(c2) | PT(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2).  [resolve(330,b,322,e)].
+Derived: PT(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | PT(c2).  [resolve(392,a,348,a)].
+393 STV(c2) | PT(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PT(c2).  [resolve(330,b,324,e)].
+Derived: PT(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PT(c2) | PT(c2).  [resolve(393,a,348,a)].
+394 STV(c2) | -AB(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)).  [resolve(332,b,321,e)].
+Derived: -AB(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | -AB(c2).  [resolve(394,a,350,b)].
+395 STV(c2) | -AB(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2).  [resolve(332,b,322,e)].
+Derived: -AB(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | -AB(c2).  [resolve(395,a,350,b)].
+396 STV(c2) | -AB(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | -AB(c2).  [resolve(332,b,325,e)].
+Derived: -AB(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | -AB(c2) | -AB(c2).  [resolve(396,a,350,b)].
+397 STV(c1) | -PC(c1,x,y).  [resolve(333,b,315,b)].
+Derived: -PC(c1,x,y) | -PRE(c1,z) | PC(f1(c1,z),c1,z).  [resolve(397,a,346,a)].
+Derived: -PC(c1,x,y) | -PC(c1,z,u).  [resolve(397,a,351,b)].
+398 STV(c1) | -L_1(c1).  [resolve(333,b,316,b)].
+Derived: -L_1(c1) | -PRE(c1,x) | PC(f1(c1,x),c1,x).  [resolve(398,a,346,a)].
+Derived: -L_1(c1) | -L_1(c1).  [resolve(398,a,352,b)].
+399 STV(c1) | -PED(c1).  [resolve(333,b,317,b)].
+Derived: -PED(c1) | -PRE(c1,x) | PC(f1(c1,x),c1,x).  [resolve(399,a,346,a)].
+Derived: -PED(c1) | -PED(c1).  [resolve(399,a,353,b)].
+400 STV(c1) | -NPED(c1).  [resolve(333,b,318,b)].
+Derived: -NPED(c1) | -PRE(c1,x) | PC(f1(c1,x),c1,x).  [resolve(400,a,346,a)].
+Derived: -NPED(c1) | -NPED(c1).  [resolve(400,a,354,b)].
+401 STV(c1) | -AS(c1).  [resolve(333,b,319,b)].
+Derived: -AS(c1) | -PRE(c1,x) | PC(f1(c1,x),c1,x).  [resolve(401,a,346,a)].
+Derived: -AS(c1) | -AS(c1).  [resolve(401,a,355,b)].
+402 -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | STV(x) | -PC(x,y,z).  [resolve(334,f,315,b)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | -PC(x,y,z) | -PRE(x,u) | PC(f1(x,u),x,u).  [resolve(402,e,346,a)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | -PC(x,y,z) | -PC(x,u,w).  [resolve(402,e,351,b)].
+403 -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | STV(x) | -L_1(x).  [resolve(334,f,316,b)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | -L_1(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(403,e,346,a)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | -L_1(x) | -L_1(x).  [resolve(403,e,352,b)].
+404 -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | STV(x) | -PED(x).  [resolve(334,f,317,b)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | -PED(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(404,e,346,a)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | -PED(x) | -PED(x).  [resolve(404,e,353,b)].
+405 -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | STV(x) | -NPED(x).  [resolve(334,f,318,b)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | -NPED(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(405,e,346,a)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | -NPED(x) | -NPED(x).  [resolve(405,e,354,b)].
+406 -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | STV(x) | -AS(x).  [resolve(334,f,319,b)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | -AS(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(406,e,346,a)].
+Derived: -PT(x) | Q(x) | AB(x) | PC(x,f2(x),f3(x)) | -AS(x) | -AS(x).  [resolve(406,e,355,b)].
+407 -PT(x) | Q(x) | AB(x) | L_1(x) | STV(x) | -PC(x,y,z).  [resolve(335,f,315,b)].
+Derived: -PT(x) | Q(x) | AB(x) | L_1(x) | -PC(x,y,z) | -PRE(x,u) | PC(f1(x,u),x,u).  [resolve(407,e,346,a)].
+Derived: -PT(x) | Q(x) | AB(x) | L_1(x) | -PC(x,y,z) | -PC(x,u,w).  [resolve(407,e,351,b)].
+408 -PT(x) | Q(x) | AB(x) | L_1(x) | STV(x) | -PED(x).  [resolve(335,f,317,b)].
+Derived: -PT(x) | Q(x) | AB(x) | L_1(x) | -PED(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(408,e,346,a)].
+Derived: -PT(x) | Q(x) | AB(x) | L_1(x) | -PED(x) | -PED(x).  [resolve(408,e,353,b)].
+409 -PT(x) | Q(x) | AB(x) | L_1(x) | STV(x) | -NPED(x).  [resolve(335,f,318,b)].
+Derived: -PT(x) | Q(x) | AB(x) | L_1(x) | -NPED(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(409,e,346,a)].
+Derived: -PT(x) | Q(x) | AB(x) | L_1(x) | -NPED(x) | -NPED(x).  [resolve(409,e,354,b)].
+410 -PT(x) | Q(x) | AB(x) | L_1(x) | STV(x) | -AS(x).  [resolve(335,f,319,b)].
+Derived: -PT(x) | Q(x) | AB(x) | L_1(x) | -AS(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(410,e,346,a)].
+Derived: -PT(x) | Q(x) | AB(x) | L_1(x) | -AS(x) | -AS(x).  [resolve(410,e,355,b)].
+411 -PC(x,y,z) | STV(x) | PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x).  [resolve(336,c,320,g)].
+Derived: -PC(x,y,z) | PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x) | -PRE(x,u) | PC(f1(x,u),x,u).  [resolve(411,b,346,a)].
+Derived: -PC(x,y,z) | PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x) | -PC(x,u,w).  [resolve(411,b,351,b)].
+412 -PC(c2,x,y) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)).  [resolve(336,c,321,e)].
+Derived: -PC(c2,x,y) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | -PRE(c2,z) | PC(f1(c2,z),c2,z).  [resolve(412,b,346,a)].
+Derived: -PC(c2,x,y) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | -PC(c2,z,u).  [resolve(412,b,351,b)].
+413 -PC(c2,x,y) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2).  [resolve(336,c,322,e)].
+Derived: -PC(c2,x,y) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | -PRE(c2,z) | PC(f1(c2,z),c2,z).  [resolve(413,b,346,a)].
+Derived: -PC(c2,x,y) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | -PC(c2,z,u).  [resolve(413,b,351,b)].
+414 -PC(c2,x,y) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2).  [resolve(336,c,326,g)].
+Derived: -PC(c2,x,y) | Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | -PRE(c2,z) | PC(f1(c2,z),c2,z).  [resolve(414,b,346,a)].
+Derived: -PC(c2,x,y) | Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | -PC(c2,z,u).  [resolve(414,b,351,b)].
+415 -L_1(x) | STV(x) | PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x).  [resolve(337,c,320,g)].
+Derived: -L_1(x) | PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x) | -PRE(x,y) | PC(f1(x,y),x,y).  [resolve(415,b,346,a)].
+Derived: -L_1(x) | PED(x) | NPED(x) | AS(x) | -PT(x) | Q(x) | AB(x) | -L_1(x).  [resolve(415,b,352,b)].
+416 -L_1(c2) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)).  [resolve(337,c,321,e)].
+Derived: -L_1(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(416,b,346,a)].
+Derived: -L_1(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | -L_1(c2).  [resolve(416,b,352,b)].
+417 -L_1(c2) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2).  [resolve(337,c,326,g)].
+Derived: -L_1(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(417,b,346,a)].
+Derived: -L_1(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PED(c2) | NPED(c2) | AS(c2) | -L_1(c2).  [resolve(417,b,352,b)].
+418 -PED(c2) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)).  [resolve(338,c,321,e)].
+Derived: -PED(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(418,b,346,a)].
+Derived: -PED(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | -PED(c2).  [resolve(418,b,353,b)].
+419 -PED(c2) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2).  [resolve(338,c,322,e)].
+Derived: -PED(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(419,b,346,a)].
+Derived: -PED(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | -PED(c2).  [resolve(419,b,353,b)].
+420 -NPED(c2) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)).  [resolve(339,c,321,e)].
+Derived: -NPED(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(420,b,346,a)].
+Derived: -NPED(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | -NPED(c2).  [resolve(420,b,354,b)].
+421 -NPED(c2) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2).  [resolve(339,c,322,e)].
+Derived: -NPED(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(421,b,346,a)].
+Derived: -NPED(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | -NPED(c2).  [resolve(421,b,354,b)].
+422 -AS(c2) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)).  [resolve(340,c,321,e)].
+Derived: -AS(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(422,b,346,a)].
+Derived: -AS(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | PC(c2,f2(c2),f3(c2)) | -AS(c2).  [resolve(422,b,355,b)].
+423 -AS(c2) | STV(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2).  [resolve(340,c,322,e)].
+Derived: -AS(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | -PRE(c2,x) | PC(f1(c2,x),c2,x).  [resolve(423,b,346,a)].
+Derived: -AS(c2) | Q(c2) | PRE(c1,c2) | c1 = c2 | L_1(c2) | -AS(c2).  [resolve(423,b,355,b)].
+
+Eliminating TL/1
+
+Eliminating SL/1
+
+Eliminating AR/1
+
+Eliminating NAPO/1
+
+Eliminating SOB/1
+424 -SC(x) | SOB(x).  [resolve(271,b,270,a)].
+425 -SOB(x) | NPED(x).  [resolve(253,b,252,a)].
+Derived: -SC(x) | NPED(x).  [resolve(424,b,425,a)].
+
+Eliminating SC/1
+
+============================== end predicate elimination =============
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, T, Q, PT, AB, L_1, AS, NPED, PED, PRE, O, P, PP, PC, tin2 ]).
+Function symbol precedence:  function_order([ c1, c2, f1, f6, f7, f8, f9, f11, f12, f2, f3, f5, f10, f4, f13 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+  % set(binary_resolution).  % (non-Horn)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.25 seconds.
+
+============================== PROOF =================================
+
+% Proof 1 at 0.30 (+ 0.01) seconds.
+% Length of proof is 26.
+% Level of proof is 5.
+% Maximum clause weight is 10.000.
+% Given clauses 291.
+
+1 (all x all y all t (PC(x,y,t) -> ED(x) & PD(y) & T(t))) # label(non_clause).  [assumption].
+5 (all x all y all t (PC(x,y,t) <-> (all t1 (P(t1,t) -> PC(x,y,t1))))) # label(non_clause).  [assumption].
+8 (all x (plane2(x) <-> PD(x))) # label(non_clause).  [assumption].
+25 (all x all y (P(x,y) -> T(y) & T(y))) # label(non_clause).  [assumption].
+44 (all x (R(x) -> AB(x))) # label(non_clause).  [assumption].
+51 (all x (TR(x) | PR(x) | AR(x) -> R(x))) # label(non_clause).  [assumption].
+54 (all x (T(x) -> TR(x))) # label(non_clause).  [assumption].
+60 (all x (PD(x) -> -Q(x) & -AB(x))) # label(non_clause).  [assumption].
+88 (all x all p (plane2(x) & in2(p,x) & point2(p) -> (exists y tin2(y,x,p)))) # label(non_clause) # label(goal).  [goal].
+95 -plane2(x) | PD(x).  [clausify(8)].
+96 plane2(c1).  [deny(88)].
+146 -PD(x) | -AB(x).  [clausify(60)].
+150 PD(c1).  [resolve(96,a,95,a)].
+231 -TR(x) | R(x).  [clausify(51)].
+232 -R(x) | AB(x).  [clausify(44)].
+266 -T(x) | TR(x).  [clausify(54)].
+268 -TR(x) | AB(x).  [resolve(231,b,232,a)].
+426 -PC(x,y,z) | T(z).  [clausify(1)].
+430 PC(x,y,z) | P(f4(x,y,z),z).  [clausify(5)].
+437 -P(x,y) | T(y).  [clausify(25)].
+510 -AB(c1).  [resolve(150,a,146,a)].
+617 AB(x) | -T(x).  [resolve(268,a,266,b)].
+825 P(f4(x,y,z),z) | T(z).  [resolve(430,a,426,a)].
+1185 T(x).  [resolve(825,a,437,a),merge(b)].
+1397 AB(x).  [back_unit_del(617),unit_del(b,1185)].
+1398 $F.  [resolve(1397,a,510,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=291. Generated=2121. Kept=864. proofs=1.
+Usable=119. Sos=41. Demods=0. Limbo=212, Disabled=1125. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=1257. Back_subsumed=172.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=319.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=8557. Nonunit_bsub_feature_tests=5206.
+Megabytes=2.51.
+User_CPU=0.30, System_CPU=0.01, Wall_clock=1.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 3468 exit (max_proofs) Tue Oct  1 09:32:12 2013
