@@ -1,48 +1,24 @@
-% Automatically generated from CL/KIF
 formulas(sos).
-% Module http:/colore.oor.net/multidim_space_voids/voids_extended
-%imports("http:/colore.oor.net/multidim_space_voids/voids").
-% 'V-A9:'
- all x all y ((hostsh(x, y) <-> hostsv(x, y) & ICon(r(x)))).
-% 'V-A10:'
- all x all y ((hostsg(x, y) <-> hostsv(x, y) & -(ICon(r(x))))).
-% 'Hole-D:'
- all y ((Hole(y) <->  exists x (hostsh(x, y)))).
-% 'Gap-D:'
- all y ((Gap(y) <->  exists x (hostsg(x, y)))).
-% 'V-A11: opening of a void'
- all x all v ((hostsv(x, v) -> (op(x, v) = intersection(r(v), difference(U, sum(r(x), r(v))))))).
-% 'V-A12: hosting a cavity'
- all x all y ((hostscavity(x, y) <-> hostsv(x, y) & -(Covers(r(x), op(x, y))))).
-% 'CAV-D'
- all y ((CAVITY(y) <->  exists x (hostscavity(x, y)))).
-% 'V-A13: hosting an internal cavity'
- all x all y ((hostscavityi(x, y) <-> hostscavity(x, y) & ZEX(op(x, y)))).
-% 'V-A14: hosting a tangential cavity'
- all x all y ((hostscavityt(x, y) <-> hostscavity(x, y) & -(ZEX(op(x, y))))).
-% 'V-A15: hosting a hollow'
- all x all y ((hostshollow(x, y) <-> hostsv(x, y) & Covers(r(x), op(x, y)) & ICon(op(x, y)))).
-% 'HOL-D'
- all y ((HOL(y) <->  exists x (hostshollow(x, y)))).
-% 'V-A16: hosting a tunnel'
- all x all y ((hoststunnel(x, y) <-> hostsv(x, y) & Covers(r(x), op(x, y)) & -(ICon(op(x, y))))).
-% 'TUN-D'
- all y ((TUN(y) <->  exists x (hoststunnel(x, y)))).
-% 'V-A17: hosting an external void'
- all x all y ((hostsve(x, y) <-> hostsv(x, y) &  exists z (P(z, op(x, y)) &  all u ((hostsv(x, u) & EqDim(intersection(z, r(u)), z) -> PO(r(y), r(u)) & Cont(intersection(z, r(u)), op(x, u))))))).
-% 'V-A18: hosting an internal void'
- all x all y ((hostsvi(x, y) <-> hostsv(x, y) & -(hostsve(x, y)))).
-% 'V-A19: porespace'
- all v all o ((PO(v, porespace(o)) <->  exists m (DK1(m, o) &  all u ((hostsv(o, u) -> -(PO(v, r(u))))) &  exists u (hostsv(m, u) & PO(v, r(u)))))).
-% 'V-A20: voidspace'
- all v all o ((PO(v, voidspace(o)) <-> PO(v, porespace(o)) |  exists u (hostsv(o, u) & PO(v, r(u))))).
-% 'V-A21'
- all o ((-(ZEX(porespace(o))) ->  exists v exists m ((r(v) = porespace(o)) & hostsv(m, v) & DK1(m, o)))).
-% 'V-A22'
- all o ((-(ZEX(voidspace(o))) ->  exists v exists m ((r(v) = voidspace(o)) & hostsv(m, v) & DK1(m, o)))).
-% 'V-A23: connected voidspace'
- all v all o ((PO(v, convoidspace(o)) <->  exists u (PO(v, u) & ICon(u) & Cont(u, voidspace(o)) & StrongC(u, difference(Uni, sum(r(o), voidspace(o))))))).
-% 'V-A24: connected porespace'
- all v all o ((PO(v, conporespace(o)) <->  exists u (PO(v, u) & ICon(u) & Cont(u, porespace(o)) & StrongC(u, difference(Uni, sum(r(o), porespace(o))))))).
-
+% cl-imports multidim_space_voids/voids.clif
+( all x12 all x11 ( (hostsh(x12, x11)) <-> ((hostsv(x12, x11) & icon(r(x12)))) )) .
+( all x22 all x21 ( (hostsg(x22, x21)) <-> ((hostsv(x22, x21) & - (icon(r(x22))))) )) .
+( all x31 ( (hole(x31)) <-> (( exists x32 hostsh(x32, x31)) ) )) .
+( all x41 ( (gap(x41)) <-> (( exists x42 hostsg(x42, x41)) ) )) .
+( all x51 all x52 ( (hostsv(x51, x52)) -> ((op(x51, x52)=intersection(r(x52), difference(cuni, sum(r(x51), r(x52)))))) )) .
+( all x62 all x61 ( (hostscavity(x62, x61)) <-> ((hostsv(x62, x61) & - (covers(r(x62), op(x62, x61))))) )) .
+( all x71 ( (cavity(x71)) <-> (( exists x72 hostscavity(x72, x71)) ) )) .
+( all x82 all x81 ( (hostscavityi(x82, x81)) <-> ((hostscavity(x82, x81) & zex(op(x82, x81)))) )) .
+( all x92 all x91 ( (hostscavityt(x92, x91)) <-> ((hostscavity(x92, x91) & - (zex(op(x92, x91))))) )) .
+( all x102 all x101 ( (hostshollow(x102, x101)) <-> ((hostsv(x102, x101) & covers(r(x102), op(x102, x101)) & icon(op(x102, x101)))) )) .
+( all x111 ( (hol(x111)) <-> (( exists x112 hostshollow(x112, x111)) ) )) .
+( all x122 all x121 ( (hoststunnel(x122, x121)) <-> ((hostsv(x122, x121) & covers(r(x122), op(x122, x121)) & - (icon(op(x122, x121))))) )) .
+( all x131 ( (tun(x131)) <-> (( exists x132 hoststunnel(x132, x131)) ) )) .
+( all x142 all x141 ( (hostsve(x142, x141)) <-> ((hostsv(x142, x141) & ( exists x143 (p(x143, op(x142, x141)) & ( all x144 ( ((hostsv(x142, x144) & eqdim(intersection(x143, r(x144)), x143))) -> ((po(r(x141), r(x144)) & cont(intersection(x143, r(x144)), op(x142, x144)))) )) )) )) )) .
+( all x152 all x151 ( (hostsvi(x152, x151)) <-> ((hostsv(x152, x151) & - (hostsve(x152, x151)))) )) .
+( all x164 all x163 ( (po(x164, porespace(x163))) <-> (( exists x162 (dk1(x162, x163) & ( all x161 ( (hostsv(x163, x161)) -> (- (po(x164, r(x161)))) ))  & ( exists x161 (hostsv(x162, x161) & po(x164, r(x161)))) )) ) )) .
+( all x173 all x172 ( (po(x173, voidspace(x172))) <-> ((po(x173, porespace(x172)) | ( exists x171 (hostsv(x172, x171) & po(x173, r(x171)))) )) )) .
+( all x182 ( (- (zex(porespace(x182)))) -> (( exists x183 exists x181 ((r(x183)=porespace(x182)) & hostsv(x181, x183) & dk1(x181, x182))) ) )) .
+( all x192 ( (- (zex(voidspace(x192)))) -> (( exists x193 exists x191 ((r(x193)=voidspace(x192)) & hostsv(x191, x193) & dk1(x191, x192))) ) )) .
+( all x203 all x202 ( (po(x203, convoidspace(x202))) <-> (( exists x201 (po(x203, x201) & icon(x201) & cont(x201, voidspace(x202)) & strongc(x201, difference(cuni, sum(r(x202), voidspace(x202)))))) ) )) .
+( all x213 all x212 ( (po(x213, conporespace(x212))) <-> (( exists x211 (po(x213, x211) & icon(x211) & cont(x211, porespace(x212)) & strongc(x211, difference(cuni, sum(r(x212), porespace(x212)))))) ) )) .
 end_of_list.
