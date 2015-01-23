@@ -3,6 +3,8 @@
 
 (cl-imports http://colore.oor.net/combinatorial_magma/quasigroup_gen.clif)
 
+(cl-imports http://colore.oor.net/magma/definitions/magma_defs.clif
+
 (forall (x y)
 	(iff	(subword x y)
 		(exists (u v)
@@ -24,7 +26,7 @@
 			(= z (op y x)))))
 
 (forall (x)
-	(iff	(bounded x)
+	(iff	(bounded_word x)
 		(or	(generator x)
 			(and	(exists (y z)
 					(and	(generator y)
@@ -34,9 +36,23 @@
 						(= (op z y) x)))))))
 
 (forall (x)
-	(iff	(thin x)
+	(iff	(thin_word x)
 		(forall (y z)
 			(if	(subword y z)
-				(bounded y)))))
+				(bounded_word y)))))
+
+(forall (x)
+	(iff	(tame_word x)
+		(forall (y z w)
+			(if	(and	(end_subword (z (op y x)))
+					(end_subword w x))
+				(or	(end_subword w z)
+					(end_subword z w))))))
+
+(forall (x)
+	(iff	(reduced_word x)
+		(not (exists (y z)
+			(and	(inverse y z)
+				(subword (op y z) x))))))
 
 )
