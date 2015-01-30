@@ -1,0 +1,54 @@
+
+(cl-text http://colore.oor.net/combinatorial_magma/concat_quine.clif
+
+(cl-comment "Axioms adapted from Ganea (including correction of typo)")
+
+(cl-imports http://colore.oor.net/magma/semigroup.clif)
+
+(cl-imports http://colore.oor.net/magma/cancellative.clif)
+
+(cl-imports http://colore.oor.net/magma/definitions/magma_def.clif)
+
+(forall (z)
+	(iff	(generator z)
+		(not (exists (x y)
+			(= z (op x y))))))
+
+(exists (x)
+	(generator x))
+
+(forall (x y z w)
+	(if	(= (op x y) (op z w))
+		(or	(and	(= x z)
+				(= y w))
+			(exists (u)
+				(or	(and	(= z (op x u))
+						(= y (op u w)))
+					(and	(= x (op z u))
+						(= w (op u y))))))))
+
+(forall (x)
+	(or	(generator x)
+		(exists (y z)
+			(and	(generator y)
+				(= x (op y z))))))
+
+(forall (x)
+	(or	(generator x)
+		(exists (y z)
+			(and	(generator y)
+				(= x (op z y))))))
+
+(forall (p)
+	(if	(and	(forall (y)
+				(if	(generator y)
+					(p y)))
+			(forall (x)
+				(if	(p x)
+					(forall (y)
+						(if	(generator y)
+							(p (op x y)))))))
+		(forall (z)
+			(p z))))
+
+)
