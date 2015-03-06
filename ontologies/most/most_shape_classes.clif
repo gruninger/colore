@@ -1,0 +1,59 @@
+/*******************************************************************************
+* Copyright (c) University of Toronto and others. All rights reserved.
+* The content of this file is licensed under the Creative Commons Attribution-
+* ShareAlike 3.0 Unported license. The legal text of this license can be
+* found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+*
+* Contributors:
+* Carmen Chui, Michael Gruninger
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/most/most_shape_classes.clif
+
+(cl-comment 'These are conservative extensions of the MoSt root theory.')
+
+(cl-comment 'Trivial: a functional group for single atoms.')
+(forall (x)
+	(iff (trivialgroup x)
+		(and (functional_group x)
+			(forall (y z)
+				(if (and (inGroup y x)(inGroup z x))
+					(= y z))))))
+
+(cl-comment 'Part: Two functional groups are part of each other if they share a common atom.')
+(forall (g1 g2)
+	(iff (part g1 g2)
+		(and (functional_group g1)(functional_group g2)
+			(forall (x)
+				(if (inGroup x g1)
+					(inGroup x g2))))))
+
+(cl-comment 'Connection Between Two Functional Groups: Two functional groups are connected to each other by a single bond between two atoms in the groups.')
+(forall (g1 g2)
+	(iff (conn g1 g2)
+		(and (functional_group g1)(functional_gorup g2)
+			(exists (w z b)
+				(and (inGroup w g1)(inGroup z g2)(hasBond b w z))))))
+
+(cl-comment 'Connection Between An Atom and A Functional Group: An atom is connected to an atom in the functional group by a single bond.')
+(forall (x g)
+	(iff (atomconn x g)
+		(and (atom x)(functional_group g)
+			(exists (z b)
+				(and (inGroup z y)(hasBond b x z))))))
+
+(cl-comment 'Primitive Functional Group: Definition for a primitive functional group.')
+(forall (g)
+	(iff (primitivegroup g)
+		(forall (g1)
+			(if (part g1 g)
+				(= g1 g)))))
+
+(cl-comment 'Linear: If an atom is not an end, it is adjacent to exactly two other atoms.')
+
+(cl-comment 'Branched: An atom is bonded to more than two other atoms.')
+
+(cl-comment 'Cyclic: Each atom is bonded to exactly two distinct atoms.')
+
+
+)
