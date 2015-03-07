@@ -1,0 +1,63 @@
+/*******************************************************************************
+* Copyright (c) University of Toronto and others. All rights reserved.
+* The content of this file is licensed under the Creative Commons Attribution-
+* ShareAlike 3.0 Unported license. The legal text of this license can be
+* found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+*
+* Contributors:
+* Carmen Chui, Michael Gruninger
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/most/most_fg_hydrocarbons.clif
+
+(cl-comment 'These are axioms for functional groups that contain hydrocarbons.')
+
+(cl-comment 'Alkyl: all of the atoms in this group are carbon atoms.')
+(forall (x)
+	(iff (alkyl_group x)
+		(and (functional_group x)(saturated x)
+			(forall (a)
+				(if (and (atom a)(inGroup a x))
+					(carbon a))))))
+
+(cl-comment 'Alkenyl: double bond between the carbon atoms.')
+(forall (x)
+	(iff (alkenyl_group x)
+		(and (functional_group x)(unsaturated x)
+			(forall (a)
+				(if (and (atom a)(inGroup a x))
+					(carbon a)))
+			(exists (b y z)
+				(if (and (bond b)(atom y)(atom z))
+					(doublebond b y z))))))
+
+(cl-comment 'Alkynyl: triple bond between the carbon atoms.')
+(forall (x)
+	(iff (alkynyl_group x)
+		(and (functional_group x)(unsaturated x)
+			(forall (a)
+				(if (and (atom a)(inGroup a x))
+					(carbon a)))
+			(exists (b y z)
+				(if (and (bond b)(atom y)(atom z))
+					(triplebond b y z))))))
+
+(cl-comment 'Phenyl: cyclic group of atoms with exactly six carbon atoms with alternating single and double bonds.') 
+(cl-comment 'incomplete definition------------TBA')
+(forall (x)
+	(iff (phenyl_group x)
+		(and (functional_group x)(unsaturated x)
+			
+		)
+	)
+)
+
+(cl-comment 'Benzyl: a benzene ring that is attached to a CH2 group.')
+(forall (x)
+	(iff (benzyl_group x)
+		(and (funcional_group x)
+			(exists (g1 g2)
+				(and (phenyl_group g1)(methylene g2)
+					(part x g1)(part x g2))))))
+
+)
