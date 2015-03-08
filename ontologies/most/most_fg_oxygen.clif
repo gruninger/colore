@@ -1,0 +1,68 @@
+/*******************************************************************************
+* Copyright (c) University of Toronto and others. All rights reserved.
+* The content of this file is licensed under the Creative Commons Attribution-
+* ShareAlike 3.0 Unported license. The legal text of this license can be
+* found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+*
+* Contributors:
+* Carmen Chui, Michael Gruninger
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/most/most_fg_oxygen.clif
+
+(cl-comment 'These are axioms for functional groups that contain oxygen.')
+
+(cl-comment 'Hydroxyl: contains an oxygen atom connected by a covalent bond to a hydrogen atom.') 
+(forall (x)
+	(iff (hydroxyl_group x)
+		(and (functional_group x)
+			(exists (y z b)
+				(and (oxygen y)(hydrogen z)(hasBond b y z)(inGroup y x)(inGroup z x))))))
+
+(cl-comment 'Alcohol: It is sometimes called the alcohol functional group because when bonded to carbon in a molecule that otherwise contains only hydrogen and carbon the hydroxyl group defines the molecule as an alcohol, resulting in a name ending in -ol.')
+(forall (x)
+	(iff (alcohol_group x)
+		(and (functional_group x)
+			(exists (y z)
+				(and (alkyl_group y)(hydroxyl_group z)(inGroup y x)(inGroup z x))))))
+
+(cl-comment 'Carbonyl: composed of a carbon atom double-bonded to an oxygen atom: C=O.')
+(forall (x)
+	(iff (carbonyl_group x)
+		(adn (functional_group x)
+			(exists (y z b)
+				(and (carbon y)(oxygen z)(doublebond b y z)(inGroup y x)(inGroup z x))))))
+
+(cl-comment 'Aledehyde (Formyl Group): with the structure R-CHO, consisting of a carbonyl center (a carbon double bonded to oxygen) bonded to hydrogen and an R group, which is any generic alkyl or side chain.') 
+(forall (x)
+	(iff (formyl_group x)
+		(and (functional_group x)
+			(exists (y z b)
+				(and (carbonyl_group y)(r_group z)
+					(hasBond b y z)(inGroup y x)(inGroup z x))))))
+
+(cl-comment 'Haloformyl: acyl halide characterized by a carbon-oxygen double bond and a carbon-halogen bond.')
+(forall (x)
+	(iff (haloformyl_group x)
+		(and (functional_group x)
+			(exists (w y z b1 b2)
+				(and (carbon y)(oxygen z)(x_group w)(doublebond b1 y z)
+					(hasBond b2 w y)(inGroup w x)(inGroup y x)(inGroup z x))))))
+
+(cl-comment 'Carbonate Ester}: consists of a carbonyl group flanked by two alkoxy groups.')
+
+(cl-comment 'Carboxylate: a salt or ester of a carboxylic acid, usually written in the form RCOO-.')
+(cl-comment 'Carboxyl: consists of a carbon atom double bonded to an oxygen atom and single bonded to a hydroxyl group.')
+(cl-comment 'Ester: characterized by a carbon bound to three other atoms: a single bond to a carbon, a double bond to an oxygen, and a single bond to an oxygen. The singly bound oxygen is bound to another carbon. Generally written as RCOOR.')
+(cl-comment 'Methoxy: consists of a methyl group bound to oxygen.')
+(cl-comment 'Hydroperoxy}: contains the peroxide functional group (ROOH).')
+(cl-comment 'Peroxy: contains the peroxide functional group (ROOR).') 
+(cl-comment 'Ether: contains an oxygen atom connected to two alkyl or aryl groups; of general formula R¡VO¡VR.')
+(cl-comment 'Hemiacetal: composed of an alcohol added to an aldehyde RCH(OR)(OH).')
+(cl-comment 'Hemiketal: composed of an alcohol added to a ketone RC(OR)(OH)R.')
+(cl-comment 'Acetal: central carbon atom has four bonds to it, and is saturated; RCH(OR)(OR).')
+(cl-comment 'Ketal: RC(OR)(OR)R; The term acetal used to be restricted to systems derived from aldehydes and the term ketal applied to those from ketones, but chemists now use acetal to describe both.')
+(cl-comment 'Orthoester: contains three alkoxy groups attached to one carbon atom; RC(OR)(OR)(OR).')
+(cl-comment 'Methylenedioxy: two oxygen atoms connected to a methylene bridge (-CH2- unit); R-O-CH2-O-R and also written as PhOCOPh.')
+
+)
