@@ -41,17 +41,15 @@
 (forall (b x)
 	(not (hasBond b x x)))
 
-(cl-comment ' causes inconsistency????')
-(cl-comment 'A bond is related to at most two atoms.
+(cl-comment 'A bond is related to at most two atoms.')
 (forall (b)
 	(if (bond b)
-		(exists (x y z)
-			(and (hasBond b x y)(hasBond b x z)(not (= y z))))))
-')
+		(exists (x y)
+			(and (hasBond b x y)(not (= y z))))))
 
 (cl-comment 'A bond is related to at least two atoms.')
 (forall (b x y z)
-	(if (and (hasBond b x y)(hasBond b x z))
+	(if (and (bond b)(hasBond b x y)(hasBond b x z))
 		(= y z)))
 
 (cl-comment 'Every group is in a molecule.')
