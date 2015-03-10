@@ -41,10 +41,13 @@
 (forall (b x)
 	(not (hasBond b x x)))
 
-(cl-comment 'A bond is related to at most two atoms.')
+(cl-comment ' causes inconsistency????')
+(cl-comment 'A bond is related to at most two atoms.
 (forall (b)
-	(exists (x y z)
-		(and (hasBond b x y)(hasBond b x z)(not (= y z)))))
+	(if (bond b)
+		(exists (x y z)
+			(and (hasBond b x y)(hasBond b x z)(not (= y z))))))
+')
 
 (cl-comment 'A bond is related to at least two atoms.')
 (forall (b x y z)
@@ -126,7 +129,21 @@
 (cl-comment 'Group-Atom Relationship: For every functional group, there exists an atom that is in the group.')
 (forall (x)
 	(if (atom x)
-		(exists (y z)
+		(exists (b y z)
 			(and (functional_group y)(atom z)(hasBond b x z)(inGroup z y)))))
+
+(cl-comment 'Axioms to prevent trivial models from being generated from Mace4.')
+(exists (x)
+	(molecule x))
+
+(exists (x)
+	(atom x))
+
+(exists (x)
+	(functional_group x))
+
+(exists (x)
+	(bond x))
+
 
 )
