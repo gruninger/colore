@@ -15,11 +15,26 @@
 (cl-imports most_bonds)
 (cl-comment 'This theory imports most_bonds.')
 
-saturated
-unsaturated
-alternating bond defs
+(cl-comment 'A saturated molecule is one that has at least one single bond.')
+(forall (x)
+	(iff (saturated x)
+		(forall (b y z)
+			(if (and (hasBond b y z)(inGroup y x)(inGroup z x))
+				(singlebond b y z)))))
 
-(cl-comment 'These are conservative extensions of the MoSt root theory.')
+(cl-comment 'An unsaturated molecule is one that has at least one double bond.')
+(forall (x)
+	(iff (unsaturated x)
+		(exists (b y z)
+			(if (and (hasBond b y z)(inGroup y x)(inGroup z x))
+				(doublebond b y z)))))
+				
+(cl-comment 'Alternating Group Definition: each atom is in a single and a double bond with another atom in the functional group.')
+(forall (x y)
+	(iff (alternating_group x)
+		(if (and (functional_group x)(atom y)(inGroup x y))
+			(exists (a1 a2)
+				(and (atom a1)(atom a2)(hasBond b1 y a1)(doublebond b2 y a2)(inGroup a1 x)(inGroup a2 x))))))
 
 (cl-comment 'Trivial: a functional group for single atoms.')
 (forall (x)
