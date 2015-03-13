@@ -1,0 +1,38 @@
+/*******************************************************************************
+* Copyright (c) University of Toronto and others. All rights reserved.
+* The content of this file is licensed under the Creative Commons Attribution-
+* ShareAlike 3.0 Unported license. The legal text of this license can be
+* found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+*
+* Contributors:
+* Carmen Chui, Michael Gruninger
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/most/most_bonds.clif
+
+(cl-comment 'Theory containing definitions for the types of bonds between atoms.')
+
+(cl-comment 'A single bond is a bond.')
+(forall (b x y)
+	(iff (singlebond b x y)
+		(and (bond b)(hasBond b x y)
+			(forall (b2)
+				(if (hasBond b2 x y)
+					(= b b2))))))
+
+(cl-comment 'A double bond is a bond.')
+(forall (b x y)
+	(iff (doublebond b x y)
+		(exists (b2)
+			(and (bond b2)(hasBond b x y)(hasBond b2 x y)(not(= b b2))))))
+
+(cl-comment 'A triple bond is a bond.')
+(forall (b x y)
+	(iff (triplebond b x y)
+		(exists (b2 b3)
+			(and (bond b2)(bond b3)(hasBond b x y)(hasBond b2 x y)(hasBond b3 x y)
+				(not(= b b2))
+				(not(= b b2))
+				(not(= b2 b3))))))
+
+)
