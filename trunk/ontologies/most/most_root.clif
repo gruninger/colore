@@ -105,24 +105,24 @@
 
 (cl-comment 'Group-Bond Relationship: A bond is in a functional group iff both of its atoms are in the functional group.')
 (forall (x y)
-	(iff (foo x y)
+	(iff (bondGroup x y)
 		(and (bond x)(functional_group y)
 			(exists (w z)
 				(and (atom z)(atom w)(inGroup z y)(inGroup w y)(hasBond x z w))))))
 
 (cl-comment 'Molecule-Atom Relationship: An atom is in a molecule iff it is in a group that is contained in the molecule.')
 (forall (x y)
-	(iff (foo2 x y)
+	(iff (inMolecule x y)
 		(and (atom x)(molecule y)
 			(exists (w z)
 				(and (functional_group z)(inGroup x z)(containsGroup y z))))))
 
 (cl-comment 'Molecule-Bond Relationship: A bond is in a molecule iff it is in a group that is contained in the molecule.')
 (forall (x y)
-	(iff (foo3 x y)
+	(iff (molecularBond x y)
 		(and (bond x)(molecule y)
 			(exists (w z)
-				(and (functional_group z)(foo x z)(containsGroup y z))))))
+				(and (functional_group z)(bondGroup x z)(containsGroup y z))))))
 
 (cl-comment 'Group-Atom Relationship: For every functional group, there exists an atom that is in the group.')
 (forall (x)
