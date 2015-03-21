@@ -9,4 +9,38 @@
 		(exists (d)
 			(freq a d))))
 
+(forall (a d1 d2)
+	(if	(and	(freq a d1)
+			(freq a d2))
+		(= d1 d2)))
+
+(forall (a d t o1 o2)
+	(if	(and	(freq a d)
+			(occurrence_of o1 a)
+			(occurrence_of o2 a)
+			(= d (duration (beginof o1) t)))
+		(not (between (beginof o1) (beginof o2) t))))
+
+(forall a d t o1 o2)
+	(if	(and	(date a)
+			(occurrence_of o1 a)
+			(occurrence_of o2 a))
+		(= (duration (beginof o1) (endof o1)) (duration (beginof o2) (endof o2)))))
+
+(forall (a t)
+	(iff	(occurs a t)
+		(forall (o)
+			(if	(between (beginof o) t (endof o))
+				(occurrence_of o a)))))
+
+(forall (a d)
+	(iff	(freq a d)
+		(and	(activity a)
+			(timeduration d)
+			(forall (o)
+				(if	(occurrence o a)
+					(exists (t)
+						(and	(= d (duration (beginof o) t)))
+							(occurs a t))))))))
+
 )
