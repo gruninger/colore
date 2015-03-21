@@ -1,0 +1,53 @@
+(cl-text http://colore.oor.net/duration/date_compose.clif
+
+(cl-imports http://colore.oor.net/duration/date_periodic.clif)
+
+(cl-imports http://colore.oor.net/psl_actocc/actocc.clif)
+
+(forall (a1 a2)
+	(if	(and	(date a1)
+			(subactivity a2 a1))
+		(date a2)))
+
+(forall (a1 a2 o2)
+	(if	(and	(date a1)
+			(subactivity a2 a1)
+			(occurrence_of o1 a1))
+		(exists (o2)
+			(and	(occurrence_of o2 a2)
+				(subactivity_occurrence o2 o1)))))
+
+(forall (a s1 s2 s3 s4)
+	(if	(and	(date a)
+			(min_precedes s1 s2 a)
+			(mono s1 s3 a)
+			(mono s2 s4 a))
+		(min_precedes s3 s4 a)))
+
+(forall (a1 a2 o1 o2 o3)
+	(if	(and	(date a)
+			(occurrence_of o1 a1)
+			(subactivity_occurrence o2 o1)
+			(subactivity_occurrence o3 o1)
+			(occurrence_of o2 a2)
+			(occurrence_of o3 a2)
+			(not (= o2 o3)))
+		(exists (a3)
+			(and	(subactivity a3 a1)
+				(subactivity a2 a3)
+				(not (= a3 a1))	
+				(not (= a3 a2))))))	
+
+(forall (a a1 a2 s s1 s2 s3 s4)
+	(if	(and	(date a)
+			(subactivity a1 a)
+			(subactivity a2 a)
+			(root s1 a1)
+			(leaf s3 a1)
+			(root s2 a2)
+			(leaf s4 a2)
+			(min_precedes s1 s2 a)
+			(min_precedes s2 s3 a))	
+		(min_precedes s4 s3 a)))
+
+)
