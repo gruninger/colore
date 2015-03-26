@@ -10,18 +10,41 @@
 
 (cl-text http://colore.oor.net/most/most_molecules.clif
 
-(cl-comment 'Definition for Hydrocarbon')
+(cl-comment 'This set of axioms contain definitions for common molecules.')
+
+(cl-comment 'Hydrocarbon')
 (forall (x)
 	(iff (hydrocarbon x)
 		(and (molecule x)
-			(if (forall (y)
-				(and (atom y)(inMolecule y x))
+			(forall (y)
+				(if (and (atom y)(inMolecule y x))
 					(or (carbon y)(hydrogen y)))))))
 
-(cl-comment 'Definition for Benzene')
+(cl-comment 'Benzene')
 (forall (x y)
 	(if (and (benzene x)(carbon y)(inMolecule y x))
 		(exists (g)
 			(and (containsGroup x g)(inGroup y g)))))
+
+(cl-comment 'Alkane: An alkane is a saturated hydrocarbon in a chain group where every atom in the chain is a Carbon atom.')
+(forall (x)
+	(iff (alkane x)
+		(and (molecule x)(hydrocarbon x)
+			(exists (y)
+				(and (alkyl_group y)(containsGroup x y))))))
+
+(cl-comment 'Methane')
+(forall (x)
+	(iff (methane x)
+		(and (alkane x)
+			(exists (y)
+				(and (methyl_group y)(containsGroup x y))))))
+
+(cl-comment 'Alkene')
+(forall (x)
+	(iff (alkene x)
+		(and (molecule x)(hydrocarbon x)
+			(exists (y)
+				(and (alkenyl_group y)(containsGroup x y))))))
 
 )
