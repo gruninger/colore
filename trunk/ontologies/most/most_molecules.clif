@@ -25,6 +25,23 @@
 	(if (and (benzene x)(carbon y)(inMolecule y x))
 		(exists (g)
 			(and (containsGroup x g)(inGroup y g)))))
+			
+(cl-comment 'The axiom for benzene should entail the following:
+
+(forall (x y)
+	(if (and (benzene x)(carbon y)(inMolecule y x))
+		(exists (z b)
+			(and (hydrogen z)(hasBond b y z)(inMolecules z x)))))
+')
+
+(cl-comment 'Benzene Closure Axiom: There is exactly 1 phenyl group and no other groups.')
+(forall (x)
+	(if (benzene x)
+		(exists (g)
+			(forall (y)
+				(and (containsGroup x y)
+					(iff (phenyl_group y)
+						(= y g)))))))
 
 (cl-comment 'Alkane: An alkane is a saturated hydrocarbon in a chain group where every atom in the chain is a Carbon atom.')
 (forall (x)
