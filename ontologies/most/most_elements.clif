@@ -10,6 +10,35 @@
 
 (cl-text http://colore.oor.net/most/most_elements.clif
 
+(cl-comment 'Valence Class Definitions')
+
+(cl-comment 'Single Valence')
+(forall (x)
+	(iff (singlevalence x)
+		(and (atom x)
+			(forall (b1 b2 a1 a2)
+				(if (and (hasBond b1 a1 x)(hasBond b2 a2 x))
+					(= b1 b2))))))
+
+(cl-comment 'Double Valence')
+(forall (x)
+	(iff (doublevalence x)
+		(and (atom x)
+			(forall (b1 b2 b3 a1 a2 a3)
+				(if (and (hasBond b1 a1 x)(hasBond b2 a2 x)(hasBond b3 a3 x))
+					(or (= b1 b2)(= b1 b3)(= b2 b3)))))))
+
+(cl-comment 'New valence classes for elements.')
+(cl-comment 'These axioms indicate that they can have at most a certain number of bonds.')
+(forall (x)
+	(if (hydrogen x)
+		(singlevalence x)))
+
+(forall (x)
+	(if (oxygen x)
+		(doublevalence x)))
+
+
 (cl-comment 'Hydrogen has exactly 1 covalent bond.')
 (forall (x)
 	(if (hydrogen x)
@@ -34,7 +63,7 @@
 				(hasBond b1 a1 x)(hasBond b2 a2 x))))))
 
 (forall (x)
-	(iff (oxygen x)
+	(if (oxygen x)
 		(and (atom x)
 			(exists (a1 b1 a2 b2 a b)
 				(if (hasBond b a x)
@@ -43,7 +72,7 @@
 
 (cl-comment 'Nitrogen has exactly 3 covalent bonds.')
 (forall (x)
-	(iff (nitrogen x)
+	(if (nitrogen x)
 		(and (atom x)
 			(exists (a1 a2 a3 b1 b2 b3)
 				(and (atom a1)(atom a2)(atom a3)
@@ -52,7 +81,7 @@
 					(hasBond b1 a1 x)(hasBond b2 a2 x)(hasBond b3 a3 x))))))
 
 (forall (x)
-	(iff (nitrogen x)
+	(if (nitrogen x)
 		(and (atom x)
 			(exists (a1 a2 a3 b1 b2 b3)
 				(forall (b a)
@@ -63,7 +92,7 @@
 								
 (cl-comment 'Carbon has exactly 4 covalent bonds.')
 (forall (x)
-	(iff (carbon x)
+	(if (carbon x)
 		(and (atom x)
 			(exists (a1 a2 a3 a4 b1 b2 b3 b4)
 				(and (atom a1)(atom a2)(atom a3)(atom a4)
@@ -72,7 +101,7 @@
 					(hasBond b1 a1 x)(hasBond b2 a2 x)(hasBond b3 a3 x)(hasBond b4 a4 x))))))
 
 (forall (x)
-	(iff (carbon x)
+	(if (carbon x)
 		(and (atom x)
 			(exists (a1 a2 a3 a4 b1 b2 b3 b4)
 					(forall (b a)
@@ -84,7 +113,7 @@
 								
 (cl-comment 'A halogen is a fluorine, chlorine, bromine, iodine or astatine atom.')
 (forall (x)
-	(iff (halogen x)
+	(if (halogen x)
 		(or (fluorine x)(chlorine x)(bromine x)(iodine x)(astatine x))))
 
 )
