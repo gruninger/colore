@@ -12,22 +12,24 @@
 
 (cl-comment 'Theory containing definitions for the types of shapes for the molecules.')
 
-(cl-imports most_bonds)
+(cl-imports test/most_bonds)
 (cl-comment 'This theory imports most_bonds.')
 
 (cl-comment 'A saturated molecule is one that has at least one single bond.')
 (forall (x)
 	(iff (saturated x)
-		(forall (b y z)
+		(and (functional_group x)
+			(forall (b y z)
 			(if (and (hasBond b y z)(inGroup y x)(inGroup z x))
-				(singlebond b y z)))))
+				(singlebond b y z))))))
 
 (cl-comment 'An unsaturated molecule is one that has at least one double bond.')
 (forall (x)
 	(iff (unsaturated x)
+		(and (functional_group x)
 		(exists (b y z)
 			(if (and (hasBond b y z)(inGroup y x)(inGroup z x))
-				(doublebond b y z)))))
+				(doublebond b y z))))))
 				
 (cl-comment 'Alternating Group Definition: each atom is in a single and a double bond with another atom in the functional group.')
 (forall (x y)
