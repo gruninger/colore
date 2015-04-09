@@ -1,0 +1,90 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% 'http://colore.oor.net/most/most_root.clif'
+% 'An atom can be bonded if there exists another atom for which it can be bonded.'
+ all x ((atom(x) ->  exists b exists y ((atom(y) & hasBond(b, x, y))))).
+% 'A bond is possible between two atoms.'
+ all b ((bond(b) ->  exists x exists y (hasBond(b, x, y)))).
+% 'An atom x is in a functional group y.'
+ all x all y ((inGroup(x, y) -> (atom(x) & functional_group(y)))).
+% 'Two atoms are bonded if a bond exists between them.'
+ all b all x all y ((hasBond(b, x, y) -> (bond(b) & atom(x) & atom(y)))).
+% 'Additional axioms to ensure that the same bond can only be between two atoms.'
+ all b all x all y all z (((hasBond(b, x, y) & hasBond(b, x, z)) -> (y = z))).
+ all b all x all y all z (((hasBond(b, x, y) & hasBond(b, z, y)) -> (x = z))).
+% 'A bond is symmetric between two atoms.'
+ all b all x all y ((hasBond(b, x, y) -> hasBond(b, y, x))).
+% 'An atom cannot bond to itself.'
+ all b all x (-(hasBond(b, x, x))).
+% 'A bond is related to at most two atoms.'
+ all b ((bond(b) ->  exists x exists y ((hasBond(b, x, y) & -((x = y)))))).
+% 'A bond is related to at least two atoms.'
+ all b all x all y all z (((bond(b) & hasBond(b, x, y) & hasBond(b, x, z)) -> (y = z))).
+% 'Every group is in a molecule.'
+ all x ((functional_group(x) ->  exists y ((molecule(y) & containsGroup(y, x))))).
+% 'Every group is contained in a unique molecule.'
+ all x ((functional_group(x) ->  exists y ((molecule(y) & containsGroup(y, x) & -( exists w ((molecule(w) & containsGroup(y, w) & -((w = y))))))))).
+% 'A functional group is in a molecule if the group is in the molecule.'
+ all x all y ((containsGroup(x, y) -> (molecule(x) & functional_group(y)))).
+% 'Definition for an end atom in a linear functional group.'
+ all x all y ((end(x, y) <-> (inGroup(x, y) &  all b1 all b2 all w all z (((hasBond(b1, x, z) & hasBond(b2, x, w) & inGroup(z, y) & inGroup(w, y)) -> (w = z)))))).
+% 'Definition for a fork atom in a branched functional group: an atom in the same functional group has at least 3 other atoms in bonds.'
+ all x all y ((fork(x, y) <-> (inGroup(x, y) &  exists b1 exists b2 exists b3 exists a1 exists a2 exists a3 ((-((b1 = b2)) & -((b2 = b3)) & -((b1 = b3)) & hasBond(b1, x, a1) & hasBond(b2, x, a2) & hasBond(b3, x, a3) & inGroup(a1, y) & inGroup(a2, y) & inGroup(a3, y)))))).
+% 'Disjointness axioms for atom(x), bond(x), functional_group(x), and molecule(x).'
+ all x ((molecule(x) -> -((atom(x) | bond(x) | functional_group(x))))).
+ all x ((atom(x) -> -((bond(x) | functional_group(x))))).
+ all x ((bond(x) -> -(functional_group(x)))).
+% 'For every functional group, there exists an atom that is in the group.'
+ all x ((functional_group(x) ->  exists a ((atom(a) & inGroup(a, x))))).
+% 'Group-Bond Relationship: A bond is in a functional group iff both of its atoms are in the functional group.'
+ all x all y ((bondGroup(x, y) <-> (bond(x) & functional_group(y) &  exists w exists z ((atom(z) & atom(w) & inGroup(z, y) & inGroup(w, y) & hasBond(x, z, w)))))).
+% 'Molecule-Atom Relationship: An atom is in a molecule iff it is in a group that is contained in the molecule.'
+ all x all y ((inMolecule(x, y) <-> (atom(x) & molecule(y) &  exists w exists z ((functional_group(z) & inGroup(x, z) & containsGroup(y, z)))))).
+% 'Molecule-Bond Relationship: A bond is in a molecule iff it is in a group that is contained in the molecule.'
+ all x all y ((molecularBond(x, y) <-> (bond(x) & molecule(y) &  exists w exists z ((functional_group(z) & bondGroup(x, z) & containsGroup(y, z)))))).
+% 'Group-Atom Relationship: For every functional group, there exists an atom that is in the group.'
+ all x ((atom(x) ->  exists b exists y exists z ((functional_group(y) & atom(z) & hasBond(b, x, z) & inGroup(z, y))))).
+
+% 'http://colore.oor.net/most/most_bonds.clif'
+% 'Theory containing definitions for the types of bonds between atoms.'
+% 'A single bond is a bond.'
+ all b all x all y ((singlebond(b, x, y) <-> (bond(b) & hasBond(b, x, y) &  all b2 ((hasBond(b2, x, y) -> (b = b2)))))).
+% 'A double bond is a bond.'
+ all b all x all y ((doublebond(b, x, y) <->  exists b2 ((bond(b2) & hasBond(b, x, y) & hasBond(b2, x, y) & -((b = b2)))))).
+% 'A triple bond is a bond.'
+ all b all x all y ((triplebond(b, x, y) <->  exists b2 exists b3 ((bond(b2) & bond(b3) & hasBond(b, x, y) & hasBond(b2, x, y) & hasBond(b3, x, y) & -((b = b2)) & -((b = b2)) & -((b2 = b3)))))).
+
+% 'Axioms to prevent trivial models from being generated from Mace4.'
+ exists x (molecule(x)).
+ exists x (atom(x)).
+ exists x (functional_group(x)).
+ exists x (bond(x)).
+
+% Ensures existence of a part in the non-trivial model.
+exists x exists y (part(x,y)).
+
+% 'http://colore.oor.net/most/most_shape.clif'
+% 'Theory containing definitions for the types of shapes for the molecules.'
+%imports("test/most_bonds").
+% 'This theory imports most_bonds.'
+% 'Part: Two functional groups are part of each other if they share a common atom.'
+ all g1 all g2 ((part(g1, g2) <-> (functional_group(g1) & functional_group(g2) & g1!=g2 &  all x ((inGroup(x, g1) -> inGroup(x, g2)))))).
+
+end_of_list.
+
+formulas(goals).
+
+end_of_list.
+
