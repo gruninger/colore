@@ -56,6 +56,16 @@ formulas(assumptions).
  all x all y ((molecularBond(x, y) <-> (bond(x) & molecule(y) &  exists w exists z ((functional_group(z) & bondGroup(x, z) & containsGroup(y, z)))))).
 % 'Group-Atom Relationship: For every functional group, there exists an atom that is in the group.'
  all x ((atom(x) ->  exists b exists y exists z ((functional_group(y) & atom(z) & hasBond(b, x, z) & inGroup(z, y))))).
+
+% 'http://colore.oor.net/most/most_bonds.clif'
+% 'Theory containing definitions for the types of bonds between atoms.'
+% 'A single bond is a bond.'
+ all b all x all y ((singlebond(b, x, y) <-> (bond(b) & hasBond(b, x, y) &  all b2 ((hasBond(b2, x, y) -> (b = b2)))))).
+% 'A double bond is a bond.'
+ all b all x all y ((doublebond(b, x, y) <->  exists b2 ((bond(b2) & hasBond(b, x, y) & hasBond(b2, x, y) & -((b = b2)))))).
+% 'A triple bond is a bond.'
+ all b all x all y ((triplebond(b, x, y) <->  exists b2 exists b3 ((bond(b2) & bond(b3) & hasBond(b, x, y) & hasBond(b2, x, y) & hasBond(b3, x, y) & -((b = b2)) & -((b = b2)) & -((b2 = b3)))))).
+
 % 'Axioms to prevent trivial models from being generated from Mace4.'
  exists x (molecule(x)).
  exists x (atom(x)).
