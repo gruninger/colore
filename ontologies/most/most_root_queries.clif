@@ -25,5 +25,22 @@
 	(if (fork x y)
 		(not (end x y))))
 
+(cl-comment 'If an atom is in a functional group, then there exists a molecule in which the atom is contained.')
+(forall (x y)
+	(if (inGroup x y)
+		(exists (m)
+			(inMolecule x m))))
+
+(cl-comment 'If an atom is in a molecule, then there exists a bond in the molecule to which the atom is bonded.')
+(forall (x y)
+	(if (inMolecule x y)
+		(exists (b z)
+			(if (hasBond b x z)
+				(molecularBond b y)))))
+
+(cl-comment 'If two atoms share a bond, that bond is either a single, double or triple bond.')
+(forall (b x y)
+	(if (hasBond b x y)
+		(or (singlebond b x y)(doublebond b x y)(triplebond b x y))))
 
 )
