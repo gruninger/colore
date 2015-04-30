@@ -8,66 +8,124 @@
  *    Torsten Hahmann - initial implementation
  *******************************************************************************/
 
-(cl-text http://colore.oor.net/multidim_space_voids/theorems/voids_theorems.clif
+(cl-text http://colore.oor.net/multidim_space_physcont/theorems/depcont_full_theorems.clif
 
-(cl-imports http://colore.oor.net/multidim_space_voids/voids.clif)
+(cl-imports http://colore.oor.net/multidim_space_physcont/depcont_full.clif)
 
-(cl-comment 'V-T1')
+(cl-comment 'JEPD Theorems from Section 6.5 of the COSIT containment paper')
 
-(forall (x)
+(cl-comment 'DepCont JEPD1')
+
+(forall (x y)
 	(if
-		(V x)
-		(DPF x)
+		(and
+			(or
+				(mat x)
+				(V x)
+			)
+			(
+				(mat y)
+				(V y)
+			)
+			(dep-contains y x)
+		)
+		(or
+			(materially-contains y x)
+			(immaterially-contains y x)
+			(hostsv y x)
+		)
 	)
 )
 
-(cl-comment 'V-A1prime from COSIT 2013 Containement Paper')
+(cl-comment 'DepCont JEPD2')
 
-(forall (x)
+(forall (x y)
 	(if
-		(hostsv y x)
-		(PED y)
-	)
-)
-
-
-(forall (x)
-	(if
-		(hostsv y x)
-		(not (V y))
-	)
-)
-
-
-(forall (x)
-	(if
-		(hostsv y x)
-		(V x)
-	)
-)
-
-
-(forall (x)
-	(if
-		(hostsv y x)
-		(P (r x) (ch y))
+		(materially-contains y x)
+		(not (immaterially-contains y x))
 	)
 )
 
 
+(cl-comment 'DepCont JEPD3')
 
-(forall (x)
+(forall (x y)
 	(if
-		(hostsv y x)
-		(StrongC (r x) (r y))
+		(materially-contains y x)
+		(not (hostsv y x))
 	)
 )
 
 
-(forall (x)
+(cl-comment 'DepCont JEPD4')
+
+(forall (x y)
+	(if
+		(immaterially-contains y x)
+		(not (hostsv y x))
+	)
+)
+
+
+(cl-comment 'DepCont JEPD5a')
+
+(forall (x y)
+	(if
+		(dep-mat-contains y x)
+		(or
+			(materially-contains y x)
+			(hostsv y x)
+		)
+	)
+)
+
+(cl-comment 'DepCont JEPD5b')
+
+(forall (x y)
+	(if
+		(materially-contains y x)
+		(dep-mat-contains y x)
+	)
+)
+
+(cl-comment 'DepCont JEPD5c')
+
+(forall (x y)
 	(if
 		(hostsv y x)
-		(not (PO (r x) (r y)))
+		(dep-mat-contains y x)
+	)
+)
+
+
+
+(cl-comment 'DepCont JEPD6a')
+
+(forall (x y)
+	(if
+		(dep-immat-contains y x)
+		(immaterially-contains y x)
+	)
+)
+
+
+(cl-comment 'DepCont JEPD6b')
+
+(forall (x y)
+	(if
+		(immaterially-contains y x)
+		(dep-immat-contains y x)
+	)
+)
+
+
+
+(cl-comment 'DepCont JEPD7')
+
+(forall (x y)
+	(if
+		(dep-mat-contains y x)
+		(not (dep-immat-contains y x))
 	)
 )
 
