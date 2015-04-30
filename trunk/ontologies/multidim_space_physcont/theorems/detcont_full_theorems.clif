@@ -1,0 +1,129 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/multidim_space_physcont/theorems/depcont_full_theorems.clif
+
+(cl-imports http://colore.oor.net/multidim_space_physcont/definitions/omsurrounds.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_physcont/definitions/ovsurrounds.clif)
+
+(cl-comment 'JEPD Theorems from end of Section 7.2 and from 7.3 of the COSIT containment paper')
+
+(cl-comment 'JEPD17a')
+
+
+(forall (x y)
+	(if
+		(surrounds y x)
+			(or
+				(surrounds-void y x)
+				(surrounds-mat y x)
+			)
+		)
+	)
+)
+
+(cl-comment 'JEPD17b')
+
+
+(forall (x y)
+	(if
+		(surrounds-void y x)
+		(surrounds y x)
+	)
+)
+
+(cl-comment 'JEPD17c')
+
+
+(forall (x y)
+	(if
+		(surrounds-mat y x)
+		(surrounds y x)
+	)
+)
+
+
+
+(cl-comment 'JEPD18')
+
+
+(forall (x y)
+	(if
+		(surrounds-mat y x)
+		(not (surrounds-void y x))
+	)
+)
+
+
+(cl-comment 'JEPD19a')
+
+(forall (x y)
+	(if
+		(and
+			(or
+				(mat x)
+				(V x)
+			)
+			(or
+				(mat y)
+				(V y)
+			)
+		)
+		(if
+			(det-contains y x)
+			(or
+				(inside x y)
+				(surrounds y x)
+			)
+		)
+	)
+)
+
+
+
+(cl-comment 'JEPD19b')
+
+(forall (x y)
+	(if
+		(and
+			(or
+				(mat x)
+				(V x)
+			)
+			(or
+				(mat y)
+				(V y)
+			)
+		)
+		(if
+			(or
+				(inside x y)
+				(surrounds y x)
+			)
+			(det-contains y x)
+		)
+	)
+)
+
+
+
+(cl-comment 'JEPD20')
+
+
+(forall (x y)
+	(if
+		(inside x y)
+		(not (surrounds y x))
+	)
+)
+
+
+)
