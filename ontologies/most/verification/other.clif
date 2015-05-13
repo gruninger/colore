@@ -1,0 +1,151 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Carmen Chui, Michael Gruninger
+ *******************************************************************************/
+ 
+(cl-text http://colore.oor.net/most/other.clif
+
+(cl-comment "Every point is in a line.")
+(cl-comment "Corresponding theory: https://code.google.com/p/colore/source/browse/trunk/ontologies/tripartite_incidence/point_tripartite.clif")
+(forall (p)
+	(if (point p)
+		(exists (l)
+			(and (line l)(in p l)))))
+
+(cl-comment "Every line has exactly two points.")
+(cl-comment "Corresponding theory: https://code.google.com/p/colore/source/browse/trunk/ontologies/bipartite_incidence/nontrivial_lines.clif")
+(forall (l)
+	(if (line l)
+		(exists (x y)
+			(and (point x)(point y)(not (= x y))
+				(in x l)(in y l)))))
+
+(cl-comment "Axiom name: hanging_point")
+(cl-comment "Every point in a space is either in a plane in that space, or is in a line whose other point is in that plane in that space.")
+(cl-comment "Corresponding theory: TBA")
+(forall (s p_1)
+	(if (and (point p_1)(space s)(in p_1 s))
+		(exists (q_1)
+			(and (plane q_1)
+				(or (and (in p_1 q_1)(in q_1 s))
+					(exists (p_2 l q_2)
+						(and (point p_2)(line l)(plane q_2)(in p_2 l)(in p_1 l)(in q_2 s))))))))
+
+(cl-comment "A linkage is not in any plane.")
+(cl-comment "Corresponding theory: TBA")
+(forall (q_1 q_2 l)
+	(if (and (plane q_1)(plane q_2)(line l)(linkage q_1 l q_2))
+		(not (exists (q_3)
+			(and (plane q_3)(not (in l q_3)))))))
+
+(cl-comment "For every point there exists another point and these two points are in the same line.")
+(cl-comment "Corresponding theory: TBA")
+(forall (p_1)
+	(if (point p_1)
+		(exists (p_2 l)
+			(and (point p_2)(line l)(in p_1 l)(in p_2 l)))))
+
+(cl-comment "Axiom name: coplanar_point_pair")
+(cl-comment "A point in a plane is collinear with another point in that plane.")
+(cl-comment "Corresponding theory: TBA")
+(forall (q p_1)
+	(if (and (plane q)(point p_1)(in p_1 q))
+		(exists (p_2 l)
+			(and (point p_2)(line l)(in p_2 q)(in p_1 l)(in p_2 l)(in l q)(not (= p_1 p_2))))))
+
+(cl-comment "Every plane has at least one line.")
+(cl-comment "Corresponding theory: https://code.google.com/p/colore/source/browse/trunk/ontologies/tripartite_incidence/partial_plane.clif")
+(forall (q)
+	(if (plane q)
+		(exists (l)
+			(and (line l)(in l q)))))
+			
+(cl-comment "Two planes intersect at a line.")
+(cl-comment "Corresponding theory: https://code.google.com/p/colore/source/browse/trunk/ontologies/tripartite_incidence/plane_intersect.clif")
+(forall (q_1 q_2)
+	(iff (intersecting q_1 q_2)
+		(and (plane q_1)(plane q_2)(not (= q_1 q_2))
+			(exists (l)
+				(and (line l)(in l q_1)(in l q_2))))))
+
+(cl-comment "Axiom name: nonlinkage_intersect")
+(cl-comment "An intersecting line is not a linkage.")
+(cl-comment "Corresponding theory: TBA")
+(forall (q_1 q_2 l)
+	(if (and (plane q_1)(plane q_2)(line l)(intersecting q_1 q_2))
+		(not (linkage q_1 l q_2))))
+
+(cl-comment "Symmetry for linkages.")
+(cl-comment "Corresponding theory: TBA")
+(forall (q_1 q_2 l)
+	(if (and (linkage q_1 l q_2)(linkage q_2 l q_1))
+		(= l_1 l_2)))
+
+(cl-comment "Axiom name: unique_linkage")
+(cl-comment "Two planes have at most one linkage.")
+(cl-comment "Corresponding theory: TBA")
+(forall (q_1 q_2 l)
+	(if (and (plane q_1)(plane q_2)))
+)
+(cl-comment "----------------------------------------------------fix this axiom")
+
+(cl-comment "Transitivity of being in a plane.")
+(cl-comment "Corresponding theory: https://code.google.com/p/colore/source/browse/trunk/ontologies/tripartite_incidence/transitive_tripartite.clif")
+(forall (p l q)
+	(if (and (point p)(line l)(plane q)(in p l)(in l q))
+		(in p q)))
+
+(cl-comment "Axiom name: coplanar_endpoints")
+(cl-comment "If two points are in the same plane and in the same line, then the line is in the plane.")
+(cl-comment "Corresponding theory: TBA")
+(forall (p_1 p_2 q l)
+	(if (and (point p_1)(point p_2)(not (= p_1 p_2))(plane q)(line l)(in p_1 q)(in p_2 q))
+		(in l q)))
+
+(cl-comment "A line is in at most two planes.")
+(cl-comment "Corresponding theory: https://code.google.com/p/colore/source/browse/trunk/ontologies/tripartite_incidence/double_plane.clif")
+
+(cl-comment "========================= DEFINITIONS =========================")
+(cl-comment "Definitions")
+(cl-comment "Parallel Planes")
+(forall (q_1 q_2)
+	(iff (parallelplanes q_1 q_2)
+		(and (plane q_1)(plane q_2)
+			(not (exists (x)
+				(and (in x q_1)(in x q_2)))))))
+
+(cl-comment "Linkage")
+(forall (q_1 l q_2)
+	(iff (linkage q_1 l q_2)
+		(and (line l)(plane q_1)(plane q_2)(not (= q_1 q_2))(parallelplanes q_1 q_2)
+			(exists (p_1 p_2)
+				(and (point p_1)(point p_2)(in p_1 q_1)(in p_2 q_2)(in p_1 l)(in p_2 l))))))
+
+(cl-comment "========================= IN PROBATION =========================")
+(cl-comment "In Probation")
+(cl-comment "Every point is connected to at most four lines.")
+(cl-comment "Corresponding theory: TBA")
+
+(cl-comment "Every plane is either tree-ordered or cyclically ordered.")
+(cl-comment "Corresponding theory: TBA")
+(forall (x p_1 p_2 p_3)
+	(if (and (plane x)(point p_1)(point p_2)(point p_3)(in p_1 x)(in p_2 x)(in p_3 x))
+		(or (between p_1 p_2 p_3)(between p_2 p_1 p_3))))
+
+(cl-comment "Two planes in the same space are connected by a line.")
+(cl-comment "Corresponding theory: TBA")
+(forall (s q_1 q_2)
+	(if (and (space s)(plane q_1)(plane q_2)(not (= q_1 q_2))(in q_1 s)(in q_2 s))
+		(exists (q_3 l)
+			(and (plane q_3)(in q_3 s)(line l)(linkage q_1 l q_3)))))
+			
+(cl-comment "========================= REMOVED =========================")
+(cl-comment "Not every line is in a plane.")
+
+)
+)
