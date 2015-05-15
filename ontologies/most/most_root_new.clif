@@ -1,0 +1,165 @@
+/*******************************************************************************
+* Copyright (c) University of Toronto and others. All rights reserved.
+* The content of this file is licensed under the Creative Commons Attribution-
+* ShareAlike 3.0 Unported license. The legal text of this license can be
+* found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+*
+* Contributors:
+* Carmen Chui, Michael Gruninger
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/most/most_root.clif
+
+(cl-comment 'new version of most_root with split up hasBond relation')
+
+(cl-comment 'A new relation fooBond(a,b) to indicate an atom a is in a bond b.')
+(forall (a b)
+	(if (fooBond a b)
+		(and (atom a)(bond b))))
+
+(forall (b x y)
+	(iff (hasBond b x y)
+		(and (fooBond x b)(fooBond y b))))
+
+(forall (x y z b)
+	(if (and (fooBond x b)(fooBond y b)(fooBond z b))
+		(or (= x y)(= x z)(= y z))))
+
+(cl-comment 'An atom can be bonded if there exists another atom for which it can be bonded.')
+(forall (x)
+	(if (atom x)
+		(exists (b y)
+			(and (atom y)(fooBond x b)(fooBond y b)))))
+
+(cl-comment 'A bond is possible between two atoms.')
+(forall (b)
+	(if (bond b)
+		(exists (x y)
+			(and (fooBond x b)(fooBond y b)))))
+
+(cl-comment 'An atom x is in a functional group y.')
+(forall (x y)
+	(if (inGroup x y)
+		(and (atom x)(functional_group y))))
+
+(cl-comment 'Two atoms are bonded if a bond exists between them.')
+(forall (b x y)
+	(if (and (fooBond x b)(fooBond y b))
+		(and (bond b)(atom x)(atom y))))
+
+(cl-comment 'A bond is related to at most two atoms.')
+(forall (b)
+	(if (bond b)
+		(exists (x y)
+			(and (fooBond x b)(fooBond y b)(not (= x y))))))
+
+(cl-comment 'A bond is related to at least two atoms.')
+(forall (b)
+	(if (bond b)
+		(exists (x y)
+			(and (fooBond x b)(fooBond y b)(not (= y x))))))
+
+(cl-comment 'Every group is in a molecule.')
+(forall (x)
+	(if (functional_group x)
+		(exists (y)
+			(and (molecule y)(containsGroup y x)))))
+
+(cl-comment 'Every group is contained in a unique molecule.')
+(forall (x)
+	(if (functional_group x)
+		(exists (y)
+			(and (molecule y)(containsGroup y x)
+				(not (exists (w)
+					(and (molecule w)(containsGroup y w)(not (= w y)))))))))
+			
+(cl-comment 'A functional group is in a molecule if the group is in the molecule.')
+(forall (x y)
+	(if (containsGroup x y)
+		(and (molecule x)(functional_group y))))
+
+(cl-comment 'Definition for an end atom in a linear functional group.')
+(forall (x y)
+	(iff (end x y)
+		(and (inGroup x y)
+			(forall (b1 b2 w z)
+				(if (and (fooBond x b1)(fooBond z b1)(fooBond x b2)(fooBond w b2)(inGroup z y)(inGroup w y))
+					(= w z))))))
+
+(cl-comment 'Definition for a fork atom in a branched functional group: an atom in the same functional group has at least 3 other atoms in bonds.')
+(forall (x y)
+	(iff (fork x y)
+		(and (inGroup x y)
+			(exists (b1 b2 b3 a1 a2 a3)
+				(and (not (= a1 a2))(not (= a2 a3))(not (= a1 a3))
+					(not (= b1 b2))(not (= b2 b3))(not (= b1 b3))
+					(fooBond x b1)(fooBond a1 b1)
+					(fooBond x b2)(fooBond a2 b2)
+					(fooBond x b3)(fooBond a3 b3)
+					(inGroup a1 y)(inGroup a2 y)(inGroup a3 y))))))
+
+(cl-comment 'Disjointness axioms for atom(x), bond(x), functional_group(x), and molecule(x).')
+(forall (x)
+	(if (molecule x)
+		(not (or (atom x)(bond x)(functional_group x)))))
+
+(forall (x)
+	(if (atom x)
+		(not (or (bond x)(functional_group x)))))
+
+(forall (x)
+	(if (bond x)
+		(not (functional_group x))))
+
+(cl-comment 'For every functional group, there exists an atom that is in the group.')
+(forall (x)
+	(if (functional_group x)
+		(exists (a) (and (atom a)(inGroup a x)))))
+
+(cl-comment 'Group-Bond Relationship: A bond is in a functional group iff both of its atoms are in the functional group.')
+(forall (x y)
+	(iff (bondGroup x y)
+		(and (bond x)(functional_group y)
+			(exists (w z)
+				(and (atom z)(atom w)(inGroup z y)(inGroup w y)(fooBond z x)(fooBond w z))))))
+
+(cl-comment 'Molecule-Atom Relationship: An atom is in a molecule iff it is in a group that is contained in the molecule.')
+(forall (x y)
+	(iff (inMolecule x y)
+		(and (atom x)(molecule y)
+			(exists (w z)
+				(and (functional_group z)(inGroup x z)(containsGroup y z))))))
+
+(cl-comment 'Molecule-Bond Relationship: A bond is in a molecule iff it is in a group that is contained in the molecule.')
+(forall (x y)
+	(iff (molecularBond x y)
+		(and (bond x)(molecule y)
+			(exists (w z)
+				(and (functional_group z)(bondGroup x z)(containsGroup y z))))))
+
+(cl-comment 'Group-Atom Relationship: Every atom has a bond with an atom in a functional group.')
+(forall (x)
+	(if (atom x)
+		(exists (b y z)
+			(and (functional_group y)(atom z)(fooBond x b)(fooBond z b)(inGroup z y)))))
+
+(cl-comment 'Transitive relation to indicate that any bond between two atoms in a group implies that the atom is in the group.')
+(forall (b g x y)
+	(if (and (fooBond x b)(fooBond y b)(bondGroup b g))
+		(inGroup x g)))
+
+(cl-comment 'Axioms to prevent trivial models from being generated from Mace4.
+(exists (x)
+	(molecule x))
+
+(exists (x)
+	(atom x))
+
+(exists (x)
+	(functional_group x))
+
+(exists (x)
+	(bond x))
+')
+
+)
