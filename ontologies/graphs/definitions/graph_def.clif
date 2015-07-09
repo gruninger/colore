@@ -1,5 +1,5 @@
 
-(cl-text http://colore.oor.net/graphs/graph_def.clif
+(cl-text http://colore.oor.net/graphs/definitions/graph_def.clif
 
 (cl-imports http://colore.oor.net/graphs/undirected_graph.clif)
 
@@ -17,10 +17,49 @@
 		(and	(path x ... y)
 			(adj x y))))
 
-(forall (x y z)
-	(iff	(cycle x z)
-		(and	(adj x y)
+(forall (x y)
+	(iff	(cycle x y)
+		(exists (z)
+			(and	(adj x z)
+				(adj z y)))))
+
+(forall (x y z ...)
+	(iff	(simple_path x ... y z)
+		(and	(simple_path x ... y)
+			(not (= x y))
 			(adj y z))))
+
+(forall (x y)
+	(iff	(simple_path x y)
+		(adj x y)))
+
+(forall (x y ...)
+	(iff	(simple_cycle x ... y)
+		(and	(simple_path x ... y)
+			(adj x y))))
+
+(forall (x y)
+	(iff	(simple_cycle x y)
+		(exists (z)
+			(and	(adj x z)
+				(adj z y)))))
+
+(forall (x y z ...)
+	(iff	(nontrivial_cycle x ... y z)
+		(and	(simple_path x ... y)
+			(not (= x y))
+			(not (= x z))
+			(not (= z y))
+			(adj y z))))
+
+(forall (x y z)
+	(iff	(nontrivial_cycle x y z)
+		(and	(adj x y)
+			(adj y z)
+			(adj x z)
+			(not (= x y))
+			(not (= x z))
+			(not (= z y)))))
 
 (forall (x y ...)
 	(iff	(odd_cycle x ... y)
