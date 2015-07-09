@@ -4,12 +4,12 @@
 (cl-imports http://colore.oor.net/graphs/undirected_graph.clif)
 
 (forall (x y z ...)
-	(iff	(path x ... y z)
-		(and	(path x ... y)
+	(iff	(walk x ... y z)
+		(and	(walk x ... y)
 			(adj y z))))
 
 (forall (x y)
-	(iff	(path x y)
+	(iff	(walk x y)
 		(adj x y)))
 
 (forall (x y ...)
@@ -24,29 +24,19 @@
 				(adj z y)))))
 
 (forall (x y z ...)
-	(iff	(simple_path x ... y z)
-		(and	(simple_path x ... y)
+	(iff	(path x ... y z)
+		(and	(path x ... y)
 			(not (= x y))
 			(adj y z))))
 
 (forall (x y)
-	(iff	(simple_path x y)
-		(adj x y)))
-
-(forall (x y ...)
-	(iff	(simple_cycle x ... y)
-		(and	(simple_path x ... y)
-			(adj x y))))
-
-(forall (x y)
-	(iff	(simple_cycle x y)
-		(exists (z)
-			(and	(adj x z)
-				(adj z y)))))
+	(iff	(path x y)
+		(and	(adj x y)
+			(not (= x y)))))
 
 (forall (x y z ...)
 	(iff	(nontrivial_cycle x ... y z)
-		(and	(simple_path x ... y)
+		(and	(path x ... y)
 			(not (= x y))
 			(not (= x z))
 			(not (= z y))
