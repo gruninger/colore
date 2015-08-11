@@ -68,16 +68,6 @@
                         (bondGroup e s1) (bondGroup e s2) (bondGroup e s3))
                 (or     (= s1 s2) (= s2 s3) (= s1 s3))))
 
-
-(cl-comment 'ORIGINAL: A surface that is part of a box containing other surfaces also contains a ridge.')
-(cl-comment 'A functional group that is part of a molecule containing other functional groups also contains a fusedBond.')
-(forall (x s1 s2)
-        (if     (and    (molecule x) (functional_group s1) (functional_group s2) (not (= s1 s2))
-                        (containsGroup s1 x) (containsGroup s2 x))
-                (exists (e)
-                        (and    (fusedBond e) (bondGroup e s1)))))
-
-
 (cl-comment 'ORIGINAL: Every edge in a surface meets another distinct edge in that surface.')
 (cl-comment 'Every bond in a functional group meets another distinct bond in that functional group.')
 (forall (e1 s v)
@@ -93,15 +83,6 @@
                         (and    (borderBond e2) (borderBond e3) (not (= e2 e3))
                                 (sharedAtom e1 e2 v1) (sharedAtom e1 e3 v2)))))
 
-
-(cl-comment 'ORIGINAL: A ridge is an edge that is part of two surfaces.')
-(cl-comment 'A fusedBond is an bond that is part of two functional groups.')
-(forall (e)
-        (iff    (fusedBond e)
-                (exists (s1 s2)
-                        (and    (bond e) (functional_group s1) (functional_group s2) (not (= s1 s2))
-                                (bondGroup e s1) (bondGroup e s2)))))
-
 (cl-comment 'ORIGINAL: A border is an edge that is part of a unique surface.')
 (cl-comment 'A border bond is an bond that is part of a unique functional group.')
 (forall (e)
@@ -115,11 +96,6 @@
 (forall (x)
         (if     (or (atom x) (bond x) (functional_group x))
                 (not (molecule x))))
-
-(forall (x y)
-        (if     (and    (part x y) (molecule x) (molecule y))
-                (= x y)))
-(cl-comment 'not valid in MoSt')
 				
 (cl-comment '==================================')
 (cl-comment 'From http://colore.oor.net/moleculeworld/cardworld_bond.clif')
@@ -185,23 +161,4 @@
 (forall (x)
         (if     (bond x) (not (functional_group x))))
 
-(cl-comment 'The axioms below don't apply.')
-(forall (x y)
-        (if     (part x y) (part y x)))
-
-(forall (x y)
-        (part x x))
-
-(forall (x y)
-        (if     (and    (part x y) (atom x) (atom y))
-                (= x y)))
-
-(forall (x y)
-        (if     (and    (part x y) (bond x) (bond y))
-                (= x y)))
-
-(forall (x y)
-        (if     (and    (part x y) (functional_group x) (functional_group y))
-                (= x y)))
-			
 )
