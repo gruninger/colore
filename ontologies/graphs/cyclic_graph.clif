@@ -1,24 +1,19 @@
 
 (cl-text http://colore.oor.net/graphs/cyclic_graph.clif
 
-(cl-comment 'This is the directed version of a cyclic graph, in which each vertex has exactly one incoming and one outgoing edge (adjacency relation).')
+(cl-imports http://colore.oor.net/graphs/simple_graph.clif)
 
-(forall (x y z)
+(forall (x y z w)
 	(iff	(and	(adj x y)
-			(adj x z))
-		(= y z)))
-
-(forall (x y z)
-	(iff	(and	(adj y x)
-			(adj z x))
-		(= y z)))
+			(adj x z)
+			(adj x w))
+		(or	(= y z)
+			(= y w)
+			(= z w))))
 
 (forall (x)
-	(exists (y)
-		(adj x y)))
-
-(forall (x)
-	(exists (y)
-		(adj y x)))
+	(exists (y z)
+		(and	(adj x y)
+			(adj x z))))
 
 )
