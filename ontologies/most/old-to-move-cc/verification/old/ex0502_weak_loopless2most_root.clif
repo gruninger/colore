@@ -1,0 +1,65 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Carmen Chui, Michael Gruninger
+ *******************************************************************************/
+ 
+(cl-text http://colore.oor.net/most/geometry2molecules_exp.clif
+
+(cl-comment 'Import weak_loopless')
+(cl-imports test/weak_loopless)
+(cl-comment 'Import translation definitions')
+(cl-imports test/weak_loopless2most_root)
+
+(cl-comment 'Things to prove from most_root_bipartite')
+(cl-comment 'An atom can be bonded if there exists another atom for which it can be bonded.')
+(forall (x)
+	(if (atom x)
+		(exists (b y)
+			(and (atom y)(hasBond b x y)))))
+
+(cl-comment 'A bond is possible between two atoms.')
+(forall (b)
+	(if (bond b)
+		(exists (x y)
+			(hasBond b x y))))
+
+(cl-comment 'Two atoms are bonded if a bond exists between them.')
+(forall (b x y)
+	(if (hasBond b x y)
+		(and (bond b)(atom x)(atom y))))
+
+(cl-comment 'Additional axioms to ensure that the same bond can only be between two atoms.')
+(forall (b x y z)
+	(if (and (hasBond b x y)(hasBond b x z))
+		(= y z)))
+
+(forall (b x y z)
+	(if (and (hasBond b x y)(hasBond b z y))
+		(= x z)))
+
+(cl-comment 'A bond is symmetric between two atoms.')
+(forall (b x y)
+	(if (hasBond b x y)
+		(hasBond b y x)))
+
+(cl-comment 'An atom cannot bond to itself.')
+(forall (b x)
+	(not (hasBond b x x)))
+
+(cl-comment 'A bond is related to at most two atoms.')
+(forall (b)
+	(if (bond b)
+		(exists (x y)
+			(and (hasBond b x y)(not (= x y))))))
+
+(cl-comment 'A bond is related to at least two atoms.')
+(forall (b x y z)
+	(if (and (bond b)(hasBond b x y)(hasBond b x z))
+		(= y z)))
+
+)
