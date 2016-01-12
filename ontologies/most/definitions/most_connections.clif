@@ -14,7 +14,9 @@
 
 (cl-comment 'This CLIF file contains information on the various connections between atoms, bonds, and molecules.')
 
-(cl-comment 'A new relation inBond(a,b) to indicate an atom a is in a bond b.')
+(cl-comment '====== ATOM TO BOND CONNECTION ======')
+
+(cl-comment 'A new relation inBond to indicate an atom a is in a bond b.')
 (forall (a b)
 	(if (inBond a b)
 		(and (atom a)(bond b))))
@@ -53,60 +55,12 @@
 		(exists (x y)
 			(and (inBond x b)(inBond y b)(not (= y x))))))
 
-(cl-comment '---------------------Partitioned according to GROUP/TRIPARTITE---------------------')
+(cl-comment '====== ATOM TO GROUP CONNECTION ======')
 
 (cl-comment 'An atom x is in a functional group y.')
 (forall (x y)
 	(if (inGroup x y)
 		(and (atom x)(functional_group y))))
-
-(cl-comment 'Definition for an end atom in a linear functional group.')
-(forall (x y)
-	(iff (end x y)
-		(and (inGroup x y)
-			(forall (b1 b2 w z)
-				(if (and (inBond x b1)(inBond z b1)(inBond x b2)(inBond w b2)(inGroup z y)(inGroup w y))
-					(= w z))))))
-
-(cl-comment 'Definition for a fork atom in a branched functional group: an atom in the same functional group has at least 3 other atoms in bonds.')
-(forall (x y)
-	(iff (fork x y)
-		(and (inGroup x y)
-			(exists (b1 b2 b3 a1 a2 a3)
-				(and (not (= a1 a2))(not (= a2 a3))(not (= a1 a3))
-					(not (= b1 b2))(not (= b2 b3))(not (= b1 b3))
-					(inBond x b1)(inBond a1 b1)
-					(inBond x b2)(inBond a2 b2)
-					(inBond x b3)(inBond a3 b3)
-					(inGroup a1 y)(inGroup a2 y)(inGroup a3 y))))))
-
-(cl-comment 'If there are three distinct ends in a molecule, then there exists a fork in the molecule.')
-(forall (x1 x2 x3 y)
-	(if (and (end x1 y)(end x2 y)(end x3 y)
-		(not (= x1 x2))(not (= x1 x3))(not (= x2 x3)))
-		(exists (z) (fork z y))))
-
-(cl-comment 'Disjointness axiom for atom(x), bond(x), functional_group(x), and molecule(x).')
-(forall (x)
-	(if (atom x)
-		(not (or (bond x)(functional_group x)))))
-
-(cl-comment 'Disjointness axiom for atom(x), bond(x), functional_group(x), and molecule(x).')
-(forall (x)
-	(if (bond x)
-		(not (functional_group x))))
-
-(cl-comment 'For every functional group, there exists an atom that is in the group.')
-(forall (x)
-	(if (functional_group x)
-		(exists (a) (and (atom a)(inGroup a x)))))
-
-(cl-comment 'Group-Bond Relationship: A bond is in a functional group iff both of its atoms are in the functional group.')
-(forall (x y)
-	(iff (bondGroup x y)
-		(and (bond x)(functional_group y)
-			(exists (w z)
-				(and (atom z)(atom w)(inGroup z y)(inGroup w y)(inBond z x)(inBond w z))))))
 
 (cl-comment 'Group-Atom Relationship: Every atom has a bond with an atom in a functional group.')
 (forall (x)
@@ -124,12 +78,34 @@
 	(if (and (inBond x y)(bondGroup y z))
 		(inGroup x z)))
 
+(cl-comment '====== BOND TO GROUP CONNECTION ======')
+
+(cl-comment 'A sentence to describe that functional groups contain bonds.')
+(forall (y)
+	(if (functional_group y)
+		(exists (x)
+			(bondGroup x y))))
+
+(cl-comment 'Group-Bond Relationship: A bond is in a functional group iff both of its atoms are in the functional group.')
+(forall (x y)
+	(iff (bondGroup x y)
+		(and (bond x)(functional_group y)
+			(exists (w z)
+				(and (atom z)(atom w)(inGroup z y)(inGroup w y)(inBond z x)(inBond w z))))))
+
 (cl-comment 'If two atoms are in a group and have a bond between each other, then the bond is in the functional group.')
 (forall (x y b g)
 	(if (and (inGroup x y)(inGroup y g)(inBond x b)(inBond y b)(not (= x y)))
 		(bondGroup b g)))
 
-(cl-comment '---------------------Partitioned according to MOLECULE/QUADRIPARTITE---------------------')
+(cl-comment 'A bond is a link between two functional groups iff there exists a bond between two atoms that are in both groups, respectively.')
+(forall (b g1 g2)
+	(iff (link b g1 g2)
+		(and (bond b)(functional_group g1)(functional_group g2)
+			(exists (x y)
+				(and (atom x)(atom y)(inGroup x g1)(inGroup y g2)(hasBond b x y))))))
+		
+(cl-comment '====== GROUP TO MOLECULE CONNECTION ======')
 
 (cl-comment 'Every group is in a molecule.')
 (forall (x)
@@ -144,7 +120,7 @@
 			(and (molecule y)(containsGroup y x)
 				(not (exists (w)
 					(and (molecule w)(containsGroup y w)(not (= w y)))))))))
-			
+
 (cl-comment 'A functional group is in a molecule if the group is in the molecule.')
 (forall (x y)
 	(if (containsGroup x y)
@@ -154,6 +130,8 @@
 (forall (x)
 	(if (molecule x)
 		(not (or (atom x)(bond x)(functional_group x)))))
+		
+(cl-comment '====== ATOM TO MOLECULE CONNECTION ======')
 
 (cl-comment 'Molecule-Atom Relationship: An atom is in a molecule iff it is in a group that is contained in the molecule.')
 (forall (x y)
@@ -162,25 +140,21 @@
 			(exists (w z)
 				(and (functional_group z)(inGroup x z)(containsGroup y z))))))
 
+(cl-comment 'An atom is in a molecule if it is in a group or has a bond.')
+(forall (x m)
+	(iff (inMolecule x m)
+		(or (exists (g)
+				(and (functional_group g)(containsGroup m g)(inGroup x g)))
+			(exists (b y g)
+				(and (inGroup y g)(containsGroup m g)(hasBond b x y))))))
+				
+(cl-comment '====== BOND TO MOLECULE CONNECTION ======')
+
 (cl-comment 'Molecule-Bond Relationship: A bond is in a molecule iff it is in a group that is contained in the molecule.')
 (forall (x y)
 	(iff (molecularBond x y)
 		(and (bond x)(molecule y)
 			(exists (w z)
 				(and (functional_group z)(bondGroup x z)(containsGroup y z))))))
-
-(cl-comment 'Axioms to prevent trivial models from being generated from Mace4.
-(exists (x)
-	(molecule x))
-
-(exists (x)
-	(atom x))
-
-(exists (x)
-	(functional_group x))
-
-(exists (x)
-	(bond x))
-')
 
 )

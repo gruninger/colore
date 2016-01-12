@@ -10,33 +10,6 @@
 
 (cl-text http://colore.oor.net/most/definitions/most_basic_definitions.clif
 
-(cl-comment 'A bond is a link between two functional groups iff there exists a bond between two atoms that are in both groups, respectively.')
-(forall (b g1 g2)
-	(iff (link b g1 g2)
-		(and (bond b)(functional_group g1)(functional_group g2)
-			(exists (x y)
-				(and (atom x)(atom y)(inGroup x g1)(inGroup y g2)(hasBond b x y))))))
-
-(cl-comment 'An atom is in a molecule if it is in a group or has a bond.')
-(forall (x m)
-	(iff (inMolecule x m)
-		(or (exists (g)
-				(and (functional_group g)(containsGroup m g)(inGroup x g)))
-			(exists (b y g)
-				(and (inGroup y g)(containsGroup m g)(hasBond b x y))))))
-
-(cl-comment 'A sentence to describe that functional groups contain bonds.')
-(forall (y)
-	(if (functional_group y)
-		(exists (x)
-			(bondGroup x y))))
-
-(cl-comment 'A sentence to describe that a molecule x contains a functional group y.')
-(forall (y)
-	(if (functional_group y)
-		(exists (x)
-			(containsGroup x y))))
-
 (cl-comment 'An X Group is a halogen.')
 (forall (x)
 	(iff (x_group x)
