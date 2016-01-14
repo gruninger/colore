@@ -1,19 +1,29 @@
 (cl-text http://colore.oor.net/algebra/vectorspace.clif
 
-(cl-imports http://colore.oor.net/ringoids/field.clif)
+(cl-module ringoid (cl-imports http://colore.oor.net/ringoids/ringoid.clif))
 
-(cl-imports http://colore.oor.net/magma/abelian_group.clif)
+(cl-module algebra (cl-imports http://colore.oor.net/magma/abelian_group.clif))
 
 (forall (r x y)
-	(= (mult r (op x y)) (op (mult r x) (mult r y))))
+	(if	(and	(ringoid r)
+			(algebra x)
+			(algebra y))
+		(= (mult r (op x y)) (op (mult r x) (mult r y)))))
 
 (forall (r s x)
-	(= (mult (sum r s) x) (op (mult r x) (mult s x))))
+	(if	(and	(ringoid r)
+			(algebra x)
+			(algebra y))
+		(= (mult (sum r s) x) (op (mult r x) (mult s x)))))
 
 (forall (r s x)
-	(= (mult (prod r s) x) (mult r (mult s x))))
+	(if	(and	(ringoid r)
+			(algebra x)
+			(algebra y))
+	(= (mult (prod r s) x) (mult r (mult s x)))))
 
 (forall (x)
-	(= x (mult one x)))
+	(if	(algebra x)
+		(= x (mult one x))))
 
 )
