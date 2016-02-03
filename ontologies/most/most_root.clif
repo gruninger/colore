@@ -19,6 +19,52 @@
 	(if (inGroup x y)
 		(and (atom x)(functional_group y))))
 
+(cl-comment 'Disjointness axiom for atom(x), bond(x), functional_group(x), and molecule(x).')
+(forall (x)
+	(if (atom x)
+		(not (or (bond x)(functional_group x)))))
+
+(cl-comment 'Disjointness axiom for atom(x), bond(x), functional_group(x), and molecule(x).')
+(forall (x)
+	(if (bond x)
+		(not (functional_group x))))
+
+(cl-comment 'For every functional group, there exists an atom that is in the group.')
+(forall (x)
+	(if (functional_group x)
+		(exists (a) (and (atom a)(inGroup a x)))))
+
+(cl-comment '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+(cl-comment 'Group-Bond Relationship: A bond is in a functional group iff both of its atoms are in the functional group.')
+(forall (x y)
+	(iff (bondGroup x y)
+		(and (bond x)(functional_group y)
+			(exists (w z)
+				(and (atom z)(atom w)(inGroup z y)(inGroup w y)(inBond z x)(inBond w z))))))
+
+(cl-comment '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+
+(cl-comment 'Group-Atom Relationship: Every atom has a bond with an atom in a functional group.')
+(forall (x)
+	(if (atom x)
+		(exists (b y z)
+			(and (functional_group y)(atom z)(inBond x b)(inBond z b)(inGroup z y)))))
+
+(cl-comment 'Transitive relation to indicate that any bond between two atoms in a group implies that the atom is in the group.')
+(forall (b g x y)
+	(if (and (inBond x b)(inBond y b)(bondGroup b g))
+		(inGroup x g)))
+
+(cl-comment 'If an atom is in a bond that is in a functional group, then the atom is in the functional group.')
+(forall (x y z)
+	(if (and (inBond x y)(bondGroup y z))
+		(inGroup x z)))
+
+(cl-comment 'If two atoms are in a group and have a bond between each other, then the bond is in the functional group.')
+(forall (x y b g)
+	(if (and (inGroup x y)(inGroup y g)(inBond x b)(inBond y b)(not (= x y)))
+		(bondGroup b g)))
+
 (cl-comment 'Definition for an end atom in a linear functional group.')
 (forall (x y)
 	(iff (end x y)
@@ -44,50 +90,7 @@
 	(if (and (end x1 y)(end x2 y)(end x3 y)
 		(not (= x1 x2))(not (= x1 x3))(not (= x2 x3)))
 		(exists (z) (fork z y))))
-
-(cl-comment 'Disjointness axiom for atom(x), bond(x), functional_group(x), and molecule(x).')
-(forall (x)
-	(if (atom x)
-		(not (or (bond x)(functional_group x)))))
-
-(cl-comment 'Disjointness axiom for atom(x), bond(x), functional_group(x), and molecule(x).')
-(forall (x)
-	(if (bond x)
-		(not (functional_group x))))
-
-(cl-comment 'For every functional group, there exists an atom that is in the group.')
-(forall (x)
-	(if (functional_group x)
-		(exists (a) (and (atom a)(inGroup a x)))))
-
-(cl-comment 'Group-Bond Relationship: A bond is in a functional group iff both of its atoms are in the functional group.')
-(forall (x y)
-	(iff (bondGroup x y)
-		(and (bond x)(functional_group y)
-			(exists (w z)
-				(and (atom z)(atom w)(inGroup z y)(inGroup w y)(inBond z x)(inBond w z))))))
-
-(cl-comment 'Group-Atom Relationship: Every atom has a bond with an atom in a functional group.')
-(forall (x)
-	(if (atom x)
-		(exists (b y z)
-			(and (functional_group y)(atom z)(inBond x b)(inBond z b)(inGroup z y)))))
-
-(cl-comment 'Transitive relation to indicate that any bond between two atoms in a group implies that the atom is in the group.')
-(forall (b g x y)
-	(if (and (inBond x b)(inBond y b)(bondGroup b g))
-		(inGroup x g)))
-
-(cl-comment 'If an atom is in a bond that is in a functional group, then the atom is in the functional group.')
-(forall (x y z)
-	(if (and (inBond x y)(bondGroup y z))
-		(inGroup x z)))
-
-(cl-comment 'If two atoms are in a group and have a bond between each other, then the bond is in the functional group.')
-(forall (x y b g)
-	(if (and (inGroup x y)(inGroup y g)(inBond x b)(inBond y b)(not (= x y)))
-		(bondGroup b g)))
-
+		
 (cl-comment '---------------------Partitioned according to MOLECULE/QUADRIPARTITE---------------------')
 
 (cl-comment 'Every group is in a molecule.')
