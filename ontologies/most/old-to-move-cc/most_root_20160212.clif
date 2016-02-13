@@ -13,6 +13,8 @@
 (cl-imports http://colore.oor.net/molecular_graph/definitions/most_elements.clif)
 (cl-imports http://colore.oor.net/molecular_graph/definitions/most_bonds.clif)
 
+(cl-comment '---------------------Partitioned according to GROUP/TRIPARTITE---------------------')
+
 (cl-comment 'An atom x is in a functional group y.')
 (forall (x y)
 	(if (inGroup x y)
@@ -33,19 +35,36 @@
 	(if (functional_group x)
 		(exists (a) (and (atom a)(inGroup a x)))))
 
-(forall (x)
-	(if	(atom x)
-		(exists (y)
-			(inGroup x y))))
-
+(cl-comment '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 (cl-comment 'Group-Bond Relationship: A bond is in a functional group iff both of its atoms are in the functional group.')
 (forall (x y)
-	(iff	(bondGroup x y)
-		(and	(bond x)
-			(functional_group y)
-			(not (exists (z)
-				(and 	(inBond z x)
-					(not (inGroup z y))))))))
+	(iff (bondGroup x y)
+		(and (bond x)(functional_group y)
+			(exists (w z)
+				(and (atom z)(atom w)(inGroup z y)(inGroup w y)(inBond z x)(inBond w z))))))
+
+(cl-comment '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+
+(cl-comment 'Group-Atom Relationship: Every atom has a bond with an atom in a functional group.')
+(forall (x)
+	(if (atom x)
+		(exists (b y z)
+			(and (functional_group y)(atom z)(inBond x b)(inBond z b)(inGroup z y)))))
+
+(cl-comment 'Transitive relation to indicate that any bond between two atoms in a group implies that the atom is in the group.')
+(forall (b g x y)
+	(if (and (inBond x b)(inBond y b)(bondGroup b g))
+		(inGroup x g)))
+
+(cl-comment 'If an atom is in a bond that is in a functional group, then the atom is in the functional group.')
+(forall (x y z)
+	(if (and (inBond x y)(bondGroup y z))
+		(inGroup x z)))
+
+(cl-comment 'If two atoms are in a group and have a bond between each other, then the bond is in the functional group.')
+(forall (x y b g)
+	(if (and (inGroup x y)(inGroup y g)(inBond x b)(inBond y b)(not (= x y)))
+		(bondGroup b g)))
 
 (cl-comment 'Definition for an end atom in a linear functional group.')
 (forall (x y)
@@ -54,16 +73,6 @@
 			(forall (b1 b2 w z)
 				(if (and (inBond x b1)(inBond z b1)(inBond x b2)(inBond w b2)(inGroup z y)(inGroup w y))
 					(= w z))))))
-
-(cl-comment 'A functional group has at most two ends.')
-(forall (x y z w)
-	(if	(and	(functional_group x)
-			(end y x)
-			(end z x)
-			(end w x))
-		(or	(= y z)
-			(= y w)
-			(= z w))))
 
 (cl-comment 'Definition for a fork atom in a branched functional group: an atom in the same functional group has at least 3 other atoms in bonds.')
 (forall (x y)
@@ -77,12 +86,11 @@
 					(inBond x b3)(inBond a3 b3)
 					(inGroup a1 y)(inGroup a2 y)(inGroup a3 y))))))
 
-(cl-comment 'No functional group has a fork.')
-(forall (x)
-	(if	(functional_group x)
-		(not (exists (y)
-			(fork y x)))))
-
+(cl-comment 'If there are three distinct ends in a molecule, then there exists a fork in the molecule.')
+(forall (x1 x2 x3 y)
+	(if (and (end x1 y)(end x2 y)(end x3 y)
+		(not (= x1 x2))(not (= x1 x3))(not (= x2 x3)))
+		(exists (z) (fork z y))))
 		
 (cl-comment '---------------------Partitioned according to MOLECULE/QUADRIPARTITE---------------------')
 
