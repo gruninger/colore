@@ -2,14 +2,15 @@
 
 This repository directory contains the theories found in the MOlecular Structure Ontology (MoSt) written in the Common Logic syntax.
 
-The ontology represents atoms, bonds, functional groups, and molecules as things in the ontology, and imports theories from [most_graph](../blob/master/ontologies/molecular_graph/most_graph.clif).
+The ontology represents atoms, bonds, functional groups, and molecules as things in the ontology, and imports theories from [molecular_graph](https://github.com/gruninger/colore/blob/master/ontologies/molecular_graph/).
 
 Notes
 ================================================
 - This ontology is currently a work in progress.
-- Common functional groups have been axiomatized in the ontology
+- Common functional groups have been axiomatized in the ontology.
+- A few molecules have been axiomatized in [most_molecules](https://github.com/gruninger/colore/blob/master/ontologies/most/definitions/most_molecules.clif) for demonstration purposes.
 
-To Do
+Things To Do
 ================================================
 - Since there are various names for groups and molecules, we have included the common ones listed on Wikipedia (to be updated later with validated names found on ChemSpider).
 - We currently do not have any axioms for cis/trans isomers at the moment (need a new relation?); definitions of groups to fix:
