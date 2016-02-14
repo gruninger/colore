@@ -303,6 +303,15 @@
 							(or (= y c1)(= y c2)(= y c3)))))))))
 
 (forall (x)
+	(iff (butylene x))
+		(butene x)))
+
+(cl-comment 'Butene has 4 isomers: 1-butene, (Z)-but-2-ene, (E)-but-2-ene, 2-methylpropene')
+(forall (x)
+	(if (butene x)
+		(or (1_butene x)(z_but_2_ene x)(e_but_2_ene x)(2_methylpropene x))))
+
+(forall (x)
 	(iff (or (1_butene x)(ethylethylene x))
 		(but_1_ene x)))
 
@@ -321,6 +330,25 @@
 						(iff (inGroup y x)
 							(or (= y c1)(= y c2)(= y c3)(= y c4)))))))))
 							
+(forall (x)
+	(iff (or (1_butene x)(ethylethylene x))
+		(pent_1_ene x)))
+
+(forall (x)
+	(iff (pent_1_ene x)
+		(and (chain x)(unsaturated x)
+			(exists (c1 c2 c3 c4 b1 b2 b3)
+				(and (carbon c1)(carbon c2)(carbon c3)(carbon c4)
+					(not (= c1 c2))(not (= c1 c3))(not (= c1 c4))
+					(not (= c2 c3))(not (= c2 c4))
+					(not (= c3 c4))
+					(doubleBond b1 c1 c2)
+					(singleBond b2 c2 c3)
+					(singleBond b3 c3 c4)
+					(forall (y)
+						(iff (inGroup y x)
+							(or (= y c1)(= y c2)(= y c3)(= y c4)))))))))
+
 (cl-comment 'http://www.chem.canterbury.ac.nz/LetsTalkChemistry/ElectronicVersion/ElectronicVersionNew/chapter06/alkenenames.shtml')
 
 (cl-comment '================================================')
