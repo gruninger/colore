@@ -2,7 +2,7 @@
 
 This repository directory contains the theories found in the MOlecular Structure Ontology (MoSt) written in the Common Logic syntax.
 
-The ontology represents atoms, bonds, functional groups, and molecules as things in the ontology, and imports theories from [most_graph](../blob/master/ontologies/molecular_graph).
+The ontology represents atoms, bonds, functional groups, and molecules as things in the ontology, and imports theories from [most_graph](../blob/master/ontologies/molecular_graph/most_graph.clif).
 
 Notes
 ================================================
