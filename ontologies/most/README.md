@@ -13,8 +13,15 @@ Notes
 Things To Do
 ================================================
 - Since there are various names for groups and molecules, we have included the common ones listed on Wikipedia (to be updated later with validated names found on ChemSpider).
-- We currently do not have any axioms for cis/trans isomers at the moment (need a new relation?); definitions of groups to fix:
+    - There needs to be a standardized way to axiomatize the names of these molecules with multiple names - ACD/IUPAC/other languages/informal names.
+- We currently do not have any axioms for cis/trans isomers at the moment (need a new relation for indicating the geometric placement of carbons); definitions of groups to fix:
     - (cis_but_2_ene x)
     - (trans_but_2_ene x)
     - (cis_pent_2_ene x)
     - (trans_pent_2_ene x)
+    - (cis_2_hexene x)
+    - (trans_2_hexene x)
+    
+References
+================================================
+- http://www.kentchemistry.com/links/organic/isomersofalkanes.htm
