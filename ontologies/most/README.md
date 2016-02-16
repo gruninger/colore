@@ -27,4 +27,4 @@ References
 ================================================
 - http://www.kentchemistry.com/links/organic/isomersofalkanes.htm
 - table of functional groups
-![test](https://github.com/gruninger/colore/ontologies/most/2016-02-16_004830.jpg)
+![test](https://github.com/gruninger/colore/blob/master/ontologies/most/2016-02-16_004830.jpg)
