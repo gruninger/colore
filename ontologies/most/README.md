@@ -12,6 +12,7 @@ Notes
 
 Things To Do
 ================================================
+- fix halogen axioms
 - Since there are various names for groups and molecules, we have included the common ones listed on Wikipedia (to be updated later with validated names found on ChemSpider).
     - There needs to be a standardized way to axiomatize the names of these molecules with multiple names - ACD/IUPAC/other languages/informal names.
 - We currently do not have any axioms for cis/trans isomers at the moment (need a new relation for indicating the geometric placement of carbons); definitions of groups to fix:
