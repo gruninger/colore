@@ -1,0 +1,343 @@
+
+(cl-text colore.oor.net/sumo/sumo_time.clif
+
+(forall (x y)
+	(if	(beforeOrEqual x y)
+		(and	(TimePoint x)
+			(TimePoint y))))
+
+(forall (x)
+	(if	(TimePoint x)
+		(beforeOrEqual x x)))
+
+(forall (x y z)
+	(if	(and	(beforeOrEqual x y)
+			(beforeOrEqual y z))
+		(beforeOrEqual x z)))
+
+(forall (x y)
+	(if	(beforeOrEqual x y)
+		(before x y)))
+
+(forall (x y)
+	(if	(before x y)
+		(and	(TimePoint x)
+			(TimePoint y))))
+
+(forall (x)
+	(if	(TimePoint x)
+		(not (before x x))))
+
+(forall (x y z)
+	(if	(and	(before x y)
+			(before y z))
+		(before x z)))
+
+(forall (x y z)
+	(if	(temporallyBetween x y z)
+		(and	(TimePoint x)
+			(TimePoint y)
+			(TimePoint z))))
+
+(forall (x y z)
+	(if	(temporallyBetween x y z)
+		(temporallyBetweenOrEqual x y z)))
+
+(forall (x y z)
+	(iff	(temporallyBetween x y z)
+		(and	(before x y)
+			(before y z))))
+
+(forall (x y z)
+	(iff	(temporallyBetween x y z)
+		(and	(beforeOrEqual x y)
+			(beforeOrEqual y z))))
+
+(forall (x y z)
+	(if	(temporallyBetweenorEqual x y z)
+		(and	(TimePoint x)
+			(TimePoint y)
+			(TimePoint z))))
+
+(TimePoint PositiveInfinity)
+
+(TimePoint NegativeInfinity)
+
+(forall (x)
+	(if	(and	(TimePoint x)
+			(not (= x PositiveInfinity)))
+		(before x PositiveInfinity)))
+
+(forall (x)
+	(if	(and	(TimePoint x)
+			(not (= x NegativeInfinity)))
+		(before NegativeInfinity x)))
+
+(forall (x)
+	(if	(and	(TimePoint x)
+			(not (= x PositiveInfinity)))
+		(exists (y)
+			(temporallyBetween x y PositiveInfinity))))
+
+(forall (x)
+	(if	(and	(TimePoint x)
+			(not (= x NegativeInfinity)))
+		(exists (y)
+			(temporallyBetween NegativeInfinity y x))))
+
+(forall (x y)
+	(if	(and	(temporalPart x y)
+			(temporalPart y x))
+		(= x y)))
+
+(forall (x y z)
+	(if	(and	(temporalPart x y)
+			(temporalPart y z))
+		(temporalPart x z)))
+
+(forall (x y)
+	(if	(overlapsTemporally x y)
+		(and	(TimeInterval x)
+			(TimeInterval y))))
+
+(forall (x)
+	(if	(TimeInterval x)
+		(overlapsTemporally x x)))
+
+(forall (x y)
+	(if	(overlapsTemporally x y)
+		(overlapsTemporally y x)))
+
+(forall (x y)
+	(iff	(overlapsTemporally x y)
+		(exists (z)
+			(and	(TimeInterval z)
+				(temporalPart z x)
+				(temporalPart z y)))))
+
+(forall (x y)
+	(if	(starts x y)
+		(and	(TimeInterval x)
+			(TimeInterval y))))
+
+(forall (x y z)
+	(if	(and	(starts x y)
+			(starts y z))
+		(starts x z)))
+
+(forall (x)
+	(if	(TimeInterval x)
+		(not (starts x x))))
+
+(forall (x y)
+	(if	(starts x y)
+		(temporalPart x y)))
+
+(forall (x y)
+	(iff	(starts x y)
+		(and	(TimeInterval x)
+			(TimeInterval y)
+			(before (EndFn x) (EndFn y))
+			(= (BeginFn x) (BeginFn y)))))
+
+(forall (x y)
+	(if	(finishes x y)
+		(and	(TimeInterval x)
+			(TimeInterval y))))
+
+(forall (x y z)
+	(if	(and	(finishes x y)
+			(finishes y z))
+		(finishes x z)))
+
+(forall (x)
+	(if	(TimeInterval x)
+		(not (finishes x x))))
+
+(forall (x y)
+	(if	(finishes x y)
+		(temporalPart x y)))
+
+(forall (x y)
+	(iff	(finishes x y)
+		(and	(TimeInterval x)
+			(TimeInterval y)
+			(before (BeginFn x) (BeginFn y))
+			(= (EndFn x) (EndFn y)))))
+
+(forall (x y)
+	(if	(during x y)
+		(and	(TimeInterval x)
+			(TimeInterval y))))
+
+(forall (x y z)
+	(if	(and	(during x y)
+			(during y z))
+		(during x z)))
+
+(forall (x)
+	(if	(TimeInterval x)
+		(not (during x x))))
+
+(forall (x y)
+	(if	(during x y)
+		(temporalPart x y)))
+
+(forall (x y)
+	(if	(during x y)
+		(and	(TimeInterval x)
+			(TimeInterval y)
+			(before (EndFn x) (EndFn y))
+			(before (BeginFn y) (BeginFn x)))))
+
+(forall (x y)
+	(if	(earlier x y)
+		(and	(TimeInterval x)
+			(TimeInterval y))))
+
+(forall (x y z)
+	(if	(and	(earlier x y)
+			(earlier y z))
+		(earlier x z)))
+
+(forall (x)
+	(if	(TimeInterval x)
+		(not (earlier x x))))
+
+(forall (x y)
+	(iff	(earlier x y)
+		(and	(TimeInterval x)
+			(TimeInterval y)
+			(before (EndFn x) (BeginFn y)))))
+
+(forall (x y)
+	(if	(meetsTemporally x y)
+		(and	(TimeInterval x)
+			(TimeInterval y))))
+
+(forall (x y z)
+	(if	(and	(meetsTemporally x y)
+			(meetsTemporally y z))
+		(not (meetsTemporally x z))))
+
+(forall (x y)
+	(if	(meetsTemporally x y)
+		(not (meetsTemporally y x))))
+
+(forall (x y)
+	(iff	(meetTemporally x y)
+		(and	(TimeInterval x)
+			(TimeInterval y)
+			(= (EndFn x) (BeginFn y)))))
+
+(forall (x)
+	(TimeInterval x)
+	(temporalPart x x))
+
+(forall (x)
+	(if	(TimeInterval x)
+		(Timeposition x)))
+
+(forall (x)
+	(if	(TimePoint x)
+		(Timeposition x)))
+
+(forall (x)
+	(if	(TimePosition x)
+		(or	(TimeInterval x)
+			(TimePoint x))))
+
+(forall (x)
+	(if	(TimeInterval x)
+		(not (TimePoint x))))
+
+(forall (x y)
+	(if	(temporalPart x y)
+		(and	(TimePosition x)
+			(TimePosition y))))
+
+(forall (x)
+	(if	(TimePosition x)
+		(temporalPart x x)))
+
+(forall (x)
+	(if	(and	(temporalPart x y)
+			(temporalPart y x))
+		(= x y)))
+
+(forall (x y z)
+	(if	(and	(temporalPart x y)
+			(temporalPart y z))
+		(temporalPart x z)))
+
+(forall (x)
+	(if	(TimePoint x)
+		(exists (y)
+			(and	(TimeInterval y)
+				(temporalPart x y)))))
+
+(forall (x)
+	(if	(TimeInterval x)
+		(exists (y)
+			(and	(TimePoint y)
+				(temporalPart y x)))))
+
+(forall (x y z t)
+	(if	(and	(TimePoint x)
+			(TimePoint y)
+			(TimeInterval z)
+			(= (TimeIntervalFn x y) z)
+			(TimePoint t))
+		(iff	(temporallyBetweenOrEqual x t y)
+			(temporalPart t z))))
+
+(forall (x y z)
+	(if	(and	(TimePoint x)
+			(TimePoint y)
+			(TimeInterval z)
+			(= (TimeIntervalFn x y) z))
+		(and	(= (BeginFn z) x)
+			(= (EndFn z) y))))
+
+(forall (x y z t)
+	(if	(and	(TimeInterval x)
+			(TimeInterval y)
+			(TimePoint z)
+			(TimePoint t)
+			(= (BeginFn x) z)
+			(= (BeginFn y) z)
+			(= (EndFn x) t)
+			(= (EndFn y) t))
+		(= x y)))
+
+(forall (x y)
+	(if	(and	(TimeInterval x)
+			(TimePoint y)
+			(= (BeginFn x) y))
+		(forall (z)
+			(if	(and	(temporalPart z x)
+					(TimePoint z)
+					(not (= z y)))
+				(before y z)))))
+
+(forall (x y)
+	(if	(and	(TimeInterval x)
+			(TimePoint y)
+			(= (EndFn x) y))
+		(forall (z)
+			(if	(and	(temporalPart z x)
+					(TimePoint z)
+					(not (= z y)))
+				(before z y)))))
+
+(forall (z u v)
+	(if	(and	(TimeInterval z)
+			(TimePoint u)
+			(TimePoint v)
+			(= (BeginFn z) u)
+			(= (EndFn z) v))
+		(before u v)))
+
+
+
+)

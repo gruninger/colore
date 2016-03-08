@@ -1,0 +1,55 @@
+
+(cl-text colore.oor.net/sumo/sumo_timepoints/sumo_ordered_timepoints.clif
+
+(cl-imports colore.oor.net/sumo/sumo_timepoints/sumo_timepoints_def.clif)
+
+(forall (x y)
+	(if	(before x y)
+		(and	(TimePoint x)
+			(TimePoint y))))
+
+(forall (x)
+	(if	(TimePoint x)
+		(not (before x x))))
+
+(forall (x y z)
+	(if	(and	(before x y)
+			(before y z))
+		(before x z)))
+
+(TimePoint PositiveInfinity)
+
+(TimePoint NegativeInfinity)
+
+(forall (x)
+	(if	(and	(TimePoint x)
+			(not (= x PositiveInfinity)))
+		(before x PositiveInfinity)))
+
+(forall (x)
+	(if	(and	(TimePoint x)
+			(not (= x NegativeInfinity)))
+		(before NegativeInfinity x)))
+
+(forall (x)
+	(if	(and	(TimePoint x)
+			(not (= x PositiveInfinity)))
+		(exists (y)
+			(temporallyBetween x y PositiveInfinity))))
+
+(forall (x)
+	(if	(and	(TimePoint x)
+			(not (= x NegativeInfinity)))
+		(exists (y)
+			(temporallyBetween NegativeInfinity y x))))
+
+(before NegativeInfinity PositiveInfinity)
+
+(forall (t1 t2)
+	(if	(and	(TimePoint t1)
+			(TimePoint t2))
+		(or	(before t1 t2)
+			(before t2 t1)
+			(= t1 t2))))
+
+)

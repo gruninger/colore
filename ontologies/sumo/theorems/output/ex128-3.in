@@ -1,0 +1,52 @@
+formulas(assumptions).
+
+%-------------------------------------------------------------------------------------------------
+% Ordered TimePoints
+%-------------------------------------------------------------------------------------------------
+all x all y (beforeOrEqual(x,y)-> TimePoint(x) & TimePoint(y)).%1
+all x (TimePoint(x)-> beforeOrEqual(x,x)).%2
+all x all y (beforeOrEqual(x,y) & beforeOrEqual(y,x)) -> (x=y).%3
+all x all y all z ((beforeOrEqual(x,y) & beforeOrEqual(y,z))-> beforeOrEqual(x,z)).%4
+all x all y (beforeOrEqual(x,y)->(before(x,y) | (x=y))).%5
+all x all y (before(x,y)-> TimePoint(x) & TimePoint(y)).%6
+all x (TimePoint(x)->(-(before(x,x)))).%7
+all x all y all z ((before(x,y) & before(y,z))-> before(x,z)).%8
+all x all y (before(x,y)-> beforeOrEqual(x,y)).%10
+all x all y all z (temporallyBetween(x,y,z)-> TimePoint(x) & TimePoint(y) & TimePoint(z)).%11
+all x all y all z (temporallyBetween(x,y,z)-> temporallyBetweenOrEqual(x,y,z)).%12
+all y all z all x (temporallyBetween(x,y,z)<->(before(x,y) & before(y,z))).%13 
+all y all z all x (temporallyBetweenOrEqual(x,y,z)<->(beforeOrEqual(x,y) & beforeOrEqual(y,z))).%14
+all x all y all z (temporallyBetweenOrEqual(x,y,z)-> TimePoint(x) & TimePoint(y) & TimePoint(z)).%15
+%-------------------------------------------------------------------------------------------------
+% Intervals Mereology
+%-------------------------------------------------------------------------------------------------
+all x all y ((temporalPart(x,y) & temporalPart(y,x)) -> (x=y)). %22
+all x all y all z ((temporalPart(x,y) & temporalPart(y,z))-> temporalPart(x,z)). %23
+all x (TimeInterval(x)-> temporalPart(x,x)). %47
+
+%-------------------------------------------------------------------------------------------------
+% Intervals and Points Mereology
+%-------------------------------------------------------------------------------------------------
+all x (TimeInterval(x)-> TimePosition(x)).%48
+all x (TimePoint(x)-> TimePosition(x)).%49
+all x (TimePosition(x)-> TimeInterval(x) | TimePoint(x)).%50
+all x (TimeInterval(x)-> -(TimePoint(x))).%51
+all x all y (temporalPart(x,y)-> TimePosition(x) & TimePosition(y)).%52
+all x (TimePosition(x)-> temporalPart(x,x)). %53
+all x (TimePoint(x) ->(exists y (TimeInterval(y) & temporalPart(x,y)))). %55
+all x (TimeInterval(x)->(exists y (TimePoint(y) & temporalPart(y,x)))). %56
+all x all y all z all t (TimePoint(x) & TimePoint(y) & TimeInterval(z) & (TimeIntervalFn(x,y)=z) & TimePoint(t)-> (temporallyBetweenOrEqual(x,t,y)<->temporalPart(t,z))).%57 
+all x all y all z (TimePoint(x) & TimePoint(y) & TimeInterval(z) & (TimeIntervalFn(x,y)=z)->(BeginFn(z)=x) & (EndFn(z)=y)).%58
+all x all y all z all t(TimeInterval(x) & TimeInterval(y) & TimePoint(z) & TimePoint(t) ->
+((BeginFn(x)=z) & (BeginFn(y)=z) & (EndFn(x)=t) & (EndFn(y)=t)-> (x=y))).%59
+all x all y (TimeInterval(x) & TimePoint(y)  &(BeginFn(x)=y) -> all z(temporalPart(z,x) & TimePoint(z) & -(z=y)->before(y,z))).%60
+all x all y (TimeInterval(x) & TimePoint(y)  &(EndFn(x)=y) -> all z(temporalPart(z,x) & TimePoint(z) & -(z=y)->before(z,y))).%61
+all z all u all v(TimeInterval(z) & TimePoint(u) & TimePoint(v)-> ((BeginFn(z)=u) & (EndFn(z)=v)-> before(u,v))).%62
+all x (TimePosition(x)).%68
+
+(exists x exists y
+	(TimePoint(x)
+	& TimeInterval(y)
+	& temporalPart(y,x))).
+
+end_of_list.

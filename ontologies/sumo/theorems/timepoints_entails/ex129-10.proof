@@ -1,0 +1,43 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 8738 was started by mudcat on mie-17-83.internal.mie.utoronto.ca,
+Mon Mar  7 15:05:30 2016
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 23.
+% Level of proof is 8.
+% Maximum clause weight is 6.
+% Given clauses 19.
+
+1 (all x all y (before(x,y) -> TimePoint(x) & TimePoint(y))) # label(non_clause).  [assumption].
+9 (all x all y (beforeOrEqual(x,y) <-> before(x,y) | TimePoint(x) & x = y)) # label(non_clause).  [assumption].
+11 (all x all y (temporallyBetweenOrEqual(x,y,z) <-> beforeOrEqual(x,y) & beforeOrEqual(y,z))) # label(non_clause).  [assumption].
+12 -(all x all y all z (temporallyBetweenOrEqual(x,y,z) -> TimePoint(x) & TimePoint(y) & TimePoint(z))) # label(non_clause).  [assumption].
+19 -temporallyBetweenOrEqual(x,y,z) | beforeOrEqual(x,y).  [clausify(11)].
+20 -temporallyBetweenOrEqual(x,y,z) | beforeOrEqual(y,z).  [clausify(11)].
+21 temporallyBetweenOrEqual(c1,c2,c3).  [clausify(12)].
+23 -beforeOrEqual(x,y) | before(x,y) | TimePoint(x).  [clausify(9)].
+24 -beforeOrEqual(x,y) | before(x,y) | y = x.  [clausify(9)].
+26 beforeOrEqual(c1,c2).  [resolve(21,a,19,a)].
+27 beforeOrEqual(c2,c3).  [resolve(21,a,20,a)].
+28 -before(x,y) | TimePoint(x).  [clausify(1)].
+29 -before(x,y) | TimePoint(y).  [clausify(1)].
+38 -TimePoint(c1) | -TimePoint(c2) | -TimePoint(c3).  [clausify(12)].
+43 before(c1,c2) | TimePoint(c1).  [resolve(26,a,23,a)].
+45 before(c2,c3) | TimePoint(c2).  [resolve(27,a,23,a)].
+46 before(c2,c3) | c3 = c2.  [resolve(27,a,24,a)].
+57 TimePoint(c1).  [resolve(43,a,28,a),merge(b)].
+58 -TimePoint(c2) | -TimePoint(c3).  [back_unit_del(38),unit_del(a,57)].
+64 TimePoint(c2).  [resolve(45,a,28,a),merge(b)].
+65 -TimePoint(c3).  [back_unit_del(58),unit_del(a,64)].
+68 c3 = c2.  [resolve(46,a,29,a),unit_del(b,65)].
+69 $F.  [back_rewrite(65),rewrite([68(1)]),unit_del(a,64)].
+
+============================== end of proof ==========================

@@ -1,0 +1,30 @@
+formulas(assumptions).
+
+%-------------------------------------------------------------------------------------------------
+% Ordered TimePoints
+%-------------------------------------------------------------------------------------------------
+all x all y (beforeOrEqual(x,y)-> TimePoint(x) & TimePoint(y)).%1
+all x (TimePoint(x)-> beforeOrEqual(x,x)).%2
+all x all y (beforeOrEqual(x,y) & beforeOrEqual(y,x)) -> (x=y).%3
+all x all y all z ((beforeOrEqual(x,y) & beforeOrEqual(y,z))-> beforeOrEqual(x,z)).%4
+all x all y (beforeOrEqual(x,y)->(before(x,y) | (x=y))).%5
+all x all y (before(x,y)-> TimePoint(x) & TimePoint(y)).%6
+all x (TimePoint(x)->(-(before(x,x)))).%7
+all x all y all z ((before(x,y) & before(y,z))-> before(x,z)).%8
+all x all y (TimePoint(x) & TimePoint(y) -> (before(x,y) | before(y,x) | (x=y))).%9
+all x all y (before(x,y)-> beforeOrEqual(x,y)).%10
+all x all y all z (temporallyBetween(x,y,z)-> TimePoint(x) & TimePoint(y) & TimePoint(z)).%11
+all x all y all z (temporallyBetween(x,y,z)-> temporallyBetweenOrEqual(x,y,z)).%12
+all y all z all x (temporallyBetween(x,y,z)<->(before(x,y) & before(y,z))).%13 
+all y all z all x (temporallyBetweenOrEqual(x,y,z)<->(beforeOrEqual(x,y) & beforeOrEqual(y,z))).%14
+all x all y all z (temporallyBetweenOrEqual(x,y,z)-> TimePoint(x) & TimePoint(y) & TimePoint(z)).%15
+TimePoint(PositiveInfinity).%16
+TimePoint(NegativeInfinity).%17
+all x (TimePoint(x) & (-(x=PositiveInfinity))->before(x,PositiveInfinity)).%18
+all x (TimePoint(x) & (-(x=NegativeInfinity))->before(NegativeInfinity,x)).%19
+all x (TimePoint(x) & (-(x=PositiveInfinity))->(exists y temporallyBetween(x,y,PositiveInfinity))).%20
+all x (TimePoint(x) & (-(x=NegativeInfinity))->(exists y temporallyBetween(NegativeInfinity,y,x))).%21
+
+(PositiveInfinity = NegativeInfinity).
+
+end_of_list.

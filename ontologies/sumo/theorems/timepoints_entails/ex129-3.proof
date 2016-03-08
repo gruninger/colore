@@ -1,0 +1,39 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 8642 was started by mudcat on mie-17-83.internal.mie.utoronto.ca,
+Mon Mar  7 15:01:05 2016
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 19.
+% Level of proof is 6.
+% Maximum clause weight is 9.
+% Given clauses 26.
+
+1 (all x all y (before(x,y) -> TimePoint(x) & TimePoint(y))) # label(non_clause).  [assumption].
+2 (all x (TimePoint(x) -> -before(x,x))) # label(non_clause).  [assumption].
+3 (all x all y all z (before(x,y) & before(y,z) -> before(x,z))) # label(non_clause).  [assumption].
+9 (all x all y (beforeOrEqual(x,y) <-> before(x,y) | TimePoint(x) & x = y)) # label(non_clause).  [assumption].
+12 -(all x all y (beforeOrEqual(x,y) & beforeOrEqual(y,x) -> x = y)) # label(non_clause).  [assumption].
+23 -beforeOrEqual(x,y) | before(x,y) | y = x.  [clausify(9)].
+25 beforeOrEqual(c1,c2).  [clausify(12)].
+26 beforeOrEqual(c2,c1).  [clausify(12)].
+28 -before(x,y) | TimePoint(y).  [clausify(1)].
+29 -TimePoint(x) | -before(x,x).  [clausify(2)].
+30 -before(x,y) | -before(y,z) | before(x,z).  [clausify(3)].
+37 c2 != c1.  [clausify(12)].
+43 before(c1,c2) | c2 = c1.  [resolve(25,a,23,a)].
+44 before(c1,c2).  [copy(43),unit_del(b,37)].
+46 before(c2,c1) | c1 = c2.  [resolve(26,a,23,a)].
+47 before(c2,c1).  [copy(46),flip(b),unit_del(b,37)].
+58 TimePoint(c2).  [resolve(44,a,28,a)].
+70 -before(c2,c2).  [ur(29,a,58,a)].
+82 $F.  [ur(30,b,44,a,c,70,a),unit_del(a,47)].
+
+============================== end of proof ==========================

@@ -1,0 +1,56 @@
+
+(cl-text colore.oor.net/sumo_timeintervals/sumo_timeintervals.clif
+
+(cl-imports colore.oor.net/sumo_timepoints/sumo_ordered_timepoints.clif)
+
+(forall (x)
+	(TimeInterval x)
+	(temporalPart x x))
+
+(forall (x)
+	(if	(TimeInterval x)
+		(Timeposition x)))
+
+(forall (x)
+	(if	(TimePoint x)
+		(Timeposition x)))
+
+(forall (x)
+	(if	(TimePosition x)
+		(or	(TimeInterval x)
+			(TimePoint x))))
+
+(forall (x)
+	(if	(TimeInterval x)
+		(not (TimePoint x))))
+
+(forall (x y z)
+	(if	(and	(TimePoint x)
+			(TimePoint y)
+			(TimeInterval z)
+			(= (TimeIntervalFn x y) z))
+		(and	(= (BeginFn z) x)
+			(= (EndFn z) y))))
+
+(forall (x y z t)
+	(if	(and	(TimeInterval x)
+			(TimeInterval y)
+			(TimePoint z)
+			(TimePoint t)
+			(= (BeginFn x) z)
+			(= (BeginFn y) z)
+			(= (EndFn x) t)
+			(= (EndFn y) t))
+		(= x y)))
+
+(forall (z u v)
+	(if	(and	(TimeInterval z)
+			(TimePoint u)
+			(TimePoint v)
+			(= (BeginFn z) u)
+			(= (EndFn z) v))
+		(before u v)))
+
+
+
+)
