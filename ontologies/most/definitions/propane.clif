@@ -1,0 +1,36 @@
+/*******************************************************************************
+* Copyright (c) University of Toronto and others. All rights reserved.
+* The content of this file is licensed under the Creative Commons Attribution-
+* ShareAlike 3.0 Unported license. The legal text of this license can be
+* found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+*
+* Contributors:
+* Carmen Chui, Michael Gruninger
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/most/definitions/propane.clif
+
+(cl-imports http://colore.oor.net/most/definitions/most_shape.clif)
+(cl-imports http://colore.oor.net/most/definitions/most_connections.clif)
+
+(cl-comment 'Category: alkyl')
+
+(cl-comment 'Chemical Name: propane')
+
+(cl-comment 'Chemical Formula: C3H8')
+
+(forall (x)
+	(iff (propane x)
+		(and (chain x)(saturated x)
+			(exists (c1 c2 c3 b1 b2)
+				(and (carbon c1)(carbon c2)(carbon c3)
+					(not (= c1 c2))(not (= c1 c3))(not (= c2 c3))
+					(end c1 x)
+					(end c3 x)
+					(singlebond b1 c1 c2)
+					(singlebond b2 c2 c3)
+					(forall (y)
+						(iff (inGroup y x)
+							(or (= y c1)(= y c2)(= y c3)))))))))
+
+)
