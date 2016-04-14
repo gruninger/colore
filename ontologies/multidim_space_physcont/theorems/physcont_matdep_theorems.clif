@@ -1,0 +1,168 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/multidim_space_physcont/theorems/physcont_matdep_theorems.clif
+
+(cl-imports http://colore.oor.net/multidim_space_physcont/matdep.clif)
+
+
+(cl-imports http://colore.oor.net/multidim_space_voids/voids.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_physcont/definitions/mcont.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_physcont/definitions/imcont.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_physcont/definitions/submat.clif)
+
+
+(cl-comment 'MDep-T4')
+
+(forall (x y)
+	(if
+		(materially-contains x y)
+		(matdep x y)
+	)
+)
+
+
+(forall (x y)
+	(if
+		(materially-contains x y)
+		(mat x)
+	)
+)
+
+
+(forall (x y)
+	(if
+		(materially-contains x y)
+		(mat y)
+	)
+)
+
+
+(cl-comment 'MDep-T5, MDep-T8')
+
+(forall (x y)
+	(if
+		(hostsv x y)
+		(matdep x y)
+	)
+)
+
+
+(forall (x y)
+	(if
+		(hostsv x y)
+		(mat x)
+	)
+)
+
+
+(forall (x y)
+	(if
+		(hostsv x y)
+		(V y)
+	)
+)
+
+(cl-comment 'MDep-T6')
+
+(forall (x y)
+	(if
+		(immaterially-contains x y)
+		(matdep x y)
+	)
+)
+
+
+(forall (x y)
+	(if
+		(immaterially-contains x y)
+		(V x)
+	)
+)
+
+
+(forall (x y)
+	(if
+		(immaterially-contains x y)
+		(V y)
+	)
+)
+
+
+(cl-comment 'MDep-T7')
+
+(forall (x y)
+	(if
+		(submat x y)
+		(matdep x y)
+	)
+)
+
+
+(cl-comment 'MDep-T9')
+
+(forall (x y hy)
+	(if
+        (and
+            (hostsv hy y)
+            (submat hy x)
+        )
+		(matdep y x)
+	)
+)
+
+
+
+(cl-comment 'MDep-T10')
+
+(forall (x y hy)
+    (if
+        (and
+            (hostsv hy y)
+            (submat x hy)
+            (or
+                (StrongC (r x) (r y))
+                (PO (r x) (r y))
+            )
+        )
+        (matdep x y)
+        )
+    )
+)
+
+
+(cl-comment 'MDep-T11')
+
+(forall (x y)
+	(if
+		(hostsv x y)
+		(StrongC x y)
+	)
+)
+
+(cl-comment 'MDep-T12')
+
+(forall (x y)
+	(if
+        (and
+            (V x)
+            (V y)
+            (matdep x y)
+        )
+		(PO (r x) (r y))
+	)
+)
+
+
+
+)
