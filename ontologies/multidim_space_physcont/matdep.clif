@@ -1,0 +1,171 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/multidim_space_physcont/matdep.clif
+
+(cl-imports http://colore.oor.net/multidim_space_physcont/dep.clif)
+
+(cl-imports
+http://colore.oor.net/multidim_space_codi/definitions/icon.clif)
+
+(cl-comment 'MDep-A1: matdep is a kind of physical interdependence')
+
+(forall (x y)
+	(if
+		(matdep x y)
+		(dep x y)
+	)
+)
+
+
+(cl-comment 'MDep-A2: matdep applies only to material endurants and voids')
+
+(forall (x y)
+	(if
+		(matdep x y)
+        (or
+            (mat x)
+            (V x)
+        )
+	)
+)
+
+
+(forall (x y)
+	(if
+		(matdep x y)
+        (or
+            (mat y)
+            (V y)
+        )
+	)
+)
+
+
+
+(cl-comment 'MDep-A3: matdep requires the participants to have overlapping spatial extents; here reexpressed without the explicit use of spatial extent e() utilizing the fact the according to the subsequent statements, for two material endurants the regions overlap')
+
+(forall (x y)
+    (if
+        (and
+            (matdep x y)
+            (V x)
+            (mat y)
+        )
+        (or
+            (PO (r x) (r y))
+            (exists (v)
+                (and
+                    (hostsv y v)
+                    (PO (r x) (r v))
+                )
+            )
+        )
+    )
+) 
+
+
+(forall (x y)
+    (if
+        (and
+            (matdep x y)
+            (V x)
+            (V y)
+        )
+        (PO (r x) (r y))
+    )
+) 
+    
+
+(cl-comment 'MDep-A4')
+
+(forall (x y)
+    (if
+        (matdep x y)
+        (or
+            (PO (r x) (r y))
+            (StrongC (r x) (r y))
+        )
+    )
+)
+
+
+(cl-comment 'MDep-A5 - is at the same time an altered version of Dep-A3prime that works in conjunction with MDep-A3 and MDep-A4')
+
+(forall (x y)
+    (if
+        (and
+            (matdep x y)
+            (mat x)
+            (mat y)
+        )
+        (PO (r x) (r y))
+    )
+)
+    
+
+(cl-comment 'MDep-A6 and MDep-A7 capture generic constituents and cannot directly be expressed here')
+
+
+(cl-comment 'MDep-A8')
+
+(forall (x y)
+    (if
+        (and
+            (mat x)
+            (V y)
+        )
+        (iff
+            (matdep x y)
+            (exists (z hy)
+                (and
+                    (submat z x)
+                    (submat z hy)
+                    (hostsv hy y)
+                    (or
+                        (StrongC (r z) (r y))
+                        (PO (r z) (r y))
+                    )
+                )
+            )
+        )
+    )
+)
+
+(cl-comment 'MDep-A9')
+
+(forall (x y)
+    (if
+        (and
+            (V x)
+            (V y)
+        )
+        (iff
+            (matdep x y)
+            (and
+                (PO (r x) (r y))
+                (exists (hx hy z)
+                    (and
+                        (hostsv hx x)
+                        (hostsv hy y)
+                        (mat hx)
+                        (mat hy)
+                        (P (r hx) (r hy))
+                        (P (r hy) (r hx))
+                    )
+                )
+            )
+        )
+    )
+)
+
+
+    
+)

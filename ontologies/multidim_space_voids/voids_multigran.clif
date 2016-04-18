@@ -1,0 +1,65 @@
+/*******************************************************************************
+ * Copyright (c) Torsten Hahmann, University of Maine. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/multidim_space_voids/voids_multigran.clif
+
+(cl-imports http://colore.oor.net/multidim_space_voids/voids.clif)
+
+
+(cl-comment 'Vany-D: hostsvany is the hosting of a void relation at any level of granularity. While originally defined as there exists some n at which it is hosted, here we restrict ourselves to saying it is hosted at one of the first four levels of granularity.')
+
+(forall (x y)
+	(iff
+		(hostsvany y x)
+		(or
+			(hostsv y x)
+			(hostsv1 y x)
+			(hostsv2 y x)
+			(hostsv3 y x)
+		)
+	)
+)
+
+
+(cl-comment 'V-A25: voidspace at all levels of granularity (entire voidspace)')
+
+(forall (x y)
+	(iff
+		(PO y (voidspaceall x))
+		(exists (v)
+			(and
+				(hostsvany x v)
+				(PO y (r v))
+			)
+		)
+	)
+)
+
+
+
+(cl-comment 'V-A26: some void is located in a material endurants nonempty entire voidspace')
+
+(forall (x)
+	(if
+		(and
+			(mat x)
+			(not (ZEX (voidspaceall x)))
+		)
+		(exists (y h)
+			(and
+				(= (r y) (voidspaceall x))
+				(hostsv h y)
+			)
+		)
+	)
+)
+
+
+)
