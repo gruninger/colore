@@ -150,7 +150,7 @@
 	(if (containsGroup x y)
 		(and (molecule x)(functional_group y))))
 
-(cl-comment 'Disjointness axiom for atom(x), bond(x), functional_group(x), and molecule(x).')
+(cl-comment 'Disjointness axiom for atom, bond, functional_group, and molecule.')
 (forall (x)
 	(if (molecule x)
 		(not (or (atom x)(bond x)(functional_group x)))))
@@ -211,10 +211,10 @@
 (forall (g1 g2)
 	(iff (spiro g1 g2)
 		(exists (b1 b2 a)
-			(inGroup a g1)(inGroup a g2)(not (= g1 g2))
+			(and (inGroup a g1)(inGroup a g2)(not (= g1 g2))
 			(inBond a b1)(inBond a b2)
 			(bondGroup b1 g1)(not (bondGroup b1 g2))
-			(bondGroup b2 g2)(not (bondGroup b2 g1)))))
+			(bondGroup b2 g2)(not (bondGroup b2 g1))))))
 						
 (cl-comment '==================================')
 (cl-comment 'TETHER')
@@ -228,7 +228,7 @@
 			(exists (a1 a2 b)
 				(and (inGroup a1 g1)(inGroup a2 g2)(not (= g1 g2))
 					(inBond a1 b)(inBond a2 b)
-					(not (bondGroup b1 g1))(not (bondGroup b1 g2))))))
+					(not (bondGroup b g1))(not (bondGroup b g2))))))
 
 (forall (g1 g2)
 	(iff (singletether g1 g2)
@@ -236,7 +236,7 @@
 				(and (inGroup a1 g1)(inGroup a2 g2)(not (= g1 g2))
 					(inBond a1 b)(inBond a2 b)
 					(singlebond b a1 a2)
-					(not (bondGroup b1 g1))(not (bondGroup b1 g2))))))
+					(not (bondGroup b g1))(not (bondGroup b g2))))))
 					
 (forall (g1 g2)
 	(iff (doubletether g1 g2)
@@ -244,7 +244,7 @@
 				(and (inGroup a1 g1)(inGroup a2 g2)(not (= g1 g2))
 					(inBond a1 b)(inBond a2 b)
 					(doublebond b a1 a2)
-					(not (bondGroup b1 g1))(not (bondGroup b1 g2))))))
+					(not (bondGroup b g1))(not (bondGroup b g2))))))
 					
 (forall (g1 g2)
 	(iff (tripletether g1 g2)
@@ -252,7 +252,7 @@
 				(and (inGroup a1 g1)(inGroup a2 g2)(not (= g1 g2))
 					(inBond a1 b)(inBond a2 b)
 					(triplebond b a1 a2)
-					(not (bondGroup b1 g1))(not (bondGroup b1 g2))))))
+					(not (bondGroup b g1))(not (bondGroup b g2))))))
 					
 (cl-comment '==================================')
 (cl-comment 'SKELETON AXIOMS')
@@ -262,14 +262,14 @@
 		(and	(functional_group g)
 			(skeleton s))))
 
-(cl-comment "A skeleton contains a functional group.")
+(cl-comment 'A skeleton contains a functional group.')
 (forall (s)
 	(if	(skeleton s)
 		(exists (g)
 			(and	(functional_group g)
 				(inSkeleton g s)))))
 
-(cl-comment "Each functional group in a skeleton contains an atom that is in a bond with an atom in a different functional group in the skeleton.")
+(cl-comment 'Each functional group in a skeleton contains an atom that is in a bond with an atom in a different functional group in the skeleton.')
 (forall (g1 s)
 	(if	(and	(skeleton s)
 			(functional_group g1)
@@ -285,7 +285,7 @@
 				(inBond a1 b)
 				(inBond a2 b)))))
 
-(cl-comment "An atom in a molecule is in a functional group iff it is not hydrogen.")
+(cl-comment 'An atom in a molecule is in a functional group iff it is not hydrogen.')
 (forall (a m)
 	(if	(and	(atom a)
 			(molecule m)
