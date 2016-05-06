@@ -14,22 +14,26 @@
 
 (cl-comment 'This CLIF file contains information on the various connections between atoms, bonds, and molecules.')
 
+(cl-comment 'Axiom: MC-ax-1')
 (cl-comment 'Group-Atom Relationship: Every atom has a bond with an atom in a functional group.')
 (forall (x)
 	(if (atom x)
 		(exists (b y z)
 			(and (functional_group y)(atom z)(inBond x b)(inBond z b)(inGroup z y)))))
 
+(cl-comment 'Axiom: MC-ax-2')
 (cl-comment 'Transitive relation to indicate that any bond between two atoms in a group implies that the atom is in the group.')
 (forall (b g x y)
 	(if (and (inBond x b)(inBond y b)(bondGroup b g))
 		(inGroup x g)))
 
+(cl-comment 'Axiom: MC-ax-3')
 (cl-comment 'If an atom is in a bond that is in a functional group, then the atom is in the functional group.')
 (forall (x y z)
 	(if (and (inBond x y)(bondGroup y z))
 		(inGroup x z)))
 
+(cl-comment 'Axiom: MC-ax-4')
 (cl-comment 'Connection Between An Atom and A Functional Group: An atom is connected to an atom in the functional group by a single bond.')
 (forall (x g)
 	(iff (atomconn x g)
@@ -38,13 +42,14 @@
 				(and (inGroup z g)(inBond x b)(inBond z b))))))
 		
 (cl-comment '====== BOND TO GROUP CONNECTION ======')
-
+(cl-comment 'Axiom: MC-ax-5')
 (cl-comment 'A sentence to describe that functional groups contain bonds.')
 (forall (y)
 	(if (functional_group y)
 		(exists (x)
 			(bondGroup x y))))
 
+(cl-comment 'Axiom: MC-ax-6')
 (cl-comment 'Group-Bond Relationship: A bond is in a functional group iff both of its atoms are in the functional group.')
 (forall (x y)
 	(iff (bondGroup x y)
@@ -52,11 +57,13 @@
 			(exists (w z)
 				(and (atom z)(atom w)(inGroup z y)(inGroup w y)(inBond z x)(inBond w z))))))
 
+(cl-comment 'Axiom: MC-ax-7')
 (cl-comment 'If two atoms are in a group and have a bond between each other, then the bond is in the functional group.')
 (forall (x y b g)
 	(if (and (inGroup x y)(inGroup y g)(inBond x b)(inBond y b)(not (= x y)))
 		(bondGroup b g)))
 
+(cl-comment 'Axiom: MC-ax-8')
 (cl-comment 'A bond is a link between two functional groups iff there exists a bond between two atoms that are in both groups, respectively.')
 (forall (b g1 g2)
 	(iff (link b g1 g2)
@@ -65,7 +72,7 @@
 				(and (atom x)(atom y)(inGroup x g1)(inGroup y g2)(hasBond b x y))))))
 		
 (cl-comment '====== GROUP TO GROUP CONNECTION ======')
-
+(cl-comment 'Axiom: MC-ax-9')
 (cl-comment 'Part: Two functional groups are part of each other if they share a common atom.')
 (forall (g1 g2)
 	(iff (part g1 g2)
@@ -74,6 +81,7 @@
 				(if (inGroup x g1)
 					(inGroup x g2))))))
 
+(cl-comment 'Axiom: MC-ax-10')
 (cl-comment 'Connection Between Two Functional Groups: Two functional groups are connected to each other by a single bond between two atoms in the groups.')
 (forall (g1 g2)
 	(iff (conn g1 g2)
@@ -83,6 +91,7 @@
 		
 (cl-comment '====== ATOM TO MOLECULE CONNECTION ======')
 
+(cl-comment 'Axiom: MC-ax-11')
 (cl-comment 'An atom is in a molecule if it is in a group or has a bond.')
 (forall (x m)
 	(iff (inMolecule x m)
@@ -92,7 +101,7 @@
 				(and (inGroup y g)(containsGroup m g)(hasBond b x y))))))
 				
 (cl-comment '====== MOLECULE TO MOLECULE CONNECTION ======')
-
+(cl-comment 'Axiom: MC-ax-12')
 (cl-comment 'Connection Between A Molecule and A Molecule: A molecule is part of another molecule if they share a bond ??what do they share??.')
 (forall (m1 m2)
 	(iff (subMolecule m1 m2)
@@ -105,7 +114,7 @@
 (cl-comment 'Fusion Connection')
 (cl-comment 'Overlapping Bonds')
 (cl-comment '==================================')
-
+(cl-comment 'Axiom: MC-ax-13')
 (forall (g1 g2)
 	(iff (fusion g1 g2)
 		(exists (a1 a2 b)
@@ -117,7 +126,7 @@
 (cl-comment 'Spiro Connection')
 (cl-comment 'An atom is shared')
 (cl-comment '==================================')
-
+(cl-comment 'Axiom: MC-ax-14')
 (forall (g1 g2)
 	(iff (spiro g1 g2)
 		(exists (b1 b2 a)
@@ -132,7 +141,7 @@
 (cl-comment 'No atoms are shared')
 (cl-comment 'Groups are bonded together by a bond between each group')
 (cl-comment '==================================')
-
+(cl-comment 'Axiom: MC-ax-15')
 (forall (g1 g2)
 	(iff (tether g1 g2)
 			(exists (a1 a2 b)
@@ -140,6 +149,7 @@
 					(inBond a1 b)(inBond a2 b)
 					(not (bondGroup b g1))(not (bondGroup b g2))))))
 
+(cl-comment 'Axiom: MC-ax-16')
 (forall (g1 g2)
 	(iff (singletether g1 g2)
 			(exists (a1 a2 b)
@@ -147,7 +157,8 @@
 					(inBond a1 b)(inBond a2 b)
 					(singlebond b a1 a2)
 					(not (bondGroup b g1))(not (bondGroup b g2))))))
-					
+
+(cl-comment 'Axiom: MC-ax-17')
 (forall (g1 g2)
 	(iff (doubletether g1 g2)
 			(exists (a1 a2 b)
@@ -155,7 +166,8 @@
 					(inBond a1 b)(inBond a2 b)
 					(doublebond b a1 a2)
 					(not (bondGroup b g1))(not (bondGroup b g2))))))
-					
+
+(cl-comment 'Axiom: MC-ax-18')			
 (forall (g1 g2)
 	(iff (tripletether g1 g2)
 			(exists (a1 a2 b)
@@ -167,11 +179,13 @@
 (cl-comment '==================================')
 (cl-comment 'SKELETON AXIOMS')
 (cl-comment '==================================')
+(cl-comment 'Axiom: MC-ax-19')
 (forall (g s)
 	(if	(inSkeleton g s)
 		(and	(functional_group g)
 			(skeleton s))))
 
+(cl-comment 'Axiom: MC-ax-20')
 (cl-comment 'A skeleton contains a functional group.')
 (forall (s)
 	(if	(skeleton s)
@@ -179,6 +193,7 @@
 			(and	(functional_group g)
 				(inSkeleton g s)))))
 
+(cl-comment 'Axiom: MC-ax-21')
 (cl-comment 'Each functional group in a skeleton contains an atom that is in a bond with an atom in a different functional group in the skeleton.')
 (forall (g1 s)
 	(if	(and	(skeleton s)
@@ -195,6 +210,7 @@
 				(inBond a1 b)
 				(inBond a2 b)))))
 
+(cl-comment 'Axiom: MC-ax-22')
 (cl-comment 'An atom in a molecule is in a functional group iff it is not hydrogen.')
 (forall (a m)
 	(if	(and	(atom a)
