@@ -14,54 +14,6 @@
 
 (cl-comment 'This CLIF file contains information on the various connections between atoms, bonds, and molecules.')
 
-(cl-comment '====== ATOM TO BOND CONNECTION ======')
-
-(cl-comment 'A new relation inBond to indicate an atom a is in a bond b.')
-(forall (a b)
-	(if (inBond a b)
-		(and (atom a)(bond b))))
-
-(cl-comment 'A bond is between exactly two atoms.')
-(forall (x y z b)
-	(if (and (inBond x b)(inBond y b)(inBond z b))
-		(or (= x y)(= x z)(= y z))))
-
-(cl-comment 'An atom can be bonded if there exists another atom for which it can be bonded.')
-(forall (x)
-	(if (atom x)
-		(exists (b y)
-			(and (atom y)(inBond x b)(inBond y b)))))
-
-(cl-comment 'A bond is possible between two atoms.')
-(forall (b)
-	(if (bond b)
-		(exists (x y)
-			(and (inBond x b)(inBond y b)))))
-
-(cl-comment 'Two atoms are bonded if a bond exists between them.')
-(forall (b x y)
-	(if (and (inBond x b)(inBond y b))
-		(and (bond b)(atom x)(atom y))))
-
-(cl-comment 'A bond is related to at most two atoms.')
-(forall (b)
-	(if (bond b)
-		(exists (x y)
-			(and (inBond x b)(inBond y b)(not (= x y))))))
-
-(cl-comment 'A bond is related to at least two atoms.')
-(forall (b)
-	(if (bond b)
-		(exists (x y)
-			(and (inBond x b)(inBond y b)(not (= y x))))))
-
-(cl-comment '====== ATOM TO GROUP CONNECTION ======')
-
-(cl-comment 'An atom x is in a functional group y.')
-(forall (x y)
-	(if (inGroup x y)
-		(and (atom x)(functional_group y))))
-
 (cl-comment 'Group-Atom Relationship: Every atom has a bond with an atom in a functional group.')
 (forall (x)
 	(if (atom x)
