@@ -1,0 +1,60 @@
+/*******************************************************************************
+* Copyright (c) University of Toronto and others. All rights reserved.
+* The content of this file is licensed under the Creative Commons Attribution-
+* ShareAlike 3.0 Unported license. The legal text of this license can be
+* found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+*
+* Contributors:
+* Carmen Chui, Michael Gruninger
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/most/definitions/most_skeleton.clif
+
+(cl-imports http://colore.oor.net/most/most_root.clif)
+
+(cl-comment '==================================')
+(cl-comment 'SKELETON AXIOMS')
+(cl-comment '==================================')
+(cl-comment 'Axiom: MS-ax-01')
+(forall (g s)
+	(if	(inSkeleton g s)
+		(and	(functional_group g)
+			(skeleton s))))
+
+(cl-comment 'Axiom: MS-ax-02')
+(cl-comment 'A skeleton contains a functional group.')
+(forall (s)
+	(if	(skeleton s)
+		(exists (g)
+			(and	(functional_group g)
+				(inSkeleton g s)))))
+
+(cl-comment 'Axiom: MS-ax-03')
+(cl-comment 'Each functional group in a skeleton contains an atom that is in a bond with an atom in a different functional group in the skeleton.')
+(forall (g1 s)
+	(if	(and	(skeleton s)
+			(functional_group g1)
+			(inSkeleton g1 s))
+		(exists (a1 a2 b g2)
+			(and	(atom a1)
+				(atom a2)
+				(bond b)
+				(functional_group g2)
+				(not (= g1 g2))
+				(inGroup a1 g1)
+				(inGroup a2 g2)
+				(inBond a1 b)
+				(inBond a2 b)))))
+
+(cl-comment 'Axiom: MS-ax-04')
+(cl-comment 'An atom in a molecule is in a functional group iff it is not hydrogen.')
+(forall (a m)
+	(if	(and (atom a)
+			(molecule m)
+			(inMolecule a m))
+		(iff (not (hydrogen a))
+			(exists (g)
+				(and (functional_group g)
+					(inGroup a g))))))
+
+)
