@@ -1,0 +1,67 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Carmen Chui, Michael Gruninger
+ *******************************************************************************/
+ 
+(cl-text http://colore.oor.net/molecular_graph/interprets/ex0511_nonisolated_loopless2most_graph.clif
+
+(cl-imports test/nonisolated_loopless)
+
+(cl-imports test/most_graph_reduction)
+
+(cl-comment 'Things to prove from most_root_bipartite')
+(cl-comment '---------------------Partitioned according to BOND/BIPARTITE---------------------')
+
+(cl-comment 'Axiom ID: MG-ax-1')
+(cl-comment 'A relation inBond to indicate an atom a is in a bond b.')
+(forall (a b)
+	(if (inBond a b)
+		(and (atom a)(bond b))))
+
+(cl-comment 'Axiom ID: MG-ax-2')
+(cl-comment 'A bond is between exactly two atoms.')
+(cl-comment 'is this one entailed by the last two axioms?')
+(forall (x y z b)
+	(if (and (inBond x b)(inBond y b)(inBond z b))
+		(or (= x y)(= x z)(= y z))))
+
+(cl-comment 'Axiom ID: MG-ax-3')
+(cl-comment 'An atom can be bonded if there exists another atom for which it can be bonded.')
+(forall (x)
+	(if (atom x)
+		(exists (b y)
+			(and (atom y)(inBond x b)(inBond y b)))))
+
+(cl-comment 'Axiom ID: MG-ax-4')
+(cl-comment 'A bond is possible between two atoms.')
+(forall (b)
+	(if (bond b)
+		(exists (x y)
+			(and (inBond x b)(inBond y b)))))
+
+(cl-comment 'Axiom ID: MG-ax-5')
+(cl-comment 'Two atoms are bonded if a bond exists between them.')
+(forall (b x y)
+	(if (and (inBond x b)(inBond y b))
+		(and (bond b)(atom x)(atom y))))
+
+(cl-comment 'Axiom ID: MG-ax-6')
+(cl-comment 'A bond is related to at most two atoms.')
+(exists (x y b)
+	(forall (z1 z2)
+		(if (and (bond b)(atom x)(atom y)
+				(inBond z1 b)(inBond z2 b))
+				(or (= z1 x)(= z1 y)(= z2 x)(= z2 y)))))
+
+(cl-comment 'Axiom ID: MG-ax-7')
+(cl-comment 'Comment from Carmen: check with Michael about this?')
+(cl-comment 'A bond is related to at least two atoms.')
+(exists (x y b)
+	(and (bond b)(atom x)(atom y)
+		(inBond x b)(inBond y b)(not (= y x))))
+)
