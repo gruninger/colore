@@ -1,0 +1,52 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% Reading from file test/p9/nonisolated_loopless.p9
+
+% Reading from file test/p9/most_graph_reduction.p9
+(all x (atom(x) <-> point(x))).
+(all x (bond(x) <-> line(x))).
+(all x all y (inBond(x,y) <-> in(x,y) & point(x) & line(y))).
+
+% Reading from file test/p9/weak_loopless.p9
+% Reading from file test/p9/point_bipartite.p9
+
+(all p (point(p) -> (exists l (line(l) & in(p,l))))).
+
+% Reading from file test/p9/graphical_incidence.p9
+
+% Reading from file test/p9/nontrivial_lines.p9
+(all l (line(l) -> (exists x exists y (point(x) & point(y) & x != y & in(x,l) & in(y,l))))).
+
+% Reading from file test/p9/weak_bipartite.p9
+(all x all y (in(x,y) -> in(y,x))).
+(all x (point(x) | line(x) -> in(x,x))).
+(all p (point(p) -> -line(p))).
+(all x all y (in(x,y) & point(x) & point(y) -> x = y)).
+(all x all y (in(x,y) & line(x) & line(y) -> x = y)).
+
+% Reading from file test/p9/partial_bipartite.p9
+(all l (line(l) -> (exists x (point(x) & in(x,l))))).
+
+% Reading from file test/p9/double_points.p9
+(all x all y all z all l (point(x) & point(y) & point(z) & line(l) & in(x,l) & in(y,l) & in(z,l) -> z = x | z = y | x = y)).
+
+end_of_list.
+
+formulas(goals).
+
+(all x all y all b all z1 all z2 (bond(b) & atom(x) & atom(y) & inBond(z1,b) & inBond(z2,b) -> z1 = x | z1 = y | z2 = x | z2 = y)).
+
+end_of_list.
+

@@ -1,0 +1,36 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% Reading from file test/p9/most_graph.p9
+(all a all b (inBond(a,b) -> atom(a) & bond(b))).
+(all x all y all z all b (inBond(x,b) & inBond(y,b) & inBond(z,b) -> x = y | x = z | y = z)).
+(all x (atom(x) -> (exists b exists y (atom(y) & inBond(x,b) & inBond(y,b))))).
+(all b (bond(b) -> (exists x exists y (inBond(x,b) & inBond(y,b))))).
+(all b all x all y (inBond(x,b) & inBond(y,b) -> bond(b) & atom(x) & atom(y))).
+(exists x exists y exists b all z1 all z2 (bond(b) & atom(x) & atom(y) & inBond(z1,b) & inBond(z2,b) -> z1 = x | z1 = y | z2 = x | z2 = y)).
+(exists x exists y exists b (bond(b) & atom(x) & atom(y) & inBond(x,b) & inBond(y,b) & y != x)).
+
+% Reading from file test/p9/most_graph2nonisolated_loopless.p9
+(all x (point(x) <-> atom(x))).
+(all x (line(x) <-> bond(x))).
+(all x all y (in(x,y) <-> inBond(x,y))).
+
+end_of_list.
+
+formulas(goals).
+
+(all l (line(l) -> (exists x exists y (point(x) & point(y) & x != y & in(x,l) & in(y,l))))).
+
+end_of_list.
+
