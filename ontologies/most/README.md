@@ -12,8 +12,9 @@ Notes
 
 Verification of the Ontology
 ================================================
-- Currently a WIP
-- See the [interprets](https://github.com/gruninger/colore/blob/master/ontologies/most/interprets/) folder
+- Currently a WIP.
+- See the [mappings](https://github.com/gruninger/colore/blob/master/ontologies/most/mappings/) folder for translation definitions.
+- See the [interprets](https://github.com/gruninger/colore/blob/master/ontologies/most/interprets/) folder for proofs.
 
 Things To Do
 ================================================
