@@ -10,9 +10,13 @@ Notes
 - Common functional groups have been axiomatized in the ontology.
 - A few molecules have been axiomatized in [most_molecules](https://github.com/gruninger/colore/blob/master/ontologies/most/definitions/most_molecules.clif) for demonstration purposes.
 
+Verification of the Ontology
+================================================
+- Currently a WIP
+- See the [interprets](https://github.com/gruninger/colore/blob/master/ontologies/most/interprets/) folder
+
 Things To Do
 ================================================
-- fix halogen axioms
 - Since there are various names for groups and molecules, we have included the common ones listed on Wikipedia (to be updated later with validated names found on ChemSpider).
     - There needs to be a standardized way to axiomatize the names of these molecules with multiple names - ACD/IUPAC/other languages/informal names.
 - We currently do not have any axioms for cis/trans isomers at the moment (need a new relation for indicating the geometric placement of carbons); definitions of groups to fix:
