@@ -10,9 +10,9 @@
  
 (cl-text http://colore.oor.net/molecular_graph/interprets/ex0511_nonisolated_loopless2most_graph.clif
 
-(cl-imports test/nonisolated_loopless)
+(cl-imports http://colore.oor.net/bipartite_incidence/nonisolated_loopless.clif)
 
-(cl-imports test/most_graph_reduction)
+(cl-imports http://colore.oor.net/molecular_graph/mappings/most_graph_reduction.clif)
 
 (cl-comment 'Things to prove from most_root_bipartite')
 (cl-comment '---------------------Partitioned according to BOND/BIPARTITE---------------------')
@@ -52,16 +52,17 @@
 
 (cl-comment 'Axiom ID: MG-ax-6')
 (cl-comment 'A bond is related to at most two atoms.')
-(forall (x y b z1 z2)
-		(if (and (bond b)(atom x)(atom y)
-				(inBond z1 b)(inBond z2 b))
-				(or (= z1 x)(= z1 y)(= z2 x)(= z2 y))))
-
+(forall (b)
+	(if (bond b)
+		(exists (x y)
+			(forall (z1 z2)
+				(if (and (atom x)(atom y)(inBond z1 b)(inBond z2 b))
+					(or (= z1 x)(= z1 y)(= z2 x)(= z2 y)))))))
+				
 (cl-comment 'Axiom ID: MG-ax-7')
 (cl-comment 'A bond is related to at least two atoms.')
 (forall (b)
 	(if (bond b)
 		(exists (x y)
 			(and (atom x)(atom y)(inBond x b)(inBond y b)(not (= y x))))))
-
 )
