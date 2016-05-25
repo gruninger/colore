@@ -1,0 +1,40 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% Reading from file /stl/cchui/colore/ontologies//tripartite_incidence/p9/triclosure.p9
+(all x (plane(x) | line(x) | point(x))).
+
+% Reading from file /stl/cchui/colore/ontologies//most/p9/incidence_td.p9
+(all x all y (inpl(x,y) <-> in(x,y) & point(x) & line(y))).
+(all x all y (inpq(x,y) <-> in(x,y) & point(x) & plane(y))).
+(all x all y (inlq(x,y) <-> in(x,y) & line(x) & plane(y))).
+
+% Reading from file /stl/cchui/colore/ontologies//tripartite_incidence/p9/weak_tripartite.p9
+(all x all y (in(x,y) -> in(y,x))).
+(all x (point(x) | line(x) | plane(x) -> in(x,x))).
+(all p (point(p) -> -line(p))).
+(all p (point(p) -> -plane(p))).
+(all p (plane(p) -> -line(p))).
+(all x all y (in(x,y) & point(x) & point(y) -> x = y)).
+(all x all y (in(x,y) & line(x) & line(y) -> x = y)).
+(all x all y (in(x,y) & plane(x) & plane(y) -> x = y)).
+
+end_of_list.
+
+formulas(goals).
+
+(all x all y (in(x,y) <-> inpl(x,y) | inpl(y,x) | inpq(x,y) | inpq(y,x) | inlq(x,y) | inlq(y,x) | x = y)).
+
+end_of_list.
+
