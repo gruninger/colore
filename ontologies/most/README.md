@@ -7,7 +7,7 @@ The ontology represents atoms, bonds, functional groups, and molecules as things
 Notes
 ================================================
 - This ontology is currently a work in progress.
-- Common functional groups have been axiomatized in the ontology.
+- Common functional groups have been axiomatized in the ontology (see [functional groups](http://colore.oor.net/most/definitions)).
 - A few molecules have been axiomatized in [most_molecules](https://github.com/gruninger/colore/blob/master/ontologies/most/definitions/most_molecules.clif) for demonstration purposes.
 
 Verification of the Ontology
