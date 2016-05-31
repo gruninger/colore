@@ -1,0 +1,173 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Carmen Chui, Michael Gruninger
+ *******************************************************************************/
+ 
+(cl-text http://colore.oor.net/most/interprets/ex0524_cycle_path_subgraph2most_root.clif
+
+(cl-imports http://colore.oor.net/tripartite_incidence/cycle_path_subgraph.clif)
+
+(cl-imports http://colore.oor.net/most/mappings/most_root_reduction.clif)
+
+(cl-imports http://colore.oor.net/most/incidence_tri_td.clif)
+
+(cl-comment 'Things to prove from most_root.')
+
+(cl-comment 'Axiom ID: MR-ax-1')
+(cl-comment 'An atom x is in a functional group y.')
+(forall (x y)
+	(if (inGroup x y)
+		(and (atom x)(functional_group y))))
+
+(cl-comment 'Axiom ID: MR-ax-2')
+(cl-comment 'Disjointness axiom for atom(x), bond(x), functional_group(x), and molecule(x).')
+(forall (x)
+	(if (atom x)
+		(not (or (bond x)(functional_group x)))))
+
+(cl-comment 'Axiom ID: MR-ax-3')
+(cl-comment 'Disjointness axiom for atom(x), bond(x), functional_group(x), and molecule(x).')
+(forall (x)
+	(if (bond x)
+		(not (functional_group x))))
+
+(cl-comment 'Axiom ID: MR-ax-4')
+(cl-comment 'For every functional group, there exists an atom that is in the group.')
+(forall (x)
+	(if (functional_group x)
+		(exists (a) (and (atom a)(inGroup a x)))))
+
+(cl-comment 'Axiom ID: MR-ax-5')
+(forall (x)
+	(if	(atom x)
+		(exists (y)
+			(inGroup x y))))
+
+(cl-comment 'Axiom ID: MR-ax-6')
+(cl-comment 'Group-Bond Relationship: A bond is in a functional group iff both of its atoms are in the functional group.')
+(forall (x y)
+	(iff	(bondGroup x y)
+		(and	(bond x)
+			(functional_group y)
+			(not (exists (z)
+				(and 	(inBond z x)
+					(not (inGroup z y))))))))
+
+(cl-comment 'Axiom ID: MR-ax-7')
+(cl-comment 'Definition for an end atom in a linear functional group.')
+(forall (x y)
+	(iff (end x y)
+		(and (inGroup x y)
+			(forall (b1 b2 w z)
+				(if (and (inBond x b1)(inBond z b1)(inBond x b2)(inBond w b2)(inGroup z y)(inGroup w y))
+					(= w z))))))
+
+(cl-comment 'Axiom ID: MR-ax-8')
+(cl-comment 'A functional group has at most two ends.')
+(forall (x y z w)
+	(if	(and	(functional_group x)
+			(end y x)
+			(end z x)
+			(end w x))
+		(or	(= y z)
+			(= y w)
+			(= z w))))
+
+(cl-comment 'Axiom ID: MR-ax-9')
+(cl-comment 'Definition for a fork atom in a branched functional group: an atom in the same functional group has at least 3 other atoms in bonds.')
+(forall (x y)
+	(iff (fork x y)
+		(and (inGroup x y)
+			(exists (b1 b2 b3 a1 a2 a3)
+				(and (not (= a1 a2))(not (= a2 a3))(not (= a1 a3))
+					(not (= b1 b2))(not (= b2 b3))(not (= b1 b3))
+					(inBond x b1)(inBond a1 b1)
+					(inBond x b2)(inBond a2 b2)
+					(inBond x b3)(inBond a3 b3)
+					(inGroup a1 y)(inGroup a2 y)(inGroup a3 y))))))
+
+(cl-comment 'Axiom ID: MR-ax-10')
+(cl-comment 'No functional group has a fork.')
+(forall (x)
+	(if	(functional_group x)
+		(not (exists (y)
+			(fork y x)))))
+
+(cl-comment '---------------------Partitioned according to MOLECULE/QUADRIPARTITE---------------------')
+
+(cl-comment 'Axiom ID: MR-ax-11')
+(cl-comment 'Every group is in a molecule.')
+(forall (x)
+	(if (functional_group x)
+		(exists (y)
+			(and (molecule y)(containsGroup y x)))))
+
+(cl-comment 'Axiom ID: MR-ax-11')
+(cl-comment 'Every group is contained in a unique molecule.')
+(forall (x)
+	(if (functional_group x)
+		(exists (y)
+			(and (molecule y)(containsGroup y x)
+				(not (exists (w)
+					(and (molecule w)(containsGroup y w)(not (= w y)))))))))
+
+(cl-comment 'Axiom ID: MR-ax-12')
+(cl-comment 'A functional group is in a molecule if the group is in the molecule.')
+(forall (x y)
+	(if (containsGroup x y)
+		(and (molecule x)(functional_group y))))
+
+(cl-comment 'Axiom ID: MR-ax-13')
+(cl-comment 'Disjointness axiom for atom(x), bond(x), functional_group(x), and molecule(x).')
+(forall (x)
+	(if (molecule x)
+		(not (or (atom x)(bond x)(functional_group x)))))
+
+(cl-comment 'Axiom ID: MR-ax-14')
+(cl-comment 'Molecule-Atom Relationship: An atom is in a molecule iff it is in a group that is contained in the molecule.')
+(forall (x y)
+	(iff (inMolecule x y)
+		(and (atom x)(molecule y)
+			(exists (w z)
+				(and (functional_group z)(inGroup x z)(containsGroup y z))))))
+
+(cl-comment 'Axiom ID: MR-ax-15')
+(cl-comment 'Molecule-Bond Relationship: A bond is in a molecule iff it is in a group that is contained in the molecule.')
+(forall (x y)
+	(iff (molecularBond x y)
+		(and (bond x)(molecule y)
+			(exists (w z)
+				(and (functional_group z)(bondGroup x z)(containsGroup y z))))))
+				
+(cl-comment 'Axiom ID: MR-ax-16')
+(cl-comment 'There do not exist two functional groups x and y, and 3 atoms such that those three atoms are in functional groups x and y.')
+(cl-comment 'Any two functional groups intersect at AT MOST two atoms.')
+(not (exists (x y a b c)
+	(and (functional_group x)
+			(functional_group y)
+			(atom a)
+			(atom b)
+			(atom c)
+			(inGroup a x)(inGroup b x)(inGroup c x)
+			(inGroup a y)(inGroup b y)(inGroup c y)
+			(not (= x y))
+			(not (= a b))
+			(not (= b c))
+			(not (= a c)))))
+
+(cl-comment 'Axiom ID: MR-ax-17')
+(cl-comment 'If there are two distinct functional groups, there exists an atom that is only in one of the groups and not the other.')
+(forall (x y)
+	(if (and (functional_group x)
+			(functional_group y)
+			(not (= x y)))
+		(exists (a)
+			(and (atom a)(inGroup a x)(not (inGroup a y))))))
+
+
+)
