@@ -1,0 +1,59 @@
+(cl-text http://colore.oor.net/biospatial/biospatial.clif
+
+(cl-comment 'Author: Anthony G. Cohn')
+(cl-comment 'Paper: Formalising Bio-Spatial Knowledge')
+
+(cl-comment 'Axiom numbering corresponds to numbering found in the paper.')
+
+(cl-comment 'Axiom ID: A1')
+(forall (x y z)
+	(if (and (Part x y)(Part y z))
+		(not (Part x z))))
+
+(cl-comment 'Axiom ID: A2')
+(forall (x y)
+	(if (Part x y)
+		(exists (z)
+			(and (Part z y)(not (= x z))))))
+
+(cl-comment 'Axiom ID: A3')
+(forall (x y)
+	(if (Part x y)
+		(FCon x)))
+
+(cl-comment 'Axiom ID: D1')
+(forall (x)
+	(iff (Assembly x)
+		(exists (y)
+			(Part y x))))
+
+(cl-comment 'Axiom ID: A4')
+(forall (x y)
+	(if (and (P x (sp y))(Assembly y))
+		(exists (v z)
+			(and (Part z y)(P v x)(P v (sp z))))))
+
+(cl-comment 'Axiom ID: A5')
+(forall (x y)
+	(if (Part x y)
+		(P (sp x) (sp y))))
+
+(cl-comment 'Axiom ID: D2')
+(cl-comment 'check with Michael---')
+(forall (x y1 y2 y3)
+	(iff (Parts x y1 y2 y3)
+		(and (Part y1 x)(Part y2 x)(Part y3 x)
+				(not (= y1 y2))(not (= y1 y3))(not (= y2 y3)))))
+
+(cl-comment 'Axiom ID: D3')
+(cl-comment 'check with Michael---')
+(forall (x y1 y2 y3)
+	(iff (AllParts x y1 y2 y3)
+		(and (Parts x y1 y2 y3)
+			(forall (z)
+				(if (Part z x)
+					(= z y1)(= z y2)(=z y3))))))
+
+(cl-comment 'stopped at page 4')
+
+)
