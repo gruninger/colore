@@ -47,6 +47,7 @@
 
 (cl-comment 'Axiom ID: D3')
 (cl-comment 'check with Michael---')
+(cl-comment 'not sure what to do with the quantifications')
 (forall (x y1 y2 y3)
 	(iff (AllParts x y1 y2 y3)
 		(and (Parts x y1 y2 y3)
@@ -54,6 +55,212 @@
 				(if (Part z x)
 					(= z y1)(= z y2)(=z y3))))))
 
-(cl-comment 'stopped at page 4')
+(cl-comment 'Axiom ID: D4')
+(cl-comment 'check with Michael---')
+(cl-comment 'not sure what to do with the subtraction / functions')
+(forall (r)
+	(iff (Ring r)
+		(and (Assembly r)(FCon r)
+			(forall (x)
+				(if (Part x r)
+					(not (exists y1 y2)
+						(and (Part y1 r)(Part y2 r)(Linked x y1)(Linked x y2)))))
+			(forall (x)
+				(if (Part x r)
+					(Con (- (sp r)(sp x))))))))
+					
+(cl-comment 'Axiom ID: D5')
+(forall (n)
+	(iff (Nucleotide n)
+		(and (Molecule n)
+			(exists (r s p)
+				(and (Parts n r s g)
+					(NitrogenRingCompound r)
+					(or (Ribose s)(Deoxyribose s))
+					(PhosphateGroup g)
+					(Linked r s)
+					(Carries s g))))))
 
-)
+(cl-comment 'Axiom ID: D6')
+(forall (n)
+	(iff (NitrogenRingCompound x)
+		(exists (r)
+			(and (Part r x)(Ring r)
+				(exists (p)
+					(and (Part p r)(Nitrogen p)))))))
+					
+(cl-comment 'Axiom ID: D7')
+(forall (g)
+	(iff (PhosphateGroup g)
+		(or (Phosphate g)
+			(and (Assembly g)
+					(forall (x)
+						(if (Part x g)
+							(Phosphate x)))))))
+
+(cl-comment 'Axiom ID: A6')
+(forall (s)
+	(if (or (Ribose s)(Deoxyribose s))
+		(5CSugar s)))
+
+(cl-comment 'Axiom ID: D8')
+(forall (r s)
+	(iff (Linked r s)
+		(CoValLinked r s)))
+
+(cl-comment 'Axiom ID: D9')
+(forall (r s)
+	(iff (Carries r s)
+		(CoValLinked r s)))
+
+(cl-comment 'Axiom ID: D10')
+(cl-comment 'check with Michael---')
+(cl-comment 'not sure what to do with the quantifications')
+(forall (x y)
+	(iff (CoValLinked x y)
+		(and (not (exists (e1 e2 e3)
+				(and (Electron e1)(Electron e2)(Electron e3)
+					(P (sp e1) (* (sp x)(sp y)))
+					(P (sp e2) (* (sp x)(sp y)))
+					(P (sp e3) (* (sp x)(sp y))))))
+			(forall (r)
+				(if (P r (* (sp x)(sp y)))
+					(exists (r2 e4)
+						(and (P r2 r)(Electron e4)
+							(P r2 e2)
+							(P (sp e2) (* (sp x)(sp y))))))))))
+
+(cl-comment 'Axiom ID: D11')
+(forall (x)
+	(iff (Ribonucleotide x)
+		(and (Nucleotide x)
+			(exists (y)
+				(and (Part y x)(Ribose y))))))
+				
+(cl-comment 'Axiom ID: D12')
+(forall (x)
+	(iff (Deoxyribonucleotide x)
+		(and (Nucleotide x)
+			(exists (y)
+				(and (Part y x)(Deoxyribose y))))))
+
+(cl-comment 'Axiom ID: D13')
+(forall (x)
+	(iff (Base x)
+		(NitrogenRingCompound x)))
+
+(cl-comment 'Axiom ID: D14')
+(forall (x)
+	(iff (6NitRing x)
+		(and (exists (p)
+			(and (Part p x)(Nitrogen p)))
+			(not (exists (p1 p2 p3 p4 p5 p6)
+				(Part p1 x)(Part p2 x)(Part p3 x)(Part p4 x)(Part p5 x)(Part p6 x)))
+			(Ring x))))
+
+(cl-comment 'Axiom ID: D15')
+(forall (x)
+	(iff (5NitRing x)
+		(and (exists (p)
+			(and (Part p x)(Nitrogen p)))
+			(not (exists (p1 p2 p3 p4 p5)
+				(Part p1 x)(Part p2 x)(Part p3 x)(Part p4 x)(Part p5 x)))
+			(Ring x))))
+
+(cl-comment 'Axiom ID: A7')
+(forall (x)
+	(if (Purine x)
+		(exists (y z)
+			(and (Parts x y z)(6NitRing y)(5NitRing z)(Fused y z)))))
+			
+(cl-comment 'Axiom ID: A8')
+(forall (x)
+	(if (Pyrimidine x)
+		(exists (y)
+			(and (6NitRing y)(Part y x)
+				(not (exists (v)
+					(and (Part v x)(5NitRing v))))))))
+
+(cl-comment 'Axiom ID: D16')
+(forall (x y)
+	(iff (Fused x y)
+		(exists (z)
+			(and (Atom z)(Part z x)(Part z y)))))
+
+(cl-comment 'Axiom ID: A9')
+(forall (x)
+	(if (or (Cytosine x)(Thymine x)(Uracil x))
+		(Pyrimidine x)))
+			
+(cl-comment 'Axiom ID: A10')
+(forall (x)
+	(if (or (Guanine x)(Adenine x))
+		(Purine x)))
+		
+(cl-comment 'Axiom ID: A11')
+(forall (x)
+	(if (Cytosine x)
+		(and (not (Thymine x))
+			(not (Uracil x)))))
+
+(cl-comment 'Axiom ID: A12')
+(forall (x)
+	(if (Guanine x)
+		(not (Adenine x))))
+
+(cl-comment 'Axiom ID: T1')
+(forall (x)
+	(if (Purine x)
+		(not (Pyrimidine x))))
+		
+(cl-comment 'Axiom ID: D17')
+(forall (x)
+	(iff (DnaMolecule x)
+		(exists (x1 x2)
+			(DnaPair x x1 x2))))
+		
+(cl-comment 'Axiom ID: D18')		
+(forall (x x1 x2)
+	(iff (DnaPair x x1 x2)
+		(and (AllParts x x1 x2)
+			(DnaChain x1)(DnaChain x2)
+			(HBonded x1 x2))))
+		
+(cl-comment 'Axiom ID: D19')
+(forall (x)
+	(iff (DnaStrand x)
+		(DnaChain x)))
+		
+(cl-comment 'Axiom ID: D20')
+(forall (x)
+	(iff (DnaChain x)
+		(and (Assembly x)(ChainLinked x)
+			(forall (z)
+				(if (Part z x)
+					(and (Nucleotide z)
+						(exists (p)
+							(and (Part p z)
+								(or (Adenine p)
+									(Cytosine p)
+									(Guanine p)
+									(Thymine p))))))))))
+		
+(cl-comment 'stopped at D21, page 6')
+(cl-comment 'fix exclamation marks axioms d14 d15 d10')
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+			)
