@@ -1,0 +1,113 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% Reading from file /stl/cchui/colore/ontologies//tripartite_incidence/p9/cycle_path_subgraph.p9
+(all p all q (star(p,q) <-> (exists l1 exists l2 exists l3 (line(l1) & line(l2) & line(l3) & l1 != l2 & l1 != l3 & l2 != l3 & in(p,l1) & in(p,l2) & in(p,l3) & in(l1,q) & in(l2,q) & in(l3,q))))).
+
+% Reading from file /stl/cchui/colore/ontologies/most//mappings/p9/most_root_reduction.p9
+(all x (atom(x) <-> point(x))).
+(all x (bond(x) <-> line(x))).
+(all x (functional_group(x) <-> plane(x))).
+(all x (skeleton(x) <-> space(x))).
+(all x all y (inBond(x,y) <-> inpl(x,y))).
+(all x all y (inGroup(x,y) <-> inpq(x,y))).
+(all x all y (bondGroup(x,y) <-> inlq(x,y))).
+(all x all y (end(x,y) <-> planar_pendant(x,y))).
+(all x all y (star(x,y) <-> fork(x,y))).
+
+% Reading from file /stl/cchui/colore/ontologies//most/p9/incidence_tri_td.p9
+(all x all y (inpl(x,y) <-> in(x,y) & point(x) & line(y))).
+(all x all y (inpq(x,y) <-> in(x,y) & point(x) & plane(y))).
+(all x all y (inlq(x,y) <-> in(x,y) & line(x) & plane(y))).
+
+% Reading from file /stl/cchui/colore/ontologies//tripartite_incidence/p9/induced_subgraph.p9
+
+% Reading from file /stl/cchui/colore/ontologies//bipartite_incidence/p9/weak_loopless.p9
+
+% Reading from file /stl/cchui/colore/ontologies//tripartite_incidence/p9/coplanar_double_collinear.p9
+(all x all y all z all w all q all l1 all l2 all l3 (plane(q) & point(x) & point(y) & point(z) & point(w) & in(x,q) & in(y,q) & in(z,q) & in(w,q) & line(l1) & in(l1,q) & in(x,l1) & in(y,l2) & line(l2) & in(l2,q) & in(x,l2) & in(z,l2) & line(l3) & in(l3,q) & in(x,l3) & in(w,l3) -> w = z | y = z | w = y)).
+
+% Reading from file /stl/cchui/colore/ontologies//tripartite_incidence/p9/double_pendant.p9
+(all q all x all y all z (planar_pendant(x,q) & planar_pendant(y,q) & planar_pendant(z,q) -> x = y | y = z | z = x)).
+
+% Reading from file /stl/cchui/colore/ontologies//tripartite_incidence/p9/subgraph_incidence.p9
+
+% Reading from file /stl/cchui/colore/ontologies//tripartite_incidence/p9/planar_shadow.p9
+(all l all q (line(l) & plane(q) & -in(l,q) -> (exists p (point(p) & in(p,l) & -in(p,q))))).
+
+% Reading from file /stl/cchui/colore/ontologies//bipartite_incidence/p9/graphical_incidence.p9
+
+% Reading from file /stl/cchui/colore/ontologies//bipartite_incidence/p9/nontrivial_lines.p9
+(all l (line(l) -> (exists x exists y (point(x) & point(y) & x != y & in(x,l) & in(y,l))))).
+
+% Reading from file /stl/cchui/colore/ontologies//tripartite_incidence/p9/weak_tripartite.p9
+(all x all y (in(x,y) -> in(y,x))).
+(all x (point(x) | line(x) | plane(x) -> in(x,x))).
+(all p (point(p) -> -line(p))).
+(all p (point(p) -> -plane(p))).
+(all p (plane(p) -> -line(p))).
+(all x all y (in(x,y) & point(x) & point(y) -> x = y)).
+(all x all y (in(x,y) & line(x) & line(y) -> x = y)).
+(all x all y (in(x,y) & plane(x) & plane(y) -> x = y)).
+
+% Reading from file /stl/cchui/colore/ontologies/tripartite_incidence//definitions/p9/tripartite_def.p9
+(all l all q (hanging(l,q) <-> line(l) & plane(q) & (exists p1 (point(p1) & in(p1,q) & in(p1,l) & (all p2 (point(p2) & in(p2,l) & in(p2,q) -> p1 = p2)))))).
+(all x all q (planar_pendant(x,q) <-> point(x) & plane(q) & in(x,q) & (all y all z (plane_collinear(x,y,q) & plane_collinear(x,z,q) -> y = z)))).
+(all l (border_line(l) <-> (exists q (line(l) & plane(q) & in(l,q) & (all q2 (plane(q2) & in(l,q2) -> q2 = q)))))).
+(all p1 all p2 all q (plane_collinear(p1,p2,q) <-> point(p1) & point(p2) & p1 != p2 & plane(q) & in(p1,q) & in(p2,q) & (exists l (line(l) & in(l,q) & in(p1,l) & in(p2,l))))).
+(all q (matching(q) <-> plane(q) & (all l1 all l2 (line(l1) & line(l2) & l1 != l2 & in(l1,q) & in(l2,q) -> parallel(l1,l2))))).
+
+% Reading from file /stl/cchui/colore/ontologies//tripartite_incidence/p9/weak_plane_subgraph.p9
+
+% Reading from file /stl/cchui/colore/ontologies//tripartite_incidence/p9/partial_point.p9
+(all p (point(p) -> (exists q (plane(q) & in(p,q))))).
+
+% Reading from file /stl/cchui/colore/ontologies//bipartite_incidence/p9/partial_bipartite.p9
+(all l (line(l) -> (exists x (point(x) & in(x,l))))).
+
+% Reading from file /stl/cchui/colore/ontologies//bipartite_incidence/p9/double_points.p9
+(all x all y all z all l (point(x) & point(y) & point(z) & line(l) & in(x,l) & in(y,l) & in(z,l) -> z = x | z = y | x = y)).
+
+% Reading from file /stl/cchui/colore/ontologies//bipartite_incidence/p9/weak_bipartite.p9
+(all x all y (in(x,y) -> in(y,x))).
+(all x (point(x) | line(x) -> in(x,x))).
+(all p (point(p) -> -line(p))).
+(all x all y (in(x,y) & point(x) & point(y) -> x = y)).
+(all x all y (in(x,y) & line(x) & line(y) -> x = y)).
+
+% Reading from file /stl/cchui/colore/ontologies/bipartite_incidence//definitions/p9/bipartite_def.p9
+(all p1 all p2 (collinear(p1,p2) <-> point(p1) & point(p2) & p1 != p2 & (exists l (line(l) & in(p1,l) & in(p2,l))))).
+(all l1 all l2 (intersect(l1,l2) <-> line(l1) & line(l2) & l1 != l2 & (exists p (point(p) & in(p,l1) & in(p,l2))))).
+(all l1 all l2 (parallel(l1,l2) <-> line(l1) & line(l2) & -(exists p (point(p) & in(p,l1) & in(p,l2))))).
+(all l1 all l2 (nontrivial_segment(l1,l2) <-> (exists p1 (point(p1) & in(p1,l1))) & (all p2 (point(p2) & in(p2,l1) -> in(p2,l2))))).
+(all l1 all l2 (adj(l1,l2) <-> line(l1) & line(l2) & (exists p (point(p) & in(p,l1) & in(p,l2))))).
+(all y (interior_point(y) <-> (exists l (point(y) & line(l) & in(y,l) & (all z (line(z) & in(y,z) -> z = l)))))).
+(all l1 all l2 (overlap(l1,l2) <-> intersect(l1,l2) & (exists p (point(p) & in(p,l1) & -in(p,l2))))).
+(all x (pendant_point(x) <-> point(x) & (all y all z (collinear(x,y) & collinear(x,z) -> y = z)))).
+
+% Reading from file /stl/cchui/colore/ontologies//tripartite_incidence/p9/transitive_tripartite.p9
+(all x all y all z (plane(x) & line(y) & point(z) & in(z,y) & in(y,x) -> in(z,x))).
+
+% Reading from file /stl/cchui/colore/ontologies//tripartite_incidence/p9/point_plane_existence.p9
+
+(all q (plane(q) -> (exists p (point(p) & in(p,q))))).
+
+end_of_list.
+
+formulas(goals).
+
+(all x all y all z all w (functional_group(x) & end(y,x) & end(z,x) & end(w,x) -> y = z | y = w | z = w)).
+
+end_of_list.
+
