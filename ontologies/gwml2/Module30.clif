@@ -1,0 +1,39 @@
+(cl-text http://colore.oor.net/gwml2/module30.clif
+(cl-imports http://colore.oor.net/gwml2/definitions/module16.clif)
+
+(cl-comment 'GWMA-A1')
+(cl-comment 'Groundwater Management Area is a specialization of Geologic Unit')
+(forall (x)
+	(if
+		(GWMA x)
+		(GU x)
+	)
+)
+(cl-comment 'GWMA-A2')
+(cl-comment 'Groundwater Management Area overlaps some Hydro Rock Body that it manages')
+(forall (x)
+	(if
+		(GWMA x)
+		(exists (y)
+			(and
+				(HRB y)
+				(PO (r x) (r y))
+			)
+		)
+	)
+)
+(cl-comment 'GWMA-A2-Additional')
+(cl-comment 'Counterpart of GWMA-A2 for a two dimensional Managagement Area')
+(forall (x)
+	(if
+		(GWMA x)
+		(exists (y)
+			(and
+				(HRB y)
+				(< (r x) (r y))
+				(BCont (r x) (r y))
+			)
+		)
+	)
+)
+)

@@ -1,0 +1,131 @@
+(cl-text http://colore.oor.net/gwml2/module6.clif
+(cl-imports http://colore.oor.net/gwml2/module5.clif)
+
+(cl-comment 'AU-A1')
+(cl-comment 'Aquifer Unit specializes HGU')
+(forall (x)
+	(if
+		(AU x)
+		(HGU x)
+	)
+)
+(cl-comment 'AU-A2')
+(cl-comment 'Aquifer specializes AU')
+(forall (x)
+	(if
+		(A x)
+		(AU x)
+	)
+)
+(cl-comment 'AU-A3')
+(cl-comment 'Confining Bed is an AU that is in superficial contact with an Aquifer')
+(forall (x)
+	(if
+		(CB x)
+		(and
+			(AU x)
+			(exists (y)
+				(and
+					(A y)
+					(SC (r x) (r y))
+				)
+			)
+		)
+	)
+)
+(cl-comment 'AU-A4')
+(cl-comment 'Aquifers and Confining Beds cannot spatially overlap')
+(forall (x y)
+	(if
+		(and
+			(or
+				(A x)
+				(CB x)
+			)
+			(or
+				(A y)
+				(CB y)
+			)
+			(not (= x y))
+		)
+		(not (PO (r x) (r y)))
+	)
+)
+(cl-comment 'AU-A5')
+(cl-comment 'An Aquifer System is an AU that consists of at least two distinct Aquifers and a Confining Bed connected to both.')
+(forall (x)
+	(if
+		(AS x)
+		(and
+			(AU x)
+			(exists (p q l)
+				(and
+					(A p)
+					(A q)
+					(not (= p q))
+					(submaterial p x)
+					(submaterial q x)
+					(CB l)
+					(SC (r l) (r p))
+					(SC (r l) (r q))
+					(submaterial l x)
+				)
+			)
+		)
+	)
+)
+(cl-comment 'AU-A6')
+(cl-comment 'An AS is not larger than the sum of the Aquifers and Confining Beds it is composed of that is anything that overlaps the AS must overlap an A or CB that is a submaterial of that AS ')
+(forall (x)
+	(if
+		(AS x)
+		(and
+			(forall (y)
+				(if
+					(PO y (r x))
+					(exists (z)
+						(and
+							(or
+								(A z)
+								(CB z)
+							)
+							(submaterial z x)
+							(PO y (r z))
+						)
+					)
+				)
+			)
+		)
+	)
+)
+(cl-comment 'AU-A7')
+(cl-comment 'Aquifer Confining Bed and Aquifer System are mutually disjoint classes')
+(forall (x)
+	(and
+		(or
+			(not (A x))
+			(not (CB x))
+		)
+		(or
+			(not (AS x))
+			(not (CB x))
+		)
+		(or
+			(not (A x))
+			(not (AS x))
+		)
+	)
+)
+(cl-comment 'AU-A8')
+(cl-comment 'Exhaustive subclasses of AU')
+(forall (x)
+	(if
+		(AU x)
+		(or
+			(A x)
+			(CB x)
+			(AS x)
+		)
+	)
+)
+)

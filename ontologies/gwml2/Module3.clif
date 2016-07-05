@@ -1,0 +1,38 @@
+(cl-text http://colore.oor.net/gwml2/module3.clif
+(cl-imports http://colore.oor.net/gwml2/module1.clif)
+(cl-imports http://colore.oor.net/multidim_space_granular/test.clif)
+
+(cl-comment 'GU-A1')
+(cl-comment 'Geologic Unit specializes NAPO')
+(forall (x)
+	(if
+		(GU x)
+		(NAPO x)
+	)
+)
+(cl-comment 'GU-A2')
+(cl-comment 'All intragranular constituents of a Geologic Unit are Earth Material')
+(forall (x y)
+	(if
+		(and
+			(GU x)
+			(intragranularconstituent y x)
+		)
+		(EM y)
+	)
+)
+(cl-comment 'GU-A3')
+(cl-comment 'Every Geologic Unit is constituted by some non fluid Earth Material')
+(forall (x)
+	(if
+		(GU x)
+		(exists (y)
+			(and
+				(EM y)
+				(not (FM y))
+				(intragranularconstituent y x)
+			)	
+		)
+	)
+)
+)

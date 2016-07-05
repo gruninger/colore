@@ -1,0 +1,73 @@
+(cl-text http://colore.oor.net/gwml2/module22.clif
+(cl-imports http://colore.oor.net/gwml2/definitions/module14.clif)
+
+(cl-comment 'W-A2')
+(cl-comment 'Every Well Water Body is linked to an Aquifer Water Body that it drains')
+(forall (x)
+	(if
+		(WWB x)
+		(exists (y)
+			(and
+				(AWB y)
+				(SC (r x) (r y))
+			)
+		)
+	)
+)
+
+(cl-comment 'W-A3')
+(cl-comment 'Every Well has a container Wall that hosts a Hydrogeo Void that in turn contains a Well Water Body')
+(forall (x)
+	(if
+		(W x)
+		(exists (u v y)
+			(and
+				(CSB u)
+				(P (r u) (r x))
+				(HGV v)
+				(P (r v) (r x))
+				(WWB y)
+				(P (r y) (r v))
+			)
+		)
+	)
+)
+
+(cl-comment 'W-A4')
+(cl-comment 'A Well is in contact with any Aquifer whose Water Body it is linked to')
+(forall (x y z)
+	(if
+		(and
+			(W x)
+			(WWB y)
+			(AWB z)
+			(submaterial y x)
+			(SC (r y) (r z))
+		)
+		(forall (u)
+			(if 
+				(and
+					(AU u)
+					(submaterial z u)
+				)
+				(C x u)
+			)
+		)
+		)
+	)
+)
+
+(cl-comment 'W-A5')
+(cl-comment 'A Hydro Rock Body that has a Well Water Body as a submaterial is a Well')
+(forall (x y)
+	(if
+		(and
+			(HRB x)
+			(WWB y)
+			(AWB z)
+			(submaterial y x)
+		)
+		(W x)
+	)
+)
+)
