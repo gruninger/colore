@@ -1,0 +1,75 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 1596 was started by Cleo1 on Cleo1-PC,
+Mon Aug  1 21:31:15 2016
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.19 (+ 0.03) seconds.
+% Length of proof is 55.
+% Level of proof is 11.
+% Maximum clause weight is 11.
+% Given clauses 401.
+
+1 (all x T(x)) # label(non_clause).  [assumption].
+2 (all x P(x,x)) # label(non_clause).  [assumption].
+3 (all x all y all z (P(x,y) & P(y,z) -> P(x,z))) # label(non_clause).  [assumption].
+5 (all x all y (Ov(y,x) <-> (exists z (P(z,y) & P(z,x))))) # label(non_clause).  [assumption].
+7 (all x (TimeInterval(x) <-> T(x))) # label(non_clause).  [assumption].
+8 (all x all y (temporalPart(x,y) <-> P(x,y))) # label(non_clause).  [assumption].
+9 (all x all y (overlapsTemporally(x,y) <-> Ov(x,y))) # label(non_clause).  [assumption].
+10 (all x all y (TimeInterval(x) & TimeInterval(y) -> (overlapsTemporally(x,y) <-> (exists z (TimeInterval(z) & temporalPart(z,x) & temporalPart(z,y)))))) # label(non_clause) # label(goal).  [goal].
+11 Ov(x,y) | -P(z,x) | -P(z,y).  [clausify(5)].
+12 -Ov(x,y) | P(f1(y,x),x).  [clausify(5)].
+13 -Ov(x,y) | P(f1(y,x),y).  [clausify(5)].
+14 -overlapsTemporally(x,y) | Ov(x,y).  [clausify(9)].
+15 overlapsTemporally(x,y) | -Ov(x,y).  [clausify(9)].
+16 TimeInterval(x) | -T(x).  [clausify(7)].
+21 -overlapsTemporally(c1,c2) | -TimeInterval(x) | -temporalPart(x,c1) | -temporalPart(x,c2).  [deny(10)].
+22 T(x).  [clausify(1)].
+23 P(x,x).  [clausify(2)].
+24 -P(x,y) | -P(y,z) | P(x,z).  [clausify(3)].
+27 -temporalPart(x,y) | P(x,y).  [clausify(8)].
+28 temporalPart(x,y) | -P(x,y).  [clausify(8)].
+29 overlapsTemporally(c1,c2) | temporalPart(c3,c1).  [deny(10)].
+30 overlapsTemporally(c1,c2) | temporalPart(c3,c2).  [deny(10)].
+31 -P(x,y) | -P(x,z) | P(f1(z,y),y).  [resolve(11,a,12,a)].
+33 -overlapsTemporally(x,y) | P(f1(y,x),x).  [resolve(14,b,12,a)].
+34 -overlapsTemporally(x,y) | P(f1(y,x),y).  [resolve(14,b,13,a)].
+35 overlapsTemporally(x,y) | -P(z,x) | -P(z,y).  [resolve(15,b,11,a)].
+36 -overlapsTemporally(c1,c2) | -temporalPart(x,c1) | -temporalPart(x,c2) | -T(x).  [resolve(21,b,16,a)].
+37 -overlapsTemporally(c1,c2) | -temporalPart(x,c1) | -temporalPart(x,c2).  [copy(36),unit_del(d,22)].
+38 -P(x,y) | P(f1(y,y),y).  [factor(31,a,b)].
+41 overlapsTemporally(c1,c2) | P(c3,c1).  [resolve(29,b,27,a)].
+42 overlapsTemporally(c1,c2) | P(c3,c2).  [resolve(30,b,27,a)].
+49 P(f1(x,x),x).  [resolve(38,a,23,a)].
+61 -P(x,y) | P(f1(x,x),y).  [resolve(49,a,24,a)].
+63 P(c3,c1) | P(f1(c2,c1),c2).  [resolve(41,a,34,a)].
+64 P(c3,c1) | P(f1(c2,c1),c1).  [resolve(41,a,33,a)].
+65 P(c3,c2) | P(f1(c2,c1),c2).  [resolve(42,a,34,a)].
+66 P(c3,c2) | P(f1(c2,c1),c1).  [resolve(42,a,33,a)].
+125 P(c3,c1) | temporalPart(f1(c2,c1),c2).  [resolve(63,b,28,b)].
+142 P(c3,c1) | temporalPart(f1(c2,c1),c1).  [resolve(64,b,28,b)].
+160 P(c3,c2) | temporalPart(f1(c2,c1),c2).  [resolve(65,b,28,b)].
+178 P(c3,c2) | temporalPart(f1(c2,c1),c1).  [resolve(66,b,28,b)].
+182 P(c3,c1) | -overlapsTemporally(c1,c2) | -temporalPart(f1(c2,c1),c1).  [resolve(125,b,37,c)].
+183 P(c3,c2) | -overlapsTemporally(c1,c2) | -temporalPart(f1(c2,c1),c1).  [resolve(160,b,37,c)].
+1234 P(c3,c1) | -overlapsTemporally(c1,c2).  [resolve(182,c,142,b),merge(c)].
+1236 P(c3,c1).  [resolve(1234,b,41,a),merge(b)].
+1239 P(f1(c3,c3),c1).  [resolve(1236,a,61,a)].
+1247 overlapsTemporally(c1,x) | -P(c3,x).  [resolve(1236,a,35,b)].
+1271 temporalPart(f1(c3,c3),c1).  [resolve(1239,a,28,b)].
+1643 P(c3,c2) | -overlapsTemporally(c1,c2).  [resolve(183,c,178,b),merge(c)].
+1644 P(c3,c2).  [resolve(1643,b,42,a),merge(b)].
+1645 overlapsTemporally(c1,c2).  [resolve(1644,a,1247,b)].
+1649 P(f1(c3,c3),c2).  [resolve(1644,a,61,a)].
+1675 -temporalPart(x,c1) | -temporalPart(x,c2).  [back_unit_del(37),unit_del(a,1645)].
+1753 temporalPart(f1(c3,c3),c2).  [resolve(1649,a,28,b)].
+2155 $F.  [resolve(1675,b,1753,a),unit_del(a,1271)].
+
+============================== end of proof ==========================

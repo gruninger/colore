@@ -1,0 +1,47 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 5084 was started by Cleo1 on Cleo1-PC,
+Tue Aug  2 11:31:06 2016
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.03 (+ 0.01) seconds.
+% Length of proof is 27.
+% Level of proof is 9.
+% Maximum clause weight is 9.
+% Given clauses 50.
+
+2 (all x P(x,x)) # label(non_clause).  [assumption].
+4 (all x all y (P(x,y) & P(y,x) -> x = y)) # label(non_clause).  [assumption].
+8 (all x all y (part(x,y) <-> P(x,y))) # label(non_clause).  [assumption].
+9 (all x all y (properPart(x,y) <-> P(x,y) & -P(y,x))) # label(non_clause).  [assumption].
+12 (all x all y (properPart(x,y) <-> part(x,y) & -part(y,x))) # label(non_clause) # label(goal).  [goal].
+27 P(x,x).  [clausify(2)].
+29 -P(x,y) | -P(y,x) | y = x.  [clausify(4)].
+31 -part(x,y) | P(x,y).  [clausify(8)].
+32 part(x,y) | -P(x,y).  [clausify(8)].
+33 -properPart(x,y) | P(x,y).  [clausify(9)].
+34 -properPart(x,y) | -P(y,x).  [clausify(9)].
+35 properPart(x,y) | -P(x,y) | P(y,x).  [clausify(9)].
+38 properPart(c1,c2) | part(c1,c2).  [deny(12)].
+39 properPart(c1,c2) | -part(c2,c1).  [deny(12)].
+40 -properPart(c1,c2) | -part(c1,c2) | part(c2,c1).  [deny(12)].
+44 part(x,x).  [resolve(32,b,27,a)].
+45 -properPart(x,x).  [ur(34,b,27,a)].
+59 part(c1,c2) | P(c1,c2).  [resolve(38,a,33,a)].
+83 P(c1,c2).  [resolve(59,a,31,a),merge(b)].
+88 properPart(c1,c2) | P(c2,c1).  [resolve(83,a,35,b)].
+89 part(c1,c2).  [resolve(83,a,32,b)].
+90 -P(c2,c1) | c2 = c1.  [resolve(83,a,29,b),flip(b)].
+94 -properPart(c1,c2) | part(c2,c1).  [back_unit_del(40),unit_del(b,89)].
+136 part(c2,c1) | P(c2,c1).  [resolve(94,a,88,a)].
+137 P(c2,c1).  [resolve(136,a,31,a),merge(b)].
+138 c2 = c1.  [back_unit_del(90),unit_del(a,137)].
+139 $F.  [back_rewrite(39),rewrite([138(2),138(4)]),unit_del(a,45),unit_del(b,44)].
+
+============================== end of proof ==========================
