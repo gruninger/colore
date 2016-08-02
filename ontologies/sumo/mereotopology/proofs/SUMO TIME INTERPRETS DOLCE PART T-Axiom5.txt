@@ -1,0 +1,65 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 7704 was started by Cleo1 on Cleo1-PC,
+Mon Aug  1 18:21:01 2016
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.17 (+ 0.06) seconds.
+% Length of proof is 45.
+% Level of proof is 12.
+% Maximum clause weight is 15.
+% Given clauses 439.
+
+6 (all x all y (TimeInterval(x) & TimeInterval(y) -> (overlapsTemporally(x,y) -> (exists z (TimeInterval(z) & temporalPart(z,x) & temporalPart(z,y)))))) # label(non_clause).  [assumption].
+7 (all x all y (TimeInterval(x) & TimeInterval(y) -> ((exists z (TimeInterval(z) & temporalPart(z,x) & temporalPart(z,y))) -> overlapsTemporally(x,y)))) # label(non_clause).  [assumption].
+28 (all x all y (Ov(x,y) <-> overlapsTemporally(x,y))) # label(non_clause).  [assumption].
+29 (all x all y (P(x,y) <-> temporalPart(x,y))) # label(non_clause).  [assumption].
+31 (all x TimeInterval(x)) # label(non_clause).  [assumption].
+32 (all x all y (Ov(y,x) <-> (exists z (P(z,y) & P(z,x))))) # label(non_clause) # label(goal).  [goal].
+42 -TimeInterval(x) | -TimeInterval(y) | -overlapsTemporally(x,y) | temporalPart(f1(x,y),x).  [clausify(6)].
+43 -TimeInterval(x) | -TimeInterval(y) | -overlapsTemporally(x,y) | temporalPart(f1(x,y),y).  [clausify(6)].
+44 -TimeInterval(x) | -TimeInterval(y) | -TimeInterval(z) | -temporalPart(z,x) | -temporalPart(z,y) | overlapsTemporally(x,y).  [clausify(7)].
+70 -Ov(x,y) | overlapsTemporally(x,y).  [clausify(28)].
+71 Ov(x,y) | -overlapsTemporally(x,y).  [clausify(28)].
+72 -P(x,y) | temporalPart(x,y).  [clausify(29)].
+73 P(x,y) | -temporalPart(x,y).  [clausify(29)].
+74 TimeInterval(x).  [clausify(31)].
+75 Ov(c2,c1) | P(c3,c2).  [deny(32)].
+76 Ov(c2,c1) | P(c3,c1).  [deny(32)].
+77 -Ov(c2,c1) | -P(x,c2) | -P(x,c1).  [deny(32)].
+88 -temporalPart(x,y) | -temporalPart(x,z) | overlapsTemporally(y,z).  [back_unit_del(44),unit_del(a,74),unit_del(b,74),unit_del(c,74)].
+89 -overlapsTemporally(x,y) | temporalPart(f1(x,y),y).  [back_unit_del(43),unit_del(a,74),unit_del(b,74)].
+90 -overlapsTemporally(x,y) | temporalPart(f1(x,y),x).  [back_unit_del(42),unit_del(a,74),unit_del(b,74)].
+94 Ov(c2,c1) | temporalPart(c3,c2).  [resolve(75,b,72,a)].
+95 Ov(c2,c1) | temporalPart(c3,c1).  [resolve(76,b,72,a)].
+99 temporalPart(c3,c2) | overlapsTemporally(c2,c1).  [resolve(94,a,70,a)].
+112 temporalPart(c3,c1) | overlapsTemporally(c2,c1).  [resolve(95,a,70,a)].
+117 temporalPart(c3,c2) | temporalPart(f1(c2,c1),c2).  [resolve(99,b,90,a)].
+118 temporalPart(c3,c2) | temporalPart(f1(c2,c1),c1).  [resolve(99,b,89,a)].
+120 temporalPart(c3,c1) | temporalPart(f1(c2,c1),c2).  [resolve(112,b,90,a)].
+121 temporalPart(c3,c1) | temporalPart(f1(c2,c1),c1).  [resolve(112,b,89,a)].
+169 temporalPart(c3,c2) | P(f1(c2,c1),c2).  [resolve(117,b,73,b)].
+179 temporalPart(c3,c2) | P(f1(c2,c1),c1).  [resolve(118,b,73,b)].
+188 temporalPart(c3,c1) | P(f1(c2,c1),c2).  [resolve(120,b,73,b)].
+197 temporalPart(c3,c1) | P(f1(c2,c1),c1).  [resolve(121,b,73,b)].
+255 temporalPart(c3,c2) | -Ov(c2,c1) | -P(f1(c2,c1),c1).  [resolve(169,b,77,b)].
+277 temporalPart(c3,c1) | -Ov(c2,c1) | -P(f1(c2,c1),c1).  [resolve(188,b,77,b)].
+952 temporalPart(c3,c2) | -Ov(c2,c1).  [resolve(255,c,179,b),merge(c)].
+954 temporalPart(c3,c2).  [resolve(952,b,94,a),merge(b)].
+970 -temporalPart(c3,x) | overlapsTemporally(c2,x).  [resolve(954,a,88,a)].
+971 P(c3,c2).  [resolve(954,a,73,b)].
+981 -Ov(c2,c1) | -P(c3,c1).  [resolve(971,a,77,b)].
+1342 temporalPart(c3,c1) | -Ov(c2,c1).  [resolve(277,c,197,b),merge(c)].
+1343 temporalPart(c3,c1).  [resolve(1342,b,95,a),merge(b)].
+1344 overlapsTemporally(c2,c1).  [resolve(1343,a,970,a)].
+1353 P(c3,c1).  [resolve(1343,a,73,b)].
+1357 -Ov(c2,c1).  [back_unit_del(981),unit_del(b,1353)].
+1360 $F.  [resolve(1344,a,71,b),unit_del(a,1357)].
+
+============================== end of proof ==========================
