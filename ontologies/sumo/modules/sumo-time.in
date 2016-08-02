@@ -1,0 +1,25 @@
+include colore.oor.net/ontologies/sumo/modules/timepoint.in
+include colore.oor.net/ontologies/sumo/modules/time-mereotopology.in
+all x (TimeInterval(x) -> TimePoint(BeginFn(x)) & TimePoint(EndFn(x))).%48
+all x all y (TimePoint(x) & TimePoint(y) & before(x,y) ->TimeInterval(TimeIntervalFn(x,y))).%49
+all x (TimePosition(x)<-> TimeInterval(x) | TimePoint(x)).%50
+all x (TimeInterval(x)-> -(TimePoint(x))).%51
+all x all y (temporalPart(x,y)-> TimePosition(x) & TimePosition(y)).%52
+all x (TimePosition(x)-> temporalPart(x,x)). %53
+all x all y (temporalPart(x,y) & TimePoint(y)-> (x=y)).%54 ADDED
+all x (TimePoint(x) ->(exists y (TimeInterval(y) & temporalPart(x,y)))). %55
+all x (TimeInterval(x)->(exists y (TimePoint(y)  & temporalPart(y,x)))). %56
+all x all y all z all t (TimePoint(x) & TimePoint(y) & TimeInterval(z) & (TimeIntervalFn(x,y)=z) & TimePoint(t)
+-> (temporallyBetweenOrEqual(x,t,y)<->temporalPart(t,z))).%57 
+all x all y all z (TimePoint(x) & TimePoint(y) & TimeInterval(z) & (TimeIntervalFn(x,y)=z)->(BeginFn(z)=x) & (EndFn(z)=y)).%58
+all x all y all z all t(TimeInterval(x) & TimeInterval(y) & TimePoint(z) & TimePoint(t) ->
+((BeginFn(x)=z) & (BeginFn(y)=z) & (EndFn(x)=t) & (EndFn(y)=t)-> (x=y))).%59
+all x all y (TimeInterval(x) & TimePoint(y)  &(BeginFn(x)=y) -> all z(temporalPart(z,x) & TimePoint(z)  & -(z=y)->before(y,z))).%60
+all x all y (TimeInterval(x) & TimePoint(y)  &(EndFn(x)=y) -> all z(temporalPart(z,x) & TimePoint(z) & -(z=y)->before(z,y))).%61
+all z all u all v(TimeInterval(z) & (BeginFn(z)=u) & (EndFn(z)=v)-> before(u,v)).%62
+all x all y (TimeInterval(x) & TimeInterval(y)->(meetsTemporally(x,y)-> EndFn(x)=BeginFn(y))).%66
+all x all y (starts(x,y) <-> TimeInterval(x) & TimeInterval(y) & (BeginFn(x)=BeginFn(y) & before(EndFn(x),EndFn(y)))).%381
+all x all y (finishes(x,y) <-> (TimeInterval(x) & TimeInterval(y) & before(BeginFn(y),BeginFn(x)) & (EndFn(x)=EndFn(y)))).%382
+all x all y (during(x,y) <-> (TimeInterval(x) & TimeInterval(y) & before(BeginFn(y),BeginFn(x))& before(EndFn(x),EndFn(y)))).%392 CHANGED
+all x all y (earlier(x,y) <-> (TimeInterval(x) & TimeInterval(y) & before(EndFn(x),BeginFn(y)))).%395
+all x all y (meetsTemporally(x,y) <-> (TimeInterval(x) & TimeInterval(y) & (EndFn(x)=BeginFn(y)))).%393
