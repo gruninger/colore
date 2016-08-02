@@ -1,0 +1,53 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 14824 was started by Cleo1 on Cleo1-PC,
+Sun Jul 17 00:03:25 2016
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.16 (+ 0.05) seconds.
+% Length of proof is 33.
+% Level of proof is 7.
+% Maximum clause weight is 11.
+% Given clauses 267.
+
+27 (all x all r (exactlyLocated(x,r) -> -(exists y (exactlyLocated(y,r) & y != x)))) # label(non_clause).  [assumption].
+28 (all x (Region(x) -> Object(x))) # label(non_clause).  [assumption].
+33 (all x (Region(x) -> exactlyLocated(x,x))) # label(non_clause).  [assumption].
+38 (all x all y (Object(x) -> (located(x,y) <-> (exists z (part(z,y) & exactlyLocated(x,z)))))) # label(non_clause).  [assumption].
+39 (all x all y (L(x,y) <-> Region(y) & exactlyLocated(x,y))) # label(non_clause).  [assumption].
+40 (all x all y (P(x,y) <-> part(x,y))) # label(non_clause).  [assumption].
+43 (all x all y (WL(x,y) <-> Object(x) & located(x,y))) # label(non_clause).  [assumption].
+44 (all x all y ((exists z (P(z,y) & L(x,z))) -> WL(x,y))) # label(non_clause) # label(goal).  [goal].
+76 -Region(x) | Object(x).  [clausify(28)].
+78 -Region(x) | exactlyLocated(x,x).  [clausify(33)].
+79 -L(x,y) | Region(y).  [clausify(39)].
+90 -P(x,y) | part(x,y).  [clausify(40)].
+91 P(c3,c2).  [deny(44)].
+137 -exactlyLocated(x,y) | -exactlyLocated(z,y) | z = x.  [clausify(27)].
+142 -Object(x) | located(x,y) | -part(z,y) | -exactlyLocated(x,z).  [clausify(38)].
+143 -L(x,y) | exactlyLocated(x,y).  [clausify(39)].
+146 WL(x,y) | -Object(x) | -located(x,y).  [clausify(43)].
+147 L(c1,c3).  [deny(44)].
+148 -WL(c1,c2).  [deny(44)].
+194 -L(x,y) | Object(y).  [resolve(79,b,76,a)].
+196 -L(x,y) | exactlyLocated(y,y).  [resolve(79,b,78,a)].
+199 part(c3,c2).  [resolve(91,a,90,a)].
+231 exactlyLocated(c1,c3).  [resolve(147,a,143,a)].
+232 Object(c3).  [resolve(194,a,147,a)].
+234 exactlyLocated(c3,c3).  [resolve(196,a,147,a)].
+278 -exactlyLocated(x,c3) | c1 = x.  [resolve(231,a,137,b)].
+296 located(c3,x) | -part(c3,x).  [resolve(234,a,142,d),unit_del(a,232)].
+787 c3 = c1.  [resolve(278,a,234,a),flip(a)].
+1140 located(c1,x) | -part(c1,x).  [back_rewrite(296),rewrite([787(1),787(3)])].
+1169 Object(c1).  [back_rewrite(232),rewrite([787(1)])].
+1170 part(c1,c2).  [back_rewrite(199),rewrite([787(1)])].
+1419 located(c1,c2).  [resolve(1140,b,1170,a)].
+1424 $F.  [resolve(1419,a,146,c),unit_del(a,148),unit_del(b,1169)].
+
+============================== end of proof ==========================
