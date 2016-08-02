@@ -1,0 +1,22 @@
+include colore.oor.net/ontologies/sumo/modules/self-connected-objects.in
+include colore.oor.net/ontologies/sumo/modules/interior-and-supperficial-parts.in
+all x all y (hole(x,y)-> Hole(x) & SelfConnectedObject(y)).%489.1
+all x all y (hole(x,y)-> -(hole(y,x))).%489.2
+all h (Hole(h)<-> (exists o hole(h,o))).%489
+all h (hole(h,o)-> ( - Hole(o))).%490
+all h (hole(h,o)-> ( - overlaps(h,o))).%491
+all x all y all h ((hole(h,x) & hole(h,y))->(exists z (properPart(z,MereologicalProductFn(x,y)) & hole(h,z)))).%492
+all x all y all h ((hole(h,x) & part(x,y))-> (overlaps(h,y) | hole(h,y))).%494
+all x all y all z all t ((hole(z,x) & hole(t,y) & overlaps(z,t))-> overlaps(x,y)).%495
+all h (hole(h,o)-> connected(h,o)).%497
+all x (Hole(x)-> (exists y properPart(y,x))).%496
+all x (Hole(x)-> Object(HoleHostFn(x))).%497.1
+all x all y (partiallyFills(x,y)-> Object(x) & Hole(y)).%501.1
+all x all y (properlyFills(x,y)-> Object(x) & Hole(y)).%502.1
+all x all y (fills(x,y)-> Object(x) & Hole(y)).%504.1
+all x (Hole(x)-> Object(HoleSkinFn(x))).%509.1
+all x all y (HoleHostFn(x,y)-> -(HoleHostFn(y,x))).%497.2
+all x all y (HoleSkinFn(x,y)-> -(HoleSkinFn(y,x))).%509.2
+all x ((x=HoleSkinFn(h))-> (all y (overlapsSpatially(y,x)<-> (exists z (superficialPart(z,HoleHostFn(h)) & meetsSpatially(h,z) & overlapsSpatially(y,z)))))).%509
+all x all y all o ((hole(x,o) & hole(y,o))-> (all z (part(z,MereologicalSumFn(x,y))-> hole(z,o)))).%493
+all y ((Hole(x) & properPart(y,x))-> (exists o (meetsSpatially(x,o) & ( - meetsSpatially(y,o))))).%498
