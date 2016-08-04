@@ -134,7 +134,22 @@
 			(exists (b)
 				(and (bondGroup b g1)(bondGroup b g2)
 					(inBond a1 b)(inBond a2 b)))))
+
+(cl-comment 'Axiom: MR-ax-15')
+(cl-comment 'For all bonds that have the same atoms, the bonds are in the same group.')
+(forall (a1 a2 a3 a4 b1 b2 g)
+	(if (and (bondGroup b1 g)
+			(inBond a1 b1)(inBond a2 b1)(inBond a3 b2)(inBond a4 b2)
+			(= a1 a3)(= a2 a4))
+		(bondGroup b2 g)))
 					
+(cl-comment 'Axiom: MR-ax-16')
+(cl-comment 'Functional groups cannot be coextensive.')
+(cl-comment 'Two groups cannot have the exact same set of atoms.')
+(forall (g1 g2 a1 a2 a3 a4)
+	(if (and (inGroup a1 g1)(inGroup a2 g2)(not (= g1 g2))(not (= a1 a2)))
+		(and (not (inGroup a1 g2))(not (inGroup a2 g1)))))
+		
 (cl-comment 'Existence axioms to ensure nontrivial models.
 (exists (m) (molecule m))
 (exists (b) (bond b))
