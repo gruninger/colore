@@ -1,0 +1,32 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 300).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%axioms that were only needed in the proof
+
+(all x (functional_group(x) -> (exists y bondGroup(y,x)))).
+(all x all y (bondGroup(x,y) <-> bond(x) & functional_group(y) & (exists z exists u (atom(u) & atom(z) & inGroup(u,y) & inGroup(z,y) & inBond(u,x) & inBond(z,u))))).
+ (all x all y (inGroup(x,y) -> atom(x) & functional_group(y))).
+ (all x (atom(x) -> -(bond(x) | functional_group(x)))).
+ (all a all b (inBond(a,b) -> atom(a) & bond(b))).
+ (all b all x all y all g1 all g2 (bond(b) & inBond(x,b) & inBond(y,b) & x != y & inGroup(x,g1) & inGroup(x,g2) & g1 != g2 -> fused(g1,g2) | tether(g1,g2,b) | spiro(g1,g2,x))).
+
+end_of_list.
+
+formulas(goals).
+
+% Reading from file test/p9/connection_lemma_1.p9
+(all b all x all y all g1 all g2 (bond(b) & inBond(x,b) & inBond(y,b) & x != y & inGroup(x,g1) & inGroup(x,g2) & g1 != g2 -> fused(g1,g2) | tether(g1,g2,b) | spiro(g1,g2,x))).
+
+end_of_list.
+
