@@ -5,21 +5,25 @@
 
 (cl-imports  http://colore.oor.net/mereology/definitions/mereology_def.clif)
 
+%Disconnected
 (forall (x y)
 	(iff	(DC x y)
 		(not (C x y))))
 
+%Proper Overlap
 (forall (x y)
 	(iff	(PO x y)
 		(and	(overlaps x y)
 			(not (part x y))
 			(not (part y x)))))
 
+%External Connection
 (forall (x y)
 	(iff	(EC x y)
 		(and	(C x y)
 			(not (overlaps x y)))))
 
+%Tangential Proper Part
 (forall (x y)
 	(iff	(TPP x y)
 		(and	(part x y)
@@ -28,6 +32,7 @@
 				(and	(EC z x)
 					(EC z y))))))
 
+%Non-Tangential Proper Part
 (forall (x y)
 	(iff	(NTPP x y)
 		(and	(part x y)
@@ -36,11 +41,51 @@
 				(and	(EC z x)
 					(EC z y)))))))
 
+%Enclosure
 (forall (x y)
 	(iff	(E x y)
 		(forall (z)
 			(if	(C z x)
 				(C z y)))))
+
+(forall (x y)
+	(iff	(superposition x y)
+		(exists (z)
+			(and	(E z x)
+				(E z y)))))
+
+(forall (x y)
+	(iff	(proper_superposition x y)
+		(and	(superposition x y)
+			(not (E x y))
+			(not (E y x)))))
+
+(forall (x y)
+	(iff	(boundary_connected x y)
+		(and	(C x y)
+			(not (superposition x y)))))
+
+(forall (x y)
+	(iff	(internal_enclosure x y)
+		(forall (z)
+			(if	(C z x)
+				(S z y)))))
+
+(forall (x y)
+	(iff	(proper_internal_enclosure x y)
+		(and	(internal_enclosure x y)
+			(E x y)
+			(not (E y x)))))
+
+(forall (x y)
+	(iff	(tangential_enclosure x y)
+		(and	(E x y)
+			(not (internal_enclosure x y)))))
+
+(forall (x y)
+	(iff	(proper_tangential_enclosure x y)
+		(and	(tangential_enclosure x y)
+			(proper_enclosure y x))))
 
 (forall (x y)
 	(iff	(IP x y)
