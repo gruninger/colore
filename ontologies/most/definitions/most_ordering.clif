@@ -48,4 +48,20 @@
 		(exists (g)
 			(and (functional_group g)(bondGroup b g)(ring g)))))
 
+(cl-comment 'Every ring bond is in a unique ring.')
+(forall (b1 b2 g1 g2)
+	(if (and (ringBond b1)(ringBond b2)(functional_group g1)(functional_group g2)
+			(ring g1)(ring g2)
+			(bondGroup b1 g1)(bondGroup b1 g2)
+			(bondGroup b1 g2)(bondGroup b2 g2))
+		(or (= b1 b2)(= g1 g2))))
+
+(cl-comment 'Every ring bond is in at most one ring.')
+(forall (b g1 g2)
+	(if (and (ringBond b)(ring g1)(ring g2)
+			(functional_group g1)(functional_group g2)
+			(bondGroup b g1)(bondGroup b g2))
+		(= g1 g2)))
+
+			
 )
