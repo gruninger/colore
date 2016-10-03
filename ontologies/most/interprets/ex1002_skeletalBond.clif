@@ -8,23 +8,18 @@
  *    Carmen Chui, Michael Gruninger
  *******************************************************************************/
  
-(cl-text http://colore.oor.net/most/interprets/ex1002_skeleton_conn.clif
+(cl-text http://colore.oor.net/most/interprets/ex1002_skeletalBond.clif
 
 (cl-imports http://colore.oor.net/most/definitions/most_skeleton.clif)
 
-(cl-imports http://colore.oor.net/most/definitions/most_connections.clif)
-
 (cl-comment 'Things to prove')
 
-(cl-comment 'for two groups in a skeleton, they are either spiroed, fused, or tethered together.')
-(forall (s g1 g2)
-	(if (and (skeleton s)(functional_group g1)(functional_group g2)
-			(containsGroup s g1)(containsGroup s g2))
-		(or (fusion g1 g2)
-			(forall (x y)
-			(and (inGroup x g1)(inGroup y g2)(not (= x y))
-				(or (spiro g1 g2 x)(spiro g1 g2 y)
-					(exists (b)
-						(and (inBond x b)(inBond y b)(tether g1 g2 b)))))))))
+(cl-comment 'if a bond is not a skeletal bond, then its axioms must be in tethered groups.')
+
+(forall (b y)
+	(if (not (skeletalBond b y))
+		(exists (g1 g2)
+			(and (not (= g1 g2))(not (= g1 y))(not (= g2 y))
+				(tether g1 g2 b)))))
 
 )

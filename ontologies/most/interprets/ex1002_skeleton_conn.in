@@ -1,0 +1,108 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 90).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% Reading from file /stl/cchui/colore/ontologies/most//definitions/p9/20161003/most_skeleton.p9
+
+(all g all s (inSkeleton(g,s) -> functional_group(g) & skeleton(s))).
+(all s (skeleton(s) -> (exists g (functional_group(g) & inSkeleton(g,s))))).
+(all g1 all s (skeleton(s) & functional_group(g1) & inSkeleton(g1,s) -> (exists a1 exists a2 exists b exists g2 (atom(a1) & atom(a2) & bond(b) & functional_group(g2) & g1 != g2 & inGroup(a1,g1) & inGroup(a2,g2) & inBond(a1,b) & inBond(a2,b))))).
+(all x (functional_group(x) -> (exists y (skeleton(y) & containsGroup(y,x))))).
+(all x (functional_group(x) -> (exists y (skeleton(y) & containsGroup(y,x) & -(exists w (skeleton(w) & containsGroup(y,w) & w != y)))))).
+(all x all y (containsGroup(x,y) -> skeleton(x) & functional_group(y))).
+(all x (skeleton(x) -> -(atom(x) | bond(x) | functional_group(x)))).
+(all x all y (inSkeleton(x,y) <-> atom(x) & skeleton(y) & (exists w exists z (functional_group(z) & inGroup(x,z) & containsGroup(y,z))))).
+(all x all y (skeletalBond(x,y) <-> bond(x) & skeleton(y) & (exists w exists z (functional_group(z) & bondGroup(x,z) & containsGroup(y,z))))).
+
+% Reading from file /stl/cchui/colore/ontologies/most//definitions/p9/20161003/most_connections.p9
+
+(all x (atom(x) -> (exists b exists y exists z (functional_group(y) & atom(z) & inBond(x,b) & inBond(z,b) & inGroup(z,y))))).
+(all b all g all x all y (inBond(x,b) & inBond(y,b) & bondGroup(b,g) -> inGroup(x,g))).
+(all x all y all z (inBond(x,y) & bondGroup(y,z) -> inGroup(x,z))).
+(all x all g (atomconn(x,g) <-> atom(x) & functional_group(g) & x != g & -inGroup(x,g) & (exists z exists b (inGroup(z,g) & inBond(x,b) & inBond(z,b))))).
+(all y (functional_group(y) -> (exists x bondGroup(x,y)))).
+(all x all y (bondGroup(x,y) <-> bond(x) & functional_group(y) & (exists w exists z (atom(z) & atom(w) & inGroup(z,y) & inGroup(w,y) & inBond(z,x) & inBond(w,z))))).
+(all x all y all b all g (inGroup(x,y) & inGroup(y,g) & inBond(x,b) & inBond(y,b) & x != y -> bondGroup(b,g))).
+(all b all g1 all g2 (link(b,g1,g2) <-> bond(b) & functional_group(g1) & functional_group(g2) & (exists x exists y (atom(x) & atom(y) & inGroup(x,g1) & inGroup(y,g2) & hasBond(b,x,y))))).
+(all g1 all g2 (part(g1,g2) <-> functional_group(g1) & functional_group(g2) & g1 != g2 & (all x (inGroup(x,g1) -> inGroup(x,g2))))).
+(all g1 all g2 (conn(g1,g2) <-> functional_group(g1) & functional_group(g2) & g1 != g2 & (exists w exists z exists b (inGroup(w,g1) & inGroup(z,g2) & inBond(w,b) & inBond(z,b))))).
+(all x all m (inMolecule(x,m) <-> (exists g (functional_group(g) & containsGroup(m,g) & inGroup(x,g))) | (exists b exists y exists g (inGroup(y,g) & containsGroup(m,g) & hasBond(b,x,y))))).
+(all m1 all m2 (subMolecule(m1,m2) <-> molecule(m1) & molecule(m2) & m1 != m2 & (exists w exists z exists b (inMolecule(w,m1) & inMolecule(z,m2) & inBond(w,b) & inBond(z,b))))).
+(all g1 all g2 (fusion(g1,g2) <-> (exists a1 exists a2 exists b (inBond(a1,b) & inBond(a2,b) & inGroup(a1,g1) & inGroup(a1,g2) & inGroup(a2,g1) & inGroup(a2,g2) & bondGroup(b,g1) & bondGroup(b,g2) & g1 != g2 & a1 != a2)))).
+(all a1 all g1 all g2 (fusedAtom(a1,g1,g2) <-> inGroup(a1,g1) & inGroup(a1,g2) & g1 != g2 & (exists b1 exists b2 (inBond(a1,b1) & inBond(a1,b2) & bondGroup(b1,g1) & bondGroup(b2,g2))))).
+(all a1 all a2 all a3 all g1 all g2 (fusedAtom(a1,g1,g2) & fusedAtom(a1,g1,g2) & fusedAtom(a3,g1,g2) -> a1 = a2 | a1 = a3 | a2 = a3)).
+(all g1 all g2 (fusion(g1,g2) -> (exists a1 exists a2 (fusedAtom(a1,g1,g2) & fusedAtom(a2,g1,g2) & a1 != a2)))).
+(all g1 all g2 all a (spiro(g1,g2,a) <-> (exists b1 exists b2 (inGroup(a,g1) & inGroup(a,g2) & g1 != g2 & inBond(a,b1) & inBond(a,b2) & bondGroup(b1,g1) & -bondGroup(b1,g2) & bondGroup(b2,g2) & -bondGroup(b2,g1))))).
+(exists a1 all g1 all g2 all a2 (spiro(g1,g2,a1) & spiro(g1,g2,a2) -> a1 = a2)).
+(all g1 all g2 all b (tether(g1,g2,b) <-> (exists a1 exists a2 (inGroup(a1,g1) & inGroup(a2,g2) & g1 != g2 & inBond(a1,b) & inBond(a2,b) & -bondGroup(b,g1) & -bondGroup(b,g2))))).
+(exists b1 all g1 all g2 all b2 (tether(g1,g2,b1) & tether(g1,g2,b2) -> b1 = b2)).
+(all g1 all g2 all b (singletether(g1,g2,b) <-> (exists a1 exists a2 (inGroup(a1,g1) & inGroup(a2,g2) & g1 != g2 & inBond(a1,b) & inBond(a2,b) & singlebond(b,a1,a2) & -bondGroup(b,g1) & -bondGroup(b,g2))))).
+(all g1 all g2 all b (doubletether(g1,g2,b) <-> (exists a1 exists a2 (inGroup(a1,g1) & inGroup(a2,g2) & g1 != g2 & inBond(a1,b) & inBond(a2,b) & doublebond(b,a1,a2) & -bondGroup(b,g1) & -bondGroup(b,g2))))).
+(all g1 all g2 all b (tripletether(g1,g2,b) <-> (exists a1 exists a2 (inGroup(a1,g1) & inGroup(a2,g2) & g1 != g2 & inBond(a1,b) & inBond(a2,b) & triplebond(b,a1,a2) & -bondGroup(b,g1) & -bondGroup(b,g2))))).
+
+% Reading from file /stl/cchui/colore/ontologies//most/p9/20161003/most_root.p9
+
+(all x all y (inGroup(x,y) -> atom(x) & functional_group(y))).
+(all x (atom(x) -> -(bond(x) | functional_group(x)))).
+(all x (bond(x) -> -functional_group(x))).
+(all x (functional_group(x) -> (exists a (atom(a) & inGroup(a,x))))).
+(all x (atom(x) -> (exists y inGroup(x,y)))).
+(all x all y (bondGroup(x,y) <-> bond(x) & functional_group(y) & -(exists z (inBond(z,x) & -inGroup(z,y))))).
+(all x all y (end(x,y) <-> inGroup(x,y) & (all b1 all b2 all w all z (inBond(x,b1) & inBond(z,b1) & inBond(x,b2) & inBond(w,b2) & inGroup(z,y) & inGroup(w,y) -> w = z)))).
+(all x all y all z all w (functional_group(x) & end(y,x) & end(z,x) & end(w,x) -> y = z | y = w | z = w)).
+(all x all y (fork(x,y) <-> inGroup(x,y) & (exists b1 exists b2 exists b3 exists a1 exists a2 exists a3 (a1 != a2 & a2 != a3 & a1 != a3 & b1 != b2 & b2 != b3 & b1 != b3 & inBond(x,b1) & inBond(a1,b1) & inBond(x,b2) & inBond(a2,b2) & inBond(x,b3) & inBond(a3,b3) & inGroup(a1,y) & inGroup(a2,y) & inGroup(a3,y))))).
+(all x (functional_group(x) -> -(exists y fork(y,x)))).
+-(exists x exists y exists a exists b exists c (functional_group(x) & functional_group(y) & atom(a) & atom(b) & atom(c) & inGroup(a,x) & inGroup(b,x) & inGroup(c,x) & inGroup(a,y) & inGroup(b,y) & inGroup(c,y) & x != y & a != b & b != c & a != c)).
+(all x all y (functional_group(x) & functional_group(y) & x != y -> (exists a (atom(a) & inGroup(a,x) & -inGroup(a,y))))).
+(all a all m (atom(a) & molecule(m) & inMolecule(a,m) -> (-hydrogen(a) <-> (exists g (functional_group(g) & inGroup(a,g)))))).
+(all g1 all g2 all a1 all a2 (inGroup(a1,g1) & inGroup(a1,g2) & inGroup(a2,g1) & inGroup(a2,g2) & a1 != a2 & g1 != g2 -> (exists b (bondGroup(b,g1) & bondGroup(b,g2) & inBond(a1,b) & inBond(a2,b))))).
+(all a1 all a2 all a3 all a4 all b1 all b2 all g (bondGroup(b1,g) & inBond(a1,b1) & inBond(a2,b1) & inBond(a3,b2) & inBond(a4,b2) & a1 = a3 & a2 = a4 -> bondGroup(b2,g))).
+(all g1 all g2 all a1 all a2 all a3 all a4 (inGroup(a1,g1) & inGroup(a2,g2) & g1 != g2 & a1 != a2 -> -inGroup(a1,g2) & -inGroup(a2,g1))).
+
+% Reading from file /stl/cchui/colore/ontologies/molecular_graph//definitions/p9/20161003/most_elements.p9
+
+(all x (singlevalence(x) <-> atom(x) & (all b1 all b2 all a1 all a2 (inBond(a1,b1) & inBond(x,b1) & inBond(a2,b2) & inBond(x,b2) -> b1 = b2)))).
+(all x (doublevalence(x) <-> atom(x) & (all b1 all b2 all b3 all a1 all a2 all a3 (inBond(a1,b1) & inBond(x,b1) & inBond(a2,b2) & inBond(x,b2) & inBond(a3,b3) & inBond(x,b3) -> b1 = b2 | b1 = b3 | b2 = b3)))).
+(all x (triplevalence(x) <-> atom(x) & (all b1 all b2 all b3 all b4 all a1 all a2 all a3 all a4 (inBond(a1,b1) & inBond(x,b1) & inBond(a2,b2) & inBond(x,b2) & inBond(a3,b3) & inBond(x,b3) & inBond(a4,b4) & inBond(x,b4) -> b1 = b2 | b1 = b3 | b1 = b4 | b2 = b3 | b2 = b4 | b3 = b4)))).
+(all x (quadvalence(x) <-> atom(x) & (all b1 all b2 all b3 all b4 all b5 all a1 all a2 all a3 all a4 all a5 (inBond(a1,b1) & inBond(x,b1) & inBond(a2,b2) & inBond(x,b2) & inBond(a3,b3) & inBond(x,b3) & inBond(a4,b4) & inBond(x,b4) & inBond(a5,b5) & inBond(x,b5) -> b1 = b2 | b1 = b3 | b1 = b4 | b1 = b5 | b2 = b3 | b2 = b4 | b2 = b5 | b3 = b4 | b3 = b5 | b4 = b5)))).
+(all x (hydrogen(x) -> singlevalence(x))).
+(all x (oxygen(x) -> doublevalence(x))).
+(all x (nitrogen(x) -> triplevalence(x))).
+(all x (carbon(x) -> quadvalence(x))).
+(all x (hydrogen(x) -> atom(x) & (exists a1 exists b1 (atom(a1) & inBond(a1,b1) & inBond(x,b1))))).
+(all x all a1 all a2 all b1 all b2 (hydrogen(x) & inBond(a1,b1) & inBond(x,b1) & inBond(a2,b2) & inBond(x,b2) -> b1 = b2)).
+(all x (oxygen(x) -> atom(x) & (exists a1 exists b1 exists a2 exists b2 (atom(a1) & atom(a2) & a1 != a2 & b1 != b2 & inBond(a1,b1) & inBond(x,b1) & inBond(a2,b2) & inBond(x,b2))))).
+(all x all a1 all a2 all a3 all b1 all b2 all b3 (oxygen(x) & inBond(a1,b1) & inBond(x,b1) & inBond(a2,b2) & inBond(x,b2) & inBond(a3,b3) & inBond(x,b3) -> b1 = b2 | b1 = b3 | b2 = b3)).
+(all x (nitrogen(x) -> atom(x) & (exists a1 exists a2 exists a3 exists b1 exists b2 exists b3 (atom(a1) & atom(a2) & atom(a3) & a1 != a2 & a1 != a3 & a2 != a3 & b1 != b2 & b2 != b3 & b1 != b3 & inBond(a1,b1) & inBond(x,b1) & inBond(a2,b2) & inBond(x,b2) & inBond(a3,b3) & inBond(x,b3))))).
+(all x all a1 all a2 all a3 all a4 all b1 all b2 all b3 all b4 (nitrogen(x) & inBond(a1,b1) & inBond(x,b1) & inBond(a2,b2) & inBond(x,b2) & inBond(a3,b3) & inBond(x,b3) & inBond(a4,b4) & inBond(x,b4) -> b1 = b2 | b1 = b3 | b1 = b4 | b2 = b3 | b2 = b4 | b3 = b4)).
+(all x (carbon(x) -> atom(x) & (exists a1 exists a2 exists a3 exists a4 exists b1 exists b2 exists b3 exists b4 (atom(a1) & atom(a2) & atom(a3) & atom(a4) & a1 != a2 & a1 != a3 & a2 != a3 & a2 != a4 & a3 != a4 & b1 != b2 & b2 != b3 & b1 != b3 & b1 != b4 & b3 != b4 & inBond(a1,b1) & inBond(x,b1) & inBond(a2,b2) & inBond(x,b2) & inBond(a3,b3) & inBond(x,b3) & inBond(a4,b4) & inBond(x,b4))))).
+(all x all a1 all a2 all a3 all a4 all a5 all b1 all b2 all b3 all b4 all b5 (carbon(x) & inBond(a1,b1) & inBond(x,b1) & inBond(a2,b2) & inBond(x,b2) & inBond(a3,b3) & inBond(x,b3) & inBond(a4,b4) & inBond(x,b4) & inBond(a5,b5) & inBond(x,b5) -> b1 = b2 | b1 = b3 | b1 = b4 | b1 = b5 | b2 = b3 | b2 = b4 | b2 = b5 | b3 = b4 | b3 = b5 | b4 = b5)).
+(all x (halogen(x) -> fluorine(x) | chlorine(x) | bromine(x) | iodine(x) | astatine(x))).
+(all x (x_group(x) <-> halogen(x))).
+
+% Reading from file /stl/cchui/colore/ontologies/molecular_graph//definitions/p9/20161003/most_bonds.p9
+
+(all b all x all y (singlebond(b,x,y) <-> bond(b) & inBond(x,b) & inBond(y,b) & (all b2 (inBond(x,b2) & inBond(y,b2) -> b = b2)))).
+(all b all x all y (doublebond(b,x,y) <-> (exists b2 (bond(b2) & inBond(x,b) & inBond(y,b) & inBond(x,b2) & inBond(y,b2) & b != b2)))).
+(all b all x all y (triplebond(b,x,y) <-> (exists b2 exists b3 (bond(b2) & bond(b3) & inBond(x,b) & inBond(y,b) & inBond(x,b2) & inBond(y,b2) & inBond(x,b3) & inBond(y,b3) & b != b2 & b != b2 & b2 != b3)))).
+
+end_of_list.
+
+formulas(goals).
+
+% Reading from file test/p9/20161003/ex1002_skeleton_conn.p9
+
+(all s all g1 all g2 (skeleton(s) & functional_group(g1) & functional_group(g2) & containsGroup(s,g1) & containsGroup(s,g2) -> fusion(g1,g2) | (all x all y (inGroup(x,g1) & inGroup(y,g2) & x != y & (spiro(g1,g2,x) | spiro(g1,g2,y) | (exists b (inBond(x,b) & inBond(y,b) & tether(g1,g2,b)))))))).
+
+end_of_list.
+
