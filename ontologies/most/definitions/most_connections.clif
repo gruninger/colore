@@ -216,4 +216,14 @@
                     (triplebond b a1 a2)
                     (not (bondGroup b g1))(not (bondGroup b g2))))))
 
+(cl-comment 'enforce unique fusion')
+(cl-comment 'If two rings share more than one bond, then they are connected by tethering.')
+(forall (g1 g2 b1 b2)
+	(if (and (ring g1)(ring g2)
+		(not (= g1 g2))(not (= b1 b2))
+		(bond b1)(bond b2)
+		(bondGroup b1 g1)(bondGroup b1 g2)
+		(bondGroup b1 g2)(bondGroup b2 g2))
+		(and (tether g1 g2 b1)(tether g1 g2 b2))))
+					
 )
