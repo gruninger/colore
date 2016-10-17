@@ -19,7 +19,7 @@
 (forall (x)
     (if (atom x)
         (exists (b y z)
-            (and (functional_group y)(atom z)(inBond x b)(inBond z b)(inGroup z y)))))
+            (and (group y)(atom z)(inBond x b)(inBond z b)(inGroup z y)))))
 
 (cl-comment 'Axiom: MC-ax-2')
 (cl-comment 'Transitive relation to indicate that any bond between two atoms in a group implies that the atom is in the group.')
@@ -37,7 +37,7 @@
 (cl-comment 'Connection Between An Atom and A Functional Group: An atom is connected to an atom in the functional group by a single bond.')
 (forall (x g)
     (iff (atomconn x g)
-        (and (atom x)(functional_group g)(not (= x g))(not (inGroup x g))
+        (and (atom x)(group g)(not (= x g))(not (inGroup x g))
             (exists (z b)
                 (and (inGroup z g)(inBond x b)(inBond z b))))))
 
@@ -46,7 +46,7 @@
 (cl-comment 'Axiom: MC-ax-5')
 (cl-comment 'A sentence to describe that functional groups contain bonds.')
 (forall (y)
-    (if (functional_group y)
+    (if (group y)
         (exists (x)
             (bondGroup x y))))
 
@@ -54,7 +54,7 @@
 (cl-comment 'Group-Bond Relationship: A bond is in a functional group iff both of its atoms are in the functional group.')
 (forall (x y)
     (iff (bondGroup x y)
-        (and (bond x)(functional_group y)
+        (and (bond x)(group y)
             (exists (w z)
                 (and (atom z)(atom w)(inGroup z y)(inGroup w y)(inBond z x)(inBond w z))))))
 
@@ -68,7 +68,7 @@
 (cl-comment 'A bond is a link between two functional groups iff there exists a bond between two atoms that are in both groups, respectively.')
 (forall (b g1 g2)
     (iff (link b g1 g2)
-        (and (bond b)(functional_group g1)(functional_group g2)
+        (and (bond b)(group g1)(group g2)
             (exists (x y)
                 (and (atom x)(atom y)(inGroup x g1)(inGroup y g2)(hasBond b x y))))))
        
@@ -77,7 +77,7 @@
 (cl-comment 'Part: Two functional groups are part of each other if they share a common atom.')
 (forall (g1 g2)
     (iff (part g1 g2)
-        (and (functional_group g1)(functional_group g2)(not (= g1 g2))
+        (and (group g1)(group g2)(not (= g1 g2))
             (forall (x)
                 (if (inGroup x g1)
                     (inGroup x g2))))))
@@ -86,7 +86,7 @@
 (cl-comment 'Connection Between Two Functional Groups: Two functional groups are connected to each other by a single bond between two atoms in the groups.')
 (forall (g1 g2)
     (iff (conn g1 g2)
-        (and (functional_group g1)(functional_group g2)(not (= g1 g2))
+        (and (group g1)(group g2)(not (= g1 g2))
             (exists (w z b)
                 (and (inGroup w g1)(inGroup z g2)(inBond w b)(inBond z b))))))
 
@@ -98,7 +98,7 @@
 (forall (x m)
     (iff (inMolecule x m)
         (or (exists (g)
-                (and (functional_group g)(containsGroup m g)(inGroup x g)))
+                (and (group g)(containsGroup m g)(inGroup x g)))
             (exists (b y g)
                 (and (inGroup y g)(containsGroup m g)(hasBond b x y))))))
                
