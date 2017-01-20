@@ -429,6 +429,20 @@
 		(and (tether g1 g2 b1)(tether g1 g2 b2))))
 					
 
+(cl-comment '==========INTERSECTS DEFINITION===========')
+(cl-comment 'Definition: A relation to handle bridges -- for two bonds that intersect, there exists an atom that is in both bonds, and the bonds are not equivalent.')
+(forall (b1 b2)
+	(iff (intersects b1 b2)
+		(exists (a)
+			(and (atom a)
+				(inBond a b1)
+				(inBond a b2)
+				(not (= b1 b2))))))
+				
+(cl-comment 'No bond can intersect itself.')
+(forall (b)
+	(not (intersect b b)))
+
 (cl-comment '========== ORDERING AXIOMS ========')
 
 (cl-comment 'Axioms from between/semilinear theory with sort constraints.')
