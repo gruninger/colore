@@ -1,0 +1,50 @@
+/*******************************************************************************
+* Copyright (c) University of Toronto and others. All rights reserved.
+* The content of this file is licensed under the Creative Commons Attribution-
+* ShareAlike 3.0 Unported license. The legal text of this license can be
+* found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+*
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/molecular_graph/definitions/holmium.clif
+
+(cl-comment 'Element name: holmium')
+
+(cl-comment 'Valence number: 3')
+
+(cl-comment 'Holmium has at least 3 covalent bonds.')
+
+(forall (x) 
+	(if (holmium x)
+		(and (atom x)
+			(exists (a1 a2 a3 b1 b2 b3)
+				(and (atom a1)
+					(atom a2)
+					(atom a3)
+					(not (= a1 b2))
+					(not (= a1 b3))
+					(not (= a2 b1))
+					(not (= a2 b3))
+					(not (= a3 b1))
+					(not (= a3 b2))
+					(inBond a1 b1)(inBond x b1)
+					(inBond a2 b2)(inBond x b2)
+					(inBond a3 b3)(inBond x b3))))))
+
+(cl-comment 'Holmium has at most 3 covalent bonds.')
+
+(forall (x a1 a2 a3 a4 b1 b2 b3 b4)
+	(if (and (holmium x)
+		(inBond a1 b1)(inBond x b1)
+		(inBond a2 b2)(inBond x b2)
+		(inBond a3 b3)(inBond x b3)
+		(inBond a4 b4)(inBond x b4))
+	(or (= b1 b2)
+		(= b1 b3)
+		(= b1 b4)
+		(= b2 b3)
+		(= b2 b4)
+		(= b3 b4))))
+
+
+)

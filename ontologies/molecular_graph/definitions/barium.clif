@@ -1,0 +1,40 @@
+/*******************************************************************************
+* Copyright (c) University of Toronto and others. All rights reserved.
+* The content of this file is licensed under the Creative Commons Attribution-
+* ShareAlike 3.0 Unported license. The legal text of this license can be
+* found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+*
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/molecular_graph/definitions/barium.clif
+
+(cl-comment 'Element name: barium')
+
+(cl-comment 'Valence number: 2')
+
+(cl-comment 'Barium has at least 2 covalent bonds.')
+
+(forall (x) 
+	(if (barium x)
+		(and (atom x)
+			(exists (a1 a2 b1 b2)
+				(and (atom a1)
+					(atom a2)
+					(not (= a1 b2))
+					(not (= a2 b1))
+					(inBond a1 b1)(inBond x b1)
+					(inBond a2 b2)(inBond x b2))))))
+
+(cl-comment 'Barium has at most 2 covalent bonds.')
+
+(forall (x a1 a2 a3 b1 b2 b3)
+	(if (and (barium x)
+		(inBond a1 b1)(inBond x b1)
+		(inBond a2 b2)(inBond x b2)
+		(inBond a3 b3)(inBond x b3))
+	(or (= b1 b2)
+		(= b1 b3)
+		(= b2 b3))))
+
+
+)

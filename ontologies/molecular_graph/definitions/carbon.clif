@@ -1,0 +1,63 @@
+/*******************************************************************************
+* Copyright (c) University of Toronto and others. All rights reserved.
+* The content of this file is licensed under the Creative Commons Attribution-
+* ShareAlike 3.0 Unported license. The legal text of this license can be
+* found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+*
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/molecular_graph/definitions/carbon.clif
+
+(cl-comment 'Element name: carbon')
+
+(cl-comment 'Valence number: 4')
+
+(cl-comment 'Carbon has at least 4 covalent bonds.')
+
+(forall (x) 
+	(if (carbon x)
+		(and (atom x)
+			(exists (a1 a2 a3 a4 b1 b2 b3 b4)
+				(and (atom a1)
+					(atom a2)
+					(atom a3)
+					(atom a4)
+					(not (= a1 b2))
+					(not (= a1 b3))
+					(not (= a1 b4))
+					(not (= a2 b1))
+					(not (= a2 b3))
+					(not (= a2 b4))
+					(not (= a3 b1))
+					(not (= a3 b2))
+					(not (= a3 b4))
+					(not (= a4 b1))
+					(not (= a4 b2))
+					(not (= a4 b3))
+					(inBond a1 b1)(inBond x b1)
+					(inBond a2 b2)(inBond x b2)
+					(inBond a3 b3)(inBond x b3)
+					(inBond a4 b4)(inBond x b4))))))
+
+(cl-comment 'Carbon has at most 4 covalent bonds.')
+
+(forall (x a1 a2 a3 a4 a5 b1 b2 b3 b4 b5)
+	(if (and (carbon x)
+		(inBond a1 b1)(inBond x b1)
+		(inBond a2 b2)(inBond x b2)
+		(inBond a3 b3)(inBond x b3)
+		(inBond a4 b4)(inBond x b4)
+		(inBond a5 b5)(inBond x b5))
+	(or (= b1 b2)
+		(= b1 b3)
+		(= b1 b4)
+		(= b1 b5)
+		(= b2 b3)
+		(= b2 b4)
+		(= b2 b5)
+		(= b3 b4)
+		(= b3 b5)
+		(= b4 b5))))
+
+
+)
