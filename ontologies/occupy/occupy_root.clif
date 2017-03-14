@@ -1,0 +1,58 @@
+(cl-text http://colore.oor.net/occupy/occupy_root.clif
+
+(cl-domain region (cl-imports http://colore.oor.net/mereotopology/rcc.clif))
+
+(forall (x y)
+	(if	(part x y)
+		(and	(region x)
+			(region y))))
+
+(forall (x y)
+	(if	(C x y)
+		(and	(region x)
+			(region y))))
+
+(cl-domain region (cl-imports http://colore.oor.net/combined_mereotopology/mt.clif))
+
+(forall (x y)
+	(if	(part_physical x y)
+		(and	(physical_object x)
+			(physical_object y))))
+
+(forall (x y)
+	(if	(C_physical x y)
+		(and	(physical_object x)
+			(physical_object y))))
+
+(forall (x)
+	(if	(region x)
+		(not (physical_object x))))
+
+(forall (x y)
+	(if	(occupy x y)
+		(and	(physical_object x)
+			(region y))))
+
+(forall (x y z)
+	(if	(and	(occupy x y)
+			(occupy x z))
+		(y=z)))
+
+(forall (x)
+	(if	(physical_object x)
+		(exists (y)
+			(occupy x y))))
+
+(forall (x y r1 r2)
+	(if	(and	(part_physical x y)
+			(occupy x r1)
+			(occupy y r2))
+		(part r1 r2)))
+
+(forall (x y r1 r2)
+	(if	(and	(C_physical x y)
+			(occupy x r1)
+			(occupy y r2))
+		(C r1 r2)))
+
+)
