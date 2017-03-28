@@ -1,0 +1,28 @@
+(cl-text http://colore.oor.net/containment/containment_def.clif)
+
+(cl-comment "Proper Parthood (transitive, irreflexive and asymmetric)")
+(forall (x y)
+        (iff    (properContainedIn x y)
+                (and    (containedIn x y)
+                        (not (x=y))))
+
+)
+
+(cl-comment "Atom")
+(forall (x y)
+        (iff    (AtomicComponent x)
+                (not (exists (y)
+                        (properContainedIn y x))))
+
+)
+
+(cl-comment "Overlap")
+
+(forall (x y)
+        (iff    (containmentOverlaps x y)
+                (exists (z)
+                        (and    (containedIn z x)
+                                (containedIn z y)
+                                (commonContainmentOf z x y))))
+
+)
