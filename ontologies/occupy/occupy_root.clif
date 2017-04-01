@@ -12,8 +12,6 @@
 		(and	(region x)
 			(region y))))
 
-(cl-domain physical_object (cl-imports http://colore.oor.net/combined_mereotopology/mt.clif))
-
 (forall (x y)
 	(if	(physical_part x y)
 		(and	(physical_object x)
@@ -23,6 +21,34 @@
 	(if	(physical_C x y)
 		(and	(physical_object x)
 			(physical_object y))))
+
+(forall (x)
+        (if	(physical_object x)
+		(physical_part x x)))
+
+(forall (x y)
+        (if     (and    (physical_part x y)
+                        (physical_part y x))
+                (= x y)))
+
+(forall (x y z)
+        (if     (and    (physical_part x y)
+                        (physical_part y z))
+                (physical_part x z)))
+
+(forall (x) 
+	(if	(physical_object x)
+		(C x x)))
+
+(forall (x y)
+	(if	(C x y)
+		(C y x)))
+
+(forall (x y)
+        (if     (physical_part x y)
+                (forall (z)
+                        (if     (physical_C x z)
+                                (physical_C z y)))))
 
 (forall (x)
 	(if	(region x)
@@ -36,7 +62,7 @@
 (forall (x y z)
 	(if	(and	(occupies x y)
 			(occupies x z))
-		(y=z)))
+		(= y z)))
 
 (forall (x)
 	(if	(physical_object x)
