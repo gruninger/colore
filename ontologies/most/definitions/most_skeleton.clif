@@ -92,4 +92,32 @@
 			(exists (w z)
 				(and (group z)(bondGroup x z)(containsGroup y z))))))
 
+
+(cl-comment 'Scaffold Definition')
+(forall (x)
+	(iff (and (skeleton x)
+			(exists (r) (and (ring r)(inSkeleton r x)))
+			(forall (g)
+				(if (and (chain g)(inSkeleton g x))
+					(exists (y z)
+						(and (ring y)(ring z)
+							(inSkeleton y x)(inSkeleton z x)
+							(attached y g)
+							(attached z g))))))))
+							
+(cl-comment 'Linear Skeleton Definition')
+(forall (x)
+	(iff (linearskeleton x)
+		(and (skeleton x)
+			(forall (g)
+				(if (inSkeleton g x)
+					(chain g))))))
+
+(forall (g1 g2)
+	(if (attached g1 g2)
+		(or (fusion g1 g2)
+			(exists (a) (spiro g1 g2 a))
+			(exists (b) (tether g1 g2 b)))))
+					
+
 )
