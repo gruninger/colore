@@ -15,29 +15,21 @@
 
 (cl-comment 'CLIF file containing all of the MoSt ontology axioms.  We will modularize this later.')
 
-(cl-comment 'Axiom ID: MR-ax-1')
-(cl-comment 'An atom x is in a functional group y.')
-(forall (x y)
-	(if (inGroup x y)
-		(and (atom x)(group y))))
-
-(cl-comment 'Axiom ID: MR-ax-2')
 (cl-comment 'Disjointness axiom for atom(x), bond(x), group(x), and molecule(x).')
 (forall (x)
 	(if (atom x)
 		(not (or (bond x)(group x)))))
 
-(cl-comment 'Axiom ID: MR-ax-3')
 (cl-comment 'Disjointness axiom for atom(x), bond(x), group(x), and molecule(x).')
 (forall (x)
 	(if (bond x)
 		(not (group x))))
 
-(cl-comment 'Axiom ID: MR-ax-4')
 (cl-comment 'For every functional group, there exists an atom that is in the group.')
 (forall (x)
 	(if (group x)
-		(exists (a) (and (atom a)(inGroup a x)))))
+		(exists (a)
+			(and (atom a)(mol a x)))))
 
 (forall (x)
 	(if	(atom x)
