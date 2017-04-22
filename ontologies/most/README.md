@@ -7,6 +7,10 @@ The ontology represents atoms, bonds, functional groups, and molecules as things
 # currently refactoring!
 # check the archive directory for old copies of the working axioms
 
+# major changes
+================================================
+april 21, 2017: renamed all inBond/inGroup/etc. relations to mol(x,y) - all axioms will now require sort constraints
+
 Notes
 ================================================
 - This ontology is currently a work in progress.
