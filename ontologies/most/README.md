@@ -11,6 +11,14 @@ The ontology represents atoms, bonds, functional groups, and molecules as things
 ================================================
 april 21, 2017: renamed all inBond/inGroup/etc. relations to mol(x,y) - all axioms will now require sort constraints
 
+# major design decisions
+================================================
+ontology allows for:
+- unique fusion
+- unique spiro
+- unique tether
+- bridge = one end is spiro'd, other end is tethered
+
 Notes
 ================================================
 - This ontology is currently a work in progress.

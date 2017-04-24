@@ -15,6 +15,12 @@
 
 (cl-comment 'CLIF file containing all of the MoSt ontology axioms.  We will modularize this later.')
 
+(cl-comment 'Disjointness axiom for atom(x), bond(x), group(x), and skeleton(x).')
+(forall (x)
+	(if (skeleton x)
+		(not (or (atom x)(bond x)(group x)))))
+(cl-comment 'apr24 comment by carmen: what about molecule x??')
+
 (cl-comment 'Disjointness axiom for atom(x), bond(x), group(x), and molecule(x).')
 (forall (x)
 	(if (atom x)
@@ -159,7 +165,7 @@
 
 (cl-comment '========== CONNECTION AXIOMS ========')
 
-(cl-comment 'Group-Atom Relationship: Every atom has a bond with an atom in a functional group.')
+(cl-comment 'Every atom has a bond with an atom in a functional group.')
 (forall (x)
     (if (atom x)
         (exists (b y z)
@@ -332,11 +338,6 @@
 			(and (skeleton y)(mol y x)
 				(not (exists (w)
 					(and (skeleton w)(mol y w)(not (= w y)))))))))
-
-(cl-comment 'Disjointness axiom for atom(x), bond(x), group(x), and skeleton(x).')
-(forall (x)
-	(if (skeleton x)
-		(not (or (atom x)(bond x)(group x)))))
 
 (cl-comment 'Scaffold Definition')
 (forall (x)
@@ -557,7 +558,7 @@
 	(iff (linearskeleton x)
 		(and (skeleton x)
 			(forall (g)
-				(if (inSkeleton g x)
+				(if (and (group g)(mol g x))
 					(chain g))))))
 					
 (forall (g1 g2)
