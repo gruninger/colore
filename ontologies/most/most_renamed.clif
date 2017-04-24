@@ -36,18 +36,6 @@
 		(exists (y)
 			(and (group y)(mol x y)))))
 
-(cl-comment 'Definition for an end atom in a linear functional group.')
-(forall (x y)
-	(iff (end x y)
-		(and (atom x)(group y)(mol x y)
-			(forall (b1 b2 w z)
-				(if (and (bond b1)(bond b2)(atom w)(atom z)
-						(mol x b1)(mol z b1)
-						(mol x b2)(mol w b2)
-						(mol z y)(mol w y))
-					(= w z))))))
-
-(cl-comment 'Axiom ID: MR-ax-8')
 (cl-comment 'A functional group has at most two ends.')
 (forall (x y z w)
 	(if	(and	(group x)
@@ -57,19 +45,6 @@
 		(or	(= y z)
 			(= y w)
 			(= z w))))
-
-(cl-comment 'Definition for a fork atom in a branched functional group: an atom in the same functional group has at least 3 other atoms in bonds.')
-(forall (x y)
-	(iff (fork x)
-		(and (atom x)
-			(exists (b1 b2 b3 a1 a2 a3)
-				(and (atom a1)(atom a2)(atom a3)
-					(bond b1)(bond b2)(bond b3)
-					(not (= a1 a2))(not (= a2 a3))(not (= a1 a3))
-					(not (= b1 b2))(not (= b2 b3))(not (= b1 b3))
-					(mol x b1)(mol a1 b1)
-					(mol x b2)(mol a2 b2)
-					(mol x b3)(mol a3 b3))))))
 
 (cl-comment 'No functional group has a fork.')
 (forall (x)
@@ -201,14 +176,6 @@
 (forall (x y z)
     (if (and (atom x)(bond y)(group z)(mol x y)(mol y z))
         (mol x z)))
-
-(cl-comment 'Connection Between An Atom and A Functional Group: An atom is connected to an atom in the functional group by a single bond.')
-(forall (x g)
-    (iff (atomconn x g)
-        (and (atom x)(group g)(not (= x g))(not (mol x g))
-            (exists (z b)
-                (and (atom z)(bond b)(not (= x z))
-                	(mol z g)(mol x b)(mol z b))))))
        
 (cl-comment '====== BOND TO GROUP CONNECTION ======')
 
@@ -217,15 +184,6 @@
     (if (group y)
         (exists (x)
             (and (atom x)(mol x y)))))
-
-(cl-comment 'Group-Bond Relationship: A bond is in a functional group iff both of its atoms are in the functional group.')
-(forall (x y)
-    (iff (bondGroup x y)
-        (and (bond x)(group y)
-            (exists (w z)
-                (and (atom z)(atom w)(not (= w z))
-                	(mol z y)(mol w y)
-                	(mol z x)(mol w z))))))
 
 (cl-comment 'If two atoms are in a group and have a bond between each other, then the bond is in the functional group.')
 (forall (x y b g)
@@ -590,5 +548,59 @@
 (forall (x y)
 	(if (and (mol x y)(atom x)(atom y))
 		(= x y)))
-					
+
+(cl-comment '========== DEFINITIONS ==========')
+
+(cl-comment 'Definition for an end atom in a linear functional group.')
+(forall (x y)
+	(iff (end x y)
+		(and (atom x)(group y)(mol x y)
+			(forall (b1 b2 w z)
+				(if (and (bond b1)(bond b2)(atom w)(atom z)
+						(mol x b1)(mol z b1)
+						(mol x b2)(mol w b2)
+						(mol z y)(mol w y))
+					(= w z))))))
+
+(cl-comment 'Definition for a fork atom in a branched functional group: an atom in the same functional group has at least 3 other atoms in bonds.')
+(forall (x y)
+	(iff (fork x)
+		(and (atom x)
+			(exists (b1 b2 b3 a1 a2 a3)
+				(and (atom a1)(atom a2)(atom a3)
+					(bond b1)(bond b2)(bond b3)
+					(not (= a1 a2))(not (= a2 a3))(not (= a1 a3))
+					(not (= b1 b2))(not (= b2 b3))(not (= b1 b3))
+					(mol x b1)(mol a1 b1)
+					(mol x b2)(mol a2 b2)
+					(mol x b3)(mol a3 b3))))))
+
+(cl-comment 'Connection Between An Atom and A Functional Group: An atom is connected to an atom in the functional group by a single bond.')
+(forall (x g)
+    (iff (atomconn x g)
+        (and (atom x)(group g)(not (= x g))(not (mol x g))
+            (exists (z b)
+                (and (atom z)(bond b)(not (= x z))
+                	(mol z g)(mol x b)(mol z b))))))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 )
