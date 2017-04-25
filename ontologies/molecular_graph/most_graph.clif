@@ -22,7 +22,7 @@
 (cl-comment 'A bond is between exactly two atoms.')
 (cl-comment 'is this one entailed by the last two axioms?')
 (forall (x y z b)
-	(if (and (inBond x b)(inBond y b)(inBond z b))
+	(if (and (atom x)(atom y)(atom z)(bond b)(mol x b)(mol y b)(mol z b))
 		(or (= x y)(= x z)(= y z))))
 
 (cl-comment 'Axiom ID: MG-ax-3')
@@ -30,19 +30,19 @@
 (forall (x)
 	(if (atom x)
 		(exists (b y)
-			(and (atom y)(inBond x b)(inBond y b)))))
+			(and (atom y)(bond b)(mol x b)(mol y b)))))
 
 (cl-comment 'Axiom ID: MG-ax-4')
 (cl-comment 'A bond is possible between two atoms.')
 (forall (b)
 	(if (bond b)
 		(exists (x y)
-			(and (inBond x b)(inBond y b)))))
+			(and (atom x)(atom y)(mol x b)(mol y b)))))
 
 (cl-comment 'Axiom ID: MG-ax-5')
 (cl-comment 'Two atoms are bonded if a bond exists between them.')
 (forall (b x y)
-	(if (and (inBond x b)(inBond y b))
+	(if (and (atom x)(atom y)(bond b)(mol x b)(mol y b))
 		(and (bond b)(atom x)(atom y))))
 
 (cl-comment 'Axiom ID: MG-ax-6')
@@ -51,7 +51,7 @@
 	(if (bond b)
 		(exists (x y)
 			(forall (z1 z2)
-				(if (and (atom x)(atom y)(inBond z1 b)(inBond z2 b))
+				(if (and (atom x)(atom y)(atom z1)(atom z2)(mol z1 b)(mol z2 b))
 					(or (= z1 x)(= z1 y)(= z2 x)(= z2 y)))))))
 				
 (cl-comment 'Axiom ID: MG-ax-7')
@@ -59,6 +59,6 @@
 (forall (b)
 	(if (bond b)
 		(exists (x y)
-			(and (atom x)(atom y)(inBond x b)(inBond y b)(not (= y x))))))
+			(and (atom x)(atom y)(mol x b)(mol y b)(not (= y x))))))
 			
 )
