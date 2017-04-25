@@ -378,14 +378,6 @@
 					(mol x b2)(mol a2 b2)
 					(mol x b3)(mol a3 b3))))))
 
-(cl-comment 'A bond is a link between two functional groups iff there exists a bond between two atoms that are in both groups, respectively.')
-(forall (b g1 g2)
-    (iff (link b g1 g2)
-        (and (bond b)(group g1)(group g2)(not (= g1 g2))
-            (exists (x y)
-                (and (atom x)(atom y)(not (= x y))
-                	(mol x g1)(mol y g2)(mol x b)(mol y b))))))
-
 (cl-comment 'Part: Two functional groups are part of each other if they share a common atom.')
 (forall (g1 g2)
     (iff (part g1 g2)
@@ -393,15 +385,6 @@
             (forall (x)
                 (if (and (atom x)(mol x g1))
                     (mol x g2))))))
-
-(cl-comment 'Connection Between Two Functional Groups: Two functional groups are connected to each other by a single bond between two atoms in the groups.')
-(forall (g1 g2)
-    (iff (conn g1 g2)
-        (and (group g1)(group g2)(not (= g1 g2))
-            (exists (w z b)
-                (and (atom w)(atom z)(bond b)(not (= w z))
-                	(mol w g1)(mol z g2)
-                	(mol w b)(mol z b))))))
 
 (forall (g1 g2)
     (iff (fusion g1 g2)
