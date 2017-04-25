@@ -15,6 +15,19 @@
 
 (cl-comment 'CLIF file containing all of the MoSt ontology axioms.  We will modularize this later.')
 
+(cl-comment '========== MOL RELATION PROPERTIES ==========')
+
+(forall (x)
+	(mol x x))
+	
+(forall (x y)
+	(if (mol x y)
+		(mol y x)))
+		
+(forall (x y)
+	(if (and (mol x y)(atom x)(atom y))
+		(= x y)))
+
 (cl-comment 'Disjointness axiom for atom(x), bond(x), group(x), and skeleton(x).')
 (forall (x)
 	(if (skeleton x)
@@ -348,19 +361,6 @@
 							(attached y g)
 							(attached z g))))))))
 
-(cl-comment '========== MOL RELATION PROPERTIES ==========')
-
-(forall (x)
-	(mol x x))
-	
-(forall (x y)
-	(if (mol x y)
-		(mol y x)))
-		
-(forall (x y)
-	(if (and (mol x y)(atom x)(atom y))
-		(= x y)))
-
 (cl-comment '========== DEFINITIONS ==========')
 
 (cl-comment 'Definition for an end atom in a linear functional group.')
@@ -401,7 +401,7 @@
         (and (bond b)(group g1)(group g2)(not (= g1 g2))
             (exists (x y)
                 (and (atom x)(atom y)(not (= x y))
-                	(mol x g1)(mol y g2)(mol b x y))))))
+                	(mol x g1)(mol y g2)(mol x b)(mol y b))))))
 
 (cl-comment 'Part: Two functional groups are part of each other if they share a common atom.')
 (forall (g1 g2)
@@ -478,16 +478,16 @@
 				(mol a b1)
 				(mol a b2)
 				(not (= b1 b2))))))
-
+				
 (cl-comment 'Definitions for ringBond')
 (forall (b)
 	(iff (ringBond b)
 			(and (bond b)
 				(exists (a1 a2)
-					(and (atom a1)(atom a2)(mol a1 b)(mol a2 b)))
+					(and (atom a1)(atom a2)(mol a1 b)(mol a2 b)
 				(not (exists (a3)
 					(and (atom a3)
-						(or (between a3 a1 a2)(between a1 a2 a3))))))))
+						(or (between a3 a1 a2)(between a1 a2 a3))))))))))
 
 (cl-comment 'A saturated functional group is one that has at least one single bond.')
 (forall (x)
@@ -500,7 +500,6 @@
 				(singlebond b y z))))))
 (cl-comment 'apr21 comment by carmen do we leave singlebond as a ternary relation?')
 
-(cl-comment 'Axiom ID: MS-ax-2')
 (cl-comment 'An unsaturated functional group is one that has at least one double bond.')
 (forall (x)
 	(iff (unsaturated x)
