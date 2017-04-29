@@ -1,0 +1,69 @@
+
+(cl-text http://colore.oor.net/interval_meeting/bounded_meeting.clif
+
+(forall (i j)
+(if	(meets i j)
+	(and	(timeinterval i)
+		(timeinterval j))))
+
+(forall (i j k m)
+(if	(and	(meets i k)
+		(meets j k)
+		(meets i m))
+	(meets j m)))
+
+(forall (i j k l)
+(if	(and	(meets i j)
+		(meets k l))
+	(or	(meets i l)
+		(exists (n)
+			(or	(and	(meets i n)
+					(meets n l))
+				(and	(meets k n)
+					(meets n j)))))))
+
+(forall (i j)
+(if	(meets i j)
+	(not (meets j i))))
+
+(forall (i j k m)
+(iff	(and	(meets i j)
+		(meets j k)
+		(meets k m))
+	(exists (n)
+		(and	(meets i n)
+			(meets n m)))))
+
+(forall (x y)
+	(exists (z)
+		(llb x y z)))
+
+(forall (x y)
+	(exists (z)
+		(eub x y z)))
+
+(forall (x y)
+	(iff	(pre x y)
+		(or	(meets x y)
+			(before x y)
+			(= x y))))
+
+(forall (x y z)
+	(iff	(eub x y z)
+		(and	(pre x z)
+			(pre y z)
+			(forall (w)
+				(if	(and	(pre x w)
+						(pre y w))
+					(pre z w))))))
+
+(forall (x y z)
+	(iff	(llb x y z)
+		(and	(pre z x)
+			(pre z y)
+			(forall (w)
+				(if	(and	(pre w x)
+						(pre w y))
+					(pre w z))))))
+
+)
