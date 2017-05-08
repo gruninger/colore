@@ -15,7 +15,7 @@
 
 (cl-comment 'CLIF file containing all of the MoSt ontology axioms.  We will modularize this later.')
 
-(cl-comment '========== MOL RELATION PROPERTIES ==========')
+(cl-comment 'most - basic intuitions')
 
 (forall (x)
 	(mol x x))
@@ -40,6 +40,10 @@
 (forall (x)
 	(if (bond x)
 		(not (group x))))
+
+
+
+
 
 (cl-comment 'For every functional group, there exists an atom that is in the group.')
 (forall (x)
@@ -118,6 +122,20 @@
 			(atom a1)(atom a2)(not (= a1 a2))
 			(mol a1 g1)(mol a2 g2))
 		(and (not (mol a1 g2))(not (mol a2 g1)))))
+
+
+(cl-comment 'attachment axioms')
+
+(cl-comment 'remaining paths are chains')
+
+
+(cl-comment 'semilinear betweenness / spanning tree')
+
+(cl-comment 'skeletons')
+
+
+
+
 
 (cl-comment 'most version of planar shadow axiom in tripartite incidence')
 (forall (b g)
@@ -210,7 +228,7 @@
 
 (cl-comment 'Something we should be able to prove.')
 (forall (g1 g2)
-    (if (fusion g1 g2)
+    (if (fused g1 g2)
         (exists (a1 a2)
             (and (fusedAtom a1 g1 g2)
             	(fusedAtom a2 g1 g2)
@@ -381,7 +399,7 @@
                     (mol x g2))))))
 
 (forall (g1 g2)
-    (iff (fusion g1 g2)
+    (iff (fused g1 g2)
     	(and (group g1)(group g2)(not (= g1 g2))
     		(exists (a1 a2 b)
     			(and (atom a1)(atom a2)(not (= a1 a2))
@@ -506,7 +524,7 @@
 					
 (forall (g1 g2)
 	(iff (attached g1 g2)
-		(or (fusion g1 g2)
+		(or (fused g1 g2)
 			(exists (a) (spiro g1 g2 a))
 			(exists (b) (tether g1 g2 b)))))
 
