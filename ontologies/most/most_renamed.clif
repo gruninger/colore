@@ -30,6 +30,18 @@
 	(if (and (mol x y)(atom x)(atom y))
 		(= x y)))
 
+(forall (x y)
+	(if (and (mol x y)(bond x)(bond y))
+		(= x y)))
+		
+(forall (x y)
+	(if (and (mol x y)(group x)(group y))
+		(= x y)))
+		
+(forall (x y)
+	(if (and (mol x y)(skeleton x)(skeleton y))
+		(= x y)))
+		
 (cl-comment 'Disjointness axioms for atom(x), bond(x), group(x), and skeleton(x).')
 (forall (x)
 	(if (skeleton x)
@@ -151,6 +163,13 @@
     		(mol x y)(mol y g)(mol x b)(mol y b))
         (mol b g)))
 
+(cl-comment 'most version of planar shadow axiom in tripartite incidence')
+(forall (b g)
+	(if	(and (bond b)(group g)(not (mol b g)))
+		(exists (a)
+			(and (atom a)(mol a b)
+				(not (mol a g))))))
+		
 /*******************************************************************************/
 (cl-comment '======= SEMANTIC CONDITION: attachment axioms')
 /*******************************************************************************/
@@ -270,6 +289,21 @@
 		(mol b1 g2)(mol b2 g2))
 		(and (tether g1 g2 b1)(tether g1 g2 b2))))
 
+(cl-comment 'most version of weak face intersect in tripartite incidence')
+(forall (g1 g2 a1 a2)
+	(if	(and	(group g1)
+			(group g2)
+			(atom a1)
+			(atom a2)
+			(not (= a1 a2))
+			(not (= g1 g2))
+			(mol a1 g1)
+			(mol a1 g2)
+			(mol a2 g1)
+			(mol a2 g2))
+		(exists (b)
+			(and (bond b)(mol b g1)(mol b g2)))))
+		
 /*******************************************************************************/
 (cl-comment '======= SEMANTIC CONDITION: remaining paths are chains')
 /*******************************************************************************/
@@ -370,33 +404,8 @@
 							(mol y x)(mol z x)
 							(attached y g)
 							(attached z g))))))))
-							
-/*******************************************************************************/
-(cl-comment '======= SEMANTIC CONDITION: UNSURE HOW TO CLASSIFY')
-/*******************************************************************************/
 
-(cl-comment 'most version of planar shadow axiom in tripartite incidence')
-(forall (b g)
-	(if	(and (bond b)(group g)(not (mol b g)))
-		(exists (a)
-			(and (atom a)(mol a b)
-				(not (mol a g))))))
-
-			
-(cl-comment 'most version of weak face intersect in tripartite incidence')
-(forall (g1 g2 a1 a2)
-	(if	(and	(group g1)
-			(group g2)
-			(atom a1)
-			(atom a2)
-			(not (= a1 a2))
-			(not (= g1 g2))
-			(mol a1 g1)
-			(mol a1 g2)
-			(mol a2 g1)
-			(mol a2 g2))
-		(exists (b)
-			(and (bond b)(mol b g1)(mol b g2)))))
+(cl-comment 'what kind of incidence relations should we include?')							
 
 /*******************************************************************************/
 (cl-comment '========== DEFINITIONS ==========')
