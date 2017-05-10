@@ -1,0 +1,199 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%original interval meeting axioms
+
+(all i all j all k all m
+	((meets(i,k)
+	& meets(j,k)
+	& meets(i,m))
+	->
+	meets(j,m))).
+
+(all i all j all k all l
+	((meets(i,j)
+	& meets(k,l))
+	->
+	(meets(i,l)
+	| (exists n
+		((meets(i,n) & meets(n,l))
+		| (meets(k,n) & meets(n,j))))))).
+
+(all i all j
+	(meets(i,j)
+	->
+	-meets(j,i))).
+
+(all i all j all k all m
+	((meets(i,j)
+	& meets(j,k)
+	& meets(k,m))
+	->
+	(exists n
+		(meets(i,n)
+		& meets(n,m))))).
+
+all x all y (b(x,y) <-> a(y,x)).
+all x all y (d(x,y) <-> di(y,x)).
+all x all y (o(x,y) <-> oi(y,x)).
+all x all y (m(x,y) <-> mi(y,x)).
+all x all y (s(x,y) <-> si(y,x)).
+all x all y (e(x,y) <-> ei(y,x)).
+
+%definitions
+all x all y (m(x,y) <-> meets(x,y)).
+
+(all x all y
+	(b(x,y)
+	<->
+	(exists z
+		(meets(x,z)
+		& meets(z,y))))).
+
+(all i all j
+	(d(i,j)
+	<->
+	(exists k exists m exists n exists o
+		(meets(k,m)
+		& meets(m,i)
+		& meets(i,n)
+		& meets(n,o)
+		& meets(k,j)
+		& meets(j,o))))).
+
+(all i all j
+     (o(i,j)
+     <->
+     (exists k exists m exists n exists o exists p
+                 (meets(k,m)
+                 & meets(m,n)
+                 & meets(n,o)
+                 & meets(o,p)
+                 & meets(m,j)
+                 & meets(j,p)
+                 & meets(k,i)
+                 & meets(i,o))))).
+
+(all i all j
+	(s(i,j)
+	<->
+	(exists k exists m exists n
+		(meets(k,i)
+		& meets(i,m)
+		& meets(m,n)
+		& meets(k,j)
+		& meets(j,n))))).
+
+(all i all j
+	(e(i,j)
+	<->
+	(exists k exists m exists n
+		(meets(k,m)
+		& meets(m,i)
+		& meets(i,n)
+		& meets(k,j)
+		& meets(j,n))))).
+
+%proved lemma
+(all x all y all z (b(x,y) & b(y,z) -> b(x,z))).
+(all x all y all z (b(x,y) & di(y,z) -> b(x,z))).
+(all x all y all z (b(x,y) & o(y,z) -> b(x,z))).
+(all x all y all z (b(x,y) & m(y,z) -> b(x,z))).
+(all x all y all z (b(x,y) & s(y,z) -> b(x,z))).
+(all x all y all z (b(x,y) & si(y,z) -> b(x,z))).
+(all x all y all z (b(x,y) & ei(y,z) -> b(x,z))).
+
+(all x all y all z (a(x,y) & a(y,z) -> a(x,z))).
+(all x all y all z (a(x,y) & di(y,z) -> a(x,z))).
+(all x all y all z (a(x,y) & oi(y,z) -> a(x,z))).
+(all x all y all z (a(x,y) & mi(y,z) -> a(x,z))).
+(all x all y all z (a(x,y) & si(y,z) -> a(x,z))).
+(all x all y all z (a(x,y) & e(y,z) -> a(x,z))).
+(all x all y all z (a(x,y) & ei(y,z) -> a(x,z))).
+
+(all x all y all z (d(x,y) & b(y,z) -> b(x,z))).
+(all x all y all z (d(x,y) & a(y,z) -> a(x,z))).
+(all x all y all z (d(x,y) & d(y,z) -> d(x,z))).
+(all x all y all z (d(x,y) & m(y,z) -> b(x,z))).
+(all x all y all z (d(x,y) & mi(y,z) -> a(x,z))).
+(all x all y all z (d(x,y) & s(y,z) -> d(x,z))).
+(all x all y all z (d(x,y) & e(y,z) -> d(x,z))).
+
+(all x all y all z (di(x,y) & di(y,z) -> di(x,z))).
+(all x all y all z (di(x,y) & si(y,z) -> di(x,z))).
+(all x all y all z (di(x,y) & ei(y,z) -> di(x,z))).
+
+(all x all y all z (o(x,y) & b(y,z) -> b(x,z))).
+(all x all y all z (o(x,y) & m(y,z) -> b(x,z))).
+(all x all y all z (o(x,y) & s(y,z) -> o(x,z))).
+
+(all x all y all z (oi(x,y) & a(y,z) -> a(x,z))).
+(all x all y all z (oi(x,y) & mi(y,z) -> a(x,z))).
+(all x all y all z (oi(x,y) & e(y,z) -> oi(x,z))).
+
+(all x all y all z (m(x,y) & b(y,z) -> b(x,z))).
+(all x all y all z (m(x,y) & di(y,z) -> b(x,z))).
+(all x all y all z (m(x,y) & o(y,z) -> b(x,z))).
+(all x all y all z (m(x,y) & m(y,z) -> b(x,z))).
+(all x all y all z (m(x,y) & s(y,z) -> m(x,z))).
+(all x all y all z (m(x,y) & si(y,z) -> m(x,z))).
+(all x all y all z (m(x,y) & ei(y,z) -> b(x,z))).
+
+(all x all y all z (mi(x,y) & a(y,z) -> a(x,z))).
+(all x all y all z (mi(x,y) & di(y,z) -> a(x,z))).
+(all x all y all z (mi(x,y) & oi(y,z) -> a(x,z))).
+(all x all y all z (mi(x,y) & mi(y,z) -> a(x,z))).
+(all x all y all z (mi(x,y) & si(y,z) -> a(x,z))).
+(all x all y all z (mi(x,y) & e(y,z) -> mi(x,z))).
+(all x all y all z (mi(x,y) & ei(y,z) -> mi(x,z))).
+
+(all x all y all z (s(x,y) & b(y,z) -> b(x,z))).
+(all x all y all z (s(x,y) & a(y,z) -> a(x,z))).
+(all x all y all z (s(x,y) & d(y,z) -> d(x,z))).
+(all x all y all z (s(x,y) & m(y,z) -> b(x,z))).
+(all x all y all z (s(x,y) & mi(y,z) -> mi(x,z))).
+(all x all y all z (s(x,y) & s(y,z) -> s(x,z))).
+(all x all y all z (s(x,y) & e(y,z) -> d(x,z))).
+
+(all x all y all z (si(x,y) & a(y,z) -> a(x,z))).
+(all x all y all z (si(x,y) & di(y,z) -> di(x,z))).
+(all x all y all z (si(x,y) & mi(y,z) -> mi(x,z))).
+(all x all y all z (si(x,y) & si(y,z) -> si(x,z))).
+(all x all y all z (si(x,y) & e(y,z) -> oi(x,z))).
+(all x all y all z (si(x,y) & ei(y,z) -> di(x,z))).
+
+(all x all y all z (e(x,y) & b(y,z) -> b(x,z))).
+(all x all y all z (e(x,y) & a(y,z) -> a(x,z))).
+(all x all y all z (e(x,y) & d(y,z) -> d(x,z))).
+(all x all y all z (e(x,y) & m(y,z) -> m(x,z))).
+(all x all y all z (e(x,y) & mi(y,z) -> a(x,z))).
+(all x all y all z (e(x,y) & s(y,z) -> d(x,z))).
+(all x all y all z (e(x,y) & e(y,z) -> e(x,z))).
+
+(all x all y all z (ei(x,y) & b(y,z) -> b(x,z))).
+(all x all y all z (ei(x,y) & di(y,z) -> di(x,z))).
+(all x all y all z (ei(x,y) & o(y,z) -> o(x,z))).
+(all x all y all z (ei(x,y) & m(y,z) -> m(x,z))).
+(all x all y all z (ei(x,y) & s(y,z) -> o(x,z))).
+(all x all y all z (ei(x,y) & si(y,z) -> di(x,z))).
+(all x all y all z (ei(x,y) & ei(y,z) -> ei(x,z))).
+
+end_of_list.
+
+formulas(goals).
+
+all x all y all z ((m(x,y) & mi(y,z)) -> (-m(x,z))).
+
+end_of_list.
+

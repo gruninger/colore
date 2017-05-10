@@ -1,0 +1,65 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%bounded meeting
+(all x all y
+        (pre(x,y)
+        <->
+        (meets(x,y) | b(x,y) | (x=y)))).
+
+(all x all y
+        (exists z
+                (pre(x,z)
+                & pre(y,z)))).
+
+(all x all y
+        (exists z
+                (pre(z,x)
+                & pre(z,y)))).
+
+(all i all j
+	(meets(i,j)
+	->
+	-meets(j,i))).
+
+(all i all j all k all l
+	((meets(i,j)
+	& meets(k,l))
+	->
+	(meets(i,l) | b(i,l) | b(k,j)))).
+
+%definition
+all x all y (m(x,y) <-> meets(x,y)).
+
+(all x all y
+	(b(x,y)
+	<->
+	(exists z
+		(meets(x,z)
+		& meets(z,y))))).
+
+%proved lemma
+all x all y all z ((m(y,x) & b(y,z)) -> (b(x,z) | o(x,z) | m(x,z) | d(z,x) | e(z,x))).
+all x all y all z ((m(y,x) & m(y,z)) -> (s(x,z) | s(z,x) | (x=z))).
+
+end_of_list.
+
+formulas(goals).
+
+(all x all z 
+(b(x,z) | b(z,x) | d(x,z) | d(z,x) | o(x,z) | o(z,x) | m(x,z) | m(z,x) | s(x,z) | s(z,x) 
+| e(x,z) | e(z,x) | (x=z))).
+
+end_of_list.
+

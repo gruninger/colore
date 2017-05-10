@@ -1,0 +1,115 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%original interval meeting axioms
+
+(all i all j all k all m
+	((meets(i,k)
+	& meets(j,k)
+	& meets(i,m))
+	->
+	meets(j,m))).
+
+(all i all j all k all l
+	((meets(i,j)
+	& meets(k,l))
+	->
+	(meets(i,l)
+	| (exists n
+		((meets(i,n) & meets(n,l))
+		| (meets(k,n) & meets(n,j))))))).
+
+(all i all j
+	(meets(i,j)
+	->
+	-meets(j,i))).
+
+(all i all j all k all m
+	((meets(i,j)
+	& meets(j,k)
+	& meets(k,m))
+	->
+	(exists n
+		(meets(i,n)
+		& meets(n,m))))).
+
+all x all y (b(x,y) <-> a(y,x)).
+all x all y (d(x,y) <-> di(y,x)).
+all x all y (o(x,y) <-> oi(y,x)).
+all x all y (m(x,y) <-> mi(y,x)).
+all x all y (s(x,y) <-> si(y,x)).
+all x all y (e(x,y) <-> ei(y,x)).
+
+all x all y (m(x,y) <-> meets(x,y)).
+
+%definition
+(all i all j
+	(e(i,j)
+	<->
+	(exists k exists m exists n
+		(meets(k,m)
+		& meets(m,i)
+		& meets(i,n)
+		& meets(k,j)
+		& meets(j,n))))).
+
+(all x all y
+	(b(x,y)
+	<->
+	(exists z
+		(meets(x,z)
+		& meets(z,y))))).
+
+(all i all j
+	(d(i,j)
+	<->
+	(exists k exists m exists n exists o
+		(meets(k,m)
+		& meets(m,i)
+		& meets(i,n)
+		& meets(n,o)
+		& meets(k,j)
+		& meets(j,o))))).
+
+(all i all j
+     (o(i,j)
+     <->
+     (exists k exists m exists n exists o exists p
+                 (meets(k,m)
+                 & meets(m,n)
+                 & meets(n,o)
+                 & meets(o,p)
+                 & meets(m,j)
+                 & meets(j,p)
+                 & meets(k,i)
+                 & meets(i,o))))).
+
+(all i all j
+	(s(i,j)
+	<->
+	(exists k exists m exists n
+		(meets(k,i)
+		& meets(i,m)
+		& meets(m,n)
+		& meets(k,j)
+		& meets(j,n))))).
+
+end_of_list.
+
+formulas(goals).
+
+all x all y all z ((e(x,y) & ei(y,z)) -> (-b(x,z))).
+
+end_of_list.
+
