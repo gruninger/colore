@@ -1,0 +1,64 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 600).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%original interval meeting axioms
+(all i all j all k all m
+	((meets(i,k)
+	& meets(j,k)
+	& meets(i,m))
+	->
+	meets(j,m))).
+
+(all i all j all k all l
+	((meets(i,j)
+	& meets(k,l))
+	->
+	(meets(i,l) | b(i,l) | b(k,j)))).
+
+(all x all y
+	(pre(x,y)
+	<->
+	(meets(x,y) | b(x,y) | (x=y)))).
+
+(all x all y
+	(b(x,y)
+	<->
+	(exists z
+		(meets(x,z)
+		& meets(z,y))))).
+
+-(all x all y 
+	(exists z 
+		(pre(x,z)
+		& pre(y,z)))).
+
+(all i
+	(exists j exists k
+		(meets(i,j)
+		& meets(k,i)))).
+
+(all x all y all z all u
+	((meets(x,y)
+	& meets(x,z)
+	& meets(y,u)
+	& meets(z,u))
+	->
+	(y=z))).
+
+end_of_list.
+
+formulas(goals).
+
+end_of_list.
+
