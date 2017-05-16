@@ -10,4 +10,27 @@
 
 (cl-text http://colore.oor.net/most/most_ringbond.clif
 
+(cl-imports http://colore.oor.net/most/most_betweenness.clif)
+
+(forall (b)
+	(if (ringBond b)
+		(exists (g)
+			(and (mol b g)(ring g)))))
+
+(cl-comment 'Every ring bond is in a unique ring.')
+(forall (b1 b2 g1 g2)
+	(if (and (ringBond b1)(ringBond b2)
+			(group g1)(group g2)
+			(ring g1)(ring g2)
+			(mol b1 g1)(mol b1 g2)
+			(mol b1 g2)(mol b2 g2))
+		(or (= b1 b2)(= g1 g2))))
+
+(cl-comment 'Every ring bond is in at most one ring.')
+(forall (b g1 g2)
+	(if (and (ringBond b)(ring g1)(ring g2)
+			(group g1)(group g2)
+			(mol b g1)(mol b g2))
+		(= g1 g2)))
+
 )
