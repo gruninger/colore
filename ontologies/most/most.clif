@@ -38,9 +38,6 @@
 		(= x y)))
 		
 (cl-comment 'Disjointness axioms for atom(x), bond(x), group(x), and skeleton(x).')
-(forall (x)
-	(if (skeleton x)
-		(not (or (atom x)(bond x)(group x)))))
 
 (forall (x)
 	(if (atom x)
@@ -106,7 +103,7 @@
 			(= a1 a3)(= a2 a4))
 		(mol b2 g)))
 
-(cl-comment 'A sentence to describe that functional groups contain bonds.')
+(cl-comment 'A group contains at least one atom connected to it.')
 (forall (y)
     (if (group y)
         (exists (x)
@@ -217,7 +214,8 @@
 
 (cl-comment 'most version of twin junction in tripartite incidence')
 (forall (b g1 g2)
-	(if	(and (group g1)(group g2)(not (= g1 g2))
+	(if	(and (group g1)(group g2)
+			(not (= g1 g2))
 			(bond b)(mol b g1)(mol b g2))
 		(exists (a1 a2)
 			(and	(spiro g1 g2 a1)
@@ -239,7 +237,6 @@
 
 (cl-comment '==================================')
 (cl-comment 'FUSION')
-(cl-comment 'Fusion Connection')
 (cl-comment 'Two distinct atoms are shared between the groups which are in a bond.')
 (cl-comment '==================================')
 
@@ -257,19 +254,18 @@
 
 (cl-comment '==================================')
 (cl-comment 'SPIRO')
-(cl-comment 'Spiro Connection')
 (cl-comment 'An atom is shared')
 (cl-comment '==================================')
 
 (cl-comment 'Uniqueness of spiro connection.')
 (exists (a1)
     (forall (g1 g2 a2)
-        (if (and (spiro g1 g2 a1)(spiro g1 g2 a2))
+        (if (and (spiro g1 g2 a1)
+        		(spiro g1 g2 a2))
         (= a1 a2))))
 
 (cl-comment '==================================')
 (cl-comment 'TETHER')
-(cl-comment 'Tether Connection')
 (cl-comment 'No atoms are shared')
 (cl-comment 'Groups are bonded together by a bond between each group')
 (cl-comment '==================================')
@@ -406,7 +402,7 @@
 				(mol a b1)
 				(mol a b2)
 				(not (= b1 b2))))))
-				
+
 (forall (g1 g2)
 	(iff (attached g1 g2)
 		(or (fused g1 g2)
@@ -461,22 +457,44 @@
 		(and (atom x)(atom y)(atom z))))
 
 (cl-comment 'Axioms from between/semilinear theory with sort constraints.')
-(forall (x y z)
-	(if	(between x y z)
+(forall (x y z s)
+	(if (and (skeleton s)
+			(atom x)(atom y)(atom z)
+			(inSkeleton x s)
+			(inSkeleton y s)
+			(inSkeleton z s)
+			(between x y z))
 		(between z y x)))
 
-(forall (x y z)
-	(if (and (between y x z)(between x y z))
+(forall (x y z s)
+	(if (and (skeleton s)
+			(atom x)(atom y)(atom z)
+			(inSkeleton x s)
+			(inSkeleton y s)
+			(inSkeleton z s)
+			(between y x z)
+			(between x y z))
 		(= x y)))
 		
-(forall (x y z w)
-	(if	(between y x z)
+(forall (x y z w s)
+	(if	(and (skeleton s)
+			(atom x)(atom y)(atom z)
+			(inSkeleton x s)
+			(inSkeleton y s)
+			(inSkeleton z s)
+			(inSkeleton w s)
+			(between y x z))
 		(or	(between y x w)
 			(between z x w))))
 
 /*******************************************************************************/
 (cl-comment '======= SEMANTIC CONDITION: skeletons')
 /*******************************************************************************/
+
+(cl-comment 'Disjointness axiom for skeleton.')
+(forall (x)
+	(if (skeleton x)
+		(not (or (atom x)(bond x)(group x)))))
 
 (cl-comment 'A skeleton contains a functional group.')
 (forall (s)
