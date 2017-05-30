@@ -17,17 +17,18 @@
 /*******************************************************************************/
 (cl-comment '======= SEMANTIC CONDITION: most - basic intuitions =======')
 /*******************************************************************************/
-		
+
+(cl-comment 'If two groups are related by the mol relation, they are both the same group.')
 (forall (x y)
 	(if (and (mol x y)(group x)(group y))
 		(= x y)))
 		
-(cl-comment 'Disjointness axioms for atom(x), bond(x), group(x), and skeleton(x).')
-
+(cl-comment 'Disjointness axiom.')
 (forall (x)
 	(if (atom x)
 		(not (or (bond x)(group x)))))
 
+(cl-comment 'Disjointness axiom.')
 (forall (x)
 	(if (bond x)
 		(not (group x))))
@@ -207,6 +208,7 @@
 				(spiro g1 g2 a2)
 				(not (= a1 a2))))))
 
+(cl-comment 'For a bond found in two groups, it must mean the two groups are spiroed at an atom common between them.')
 (forall (a1 a2 a3 b g1 g2)
 	(if	(and (atom a1)(atom a2)(atom a3)
 			(group g1)(group g2)(not (= g1 g2))
@@ -220,11 +222,7 @@
 			(= a1 a3)
 			(= a2 a3))))
 
-(cl-comment '==================================')
-(cl-comment 'FUSION')
-(cl-comment 'Two distinct atoms are shared between the groups which are in a bond.')
-(cl-comment '==================================')
-
+(cl-comment 'A fused atom is in at most two groups. Uniqueness of fusion connection.')
 (forall (a1 a2 a3 g1 g2)
     (if (and (fusedAtom a1 g1 g2)(fusedAtom a1 g1 g2)(fusedAtom a3 g1 g2))
         (or (= a1 a2)(= a1 a3)(= a2 a3))))
@@ -237,11 +235,6 @@
             	(fusedAtom a2 g1 g2)
             	(not (= a1 a2))))))
 
-(cl-comment '==================================')
-(cl-comment 'SPIRO')
-(cl-comment 'An atom is shared')
-(cl-comment '==================================')
-
 (cl-comment 'Uniqueness of spiro connection.')
 (exists (a1)
     (forall (g1 g2 a2)
@@ -249,20 +242,13 @@
         		(spiro g1 g2 a2))
         (= a1 a2))))
 
-(cl-comment '==================================')
-(cl-comment 'TETHER')
-(cl-comment 'No atoms are shared')
-(cl-comment 'Groups are bonded together by a bond between each group')
-(cl-comment '==================================')
-
 (cl-comment 'Uniqueness of tether connection.')
 (exists (b1)
     (forall (g1 g2 b2)
         (if (and (tether g1 g2 b1)(tether g1 g2 b2))
         (= b1 b2))))
 
-(cl-comment 'enforce unique fusion')
-(cl-comment 'If two rings share more than one bond, then they are connected by tethering.')
+(cl-comment 'Enforce unique fusion: If two rings share more than one bond, then they are connected by tethering.')
 (forall (g1 g2 b1 b2)
 	(if (and (ring g1)(ring g2)
 		(not (= g1 g2))(not (= b1 b2))
@@ -286,9 +272,7 @@
 		(exists (b)
 			(and (bond b)(mol b g1)(mol b g2)))))
 		
-		
-(cl-comment 'There do not exist two functional groups x and y, and 3 atoms such that those three atoms are in functional groups x and y.')
-(cl-comment 'Any two functional groups intersect at AT MOST two atoms.')
+(cl-comment 'There do not exist two functional groups x and y, and 3 atoms such that those three atoms are in functional groups x and y. Any two functional groups intersect at AT MOST two atoms.')
 (not (exists (x y a b c)
 	(and (group x)
 			(group y)
@@ -320,8 +304,7 @@
 					(mol b g1)(mol b g2)
 					(mol a1 b)(mol a2 b)))))
 
-(cl-comment 'Functional groups cannot be coextensive.')
-(cl-comment 'Two groups cannot have the exact same set of atoms.')
+(cl-comment 'Functional groups cannot be coextensive. Two groups cannot have the exact same set of atoms.')
 (forall (g1 g2 a1 a2)
 	(if (and (group g1)(group g2)(not (= g1 g2))
 			(atom a1)(atom a2)(not (= a1 a2))
@@ -332,6 +315,7 @@
 (cl-comment '========== MOST_ATTACHMENT DEFINITIONS ==========')
 /*******************************************************************************/
 
+(cl-comment 'Definition for fusion')
 (forall (g1 g2)
     (iff (fused g1 g2)
     	(and (group g1)(group g2)(not (= g1 g2))
@@ -353,6 +337,7 @@
                 	(mol a1 b1)(mol a1 b2)
                 	(mol b1 g1)(mol b2 g2))))))
 
+(cl-comment 'Definition for spiro')
 (forall (g1 g2 a)
     (iff (spiro g1 g2 a)
     	(and (group g1)(group g2)(atom a)(not (= g1 g2))
@@ -363,6 +348,7 @@
 					(mol b1 g1)(not (mol b1 g2))
 					(mol b2 g2)(not (mol b2 g1)))))))
 
+(cl-comment 'Definition for tether: groups are bonded together by a bond between each group')
 (forall (g1 g2 b)
     (iff (tether g1 g2 b)
             (and (group g1)(group g2)(bond b)(not (= g1 g2))
@@ -372,6 +358,7 @@
 						(mol a1 b)(mol a2 b)
 						(not (mol b g1))(not (mol b g2)))))))
 
+(cl-comment 'Definition for bridge')
 (forall (x)
 	(iff (bridge x)
 		(exists (y)
@@ -388,6 +375,7 @@
 				(mol a b2)
 				(not (= b1 b2))))))
 
+(cl-comment 'If two groups are attached together, they must be attached via fusion, spiro, or tether.')
 (forall (g1 g2)
 	(iff (attached g1 g2)
 		(or (fused g1 g2)
@@ -398,6 +386,7 @@
 (cl-comment '======= SEMANTIC CONDITION: ringBond - remaining paths are chains')
 /*******************************************************************************/
 
+(cl-comment 'If a bond is a ringbond, then it must be in a ring.')
 (forall (b)
 	(if (ringBond b)
 		(exists (g)
@@ -437,6 +426,7 @@
 (cl-comment '======= SEMANTIC CONDITION: semilinear betweenness / spanning tree')
 /*******************************************************************************/
 
+(cl-comment 'Atoms are between themselves.')
 (forall (x y z)
 	(if (between x y z)
 		(and (atom x)(atom y)(atom z))))
@@ -451,6 +441,7 @@
 			(between x y z))
 		(between z y x)))
 
+(cl-comment 'Atoms in skeletons are between themselves.')
 (forall (x y z s)
 	(if (and (skeleton s)
 			(atom x)(atom y)(atom z)
@@ -518,13 +509,13 @@
 				(not (exists (w)
 					(and (skeleton w)(mol y w)(not (= w y)))))))))
 
-
 (cl-comment 'what kind of incidence relations should we include?')							
 
 /*******************************************************************************/
 (cl-comment '======= SEMANTIC CONDITION: scaffolds')
 /*******************************************************************************/
 
+(cl-comment 'Skeletons are incident with each other')
 (forall (x y)
 	(if (and (mol x y)(skeleton x)(skeleton y))
 		(= x y)))
@@ -555,6 +546,7 @@
 				(if (and (group g)(mol g x))
 					(chain g))))))
 
+(cl-comment 'part relation for skeletons')
 (forall (x y)
 	(iff (part x y)
 		(and (skeleton x)
