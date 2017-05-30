@@ -23,12 +23,12 @@
 	(if (and (mol x y)(group x)(group y))
 		(= x y)))
 		
-(cl-comment 'Disjointness axiom.')
+(cl-comment 'Disjointness axiom for atoms.')
 (forall (x)
 	(if (atom x)
 		(not (or (bond x)(group x)))))
 
-(cl-comment 'Disjointness axiom.')
+(cl-comment 'Disjointness axiom for bonds.')
 (forall (x)
 	(if (bond x)
 		(not (group x))))
@@ -112,7 +112,7 @@
 (cl-comment '========== MOST_ROOT DEFINITIONS ==========')
 /*******************************************************************************/
 
-(cl-comment 'Definition for chain.')
+(cl-comment 'Definition for chain. A chain is a group that contains an end and no forks.')
 (forall (x)
 	(iff (chain x)
 		(and (group x)
@@ -122,7 +122,7 @@
 						(if (and (atom w)(mol w x))
 							(not (fork w)))))))))
 
-(cl-comment 'Definition for ring.')
+(cl-comment 'Definition for ring. A ring is a group that contains atoms that are not ends and not forks.')
 (forall (x)
 	(iff (ring x)
 		(and (group x)
@@ -130,7 +130,7 @@
 				(if (and (atom y)(mol y x))
 					(and (not (end y x))(not (fork y))))))))
 				
-(cl-comment 'Definition for an end atom in a linear functional group.')
+(cl-comment 'Definition for an end atom. An end is in at most one bond in a group.')
 (forall (x y)
 	(iff (end x y)
 		(and (atom x)(group y)(mol x y)
@@ -141,7 +141,7 @@
 						(mol z y)(mol w y))
 					(= w z))))))
 
-(cl-comment 'Definition for a fork atom in a branched functional group: an atom in the same functional group has at least 3 other atoms in bonds.')
+(cl-comment 'Definition for a fork atom. An atom in the same functional group has at least 3 other atoms in bonds.')
 (forall (x y)
 	(iff (fork x)
 		(and (atom x)
@@ -175,7 +175,7 @@
 					(mol y x)(mol z x))
 				(doublebond b y z))))))
 
-(cl-comment 'Alternating Group Definition: each atom is in a single and a double bond with another atom in the functional group.')
+(cl-comment 'In an alternating group, each atom is in a single and a double bond with another atom in the functional group.')
 (forall (x y)
 	(iff (alternating_group x)
 		(if (and (group x)(atom y)(mol x y))
@@ -186,7 +186,7 @@
 					(doublebond b2 y a2)
 					(mol a1 x)(mol a2 x))))))
 
-(cl-comment 'Trivial Group: a functional group for single atoms.')
+(cl-comment 'A trivial group is a group containing a single atom.')
 (forall (x)
 	(iff (trivialgroup x)
 		(and (group x)
@@ -227,7 +227,7 @@
     (if (and (fusedAtom a1 g1 g2)(fusedAtom a1 g1 g2)(fusedAtom a3 g1 g2))
         (or (= a1 a2)(= a1 a3)(= a2 a3))))
 
-(cl-comment 'Something we should be able to prove.')
+(cl-comment 'For two groups that are fused together, there is a unique fused atom.  Something we should be able to prove.')
 (forall (g1 g2)
     (if (fused g1 g2)
         (exists (a1 a2)
@@ -524,7 +524,7 @@
 (cl-comment '========== SCAFFOLD DEFINITIONS ==========')
 /*******************************************************************************/
 
-(cl-comment 'Scaffold Definition')
+(cl-comment 'A scaffold consists of at least one ring and chains that are attached to each other in some way.')
 (forall (x)
 	(iff (scaffold x)
 		(and (skeleton x)
@@ -537,8 +537,7 @@
 							(attached y g)
 							(attached z g))))))))
 
-
-(cl-comment 'Linear Skeleton Definition')
+(cl-comment 'A linear skeleton is a skeleton that only contains chains.')
 (forall (x)
 	(iff (linearskeleton x)
 		(and (skeleton x)
@@ -546,7 +545,7 @@
 				(if (and (group g)(mol g x))
 					(chain g))))))
 
-(cl-comment 'part relation for skeletons')
+(cl-comment 'Two skeletons are part of each other if they are connected in some way.')
 (forall (x y)
 	(iff (part x y)
 		(and (skeleton x)
