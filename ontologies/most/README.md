@@ -4,7 +4,7 @@ This repository directory contains the theories found in the MOlecular Structure
 
 The ontology represents atoms, bonds, functional groups, and molecules as things in the ontology, and imports theories from [molecular_graph](https://github.com/gruninger/colore/blob/master/ontologies/molecular_graph/).
 
-![most hierarchy](/most_semantic_conditions.jpg)
+![most hierarchy](most_semantic_conditions.jpg)
 
 # currently refactoring!
 # check the archive directory for old copies of the working axioms
