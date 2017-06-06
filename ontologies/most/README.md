@@ -9,13 +9,13 @@ The ontology represents atoms, bonds, functional groups, and molecules as things
 # currently refactoring!
 # check the archive directory for old copies of the working axioms
 
-# major changes
+# Major Changes
 ================================================
-april 21, 2017: renamed all inBond/inGroup/etc. relations to mol(x,y) - all axioms will now require sort constraints
+- april 21, 2017: renamed all inBond/inGroup/etc. relations to mol(x,y) - all axioms will now require sort constraints
 
-# major design decisions
+# Major Design Decisions
 ================================================
-ontology allows for:
+The ontology allows for:
 - unique fusion
 - unique spiro
 - unique tether
