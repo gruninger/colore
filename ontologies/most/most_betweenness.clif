@@ -10,21 +10,41 @@
 
 (cl-text http://colore.oor.net/most/most_betweenness.clif
 
+(cl-comment 'Atoms are between themselves.')
 (forall (x y z)
 	(if (between x y z)
 		(and (atom x)(atom y)(atom z))))
 
 (cl-comment 'Axioms from between/semilinear theory with sort constraints.')
-(forall (x y z)
-	(if	(between x y z)
+(forall (x y z s)
+	(if (and (skeleton s)
+			(atom x)(atom y)(atom z)
+			(inSkeleton x s)
+			(inSkeleton y s)
+			(inSkeleton z s)
+			(between x y z))
 		(between z y x)))
 
-(forall (x y z)
-	(if (and (between y x z)(between x y z))
+(cl-comment 'Atoms in skeletons are between themselves.')
+(forall (x y z s)
+	(if (and (skeleton s)
+			(atom x)(atom y)(atom z)
+			(inSkeleton x s)
+			(inSkeleton y s)
+			(inSkeleton z s)
+			(between y x z)
+			(between x y z))
 		(= x y)))
-		
-(forall (x y z w)
-	(if	(between y x z)
+
+(cl-comment 'At most two atoms are between each other.')
+(forall (x y z w s)
+	(if	(and (skeleton s)
+			(atom x)(atom y)(atom z)
+			(inSkeleton x s)
+			(inSkeleton y s)
+			(inSkeleton z s)
+			(inSkeleton w s)
+			(between y x z))
 		(or	(between y x w)
 			(between z x w))))
 

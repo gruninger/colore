@@ -15,7 +15,7 @@
 (cl-comment 'CLIF file containing all of the MoSt ontology axioms.  We will modularize this later.')
 
 /*******************************************************************************/
-(cl-comment '======= SEMANTIC CONDITION: most - basic intuitions =======')
+(cl-comment '======= SEMANTIC CONDITION: most - basic intuitions (most_root) =======')
 /*******************************************************************************/
 
 (cl-comment 'If two groups are related by the mol relation, they are both the same group.')
@@ -101,7 +101,7 @@
     		(mol x y)(mol y g)(mol x b)(mol y b))
         (mol b g)))
 
-(cl-comment 'most version of planar shadow axiom in tripartite incidence')
+(cl-comment 'most version of planar shadow axiom in tripartite incidence -- need ENG version')
 (forall (b g)
 	(if	(and (bond b)(group g)(not (mol b g)))
 		(exists (a)
@@ -198,7 +198,7 @@
 (cl-comment '======= SEMANTIC CONDITION: attachment axioms')
 /*******************************************************************************/
 
-(cl-comment 'most version of twin junction in tripartite incidence')
+(cl-comment 'most version of twin junction in tripartite incidence -- need ENG version')
 (forall (b g1 g2)
 	(if	(and (group g1)(group g2)
 			(not (= g1 g2))
@@ -257,7 +257,7 @@
 		(mol b1 g2)(mol b2 g2))
 		(and (tether g1 g2 b1)(tether g1 g2 b2))))
 
-(cl-comment 'most version of weak face intersect in tripartite incidence')
+(cl-comment 'most version of weak face intersect in tripartite incidence -- need ENG version')
 (forall (g1 g2 a1 a2)
 	(if	(and	(group g1)
 			(group g2)
@@ -315,7 +315,7 @@
 (cl-comment '========== MOST_ATTACHMENT DEFINITIONS ==========')
 /*******************************************************************************/
 
-(cl-comment 'Definition for fusion')
+(cl-comment 'Definition for fusion: two groups are fused together if there is one bond shared between them.')
 (forall (g1 g2)
     (iff (fused g1 g2)
     	(and (group g1)(group g2)(not (= g1 g2))
@@ -326,7 +326,7 @@
     				(mol a2 g1)(mol a2 g2)
     				(mol b g1)(mol b g2))))))
 
-(cl-comment 'Definition of fused atom - an atom that is in bonds of different groups.')
+(cl-comment 'Definition of fused atom: an atom that is in bonds of different groups.')
 (forall (a1 g1 g2)
     (iff (fusedAtom a1 g1 g2)
         (and (atom a1)(group g1)(group g2)
@@ -337,7 +337,7 @@
                 	(mol a1 b1)(mol a1 b2)
                 	(mol b1 g1)(mol b2 g2))))))
 
-(cl-comment 'Definition for spiro')
+(cl-comment 'Definition for spiro: two groups are spiroed together if they share one atom between them.')
 (forall (g1 g2 a)
     (iff (spiro g1 g2 a)
     	(and (group g1)(group g2)(atom a)(not (= g1 g2))
@@ -358,7 +358,7 @@
 						(mol a1 b)(mol a2 b)
 						(not (mol b g1))(not (mol b g2)))))))
 
-(cl-comment 'Definition for bridge')
+(cl-comment 'Definition for bridge: a bridge is a chain in a ring where one end is spiroed to the ring and the other is tethered to the ring.')
 (forall (x)
 	(iff (bridge x)
 		(exists (y)
@@ -412,7 +412,7 @@
 (cl-comment '========== MOST_RINGBOND DEFINITIONS ==========')
 /*******************************************************************************/
 
-(cl-comment 'Definitions for ringBond')
+(cl-comment 'Definitions for ringBond: a bond that is in a ring with no other atoms between it.')
 (forall (b)
 	(iff (ringBond b)
 			(and (bond b)
@@ -451,7 +451,8 @@
 			(between y x z)
 			(between x y z))
 		(= x y)))
-		
+
+(cl-comment 'At most two atoms are between each other.')
 (forall (x y z w s)
 	(if	(and (skeleton s)
 			(atom x)(atom y)(atom z)
@@ -515,7 +516,7 @@
 (cl-comment '======= SEMANTIC CONDITION: scaffolds')
 /*******************************************************************************/
 
-(cl-comment 'Skeletons are incident with each other')
+(cl-comment 'Skeletons are incident with each other -- check this?')
 (forall (x y)
 	(if (and (mol x y)(skeleton x)(skeleton y))
 		(= x y)))

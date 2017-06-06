@@ -8,14 +8,16 @@
 * Carmen Chui, Michael Gruninger
 *******************************************************************************/
 
-(cl-text http://colore.oor.net/most/scaffold.clif
+(cl-text http://colore.oor.net/most/def_most_attachment.clif
 
-(cl-imports http://colore.oor.net/most/most_skeleton.clif)
-(cl-imports http://colore.oor.net/most/def_most_scaffold.clif)
-
-(cl-comment 'Skeletons are incident with each other')
-(forall (x y)
-	(if (and (mol x y)(skeleton x)(skeleton y))
-		(= x y)))
+(cl-comment 'Definitions for ringBond: a bond that is in a ring with no other atoms between it.')
+(forall (b)
+	(iff (ringBond b)
+			(and (bond b)
+				(exists (a1 a2)
+					(and (atom a1)(atom a2)(mol a1 b)(mol a2 b)
+				(not (exists (a3)
+					(and (atom a3)
+						(or (between a3 a1 a2)(between a1 a2 a3))))))))))
 
 )

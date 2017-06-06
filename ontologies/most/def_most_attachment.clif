@@ -1,0 +1,82 @@
+/*******************************************************************************
+* Copyright (c) University of Toronto and others. All rights reserved.
+* The content of this file is licensed under the Creative Commons Attribution-
+* ShareAlike 3.0 Unported license. The legal text of this license can be
+* found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+*
+* Contributors:
+* Carmen Chui, Michael Gruninger
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/most/def_most_attachment.clif
+
+(cl-imports http://colore.oor.net/most/most_root.clif)
+
+(cl-comment 'Definition for fusion: two groups are fused together if there is one bond shared between them.')
+(forall (g1 g2)
+    (iff (fused g1 g2)
+    	(and (group g1)(group g2)(not (= g1 g2))
+    		(exists (a1 a2 b)
+    			(and (atom a1)(atom a2)(not (= a1 a2))
+    				(mol a1 b)(mol a2 b)
+    				(mol a1 g1)(mol a1 g2)
+    				(mol a2 g1)(mol a2 g2)
+    				(mol b g1)(mol b g2))))))
+
+(cl-comment 'Definition of fused atom: an atom that is in bonds of different groups.')
+(forall (a1 g1 g2)
+    (iff (fusedAtom a1 g1 g2)
+        (and (atom a1)(group g1)(group g2)
+        	(mol a1 g1)(mol a1 g2)
+        	(not (= g1 g2))
+            (exists (b1 b2)
+                (and (bond b1)(bond b2)
+                	(mol a1 b1)(mol a1 b2)
+                	(mol b1 g1)(mol b2 g2))))))
+
+(cl-comment 'Definition for spiro: two groups are spiroed together if they share one atom between them.')
+(forall (g1 g2 a)
+    (iff (spiro g1 g2 a)
+    	(and (group g1)(group g2)(atom a)(not (= g1 g2))
+    		(exists (b1 b2)
+				(and (bond b1)(bond b2)
+					(mol a g1)(mol a g2)
+					(mol a b1)(mol a b2)
+					(mol b1 g1)(not (mol b1 g2))
+					(mol b2 g2)(not (mol b2 g1)))))))
+
+(cl-comment 'Definition for tether: groups are bonded together by a bond between each group')
+(forall (g1 g2 b)
+    (iff (tether g1 g2 b)
+            (and (group g1)(group g2)(bond b)(not (= g1 g2))
+            	(exists (a1 a2)
+					(and (atom a1)(atom a2)
+						(mol a1 g1)(mol a2 g2)
+						(mol a1 b)(mol a2 b)
+						(not (mol b g1))(not (mol b g2)))))))
+
+(cl-comment 'Definition for bridge: a bridge is a chain in a ring where one end is spiroed to the ring and the other is tethered to the ring.')
+(forall (x)
+	(iff (bridge x)
+		(exists (y)
+			(and (ring y)(chain x)
+				(exists (a) (and (atom a)(spiro x y a)))
+				(exists (b) (and (bond b)(tether x y b)))))))
+
+(cl-comment 'Definition: A relation to handle bridges -- for two bonds that intersect, there exists an atom that is in both bonds, and the bonds are not equivalent.')
+(forall (b1 b2)
+	(iff (intersects b1 b2)
+		(exists (a)
+			(and (atom a)
+				(mol a b1)
+				(mol a b2)
+				(not (= b1 b2))))))
+
+(cl-comment 'If two groups are attached together, they must be attached via fusion, spiro, or tether.')
+(forall (g1 g2)
+	(iff (attached g1 g2)
+		(or (fused g1 g2)
+			(exists (a) (spiro g1 g2 a))
+			(exists (b) (tether g1 g2 b)))))
+
+)
