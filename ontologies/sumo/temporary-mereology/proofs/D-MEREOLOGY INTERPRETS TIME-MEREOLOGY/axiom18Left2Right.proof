@@ -1,0 +1,45 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 8328 was started by Cleo1 on Cleo1-PC,
+Tue Jun 13 13:44:10 2017
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.03 (+ 0.00) seconds.
+% Length of proof is 25.
+% Level of proof is 5.
+% Maximum clause weight is 8.
+% Given clauses 46.
+
+4 (all x all y (Ov(y,x) <-> (exists z (P(z,y) & P(z,x))))) # label(non_clause).  [assumption].
+6 (all x all y (T(y) & P(x,y) -> T(x))) # label(non_clause).  [assumption].
+8 (all x (TimeInterval(x) <-> T(x))) # label(non_clause).  [assumption].
+9 (all x all y (temporalPart(x,y) <-> P(x,y))) # label(non_clause).  [assumption].
+10 (all x all y (overlapsTemporally(x,y) <-> T(x) & T(y) & Ov(x,y))) # label(non_clause).  [assumption].
+11 (all x all y (TimeInterval(x) & TimeInterval(y) -> (overlapsTemporally(x,y) -> (exists z (TimeInterval(z) & temporalPart(z,x) & temporalPart(z,y)))))) # label(non_clause) # label(goal).  [goal].
+18 TimeInterval(x) | -T(x).  [clausify(8)].
+19 -TimeInterval(x) | T(x).  [clausify(8)].
+21 TimeInterval(c2).  [deny(11)].
+22 -TimeInterval(x) | -temporalPart(x,c1) | -temporalPart(x,c2).  [deny(11)].
+26 -overlapsTemporally(x,y) | Ov(x,y).  [clausify(10)].
+27 overlapsTemporally(c1,c2).  [deny(11)].
+31 -Ov(x,y) | P(f1(y,x),x).  [clausify(4)].
+32 -Ov(x,y) | P(f1(y,x),y).  [clausify(4)].
+34 -T(x) | -P(y,x) | T(y).  [clausify(6)].
+36 temporalPart(x,y) | -P(x,y).  [clausify(9)].
+47 T(c2).  [resolve(21,a,19,a)].
+48 -temporalPart(x,c1) | -temporalPart(x,c2) | -T(x).  [resolve(22,a,18,a)].
+51 Ov(c1,c2).  [resolve(27,a,26,a)].
+74 P(f1(c2,c1),c2).  [resolve(51,a,32,a)].
+75 P(f1(c2,c1),c1).  [resolve(51,a,31,a)].
+104 temporalPart(f1(c2,c1),c2).  [resolve(74,a,36,b)].
+105 T(f1(c2,c1)).  [resolve(74,a,34,b),unit_del(a,47)].
+116 temporalPart(f1(c2,c1),c1).  [resolve(75,a,36,b)].
+152 $F.  [resolve(104,a,48,b),unit_del(a,116),unit_del(b,105)].
+
+============================== end of proof ==========================
