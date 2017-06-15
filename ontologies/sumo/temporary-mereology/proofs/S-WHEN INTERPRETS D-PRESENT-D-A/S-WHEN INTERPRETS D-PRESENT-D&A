@@ -1,0 +1,127 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_megs, 4000).
+  assign(max_seconds, 60).
+end_if.
+
+if(Prover9). % Additional input for Prover9
+assign(max_seconds, -1).
+end_if.
+
+if(Mace4).   % Additional input for Mace4
+% Additional input for Mace4
+% Additional input for Mace4
+% Additional input for Mace4
+% Additional input for Mace4
+assign(max_seconds, -1).
+end_if.
+
+formulas(assumptions).
+
+%%-------------------------------------------------------------------------------------------------
+%% TIME MEREOLOGY
+%%------------------------------------------------------------------------------------------------
+all x all y ((temporalPart(x,y) & temporalPart(y,x)) -> (x=y)).%13
+all x all y all z ((temporalPart(x,y) & temporalPart(y,z))-> temporalPart(x,z)).%14
+all x all y (overlapsTemporally(x,y)-> TimeInterval(x) & TimeInterval(y)).%15
+all x (TimeInterval(x)-> overlapsTemporally(x,x)).%16
+all x all y (overlapsTemporally(x,y)-> overlapsTemporally(y,x)).%17
+all x all y (TimeInterval(x) & TimeInterval(y) -> (overlapsTemporally(x,y)->(exists z (TimeInterval(z) & temporalPart(z,x) & temporalPart(z,y))))).%18->
+all x all y (TimeInterval(x) & TimeInterval(y) ->((exists z (TimeInterval(z) & temporalPart(z,x) & temporalPart(z,y)))->overlapsTemporally(x,y))).%18<-
+all x (TimeInterval(x)-> temporalPart(x,x)).%19
+%-------------------------------------------------------------------------------------------------
+% SUMO TIME  (includes TIME MEREOLOGY)
+%-------------------------------------------------------------------------------------------------
+all x all y (beforeOrEqual(x,y)-> TimePoint(x) & TimePoint(y)).%1
+all x (TimePoint(x)-> beforeOrEqual(x,x)).%2
+all x all y (beforeOrEqual(x,y) & beforeOrEqual(y,x)) -> (x=y).%3
+all x all y all z ((beforeOrEqual(x,y) & beforeOrEqual(y,z))-> beforeOrEqual(x,z)).%4
+all x all y (beforeOrEqual(x,y)->(before(x,y) | (x=y))).%5
+all x all y (before(x,y)-> TimePoint(x) & TimePoint(y)).%6
+all x (TimePoint(x)->(-(before(x,x)))).%7
+all x all y all z ((before(x,y) & before(y,z))-> before(x,z)).%8
+all x all y (TimePoint(x) & TimePoint(y) -> (before(x,y) | before(y,x) | (x=y))).%9 ADDED
+all x all y (before(x,y)-> beforeOrEqual(x,y)).%10
+all x all y all z (temporallyBetween(x,y,z)-> TimePoint(x) & TimePoint(y) & TimePoint(z)).%11
+all x all y all z (temporallyBetween(x,y,z)-> temporallyBetweenOrEqual(x,y,z)).%12
+all y all z all x (temporallyBetween(x,y,z)<->(before(x,y) & before(y,z))).%13 
+all y all z all x (temporallyBetweenOrEqual(x,y,z)<->(beforeOrEqual(x,y) & beforeOrEqual(y,z))).%14
+all x all y all z (temporallyBetweenOrEqual(x,y,z)-> TimePoint(x) & TimePoint(y) & TimePoint(z)).%15
+TimePoint(PositiveInfinity).%16
+TimePoint(NegativeInfinity).%17
+before(NegativeInfinity, PositiveInfinity).%ADDED
+all x (TimePoint(x) & (-(x=PositiveInfinity))->before(x,PositiveInfinity)).%18
+all x (TimePoint(x) & (-(x=NegativeInfinity))->before(NegativeInfinity,x)).%19
+%all x (TimePoint(x) & (-(x=PositiveInfinity))->(exists y temporallyBetween(x,y,PositiveInfinity))).%20
+%all x (TimePoint(x) & (-(x=NegativeInfinity))->(exists y temporallyBetween(NegativeInfinity,y,x))).%21
+%-------------------------------------------------------------------------------------------------
+all x (TimeInterval(x) -> TimePoint(BeginFn(x)) & TimePoint(EndFn(x))).%48
+all x all y (TimePoint(x) & TimePoint(y) & before(x,y) ->TimeInterval(TimeIntervalFn(x,y))).%49
+all x (TimePosition(x)<-> TimeInterval(x) | TimePoint(x)).%50
+all x (TimeInterval(x)-> -(TimePoint(x))).%51
+all x all y (temporalPart(x,y)-> TimePosition(x) & TimePosition(y)).%52
+all x (TimePosition(x)-> temporalPart(x,x)). %53
+all x all y (temporalPart(x,y) & TimePoint(y)-> (x=y)).%54 ADDED
+all x (TimePoint(x) ->(exists y (TimeInterval(y) & temporalPart(x,y)))). %55
+all x (TimeInterval(x)->(exists y (TimePoint(y)  & temporalPart(y,x)))). %56
+
+all x all y all z all t (TimePoint(x) & TimePoint(y) & TimeInterval(z) & (TimeIntervalFn(x,y)=z) & TimePoint(t)
+-> (temporallyBetweenOrEqual(x,t,y)<->temporalPart(t,z))).%57 
+all x all y all z (TimePoint(x) & TimePoint(y) & TimeInterval(z) & (TimeIntervalFn(x,y)=z)->(BeginFn(z)=x) & (EndFn(z)=y)).%58
+
+all x all y all z all t(TimeInterval(x) & TimeInterval(y) & TimePoint(z) & TimePoint(t) ->
+((BeginFn(x)=z) & (BeginFn(y)=z) & (EndFn(x)=t) & (EndFn(y)=t)-> (x=y))).%59
+
+all x all y (TimeInterval(x) & TimePoint(y)  &(BeginFn(x)=y) -> all z(temporalPart(z,x) & TimePoint(z)  & -(z=y)->before(y,z))).%60
+all x all y (TimeInterval(x) & TimePoint(y)  &(EndFn(x)=y) -> all z(temporalPart(z,x) & TimePoint(z) & -(z=y)->before(z,y))).%61
+
+all x(TimeInterval(x) -> before(BeginFn(x),EndFn(x))).%62
+
+%%-------------------------------------------------------------------------------------------------
+%S-PRESENT
+%%-------------------------------------------------------------------------------------------------
+all x all y (time(x,y)-> Physical(x) & TimePosition(y)).%31
+all x all y (time(x,y)-> -(time(y,x))).%32
+all x (Physical(x)->exists y(TimePosition(y) & time(x,y))).%33
+all x (TimePosition(x)->(-Physical(x))). % SUMO disjoint categories
+% Translations D-PRESENT into S-PRESENT
+all x (T(x) <-> TimePosition(x)).
+all x all y (PRE(x,y)<-> time(x,y)).
+all x (O(x)<-> Physical(x)).
+all x (E(x)<-> Physical(x)).
+%%-------------------------------------------------------------------------------------------------
+%SUMO WHEN
+%%-------------------------------------------------------------------------------------------------
+all x (Physical(x)-> TimeInterval(WhenFn(x))).%34       400.1
+all x all t (Physical(x) -> (temporalPart(t,WhenFn(x))<-> time(x,t))).%35       376
+all t ((time(y,t) & TimePoint(t))<-> temporallyBetweenOrEqual(BeginFn(WhenFn(y)),t,EndFn(WhenFn(y)))).%36       389
+% Translations D-PRESENT-D&A into WHEN
+all x all y (P(x,y)<-> (temporalPart(x,y))).
+all y all x all z SUM(z,x,y)<-> (TimePosition(x) & TimePosition(y) & TimePosition(z) & all u (Physical(u) & time(u,x) & time(u,y) -> temporalPart(z,WhenFn(u)))).
+%%-------------------------------------------------------------------------------------------------
+
+end_of_list.
+
+formulas(goals).
+
+%%%%-------------------------------------------------------------------------------------------------
+%%%D-PRESENT
+%%%%-------------------------------------------------------------------------------------------------
+%all x all t (PRE(x,t) -> T(t) & (O(x)|E(x))). %27       A7p  RESTRICTED TO O and E
+%all x (O(x)|E(x)-> exists t (PRE(x,t))).%28     A10  ESTRICTED TO O and E
+%%%-------------------------------------------------------------------------------------------------
+%%D-PRESENT-D&A
+%%%-------------------------------------------------------------------------------------------------
+%all x all t all y ((PRE(x,t) & P(y,t))->PRE(x,y)).%29        dissectivity %A8p
+%all x all y all z all u (PRE(u,x) & PRE(u,y) & SUM(z,x,y) -> PRE(u,z)).%30      additivity %A9p
+%%-------------------------------------------------------------------------------------------------
+
+end_of_list.
+
