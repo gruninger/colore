@@ -1,0 +1,45 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 3216 was started by Cleo1 on Cleo1-PC,
+Tue Jun 13 17:53:56 2017
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.08 (+ 0.03) seconds.
+% Length of proof is 25.
+% Level of proof is 7.
+% Maximum clause weight is 9.
+% Given clauses 189.
+
+2 (all x all y all z (temporalPart(x,y) & temporalPart(y,z) -> temporalPart(x,z))) # label(non_clause).  [assumption].
+9 (all x all y (P(x,y) <-> temporalPart(x,y))) # label(non_clause).  [assumption].
+44 (all x all y (time(x,y) -> Physical(x) & TimePosition(y))) # label(non_clause).  [assumption].
+49 (all x all y (PRE(x,y) <-> time(x,y))) # label(non_clause).  [assumption].
+53 (all x all t (Physical(x) -> (temporalPart(t,WhenFn(x)) <-> time(x,t)))) # label(non_clause).  [assumption].
+55 (all x all t all y (PRE(x,t) & P(y,t) -> PRE(x,y))) # label(non_clause) # label(goal).  [goal].
+57 -P(x,y) | temporalPart(x,y).  [clausify(9)].
+58 P(c3,c2).  [deny(55)].
+99 -temporalPart(x,y) | -temporalPart(y,z) | temporalPart(x,z).  [clausify(2)].
+149 -time(x,y) | Physical(x).  [clausify(44)].
+152 -PRE(x,y) | time(x,y).  [clausify(49)].
+153 PRE(x,y) | -time(x,y).  [clausify(49)].
+155 -Physical(x) | -temporalPart(y,WhenFn(x)) | time(x,y).  [clausify(53)].
+156 -Physical(x) | temporalPart(y,WhenFn(x)) | -time(x,y).  [clausify(53)].
+159 PRE(c1,c2).  [deny(55)].
+160 -PRE(c1,c3).  [deny(55)].
+161 temporalPart(c3,c2).  [resolve(58,a,57,a)].
+222 time(c1,c2).  [resolve(159,a,152,a)].
+230 -temporalPart(c2,x) | temporalPart(c3,x).  [resolve(161,a,99,a)].
+289 -Physical(c1) | temporalPart(c2,WhenFn(c1)).  [resolve(222,a,156,c)].
+291 Physical(c1).  [resolve(222,a,149,a)].
+292 temporalPart(c2,WhenFn(c1)).  [back_unit_del(289),unit_del(a,291)].
+596 temporalPart(c3,WhenFn(c1)).  [resolve(230,a,292,a)].
+603 time(c1,c3).  [resolve(596,a,155,b),unit_del(a,291)].
+613 $F.  [resolve(603,a,153,b),unit_del(a,160)].
+
+============================== end of proof ==========================
