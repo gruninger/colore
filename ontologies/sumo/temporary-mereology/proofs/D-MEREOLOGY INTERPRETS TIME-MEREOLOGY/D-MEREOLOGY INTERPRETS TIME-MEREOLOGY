@@ -1,0 +1,44 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% D-MEREOLOGY
+all x (P(x,x)). %5
+all x all y all z (P(x,y) & P(y,z)->P(x,z)). %6
+all x all y (P(x,y) & P(y,x)->(x=y)). %7
+all y all x ((Ov(x,y) <-> exists z (P(z,x) & P(z,y)))).%8              
+all y all x all z (SUM(z,x,y)<-> all u (Ov(u,z)<->(Ov(u,x)|Ov(u,y)))).%9                 
+all x all y (T(x) & T(y) & Sum(z,x,y)-> T(z)).%11  additivityT
+% Translations SUMO TIME MEREOLOGY into DOLCE D-MEREOLOGY
+all x (TimeInterval(x) <-> T(x)).
+all x all y (temporalPart(x,y)<->P(x,y)).
+all x all y (overlapsTemporally(x,y)<->  T(x) &  T(y) & Ov(x,y)).
+
+end_of_list.
+
+formulas(goals).
+
+%%-------------------------------------------------------------------------------------------------
+%% TIME MEREOLOGY
+%%------------------------------------------------------------------------------------------------
+%all x all y ((temporalPart(x,y) & temporalPart(y,x)) -> (x=y)).%13
+%all x all y all z ((temporalPart(x,y) & temporalPart(y,z))-> temporalPart(x,z)).%14
+%all x all y (overlapsTemporally(x,y)-> TimeInterval(x) & TimeInterval(y)).%15
+%all x (TimeInterval(x)-> overlapsTemporally(x,x)).%16
+%all x all y (overlapsTemporally(x,y)-> overlapsTemporally(y,x)).%17
+%all x all y (TimeInterval(x) & TimeInterval(y) -> (overlapsTemporally(x,y)->(exists z (TimeInterval(z) & temporalPart(z,x) & temporalPart(z,y))))).%18->
+%all x all y (TimeInterval(x) & TimeInterval(y) ->((exists z (TimeInterval(z) & temporalPart(z,x) & temporalPart(z,y)))->overlapsTemporally(x,y))).%18<-
+%all x (TimeInterval(x)-> temporalPart(x,x)).%19
+
+end_of_list.
+
