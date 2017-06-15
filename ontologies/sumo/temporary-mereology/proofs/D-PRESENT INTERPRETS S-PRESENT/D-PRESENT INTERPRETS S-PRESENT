@@ -1,0 +1,52 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%%-------------------------------------------------------------------------------------------------
+%% D-MEREOLOGY
+%%------------------------------------------------------------------------------------------------
+all x (T(x)->P(x,x)). %5
+all x all y all z (P(x,y) & P(y,z)->P(x,z)). %6
+all x all y (P(x,y) & P(y,x)->(x=y)). %7
+all y all x ((Ov(x,y) <-> exists z (P(z,x) & P(z,y)))).%8              
+all y all x all z (SUM(z,x,y)<-> all u (Ov(u,z)<->(Ov(u,x)|Ov(u,y)))).%9                 
+all x all y (T(x) & T(y) & SUM(z,x,y)-> T(z)).%10  additivityT
+% Translations SUMO TIME MEREOLOGY into DOLCE D-MEREOLOGY
+all x (TimeInterval(x) <-> T(x)).
+all x all y (temporalPart(x,y)<->P(x,y)).
+all x all y (overlapsTemporally(x,y)<->  T(x) &  T(y) & Ov(x,y)).
+%%-------------------------------------------------------------------------------------------------
+%D-PRESENT
+%%-------------------------------------------------------------------------------------------------
+all x all t (PRE(x,t) -> T(t) & (O(x)|E(x))). %27       A7p  RESTRICTED TO O and E
+all x (O(x)|E(x)-> exists t (PRE(x,t))).%28     A10  ESTRICTED TO O and E
+all x (T(x)->(-(O(x)|E(x)))). % SUMO disjoint categories
+% Translations S-PRESENT into D-PRESENT
+all x (Physical(x) <-> O(x)|E(x)).
+all x (TimePosition(x) <-> T(x)).
+all x all y (time(x,y)<-> PRE(x,y)).
+
+end_of_list.
+
+formulas(goals).
+
+%%%-------------------------------------------------------------------------------------------------
+%%S-PRESENT
+%%%-------------------------------------------------------------------------------------------------
+%all x all y (time(x,y)-> Physical(x) & TimePosition(y)).%31
+%all x all y (time(x,y)-> -(time(y,x))).%32
+%all x (Physical(x)->exists y(TimePosition(y) & time(x,y))).%33
+%%%-------------------------------------------------------------------------------------------------
+
+end_of_list.
+
