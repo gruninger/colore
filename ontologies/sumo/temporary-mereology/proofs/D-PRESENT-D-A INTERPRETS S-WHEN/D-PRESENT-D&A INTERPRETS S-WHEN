@@ -1,0 +1,74 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_megs, 4000).
+  assign(max_seconds, 60).
+end_if.
+
+if(Prover9). % Additional input for Prover9
+assign(max_seconds, -1).
+end_if.
+
+if(Mace4).   % Additional input for Mace4
+% Additional input for Mace4
+% Additional input for Mace4
+% Additional input for Mace4
+% Additional input for Mace4
+assign(max_seconds, -1).
+end_if.
+
+formulas(assumptions).
+
+%%-------------------------------------------------------------------------------------------------
+%% D-MEREOLOGY
+%%------------------------------------------------------------------------------------------------
+all x (T(x)->P(x,x)). %5
+all x all y all z (P(x,y) & P(y,z)->P(x,z)). %6
+all x all y (P(x,y) & P(y,x)->(x=y)). %7
+all y all x ((Ov(x,y) <-> exists z (P(z,x) & P(z,y)))).%8              
+all y all x all z (SUM(z,x,y)<-> all u (Ov(u,z)<->(Ov(u,x)|Ov(u,y)))).%9                 
+all x all y (T(x) & T(y) & SUM(z,x,y)-> T(z)).%10  additivityT
+%%%%-------------------------------------------------------------------------------------------------
+%%%D-PRESENT
+%%%%-------------------------------------------------------------------------------------------------
+all x all t (PRE(x,t) -> T(t) & (O(x)|E(x))). %27       A7p  RESTRICTED TO O and E
+all x (O(x)|E(x)-> exists t (PRE(x,t))).%28     A10  ESTRICTED TO O and E
+%%%-------------------------------------------------------------------------------------------------
+%%D-PRESENT-D&A
+%%%-------------------------------------------------------------------------------------------------
+all x all t all y ((PRE(x,t) & P(y,t))->PRE(x,y)).%29        dissectivity %A8p
+all x all y all z all u (PRE(u,x) & PRE(u,y) & SUM(z,x,y) -> PRE(u,z)).%30      additivity %A9p
+%%-------------------------------------------------------------------------------------------------
+% Translations S-WHEN into D-PRESENT-D&A
+%%-------------------------------------------------------------------------------------------------
+all x all y (temporalPart(x,y)<->P(x,y)).
+all x (TimePoint(x) <-> T(x)).
+all x (TimeInterval(x) <-> T(x)).
+all x all y (when(x,y)<-> PRE(x,y) & all t(PRE(x,t)->P(t,y))).
+all x (Physical(x) <-> O(x)|E(x)).
+
+end_of_list.
+
+formulas(goals).
+
+%%%-------------------------------------------------------------------------------------------------
+%%characterization of predicate when
+%%%-------------------------------------------------------------------------------------------------
+%all x all y (when(x,y)-> Physical(x) & TimeInterval(y)).%43        when1
+%all x (Physical(x) -> exists y (TimeInterval(y) & when(x,y))).%44      when2    
+%all x all y all z(when(x,y) & when(x,z)-> (y=z)).%45       when3
+%%%-------------------------------------------------------------------------------------------------
+%%S-WHEN Relational Version (includes characterization of predicate when)
+%%%-------------------------------------------------------------------------------------------------
+%all x all t (Physical(x)& when(x,y) -> (temporalPart(t,y)<-> time(x,t))).% 35relational 376
+%all t ((time(y,t) & TimePoint(t) & when(y,v))<-> temporallyBetweenOrEqual(BeginFn(v),t,EndFn(v))).%36relational     389 -----------NOT DOLCE
+%%%-------------------------------------------------------------------------------------------------
+
+end_of_list.
+
