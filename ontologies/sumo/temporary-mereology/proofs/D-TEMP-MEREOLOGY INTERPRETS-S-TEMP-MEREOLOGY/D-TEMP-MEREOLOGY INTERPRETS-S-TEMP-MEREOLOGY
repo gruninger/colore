@@ -1,0 +1,79 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%%%-------------------------------------------------------------------------------------------------
+%%D-PRESENT
+%%%-------------------------------------------------------------------------------------------------
+all x all t (PRE(x,t) -> T(t) & (O(x)|E(x))). %27       A7p  RESTRICTED TO O and E
+all x (O(x)|E(x)-> exists t (PRE(x,t))).%28     A10  ESTRICTED TO O and E
+%%-------------------------------------------------------------------------------------------------
+%% D-MEREOLOGY
+%%------------------------------------------------------------------------------------------------
+all x (T(x)->P(x,x)). %5
+all x all y all z (P(x,y) & P(y,z)->P(x,z)). %6
+all x all y (P(x,y) & P(y,x)->(x=y)). %7
+all y all x ((Ov(x,y) <-> exists z (P(z,x) & P(z,y)))).%8              
+all y all x all z (SUM(z,x,y)<-> all u (Ov(u,z)<->(Ov(u,x)|Ov(u,y)))).%9
+all x all y (T(x) & T(y) & SUM(z,x,y)-> T(z)).%10  additivityT
+%%-------------------------------------------------------------------------------------------------
+%% D-CLOSED-MEREOLOGY  (includes D-MEREOLOGY)
+%%------------------------------------------------------------------------------------------------
+all x all y (T(y) & P(x,y)-> T(x)).%11   dissectivityT
+%%-------------------------------------------------------------------------------------------------
+%% D-TEMP-MEREOLOGY
+%-------------------------------------------------------------------------
+all x all y all t (TOv(x,y,t) <-> exists z (TP(z,x,t) & TP(z,y,t))).%53         D3p
+all x all y all t (TP(x,y,t)->PRE(x,t) & PRE(y,t)).%54             A11p
+all x all t (PRE(x,t) & O(x)->TP(x,x,t)).%55          A12p RESTRICTED TO OBJECT   Object(x)&
+all x all y all t all z (TP(x,y,t) & TP(y,z,t)->TP(x,z,t)).%56              A13p
+all x all y all t (O(y) & TP(x,y,t)-> O(x)).%57             A15p-O
+all x all y all t (CC(x,y,t) <-> TP(x,y,t) & TP(y,x,t)).%58         D4p Temp. Coincidence
+all x all y (CP(x,y) <-> exists t(PRE(y,t) & all u(PRE(y,u)->TP(x,y,u)))).%59           D5p Constant Part
+all x exists t(PRE(x,t)-> (CP(x,y)<->P(x,y))).%60               A16p
+all x all y all t all x1 all y1 (TP(x,y,t) & CC(x1,x,t) & CC(y1,y,t)-> TP(x1,y1,t)).%61             substitutivity
+% General Categories (this is supposed to exist independently of the subtheory we are working with)
+all x(O(x)|T(x)). % We have restricted D-TEMP-MEREOLOGY to categories O, E
+all x (O(x)->(-(T(x)))).  % DOLCE disjoint categories
+%%------------------------------------------------------------------------------------------------
+% Translations S-TEMP-MEREOLOGY into D-TEMP-MEREOLOGY
+all x all y all t(tOverlap(x,y,t)<-> TOv(x,y,t) & O(x) & O(y)).
+all x all y all t(tPart(x,y,t)<-> (TP(x,y,t) & O(x) & O(y))).
+all x all y all t (tCoincident(x,y,t)<->CC(x,y,t) & O(x) & O(y)).
+all x all y (part(x,y) <->CP(x,y)& O(x) & O(y)).
+all x (Object(x) <-> O(x)).
+all x all y (time(x,y)<-> PRE(x,y)).
+all x (Physical(x) <-> O(x)).
+all x (TimePosition(x) <-> T(x)).
+%%-------------------------------------------------------------------------------------------------
+
+end_of_list.
+
+formulas(goals).
+
+%%%%-------------------------------------------------------------------------------------------------
+%%%% S-TEMP-MEREOLOGY
+%%%%-------------------------------------------------------------------------
+%all x all y all t (tPart(x,y,t)-> Object(x) & Object(y) & time(x,t) & time(y,t)).%65              A11p
+%all x all t (time(x,t)& Object(x)->tPart(x,x,t)).%66                A12p
+%all x all y all t all z (tPart(x,y,t) & tPart(y,z,t)->tPart(x,z,t)).%67             A13p
+%all x all y all t(tOverlap(x,y,t)-> exists z (tPart(z,x,t) & tPart(z,y,t))).%68 ->           D3p
+%all x all y all t(exists z (tPart(z,x,t) & tPart(z,y,t))-> tOverlap(x,y,t) ).%68 <-           D3p
+%all x all y all t (tCoincident(x,y,t)-> tPart(x,y,t) & tPart(y,x,t)).%69  ->         D4p Temp. Coincidence
+%all x all y all t (tPart(x,y,t) & tPart(y,x,t)->tCoincident(x,y,t) ).%69 <-          D4p Temp. Coincidence
+%all x all y (part(x,y) -> (Object(x) & Object(y) & (all t(time(y,t)->tPart(x,y,t))))).%70 ->       D5p part
+%all x all y ((Object(x) & Object(y) & (all t(time(y,t)->tPart(x,y,t))))->part(x,y)).%70 <-       D5p part   
+%all x all y all t all x1 all y1 (tPart(x,y,t) & tCoincident(x,x1,t) & tCoincident(y,y1,t)-> tPart(x1,y1,t)).%71         substitutivity
+
+end_of_list.
+
