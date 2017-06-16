@@ -1,0 +1,139 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%-------------------------------------------------------------------------------------------------
+% TimePoints
+%-------------------------------------------------------------------------------------------------
+all x all y (beforeOrEqual(x,y)-> TimePoint(x) & TimePoint(y)).%1
+all x (TimePoint(x)-> beforeOrEqual(x,x)).%2
+all x all y (beforeOrEqual(x,y) & beforeOrEqual(y,x)) -> (x=y).%3
+all x all y all z ((beforeOrEqual(x,y) & beforeOrEqual(y,z))-> beforeOrEqual(x,z)).%4
+all x all y (beforeOrEqual(x,y)->(before(x,y) | (x=y))).%5
+all x all y (before(x,y)-> TimePoint(x) & TimePoint(y)).%6
+all x (TimePoint(x)->(-(before(x,x)))).%7
+all x all y all z ((before(x,y) & before(y,z))-> before(x,z)).%8
+all x all y (TimePoint(x) & TimePoint(y) -> (before(x,y) | before(y,x) | (x=y))).%9 ADDED
+all x all y (before(x,y)-> beforeOrEqual(x,y)).%10
+all x all y all z (temporallyBetween(x,y,z)-> TimePoint(x) & TimePoint(y) & TimePoint(z)).%11
+all x all y all z (temporallyBetween(x,y,z)-> temporallyBetweenOrEqual(x,y,z)).%12
+all y all z all x (temporallyBetween(x,y,z)<->(before(x,y) & before(y,z))).%13 
+all y all z all x (temporallyBetweenOrEqual(x,y,z)<->(beforeOrEqual(x,y) & beforeOrEqual(y,z))).%14
+all x all y all z (temporallyBetweenOrEqual(x,y,z)-> TimePoint(x) & TimePoint(y) & TimePoint(z)).%15
+TimePoint(PositiveInfinity).%16
+TimePoint(NegativeInfinity).%17
+before(NegativeInfinity, PositiveInfinity).%ADDED
+all x (TimePoint(x) & (-(x=PositiveInfinity))->before(x,PositiveInfinity)).%18
+all x (TimePoint(x) & (-(x=NegativeInfinity))->before(NegativeInfinity,x)).%19
+%all x (TimePoint(x) & (-(x=PositiveInfinity))->(exists y temporallyBetween(x,y,PositiveInfinity))).%20
+%all x (TimePoint(x) & (-(x=NegativeInfinity))->(exists y temporallyBetween(NegativeInfinity,y,x))).%21
+%-------------------------------------------------------------------------------------------------
+% Intervals Mereology
+%-------------------------------------------------------------------------------------------------
+all x (TimeInterval(x)-> temporalPart(x,x)).%53
+all x all y ((temporalPart(x,y) & temporalPart(y,x)) -> (x=y)).%22
+all x all y all z ((temporalPart(x,y) & temporalPart(y,z))-> temporalPart(x,z)).%23
+all x all y (overlapsTemporally(x,y)-> TimeInterval(x) & TimeInterval(y)).%24
+all x (TimeInterval(x)-> overlapsTemporally(x,x)).%25  
+all x all y (overlapsTemporally(x,y)-> overlapsTemporally(y,x)).%26
+all x all y (TimeInterval(x) & TimeInterval(y) -> (overlapsTemporally(x,y)->(exists z (TimeInterval(z) & temporalPart(z,x) & temporalPart(z,y))))).%27->
+all x all y (TimeInterval(x) & TimeInterval(y) ->((exists z (TimeInterval(z) & temporalPart(z,x) & temporalPart(z,y)))->overlapsTemporally(x,y))).%27<-
+%-------------------------------------------------------------------------------------------------
+% Intervals and Points Mereology
+%-------------------------------------------------------------------------------------------------
+all x (TimeInterval(x) -> TimePoint(BeginFn(x)) & TimePoint(EndFn(x))).%48
+all x all y (TimePoint(x) & TimePoint(y) & before(x,y) ->TimeInterval(TimeIntervalFn(x,y))).%49
+all x (TimePosition(x)<-> TimeInterval(x) | TimePoint(x)).%50
+all x (TimeInterval(x)-> -(TimePoint(x))).%51
+all x all y (temporalPart(x,y)-> TimePosition(x) & TimePosition(y)).%52
+all x (TimePosition(x)-> temporalPart(x,x)).%53
+all x all y (temporalPart(x,y) & TimePoint(y)-> (x=y)).%54 ADDED
+all x (TimePoint(x) ->(exists y (TimeInterval(y) & temporalPart(x,y)))).%55
+all x (TimeInterval(x)->(exists y (TimePoint(y)  & temporalPart(y,x)))).%56
+
+all x all y all z all t (TimePoint(x) & TimePoint(y) & TimeInterval(z) & (TimeIntervalFn(x,y)=z) & TimePoint(t)
+-> (temporallyBetweenOrEqual(x,t,y)<->temporalPart(t,z))).%57 
+all x all y all z (TimePoint(x) & TimePoint(y) & TimeInterval(z) & (TimeIntervalFn(x,y)=z)->(BeginFn(z)=x) & (EndFn(z)=y)).%58
+all x all y all z all t(TimeInterval(x) & TimeInterval(y) & TimePoint(z) & TimePoint(t) ->
+((BeginFn(x)=z) & (BeginFn(y)=z) & (EndFn(x)=t) & (EndFn(y)=t)-> (x=y))).%59
+all x all y (TimeInterval(x) & TimePoint(y)  &(BeginFn(x)=y) -> all z(temporalPart(z,x) & TimePoint(z)  & -(z=y)->before(y,z))).%60
+all x all y (TimeInterval(x) & TimePoint(y)  &(EndFn(x)=y) -> all z(temporalPart(z,x) & TimePoint(z) & -(z=y)->before(z,y))).%61
+all x(TimeInterval(x) -> before(BeginFn(x),EndFn(x))).%62
+all x all y (TimeInterval(x) & TimeInterval(y)->(meetsTemporally(x,y)-> EndFn(x)=BeginFn(y))).%66
+
+%all x (TimePosition(x)).%68
+all x all y (starts(x,y) <-> TimeInterval(x) & TimeInterval(y) & (BeginFn(x)=BeginFn(y) & before(EndFn(x),EndFn(y)))).%381
+all x all y (finishes(x,y) <-> (TimeInterval(x) & TimeInterval(y) & before(BeginFn(y),BeginFn(x)) & (EndFn(x)=EndFn(y)))).%382
+all x all y (during(x,y) <-> (TimeInterval(x) & TimeInterval(y) & before(BeginFn(y),BeginFn(x))& before(EndFn(x),EndFn(y)))).%392 CHANGED
+all x all y (earlier(x,y) <-> (TimeInterval(x) & TimeInterval(y) & before(EndFn(x),BeginFn(y)))).%395
+all x all y (meetsTemporally(x,y) <-> (TimeInterval(x) & TimeInterval(y) & (EndFn(x)=BeginFn(y)))).%393
+%-------------------------------------------------------------------------
+
+%%-------------------------------------------------------------------------------------------------
+%S-PRESENT
+%%-------------------------------------------------------------------------------------------------
+all x all y (time(x,y)-> Physical(x) & TimePosition(y)).%31
+all x all y (time(x,y)-> -(time(y,x))).%32
+all x (Physical(x)->exists y(TimePosition(y) & time(x,y))).%33
+%%%-------------------------------------------------------------------------------------------------
+%%% S-TEMP-MEREOLOGY
+%%%-------------------------------------------------------------------------
+all x all y all t (tPart(x,y,t)-> Object(x) & Object(y) & time(x,t) & time(y,t)).%65              A11p
+all x all t (time(x,t)& Object(x)->tPart(x,x,t)).%66                A12p
+all x all y all t all z (tPart(x,y,t) & tPart(y,z,t)->tPart(x,z,t)).%67             A13p
+all x all y all t(tOverlap(x,y,t)-> exists z (tPart(z,x,t) & tPart(z,y,t))).%68 ->           D3p
+all x all y all t(exists z (tPart(z,x,t) & tPart(z,y,t))-> tOverlap(x,y,t) ).%68 <-           D3p
+all x all y all t (tCoincident(x,y,t)-> tPart(x,y,t) & tPart(y,x,t)).%69  ->         D4p Temp. Coincidence
+all x all y all t (tPart(x,y,t) & tPart(y,x,t)->tCoincident(x,y,t) ).%69 <-          D4p Temp. Coincidence
+all x all y (part(x,y) -> (Object(x) & Object(y) & (all t(time(y,t)->tPart(x,y,t))))).%70 ->       D5p part
+all x all y ((Object(x) & Object(y) & (all t(time(y,t)->tPart(x,y,t))))->part(x,y)).%70 <-       D5p part     
+all x all y all t all x1 all y1 (tPart(x,y,t) & tCoincident(x,x1,t) & tCoincident(y,y1,t)-> tPart(x1,y1,t)).%71         substitutivity
+%-----------------------------------------------------------------------------------------------------
+%% S-TEMP-MEREOLOGY-D&A  (includes S-TEMP-MEREOLOGY)
+%-------------------------------------------------------------------------
+all x all y all t all u (tPart(x,y,t) & temporalPart(u,t)-> tPart(x,y,u)).%72           dissectivity
+all x all y all t all u (tPart(x,y,t) & tPart(x,y,u) & tSum(v,t,u)-> tPart(x,y,v)).%73          additivity
+all x all y all z (TimeInterval(x) & TimeInterval(y) -> (tSum(z,x,y)<->
+(beforeOrEqual(BeginFn(x),BeginFn(y)) & beforeOrEqual(EndFn(y),EndFn(x)) & (z=TimeIntervalFn(BeginFn(x),EndFn(y)))) |
+(beforeOrEqual(BeginFn(y),BeginFn(x)) & beforeOrEqual(EndFn(x),EndFn(y)) & (z=TimeIntervalFn(BeginFn(y),EndFn(x)))) |
+((EndFn(x)=BeginFn(y)) & (z=TimeIntervalFn(BeginFn(x),EndFn(y)))) |
+((EndFn(x)=BeginFn(y)) & (z=TimeIntervalFn(BeginFn(y),EndFn(x)))))).
+
+all x all y all z (TimePoint(x) & TimeInterval(y) -> (tSum(z,x,y)<-> temporalPart(x,y) & (z=y))).
+all x all y all z (TimeInterval(x) & TimePoint(y) -> (tSum(z,x,y)<-> temporalPart(y,x) & (z=x))).
+all x all y all z (TimePoint(x) & TimePoint(y) -> (tSum(z,x,y)<-> (x=y) & (z=x))).% General Categories (this is supposed to exist independently of the subtheory we are working with)
+all x (TimePosition(x)->(-Physical(x))). % SUMO disjoint categories
+all x (Object(x)-> Physical(x)).
+%%------------------------------------------------------------------------------------------------
+% Translations D-TEMP-MEREOLOGY into S-TEMP-MEREOLOGY
+all x all y all t(TOv(x,y,t)<-> tOverlap(x,y,t)).% 
+all x all y all t(TP(x,y,t)<-> (tPart(x,y,t))).%
+all x all y all t (CC(x,y,t)<->tCoincident(x,y,t)).%
+all x all y (CP(x,y) <-> part(x,y)).%
+all x (O(x)<-> Object(x)).
+all x all y (PRE(x,y)<->time(x,y)).
+all x (T(x) <-> TimePosition(x)).
+%%-------------------------------------------------------------------------------------------------
+% Translations D-TEMP-MEREOLOGY-D&A into S-TEMP-MEREOLOGY-D&A
+all x all y (P(x,y)<-> TimePosition(x)& TimePosition(y) & temporalPart(x,y)).
+all x all y all t (SUM(z,x,y)<-> tSum(z,x,y)).
+
+end_of_list.
+
+formulas(goals).
+
+%all x all y all t all u (TP(x,y,t) & P(u,t)->TP(x,y,u)).%62                   dissectivity
+%all x all y all t all u ( TP(x,y,t) & TP(x,y,u) & SUM(v,t,u)->TP(x,y,v)).%63                      additivity
+
+end_of_list.
+
