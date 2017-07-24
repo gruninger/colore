@@ -6,15 +6,12 @@ The ontology represents atoms, bonds, functional groups, and molecules as things
 
 ![most hierarchy](most_semantic_conditions.jpg)
 
-# currently refactoring!
-# check the archive directory for old copies of the working axioms
-
 # Major Changes
-================================================
+===============
 - april 21, 2017: renamed all inBond/inGroup/etc. relations to mol(x,y) - all axioms will now require sort constraints
 
 # Major Design Decisions
-================================================
+========================
 The ontology allows for:
 - unique fusion
 - unique spiro
@@ -22,7 +19,7 @@ The ontology allows for:
 - bridge = one end is spiro'd, other end is tethered
 
 Notes
-================================================
+=====
 - This ontology is currently a work in progress.
 - Common functional groups have been axiomatized in the ontology (see [functional groups](http://colore.oor.net/most/definitions)).
 - A few molecules have been axiomatized in [most_molecules](https://github.com/gruninger/colore/blob/master/ontologies/most/definitions/most_molecules.clif) for demonstration purposes.
@@ -32,21 +29,3 @@ Verification of the Ontology
 - Currently a WIP.
 - See the [mappings](https://github.com/gruninger/colore/blob/master/ontologies/most/mappings/) folder for translation definitions.
 - See the [interprets](https://github.com/gruninger/colore/blob/master/ontologies/most/interprets/) folder for proofs.
-
-Things To Do
-================================================
-- Since there are various names for groups and molecules, we have included the common ones listed on Wikipedia (to be updated later with validated names found on ChemSpider).
-    - There needs to be a standardized way to axiomatize the names of these molecules with multiple names - ACD/IUPAC/other languages/informal names.
-- We currently do not have any axioms for cis/trans isomers at the moment (need a new relation for indicating the geometric placement of carbons); definitions of groups to fix:
-    - (cis_but_2_ene x)
-    - (trans_but_2_ene x)
-    - (cis_pent_2_ene x)
-    - (trans_pent_2_ene x)
-    - (cis_2_hexene x)
-    - (trans_2_hexene x)
-    
-References
-================================================
-- http://www.kentchemistry.com/links/organic/isomersofalkanes.htm
-- table of functional groups
-![test](https://github.com/gruninger/colore/blob/master/ontologies/most/2016-02-16_004830.jpg)
