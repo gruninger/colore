@@ -1,16 +1,49 @@
 (cl-text http://colore.oor.net/matter/matter.clif
 
 (cl-imports http://colore.oor.net/constitution/constitution.clif)
-(cl-import http://colore.oor.net/occupy/occupy_root.clif)
 
 (forall (x y)
 	(iff	(portionOf x y)
 		(exists (w z r1 r2)
 			(and	(constitutes w x)
 				(constitutes z y)
-				(occupies w r1)
-				(occupies z r2)
-				(region_part r1 r2)))))
+				(chunkOf w z)))))			
+
+(cl-comment "Proper Parthood")
+(forall (x y)
+        (iff    (properChunkOf x y)
+                (and    (chunkOf x y)
+                        (not (x=y))))
+                        
+
+
+(cl-comment "Overlaps")
+(forall (x y)
+        (iff    (chunkOf x y)
+                (chunkOverlaps x y)))
+                        
+
+(cl-comment "Disjointness")
+(forall (x y)
+        (iff    (chunkDisjoints x y)
+                (not (chunkOverlaps x y))))
+		
+(cl-text "Transitivity")
+(forall (x y z)
+        (if     (and    (chunkOf x y)
+                        (chunkOf y z))
+                (chunkOf x z)))
 				
+(cl-text "Reflexivity")
+(forall (x)
+        (chunkOf x x))
+	
+(cl-text "Antisymmetry")
+(forall (x y)
+        (if     (and    (chunkOf x y)
+                        (chunkOf y x))
+                (x=y)))
+	
+	
 
 )
