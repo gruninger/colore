@@ -14,16 +14,19 @@
 
 (cl-imports http://colore.oor.net/multidim_mereotopology_dim/dim_prime_linear_unbounded.clif)
 
-(cl-imports http://colore.oor.net/multidim_mereotopology_dim/definitions/dim_basic_defs.clif)
-
 (cl-comment 'The following two definitions are relative, they do not define a maximum and minimum, i.e. they do not define what the dimension of space is and what are atoms.')
 
 (cl-comment 'D-D4: Maximal dimension (Codim=0)')
 (forall (x)
-	(iff	(MaxDim x)
+	(iff	
+		(MaxDim x)
+		(and
+			(S x)
+			(not (ZEX x))
 			(forall (y) 
-					(<= y x)
+				(<= y x)
 			)
+		)
 	)
 )
 
@@ -32,11 +35,12 @@
 	(iff	
 		(MinDim x)
 		(and
+			(S x)
 			(not (ZEX x))
 			(forall (y)
 				(if
-					(< y x)
-					(ZEX y)
+					(not (ZEX y))
+					(<= x y)
 				)
 			)	
 		)

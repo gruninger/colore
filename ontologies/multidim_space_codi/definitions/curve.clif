@@ -11,7 +11,9 @@
 
 (cl-text http://colore.oor.net/multidim_space_codi/definitions/curve.clif
 
-(cl-imports http://colore.oor.net/multidim_space_codi/definitions/point.clif)
+(cl-imports http://colore.oor.net/multidim_space_codi/codi_basic.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_dim/definitions/min_max_dim.clif)
 
 (cl-imports http://colore.oor.net/multidim_space_dim/definitions/covers.clif)
 
@@ -20,10 +22,13 @@
 (forall (x)
 	(iff
 		(Curve x)
-		(forall (y)
-			(if
-				(Point y)
-				(Covers x y)
+		(and
+			(not (MinDim x))
+			(forall (y)
+				(iff
+					(MinDim y)
+					(Covers x y)
+				)
 			)
 		)
 	)

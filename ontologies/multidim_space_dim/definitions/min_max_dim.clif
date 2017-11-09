@@ -15,8 +15,6 @@
 
 (cl-imports http://colore.oor.net/multidim_space_dim/dim_prime_linear_unbounded.clif)
 
-(cl-imports http://colore.oor.net/multidim_space_dim/definitions/dim_basic_defs.clif)
-
 (cl-comment 'The following two definitions are relative, they do not define a maximum and minimum, i.e. they do not define what the dimension of space is and what are atoms.')
 
 (cl-comment 'D-D4: Maximal dimension (Codim=0)')
@@ -27,36 +25,39 @@
         (MaxDim x)
         (and
             (S x)
-            (not (exists (y) 
-                (and
+			(not (ZEX x))
+            (forall (y) 
+                (if
                     (S y)
-                    (< x y)
+                    (<= y x)
                 )
-            ))
+            )
         )
 	)
 )
 
-(cl-comment 'D-D5: Minimal dimension (Dim=0)')
 
+
+(cl-comment 'D-D5: Minimal dimension (Dim=0)')
 (forall (x)
 	(iff	
 		(MinDim x)
 		(and
-            (S x)
+			(S x)
 			(not (ZEX x))
 			(forall (y)
 				(if
 					(and
-                        (S y)
-                        (< y x)
-                    )
-					(ZEX y)
+						(S y)
+						(not (ZEX y))
+					)
+					(<= x y)
 				)
 			)	
 		)
 	)
 )
+
 
 
 )

@@ -12,16 +12,21 @@
 
 (cl-imports http://colore.oor.net/multidim_space_codi/codi_basic.clif)
 
-(cl-imports http://colore.oor.net/multidim_space_codi/definitions/min_max_in_dim.clif)
+(cl-imports http://colore.oor.net/multidim_space_dim/definitions/min_max_dim.clif)
 
-(cl-comment 'PL-D1: points')
+(cl-comment 'PL-D1: points as spatial regions of minimal non-zero dimension that spatially contain only themselves')
 
 (forall (x)
 	(iff
 		(Point x)
 		(and
-			(Min x)
 			(MinDim x)
+			(forall (y)
+				(if
+					(Cont y x)
+					(= y x)
+				)
+			)
 		)
 	)
 )

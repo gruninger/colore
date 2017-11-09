@@ -14,7 +14,7 @@
 
 (cl-imports http://colore.oor.net/multidim_space_codib/codib_updown.clif)
 
-(cl-imports http://colore.oor.net/multidim_space_codi/definitions/icon.clif)
+(cl-imports http://colore.oor.net/multidim_space_dim/definitions/min_max_dim.clif)
 
 (cl-comment 'This is a version that omits the DK1 relation and axioms that use it.')
 
@@ -58,7 +58,7 @@
 
 (forall (x y)
 	(if
-		(< x y)
+		(<= x y)
 		(and
 			(S x)
 			(S y)
@@ -99,28 +99,28 @@
 )
 
 
-(cl-comment 'S-A10: ')
+(cl-comment 'S-A10': revised; no longer implies that DPF cannot overlap their host')
 
 (forall (x y)
 	(if
-		(hosts x y)
-		(iff
+		(and
+			(hosts x y)
 			(RPF y)
-			(P (r y) (r x))
 		)
+		(P (r y) (r x))
 	)
 )
 
 
 
-(cl-comment 'S-A12: ')
+(cl-comment 'S-A12': revised; no longer implies that DPF cannot overlap their host')
 
 (forall (x y)
 	(if
 		(hosts x y)
-		(iff
-			(DPF y)
+		(if
 			(not (PO (r x) (r y)))
+			(DPF y)
 		)
 	)
 )
