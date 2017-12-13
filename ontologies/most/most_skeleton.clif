@@ -40,6 +40,16 @@
 				(mol a1 b)
 				(mol a2 b)))))
 
+(cl-comment 'Fused skeletons only contain fused rings.')
+(forall (s)
+	(iff (fusedSkeleton s)
+		(and (skeleton s)
+			(forall (g)
+				(if (and (group g1)(mol g1 s)
+						(group g2)(mol g2 s)
+						(not (= g1 g2)))
+					(and (ring g1)(ring g2)(fused g1 g2)))))))
+
 (cl-comment 'Every group is in a skeleton.')
 (forall (x)
 	(if (group x)

@@ -177,7 +177,7 @@
 
 (cl-comment 'In an alternating group, each atom is in a single and a double bond with another atom in the functional group.')
 (forall (x y)
-	(iff (alternating_group x)
+	(iff (alternatinggroup x)
 		(if (and (group x)(atom y)(mol x y))
 			(exists (a1 a2 b1 b2)
 				(and (atom a1)(atom a2)
@@ -470,6 +470,16 @@
 				(mol a2 g2)
 				(mol a1 b)
 				(mol a2 b)))))
+
+(cl-comment 'Fused skeletons only contain fused rings.')
+(forall (s)
+	(iff (fusedSkeleton s)
+		(and (skeleton s)
+			(forall (g)
+				(if (and (group g1)(mol g1 s)
+						(group g2)(mol g2 s)
+						(not (= g1 g2)))
+					(and (ring g1)(ring g2)(fused g1 g2)))))))
 
 (cl-comment 'Every group is in a skeleton.')
 (forall (x)
