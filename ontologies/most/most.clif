@@ -112,16 +112,6 @@
 (cl-comment '========== MOST_ROOT DEFINITIONS ==========')
 /*******************************************************************************/
 
-(cl-comment 'Definition for chain. A chain is a group that contains an end and no forks.')
-(forall (x)
-	(iff (chain x)
-		(and (group x)
-			(exists (y)
-				(and (end y x)
-					(forall (w)
-						(if (and (atom w)(mol w x))
-							(not (fork w)))))))))
-
 (cl-comment 'Definition for ring. A ring is a group that contains atoms that are not ends and not forks.')
 (forall (x)
 	(iff (ring x)
@@ -154,6 +144,15 @@
 					(mol x b2)(mol a2 b2)
 					(mol x b3)(mol a3 b3))))))
 
+(cl-comment 'Definition for chain. A chain is a group that contains an end and no forks.')
+(forall (x)
+	(iff (chain x)
+		(and (group x)
+			(exists (y)
+				(and (end y x)
+					(forall (w)
+						(if (and (atom w)(mol w x))
+							(not (fork w)))))))))
 					
 (cl-comment 'A saturated functional group is one that has at least one single bond.')
 (forall (x)
