@@ -305,6 +305,16 @@
                 	(mol a1 b1)(mol a1 b2)
                 	(mol b1 g1)(mol b2 g2))))))
 
+(cl-comment 'Definition for tether: groups are bonded together by a bond between each group')
+(forall (g1 g2 b)
+    (iff (tether g1 g2 b)
+            (and (group g1)(group g2)(bond b)(not (= g1 g2))
+            	(exists (a1 a2)
+					(and (atom a1)(atom a2)
+						(mol a1 g1)(mol a2 g2)
+						(mol a1 b)(mol a2 b)
+						(not (mol b g1))(not (mol b g2)))))))
+
 (cl-comment 'Definition for spiro: two groups are spiroed together if they share one atom between them.')
 (forall (g1 g2 a)
     (iff (spiro g1 g2 a)
@@ -315,16 +325,6 @@
 					(mol a b1)(mol a b2)
 					(mol b1 g1)(not (mol b1 g2))
 					(mol b2 g2)(not (mol b2 g1)))))))
-
-(cl-comment 'Definition for tether: groups are bonded together by a bond between each group')
-(forall (g1 g2 b)
-    (iff (tether g1 g2 b)
-            (and (group g1)(group g2)(bond b)(not (= g1 g2))
-            	(exists (a1 a2)
-					(and (atom a1)(atom a2)
-						(mol a1 g1)(mol a2 g2)
-						(mol a1 b)(mol a2 b)
-						(not (mol b g1))(not (mol b g2)))))))
 
 (cl-comment 'Definition for bridge atom: an atom a in a group g1 is in the bridge of the molecule if the group is fused along multiple edges of another group g3.')
 (forall (a g1)
