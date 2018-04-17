@@ -250,37 +250,11 @@
         (between a1 a3 a2))
     (and (mol a3 g1)(mol a3 g2))))
             
-(cl-comment 'There do not exist two functional groups x and y, and 3 atoms such that those three atoms are in functional groups x and y. Any two functional groups intersect at AT MOST two atoms.')
-(not (exists (x y a b c)
-	(and (group x)
-			(group y)
-			(atom a)
-			(atom b)
-			(atom c)
-			(mol a x)(mol b x)(mol c x)
-			(mol a y)(mol b y)(mol c y)
-			(not (= x y))
-			(not (= a b))
-			(not (= b c))
-			(not (= a c)))))
-
 (cl-comment 'If there are two distinct functional groups, there is an atom that is only in one of the groups and not the other.')
 (forall (x y)
 	(if (and (group x)(group y)(not (= x y)))
 		(exists (a)
 			(and (atom a)(mol a x)(not (mol a y))))))
-
-(cl-comment 'If two functional groups intersect at two distinct atoms, then the atoms are in the same bond.')
-(forall (g1 g2 a1 a2)
-	(if (and (atom a1)(atom a2)
-			(group g1)(group g2)
-			(not (= a1 a2))(not (= g1 g2))
-			(mol a1 g1)(mol a1 g2)
-			(mol a2 g1)(mol a2 g2))
-			(exists (b)
-				(and (bond b)
-					(mol b g1)(mol b g2)
-					(mol a1 b)(mol a2 b)))))
 
 (cl-comment 'Functional groups cannot be coextensive. Two groups cannot have the exact same set of atoms.')
 (forall (g1 g2 a1 a2)
@@ -349,7 +323,7 @@
 					(= g1 g2)))
 			(multiply_fused g1 g3))))
 
-(cl-comment 'Definition: multiply_fused is a relation that indicates that two groups are multiply fused together if and only if there are two bonds that are in both groups.')
+(cl-comment 'Definition: multiply_fused is a relation that indicates that two groups are multiply fused together if and only if there are two or more bonds that are in both groups.')
 (forall (g1 g2)
 	(iff (multiply_fused g1 g2)
 		(and (group g1)
@@ -364,6 +338,13 @@
 					(mol b2 g1)
 					(mol b2 g2))))))
 
+(cl-comment 'Potential Extension Axiom: one group can be multiply fused with one other group.')
+(forall (g1 g2 g3)
+   (if (and (not (= g1 g2))
+            (multiply_fused g1 g2)
+            (multiply_fused g2 g3))
+    (= g1 g2)))
+                    
 (cl-comment 'Definition: A bridgehead atom is an atom in the ring system g1 that participates in bond with three or more non-hydrogen skeletal atoms.  This is equivalent to junction in the tripartite theories.')
 (forall (a g1 g2)
 	(iff	(bridgehead a g1 g2)
@@ -387,15 +368,6 @@
 					(not (mol b1 g2))
 					(not (mol b2 g1))
 					(mol b2 g2))))))
-
-(cl-comment 'Definition: A relation to handle bridges: for two bonds that intersect, there is an atom that is in both bonds, and the bonds are not equivalent.')
-(forall (b1 b2)
-	(iff (intersects b1 b2)
-		(exists (a)
-			(and (atom a)
-				(mol a b1)
-				(mol a b2)
-				(not (= b1 b2))))))
 
 (cl-comment 'If two groups are attached together, they must be attached via fusion, spiro, or tether.')
 (forall (g1 g2)
@@ -434,7 +406,7 @@
 /*******************************************************************************/
 
 (cl-comment 'Cyclic ordering axioms TBA')
-(cl-comment 'see https://github.com/gruninger/colore/blob/master/ontologies/cyclic_geometry/hcg.clif ')
+(cl-comment 'see  cyclic_geometry hcg.clif ')
 
 /*******************************************************************************/
 (cl-comment '======= SEMANTIC CONDITION: semilinear betweenness / spanning tree')
