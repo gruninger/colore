@@ -11,11 +11,13 @@
  * 
  *******************************************************************************/
  
-(cl-text http://colore.oor.net/transportation/transportation_network
+(cl-text http://colore.oor.net/network/transportation_network
 
 (cl-comment 'The epp.clif theory is a definitional extension of codi_linear that defines parthood, P, and proper parthood, PP, as equidimensional containment')
-(cl-comment 'imports epp.clif')
+(cl-imports http://colore.oor.net/multidim_mereotopology_codi/definitions/epp.clif)
 
+(cl-comment 'The curve.clif theory defines 1d and 0d elements in CODI')
+(cl-imports http://colore.oor.net/multidim_mereotopology_codi/definitions/curve.clif)
 (cl-comment 'network structure axioms: reused and renamed from directed_multigraph.clif')
 (forall (e x)
 	(if	(edge e)
@@ -42,263 +44,17 @@
 		(and	(= x u)
 			(= y v))))
 
-(cl-comment 'axioms imported from epp.clif')
-(cl-comment 'cont_basic.clif')
-(cl-comment 'a possibly existing zero extent ZEX is included')
-
-(cl-comment 'C-A1: reflexive (the direction <- is provable from C-A4')
-(forall (x)
-	(iff
-		(not (ZEX x))
-		(Cont x x)
-	)
-)
-
-(cl-comment 'C-A2: antisymmetric')
-(forall (x y)
-	(if	(and (Cont x y) (Cont y x))
-		(= x y)
-	)
-)
-
-(cl-comment 'C-A3: transitive')
-(forall (x y z)
-	(if 	(and (Cont x y) (Cont y z))
-		(Cont x z)
-	)
-)
-
-(cl-comment 'C-A4: ZEXs are not contained in anything and contain nothing')
-(forall (x y)
-	(if
-		(ZEX x)
-		(and (not (Cont y x)) (not (Cont x y)))
-	)
-)
-
-(cl-comment 'The following hold no matter whether a ZEX exists or not (already included in the basic axiomatization of dimension)')
-
-(cl-comment 'D-A4: unique ZEX (previously Z-A2)')
-(forall (x y)
-	(if
-		(and (ZEX x) (ZEX y))
-		(= x y)
-	)
-)
-
-(cl-comment 'epp.clif')
-(cl-comment 'EPP-D: definition of proper parthood')
-
-(forall (x y)
-	(iff 	
-		(PP x y)
-		(and 
-			(P x y) 
-			(not (= x y))
-		)
-	)
-)
-
-(cl-comment 'min_max_dim.clif')
-(cl-comment 'The following two definitions are relative, they do not define a maximum and minimum, i.e. they do not define what the dimension of space is and what are atoms.')
-
-(cl-comment 'D-D4: Maximal dimension (Codim=0)')
-(forall (x)
-	(iff	
-		(MaxDim x)
-		(and
-			(S x)
-			(not (ZEX x))
-			(forall (y) 
-				(<= y x)
-			)
-		)
-	)
-)
-
-(cl-comment 'D-D5: Minimal dimension (Dim=0)')
-(forall (x)
-	(iff	
-		(MinDim x)
-		(and
-			(S x)
-			(not (ZEX x))
-			(forall (y)
-				(if
-					(not (ZEX y))
-					(<= x y)
-				)
-			)	
-		)
-	)
-)
-
-(cl-comment 'eq_dim.clif')
-(cl-comment 'definitional extensions to basic axioms of dimensionality')
-
-(cl-comment 'D-D2: define EqDim in terms of <')
-
-(forall (x y)
-	(iff 
-		(EqDim x y)
-		(and 	
-            (<= x y)
-			(<= y x)
-		)
-	)
-)
-
-(cl-comment 'dim_prime_linear_unbounded.clif')
-(cl-comment 'compact axioms for linear relative dimension')
-
-(cl-comment 'D-A1: reflexive')
-(forall (x)
-	(<= x x)
-)
-
-(cl-comment 'D-A3: transitive')
-(forall (x y z)
-	(if 	(and (<= x y) (<= y z))
-		(<= x z)
-	)
-)
-
-
-(cl-comment 'D-A4: unique ZEX')
-(forall (x y)
-	(if
-		(and (ZEX x) (ZEX y))
-		(= x y)
-	)
-)
-
-(cl-comment 'D-A5: ZEX has dimension lower than anything else')
-
-(forall (x y)
-	(if
-		(ZEX x)
-		(<= x y)
-	)
-)
-
-(cl-comment 'codi_linear.clif')
-(cl-comment 'relationship between dimension and containment')
-
-(cl-comment 'CD-A1: containment requires that the contained entity has a dimension that is lower or equal to the entity containing it')
-
-
-(forall (x y)
-	(if
-        (Cont x y)
-		(or
-            (< x y)
-            (EqDim x y)
-        )
-	)
-)
-
-(cl-comment 'dim_basic_defs.clif')
-(cl-comment 'definitional extensions to basic axioms of dimensionality')
-
-(cl-comment 'D-D1: >')
-
-(forall (x y)
-	(iff (> x y) (< y x))
-)
-
-
-(cl-comment 'D-D2: >=')
-
-(forall (x y)
-	(iff (>= x y) (<= y x))
-)
-
-
-(cl-comment 'D-D3: <=')
-
-(forall (x y)
-	(iff 
-		(< x y) 
-		(and 
-			(<= x y) 
-			(not (EqDim x y))
-		)
-	)
-)
-
-(cl-comment 'dim_prime_linear.clif')
-(cl-comment 'D-A6: a lowest dimension must exist')
-
-(exists (x)
-	(MinDim x)
-)
-
-(cl-comment 'po.clif')
-(cl-comment 'PO-D: partial overlap (strong contact)')
-
-(forall (x y)
-	(iff
-		(PO x y)
-		(exists (z)
-			(and (P z x) (P z y))
-		)
-	)
-)
-
-(cl-comment 'ep.clif')
-(cl-comment 'basic axioms of traditional parthood (parthood of equidimensional entities) which is a non-strict partial order')
-
-(cl-comment 'parthood holds between two entities of the same spatial dimension')
-
-(cl-comment 'EP-D: definition of parthood')
-
-(forall (x y)
-	(iff 	
-        (P x y)
-		(and (Cont x y) (EqDim x y))
-	)
-)
-
-(cl-comment 'covers.clif')
-(cl-comment 'D-D6: next highest dimension (covers), x covers y if x>y and no z s.t. x>z>y')
-
-(forall (x y)
-	(iff 
-		(Covers x y)
-		(and
-			(< y x)
-			(forall (z)
-				(not
-					(and
-						(< y z)
-						(< z x)
-					)
-				)
-			)
-		)
-	)
-)
-
-(cl-comment 'c.clif')
-(cl-comment 'C-D: definition of contact in terms of containment')
-
-(forall (x y)
-	(iff
-		(C x y)
-		(exists (z)
-			(and (Cont z x) (Cont z y))
-		)
-	)
-)
-
-(cl-comment 'transportation_network.clif extensions')
-(cl-comment 'relative dimsension of paths and nodes')
-(forall (p n1 n2 n3)
-	(if	(and	(path p n1 n2)
-				(node n3))
-		(and	(< n3 p)
+(cl-comment 'path sort: a path is a kind of Curve that begins and ends at a node')
+(forall (p n1 n2)
+	(if	(path p n1 n2)
+		(and	(Curve p)
 				(node n1)
 				(node n2))))
+				
+(cl-comment 'a node is a kind of PointRegion')
+(forall (x)
+	(if	(node x)
+		(PointRegion x)))
 				
 (cl-comment 'paths cannot be cycles')
 (forall (e v1 v2)
@@ -361,30 +117,8 @@
 	(iff	(connects p1 p2)
 			(exists (v1 v2 v3)	(and	(path p1 v1 v2)
 										(path p2 v2 v3)))))
-(cl-comment 'a pair of paths intersects if they contain more than one of the same node and do not form a loop')
-(forall (p1 p2)
-	(iff	(PI p1 p2)
-			(exists (n1 n2)
-				(and	(node n1)
-						(node n2)
-						(Cont n1 p1)
-						(Cont n1 p2)
-						(Cont n2 p1)
-						(Cont n2 p2)
-						(not (= n1 n2))))))
-						
-(cl-comment 'any pair of connected paths that does not intersect forms a path')
-(forall (p1 p2)
-	(if	(and	(not (PI p1 p2))
-				(connects p1 p2))
-		(exists	(p n1 n2 n3)	(and	(path p1 n1 n2)
-							(path p2 n2 n3)
-							(path p n1 n3)
-							(PP p1 p)
-							(PP p2 p)))))
-																
-(cl-comment '﻿All proper sub-paths of a path must be connected to some other sub-path, but nothing connects to the start arc, and the end arc is not connected to anything')
-					
+										
+(cl-comment '﻿All proper sub-paths of a path must be connected to some other sub-path, but nothing connects to the start arc, and the end arc is not connected to anything')						
 (cl-comment 'The start path must be connected to some subpath')
 (forall (p1 n12 p n1 n2)
 	(if	(and	(path p	n1 n2)
@@ -417,7 +151,6 @@
 					(PP p3 p)))))
 
 (cl-comment 'no path before start path')
-(cl-comment 'corrected 16apr2018')
 (forall (p p1 n1 n2 n3)	(if	(and	(path p n1 n2)
 									(path p1 n1 n3)
 									(P p1 p))
@@ -431,7 +164,7 @@
 							(not (exists (p2)	(and	(P p2 p)
 														(connects p1 p2))))))		
 
-(cl-comment 'Theorem? The connection between arcs in a path is unique within a given path')
+(cl-comment 'The connection between arcs in a path is unique within a given path')
 (forall (p1 p2 p3 p n11 n12 n21 n22 n31 n32)
 	(if	(and	(PP p1 p)
 				(PP p2 p)
@@ -442,6 +175,29 @@
 				(arc p2 n21 n22)
 				(arc p3 n31 n32))
 		(= p2 p3)))
+		
+(cl-comment 'a pair of paths intersects if they contain more than one of the same node and do not form a loop')
+(forall (p1 p2)
+	(iff	(PI p1 p2)
+			(exists (n1 n2)
+				(and	(node n1)
+						(node n2)
+						(Cont n1 p1)
+						(Cont n1 p2)
+						(Cont n2 p1)
+						(Cont n2 p2)
+						(not (= n1 n2))))))
+										
+(cl-comment 'any pair of connected paths that does not intersect forms a path')
+(forall (p1 p2)
+	(if	(and	(not (PI p1 p2))
+				(connected p1 p2))
+		(exists	(p n1 n2 n3)	
+			(and	(path p n1 n3)
+					(path p1 n1 n2)
+					(path p2 n2 n3)
+					(PP p1 p)
+					(PP p2 p)))))
 
 						
 (cl-comment 'If p1 is a proper part of p, then there is some other path that is a proper part of p that p1 is connected to')
