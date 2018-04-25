@@ -1,0 +1,82 @@
+
+(cl-text http://colore.oor.net/size/spatial_volume.clif
+
+(cl-module field (cl-imports http://colore.oor.net/ringoids/field.clif))
+
+(spatial_volume zero_volume)
+
+(forall (v1 v2)
+(if  (and	(spatial_volume v1)
+		(spatial_volume v2))
+	  (spatial_volume (add_volume v1 v2))))
+
+(forall (v1 v2 v3)
+(if	(and	(spatial_volume v1)
+		(spatial_volume v2)
+		(spatial_volume v3))
+	(= (add_volume (add_volume v1 v2) v3) 
+	   (add_volume v1 (add_volume v2 v3)))))
+
+(forall (v)
+(if  (spatial_volume v)
+          (= (add_volume d zero_volume) v)))
+
+(forall (v1)
+(if     (spatial_volume v1)
+        (exists (v2)
+                (and    (spatial_volume v2)
+                        (= (add_volume v1 v2) zero_volume)))))
+
+(forall (v1 v2)
+(if  (and	(spatial_volume v1)
+		(spatial_volume v2))
+          (= (add_volume v1 v2) (add_volume v2 v1))))
+
+(forall (d r)
+(if	(and	(spatial_volume v)
+		(field r))
+	(spatial_volume (mult_volume r v))))
+
+(forall (v1 v2 r)
+(if	(and	(spatial_volume v1)
+		(spatial_volume v2)
+		(field r))
+        (= (mult_volume r (add_volume v1 v2)) (add_volume (mult_volume r v1) (mult_volume r v2)))))
+
+(forall (d r s)
+(if	(and	(spatial_volume v)
+		(field r)
+		(field s))
+        (= (mult_volume (sum r s) v) 
+	   (add_volume (mult_volume r v) (mult_volume s v)))))
+
+(forall (d r s)
+(if	(and	(spatial_volume v)
+		(field r)
+		(field s))
+        (= (mult_volume (prod r s) v) (mult_volume r (mult_volume s v)))))
+
+(forall (v)
+(if	(spatial_volume v)
+        (= v (mult_volume one_volume v))))
+
+(forall (v1 v2 v3)
+	(if	(and	(spatial_volume v1)
+			(spatial_volume v2)
+			(spatial_volume v3))
+        	(iff    (lesser_volume v1 v2)
+                	(lesser_volume (add_volume v1 v3) (add_volume v2 v3)))))
+
+(forall (v1 v2 v3)
+	(if	(and	(spatial_volume v1)
+			(spatial_volume v2)
+			(spatial_volume v3))
+        	(iff    (= v1 v2)
+                	(= (add_volume v1 v3) (add_volume v2 v3)))))
+
+(forall (x)
+	(if	(spatial_volume x)
+		(not (lesser_volume x zero_volume))))
+
+)
+

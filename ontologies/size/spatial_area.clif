@@ -1,0 +1,81 @@
+
+(cl-text http://colore.oor.net/size/spatial_area.clif
+
+(cl-module field (cl-imports http://colore.oor.net/ringoids/field.clif))
+
+(spatial_area zero_area)
+
+(forall (a1 a2)
+(if  (and	(spatial_area a1)
+		(spatial_area a2))
+	  (spatial_area (add_area a1 a2))))
+
+(forall (a1 a2 a3)
+(if  (and	(spatial_area a1)
+		(spatial_area a2)
+		(spatial_area a3))
+          (= (add_area (add_area a1 a2) a3) (add_area a1 (add_area a2 a3)))))
+
+(forall (a)
+(if  (spatial_area a)
+          (= (add_area d zero_area) a)))
+
+(forall (a1)
+(if     (spatial_area a1)
+        (exists (a2)
+                (and    (spatial_area a2)
+                        (= (add_area a1 a2) zero_area)))))
+
+(forall (a1 a2)
+(if  (and	(spatial_area a1)
+		(spatial_area a2))
+          (= (add_area a1 a2) (add_area a2 a1))))
+
+(forall (d r)
+(if	(and	(spatial_area a)
+		(field r))
+	(area (mult_area r a))))
+
+(forall (a1 a2 r)
+(if	(and	(spatial_area a1)
+		(spatial_area a2)
+		(field r))
+        (= (mult_area r (add_area a1 a2)) 
+	   (add_area (mult_area r a1) (mult_area r a2)))))
+
+(forall (d r s)
+(if	(and	(spatial_area a)
+		(field r)
+		(field s))
+        (= (mult_area (sum r s) a) (add_area (mult_area r a) (mult_area s a)))))
+
+(forall (d r s)
+(if	(and	(spatial_area a)
+		(field r)
+		(field s))
+        (= (mult_area (prod r s) a) (mult_area r (mult_area s a)))))
+
+(forall (a)
+(if	(spatial_area a)
+        (= a (mult_area one_area a))))
+
+(forall (a1 a2 a3)
+	(if	(and	(spatial_area a1)
+			(spatial_area a2)
+			(spatial_area a3))
+        	(iff    (lesser_area a1 a2)
+                	(lesser_area (add_area a1 a3) (add_area a2 a3)))))
+
+(forall (a1 a2 a3)
+	(if	(and	(spatial_area a1)
+			(spatial_area a2)
+			(spatial_area a3))
+        	(iff    (= a1 a2)
+                	(= (add_area a1 a3) (add_area a2 a3)))))
+
+(forall (x)
+	(if	(spatial_area x)
+		(not (lesser_area x zero_area))))
+
+)
+

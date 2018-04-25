@@ -1,0 +1,60 @@
+(cl-text http://colore.oor.net/velocity/velocity.clif
+
+(cl-imports http://colore.oor.net/duration/timeduration.clif)
+
+(cl-imports http://colore.oor.net/size/spatial_length.clif)
+
+(forall (l d)
+	(iff	(velocity (vld l d))
+		(and	(timeduration d)
+			(spatial_length l)
+			(lesser zero_length l))))
+
+(forall (v l)
+	(if	(and	(velocity v)
+			(spatial_length l))
+		(exists (d)
+			(= (vld l d) v))))
+
+(forall (v d)
+	(if	(and	(timeduration d)
+			(velocity v))
+		(exists (l)
+			(= (vld l d) v))))
+
+(forall (x y z)
+	(if	(= (vld x y) (vld z y))
+		(= x z)))
+
+(forall (x y z)
+	(if	(= (vld x y) (vld x z))
+		(= y z)))
+
+(forall (a d l)
+	(if	(and	(timeduration d)
+			(spatial_length l)
+			(field a))
+		(= (vld (mult_duration a d) l) (mult_velocity a (vld d l)))))
+
+(forall (a d l)
+	(if	(and	(timeduration d)
+			(spatial_length l)
+			(field a))
+		(= (vld v (mult_length a l)) (mult_velocity a (vld d l)))))
+
+(forall (d1 d2 l)
+	(if	(and	(timeduration v1)
+			(timeduration v2)
+			(spatial_length l))
+		(= (vld (add_duration d1 d2) l) 
+		   (add_velocity (vld d1 l) (vld d2 l)))))
+
+(forall (d l1 l2)
+	(if	(and	(timeduration d)
+			(spatial_length l1)
+			(spatial_length l2))
+		(= (vld d (add_length l1 l2)) 
+		   (add_velocity (vld d l1) (vld d l2)))))
+
+)
+

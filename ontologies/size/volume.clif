@@ -1,0 +1,37 @@
+
+(cl-text http://colore.oor.net/size/volume.clif
+
+(cl-imports http://colore.oor.net/multidim_mereotopology_codi/codi_int.clif)
+
+(cl-imports http://colore.oor.net/multidim_mereotopology_codi/definitions/voluminous_region.clif)
+
+(cl-imports http://colore.oor.net/size/spatial_volume.clif)
+
+(forall (x)
+	(if  	(VoluminousRegion x)
+		(spatial_volume (volume x))))
+
+(forall (x)
+        (if     (VoluminousRegion x)   
+                (lesser zero_volume (volume x))))
+
+(forall (x y)
+	(if	(ppart x y)
+		(lesser (volume x) (volume y))))
+		
+(forall (x y z)
+	(if	(and	(diff x y z)
+			(VoluminousRegion x)
+			(VoluminousRegion y)
+			(VoluminousRegion z))
+		(= (volume x) (add (volume y) (volume z)))))
+
+(forall (x y)
+	(if	(ppart y x)
+		(exists (z)
+			(and	(ppart z x)
+				(not (= y z))
+				(= (volume y) (volume z))))))
+
+)
+

@@ -1,0 +1,38 @@
+(cl-text http://colore.oor.net/velocity/velocity_vector.clif
+
+(cl-module vector (cl-imports http://colore.oor.net/algebra/vectorspace.clif))
+
+(cl-imports http://colore.oor.net/velocity/velocity.clif
+
+(forall (x y)
+	(iff	(velocity (velq x y))
+		(and	(vector x)
+			(velocity y))))
+
+(forall (v1 v2 x)
+	(if	(and	(vector v1)
+			(vector v2)
+			(velocity x))
+		(= (velq (add v1 v2) x) 
+		   (add_velocity (velq v1 x) (velq v2 x)))))
+
+(forall (v x y)
+	(if	(and	(vector v)
+			(velocity x)
+			(velocity y))
+		(= (velq v (add x y)) (add_velocity (velq v x) (velq v y)))))
+
+(forall (a v x)
+	(if	(and	(vector v)
+			(velocity x)
+			(field a))
+		(= (velq (mult a v) x) (mult_velocity a (velq v x)))))
+
+(forall (a v x)
+	(if	(and	(velocity x)
+			(vector v)
+			(field a))
+		(= (velq v (mult_velocity a x)) (mult_velocity a (velq v x)))))
+
+)
+

@@ -1,0 +1,81 @@
+
+(cl-text http://colore.oor.net/mass/amount.clif
+
+(cl-module field (cl-imports http://colore.oor.net/ringoids/field.clif))
+
+(amount zero_mass)
+
+(forall (d1 d2)
+(if  (and	(amount d1)
+		(amount d2))
+	  (amount (add_mass d1 d2))))
+
+(forall (d1 d2 d3)
+(if  (and	(amount d1)
+		(amount d2)
+		(amount d3))
+          (= (add_mass (add_mass d1 d2) d3) (add_mass d1 (add_mass d2 d3)))))
+
+(forall (d)
+(if  (amount d)
+          (= (add_mass d zero_mass) d)))
+
+(forall (d1)
+(if	(amount d1)
+	(exists (d2)
+		(and	(amount d2)
+			(= (add_mass d1 d2) zero_mass)))))
+
+(forall (d1 d2)
+(if  (and	(amount d1)
+		(amount d2))
+          (= (add_mass d1 d2) (add_mass d2 d1))))
+
+(forall (d r)
+(if	(and	(amount d)
+		(field r))
+	(amount (mult_mass r d))))
+
+(forall (d1 d2 r)
+(if	(and	(amount d1)
+		(amount d2)
+		(field r))
+        (= (mult_mass r (add_mass d1 d2)) 
+	   (add_mass (mult_mass r d1) (mult_mass r d2)))))
+
+(forall (d r s)
+(if	(and	(amount d)
+		(field r)
+		(field s))
+        (= (mult_mass (sum r s) d) (add_mass (mult_mass r d) (mult_mass s d)))))
+
+(forall (d r s)
+(if	(and	(amount d)
+		(field r)
+		(field s))
+        (= (mult_mass (prod r s) d) (mult_mass r (mult_mass s d)))))
+
+(forall (d)
+(if	(amount d)
+        (= d (mult_mass one_mass d))))
+
+(forall (d1 d2 d3)
+	(if	(and	(amount d1)
+			(amount d2)
+			(amount d3))
+        	(iff    (lesser_mass d1 d2)
+                	(lesser_mass (add_mass d1 d3) (add_mass d2 d3)))))
+
+(forall (d1 d2 d3)
+	(if	(and	(amount d1)
+			(amount d2)
+			(amount d3))
+        	(iff    (= d1 d2)
+                	(= (add_mass d1 d3) (add_mass d2 d3)))))
+
+(forall (x)
+	(if	(amount x)
+		(not (lesser_mass x zero_mass))))
+
+)
+

@@ -1,0 +1,58 @@
+(cl-text http://colore.oor.net/density/density.clif
+
+(cl-imports http://colore.oor.net/mass/amount.clif)
+
+(cl-imports http://colore.oor.net/size/spatial_volume.clif)
+
+(forall (v m)
+	(iff	(density (dmv v m))
+		(and	(amount m)
+			(spatial_volume v)
+			(lesser zero_volume v))))
+
+(forall (v d)
+	(if	(and	(density d)
+			(spatial_volume v))
+		(exists (m)
+			(= (dmv v m) d))))
+
+(forall (m d)
+	(if	(and	(amount m)
+			(density d))
+		(exists (v)
+			(= (dmv v m) d))))
+
+(forall (x y z)
+	(if	(= (dmv x y) (dmv z y))
+		(= x z)))
+
+(forall (x y z)
+	(if	(= (dmv x y) (dmv x z))
+		(= y z)))
+
+(forall (a m v)
+	(if	(and	(amount m)
+			(spatial_volume v)
+			(field a))
+		(= (dmv (mult_mass a m) v) (mult_density a (dmv m v)))))
+
+(forall (a m v)
+	(if	(and	(amount m)
+			(spatial_volume v)
+			(field a))
+		(= (dmv m (mult_volume a v)) (mult_density a (dmv m v)))))
+
+(forall (m1 m2 v)
+	(if	(and	(amount m1)
+			(amount m2)
+			(spatial_volume v))
+		(= (dmv (add_mass m1 m2) v) (add_density (dmv m1 v) (dmv m2 v)))))
+
+(forall (m v1 v2)
+	(if	(and	(mass m)
+			(spatial_volume v1)
+			(spatial_volume v2))
+		(= (dmv m (add_volume v1 v2)) (add_density (dmv m v1) (dmv m v2)))))
+
+)
+

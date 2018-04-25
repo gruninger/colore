@@ -1,0 +1,82 @@
+
+(cl-text http://colore.oor.net/size/spatial_length.clif
+
+(cl-module field (cl-imports http://colore.oor.net/ringoids/field.clif))
+
+(spatial_length zero_length)
+
+(forall (l1 l2)
+(if  (and	(spatial_length l1)
+		(spatial_length l2))
+	  (spatial_length (add_length l1 l2))))
+
+(forall (l1 l2 l3)
+(if  (and	(spatial_length l1)
+		(spatial_length l2)
+		(spatial_length l3))
+          (= (add_length (add_length l1 l2) l3) (add_length l1 (add_length l2 l3)))))
+
+(forall (l)
+(if  (spatial_length l)
+          (= (add_length d zero_length) l)))
+
+(forall (l1)
+(if     (spatial_length l1)
+        (exists (l2)
+                (and    (spatial_length l2)
+                        (= (add_length l1 l2) zero_length)))))
+
+(forall (l1 l2)
+(if  (and	(spatial_length l1)
+		(spatial_length l2))
+          (= (add_length l1 l2) (add_length l2 l1))))
+
+(forall (d r)
+(if	(and	(spatial_length l)
+		(field r))
+	(spatial_length (mult_length r l))))
+
+(forall (l1 l2 r)
+(if	(and	(spatial_length l1)
+		(spatial_length l2)
+		(field r))
+        (= (mult_length r (add_length l1 l2)) 
+	   (add_length (mult_length r l1) (mult_length r l2)))))
+
+(forall (d r s)
+(if	(and	(spatial_length l)
+		(field r)
+		(field s))
+        (= (mult_length (sum r s) l) 
+	   (add_length (mult_length r l) (mult_length s l)))))
+
+(forall (d r s)
+(if	(and	(spatial_length l)
+		(field r)
+		(field s))
+        (= (mult_length (prod r s) l) (mult_length r (mult_length s l)))))
+
+(forall (l)
+(if	(spatial_length l)
+        (= l (mult_length one_length l))))
+
+(forall (l1 l2 l3)
+	(if	(and	(spatial_length l1)
+			(spatial_length l2)
+			(spatial_length l3))
+        	(iff    (lesser_length l1 l2)
+                	(lesser_length (add_length l1 l3) (add_length l2 l3)))))
+
+(forall (l1 l2 l3)
+	(if	(and	(spatial_length l1)
+			(spatial_length l2)
+			(spatial_length l3))
+        	(iff    (= l1 l2)
+                	(= (add_length l1 l3) (add_length l2 l3)))))
+
+(forall (x)
+	(if	(spatial_length x)
+		(not (lesser_length x zero_length))))
+
+)
+
