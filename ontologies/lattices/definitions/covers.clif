@@ -1,13 +1,27 @@
-(cl-text http://colore.oor.net/lattices/definitions/leq.clif
+(cl-text http://colore.oor.net/lattices/definitions/covers.clif
 
 (cl-imports http://colore.oor.net/lattices/lattice.clif)
 
-(forall (x y)
-	(iff	(leq x y)
-		(= x (meet x y))))
+(cl-imports http://colore.oor.net/lattices/definitions/covers.clif)
 
 (forall (x y)
-	(iff	(leq x y)
-		(= y (join x y))))
-
+	(iff
+        (covers x y)
+		(and
+            (leq x y)
+            (forall (z)
+                (if
+                    (and
+                        (leq x z)
+                        (leq z y)
+                    )
+                    (or
+                        (= z x)
+                        (= z y)
+                    )
+                )
+            )
+        )
+    )
 )
+
