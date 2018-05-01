@@ -1,0 +1,74 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/multidim_space_codi/codi_atomic_2d.clif
+
+(cl-imports http://colore.oor.net/multidim_space_codi/codi_atomic_2d.clif)
+
+(cl-comment 'all point regions are points (i.e. no sets of isolated points are entities themselves)')
+
+(forall (x)
+    (if
+        (PointRegion x)
+        (Point x)
+    )
+)
+
+(cl-comment 'every 1D spatial region contains some point')
+
+(forall (x)
+    (if
+        (Curve x)
+        (exists (y)
+            (and
+                (PointRegion y)
+                (Cont y x)
+            )
+        )
+    )
+)
+
+
+(cl-comment 'every 2D spatial region contains some point')
+
+(forall (x)
+    (if
+        (ArealRegion x)
+        (exists (y)
+            (and
+                (PointRegion y)
+                (Cont y x)
+            )
+        )
+    )
+)
+
+
+(cl-comment 'every 2D spatial region is in some proper parthood relation')
+
+(forall (x)
+    (if
+        (ArealRegion x)
+        (exists (y)
+            (and
+               (EqDim x y)
+                (or
+                    (Cont x y)
+                    (Cont y x)
+                )
+            )
+        )
+    )
+)
+
+ 
+
+
+)
