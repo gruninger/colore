@@ -458,6 +458,82 @@
 (cl-comment 'Axiom: MCO-1')
 (cl-comment 'Cyclic ordering axioms TBA -- see cyclic_geometry hcg.clif ')
 
+line = ring
+point = bond
+C = ringOrder
+more explicit
+
+
+(forall (x y z)
+	(if	(C x y z)
+		(point x)))
+
+(forall (x y z)
+	(if	(C x y z)
+		(exists (l)
+			(and	(line l)
+				(in x l)
+				(in y l)
+				(in z l)))))
+
+(cl-comment 'might not need this one because of fusion')
+(forall (x y z l)
+	(if	(and	(C x y z)
+			(line l)
+			(in x l))
+		(in y l)))
+
+(forall (x y z l)
+	(if	(and	(line l)
+			(in x l)
+			(in y l)
+			(in z l)
+			(not (= x y))
+			(not (= x z))
+			(not (= z y))
+			(C x y z))
+		(not (C z y x))))
+
+(forall (x y z l)
+	(if	(and	(line l)
+			(in x l)
+			(in y l)
+			(in z l)
+			(C x y z))
+		(and	(not (= x y))
+			(not (= x z))
+			(not (= y z)))))
+
+(forall (x y z l)
+	(if	(and	(line l)
+			(in x l)
+			(in y l)
+			(in z l)
+			(not (= x y))
+			(not (= x z))
+			(not (= z y))
+			(C x y z))
+		(forall (w)
+			(if	(and	(point w)
+					(in w l))
+				(or	(C x y w)
+					(C w y z))))))
+
+(forall (l)
+	(if	(line l)
+		(exists (x y z)
+			(C x y z))))
+			
+(forall (x y z w l)
+        (if     (and    (line l)
+                        (in x l)
+                        (in y l)
+                        (in z l)
+                        (in w l)
+                        (C x y z)
+                        (C x z w))
+                (C x y w)))
+
 /*******************************************************************************/
 (cl-comment '======= SEMANTIC CONDITION: semilinear betweenness / spanning tree =======')
 /*******************************************************************************/
