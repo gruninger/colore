@@ -456,11 +456,15 @@
 /*******************************************************************************/
 
 (cl-comment 'Axiom: MCO-1')
+(cl-comment 'The ringOrder relation pertains to bonds in a ring.')
 (forall (x y z)
 	(if	(ringOrder x y z)
-		(bond x)))
+		(and (bond x)
+		(bond y)
+		(bond z))))
 
 (cl-comment 'Axiom: MCO-2')
+(cl-comment 'If there are three bonds that are ordered, there exists a ring for which these bonds are in.')
 (forall (x y z)
 	(if	(and (ringOrder x y z)
 		(bond x)
@@ -473,6 +477,7 @@
 				(mol z l)))))
 
 (cl-comment 'Axiom: MCO-3')
+(cl-comment 'Distinct bonds ordered in a ring are ordered in a particular order.')
 (forall (x y z l)
 	(if	(and	(ring l)
 			(bond x)
@@ -488,6 +493,7 @@
 		(not (ringOrder z y x))))
 
 (cl-comment 'Axiom: MCO-4')
+(cl-comment 'There are three distinct bonds that are ordered in a ring.')
 (forall (x y z l)
 	(if	(and	(ring l)
 			(bond x)
@@ -502,6 +508,7 @@
 			(not (= y z)))))
 
 (cl-comment 'Axiom: MCO-5')
+(cl-comment 'For distinct bonds that are ordered in a ring, all bonds that follow are ordered before or after.')
 (forall (x y z l)
 	(if	(and	(ring l)
 			(bond x)
@@ -521,6 +528,7 @@
 					(ringOrder w y z))))))
 
 (cl-comment 'Axiom: MCO-6')
+(cl-comment 'If there is a ring, then there exists three bonds that are ordered in the ring.')
 (forall (l)
 	(if	(ring l)
 		(exists (x y z)
@@ -528,6 +536,7 @@
 			(ringOrder x y z)))))
 			
 (cl-comment 'Axiom: MCO-7')
+(cl-comment 'The ringOrder relation is transitive.')
 (forall (x y z w l)
 	(if (and (ring l)
 			(bond x)
