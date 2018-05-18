@@ -672,13 +672,31 @@
 				(not (exists (w)
 					(and (skeleton w)(mol w x)(not (= w y)))))))))
 
+(cl-comment 'Axiom: MS-7')
+(cl-comment 'Two skeletons are part of each other if they are connected in some way.  Using extensional mereology; do we need to do a sort on z? what is z?? or do we leave it open')
+(forall (x y)
+	(iff (part x y)
+		(and (skeleton x)
+			(skeleton y)
+			(forall (z)
+				(if (mol z x)
+					(mol z y))))))
+
+(cl-comment 'Axiom: MS-8')
+(cl-comment 'A linear skeleton is a skeleton that only contains chains.')
+(forall (x)
+	(iff (linearskeleton x)
+		(and (skeleton x)
+			(forall (g)
+				(if (and (group g)(mol g x))
+					(chain g))))))
 
 /*******************************************************************************/
 (cl-comment '======= SEMANTIC CONDITION: scaffolds =======')
 /*******************************************************************************/
 
 (cl-comment 'Axiom: MSC-1')
-(cl-comment 'Two molecules cannot be incident with each other.')
+(cl-comment 'Two molecules cannot be incident with each other. check if this is still true?')
 (forall (x y)
 	(if (and (mol x y)(skeleton x)(skeleton y))
 		(= x y)))
@@ -700,24 +718,5 @@
 							(mol y x)(mol z x)
 							(attached y g)
 							(attached z g))))))))
-
-(cl-comment 'Axiom: MSC-2')
-(cl-comment 'A linear skeleton is a skeleton that only contains chains.')
-(forall (x)
-	(iff (linearskeleton x)
-		(and (skeleton x)
-			(forall (g)
-				(if (and (group g)(mol g x))
-					(chain g))))))
-
-(cl-comment 'Axiom: MSC-3')
-(cl-comment 'Two skeletons are part of each other if they are connected in some way.  Using extensional mereology; do we need to do a sort on z? what is z?? or do we leave it open')
-(forall (x y)
-	(iff (part x y)
-		(and (skeleton x)
-			(skeleton y)
-			(forall (z)
-				(if (mol z x)
-					(mol z y))))))
 
 )
