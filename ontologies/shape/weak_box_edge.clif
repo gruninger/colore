@@ -1,0 +1,52 @@
+(cl-text http://colore.oor.net/shape/weak_box_edge.clif
+
+(cl-imports http://colore.oor.net/shape/weak_card_edge.clif )
+(cl-imports http://colore.oor.net/boxworld/boxworld_part.clif )
+
+        
+
+(forall (x s1 s2)
+(if	(and (box x) 
+         (surface s1) 
+         (surface s2)
+         (not (= s1 s2))
+         (in s1 x)
+         (in s1 x))
+    (exists (e) (and (ridge e) 
+                     (in e s1)))))
+
+                          
+(forall (e1 e2 e3 v s)
+(if	(and	(edge e1)
+            (edge e2)
+            (edge e3)
+            (not (= e1 e2))
+            (not (= e1 e3))
+            (not (= e2 e3))
+            (vertex v)
+            (in e1 s)
+            (in e2 s)
+            (in v e2)
+            (meet e1 e2 v)
+            (meet e1 e3 v))
+            (not (in e3 s))))
+        
+
+(forall (e)
+(iff    (ridge e)
+        (exists (s1 s2) 
+                (and    (edge e)
+                        (surface s1) 
+                        (surface s2) 
+                        (not (= s1 s2))
+                        (in e s1)
+                        (in e s2)))))
+        
+
+(forall (e)
+(iff    (border e)
+        (and (edge e) (not (ridge e)))))
+        
+
+
+)
