@@ -3,19 +3,19 @@
 (cl-imports component-assemblies)
 (cl-imports simple-geometry)
 
-(cl-comment "KIF to CLIF translation of http://ksl-web.stanford.edu/knowledge-sharing/ontologies/html/mechanical-components/mechanical-components.lisp.html")
+(cl-comment 'KIF to CLIF translation of http://ksl-web.stanford.edu/knowledge-sharing/ontologies/html/mechanical-components/mechanical-components.lisp.html')
 
-(cl-comment "This theory provides a minimal vocabulary for describing three-dimensional objects with mass.  It is built on the abstract notion of components that we get from the component-assemblies theory, and the elementary geometric primitives from the simple-geometry theory.  In this theory, we say that a MECHANICAL-COMPONENT is a component that has a REFERENCE-POINT, a REFERENCE-FRAME, and a MASS.  Information about the spatial extent and relative position of the object can be specified using the reference frame and point.  The MASS of a mechanical-component is a physical quantity specified as the value of a unary function.  The INERTIA-TENSOR for the component is given with a binary relation from the component and its reference point to an inertia quantity.")
+(cl-comment 'This theory provides a minimal vocabulary for describing three-dimensional objects with mass.  It is built on the abstract notion of components that we get from the component-assemblies theory, and the elementary geometric primitives from the simple-geometry theory.  In this theory, we say that a MECHANICAL-COMPONENT is a component that has a REFERENCE-POINT, a REFERENCE-FRAME, and a MASS.  Information about the spatial extent and relative position of the object can be specified using the reference frame and point.  The MASS of a mechanical-component is a physical quantity specified as the value of a unary function.  The INERTIA-TENSOR for the component is given with a binary relation from the component and its reference point to an inertia quantity.')
 
-(cl-comment "ISSUES: Copyright (c) 1994 Greg Olsen and Thomas R. Gruber")
+(cl-comment 'ISSUES: Copyright (c) 1994 Greg Olsen and Thomas R. Gruber')
 
-(cl-comment "
+(cl-comment '
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Physical Components
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-")
+')
 
-(cl-comment "
+(cl-comment '
 (define-class MECHANICAL-COMPONENT (?p)
 Mechanical-component is a specialization of COMPONENT from the component-assemblies theory.  Mechanical components are three-dimensional objects with an associated reference point and reference frame.  They also have a slot called MASS whose value is a scalar-quantity of dimension mass-dimension.
 
@@ -24,7 +24,7 @@ Mechanical-component is a specialization of COMPONENT from the component-assembl
 	    (3D-frame (REFERENCE-FRAME ?p))
 	    (scalar-quantity (MASS ?p))
 	    (3D-dyad (inertia-tensor ?p (reference-point ?p)))))
-")
+')
 
 (forall (?p)
 	(if (MECHANICAL-COMPONENT ?p)
@@ -34,35 +34,35 @@ Mechanical-component is a specialization of COMPONENT from the component-assembl
 	    (scalar-quantity (MASS ?p))
 	    (3D-dyad (inertia-tensor ?p (reference-point ?p))))))
 
-(cl-comment "
+(cl-comment '
 (define-class MECHANICAL-CONNECTION (?c)
 The physical-connection class is a specialization of the connection class from the component-components theory.
   :def (connection ?c))	
-")
+')
 (forall (?p)
 	(if (MECHANICAL-CONNECTION ?c)
 		(connection ?c)))
 		
-(cl-comment "
+(cl-comment '
 (define-function REFERENCE-POINT (?comp) :-> ?point
   The reference point of a mechanical-component.
   :def (and (mechanical-component ?comp)
 	    (3D-point ?point)))
-")
+')
 
-(cl-comment "define-function")
+(cl-comment 'define-function')
 (forall (?comp ?point)		
 		(if
 			(and	(= (REFERENCE-POINT ?comp) ?point)
 					(mechanical-component ?comp))
 			(3D-point ?point)))
 
-(cl-comment "
+(cl-comment '
 (define-function REFERENCE-FRAME (?comp) :-> ?frame
   The reference frame of a mechanical-component.
   :def (and (mechanical-component ?comp)
 	    (3D-frame ?frame)))
-")
+')
 
 (forall (?comp ?frame)
 	(if
@@ -70,7 +70,7 @@ The physical-connection class is a specialization of the connection class from t
 			(mechanical-component ?comp))
 			(3D-frame ?frame)))
 
-(cl-comment "
+(cl-comment '
 (define-function MASS (?comp) :-> ?m
   The mass of a mechanical-component, which is a scalar
 quantity of physical-dimension mass-dimension.
@@ -78,7 +78,7 @@ quantity of physical-dimension mass-dimension.
   :def (and (mechanical-component ?comp)
 	    (scalar-quantity ?m)
 	    (quantity.dimension ?m mass-dimension)))
-")
+')
 
 (forall (?comp ?m)
 	(if (and (= (MASS ?comp) ?m)
@@ -88,7 +88,7 @@ quantity of physical-dimension mass-dimension.
 	)
 )
 
-(cl-comment "
+(cl-comment '
 (define-function INERTIA-TENSOR (?comp ?pt) :-> ?i
 The inertia tensor of mechanical-component. Relative to a given point.
   :def (and (mechanical-component ?comp)
@@ -99,7 +99,7 @@ The inertia tensor of mechanical-component. Relative to a given point.
 	     (* mass-dimension
 		(* length-dimension
 		   length-dimension)))))
-")
+')
 
 (forall (?comp ?pt ?i)
 	(if (and (= (INERTIA-TENSOR ?comp ?pt) ?i)
@@ -110,14 +110,14 @@ The inertia tensor of mechanical-component. Relative to a given point.
     )
 )
 
-(cl-comment "
+(cl-comment '
 (define-function APPLIED-FORCE (?comp1 ?comp2) :-> ?f
   The resultant applied force of comp1 on comp2.  A 3D vector.
   :def (and (mechanical-component ?comp1)
 	    (mechanical-component ?comp2)
 	    (3D-vector-quantity ?f)
 	    (quantity.dimension ?f force-dimension)))
-")
+')
 
 (forall (?comp1 ?comp2 ?f)
 	(if (and (= (APPLIED-FORCE ?comp1 ?comp2) ?f)
@@ -128,7 +128,7 @@ The inertia tensor of mechanical-component. Relative to a given point.
     )
 )
 
-(cl-comment "
+(cl-comment '
 (define-function APPLIED-TORQUE (?comp1 ?comp2) :-> ?t
   The resultant applied torque of comp1 on comp2.  A 3D vector.
   :def (and (mechanical-component ?comp1)
@@ -136,7 +136,7 @@ The inertia tensor of mechanical-component. Relative to a given point.
 	    (3D-vector-quantity ?t)
 	    (quantity.dimension ?t (* force-dimension
 				      length-dimension))))
-")
+')
 
 (forall (?comp1 ?comp2 ?t)
 	(if (and (= (APPLIED-TORQUE ?comp1 ?comp2) ?t)
