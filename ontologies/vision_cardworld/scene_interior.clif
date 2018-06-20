@@ -12,7 +12,7 @@
 
 (cl-imports http://colore.oor.net/vision_cardworld/fg.clif)
 
-(cl-comment "An edge is a boundary edge for a position iff the position lies on the figure side of the edge and there exists a point in the edge that is noncrossing with respect to the position.")
+(cl-comment 'An edge is a boundary edge for a position iff the position lies on the figure side of the edge and there exists a point in the edge that is noncrossing with respect to the position.')
 (forall (e t) 
 (iff 	(boundary e t) 
 	(exists (e2) 
@@ -25,14 +25,14 @@
 							(part e s)) 
 						(noncrossing s t t1))))))))
 
-(cl-comment "A position is interior to a surface iff there exits edges in the surface that are boundary edges for the position.")
+(cl-comment 'A position is interior to a surface iff there exits edges in the surface that are boundary edges for the position.')
 (forall (s t) 
 (iff 	(interior s t) 
 	(exists (e) 
 		(and 	(part e s) 
 			(boundary e t)))))
 
-(cl-comment "A hole edge is a hole boundary edge for a position iff the position lies on the ground side of the edge and there exits a point in the edge that is noncrossing with respect to the position.")
+(cl-comment 'A hole edge is a hole boundary edge for a position iff the position lies on the ground side of the edge and there exits a point in the edge that is noncrossing with respect to the position.')
 (forall (e t) 
 (iff 	(hole_boundary e t) 
 	(exists (e2) 
@@ -47,25 +47,25 @@
 							(part e s)) 
 						(noncrossing s t t1))))))))
 
-(cl-comment "A position is interior to a hole of a surface iff there exist edges in the surface that are hole boundary edges for the position.")
+(cl-comment 'A position is interior to a hole of a surface iff there exist edges in the surface that are hole boundary edges for the position.')
 (forall (s t) 
 (iff 	(hole_interior s t) 
 	(exists (e) 
 		(and 	(part e s) 
 			(hole_boundary e t)))))
 
-(cl-comment "Boundary edges and hole boundary edges are disjoint sets.")
+(cl-comment 'Boundary edges and hole boundary edges are disjoint sets.')
 (forall (e t) 
 	(if 	(boundary e t) 
 		(not (hole_boundary e t))))
 
-(cl-comment "Hole boundary edges for the same position must be connected.")
+(cl-comment 'Hole boundary edges for the same position must be connected.')
 (forall (e1 e2 t) 
 	(if 	(and 	(hole_boundary e1 t) 
 			(hole_boundary e2 t)) 
 		(connected e1 e2)))
 
-(cl-comment "If two surfaces have overlapping interiors, then there exists a point in a boundary edge of one surface which is also interior to the other surface.")
+(cl-comment 'If two surfaces have overlapping interiors, then there exists a point in a boundary edge of one surface which is also interior to the other surface.')
 (forall (s1 s2 t1 t2) 
 	(if 	(and 	(interior s1 t1) 
 			(interior s2 t1) 
@@ -78,7 +78,7 @@
 				(position p t3) 
 				(interior s1 t3)))))
 
-(cl-comment "If the interior of one surface overlaps with the hole of another surface, then there exists a point in a boundary edge of the surface which is also interior to a hole of the other surface.")
+(cl-comment 'If the interior of one surface overlaps with the hole of another surface, then there exists a point in a boundary edge of the surface which is also interior to a hole of the other surface.')
 (forall (s1 s2 t1 t2) 
 	(if 	(and 	(interior s1 t1) 
 			(hole_interior s2 t1) 
@@ -91,7 +91,7 @@
 				(position p t3) 
 				(hole_interior s2 t3)))))
 
-(cl-comment "If two surfaces have overlapping hole interiors, then there exists a point in a hole boundary edge of one surface which is also interior to the hole of the other surface.")
+(cl-comment 'If two surfaces have overlapping hole interiors, then there exists a point in a hole boundary edge of one surface which is also interior to the hole of the other surface.')
 (forall (s1 s2 t2 t2) 
 	(if 	(and 	(interior s1 t1) 
 			(hole_interior s2 t1) 
