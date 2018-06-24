@@ -14,9 +14,9 @@
 
 (cl-comment 'CLIF file containing all of the master MoSt ontology axioms')
 
-/*******************************************************************************/
+(cl-comment '========================================================================')
 (cl-comment '======= SEMANTIC CONDITION: most -- basic intuitions (most_root) =======')
-/*******************************************************************************/
+(cl-comment '========================================================================')
 
 (cl-comment 'Axiom: M-1')
 (cl-comment 'Disjointness axiom for atoms.')
@@ -122,9 +122,9 @@
 		(not (exists (y)
 			(fork y)))))
 
-/*******************************************************************************/
+(cl-comment '========================================================================')
 (cl-comment '======= MOST_ROOT DEFINITIONS =======')
-/*******************************************************************************/
+(cl-comment '========================================================================')
 
 (cl-comment 'Axiom: MD-1')	
 (cl-comment 'Definition for an end atom. An end is in at most one bond in a group.')
@@ -215,9 +215,9 @@
 				(if (and (atom y)(atom z)(mol y x)(mol z x))
 					(= y z))))))
 
-/*******************************************************************************/
+(cl-comment '========================================================================')
 (cl-comment '======= SEMANTIC CONDITION: attachment axioms =======')
-/*******************************************************************************/
+(cl-comment '========================================================================')
 
 (cl-comment 'Axiom: MA-1')
 (cl-comment 'For a bond found in two groups connected via spiro, it must mean the two groups are spiroed at an atom common between them.')
@@ -264,9 +264,9 @@
     (if (fused g1 g2)
         (and (ring g1)(ring g2))))
 
-/*******************************************************************************/
+(cl-comment '========================================================================')
 (cl-comment '======= MOST_ATTACHMENT DEFINITIONS =======')
-/*******************************************************************************/
+(cl-comment '========================================================================')
 
 (cl-comment 'Axiom: MAD-1')
 (cl-comment 'Definition for fusion: two groups are fused together if there is one bond shared between them.')
@@ -311,9 +311,9 @@
 			(exists (a) (spiro g1 g2 a))
 			(exists (b) (tether g1 g2 b)))))
 
-/*******************************************************************************/
+(cl-comment '========================================================================')
 (cl-comment '======= SEMANTIC CONDITION: bridges =======')
-/*******************************************************************************/
+(cl-comment '========================================================================')
 
 (cl-comment 'Axiom: MBR-1')
 (cl-comment 'Uniqueness of spiro connection.')
@@ -353,9 +353,9 @@
             (multiply_fused g2 g3))
     (= g1 g2)))
 
-/*******************************************************************************/
+(cl-comment '========================================================================')
 (cl-comment '======= MOST_BRIDGES DEFINITIONS =======')
-/*******************************************************************************/
+(cl-comment '========================================================================')
 
 (cl-comment 'Axiom: MBRD-1')
 (cl-comment 'Definition: multiply_fused is a relation that indicates that two groups are multiply fused together if and only if there are two or more bonds that are in both groups.')
@@ -424,9 +424,9 @@
 					(not (mol b2 g1))
 					(mol b2 g2))))))
 
-/*******************************************************************************/
+(cl-comment '========================================================================')
 (cl-comment '======= SEMANTIC CONDITION: ringBond -- remaining paths are chains =======')
-/*******************************************************************************/
+(cl-comment '========================================================================')
 
 (cl-comment 'Axiom: MRB-1')
 (cl-comment 'If a bond is a ringbond, then it must be in a ring.')
@@ -435,9 +435,9 @@
 		(exists (g)
 			(and (mol b g)(ring g)))))
 		
-/*******************************************************************************/
+(cl-comment '========================================================================')
 (cl-comment '======= MOST_RINGBOND DEFINITIONS =======')
-/*******************************************************************************/
+(cl-comment '========================================================================')
 
 (cl-comment 'Axiom: MRBD-1')
 (cl-comment 'Definitions for ringBond: a bond that is in a ring with no other atoms between it.')
@@ -450,17 +450,109 @@
 					(and (atom a3)
 						(or (between a3 a1 a2)(between a1 a2 a3))))))))))
 
-
-/*******************************************************************************/
+(cl-comment '========================================================================')
 (cl-comment '======= SEMANTIC CONDITION: cyclic ordering =======')
-/*******************************************************************************/
+(cl-comment '========================================================================')
 
 (cl-comment 'Axiom: MCO-1')
-(cl-comment 'Cyclic ordering axioms TBA -- see cyclic_geometry hcg.clif ')
+(cl-comment 'The ringOrder relation pertains to bonds in a ring.')
+(forall (x y z)
+	(if	(ringOrder x y z)
+		(and (bond x)
+		(bond y)
+		(bond z))))
 
-/*******************************************************************************/
+(cl-comment 'Axiom: MCO-2')
+(cl-comment 'If there are three bonds that are ordered, there exists a ring for which these bonds are in.')
+(forall (x y z)
+	(if	(and (ringOrder x y z)
+		(bond x)
+		(bond y)
+		(bond z))
+		(exists (l)
+			(and	(ring l)
+				(mol x l)
+				(mol y l)
+				(mol z l)))))
+
+(cl-comment 'Axiom: MCO-3')
+(cl-comment 'Distinct bonds ordered in a ring are ordered in a particular order.')
+(forall (x y z l)
+	(if	(and	(ring l)
+			(bond x)
+			(bond y)
+			(bond z)
+			(mol x l)
+			(mol y l)
+			(mol z l)
+			(not (= x y))
+			(not (= x z))
+			(not (= z y))
+			(ringOrder x y z))
+		(not (ringOrder z y x))))
+
+(cl-comment 'Axiom: MCO-4')
+(cl-comment 'There are three distinct bonds that are ordered in a ring.')
+(forall (x y z l)
+	(if	(and	(ring l)
+			(bond x)
+			(bond y)
+			(bond z)
+			(mol x l)
+			(mol y l)
+			(mol z l)
+			(ringOrder x y z))
+		(and	(not (= x y))
+			(not (= x z))
+			(not (= y z)))))
+
+(cl-comment 'Axiom: MCO-5')
+(cl-comment 'For distinct bonds that are ordered in a ring, all bonds that follow are ordered before or after.')
+(forall (x y z l)
+	(if	(and	(ring l)
+			(bond x)
+			(bond y)
+			(bond z)
+			(mol x l)
+			(mol y l)
+			(mol z l)
+			(not (= x y))
+			(not (= x z))
+			(not (= z y))
+			(ringOrder x y z))
+		(forall (w)
+			(if	(and	(bond w)
+					(mol w l))
+				(or	(ringOrder x y w)
+					(ringOrder w y z))))))
+
+(cl-comment 'Axiom: MCO-6')
+(cl-comment 'If there is a ring, then there exists three bonds that are ordered in the ring.')
+(forall (l)
+	(if	(ring l)
+		(exists (x y z)
+			(and (bond x)(bond y)(bond z)
+			(ringOrder x y z)))))
+			
+(cl-comment 'Axiom: MCO-7')
+(cl-comment 'The ringOrder relation is transitive.')
+(forall (x y z w l)
+	(if (and (ring l)
+			(bond x)
+			(bond y)
+			(bond z)
+			(bond w)
+			(mol x l)
+			(mol y l)
+			(mol z l)
+			(mol w l)
+			(ringOrder x y z)
+			(ringOrder x z w))
+		(ringOrder x y w)))
+
+(cl-comment '========================================================================')
 (cl-comment '======= SEMANTIC CONDITION: semilinear betweenness / spanning tree =======')
-/*******************************************************************************/
+(cl-comment '========================================================================')
 
 (cl-comment 'Axiom: MBTWN-1')
 (cl-comment 'Atoms are between themselves.')
@@ -473,9 +565,9 @@
 (forall (x y z s)
 	(if (and (skeleton s)
 			(atom x)(atom y)(atom z)
-			(inSkeleton x s)
-			(inSkeleton y s)
-			(inSkeleton z s)
+			(mol x s)
+			(mol y s)
+			(mol z s)
 			(between x y z))
 		(between z y x)))
 
@@ -484,9 +576,9 @@
 (forall (x y z s)
 	(if (and (skeleton s)
 			(atom x)(atom y)(atom z)
-			(inSkeleton x s)
-			(inSkeleton y s)
-			(inSkeleton z s)
+			(mol x s)
+			(mol y s)
+			(mol z s)
 			(between y x z)
 			(between x y z))
 		(= x y)))
@@ -496,10 +588,10 @@
 (forall (x y z w s)
 	(if	(and (skeleton s)
 			(atom x)(atom y)(atom z)
-			(inSkeleton x s)
-			(inSkeleton y s)
-			(inSkeleton z s)
-			(inSkeleton w s)
+			(mol x s)
+			(mol y s)
+			(mol z s)
+			(mol w s)
 			(between y x z))
 		(or	(between y x w)
 			(between z x w))))
@@ -517,9 +609,9 @@
 		(and (mol a3 g1)
 			(mol a3 g2))))
 
-/*******************************************************************************/
+(cl-comment '========================================================================')
 (cl-comment '======= SEMANTIC CONDITION: skeletons =======')
-/*******************************************************************************/
+(cl-comment '========================================================================')
 
 (cl-comment 'Axiom: MS-1')
 (cl-comment 'Disjointness axiom for skeleton.')
@@ -564,35 +656,52 @@
 					(and (ring g1)(ring g2)(fused g1 g2)))))))
 
 (cl-comment 'Axiom: MS-5')
-(cl-comment 'Every group is in a skeleton.')
+(cl-comment 'A linear skeleton is a skeleton that only contains chains.')
 (forall (x)
-	(if (group x)
-		(exists (y)
-			(and (skeleton y)(mol y x)))))
+	(iff (linearskeleton x)
+		(and (skeleton x)
+			(forall (g)
+				(if (and (group g)(mol g x))
+					(chain g))))))
+
 
 (cl-comment 'Axiom: MS-6')
-(cl-comment 'Every group is contained in a unique skeleton.')
-(forall (x)
-	(if (group x)
-		(exists (y)
-			(and (skeleton y)(mol y x)
-				(not (exists (w)
-					(and (skeleton w)(mol w x)(not (= w y)))))))))
+(cl-comment 'For any two distinct groups, there exist a skeleton that contains them.')
+(forall (x y)
+	(if (and (group x)(group y)(not (= x y)))
+		(exists (s)
+			(and (skeleton s)(mol x s)(mol y s)))))
 
+(cl-comment 'Axiom: MS-7')
+(cl-comment 'For two distinct skeletons, there exists something that is incident with one, but not the other. For now we are only interested in mereology for decomposition feature; whether we want to extend most skeleton with a richer set of mereology of skeletons is future work.')
+(forall (x y)
+	(if (and (skeleton x)(skeleton y)(not (= x y)))
+		(exists (z)
+			(and (mol z x)(not (mol z y))))))
 
-/*******************************************************************************/
+(cl-comment 'Axiom: MS-8')
+(cl-comment 'Two skeletons are part of each other if they are connected in some way.  Using extensional mereology; do we need to do a sort on z? what is z?? or do we leave it open')
+(forall (x y)
+	(iff (part x y)
+		(and (skeleton x)
+			(skeleton y)
+			(forall (z)
+				(if (mol z x)
+					(mol z y))))))
+
+(cl-comment '========================================================================')
 (cl-comment '======= SEMANTIC CONDITION: scaffolds =======')
-/*******************************************************************************/
+(cl-comment '========================================================================')
 
 (cl-comment 'Axiom: MSC-1')
-(cl-comment 'Two molecules cannot be incident with each other.')
+(cl-comment 'Two molecules cannot be incident with each other. check if this is still true?')
 (forall (x y)
 	(if (and (mol x y)(skeleton x)(skeleton y))
 		(= x y)))
 
-/*******************************************************************************/
+(cl-comment '========================================================================')
 (cl-comment '======= SCAFFOLD DEFINITIONS =======')
-/*******************************************************************************/
+(cl-comment '========================================================================')
 
 (cl-comment 'Axiom: MSCD-1')
 (cl-comment 'A scaffold consists of at least one ring and chains that are attached to each other in some way.')
@@ -608,23 +717,15 @@
 							(attached y g)
 							(attached z g))))))))
 
-(cl-comment 'Axiom: MSC-2')
-(cl-comment 'A linear skeleton is a skeleton that only contains chains.')
-(forall (x)
-	(iff (linearskeleton x)
-		(and (skeleton x)
-			(forall (g)
-				(if (and (group g)(mol g x))
-					(chain g))))))
+(cl-comment '========================================================================')
+(cl-comment '======= EXTENSIONS =======')
+(cl-comment '========================================================================')
 
-(cl-comment 'Axiom: MSC-3')
-(cl-comment 'Two skeletons are part of each other if they are connected in some way.  Using extensional mereology; do we need to do a sort on z? what is z?? or do we leave it open')
-(forall (x y)
-	(iff (part x y)
-		(and (skeleton x)
-			(skeleton y)
-			(forall (z)
-				(if (mol z x)
-					(mol z y))))))
+(cl-comment 'Axiom: EXT-1')
+(cl-comment 'Feasibility/Verification - ease of verification and foreshadow we will raise this issue when we talk about feasibility. If x is adjacent 3 different things (atoms/vertices), then one of those is not adjacent to the other')
+(forall (u x y z)
+	(if (and (atom u)(atom x)(atom y)(atom z)
+		(mol x y)(mol x z)(mol x u)(mol u y)(mol u z)(mol y z))
+	(or (= y z)(= y u)(= u z))))
 
 )

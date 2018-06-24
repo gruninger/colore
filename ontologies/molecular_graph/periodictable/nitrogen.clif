@@ -1,0 +1,65 @@
+/*******************************************************************************
+* Copyright (c) University of Toronto and others. All rights reserved.
+* The content of this file is licensed under the Creative Commons Attribution-
+* ShareAlike 3.0 Unported license. The legal text of this license can be
+* found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+*
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/molecular_graph/definitions/nitrogen.clif
+
+(cl-comment 'Element name: nitrogen')
+
+(cl-comment 'Valence number: 3')
+
+(cl-comment 'Axiom: E-26L')
+(cl-comment 'Symbol: N')
+(cl-comment 'Atomic Number: 26')
+(cl-comment 'Nitrogen has at least 3 covalent bonds.')
+(forall (x) 
+	(if (nitrogen x)
+		(and (atom x)
+			(exists (a1 a2 a3 b1 b2 b3)
+				(and (atom a1)
+					(atom a2)
+					(atom a3)
+					(bond b1)
+					(bond b2)
+					(bond b3)
+					(not (= a1 b2))
+					(not (= a1 b3))
+					(not (= a2 b1))
+					(not (= a2 b3))
+					(not (= a3 b1))
+					(not (= a3 b2))
+					(mol a1 b1)(mol x b1)
+					(mol a2 b2)(mol x b2)
+					(mol a3 b3)(mol x b3))))))
+
+(cl-comment 'Axiom: E-26M')
+(cl-comment 'Symbol: N')
+(cl-comment 'Atomic Number: 26')
+(cl-comment 'Nitrogen has at most 3 covalent bonds.')
+(forall (x a1 a2 a3 a4 b1 b2 b3 b4)
+	(if (and (nitrogen x)
+		(atom a1)
+		(atom a2)
+		(atom a3)
+		(atom a4)
+		(bond b1)
+		(bond b2)
+		(bond b3)
+		(bond b4)
+		(mol a1 b1)(mol x b1)
+		(mol a2 b2)(mol x b2)
+		(mol a3 b3)(mol x b3)
+		(mol a4 b4)(mol x b4))
+	(or (= b1 b2)
+		(= b1 b3)
+		(= b1 b4)
+		(= b2 b3)
+		(= b2 b4)
+		(= b3 b4))))
+
+
+)

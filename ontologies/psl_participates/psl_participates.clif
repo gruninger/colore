@@ -29,8 +29,8 @@
 		(and	(object x)
 			(timepoint t))))
 
-(cl-comment "The participates_in relation only holds between objects,
-activity occurrences, and timepoints, respectively.")
+(cl-comment 'The participates_in relation only holds between objects,
+activity occurrences, and timepoints, respectively.')
 
 (forall (x occ t)
 	(if	(participates_in x occ t)
@@ -38,44 +38,44 @@ activity occurrences, and timepoints, respectively.")
 			(activity_occurrence occ) 
 			(timepoint t))))
 
-(cl-comment "An object can participate in an activity
+(cl-comment 'An object can participate in an activity
 occurrence only at those timepoints at which both the object exists and
-the activity is occurring.")
+the activity is occurring.')
 
 (forall (x occ t)
 	(if	(participates_in x occ t)
 		(and 	(exists_at x t)
          		(is_occurring_at occ t))))
 
-(cl-comment "Timepoint t2 is between timepoints t1 and t3 if and only if t1 is before 
-t2 and t2 is before t3.")
+(cl-comment 'Timepoint t2 is between timepoints t1 and t3 if and only if t1 is before 
+t2 and t2 is before t3.')
 
 (forall (t1 t2 t3) (iff (between t1 t2 t3)
   (and (before t1 t2) (before t2 t3))))
 
-(cl-comment "Timepoint t1 is beforeEq timepoint t2 if and only if t1 is before or equal
-to t2.")
+(cl-comment 'Timepoint t1 is beforeEq timepoint t2 if and only if t1 is before or equal
+to t2.')
 
 (forall (t1 t2) (iff (beforeEq t1 t2)
   (and (timepoint t1) (timepoint t2)
        (or (before t1 t2) (= t1 t2)))))
 
-(cl-comment "Timepoint t2 is betweenEq timepoints t1 and t3 if and only if 
-t1 is before or equal to t2, and t2 is before or equal to t3.")
+(cl-comment 'Timepoint t2 is betweenEq timepoints t1 and t3 if and only if 
+t1 is before or equal to t2, and t2 is before or equal to t3.')
 
 (forall (t1 t2 t3) (iff (betweenEq t1 t2 t3)
   (and (beforeEq t1 t2)
        (beforeEq t2 t3))))
 
-(cl-comment "An object exists at a timepoint t if and only if t is betweenEq its begin
-and end points.")
+(cl-comment 'An object exists at a timepoint t if and only if t is betweenEq its begin
+and end points.')
 
 (forall (x t) (iff (exists_at x t)
   (and (object x)
        (betweenEq (beginof x) t (endof x)))))
 
-(cl-comment "An activity is occurring at a timepoint t if and only if t 
-is betweenEq the begin and end points of the activity occurrence.")
+(cl-comment 'An activity is occurring at a timepoint t if and only if t 
+is betweenEq the begin and end points of the activity occurrence.')
 
 (forall (occ t) (iff (is_occurring_at occ t)
 	(and	(activity_occurrence occ)

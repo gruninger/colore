@@ -1,0 +1,52 @@
+/*******************************************************************************
+* Copyright (c) University of Toronto and others. All rights reserved.
+* The content of this file is licensed under the Creative Commons Attribution-
+* ShareAlike 3.0 Unported license. The legal text of this license can be
+* found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+*
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/molecular_graph/definitions/magnesium.clif
+
+(cl-comment 'Element name: magnesium')
+
+(cl-comment 'Valence number: 2')
+
+(cl-comment 'Axiom: E-13L')
+(cl-comment 'Symbol: Mg')
+(cl-comment 'Atomic Number: 13')
+(cl-comment 'Magnesium has at least 2 covalent bonds.')
+(forall (x) 
+	(if (magnesium x)
+		(and (atom x)
+			(exists (a1 a2 b1 b2)
+				(and (atom a1)
+					(atom a2)
+					(bond b1)
+					(bond b2)
+					(not (= a1 b2))
+					(not (= a2 b1))
+					(mol a1 b1)(mol x b1)
+					(mol a2 b2)(mol x b2))))))
+
+(cl-comment 'Axiom: E-13M')
+(cl-comment 'Symbol: Mg')
+(cl-comment 'Atomic Number: 13')
+(cl-comment 'Magnesium has at most 2 covalent bonds.')
+(forall (x a1 a2 a3 b1 b2 b3)
+	(if (and (magnesium x)
+		(atom a1)
+		(atom a2)
+		(atom a3)
+		(bond b1)
+		(bond b2)
+		(bond b3)
+		(mol a1 b1)(mol x b1)
+		(mol a2 b2)(mol x b2)
+		(mol a3 b3)(mol x b3))
+	(or (= b1 b2)
+		(= b1 b3)
+		(= b2 b3))))
+
+
+)

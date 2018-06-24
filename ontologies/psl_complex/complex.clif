@@ -12,8 +12,8 @@
 
 (cl-imports http://colore.oor.net/psl_atomic/atomic.clif)
 
-(cl-comment "Occurrences in the activity tree for an activity correspond to atomic subactivity
-occurrences of the activity.")
+(cl-comment 'Occurrences in the activity tree for an activity correspond to atomic subactivity
+occurrences of the activity.')
 
 (forall (a s1 s2)
 	(if	(min_precedes s1 s2 a)
@@ -23,8 +23,8 @@ occurrences of the activity.")
 				(atocc s1 a1)
 				(atocc s2 a2)))))
 
-(cl-comment "Root occurrences in the activity tree correspond to atomic subactivity
-occurrences of the activity.")
+(cl-comment 'Root occurrences in the activity tree correspond to atomic subactivity
+occurrences of the activity.')
 
 (forall (a s)
 	(if	(root s a)
@@ -32,7 +32,7 @@ occurrences of the activity.")
 			(and	(subactivity a1 a)
 				(atocc s a1)))))
 
-(cl-comment "All activity trees have a root subactivity occurrence.")
+(cl-comment 'All activity trees have a root subactivity occurrence.')
 
 (forall (s1 s2 a)
 	(if	(min_precedes s1 s2 a)
@@ -40,34 +40,34 @@ occurrences of the activity.")
 			(and	(root s3 a)
 				(min_precedes s3 s2 a)))))
 
-(cl-comment "No subactivity occurrences in an activity tree occur earlier than 
-the root subactivity occurrence.")
+(cl-comment 'No subactivity occurrences in an activity tree occur earlier than 
+the root subactivity occurrence.')
 
 (forall (s1 s2 a)
 	(if	(min_precedes s1 s2 a)
 		(not (root s2 a))))
 
-(cl-comment "Activity trees are subtrees of the occurrence tree.")
+(cl-comment 'Activity trees are subtrees of the occurrence tree.')
 
 (forall (s1 s2 a)
 	(if	(min_precedes s1 s2 a)
 		(precedes s1 s2)))
 
-(cl-comment "Root occurrences are elements of the occurrence tree.")
+(cl-comment 'Root occurrences are elements of the occurrence tree.')
 
 (forall (s a)
 	(if	(root s a)
 		(legal s)))
 
-(cl-comment "Every legal atomic activity occurrence is an activity tree containing only
-one occurrence.")
+(cl-comment 'Every legal atomic activity occurrence is an activity tree containing only
+one occurrence.')
 
 (forall (s a)
         (if	(and    (atocc s a)
                         (legal s))
 		(root s a)))
 
-(cl-comment "Activity trees are discrete.")
+(cl-comment 'Activity trees are discrete.')
 
 (forall (s1 s2 a)
 	(if	(min_precedes s1 s2 a)
@@ -76,8 +76,8 @@ one occurrence.")
 				(or	(min_precedes s3 s2 a)
 					(= s3 s2))))))
 
-(cl-comment "Subactivity occurrences on the same branch of the occurrence tree are
-on the same branch of the activity tree.")
+(cl-comment 'Subactivity occurrences on the same branch of the occurrence tree are
+on the same branch of the activity tree.')
 
 
 (forall (a s1 s2 s3)
@@ -86,8 +86,8 @@ on the same branch of the activity tree.")
 			(precedes s2 s3))
 		(min_precedes s2 s3 a)))
 
-(cl-comment "The activity tree for a complex subactivity occurrence
-is a subtree of the activity tree for the activity occurrence.")
+(cl-comment 'The activity tree for a complex subactivity occurrence
+is a subtree of the activity tree for the activity occurrence.')
 
 (forall (a1 a2 s1 s2 s3)
 	(if	(and	(subactivity a1 a2)
@@ -95,14 +95,14 @@ is a subtree of the activity tree for the activity occurrence.")
 			(min_precedes s1 s3 a1))
 		(min_precedes s1 s3 a2)))
 
-(cl-comment "Only complex activities can be arguments to the min_precedes relation.")
+(cl-comment 'Only complex activities can be arguments to the min_precedes relation.')
 
 (forall (s1 s2 a)
         (if	(min_precedes s1 s2 a)
                 (not (atomic a))))
 
-(cl-comment "Subactivity occurrences on the same branch of the activity tree are
-linearly ordered by the min_precedes relation.")
+(cl-comment 'Subactivity occurrences on the same branch of the activity tree are
+linearly ordered by the min_precedes relation.')
 
 (forall (a s1 s2 s3)
 	(if	(and	(min_precedes s2 s1 a)
@@ -110,9 +110,9 @@ linearly ordered by the min_precedes relation.")
 			(precedes s2 s3))
 		(min_precedes s2 s3 a)))
 
-(cl-comment "An occurrence is the leaf of an activity tree if and only if there exists an earlier
+(cl-comment 'An occurrence is the leaf of an activity tree if and only if there exists an earlier
 atomic subactivity occurrence but there does not exist a later atomic 
-subactivity occurrence.")
+subactivity occurrence.')
 
 (forall (s a) (iff (leaf s a)
     (and    (or    (root s a)
@@ -120,8 +120,8 @@ subactivity occurrence.")
         (not (exists (s2)
             (min_precedes s s2 a))))))
 
-(cl-comment "The do relation specifies the initial and final atomic subactivity occurrences
-of an occurrence of an activity.")
+(cl-comment 'The do relation specifies the initial and final atomic subactivity occurrences
+of an occurrence of an activity.')
 
 (forall (a s1 s2) (iff (do a s1 s2)
 (and	(root s1 a)
@@ -129,10 +129,10 @@ of an occurrence of an activity.")
 	(or	(min_precedes s1 s2 a)
 		(= s1 s2)))))
 
-(cl-comment "An activity occurrence s2 is the next subactivity occurrence after s1
+(cl-comment 'An activity occurrence s2 is the next subactivity occurrence after s1
 in an activity tree for a if and only of s1 precedes s2
 in the tree and there does not exist a subactivity occurrence that is between
-them in the tree.")
+them in the tree.')
 
 (forall (s1 s2 a) (iff (next_subocc s1 s2 a)
 (and    (min_precedes s1 s2 a)
@@ -141,11 +141,11 @@ them in the tree.")
 			(min_precedes s1 s3 a)
                         (min_precedes s3 s2 a)))))))
 
-(cl-comment "The activity tree for a1 with root occurrence s1
+(cl-comment 'The activity tree for a1 with root occurrence s1
 contains an activity tree for a2 as a subtree if and only if
 every atomic subactivity occurrence in the activity tree for a2
 is an element of the activity tree for a1, and there is an atomic subactivity
-occurrence in the activity tree for a1 that is not in the  activity tree for a2.")
+occurrence in the activity tree for a1 that is not in the  activity tree for a2.')
 
 (forall (s1 s2 a1 a2) (iff (subtree s1 a1 s2 a2)
 (and	(root s1 a1)
@@ -155,11 +155,11 @@ occurrence in the activity tree for a1 that is not in the  activity tree for a2.
 		(if	(min_precedes s1 s3 a1)
 			(min_precedes s2 s3 a2))))))
 
-(cl-comment "The atomic subactivity occurrences s1 and s2 are siblings
+(cl-comment 'The atomic subactivity occurrences s1 and s2 are siblings
 in an activity tree for a iff they either have a common
 predecessor in the activity tree or they are both roots of
 activity trees that have a common predecessor in the occurrence
-tree.")
+tree.')
 
 (forall (s1 s2 a) (iff (sibling s1 s2 a)
 (or	(exists (s3)
