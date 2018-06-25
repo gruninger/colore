@@ -1,8 +1,8 @@
 ============================== Prover9 ===============================
 Prover9 (32) version Dec-2007, Dec 2007.
-Process 18052 was started by torsten on torsten-2016,
-Sat Jun 23 20:37:34 2018
-The command was "/cygdrive/c/Reasoning/prover9-bin/bin-win32/prover9 -t600 -f C:\Users\torsten\Documents\github\colore\ontologies\multidim_mereotopology_cont\conversions\cont_basic.p9".
+Process 18372 was started by torsten on torsten-2016,
+Sun Jun 24 22:36:02 2018
+The command was "/cygdrive/c/Reasoning/prover9-bin/bin-win32/prover9 -t600 -f C:\Users\torsten\Documents\github\colore\ontologies\multidim_mereotopology_cont\conversions\cont_basic.p9 C:\Users\torsten\Documents\github\colore\ontologies\multidim_mereotopology_codi\generated\codi_int_relevance1.order".
 ============================== end of head ===========================
 
 ============================== INPUT =================================
@@ -12,11 +12,19 @@ The command was "/cygdrive/c/Reasoning/prover9-bin/bin-win32/prover9 -t600 -f C:
 
 formulas(sos).
 (all x11 (-zex(x11) <-> cont(x11,x11))).
-(all x22 all x21 (cont(x22,x21) & cont(x21,x22) -> x22 = x21)).
-(all x33 all x31 all x32 (cont(x33,x31) & cont(x31,x32) -> cont(x33,x32))).
-(all x42 all x41 (zex(x42) -> -cont(x41,x42) & -cont(x42,x41))).
-(all x52 all x51 (zex(x52) & zex(x51) -> x52 = x51)).
+(all x21 all x22 (cont(x21,x22) & cont(x22,x21) -> x21 = x22)).
+(all x31 all x33 all x32 (cont(x31,x33) & cont(x33,x32) -> cont(x31,x32))).
+(all x41 all x42 (zex(x41) -> -cont(x42,x41) & -cont(x41,x42))).
+(all x51 all x52 (zex(x51) & zex(x52) -> x51 = x52)).
 end_of_list.
+WARNING, predicate symbols in predicate_order (lex) command not found in formulas: covers, maxdim, mindim, sc, inc, po, c, leq, eqdim, lt, p.
+
+% Reading from file C:\Users\torsten\Documents\github\colore\ontologies\multidim_mereotopology_codi\generated\codi_int_relevance1.order
+
+predicate_order([covers,maxdim,mindim,sc,inc,po,c,=,leq,eqdim,lt,p,cont,zex]).
+set(inverse_order).
+assign(order,kbo).
+WARNING, predicate symbols in predicate_order (lex) command not found in formulas: covers, maxdim, mindim, sc, inc, po, c, leq, eqdim, lt, p.
 
 ============================== end of input ==========================
 
@@ -26,10 +34,10 @@ end_of_list.
 
 % Formulas that are not ordinary clauses:
 1 (all x11 (-zex(x11) <-> cont(x11,x11))) # label(non_clause).  [assumption].
-2 (all x22 all x21 (cont(x22,x21) & cont(x21,x22) -> x22 = x21)) # label(non_clause).  [assumption].
-3 (all x33 all x31 all x32 (cont(x33,x31) & cont(x31,x32) -> cont(x33,x32))) # label(non_clause).  [assumption].
-4 (all x42 all x41 (zex(x42) -> -cont(x41,x42) & -cont(x42,x41))) # label(non_clause).  [assumption].
-5 (all x52 all x51 (zex(x52) & zex(x51) -> x52 = x51)) # label(non_clause).  [assumption].
+2 (all x21 all x22 (cont(x21,x22) & cont(x22,x21) -> x21 = x22)) # label(non_clause).  [assumption].
+3 (all x31 all x33 all x32 (cont(x31,x33) & cont(x33,x32) -> cont(x31,x32))) # label(non_clause).  [assumption].
+4 (all x41 all x42 (zex(x41) -> -cont(x42,x41) & -cont(x41,x42))) # label(non_clause).  [assumption].
+5 (all x51 all x52 (zex(x51) & zex(x52) -> x51 = x52)) # label(non_clause).  [assumption].
 
 ============================== end of process non-clausal formulas ===
 
@@ -62,9 +70,10 @@ No predicates eliminated.
 Auto_denials:  (non-Horn, no changes).
 
 Term ordering decisions:
-Predicate symbol precedence:  predicate_order([ =, zex, cont ]).
+Function symbol KB weights: 
+Predicate symbol precedence:  predicate_order([ =, cont, zex ]).
 Function symbol precedence:  function_order([ ]).
-After inverse_order:  (no changes).
+Skipping inverse_order, because term ordering is KBO.
 Unfolding symbols: (none).
 
 Auto_inference settings:
@@ -115,17 +124,27 @@ given #5 (I,wt=5): 11 -zex(x) | -cont(x,y).  [clausify(4)].
 
 given #6 (I,wt=7): 12 -zex(x) | -zex(y) | y = x.  [clausify(5)].
 
+given #7 (A,wt=6): 13 -cont(x,y) | cont(y,y).  [resolve(10,a,6,a)].
+
+given #8 (T,wt=6): 14 -cont(x,y) | cont(x,x).  [resolve(11,a,6,a)].
+
+given #9 (T,wt=8): 15 -zex(x) | x = y | cont(y,y).  [resolve(12,a,6,a)].
+
+given #10 (T,wt=8): 16 -zex(x) | y = x | cont(y,y).  [resolve(12,b,6,a)].
+
+given #11 (T,wt=9): 17 x = y | cont(y,y) | cont(x,x).  [resolve(15,a,6,a)].
+
 ============================== STATISTICS ============================
 
-Given=6. Generated=16. Kept=7. proofs=0.
-Usable=6. Sos=0. Demods=0. Limbo=0, Disabled=8. Hints=0.
+Given=11. Generated=29. Kept=12. proofs=0.
+Usable=11. Sos=0. Demods=0. Limbo=0, Disabled=8. Hints=0.
 Weight_deleted=0. Literals_deleted=0.
-Forward_subsumed=9. Back_subsumed=1.
+Forward_subsumed=17. Back_subsumed=1.
 Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
 New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
 Demod_attempts=0. Demod_rewrites=0.
 Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
-Nonunit_fsub_feature_tests=3. Nonunit_bsub_feature_tests=12.
+Nonunit_fsub_feature_tests=10. Nonunit_bsub_feature_tests=22.
 Megabytes=0.02.
 User_CPU=0.01, System_CPU=0.03, Wall_clock=0.
 
@@ -139,12 +158,12 @@ SEARCH FAILED
 
 Exiting with failure.
 
------- process 18052 exit (sos_empty) ------
+------ process 18372 exit (sos_empty) ------
 
-Process 18052 exit (sos_empty) Sat Jun 23 20:37:34 2018
+Process 18372 exit (sos_empty) Sun Jun 24 22:36:02 2018
 ============================= C:\Reasoning\prover9-bin\bin-win32\prover9 ================================
-execution finished: Sat Jun 23 20:37:58 2018
+execution finished: Sun Jun 24 22:36:06 2018
 total CPU time used: 0
-The command was "C:\Reasoning\prover9-bin\bin-win32\prover9 -t600 -f C:\Users\torsten\Documents\github\colore\ontologies\multidim_mereotopology_cont\conversions\cont_basic.p9"
+The command was "C:\Reasoning\prover9-bin\bin-win32\prover9 -t600 -f C:\Users\torsten\Documents\github\colore\ontologies\multidim_mereotopology_cont\conversions\cont_basic.p9 C:\Users\torsten\Documents\github\colore\ontologies\multidim_mereotopology_codi\generated\codi_int_relevance1.order"
 Input read from 
 ============================ end of footer ===========================
