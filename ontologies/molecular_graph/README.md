@@ -5,10 +5,10 @@ The ontology represents atoms and bonds found in Molecular (Chemical) Graph Theo
 Hierarchy Structure
 ===================
 
-- definitions
-	- most\_elements
-	- most\_bonds
-- periodictable: folder containing valency definitions for periodic elements
+- [definitions](https://github.com/gruninger/colore/blob/master/ontologies/molecular_graph/definitions/)
+	- [most\_elements](https://github.com/gruninger/colore/blob/master/ontologies/molecular_graph/definitions/most_elements.clif)
+	- [most\_bonds](https://github.com/gruninger/colore/blob/master/ontologies/molecular_graph/definitions/most_bonds.clif)
+- [periodictable](https://github.com/gruninger/colore/blob/master/ontologies/molecular_graph/definitions/periodictable/): folder containing valency definitions for periodic elements
 
 
 Verification of Theories
