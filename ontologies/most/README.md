@@ -6,14 +6,19 @@ The ontology represents atoms, bonds, functional groups, and molecules as things
 
 ![most hierarchy](most_semantic_conditions.jpg)
 
-# Major Changes
-===============
+Major Changes
+=============
 - april 21, 2017: renamed all inBond/inGroup/etc. relations to mol(x,y) - all axioms will now require sort constraints
 
-# Major Design Decisions
-========================
+Major Design Decisions
+======================
 The ontology allows for:
-- unique fusion
+- multiple fusion to support bridges
 - unique spiro
 - unique tether
-- bridge = one end is spiro'd, other end is tethered
+
+Verification of Theories
+================================================
+- This ontology has been verified with theories found in the [tripartite_incidence](https://github.com/gruninger/colore/blob/master/ontologies/tripartite_incidence/) hierarchy.
+- See the [mappings](https://github.com/gruninger/colore/blob/master/ontologies/most/mappings/) folder for translation definitions.
+- See the [interprets](https://github.com/gruninger/colore/blob/master/ontologies/most/interprets/) folder for proofs.
