@@ -8,9 +8,9 @@
  *    Michael Gruninger - initial implementation
  *******************************************************************************/
 
-(cl-text http://colore.oor.net/psl_occtree/binary_occtree.clif
+(cl-text http://colore.oor.net/psl_occtree/dl_occtree.clif
 
-(cl-imports http://colore.oor.net/psl_core/binary_psl_core.clif)
+(cl-imports http://colore.oor.net/psl_core/dl_psl_core.clif)
 
 (forall (s)
 	(if	(arboreal s)
@@ -22,14 +22,11 @@ are elements of the occurrence tree).')
 
 (forall (s1 s2)
 	(if	(earlier s1 s2)
-		(and	(arboreal s1)
-			(arboreal s2))))
-
-(cl-comment 'The ordering relation over occurrences is irreflexive.')
+		(arboreal s1)))
 
 (forall (s1 s2)
 	(if	(earlier s1 s2)
-		(not (earlier s2 s1))))
+		(arboreal s2)))
 
 (cl-comment 'The ordering relation over occurrences is transitive.')
 
@@ -38,22 +35,13 @@ are elements of the occurrence tree).')
 			(earlier s2 s3))
 		(earlier s1 s3)))
 
-(cl-comment 'A branch in the occurrence tree is totally ordered.')
-
-(forall (s1 s2 s3)
-	(if	(and	(earlier s1 s2)
-			(earlier s3 s2))
-		(or	(earlier s1 s3)
-			(earlier s3 s1)
-			(= s3 s1))))
-
 (cl-comment 'Every branch of the occurrence tree has an initial occurrence.')
 
-(forall (s1 s2)
-	(if	(earlier s1 s2)
-		(exists (sp)
-			(and	(initial sp)
-				(earlierEq sp s1)))))
+(forall (x)
+	(if	(NonInitial x)
+		(exists (y)
+			(and	(initial y)
+				(earlier y x)))))
 
 (cl-comment 'No two initial activity occurrences in the occurrence tree are occurrences
 of the same activity.')
@@ -73,42 +61,34 @@ occurrence tree.')
 		(exists (s)
         		(and    (initial s)
                 		(occurrence_of s a)))))
+
+(forall (a)
+        (if     (generator a)
+                (forall (b)
+                        (if     (occurrence_of b a)
+                                (arboreal b)))))
    
 (cl-comment 'There is an initial occurrence of each activity.')
 
 (forall (s a)
-        (if	(occurrence_of s a)
-		(iff	(arboreal s)
-			(generator a))))
+        (if	(and	(occurrence_of s a)
+			(generator a))
+		(arboreal a)))
 
-(cl-comment 'The successor of an arboreal activity occurrence is an occurrence of a generator activity.')
+(forall (s a)
+        (if	(and	(occurrence_of s a)
+			(arboreal s))
+		(generator a)))
 
-(forall (a o)
-        (iff    (and    (generator a)
-                        (arboreal o))
-		(exists (s)
-			(and	(occurrence_of s a)
-				(next_occ o s)))))
 
 (cl-comment 'Every non-initial activity occurrence is the successor of 
 another activity occurrence.')
 
-(forall (s1 s2)
-        (if	(earlier s1 s2)
-		(exists (a s3)
-                        (and    (generator a)
-				(occurrence_of s3 a)
+(forall (s2)
+        (if	(NonInitial s2)
+		(exists (s3)
+                        (and    (arboreal s3)
 				(next_occ s3 s2)))))
-
-(cl-comment 'An occurrence s1 is earlier than the successor occurrence 
-of s2 if and only if the occurrence s2 is later than s1.')
-
-(forall (a s1 s2)
-        (if	(and	(generator a)
-			(occurrence_of s3 a)
-			(next_occ s2 s3))
-		(iff	(earlier s1 s3)
-			(earlierEq s1 s2))))
 
 (cl-comment 'The legal relation restricts arboreal activity occurrences.')
 
@@ -132,6 +112,24 @@ the successor of the activity occurrence.')
 			(ends s1 t1)
 			(begins s2 t2))
 		(before t1 t2)))
+
+(forall (x)
+	(iff	(initial x)
+		(and	(arboreal x)
+			(not (exists (y)
+				(and	(earlier y x)
+					(arboreal y)))))))
+
+(forall (x)
+	(iff	(NonInitial x)
+		(and	(arboreal x)
+			(not (initial x)))))
+
+(forall (x)
+	(iff	(NextLegal x)
+		(exists (y)
+			(and	(next_occ x y)
+				(legal y)))))
 
 (cl-comment 'An activity occurrence s1 precedes another activity occurrence s2 
 if and only if s1 is earlier than s2 in the occurrence tree and s2 is legal.')
