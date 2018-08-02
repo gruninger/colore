@@ -131,33 +131,6 @@ the successor of the activity occurrence.')
 			(and	(next_occ x y)
 				(legal y)))))
 
-(cl-comment 'An activity occurrence s1 precedes another activity occurrence s2 
-if and only if s1 is earlier than s2 in the occurrence tree and s2 is legal.')
-
-(forall (s1 s2) (iff (precedes s1 s2)
-(and	(earlier s1 s2)
-	(legal s2))))
-
-(cl-comment 'An activity occurrence s1 is EarlierEq than
-an activity occurrence s2 if and only if it is either earlier than
-s2 or it is equal to s2.')
-
-(forall (s1 s2) (iff (earlierEq s1 s2)
-(and	(arboreal s1)
-	(arboreal s2)
-	(or	(earlier s1 s2)
-		(= s1 s2)))))
-
-(cl-comment 'An activity is poss at some occurrence if and only if the successor
-occurrence of the activity is legal.')
-
-(forall (a s) 
-	(iff 	(poss a s)
-		(exists (o)
-			(and	(occurrence_of o a)
-				(legal o)
-				(next_occ s o)))))
-
 (cl-comment 'No occurrence in the occurrence tree is earlier than an initial occurrence.')
 
 (forall (s)
@@ -165,6 +138,110 @@ occurrence of the activity is legal.')
 		(and	(arboreal s)
 			(not (exists (sp)
 				(earlier sp s))))))
+
+(forall (x y z)
+	(if	(and	(earlierEq x y)
+			(earlierEq y z))
+		(earlierEq x z)))
+
+(forall (x y)
+	(if	(earlier x y)
+		(earlierEq x y)))
+
+(forall (x)
+	(if	(NonInitial x)
+		(exists (y)
+			(and	(earlier y x)
+				(initial y)))))
+
+(forall (x)
+	(if	(arboreal x)
+		(exists (y)
+			(and	(earlierEq y x)
+				(initial y)))))
+
+(forall (x y)
+	(if	(next_occ x y)
+		(arboreal x)))
+
+(forall (x y)
+	(if	(next_occ x y)
+		(arboreal y)))
+
+(forall (x y)
+	(if	(next_occ x y)
+		(earlier x y)))
+
+(forall (x y)
+	(if	(arboreal x)
+		(exists (y)
+			(and	(next_occ x y)
+				(arboreal y)))))
+
+(forall (x y z)
+	(if	(and	(next_occ x y)
+			(next_occ z y))
+		(= x z)))
+
+(forall (x)
+	(if	(NonInitial x)
+		(exists (y)
+			(and	(earlier y x)
+				(arboreal y)))))
+
+(forall (x)
+	(if	(generator x)
+		(activity x)))
+
+(forall (x)
+	(if	(generator x)
+		(exists (y)
+			(and	(occurrence_of y x)
+				(initial y)))))
+
+(forall (x)
+        (if     (generator x)
+                (exists (y)
+                        (and    (occurrence_of y x)
+                                (arborea y)))))
+
+(forall (x)
+	(if	(arboreal x)
+		(forall (y)
+			(if	(occurrence_of x y)
+				(generator y)))))
+
+(forall (x y z)
+	(if	(and	(precedes x y)
+			(precedes y z))
+		(precedes x z)))
+
+(forall (x y)
+	(if	(precedes x y)
+		(legal y)))
+
+(forall (x y)
+	(if	(precedes x y)
+		(earlier x y)))
+
+(forall (x)
+	(if	(legal x)
+		(forall (y)
+			(if	(earlier y x)
+				(legal y)))))
+
+(forall (x)
+	(if	(NextLegal x)
+		(legal x)))
+
+(forall (x y)
+	(if	(poss x y)
+		(arboreal x)))
+
+(forall (x y)
+	(if	(poss x y)
+		(generator y)))
+
 
 
 )
