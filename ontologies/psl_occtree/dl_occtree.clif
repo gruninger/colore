@@ -1,0 +1,247 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/psl_occtree/dl_occtree.clif
+
+(cl-imports http://colore.oor.net/psl_core/dl_psl_core.clif)
+
+(forall (s)
+	(if	(arboreal s)
+		(activity_occurrence s)))
+
+(cl-comment 'The earlier relation is restricted to 
+arboreal activity occurrences (that is, activity occurrences that
+are elements of the occurrence tree).')
+
+(forall (s1 s2)
+	(if	(earlier s1 s2)
+		(arboreal s1)))
+
+(forall (s1 s2)
+	(if	(earlier s1 s2)
+		(arboreal s2)))
+
+(cl-comment 'The ordering relation over occurrences is transitive.')
+
+(forall (s1 s2 s3)
+	(if	(and	(earlier s1 s2)
+			(earlier s2 s3))
+		(earlier s1 s3)))
+
+(cl-comment 'Every branch of the occurrence tree has an initial occurrence.')
+
+(forall (x)
+	(if	(NonInitial x)
+		(exists (y)
+			(and	(initial y)
+				(earlier y x)))))
+
+(cl-comment 'No two initial activity occurrences in the occurrence tree are occurrences
+of the same activity.')
+
+(forall (s1 s2 a)
+	(if	(and	(initial s1)
+			(initial s2)
+			(occurrence_of s1 a)
+			(occurrence_of s2 a))
+		(= s1 s2)))
+
+(cl-comment 'An activity is a generator iff it has an initial occurrence in the
+occurrence tree.')
+
+(forall (a) 
+	(if	(generator a)
+		(exists (s)
+        		(and    (initial s)
+                		(occurrence_of s a)))))
+
+(forall (a)
+        (if     (generator a)
+                (forall (b)
+                        (if     (occurrence_of b a)
+                                (arboreal b)))))
+   
+(cl-comment 'There is an initial occurrence of each activity.')
+
+(forall (s a)
+        (if	(and	(occurrence_of s a)
+			(generator a))
+		(arboreal a)))
+
+(forall (s a)
+        (if	(and	(occurrence_of s a)
+			(arboreal s))
+		(generator a)))
+
+
+(cl-comment 'Every non-initial activity occurrence is the successor of 
+another activity occurrence.')
+
+(forall (s2)
+        (if	(NonInitial s2)
+		(exists (s3)
+                        (and    (arboreal s3)
+				(next_occ s3 s2)))))
+
+(cl-comment 'The legal relation restricts arboreal activity occurrences.')
+
+(forall (s)
+	(if	(legal s)
+		(arboreal s)))
+
+(cl-comment 'If an activity occurrence is legal, all earlier activity
+occurrences in the occurrence tree are also legal.')
+
+(forall (s1 s2)
+	(if	(and	(legal s1)
+			(earlier s2 s1))
+		(legal s2)))
+
+(cl-comment 'The endof an activity occurrence is before to the beginof 
+the successor of the activity occurrence.')
+
+(forall (s1 s2 t1 t2)
+	(if	(and	(earlier s1 s2)
+			(ends s1 t1)
+			(begins s2 t2))
+		(before t1 t2)))
+
+(forall (x)
+	(iff	(initial x)
+		(and	(arboreal x)
+			(not (exists (y)
+				(and	(earlier y x)
+					(arboreal y)))))))
+
+(forall (x)
+	(iff	(NonInitial x)
+		(and	(arboreal x)
+			(not (initial x)))))
+
+(forall (x)
+	(iff	(NextLegal x)
+		(exists (y)
+			(and	(next_occ x y)
+				(legal y)))))
+
+(cl-comment 'No occurrence in the occurrence tree is earlier than an initial occurrence.')
+
+(forall (s)
+	(iff	(initial s)
+		(and	(arboreal s)
+			(not (exists (sp)
+				(earlier sp s))))))
+
+(forall (x y z)
+	(if	(and	(earlierEq x y)
+			(earlierEq y z))
+		(earlierEq x z)))
+
+(forall (x y)
+	(if	(earlier x y)
+		(earlierEq x y)))
+
+(forall (x)
+	(if	(NonInitial x)
+		(exists (y)
+			(and	(earlier y x)
+				(initial y)))))
+
+(forall (x)
+	(if	(arboreal x)
+		(exists (y)
+			(and	(earlierEq y x)
+				(initial y)))))
+
+(forall (x y)
+	(if	(next_occ x y)
+		(arboreal x)))
+
+(forall (x y)
+	(if	(next_occ x y)
+		(arboreal y)))
+
+(forall (x y)
+	(if	(next_occ x y)
+		(earlier x y)))
+
+(forall (x y)
+	(if	(arboreal x)
+		(exists (y)
+			(and	(next_occ x y)
+				(arboreal y)))))
+
+(forall (x y z)
+	(if	(and	(next_occ x y)
+			(next_occ z y))
+		(= x z)))
+
+(forall (x)
+	(if	(NonInitial x)
+		(exists (y)
+			(and	(earlier y x)
+				(arboreal y)))))
+
+(forall (x)
+	(if	(generator x)
+		(activity x)))
+
+(forall (x)
+	(if	(generator x)
+		(exists (y)
+			(and	(occurrence_of y x)
+				(initial y)))))
+
+(forall (x)
+        (if     (generator x)
+                (exists (y)
+                        (and    (occurrence_of y x)
+                                (arborea y)))))
+
+(forall (x)
+	(if	(arboreal x)
+		(forall (y)
+			(if	(occurrence_of x y)
+				(generator y)))))
+
+(forall (x y z)
+	(if	(and	(precedes x y)
+			(precedes y z))
+		(precedes x z)))
+
+(forall (x y)
+	(if	(precedes x y)
+		(legal y)))
+
+(forall (x y)
+	(if	(precedes x y)
+		(earlier x y)))
+
+(forall (x)
+	(if	(legal x)
+		(forall (y)
+			(if	(earlier y x)
+				(legal y)))))
+
+(forall (x)
+	(if	(NextLegal x)
+		(legal x)))
+
+(forall (x y)
+	(if	(poss x y)
+		(arboreal x)))
+
+(forall (x y)
+	(if	(poss x y)
+		(generator y)))
+
+
+
+)
