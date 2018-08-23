@@ -5,15 +5,18 @@
 
 (cl-imports http://colore.oor.net/orderings/definitions/lt.clif)
 
+(cl-imports http://colore.oor.net/orderings/definitions/lt_equiv.clif)
+
 (cl-imports http://colore.oor.net/orderings/definitions/incomparable.clif)
 
-(cl-imports http://colore.oor.net/orderings/definitions/glb.clif)
-
 (forall (x y u)
-	(if	(and	(incomparable x y)
-			(glb x y u))
-		(exists (z)
-			(and	(lt z x)
-				(incomparable z y)))))
+	(if	(incomparable x y)
+		(or	(exists (z)
+				(and	(lt z x)
+					(incomparable z y)))
+			(exists (u v)
+				(and	(leq u x)
+					(leq v y)
+					(lt_equiv u v))))))
 
 )
