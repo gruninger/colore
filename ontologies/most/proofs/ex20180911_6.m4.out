@@ -1,0 +1,331 @@
+============================== Mace4 =================================
+Mace4 (64) version 2009-11A, November 2009.
+Process 8028 was started by cchui on stl-ws4.mie.utoronto.ca,
+Tue Sep 11 23:40:04 2018
+The command was "mace4 -c -t 90 -s 90 -n 2 -N 20 -f /stl/cchui/colore/ontologies//most/p9/20180911/most_group_verification.p9 /stl/cchui/colore/ontologies/most//mappings/p9/20180911/most_graph2cycle_path_subgraph.p9 /stl/cchui/colore/ontologies//molecular_graph/p9/20180911/most_graph.p9 test/p9/20180911/ex20180911_6.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file /stl/cchui/colore/ontologies//most/p9/20180911/most_group_verification.p9
+
+
+formulas(sos).
+(all x (atom(x) -> -(bond(x) | group(x)))).
+(all x (bond(x) -> -group(x))).
+(all x all y (mol(x,y) & group(x) & group(y) -> x = y)).
+(all x (group(x) -> (exists a (atom(a) & mol(a,x))))).
+(all x (atom(x) -> (exists y (group(y) & mol(x,y))))).
+(all x (atom(x) -> (exists b exists y exists z (bond(b) & group(y) & atom(z) & x != z & mol(x,b) & mol(z,b) & mol(z,y))))).
+(all b all g all x all y (atom(x) & atom(y) & x != y & bond(b) & group(g) & mol(x,b) & mol(y,b) & mol(b,g) -> mol(x,g))).
+(all x all y all z (atom(x) & bond(y) & group(z) & mol(x,y) & mol(y,z) -> mol(x,z))).
+(all a1 all a2 all a3 all a4 all b1 all b2 all g (atom(a1) & atom(a2) & atom(a3) & atom(a4) & group(g) & mol(b1,g) & mol(a1,b1) & mol(a2,b1) & mol(a3,b2) & mol(a4,b2) & a1 = a3 & a2 = a4 -> mol(b2,g))).
+(all y (group(y) -> (exists x (atom(x) & mol(x,y))))).
+(all x all y all b all g (atom(x) & atom(y) & bond(b) & group(g) & x != y & mol(x,y) & mol(y,g) & mol(x,b) & mol(y,b) -> mol(b,g))).
+(all b all g (bond(b) & group(g) & -mol(b,g) -> (exists a (atom(a) & mol(a,b) & -mol(a,g))))).
+(all x all y all z all w (group(x) & end(y,x) & end(z,x) & end(w,x) -> y = z | y = w | z = w)).
+(all x (group(x) -> -(exists y fork(y)))).
+(all a1 all a2 all a3 all b all g1 all g2 (atom(a1) & atom(a2) & atom(a3) & group(g1) & group(g2) & g1 != g2 & bond(b) & mol(b,g1) & mol(b,g2) & spiro(g1,g2,a1) & spiro(g1,g2,a2) & spiro(g1,g2,a3) -> a1 = a2 | a1 = a3 | a2 = a3)).
+(all a1 all a2 all a3 all g1 all g2 (mol(a1,g1) & mol(a1,g2) & mol(a2,g1) & mol(a2,g2) & a1 != a2 & g1 != g2 & between(a1,a3,a2) -> mol(a3,g1) & mol(a3,g2))).
+(all x all y (group(x) & group(y) & x != y -> (exists a (atom(a) & mol(a,x) & -mol(a,y))))).
+(all g1 all g2 all a1 all a2 (group(g1) & group(g2) & g1 != g2 & atom(a1) & atom(a2) & a1 != a2 & mol(a1,g1) & mol(a2,g2) -> -mol(a1,g2) & -mol(a2,g1))).
+(all g1 all g2 (fused(g1,g2) -> ring(g1) & ring(g2))).
+(exists a1 all g1 all g2 all a2 (spiro(g1,g2,a1) & spiro(g1,g2,a2) -> a1 = a2)).
+(exists b1 all g1 all g2 all b2 (tether(g1,g2,b1) & tether(g1,g2,b2) -> b1 = b2)).
+(all g1 all g2 (fused(g1,g2) -> (exists a1 exists a2 (fusedAtom(a1,g1,g2) & fusedAtom(a2,g1,g2) & a1 != a2)))).
+(all a1 all a2 all a3 all g1 all g2 (fusedAtom(a1,g1,g2) & fusedAtom(a1,g1,g2) & fusedAtom(a3,g1,g2) -> a1 = a2 | a1 = a3 | a2 = a3)).
+(all g1 all g2 all g3 (g1 != g2 & multiply_fused(g1,g2) & multiply_fused(g2,g3) -> g1 = g2)).
+(all b (ringBond(b) -> (exists g (mol(b,g) & ring(g))))).
+(all x all y all z (ringOrder(x,y,z) -> bond(x) & bond(y) & bond(z))).
+(all x all y all z (ringOrder(x,y,z) & bond(x) & bond(y) & bond(z) -> (exists l (ring(l) & mol(x,l) & mol(y,l) & mol(z,l))))).
+(all x all y all z all l (ring(l) & bond(x) & bond(y) & bond(z) & mol(x,l) & mol(y,l) & mol(z,l) & x != y & x != z & z != y & ringOrder(x,y,z) -> -ringOrder(z,y,x))).
+(all x all y all z all l (ring(l) & bond(x) & bond(y) & bond(z) & mol(x,l) & mol(y,l) & mol(z,l) & ringOrder(x,y,z) -> x != y & x != z & y != z)).
+(all x all y all z all l (ring(l) & bond(x) & bond(y) & bond(z) & mol(x,l) & mol(y,l) & mol(z,l) & x != y & x != z & z != y & ringOrder(x,y,z) -> (all w (bond(w) & mol(w,l) -> ringOrder(x,y,w) | ringOrder(w,y,z))))).
+(all l (ring(l) -> (exists x exists y exists z (bond(x) & bond(y) & bond(z) & ringOrder(x,y,z))))).
+(all x all y all z all w all l (ring(l) & bond(x) & bond(y) & bond(z) & bond(w) & mol(x,l) & mol(y,l) & mol(z,l) & mol(w,l) & ringOrder(x,y,z) & ringOrder(x,z,w) -> ringOrder(x,y,w))).
+(all x all y all z (between(x,y,z) -> atom(x) & atom(y) & atom(z))).
+(all a1 all a2 all a3 all g1 all g2 (mol(a1,g1) & mol(a1,g2) & mol(a2,g1) & mol(a2,g2) & a1 != a2 & g1 != g2 & between(a1,a3,a2) -> mol(a3,g1) & mol(a3,g2))).
+end_of_list.
+
+% Reading from file /stl/cchui/colore/ontologies/most//mappings/p9/20180911/most_graph2cycle_path_subgraph.p9
+
+
+formulas(sos).
+(all x (atom(x) <-> point(x))).
+(all x (bond(x) <-> line(x))).
+(all x (group(x) <-> plane(x))).
+(all x all y (mol(x,y) <-> in(x,y))).
+end_of_list.
+
+% Reading from file /stl/cchui/colore/ontologies//molecular_graph/p9/20180911/most_graph.p9
+
+
+formulas(sos).
+(all x mol(x,x)).
+(all x all y (mol(x,y) -> mol(y,x))).
+(all x all y (mol(x,y) & atom(x) & atom(y) -> x = y)).
+(all x all y (mol(x,y) & bond(x) & bond(y) -> x = y)).
+(all x all y all z all b (atom(x) & atom(y) & atom(z) & bond(b) & mol(x,b) & mol(y,b) & mol(z,b) -> x = y | x = z | y = z)).
+(all x (atom(x) -> (exists b exists y (atom(y) & bond(b) & mol(x,b) & mol(y,b))))).
+(all b (bond(b) -> (exists x exists y (atom(x) & atom(y) & mol(x,b) & mol(y,b))))).
+(all b (bond(b) -> (exists x exists y all z1 all z2 (atom(x) & atom(y) & atom(z1) & atom(z2) & mol(z1,b) & mol(z2,b) -> z1 = x | z1 = y | z2 = x | z2 = y)))).
+(all b (bond(b) -> (exists x exists y (atom(x) & atom(y) & mol(x,b) & mol(y,b) & y != x)))).
+end_of_list.
+
+% Reading from file test/p9/20180911/ex20180911_6.p9
+
+
+formulas(goals).
+(all x all y (in(x,y) & point(x) & point(y) -> x = y)).
+end_of_list.
+
+% From the command line: assign(max_seconds, 90).
+
+% From the command line: assign(max_seconds_per, 90).
+    % assign(domain_size, 2) -> assign(start_size, 2).
+    % assign(domain_size, 2) -> assign(end_size, 2).
+
+% From the command line: assign(domain_size, 2).
+
+% From the command line: assign(end_size, 20).
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (atom(x) -> -(bond(x) | group(x)))) # label(non_clause).  [assumption].
+2 (all x (bond(x) -> -group(x))) # label(non_clause).  [assumption].
+3 (all x all y (mol(x,y) & group(x) & group(y) -> x = y)) # label(non_clause).  [assumption].
+4 (all x (group(x) -> (exists a (atom(a) & mol(a,x))))) # label(non_clause).  [assumption].
+5 (all x (atom(x) -> (exists y (group(y) & mol(x,y))))) # label(non_clause).  [assumption].
+6 (all x (atom(x) -> (exists b exists y exists z (bond(b) & group(y) & atom(z) & x != z & mol(x,b) & mol(z,b) & mol(z,y))))) # label(non_clause).  [assumption].
+7 (all b all g all x all y (atom(x) & atom(y) & x != y & bond(b) & group(g) & mol(x,b) & mol(y,b) & mol(b,g) -> mol(x,g))) # label(non_clause).  [assumption].
+8 (all x all y all z (atom(x) & bond(y) & group(z) & mol(x,y) & mol(y,z) -> mol(x,z))) # label(non_clause).  [assumption].
+9 (all a1 all a2 all a3 all a4 all b1 all b2 all g (atom(a1) & atom(a2) & atom(a3) & atom(a4) & group(g) & mol(b1,g) & mol(a1,b1) & mol(a2,b1) & mol(a3,b2) & mol(a4,b2) & a1 = a3 & a2 = a4 -> mol(b2,g))) # label(non_clause).  [assumption].
+10 (all y (group(y) -> (exists x (atom(x) & mol(x,y))))) # label(non_clause).  [assumption].
+11 (all x all y all b all g (atom(x) & atom(y) & bond(b) & group(g) & x != y & mol(x,y) & mol(y,g) & mol(x,b) & mol(y,b) -> mol(b,g))) # label(non_clause).  [assumption].
+12 (all b all g (bond(b) & group(g) & -mol(b,g) -> (exists a (atom(a) & mol(a,b) & -mol(a,g))))) # label(non_clause).  [assumption].
+13 (all x all y all z all w (group(x) & end(y,x) & end(z,x) & end(w,x) -> y = z | y = w | z = w)) # label(non_clause).  [assumption].
+14 (all x (group(x) -> -(exists y fork(y)))) # label(non_clause).  [assumption].
+15 (all a1 all a2 all a3 all b all g1 all g2 (atom(a1) & atom(a2) & atom(a3) & group(g1) & group(g2) & g1 != g2 & bond(b) & mol(b,g1) & mol(b,g2) & spiro(g1,g2,a1) & spiro(g1,g2,a2) & spiro(g1,g2,a3) -> a1 = a2 | a1 = a3 | a2 = a3)) # label(non_clause).  [assumption].
+16 (all a1 all a2 all a3 all g1 all g2 (mol(a1,g1) & mol(a1,g2) & mol(a2,g1) & mol(a2,g2) & a1 != a2 & g1 != g2 & between(a1,a3,a2) -> mol(a3,g1) & mol(a3,g2))) # label(non_clause).  [assumption].
+17 (all x all y (group(x) & group(y) & x != y -> (exists a (atom(a) & mol(a,x) & -mol(a,y))))) # label(non_clause).  [assumption].
+18 (all g1 all g2 all a1 all a2 (group(g1) & group(g2) & g1 != g2 & atom(a1) & atom(a2) & a1 != a2 & mol(a1,g1) & mol(a2,g2) -> -mol(a1,g2) & -mol(a2,g1))) # label(non_clause).  [assumption].
+19 (all g1 all g2 (fused(g1,g2) -> ring(g1) & ring(g2))) # label(non_clause).  [assumption].
+20 (exists a1 all g1 all g2 all a2 (spiro(g1,g2,a1) & spiro(g1,g2,a2) -> a1 = a2)) # label(non_clause).  [assumption].
+21 (exists b1 all g1 all g2 all b2 (tether(g1,g2,b1) & tether(g1,g2,b2) -> b1 = b2)) # label(non_clause).  [assumption].
+22 (all g1 all g2 (fused(g1,g2) -> (exists a1 exists a2 (fusedAtom(a1,g1,g2) & fusedAtom(a2,g1,g2) & a1 != a2)))) # label(non_clause).  [assumption].
+23 (all a1 all a2 all a3 all g1 all g2 (fusedAtom(a1,g1,g2) & fusedAtom(a1,g1,g2) & fusedAtom(a3,g1,g2) -> a1 = a2 | a1 = a3 | a2 = a3)) # label(non_clause).  [assumption].
+24 (all g1 all g2 all g3 (g1 != g2 & multiply_fused(g1,g2) & multiply_fused(g2,g3) -> g1 = g2)) # label(non_clause).  [assumption].
+25 (all b (ringBond(b) -> (exists g (mol(b,g) & ring(g))))) # label(non_clause).  [assumption].
+26 (all x all y all z (ringOrder(x,y,z) -> bond(x) & bond(y) & bond(z))) # label(non_clause).  [assumption].
+27 (all x all y all z (ringOrder(x,y,z) & bond(x) & bond(y) & bond(z) -> (exists l (ring(l) & mol(x,l) & mol(y,l) & mol(z,l))))) # label(non_clause).  [assumption].
+28 (all x all y all z all l (ring(l) & bond(x) & bond(y) & bond(z) & mol(x,l) & mol(y,l) & mol(z,l) & x != y & x != z & z != y & ringOrder(x,y,z) -> -ringOrder(z,y,x))) # label(non_clause).  [assumption].
+29 (all x all y all z all l (ring(l) & bond(x) & bond(y) & bond(z) & mol(x,l) & mol(y,l) & mol(z,l) & ringOrder(x,y,z) -> x != y & x != z & y != z)) # label(non_clause).  [assumption].
+30 (all x all y all z all l (ring(l) & bond(x) & bond(y) & bond(z) & mol(x,l) & mol(y,l) & mol(z,l) & x != y & x != z & z != y & ringOrder(x,y,z) -> (all w (bond(w) & mol(w,l) -> ringOrder(x,y,w) | ringOrder(w,y,z))))) # label(non_clause).  [assumption].
+31 (all l (ring(l) -> (exists x exists y exists z (bond(x) & bond(y) & bond(z) & ringOrder(x,y,z))))) # label(non_clause).  [assumption].
+32 (all x all y all z all w all l (ring(l) & bond(x) & bond(y) & bond(z) & bond(w) & mol(x,l) & mol(y,l) & mol(z,l) & mol(w,l) & ringOrder(x,y,z) & ringOrder(x,z,w) -> ringOrder(x,y,w))) # label(non_clause).  [assumption].
+33 (all x all y all z (between(x,y,z) -> atom(x) & atom(y) & atom(z))) # label(non_clause).  [assumption].
+34 (all a1 all a2 all a3 all g1 all g2 (mol(a1,g1) & mol(a1,g2) & mol(a2,g1) & mol(a2,g2) & a1 != a2 & g1 != g2 & between(a1,a3,a2) -> mol(a3,g1) & mol(a3,g2))) # label(non_clause).  [assumption].
+35 (all x (atom(x) <-> point(x))) # label(non_clause).  [assumption].
+36 (all x (bond(x) <-> line(x))) # label(non_clause).  [assumption].
+37 (all x (group(x) <-> plane(x))) # label(non_clause).  [assumption].
+38 (all x all y (mol(x,y) <-> in(x,y))) # label(non_clause).  [assumption].
+39 (all x mol(x,x)) # label(non_clause).  [assumption].
+40 (all x all y (mol(x,y) -> mol(y,x))) # label(non_clause).  [assumption].
+41 (all x all y (mol(x,y) & atom(x) & atom(y) -> x = y)) # label(non_clause).  [assumption].
+42 (all x all y (mol(x,y) & bond(x) & bond(y) -> x = y)) # label(non_clause).  [assumption].
+43 (all x all y all z all b (atom(x) & atom(y) & atom(z) & bond(b) & mol(x,b) & mol(y,b) & mol(z,b) -> x = y | x = z | y = z)) # label(non_clause).  [assumption].
+44 (all x (atom(x) -> (exists b exists y (atom(y) & bond(b) & mol(x,b) & mol(y,b))))) # label(non_clause).  [assumption].
+45 (all b (bond(b) -> (exists x exists y (atom(x) & atom(y) & mol(x,b) & mol(y,b))))) # label(non_clause).  [assumption].
+46 (all b (bond(b) -> (exists x exists y all z1 all z2 (atom(x) & atom(y) & atom(z1) & atom(z2) & mol(z1,b) & mol(z2,b) -> z1 = x | z1 = y | z2 = x | z2 = y)))) # label(non_clause).  [assumption].
+47 (all b (bond(b) -> (exists x exists y (atom(x) & atom(y) & mol(x,b) & mol(y,b) & y != x)))) # label(non_clause).  [assumption].
+48 (all x all y (in(x,y) & point(x) & point(y) -> x = y)) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== CLAUSES FOR SEARCH ====================
+
+formulas(mace4_clauses).
+-atom(x) | -bond(x).
+-atom(x) | -group(x).
+-bond(x) | -group(x).
+-mol(x,y) | -group(x) | -group(y) | y = x.
+-group(x) | atom(f1(x)).
+-group(x) | mol(f1(x),x).
+-atom(x) | group(f2(x)).
+-atom(x) | mol(x,f2(x)).
+-atom(x) | bond(f3(x)).
+-atom(x) | group(f4(x)).
+-atom(x) | atom(f5(x)).
+-atom(x) | f5(x) != x.
+-atom(x) | mol(x,f3(x)).
+-atom(x) | mol(f5(x),f3(x)).
+-atom(x) | mol(f5(x),f4(x)).
+-atom(x) | -atom(y) | y = x | -bond(z) | -group(u) | -mol(x,z) | -mol(y,z) | -mol(z,u) | mol(x,u).
+-atom(x) | -bond(y) | -group(z) | -mol(x,y) | -mol(y,z) | mol(x,z).
+-atom(x) | -atom(y) | -atom(z) | -atom(u) | -group(w) | -mol(v5,w) | -mol(x,v5) | -mol(y,v5) | -mol(z,v6) | -mol(u,v6) | z != x | u != y | mol(v6,w).
+-group(x) | atom(f6(x)).
+-group(x) | mol(f6(x),x).
+-atom(x) | -atom(y) | -bond(z) | -group(u) | y = x | -mol(x,y) | -mol(y,u) | -mol(x,z) | -mol(y,z) | mol(z,u).
+-bond(x) | -group(y) | mol(x,y) | atom(f7(x,y)).
+-bond(x) | -group(y) | mol(x,y) | mol(f7(x,y),x).
+-bond(x) | -group(y) | mol(x,y) | -mol(f7(x,y),y).
+-group(x) | -end(y,x) | -end(z,x) | -end(u,x) | z = y | u = y | u = z.
+-group(x) | -fork(y).
+-atom(x) | -atom(y) | -atom(z) | -group(u) | -group(w) | w = u | -bond(v5) | -mol(v5,u) | -mol(v5,w) | -spiro(u,w,x) | -spiro(u,w,y) | -spiro(u,w,z) | y = x | z = x | z = y.
+-mol(x,y) | -mol(x,z) | -mol(u,y) | -mol(u,z) | u = x | z = y | -between(x,w,u) | mol(w,y).
+-mol(x,y) | -mol(x,z) | -mol(u,y) | -mol(u,z) | u = x | z = y | -between(x,w,u) | mol(w,z).
+-group(x) | -group(y) | y = x | atom(f8(x,y)).
+-group(x) | -group(y) | y = x | mol(f8(x,y),x).
+-group(x) | -group(y) | y = x | -mol(f8(x,y),y).
+-group(x) | -group(y) | y = x | -atom(z) | -atom(u) | u = z | -mol(z,x) | -mol(u,y) | -mol(z,y).
+-group(x) | -group(y) | y = x | -atom(z) | -atom(u) | u = z | -mol(z,x) | -mol(u,y) | -mol(u,x).
+-fused(x,y) | ring(x).
+-fused(x,y) | ring(y).
+-spiro(x,y,c1) | -spiro(x,y,z) | z = c1.
+-tether(x,y,c2) | -tether(x,y,z) | z = c2.
+-fused(x,y) | fusedAtom(f9(x,y),x,y).
+-fused(x,y) | fusedAtom(f10(x,y),x,y).
+-fused(x,y) | f10(x,y) != f9(x,y).
+-fusedAtom(x,y,z) | -fusedAtom(u,y,z) | w = x | u = x | u = w.
+x = y | -multiply_fused(y,x) | -multiply_fused(x,z).
+-ringBond(x) | mol(x,f11(x)).
+-ringBond(x) | ring(f11(x)).
+-ringOrder(x,y,z) | bond(x).
+-ringOrder(x,y,z) | bond(y).
+-ringOrder(x,y,z) | bond(z).
+-ringOrder(x,y,z) | -bond(x) | -bond(y) | -bond(z) | ring(f12(x,y,z)).
+-ringOrder(x,y,z) | -bond(x) | -bond(y) | -bond(z) | mol(x,f12(x,y,z)).
+-ringOrder(x,y,z) | -bond(x) | -bond(y) | -bond(z) | mol(y,f12(x,y,z)).
+-ringOrder(x,y,z) | -bond(x) | -bond(y) | -bond(z) | mol(z,f12(x,y,z)).
+-ring(x) | -bond(y) | -bond(z) | -bond(u) | -mol(y,x) | -mol(z,x) | -mol(u,x) | z = y | u = y | u = z | -ringOrder(y,z,u) | -ringOrder(u,z,y).
+-ring(x) | -bond(y) | -bond(z) | -bond(u) | -mol(y,x) | -mol(z,x) | -mol(u,x) | -ringOrder(y,z,u) | z != y.
+-ring(x) | -bond(y) | -bond(z) | -bond(u) | -mol(y,x) | -mol(z,x) | -mol(u,x) | -ringOrder(y,z,u) | u != y.
+-ring(x) | -bond(y) | -bond(z) | -bond(u) | -mol(y,x) | -mol(z,x) | -mol(u,x) | -ringOrder(y,z,u) | u != z.
+-ring(x) | -bond(y) | -bond(z) | -bond(u) | -mol(y,x) | -mol(z,x) | -mol(u,x) | z = y | u = y | u = z | -ringOrder(y,z,u) | -bond(w) | -mol(w,x) | ringOrder(y,z,w) | ringOrder(w,z,u).
+-ring(x) | bond(f13(x)).
+-ring(x) | bond(f14(x)).
+-ring(x) | bond(f15(x)).
+-ring(x) | ringOrder(f13(x),f14(x),f15(x)).
+-ring(x) | -bond(y) | -bond(z) | -bond(u) | -bond(w) | -mol(y,x) | -mol(z,x) | -mol(u,x) | -mol(w,x) | -ringOrder(y,z,u) | -ringOrder(y,u,w) | ringOrder(y,z,w).
+-between(x,y,z) | atom(x).
+-between(x,y,z) | atom(y).
+-between(x,y,z) | atom(z).
+-mol(x,y) | -mol(x,z) | -mol(u,y) | -mol(u,z) | u = x | z = y | -between(x,w,u) | mol(w,y).
+-mol(x,y) | -mol(x,z) | -mol(u,y) | -mol(u,z) | u = x | z = y | -between(x,w,u) | mol(w,z).
+-atom(x) | point(x).
+atom(x) | -point(x).
+-bond(x) | line(x).
+bond(x) | -line(x).
+-group(x) | plane(x).
+group(x) | -plane(x).
+-mol(x,y) | in(x,y).
+mol(x,y) | -in(x,y).
+mol(x,x).
+-mol(x,y) | mol(y,x).
+-mol(x,y) | -atom(x) | -atom(y) | y = x.
+-mol(x,y) | -bond(x) | -bond(y) | y = x.
+-atom(x) | -atom(y) | -atom(z) | -bond(u) | -mol(x,u) | -mol(y,u) | -mol(z,u) | y = x | z = x | z = y.
+-atom(x) | atom(f17(x)).
+-atom(x) | bond(f16(x)).
+-atom(x) | mol(x,f16(x)).
+-atom(x) | mol(f17(x),f16(x)).
+-bond(x) | atom(f18(x)).
+-bond(x) | atom(f19(x)).
+-bond(x) | mol(f18(x),x).
+-bond(x) | mol(f19(x),x).
+-bond(x) | -atom(f20(x)) | -atom(f21(x)) | -atom(y) | -atom(z) | -mol(y,x) | -mol(z,x) | y = f20(x) | y = f21(x) | z = f20(x) | z = f21(x).
+-bond(x) | atom(f22(x)).
+-bond(x) | atom(f23(x)).
+-bond(x) | mol(f22(x),x).
+-bond(x) | mol(f23(x),x).
+-bond(x) | f23(x) != f22(x).
+in(c3,c4).
+point(c3).
+point(c4).
+c4 != c3.
+end_of_list.
+
+============================== end of clauses for search =============
+
+% There are no natural numbers in the input.
+
+============================== DOMAIN SIZE 2 =========================
+
+============================== STATISTICS ============================
+
+For domain size 2.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.01 seconds).
+Ground clauses: seen=856, kept=406.
+Selections=4, assignments=7, propagations=136, current_models=0.
+Rewrite_terms=72, rewrite_bools=1400, indexes=36.
+Rules_from_neg_clauses=32, cross_offs=32.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 3 =========================
+
+============================== STATISTICS ============================
+
+For domain size 3.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.06 seconds).
+Ground clauses: seen=6124, kept=2116.
+Selections=9, assignments=22, propagations=185, current_models=0.
+Rewrite_terms=209, rewrite_bools=11621, indexes=104.
+Rules_from_neg_clauses=0, cross_offs=30.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 4 =========================
+
+============================== STATISTICS ============================
+
+For domain size 4.
+
+Current CPU time: 0.00 seconds (total CPU time: 0.38 seconds).
+Ground clauses: seen=31628, kept=8800.
+Selections=9, assignments=23, propagations=283, current_models=0.
+Rewrite_terms=434, rewrite_bools=44403, indexes=217.
+Rules_from_neg_clauses=0, cross_offs=30.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 5 =========================
+
+============================== STATISTICS ============================
+
+For domain size 5.
+
+Current CPU time: 0.00 seconds (total CPU time: 1.80 seconds).
+Ground clauses: seen=124414, kept=28804.
+Selections=9, assignments=23, propagations=405, current_models=0.
+Rewrite_terms=800, rewrite_bools=123380, indexes=400.
+Rules_from_neg_clauses=0, cross_offs=30.
+
+============================== end of statistics =====================
+
+============================== DOMAIN SIZE 6 =========================
+
+mace4_sig_handler: condition 2
+============================== STATISTICS ============================
+
+For domain size 6.
+
+Current CPU time: 0.00 seconds (total CPU time: 5.95 seconds).
+Ground clauses: seen=322298, kept=28754.
+Selections=0, assignments=0, propagations=0, current_models=0.
+Rewrite_terms=0, rewrite_bools=0, indexes=0.
+Rules_from_neg_clauses=0, cross_offs=0.
+
+============================== end of statistics =====================
+
+User_CPU=5.95, System_CPU=0.01, Wall_clock=6.
+
+Exiting with failure.
+
+Process 8028 exit (mace_sigint) Tue Sep 11 23:40:10 2018
+The process finished Tue Sep 11 23:40:10 2018
