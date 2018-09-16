@@ -1,0 +1,83 @@
+(cl-text http://colore.oor.net/psl_resources/requires.clif
+(cl-comment 'Theory of Resource Requirements')
+
+(cl-imports http://colore.oor.net/psl_actocc/actocc.clif)
+
+(cl-imports http://colore.oor.net/psl_disc_state/disc_state.clif)
+
+(cl-imports http://colore.oor.net/ordered_magma/commutative_group.clif)
+
+(cl-imports http://colore.oor.net/ordered_magma/linear_ordered_group.clif)
+
+(forall (a a1 r s)
+	(if  (and	(requires a r)
+			(subactivity a1 a)
+			(atomic a1)
+			(holds (available r a1) s))
+		  (exists (occ)
+			(and	(occurrence occ a)
+				(subactivity_occurrence (successor a1 s) occ)))))
+
+
+(cl-comment 'An activity requires a resource if and only if there exists an
+atomic subactivity that requires the resource.')
+
+(forall (a r)
+        (iff    (requires a r)
+                (exists (a1)
+                        (and    (atomic a1)
+                                (subactivity a1 a)
+                                (requires a1 r)))))
+
+
+(cl-comment 'A resource is available for an activity iff the available quantity of the
+resource for the activity exceeds the difference
+between the quantity of the resource point and the sum of the aggregate demand
+for the resource and the demand for the resource by the activity.')
+
+(forall (r a q1 q2 q3 s)
+	(iff	(prior (available r a) s)
+		(and	(prior (resource_point r q1) s)
+			(prior (agg_demand r q3) s)
+			(prior (demand r a q2) s)
+			(lt (op q2 q3) q1))))
+
+
+(cl-comment 'The demand of an activity for a resource must be greater than zero.')
+
+(forall (r a s)
+	(if  (prior (demand r a q) s)
+		  (lt zero q)))
+
+
+(cl-comment 'The demand of a concurrent superposition of activities for a resource 
+is the sum of the demand of all of its subactivities for the resource.')
+
+(forall (a1 a2 r q q1 q2 s)
+	(iff	(prior (demand (conc a1 a2) r q) s)
+		(and    (prior (demand a1 r q1) s)
+			(prior (demand a2 r q2) s)
+			(= q (op q1 q2))))))
+
+
+(cl-comment 'The aggregation of demand for a resource is the sum of demand by all
+activities which require the resource. Thus, when an activity is initiated, the
+aggregate demand is incremented by the amount equal to the demand of that
+acivity for the resource. When the activity is terminated, the aggregate
+demand is decremented by the amount equal to the demand of the activity for the
+resource.')
+
+(forall (r q q1 q2 occ)
+	(iff	(holds (agg_demand r q) s)
+		(or	(exists (a1)
+				(and	(occurrence s a1)
+					(prior (demand r a1 q1) s)
+					(prior (agg_demand r q2) s)
+					(= q (op q1 q2))))
+			(exists (a2)
+				(and	(occurrence s a2)
+					(prior (demand r a2 q1) s)
+					(prior (agg_demand r q2) s)
+					(= q1 (op q q2)))))))
+
+)
