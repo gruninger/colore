@@ -9,13 +9,20 @@
 
 (cl-imports http://colore.oor.net/ordered_magma/linear_ordered_group.clif)
 
+(cl-imports http://colore.oor.net/sophos/definitions/solid_physical_object.clif)
+
+(forall (a r)
+	(if	(requires r a)
+		(and	(solid_physical_object r)
+			(activity a))))
+
 (forall (a a1 r s)
 	(if  (and	(requires a r)
 			(subactivity a1 a)
 			(atomic a1)
 			(holds (available r a1) s))
 		  (exists (occ)
-			(and	(occurrence occ a)
+			(and	(occurrence_of occ a)
 				(subactivity_occurrence (successor a1 s) occ)))))
 
 
@@ -70,12 +77,12 @@ resource.')
 (forall (r q q1 q2 occ)
 	(iff	(holds (agg_demand r q) s)
 		(or	(exists (a1)
-				(and	(occurrence s a1)
+				(and	(occurrence_of s a1)
 					(prior (demand r a1 q1) s)
 					(prior (agg_demand r q2) s)
 					(= q (op q1 q2))))
 			(exists (a2)
-				(and	(occurrence s a2)
+				(and	(occurrence_of s a2)
 					(prior (demand r a2 q1) s)
 					(prior (agg_demand r q2) s)
 					(= q1 (op q q2)))))))
