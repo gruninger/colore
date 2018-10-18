@@ -1,22 +1,10 @@
-/*******************************************************************************
-* Copyright (c) University of Toronto and others. All rights reserved.
-* The content of this file is licensed under the Creative Commons Attribution-
-* ShareAlike 3.0 Unported license. The legal text of this license can be
-* found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
-*
-* Contributors:
-* Carmen Chui, Michael Gruninger
-*******************************************************************************/
+(cl-text ex20181017_reduction
 
-(cl-text http://colore.oor.net/most/most_group_verification.clif
+(cl-imports http://colore.oor.net/most/experiments/cycle_path_subgraph_expanded.clif)
 
-(cl-imports http://colore.oor.net/molecular_graph/most_graph.clif)
+(cl-imports http://colore.oor.net/most/mappings/cycle_path_subgraph2most_group.clif)
 
-(cl-comment 'CLIF file containing all of the master MoSt ontology axioms')
-
-(cl-comment '========================================================================')
-(cl-comment '======= SEMANTIC CONDITION: most -- basic intuitions (most_root) =======')
-(cl-comment '========================================================================')
+(cl-comment 'Things to prove from most_group')
 
 (cl-comment 'Axiom: M-1')
 (cl-comment 'Disjointness axiom for atoms.')
@@ -147,7 +135,7 @@
     (if (and (mol a1 g1)(mol a1 g2)
         (mol a2 g1)(mol a2 g2)
         (not (= a1 a2))(not (= g1 g2))
-        (between a1 a3 a2))
+        (betweenMol a1 a3 a2))
     (and (mol a3 g1)(mol a3 g2))))
             
 (cl-comment 'Axiom: MA-3')
@@ -335,7 +323,7 @@
 (cl-comment 'Axiom: MBTWN-1')
 (cl-comment 'Atoms are between themselves.')
 (forall (x y z)
-	(if (between x y z)
+	(if (betweenMol x y z)
 		(and (atom x)(atom y)(atom z))))
 
 
@@ -348,7 +336,7 @@
 			(mol a2 g2)
 			(not (= a1 a2))
 			(not (= g1 g2))
-			(between a1 a3 a2))
+			(betweenMol a1 a3 a2))
 		(and (mol a3 g1)
 			(mol a3 g2))))
 
