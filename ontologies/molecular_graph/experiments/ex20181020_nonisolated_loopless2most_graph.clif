@@ -1,0 +1,71 @@
+(cl-text nonisolated_loopless2most_graph_experiments
+
+(cl-imports http://colore.oor.net/molecular_graph/experiments/nonisolated_loopless_expanded.clif)
+
+(cl-imports http://colore.oor.net/molecular_graph/mappings/nonisolated_loopless2most_graph.clif)
+
+(cl-comment 'Things to prove from most_graph')
+
+(cl-comment 'Axiom: MG-1')
+(cl-comment 'The mol relation is symmetric.')
+(forall (x)
+	(mol x x))
+
+(cl-comment 'Axiom: MG-2')
+(cl-comment 'The mol relation is reflexive.')
+(forall (x y)
+	(if (mol x y)
+		(mol y x)))
+
+(cl-comment 'Axiom: MG-3')
+(cl-comment 'When there are two atoms related by the mol relation, this refers to two atoms that are one and the same.')
+(forall (x y)
+	(if (and (mol x y)(atom x)(atom y))
+		(= x y)))
+
+(cl-comment 'Axiom: MG-4')
+(cl-comment 'When there are two bonds related by the mol relation, this refers to two bonds that are one and the same.')
+(forall (x y)
+	(if (and (mol x y)(bond x)(bond y))
+		(= x y)))
+
+(cl-comment '---------------------Partitioned according to BOND/BIPARTITE---------------------')
+
+(cl-comment 'Axiom: MG-5')
+(cl-comment 'A bond is between exactly two atoms. COMMENT: Is this one entailed by the last two axioms?')
+(forall (x y z b)
+	(if (and (atom x)(atom y)(atom z)(bond b)(mol x b)(mol y b)(mol z b))
+		(or (= x y)(= x z)(= y z))))
+
+(cl-comment 'Axiom: MG-6')
+(cl-comment 'An atom can be bonded if there exists another atom for which it can be bonded.')
+(forall (x)
+	(if (atom x)
+		(exists (b y)
+			(and (atom y)(bond b)(mol x b)(mol y b)))))
+
+(cl-comment 'Axiom: MG-7')
+(cl-comment 'A bond is possible between two atoms.')
+(forall (b)
+	(if (bond b)
+		(exists (x y)
+			(and (atom x)(atom y)(mol x b)(mol y b)))))
+
+(cl-comment 'Axiom: MG-8')
+(cl-comment 'A bond is related to at most two atoms.')
+(forall (b)
+	(if (bond b)
+		(exists (x y)
+			(forall (z1 z2)
+				(if (and (atom x)(atom y)(atom z1)(atom z2)(mol z1 b)(mol z2 b))
+					(or (= z1 x)(= z1 y)(= z2 x)(= z2 y)))))))
+
+(cl-comment 'Axiom: MG-9')
+(cl-comment 'A bond is related to at least two atoms.')
+(forall (b)
+	(if (bond b)
+		(exists (x y)
+			(and (atom x)(atom y)(mol x b)(mol y b)(not (= y x))))))
+
+
+)
