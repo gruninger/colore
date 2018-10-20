@@ -1,0 +1,38 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% Reading from file /stl/cchui/colore/ontologies//molecular_graph/p9/20181019/most_graph.p9
+(all x mol(x,x)).
+(all x all y (mol(x,y) -> mol(y,x))).
+(all x all y (mol(x,y) & atom(x) & atom(y) -> x = y)).
+(all x all y (mol(x,y) & bond(x) & bond(y) -> x = y)).
+(all x all y all z all b (atom(x) & atom(y) & atom(z) & bond(b) & mol(x,b) & mol(y,b) & mol(z,b) -> x = y | x = z | y = z)).
+(all x (atom(x) -> (exists b exists y (atom(y) & bond(b) & mol(x,b) & mol(y,b))))).
+(all b (bond(b) -> (exists x exists y (atom(x) & atom(y) & mol(x,b) & mol(y,b))))).
+(all b (bond(b) -> (exists x exists y all z1 all z2 (atom(x) & atom(y) & atom(z1) & atom(z2) & mol(z1,b) & mol(z2,b) -> z1 = x | z1 = y | z2 = x | z2 = y)))).
+(all b (bond(b) -> (exists x exists y (atom(x) & atom(y) & mol(x,b) & mol(y,b) & y != x)))).
+
+% Reading from file test/p9/20181019/most_graph2nonisolated_loopless.p9
+(all x (point(x) <-> atom(x))).
+(all x (line(x) <-> bond(x))).
+(all x all y (in(x,y) <-> mol(x,y))).
+
+end_of_list.
+
+formulas(goals).
+
+(all x all y (in(x,y) & line(x) & line(y) -> x = y)). %8
+
+end_of_list.
+
