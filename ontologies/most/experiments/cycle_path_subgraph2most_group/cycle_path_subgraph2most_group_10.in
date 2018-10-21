@@ -12,8 +12,7 @@ end_if.
 
 formulas(assumptions).
 
-% cycle_path_subgraph_expanded.p9
-
+% Reading from file test/p9/20181020/cycle_path_subgraph_expanded_with_def.p9
 (all x all y all z all w all q all l1 all l2 all l3 (plane(q) & point(x) & point(y) & point(z) & point(w) & in(x,q) & in(y,q) & in(z,q) & in(w,q) & line(l1) & in(l1,q) & in(x,l1) & in(y,l1) & line(l2) & in(l2,q) & in(x,l2) & in(z,l2) & line(l3) & in(l3,q) & in(x,l3) & in(w,l3) -> w = z | y = z | w = y)).
 (all q all x all y all z (planar_pendant(x,q) & planar_pendant(y,q) & planar_pendant(z,q) -> x = y | y = z | z = x)).
 (all l all q (line(l) & plane(q) & -in(l,q) -> (exists p (point(p) & in(p,l) & -in(p,q))))).
@@ -48,21 +47,19 @@ formulas(assumptions).
 (all q (plane(q) -> (exists p (point(p) & in(p,q))))).
 (all p all q (star(p,q) <-> (exists l1 exists l2 exists l3 (line(l1) & line(l2) & line(l3) & l1 != l2 & l1 != l3 & l2 != l3 & in(p,l1) & in(p,l2) & in(p,l3) & in(l1,q) & in(l2,q) & in(l3,q))))).
 
-% translation definitions
-% cycle_path_subgraph2most_group.p9
-
+% Reading from file test/p9/20181019/cycle_path_subgraph2most_group.p9
 (all x (atom(x) <-> point(x))).
 (all x (bond(x) <-> line(x))).
 (all x (group(x) <-> plane(x))).
-(all x (ring(x) <-> cycle(x))).
+(all x all y (end(x,y) <-> point(x) & plane(y) & in(x,y) & (all l1 all l2 all w all z (line(l1) & line(l2) & point(w) & point(z) & in(x,l1) & in(z,l1) & in(x,l2) & in(w,l2) & in(z,y) & in(w,y) -> w = z)))).
+(all x all y (fork(x) <-> point(x) & (exists l1 exists l2 exists b3 exists p1 exists p2 exists p3 (point(p1) & point(p2) & point(p3) & line(l1) & line(l2) & line(b3) & p1 != p2 & p2 != p3 & p1 != p3 & l1 != l2 & l2 != b3 & l1 != b3 & in(x,l1) & in(p1,l1) & in(x,l2) & in(p2,l2) & in(x,b3) & in(p3,b3))))).
 (all x all y (mol(x,y) <-> in(x,y))).
-%(all x all y (mol(x,y) <-> in(x,y) | in(y,x) | x = y)).
 
 end_of_list.
 
 formulas(goals).
 
-(all x (bond(x) -> -group(x))). %2
+(all y (group(y) -> (exists x (atom(x) & mol(x,y))))). %10
 
 end_of_list.
 
