@@ -2,8 +2,6 @@
 
 This repository directory contains the theories found in the MOlecular Structure Ontology (MoSt) written in the Common Logic syntax.
 
-The ontology represents atoms, bonds, functional groups, and skeletons as elements of the domain in the ontology, and imports theories from [molecular_graph](https://github.com/gruninger/colore/blob/master/ontologies/molecular_graph/).
-
 ![most hierarchy](most_semantic_conditions.jpg)
 
 Major Changes
@@ -13,6 +11,8 @@ Major Changes
 
 Major Design Decisions
 ======================
+The ontology represents atoms, bonds, functional groups, and skeletons as elements of the domain in the ontology, and imports theories from [molecular_graph](https://github.com/gruninger/colore/blob/master/ontologies/molecular_graph/).
+
 The ontology allows for:
 - multiple fusion to support bridges
 - unique spiro
