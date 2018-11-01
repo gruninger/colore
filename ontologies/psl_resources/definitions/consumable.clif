@@ -1,0 +1,25 @@
+(cl-text http://colore.oor.net/psl_resources/definitions/consumable.clif
+
+(cl-imports http://colore.oor.net/psl_resources/requires.clif)
+
+(cl-comment 'A resource r is consumable by an activity a if any other activity that also requires r is not possible to perform after a completes its occurrence.')
+
+(cl-comment 'An example of a consumable resource is wood in a fire, or raw materials in a manufacturing production process.')
+
+(forall (r a1) 
+(iff	(consumable r a1)
+	(forall (a2 occ1 occ2)
+        	(if	(and	(requires a1 r)
+				(requires a2 r)
+				(subactivity a1 a)
+				(subactivity a2 a)
+                        	(occurrence_of occ2 a1))
+                  	(forall (b occ3)
+                        	(if	(and	(subactivity_occurrence occ3 b)
+						(occurrence_of b a)
+						(precedes occ2 occ3))
+					(not (poss a2 occ3))))))))
+
+
+
+)

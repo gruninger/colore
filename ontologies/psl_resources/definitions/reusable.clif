@@ -1,0 +1,25 @@
+(cl-text http://colore.oor.net/psl_resources/definitions/reusable.clif
+
+(cl-imports http://colore.oor.net/psl_resources/requires.clif)
+
+(cl-comment 'A resource r is reusable by an activity a if any other activity that also requires r is still possible to perform after a completes its occurrence, in every possible future.')
+
+(cl-comment 'An example of a reusable resource is a machine that does not require setup between activities. As soon as one activity occurs, it is always possible to perform the next activity.')
+
+(forall (r a1 a2 a occ1 occ2) 
+(iff	(reusable r a1)
+        (if  (and	(requires a1 r)
+			(requires a2 r)
+			(subactivity a1 a)
+			(subactivity a2 a)
+                        (occurrence_of occ2 a1))
+                  (forall (b)
+                        (if  (forall (occ3)
+                                    (if  (and  (subactivity_occurrence occ3 b)
+							(occurrence_of b a)
+                                                        (precedes occ2 occ3))
+                                                  (poss a2 occ3))))))))
+
+
+
+)

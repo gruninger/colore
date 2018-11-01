@@ -1,0 +1,28 @@
+(cl-text http://colore.oor.net/psl_resources/definitions/weakly_reusable.clif
+
+(cl-imports http://colore.oor.net/psl_resources/requires.clif)
+
+(cl-comment 'A resource r is weakly reusable by an activity a iff for any other activity that also requires r is still possible to perform after a completes its occurrence, in every possible future situation unless it is prevented.')
+
+(cl-comment 'A weakly reusable resource is one where we can prevent the renewing of the resource. For example, a paintbrush is reusable only if we put it into varsol after use; otherwise, it is not reusable.')
+
+
+(forall (r a1) 
+(iff	(weakly_reusable r a1)
+	(forall (a2 occ1 occ2)
+        	(if	(and	(requires a1 a2 r)
+				(requires a2 r)
+				(subactivity a1 a)
+				(subactivity a2 a)
+                        	(occurrence_of occ2 a1))
+			(exists (b)
+                        	(and    (occurrence_of b a)
+					(forall (occ3)
+                                        	(if	(and	(subactivity_occurrence occ3 b)
+                                                        	(precedes occ2 occ3))
+                                                  	(poss a2 occ3)))))))))
+
+
+
+
+)

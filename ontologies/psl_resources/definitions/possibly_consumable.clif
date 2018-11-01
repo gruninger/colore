@@ -1,0 +1,23 @@
+(cl-text http://colore.oor.net/psl_resources/definitions/possibly_consumable.clif
+
+(cl-imports http://colore.oor.net/psl_resources/requires.clif)
+
+(cl-comment 'A resource r is possibly consumable with respect to an activity a1 iff after the occurrence of a1, there exists a future situation in which any activity that requires r is no longer possible.')
+
+(forall (r a1) (iff (possibly_consumable r a1)
+(forall (a2 occ1 occ2)
+        (if  (and  (common a1 a2 r)
+			(subactivity a1 a)
+			(subactivity a2 a)
+                        (occurrence_of occ2 a1))
+                  (exists (b)
+			(and	(exists (occ3)
+                                        (and    (subactivity_occurrence occ3 b)
+						(occurrence_of b a)
+                                                (precedes occ2 occ3))
+                                                (not (poss a2 occ3)))))))a))
+
+
+
+
+)

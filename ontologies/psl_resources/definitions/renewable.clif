@@ -1,0 +1,24 @@
+(cl-text http://colore.oor.net/psl_resources/definitions/renewable.clif
+
+(cl-imports http://colore.oor.net/psl_resources/requires.clif)
+
+(cl-comment 'A resource r is renewable with respect to an activity a iff for any other activity that also requires r is still possible to perform after a completes its occurrence, in every possible future situation unless it is prevented.')
+
+(cl-comment 'An example of a renewable resource is a solar-charged battery. Once it is depleted, there will always exist a future situation where the sun recharges the battery so that it can be used again.')
+
+(forall (r a1) 
+(iff	(renewable r a1)
+	(forall (a2 occ1 occ2)
+        	(if	(and	(requires a1 r)
+				(requires a2 r)
+				(subactivity a1 a)
+				(subactivity a2 a)
+                        	(occurrence_of occ2 a1))
+                  	(forall (b)
+                        	(if	(occurrence_of b a)
+					(exists (occ3)
+                                        	(and    (subactivity_occurrence occ3 b)
+                                                	(precedes occ2 occ3))
+                                                	(poss a2 occ3))))))))
+
+)

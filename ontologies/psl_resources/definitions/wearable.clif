@@ -1,0 +1,27 @@
+(cl-text http://colore.oor.net/psl_resources/definitions/wearable.clif
+
+(cl-imports http://colore.oor.net/psl_resources/requires.clif)
+
+(cl-comment 'A resource r is wearable with respect to an activity a1 iff after the occurrence of a1 there is always a situation in every possible future where any other activity that requires r is no longer possible.')
+
+(cl-comment 'An example of a wearable resource is a drill bit; in every possible future, there will exist a situation where the bt has worn down to the point where it can no longer be used.')
+
+(forall (r a1) 
+(iff 	(wearable r a1)
+	(forall (a2 occ1 occ2)
+        	(if	(and	(requires a1 r)
+				(requires a2 r)
+				(subactivity a1 a)
+				(subactivity a2 a)
+                        	(occurrence_of occ2 a1))
+                  	(forall (b)
+                        (if	(occurrence_of b a)
+				(exists (occ3)
+                                        (and    (subactivity_occurrence occ3 b)
+                                                (precedes occ2 occ3))
+                                                (not (poss a2 occ3)))))))))
+
+
+
+
+)
