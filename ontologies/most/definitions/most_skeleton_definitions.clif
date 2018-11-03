@@ -1,0 +1,91 @@
+/*******************************************************************************
+* Copyright (c) University of Toronto and others. All rights reserved.
+* The content of this file is licensed under the Creative Commons Attribution-
+* ShareAlike 3.0 Unported license. The legal text of this license can be
+* found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+*
+* Contributors:
+* Carmen Chui, Michael Gruninger
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/most/definitions/most_skeleton_definitions.clif
+
+(cl-imports http://colore.oor.net/most/most_skeleton.clif)
+
+(cl-comment 'Axiom: MS-1')
+(cl-comment 'Disjointness axiom for skeleton.')
+(forall (x)
+	(if (skeleton x)
+		(not (or (atom x)(bond x)(group x)))))
+
+(cl-comment 'Axiom: MS-2')
+(cl-comment 'A skeleton contains a functional group.')
+(forall (s)
+	(if	(skeleton s)
+		(exists (g)
+			(and	(group g)
+				(mol g s)))))
+
+(cl-comment 'Axiom: MS-3')
+(cl-comment 'Each functional group in a skeleton contains an atom that is in a bond with an atom in a different functional group in the skeleton.')
+(forall (g1 s)
+	(if	(and	(skeleton s)
+			(group g1)
+			(mol g1 s))
+		(exists (a1 a2 b g2)
+			(and	(atom a1)
+				(atom a2)
+				(bond b)
+				(group g2)
+				(not (= g1 g2))
+				(mol a1 g1)
+				(mol a2 g2)
+				(mol a1 b)
+				(mol a2 b)))))
+
+(cl-comment 'Axiom: MS-4')
+(cl-comment 'Fused skeletons only contain fused rings.')
+(forall (s)
+	(iff (fusedSkeleton s)
+		(and (skeleton s)
+			(forall (g1 g2)
+				(if (and (group g1)(mol g1 s)
+						(group g2)(mol g2 s)
+						(not (= g1 g2)))
+					(and (ring g1)(ring g2)(fused g1 g2)))))))
+
+(cl-comment 'Axiom: MS-5')
+(cl-comment 'A linear skeleton is a skeleton that only contains chains.')
+(forall (x)
+	(iff (linearskeleton x)
+		(and (skeleton x)
+			(forall (g)
+				(if (and (group g)(mol g x))
+					(chain g))))))
+
+
+(cl-comment 'Axiom: MS-6')
+(cl-comment 'For any two distinct groups, there exist a skeleton that contains them.')
+(forall (x y)
+	(if (and (group x)(group y)(not (= x y))(attached x y))
+		(exists (s)
+			(and (skeleton s)(mol x s)(mol y s)))))
+
+(cl-comment 'Axiom: MS-7')
+(cl-comment 'For two distinct skeletons, there exists something that is incident with one, but not the other. For now we are only interested in mereology for decomposition feature; whether we want to extend most skeleton with a richer set of mereology of skeletons is future work.')
+(forall (x y)
+	(if (and (skeleton x)(skeleton y)(not (= x y)))
+		(exists (z)
+			(and (mol z x)(not (mol z y))))))
+
+(cl-comment 'Axiom: MS-8')
+(cl-comment 'Two skeletons are part of each other if they are connected in some way.  Using extensional mereology; do we need to do a sort on z? what is z?? or do we leave it open')
+(forall (x y)
+	(iff (part x y)
+		(and (skeleton x)
+			(skeleton y)
+			(forall (z)
+				(if (mol z x)
+					(mol z y))))))
+
+)

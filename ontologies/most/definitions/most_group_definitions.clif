@@ -1,0 +1,100 @@
+/*******************************************************************************
+* Copyright (c) University of Toronto and others. All rights reserved.
+* The content of this file is licensed under the Creative Commons Attribution-
+* ShareAlike 3.0 Unported license. The legal text of this license can be
+* found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+*
+* Contributors:
+* Carmen Chui, Michael Gruninger
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/most/most_group_definitions.clif
+
+(cl-imports http://colore.oor.net/most/most_group.clif)
+
+(cl-comment 'Axiom: MD-1')	
+(cl-comment 'Definition for an end atom. An end is in at most one bond in a group.')
+(forall (x y)
+	(iff (end x y)
+		(and (atom x)(group y)(mol x y)
+			(forall (b1 b2 w z)
+				(if (and (bond b1)(bond b2)(atom w)(atom z)
+						(mol x b1)(mol z b1)
+						(mol x b2)(mol w b2)
+						(mol z y)(mol w y))
+					(= w z))))))
+
+(cl-comment 'Axiom: MD-2')
+(cl-comment 'Definition for a fork atom. An atom in the same functional group has at least 3 other atoms in bonds.')
+(forall (x y)
+	(iff (fork x)
+		(and (atom x)
+			(exists (b1 b2 b3 a1 a2 a3)
+				(and (atom a1)(atom a2)(atom a3)
+					(bond b1)(bond b2)(bond b3)
+					(not (= a1 a2))(not (= a2 a3))(not (= a1 a3))
+					(not (= b1 b2))(not (= b2 b3))(not (= b1 b3))
+					(mol x b1)(mol a1 b1)
+					(mol x b2)(mol a2 b2)
+					(mol x b3)(mol a3 b3))))))
+
+(cl-comment 'Axiom: MD-3')
+(cl-comment 'Definition for chain. A chain is a group that contains an end.')
+(forall (x)
+	(iff (chain x)
+		(and (group x)
+			(exists (y)
+				(and (end y x)(mol y x))))))
+
+(cl-comment 'Axiom: MD-4')
+(cl-comment 'Definition for ring. A ring is a group that contains atoms that are not ends.')
+(forall (x)
+	(iff (ring x)
+		(and (group x)
+			(not (exists (y)
+				(and (end y x)(mol y x)))))))
+
+(cl-comment 'Axiom: MD-5')
+(cl-comment 'A saturated functional group is one that has at least one single bond.')
+(forall (x)
+	(iff (saturated x)
+		(and (group x)
+			(forall (b y z)
+			(if (and (bond b)(atom y)
+					(mol y b)(mol z b)
+					(mol y x)(mol z x))
+				(singlebond b y z))))))
+
+(cl-comment 'Axiom: MD-6')
+(cl-comment 'An unsaturated functional group is one that has at least one double bond.')
+(forall (x)
+	(iff (unsaturated x)
+		(and (group x)
+		(exists (b y z)
+			(if (and (atom y)(bond b)
+					(mol y b)(mol z b)
+					(mol y x)(mol z x))
+				(doublebond b y z))))))
+
+(cl-comment 'Axiom: MD-7')
+(cl-comment 'In an alternating group, each atom is in a single and a double bond with another atom in the functional group.')
+(forall (x y)
+	(iff (alternatinggroup x)
+		(if (and (group x)(atom y)(mol x y))
+			(exists (a1 a2 b1 b2)
+				(and (atom a1)(atom a2)
+					(bond b1)(bond b2)
+					(mol y b1)(mol a1 b1)
+					(doublebond b2 y a2)
+					(mol a1 x)(mol a2 x))))))
+
+(cl-comment 'Axiom: MD-8')
+(cl-comment 'A trivial group is a group containing a single atom.')
+(forall (x)
+	(iff (trivialgroup x)
+		(and (group x)
+			(forall (y z)
+				(if (and (atom y)(atom z)(mol y x)(mol z x))
+					(= y z))))))
+
+)
