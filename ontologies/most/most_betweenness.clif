@@ -1,0 +1,69 @@
+/*******************************************************************************
+* Copyright (c) University of Toronto and others. All rights reserved.
+* The content of this file is licensed under the Creative Commons Attribution-
+* ShareAlike 3.0 Unported license. The legal text of this license can be
+* found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+*
+* Contributors:
+* Carmen Chui, Michael Gruninger
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/most/most_betweenness.clif
+
+
+(cl-comment 'Axiom: MBTWN-1')
+(cl-comment 'Atoms are between themselves.')
+(forall (x y z)
+	(if (betweenMol x y z)
+		(and (atom x)(atom y)(atom z))))
+
+(cl-comment 'Axiom: MBTWN-2')
+(cl-comment 'Axioms from between/semilinear theory with sort constraints.')
+(forall (x y z s)
+	(if (and (skeleton s)
+			(atom x)(atom y)(atom z)
+			(mol x s)
+			(mol y s)
+			(mol z s)
+			(betweenMol x y z))
+		(betweenMol z y x)))
+
+(cl-comment 'Axiom: MBTWN-3')
+(cl-comment 'Atoms in skeletons are between themselves.')
+(forall (x y z s)
+	(if (and (skeleton s)
+			(atom x)(atom y)(atom z)
+			(mol x s)
+			(mol y s)
+			(mol z s)
+			(betweenMol y x z)
+			(betweenMol x y z))
+		(= x y)))
+
+(cl-comment 'Axiom: MBTWN-4')
+(cl-comment 'At most two atoms are between each other.')
+(forall (x y z w s)
+	(if	(and (skeleton s)
+			(atom x)(atom y)(atom z)
+			(mol x s)
+			(mol y s)
+			(mol z s)
+			(mol w s)
+			(betweenMol y x z))
+		(or	(betweenMol y x w)
+			(betweenMol z x w))))
+
+(cl-comment 'Axiom: MBTWN-5')
+(cl-comment 'A point between two bridgeheads is also part of both groups that are fused together.')
+(forall (a1 a2 a3 g1 g2)
+	(if (and (mol a1 g1)
+			(mol a1 g2)
+			(mol a2 g1)
+			(mol a2 g2)
+			(not (= a1 a2))
+			(not (= g1 g2))
+			(betweenMol a1 a3 a2))
+		(and (mol a3 g1)
+			(mol a3 g2))))
+
+)

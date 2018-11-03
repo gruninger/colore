@@ -1,0 +1,64 @@
+/*******************************************************************************
+* Copyright (c) University of Toronto and others. All rights reserved.
+* The content of this file is licensed under the Creative Commons Attribution-
+* ShareAlike 3.0 Unported license. The legal text of this license can be
+* found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+*
+* Contributors:
+* Carmen Chui, Michael Gruninger
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/most/most.clif
+
+(cl-imports http://colore.oor.net/most/most_group.clif)
+
+(cl-imports http://colore.oor.net/most/definitions/most_attachment_definitions.clif)
+
+(cl-imports http://colore.oor.net/most/most_bridges.clif)
+
+(cl-comment 'Axiom: MA-1')
+(cl-comment 'For a bond found in two groups connected via spiro, it must mean the two groups are spiroed at an atom common between them.')
+(forall (a1 a2 a3 b g1 g2)
+	(if	(and (atom a1)(atom a2)(atom a3)
+			(group g1)(group g2)(not (= g1 g2))
+			(bond b)
+			(mol b g1)
+			(mol b g2)
+			(spiro g1 g2 a1)
+			(spiro g1 g2 a2)
+			(spiro g1 g2 a3))
+		(or	(= a1 a2)
+			(= a1 a3)
+			(= a2 a3))))
+
+(cl-comment 'Axiom: MA-2')
+(cl-comment 'Convex Intersect: If an atom a3 is between a1 and a2 in groups g1 and g2, then it is also in the groups.')
+(forall (a1 a2 a3 g1 g2)
+    (if (and (mol a1 g1)(mol a1 g2)
+        (mol a2 g1)(mol a2 g2)
+        (not (= a1 a2))(not (= g1 g2))
+        (betweenMol a1 a3 a2))
+    (and (mol a3 g1)(mol a3 g2))))
+
+(cl-comment 'Axiom: MA-3')
+(cl-comment 'If there are two distinct functional groups, there is an atom that is only in one of the groups and not the other.')
+(forall (x y)
+	(if (and (group x)(group y)(not (= x y)))
+		(exists (a)
+			(and (atom a)(mol a x)(not (mol a y))))))
+
+(cl-comment 'Axiom: MA-4')
+(cl-comment 'Functional groups cannot be coextensive. Two groups cannot have the exact same set of atoms.')
+(forall (g1 g2 a1 a2)
+	(if (and (group g1)(group g2)(not (= g1 g2))
+			(atom a1)(atom a2)(not (= a1 a2))
+			(mol a1 g1)(mol a2 g2))
+		(and (not (mol a1 g2))(not (mol a2 g1)))))
+
+(cl-comment 'Axiom: MA-5')
+(cl-comment 'For two groups that are fused together, these groups are rings.')
+(forall (g1 g2)
+    (if (fused g1 g2)
+        (and (ring g1)(ring g2))))
+
+)
