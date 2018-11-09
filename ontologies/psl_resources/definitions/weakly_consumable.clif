@@ -1,0 +1,27 @@
+(cl-text http://colore.oor.net/psl_resources/definitions/weakly_consumable.clif
+
+(cl-imports http://colore.oor.net/psl_resources/requires.clif)
+
+(cl-comment 'A resource r is weakly consumable with respect to an activity a1 iff after the occurrence of a1, there always exists a possible future along which any other activity that requires r will never be possible.')
+
+(cl-comment 'An example of a weakly consumable resource is a paintbrush; if we do put it into varsol after using it, then any activity that requires the brush will no longer be possible.')
+
+(forall (r a1) 
+(iff	(weakly_consumable r a1)
+	(forall (a2 occ1 occ2)
+        	(if	(and	(requires a1 r)
+				(requires a2 r)
+				(subactivity a1 a)
+				(subactivity a2 a)
+                        	(occurrence_of occ2 a1))
+                  	(exists (b)
+                        	(and    (occurrence_of b a)
+					(forall (occ3)
+                                        	(if	(and	(subactivity_occurrence occ3 b)
+                                                        	(precedes occ2 occ3))
+                                                  	(not (poss a2 occ3))))))))))
+
+
+
+
+)

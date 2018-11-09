@@ -1,195 +1,172 @@
 /*******************************************************************************
- * Copyright (c) University of Toronto and othersAll rights reserved
+ * Copyright (c) University of Toronto and others. All rights reserved. 
  * The content of this file is licensed under the Creative Commons Attribution-
- * ShareAlike 3.0 Unported licenseThe legal text of this license can be
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
  * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
  *
- * occtree.owl.clif
- * Hets generated (and modified) common logic translation of OWL version (for testing expressivity)
- * unstructured for easier translation to p9 syntax
- * note: letter cases preserved in accordance with OWL version
+ * Contributors:
+ *    Michael Gruninger - initial implementation
  *******************************************************************************/
 
-(cl-text http://colore.oor.net/psl_occtree/binary_occtree.clif 
+(cl-text http://colore.oor.net/psl_occtree/binary_occtree.clif
 
 (cl-imports http://colore.oor.net/psl_core/binary_psl_core.clif)
 
-	(cl-comment 'Thing and Nothing axioms removed')
+(forall (s)
+	(if	(arboreal s)
+		(activity_occurrence s)))
 
-	(cl-comment 'datatype property axioms removed')             
-	
-	(cl-comment 'top and bottom object property axioms removed')
+(cl-comment 'The earlier relation is restricted to 
+arboreal activity occurrences (that is, activity occurrences that
+are elements of the occurrence tree).')
 
-(forall (a) (iff (Initial a) (and (Arboreal a)
-                                                                     (not (exists (b) (and (earlier b
-                                                                                                                                     a)
-                                                                                           (Arboreal b)))))))
-                                                         (cl-comment 'Ax1_1')
+(forall (s1 s2)
+	(if	(earlier s1 s2)
+		(and	(arboreal s1)
+			(arboreal s2))))
 
-(forall (a) (iff (NextLegal a) (exists (b) (and (next_occ a
-                                                                                                                              b)
-                                                                                   (Legal b)))))
-                                                         (cl-comment 'Ax2_2')
+(cl-comment 'The ordering relation over occurrences is irreflexive.')
 
-(forall (a) (iff (NonInitial a) (and (Arboreal a)
-                                                                        (not (Initial a)))))
-                                                         (cl-comment 'Ax3_3')
+(forall (s1 s2)
+	(if	(earlier s1 s2)
+		(not (earlier s2 s1))))
 
-(forall (a) (if (Arboreal a) (Activity_Occurrence a)))
-                                                         (cl-comment 'Ax4_4')
+(cl-comment 'The ordering relation over occurrences is transitive.')
 
-(forall (a) (if (Arboreal a) (exists (b) (and (next_occ a
-                                                                                                                            b)
-                                                                                 (Arboreal b)))))
-                                                         (cl-comment 'Ax5_5')
+(forall (s1 s2 s3)
+	(if	(and	(earlier s1 s2)
+			(earlier s2 s3))
+		(earlier s1 s3)))
 
-(forall (a) (if (Arboreal a) (exists (b) (and (earlierEq b
-                                                                                                                             a)
-                                                                                 (Initial b)))))
-                                                         (cl-comment 'Ax6_6')
+(cl-comment 'A branch in the occurrence tree is totally ordered.')
 
-(forall (a) (if (Arboreal a) (forall (b) (if (occurrence_of a
-                                                                                                                                 b) (Generator b)))))
-                                                         (cl-comment 'Ax7_7')
+(forall (s1 s2 s3)
+	(if	(and	(earlier s1 s2)
+			(earlier s3 s2))
+		(or	(earlier s1 s3)
+			(earlier s3 s1)
+			(= s3 s1))))
 
-(forall (a) (if (Generator a) (Activity a)))
-                                                         (cl-comment 'Ax8_8')
+(cl-comment 'Every branch of the occurrence tree has an initial occurrence.')
 
-(forall (a) (if (Generator a) (exists (b) (and (occurrence_of b
-                                                                                                                                   a)
-                                                                                  (Initial b)))))
-                                                         (cl-comment 'Ax9_9')
+(forall (s1 s2)
+	(if	(earlier s1 s2)
+		(exists (sp)
+			(and	(initial sp)
+				(earlierEq sp s1)))))
 
-(forall (a) (if (Generator a) (forall (b) (if (occurrence_of b
-                                                                                                                                  a) (Arboreal b)))))
-                                                       (cl-comment 'Ax10_10')
+(cl-comment 'No two initial activity occurrences in the occurrence tree are occurrences
+of the same activity.')
 
-(forall (a) (if (Initial a) (Activity_Occurrence a)))
-                                                       (cl-comment 'Ax11_11')
+(forall (s1 s2 a)
+	(if	(and	(initial s1)
+			(initial s2)
+			(occurrence_of s1 a)
+			(occurrence_of s2 a))
+		(= s1 s2)))
 
-(forall (a) (if (Initial a) (and (exists (b) (and (Activity b)
-                                                                                     (occurrence_of a
-                                                                                                                                      b)))
-                                                                    (exists (b
-                                                                             c) (if (and (occurrence_of a
-                                                                                                                                          b)
-                                                                                         (occurrence_of a
-                                                                                                                                          c)
-                                                                                         (Activity b)) (= b c))))))
-                                                       (cl-comment 'Ax12_12')
+(cl-comment 'An activity is a generator iff it has an initial occurrence in the
+occurrence tree.')
 
-(forall (a) (if (Legal a) (Arboreal a)))
-                                                       (cl-comment 'Ax13_13')
+(forall (a) 
+	(if	(generator a)
+		(exists (s)
+        		(and    (initial s)
+                		(occurrence_of s a)))))
+   
+(cl-comment 'There is an initial occurrence of each activity.')
 
-(forall (a) (if (Legal a) (exists (b) (and (earlier a
-                                                                                                                        b)
-                                                                              (Legal b)))))
-                                                       (cl-comment 'Ax14_14')
+(forall (s a)
+        (if	(occurrence_of s a)
+		(iff	(arboreal s)
+			(generator a))))
 
-(forall (a) (if (Legal a) (forall (b) (if (earlier b
-                                                                                                                       a) (Legal b)))))
-                                                       (cl-comment 'Ax15_15')
+(cl-comment 'The successor of an arboreal activity occurrence is an occurrence of a generator activity.')
 
-(forall (a) (if (NextLegal a) (Legal a)))
-                                                       (cl-comment 'Ax16_16')
+(forall (a o)
+        (iff    (and    (generator a)
+                        (arboreal o))
+		(exists (s)
+			(and	(occurrence_of s a)
+				(next_occ o s)))))
 
-(forall (a) (if (NonInitial a) (Arboreal a)))
-                                                       (cl-comment 'Ax17_17')
+(cl-comment 'Every non-initial activity occurrence is the successor of 
+another activity occurrence.')
 
-(forall (a) (if (NonInitial a) (exists (b) (and (earlier b
-                                                                                                                             a)
-                                                                                   (Initial b)))))
-                                                       (cl-comment 'Ax18_18')
+(forall (s1 s2)
+        (if	(earlier s1 s2)
+		(exists (a s3)
+                        (and    (generator a)
+				(occurrence_of s3 a)
+				(next_occ s3 s2)))))
 
-(forall (a) (if (NonInitial a) (exists (b) (and (next_occ b
-                                                                                                                              a)
-                                                                                   (Arboreal b)))))
-                                                       (cl-comment 'Ax19_19')
+(cl-comment 'An occurrence s1 is earlier than the successor occurrence 
+of s2 if and only if the occurrence s2 is later than s1.')
 
-(forall (c d) (if (earlier c
-                                                              d) (earlierEq c
-                                                                                                             d)))
-                                                       (cl-comment 'Ax20_20')
+(forall (a s1 s2)
+        (if	(and	(generator a)
+			(occurrence_of s3 a)
+			(next_occ s2 s3))
+		(iff	(earlier s1 s3)
+			(earlierEq s1 s2))))
 
-(forall (c d) (if (next_occ c
-                                                               d) (earlier c
-                                                                                                            d)))
-                                                       (cl-comment 'Ax21_21')
+(cl-comment 'The legal relation restricts arboreal activity occurrences.')
 
-(forall (c d) (if (precedes c
-                                                               d) (earlier c
-                                                                                                            d)))
-                                                       (cl-comment 'Ax22_22')
+(forall (s)
+	(if	(legal s)
+		(arboreal s)))
 
-(forall (a
-           b
-           c) (if (and (next_occ a c)
-                       (next_occ b
-                                                                  c)) (= a b)))
-                                                       (cl-comment 'Ax23_23')
+(cl-comment 'If an activity occurrence is legal, all earlier activity
+occurrences in the occurrence tree are also legal.')
 
-(forall (a
-           b
-           c) (if (and (earlier a b)
-                       (earlier b
-                                                                 c)) (earlier a
-                                                                                                               c)))
-                                                       (cl-comment 'Ax24_24')
+(forall (s1 s2)
+	(if	(and	(legal s1)
+			(earlier s2 s1))
+		(legal s2)))
 
-(forall (a
-           b
-           c) (if (and (earlierEq a b)
-                       (earlierEq b
-                                                                   c)) (earlierEq a
-                                                                                                                   c)))
-                                                       (cl-comment 'Ax25_25')
+(cl-comment 'The endof an activity occurrence is before to the beginof 
+the successor of the activity occurrence.')
 
-(forall (a
-           b
-           c) (if (and (precedes a b)
-                       (precedes b
-                                                                  c)) (precedes a
-                                                                                                                 c)))
-                                                       (cl-comment 'Ax26_26')
+(forall (s1 s2 t1 t2)
+	(if	(and	(earlier s1 s2)
+			(ends s1 t1)
+			(begins s2 t2))
+		(before t1 t2)))
 
-(forall (a) (exists (b) (if (earlier a
-                                                                        b) (Arboreal a))))
-                                                       (cl-comment 'Ax27_27')
+(cl-comment 'An activity occurrence s1 precedes another activity occurrence s2 
+if and only if s1 is earlier than s2 in the occurrence tree and s2 is legal.')
 
-(forall (a) (exists (b) (if (earlierEq a
-                                                                          b) (Arboreal a))))
-                                                       (cl-comment 'Ax28_28')
+(forall (s1 s2) (iff (precedes s1 s2)
+(and	(earlier s1 s2)
+	(legal s2))))
 
-(forall (a) (exists (b) (if (next_occ a
-                                                                         b) (Arboreal a))))
-                                                       (cl-comment 'Ax29_29')
+(cl-comment 'An activity occurrence s1 is EarlierEq than
+an activity occurrence s2 if and only if it is either earlier than
+s2 or it is equal to s2.')
 
-(forall (a) (exists (b) (if (poss a
-                                                                     b) (Generator a))))
-                                                       (cl-comment 'Ax30_30')
+(forall (s1 s2) (iff (earlierEq s1 s2)
+(and	(arboreal s1)
+	(arboreal s2)
+	(or	(earlier s1 s2)
+		(= s1 s2)))))
 
-(forall (a) (exists (b) (if (precedes a
-                                                                         b) (Legal a))))
-                                                       (cl-comment 'Ax31_31')
+(cl-comment 'An activity is poss at some occurrence if and only if the successor
+occurrence of the activity is legal.')
 
-(forall (b) (exists (a) (if (earlier a
-                                                                        b) (Arboreal b))))
-                                                       (cl-comment 'Ax32_32')
+(forall (a s) 
+	(iff 	(poss a s)
+		(exists (o)
+			(and	(occurrence_of o a)
+				(legal o)
+				(next_occ s o)))))
 
-(forall (b) (exists (a) (if (earlierEq a
-                                                                          b) (Arboreal b))))
-                                                       (cl-comment 'Ax33_33')
+(cl-comment 'No occurrence in the occurrence tree is earlier than an initial occurrence.')
 
-(forall (b) (exists (a) (if (next_occ a
-                                                                         b) (Arboreal b))))
-                                                       (cl-comment 'Ax34_34')
+(forall (s)
+	(iff	(initial s)
+		(and	(arboreal s)
+			(not (exists (sp)
+				(earlier sp s))))))
 
-(forall (b) (exists (a) (if (poss a
-                                                                     b) (Arboreal b))))
-                                                       (cl-comment 'Ax35_35')
-
-(forall (b) (exists (a) (if (precedes a
-                                                                         b) (Legal b))))
-                                                       (cl-comment 'Ax36_36')
 
 )

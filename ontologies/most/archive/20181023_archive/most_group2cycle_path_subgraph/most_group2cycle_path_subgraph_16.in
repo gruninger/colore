@@ -1,0 +1,59 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% Reading from file test/p9/20181020/most_group_verification.p9
+
+(all x (atom(x) -> -(bond(x) | group(x)))).
+(all x (bond(x) -> -group(x))).
+(all x all y (mol(x,y) & group(x) & group(y) -> x = y)).
+(all x (group(x) -> (exists a (atom(a) & mol(a,x))))).
+(all x (atom(x) -> (exists y (group(y) & mol(x,y))))).
+(all x (atom(x) -> (exists b exists y exists z (bond(b) & group(y) & atom(z) & x != z & mol(x,b) & mol(z,b) & mol(z,y))))).
+(all b all g all x all y (atom(x) & atom(y) & x != y & bond(b) & group(g) & mol(x,b) & mol(y,b) & mol(b,g) -> mol(x,g))).
+(all x all y all z (atom(x) & bond(y) & group(z) & mol(x,y) & mol(y,z) -> mol(x,z))).
+(all a1 all a2 all a3 all a4 all b1 all b2 all g (atom(a1) & atom(a2) & atom(a3) & atom(a4) & group(g) & mol(b1,g) & mol(a1,b1) & mol(a2,b1) & mol(a3,b2) & mol(a4,b2) & a1 != a3 & a2 != a4 -> mol(b2,g))).
+(all y (group(y) -> (exists x (atom(x) & mol(x,y))))).
+(all x all y all b all g (atom(x) & atom(y) & bond(b) & group(g) & x != y & mol(x,y) & mol(y,g) & mol(x,b) & mol(y,b) -> mol(b,g))).
+(all b all g (bond(b) & group(g) & -mol(b,g) -> (exists a (atom(a) & mol(a,b) & -mol(a,g))))).
+(all x all y all z all w (group(x) & end(y,x) & end(z,x) & end(w,x) -> y = z | y = w | z = w)).
+(all x (group(x) -> -(exists y fork(y)))).
+
+% Reading from file /stl/cchui/colore/ontologies//molecular_graph/p9/20181020/most_graph.p9
+
+(all x mol(x,x)).
+(all x all y (mol(x,y) -> mol(y,x))).
+(all x all y (mol(x,y) & atom(x) & atom(y) -> x = y)).
+(all x all y (mol(x,y) & bond(x) & bond(y) -> x = y)).
+(all x all y all z all b (atom(x) & atom(y) & atom(z) & bond(b) & mol(x,b) & mol(y,b) & mol(z,b) -> x = y | x = z | y = z)).
+(all x (atom(x) -> (exists b exists y (atom(y) & bond(b) & mol(x,b) & mol(y,b))))).
+(all b (bond(b) -> (exists x exists y (atom(x) & atom(y) & mol(x,b) & mol(y,b))))).
+(all b (bond(b) -> (exists x exists y all z1 all z2 (atom(x) & atom(y) & atom(z1) & atom(z2) & mol(z1,b) & mol(z2,b) -> z1 = x | z1 = y | z2 = x | z2 = y)))).
+(all b (bond(b) -> (exists x exists y (atom(x) & atom(y) & mol(x,b) & mol(y,b) & y != x)))).
+
+% translation definitions
+% Reading from file test/p9/20181020/most_group2cycle_path_subgraph.p9
+
+(all x (point(x) <-> atom(x))).
+(all x (line(x) <-> bond(x))).
+(all x (group(x) <-> plane(x))).
+(all x all y (in(x,y) <-> mol(x,y))).
+
+end_of_list.
+
+formulas(goals).
+
+(all x all y all z (plane(x) & line(y) & point(z) & in(z,y) & in(y,x) -> in(z,x))). %16
+
+end_of_list.
+

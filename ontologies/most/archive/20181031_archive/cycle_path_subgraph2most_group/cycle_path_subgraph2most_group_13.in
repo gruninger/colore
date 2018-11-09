@@ -1,0 +1,64 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% Reading from file test/p9/20181023/cycle_path_subgraph_expanded_with_def.p9
+(all x all y all z all w all q all l1 all l2 all l3 (plane(q) & point(x) & point(y) & point(z) & point(w) & in(x,q) & in(y,q) & in(z,q) & in(w,q) & line(l1) & in(l1,q) & in(x,l1) & in(y,l1) & line(l2) & in(l2,q) & in(x,l2) & in(z,l2) & line(l3) & in(l3,q) & in(x,l3) & in(w,l3) -> w = z | y = z | w = y)).
+(all q all x all y all z (planar_pendant(x,q) & planar_pendant(y,q) & planar_pendant(z,q) -> x = y | y = z | z = x)).
+(all l all q (line(l) & plane(q) & -in(l,q) -> (exists p (point(p) & in(p,l) & -in(p,q))))).
+(all l (line(l) -> (exists x exists y (point(x) & point(y) & x != y & in(x,l) & in(y,l))))).
+(all x all y (in(x,y) -> in(y,x))).
+(all x (point(x) | line(x) | plane(x) -> in(x,x))).
+(all p (point(p) -> -line(p))).
+(all p (point(p) -> -plane(p))).
+(all p (plane(p) -> -line(p))).
+(all x all y (in(x,y) & point(x) & point(y) -> x = y)).
+(all x all y (in(x,y) & line(x) & line(y) -> x = y)).
+(all x all y (in(x,y) & plane(x) & plane(y) -> x = y)).
+(all l all q (hanging(l,q) <-> line(l) & plane(q) & (exists p1 (point(p1) & in(p1,q) & in(p1,l) & (all p2 (point(p2) & in(p2,l) & in(p2,q) -> p1 = p2)))))).
+(all x all q (planar_pendant(x,q) <-> point(x) & plane(q) & in(x,q) & (all y all z (plane_collinear(x,y,q) & plane_collinear(x,z,q) -> y = z)))).
+(all l (border_line(l) <-> (exists q (line(l) & plane(q) & in(l,q) & (all q2 (plane(q2) & in(l,q2) -> q2 = q)))))).
+(all p1 all p2 all q (plane_collinear(p1,p2,q) <-> point(p1) & point(p2) & p1 != p2 & plane(q) & in(p1,q) & in(p2,q) & (exists l (line(l) & in(l,q) & in(p1,l) & in(p2,l))))).
+(all q (matching(q) <-> plane(q) & (all l1 all l2 (line(l1) & line(l2) & l1 != l2 & in(l1,q) & in(l2,q) -> parallel(l1,l2))))).
+(all p all q1 all q2 (junction(p,q1,q2) <-> point(p) & plane(q1) & plane(q2) & q1 != q2 & (exists l exists l1 exists l2 (line(l) & line(l1) & line(l2) & in(p,l) & in(p,l1) & in(p,l2) & in(l,q1) & in(l,q2) & in(l1,q1) & -in(l1,q2) & -in(l2,q1) & in(l2,q2))))).
+(all p (point(p) -> (exists q (plane(q) & in(p,q))))).
+(all l (line(l) -> (exists x (point(x) & in(x,l))))).
+(all x all y all z all l (point(x) & point(y) & point(z) & line(l) & in(x,l) & in(y,l) & in(z,l) -> z = x | z = y | x = y)).
+(all p1 all p2 (collinear(p1,p2) <-> point(p1) & point(p2) & p1 != p2 & (exists l (line(l) & in(p1,l) & in(p2,l))))).
+(all l1 all l2 (intersect(l1,l2) <-> line(l1) & line(l2) & l1 != l2 & (exists p (point(p) & in(p,l1) & in(p,l2))))).
+(all l1 all l2 (parallel(l1,l2) <-> line(l1) & line(l2) & -(exists p (point(p) & in(p,l1) & in(p,l2))))).
+(all l1 all l2 (nontrivial_segment(l1,l2) <-> (exists p1 (point(p1) & in(p1,l1))) & (all p2 (point(p2) & in(p2,l1) -> in(p2,l2))))).
+(all l1 all l2 (adj(l1,l2) <-> line(l1) & line(l2) & (exists p (point(p) & in(p,l1) & in(p,l2))))).
+(all y (interior_point(y) <-> (exists l (point(y) & line(l) & in(y,l) & (all z (line(z) & in(y,z) -> z = l)))))).
+(all p (intersecting_point(p) <-> point(p) & (exists l1 exists l2 (line(l1) & line(l2) & l1 != l2 & in(p,l1) & in(p,l2))))).
+(all l1 all l2 (overlap(l1,l2) <-> intersect(l1,l2) & (exists p (point(p) & in(p,l1) & -in(p,l2))))).
+(all x (pendant_point(x) <-> point(x) & (all y all z (collinear(x,y) & collinear(x,z) -> y = z)))).
+(all x all y all z (plane(x) & line(y) & point(z) & in(z,y) & in(y,x) -> in(z,x))).
+(all q (plane(q) -> (exists p (point(p) & in(p,q))))).
+(all p all q (star(p,q) <-> (exists l1 exists l2 exists l3 (line(l1) & line(l2) & line(l3) & l1 != l2 & l1 != l3 & l2 != l3 & in(p,l1) & in(p,l2) & in(p,l3) & in(l1,q) & in(l2,q) & in(l3,q))))).
+
+% Reading from file test/p9/20181023/cycle_path_subgraph2most_group.p9
+(all x (atom(x) <-> point(x))).
+(all x (bond(x) <-> line(x))).
+(all x (group(x) <-> plane(x))).
+(all x all y (end(x,y) <-> planar_pendant(x,y))).
+(all x all y (mol(x,y) <-> in(x,y))).
+
+end_of_list.
+
+formulas(goals).
+
+(all x all y all z all w (group(x) & end(y,x) & end(z,x) & end(w,x) -> y = z | y = w | z = w)). %13
+
+end_of_list.
+

@@ -1,0 +1,27 @@
+(cl-text http://colore.oor.net/psl_resources/definitions/possibly_reusable.clif
+
+(cl-imports http://colore.oor.net/psl_resources/requires.clif)
+
+(cl-comment 'A resource r is possibly reusable by an activity a iff for any other activity that also requires r is still possible to perform after a completes its occurrence, in some possible future situation.')
+
+(cl-comment 'An example of a possibly reusable is a machine that requires some setup between different activities. After the first activity occurs, it is possible for the other activity, but only if the setup activity occurs first.')
+
+
+(forall (r a1) 
+(iff	(possibly_reusable r a1)
+	(forall (a2 occ1 occ2)
+		(if	(and  	(requires a1 r)
+				(requires a2 r)
+				(subactivity a1 a)
+				(subactivity a2 a)
+                        	(occurrence_of occ2 a1))
+		(exists (b)
+			(and	(exists (occ3)
+					(and    (subactivity_occurrence occ3 b)
+						(occurrence_of b a)
+                                                (precedes occ2 occ3))
+                                                (poss a2 occ3))))))))
+
+
+
+)
