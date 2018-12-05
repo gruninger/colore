@@ -1,0 +1,39 @@
+/*******************************************************************************
+* Copyright (c) University of Toronto and others. All rights reserved.
+* The content of this file is licensed under the Creative Commons Attribution-
+* ShareAlike 3.0 Unported license. The legal text of this license can be
+* found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+*
+* Contributors:
+* Carmen Chui, Michael Gruninger
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/most/most_scaffolds.clif
+
+(cl-imports http://colore.oor.net/most/most_skeleton.clif)
+
+(cl-comment '========================================================================')
+(cl-comment '======= SEMANTIC CONDITION: scaffolds =======')
+(cl-comment '========================================================================')
+
+(cl-comment 'most_scaffold is a definitional extension of the ontology.')
+
+(cl-comment '========================================================================')
+(cl-comment '======= SCAFFOLD DEFINITIONS =======')
+(cl-comment '========================================================================')
+
+(cl-comment 'Axiom: MSCD-1')
+(cl-comment 'A scaffold consists of at least one ring and chains that are attached to each other in some way.')
+(forall (x)
+	(iff (scaffold x)
+		(and (skeleton x)
+			(exists (r) (and (ring r)(mol r x)))
+			(forall (g)
+				(if (and (chain g)(mol g x))
+					(exists (y z)
+						(and (ring y)(ring z)
+							(mol y x)(mol z x)
+							(attached y g)
+							(attached z g))))))))
+
+)
