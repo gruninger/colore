@@ -1,0 +1,208 @@
+
+formulas(assumptions).
+
+%axioms for timedurations
+
+timeduration(Zero).
+
+all d1 all d2
+	((timeduration(d1) 
+	& timeduration(d2))
+	->
+	timeduration(add(d1,d2))).
+
+all d1 all d2 all d3
+	((timeduration(d1) 
+	& timeduration(d2) 
+	& timeduration(d3))
+	->
+	(add(add(d1,d2), d3) = add(d1, add(d2,d3)))).
+
+all d
+	(timeduration(d) 
+	->
+	(add(d,Zero) = d)).
+
+all d1
+	(timeduration(d1) 
+	->
+	(exists d2
+		(timeduration(d2) 
+		& (add(d1,d2) = Zero)))).
+
+all d1 all d2
+	((timeduration(d1) 
+	& timeduration(d2))
+	->
+	(add(d1,d2) = add(d2,d1))).
+
+all d all r
+	((timeduration(d) 
+	& field(r))
+	->
+	timeduration(mult(r,d))).
+
+all d1 all d2 all r
+	((timeduration(d1) 
+	& timeduration(d2)
+	& field(r))
+	->
+	(mult(r, add(d1,d2)) = add(mult(r,d1), mult(r,d2)))).
+
+all d all r all s
+	((timeduration(d) 
+	& field(r)
+	& field(s))
+	->
+	(mult(add(r,s), d) = add(mult(r,d), mult(s,d)))).
+
+all d all r all s
+	((timeduration(d) 
+	& field(r) 
+	& field(s))
+	->
+	(mult(mult(r,s), d) = mult(r, mult(s,d)))).
+
+all d
+	(timeduration(d) 
+	->
+	(d = mult(One,d))).
+
+all d1 all d2 all d3
+	((timeduration(d1) 
+	& timeduration(d2) 
+	& timeduration(d3))
+	->
+	(lesser(d1,d2) 
+	<-> lesser(add(d1,d3), add(d2,d3)))).
+
+all d1 all d2 all d3
+	((timeduration(d1) 
+	& timeduration(d2) 
+	& timeduration(d3))
+	->
+	((d1 = d2) 
+	<-> (add(d1,d3) = add(d2,d3)))).
+
+(all x all y
+	(lesser(x,y)
+	->
+	(timeduration(x)
+	& timeduration(y)))).
+
+(all x all y 
+	(lesser(x,y)
+	->
+	-lesser(y,x))).
+
+(all x 
+	(-lesser(x,x))).
+
+(all x all y all z
+	((lesser(x,y)
+	& lesser(y,z))
+	->
+	lesser(x,z))).
+
+(all x all y
+	(lesserEq(x,y)
+	<->
+	(lesser(x,y) | (x=y)))).
+
+%linear_point
+
+all t1 all t2
+        (before(t1,t2)
+        ->
+        (timepoint(t1)
+        & timepoint(t2))).
+
+all t1  all t2
+        ((timepoint(t1)
+        & timepoint(t2))
+        ->
+        ((t1 = t2)
+        | before(t1, t2)
+        | before(t2, t1))).
+
+all t1
+        (-before(t1, t1)).
+
+all t1 all t2 all t3
+        ((before(t1,t2)
+        & before(t2,t3))
+        ->
+        before(t1,t3)).
+
+(all x all y
+	(beforeEq(x,y)
+	<->
+	(before(x,y) | (x=y)))).
+
+all t
+        (timepoint(t)
+        ->
+        (exists u
+                (before(u,t)))).
+
+all t
+        (timepoint(t)
+        ->
+        (exists u
+                (before(t,u)))).
+
+% axioms for the duration function
+
+(all x 
+	(timepoint(x)
+	->
+	-timeduration(x))).
+
+all t1 all t2
+	((timepoint(t1) 
+	& timepoint(t2))
+	->
+	timeduration(duration(t1,t2))).
+
+all d
+	(timeduration(d)
+	->
+	(exists t1 exists t2
+		(timepoint(t1) 
+		& timepoint(t2) 
+		& (d = duration(t1,t2))))).
+
+all t1 all t2 all t3
+	((timepoint(t1) 
+	& timepoint(t2) 
+	& timepoint(t3))
+	->
+	(lesserEq(duration(t1,t2), duration(t1,t3)) 
+	<->
+	beforeEq(t2,t3))).
+
+all t1 all t2 all t3
+	((timepoint(t1) 
+	& timepoint(t2)
+	& timepoint(t3))
+	->
+	(add(duration(t1,t2),duration(t2,t3)) = duration(t1,t3))).
+
+all t1 all t2 all t3
+	((timepoint(t1) 
+	& timepoint(t2)
+	& timepoint(t3))
+	->
+	(exists t4
+		(timepoint(t4) 
+		& (duration(t1,t2) = duration(t3,t4))))).
+
+-(all t1 all t2 all t3
+	((timepoint(t1)
+	& timepoint(t2)
+	& timepoint(t3)
+	& (duration(t1,t2)=duration(t1,t3)))
+	->
+	(t2=t3))).
+
+end_of_list.
