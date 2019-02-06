@@ -1,0 +1,44 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 50477 was started by mudcat on Romuald.local,
+Sat Jan 19 12:28:06 2019
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.22 (+ 0.01) seconds.
+% Length of proof is 24.
+% Level of proof is 6.
+% Maximum clause weight is 17.
+% Given clauses 146.
+
+3 (all d (timeduration(d) -> add(d,Zero) = d)) # label(non_clause).  [assumption].
+5 (all d1 all d2 (timeduration(d1) & timeduration(d2) -> add(d1,d2) = add(d2,d1))) # label(non_clause).  [assumption].
+12 (all d1 all d2 all d3 (timeduration(d1) & timeduration(d2) & timeduration(d3) -> (d1 = d2 <-> add(d1,d3) = add(d2,d3)))) # label(non_clause).  [assumption].
+26 (all t1 all t2 (timepoint(t1) & timepoint(t2) -> timeduration(duration(t1,t2)))) # label(non_clause).  [assumption].
+28 -(all t (timepoint(t) -> Zero = duration(t,t))) # label(non_clause).  [assumption].
+30 (all t1 all t2 all t3 (timepoint(t1) & timepoint(t2) & timepoint(t3) -> add(duration(t1,t2),duration(t2,t3)) = duration(t1,t3))) # label(non_clause).  [assumption].
+38 timeduration(Zero).  [assumption].
+41 -timeduration(x) | add(x,Zero) = x.  [clausify(3)].
+44 -timeduration(x) | -timeduration(y) | add(y,x) = add(x,y).  [clausify(5)].
+53 -timeduration(x) | -timeduration(y) | -timeduration(z) | y = x | add(y,z) != add(x,z).  [clausify(12)].
+67 -timepoint(x) | -timepoint(y) | timeduration(duration(x,y)).  [clausify(26)].
+71 timepoint(c1).  [clausify(28)].
+72 duration(c1,c1) != Zero.  [clausify(28)].
+75 -timepoint(x) | -timepoint(y) | -timepoint(z) | duration(x,z) = add(duration(x,y),duration(y,z)).  [clausify(30)].
+92 -timeduration(x) | -timeduration(y) | y = x | add(x,y) != add(y,y).  [factor(53,b,c),flip(d)].
+93 -timepoint(x) | timeduration(duration(x,x)).  [factor(67,a,b)].
+98 -timepoint(x) | -timepoint(y) | add(duration(x,x),duration(x,y)) = duration(x,y).  [factor(75,a,b),flip(c)].
+108 -timepoint(x) | add(duration(x,x),duration(x,x)) = duration(x,x).  [factor(98,a,b)].
+122 -timeduration(x) | add(Zero,x) = add(x,Zero).  [resolve(44,a,38,a),flip(b)].
+163 timeduration(duration(c1,c1)).  [resolve(93,a,71,a)].
+173 add(duration(c1,c1),duration(c1,c1)) = duration(c1,c1).  [resolve(108,a,71,a)].
+405 add(duration(c1,c1),Zero) = duration(c1,c1).  [resolve(163,a,41,a)].
+411 add(Zero,duration(c1,c1)) != duration(c1,c1).  [ur(92,a,38,a,b,163,a,c,72,a),rewrite([173(12)])].
+1323 $F.  [resolve(122,a,163,a),rewrite([405(10)]),unit_del(a,411)].
+
+============================== end of proof ==========================

@@ -1,0 +1,74 @@
+/*******************************************************************************
+* Copyright (c) University of Toronto and others. All rights reserved.
+* The content of this file is licensed under the Creative Commons Attribution-
+* ShareAlike 3.0 Unported license. The legal text of this license can be
+* found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+*
+* Contributors:
+* Carmen Chui, Michael Gruninger
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/most/most_scaffolds.clif
+
+(cl-imports http://colore.oor.net/most/most_skeleton.clif)
+
+(cl-comment '========================================================================')
+(cl-comment '======= SEMANTIC CONDITION: scaffolds =======')
+(cl-comment '========================================================================')
+
+(cl-comment 'most_scaffold is a definitional extension of the ontology.')
+
+(cl-comment '========================================================================')
+(cl-comment '======= SCAFFOLD DEFINITIONS =======')
+(cl-comment '========================================================================')
+
+(cl-comment 'Axiom: MSCD-1')
+(cl-comment 'A scaffold consists of at least one ring and chains that are attached to each other in some way.')
+(forall (x)
+	(iff (scaffold x)
+		(and (skeleton x)
+			(exists (r) (and (ring r)(mol r x)))
+			(forall (g)
+				(if (and (chain g)(mol g x))
+					(exists (y z)
+						(and (ring y)(ring z)
+							(mol y x)(mol z x)
+							(attached y g)
+							(attached z g))))))))
+
+(cl-comment 'Axiom: MSCD-2')
+(cl-comment 'Definition for Ring System from Bemis and Murcko, The Properties of Known Drugs 1.')
+(forall (x)
+	(iff (ring_system x)
+		(and (skeleton x)
+			(forall (g)
+				(if (and (group g)(mol g x))
+					(ring g))))))
+					
+(cl-comment 'Axiom: MSCD-3')
+(cl-comment 'Definition for Linker Atom from Bemis and Murcko, The Properties of Known Drugs 1.')
+(forall (x)
+	(iff (linker_atom x)
+		(and (atom x)
+			(exists (g1 g2 b)
+				(and (ring_system g1)(ring_system g2)(tether g1 g2 b)
+					(mol x b))))))
+
+(cl-comment 'Axiom: MSCD-4')
+(cl-comment 'Definition for Side Chain Atom from Bemis and Murcko, The Properties of Known Drugs 1.')
+(forall (x)
+	(iff (side_chain_atom x)
+		(and (atom x)
+			(forall (g y)
+				(if (and (ring g)(linker_atom y))
+					(and (not (mol x g))(not (= x y))))))))
+
+(cl-comment 'Axiom: MSCD-5')
+(cl-comment 'Definition for Framework from Bemis and Murcko, The Properties of Known Drugs 1.')
+(forall (x)
+	(iff (framework x)
+		(forall (r1 r2 l)
+			(exists (b)
+				(and (ring_system r1)(ring_system r2)(tether r1 r2 b)(linker_atom x)(mol x b))))))
+
+)

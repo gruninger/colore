@@ -1,0 +1,51 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 20383 was started by cchui on MacBook-Pro.local,
+Tue Oct 30 19:10:39 2018
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 21.32 (+ 0.40) seconds.
+% Length of proof is 31.
+% Level of proof is 9.
+% Maximum clause weight is 12.
+% Given clauses 3580.
+
+12 (all l all q (line(l) & plane(q) & -in(l,q) -> (exists p (point(p) & in(p,l) & -in(p,q))))) # label(non_clause).  [assumption].
+43 (all x (atom(x) <-> point(x))) # label(non_clause).  [assumption].
+44 (all x (bond(x) <-> line(x))) # label(non_clause).  [assumption].
+45 (all x (group(x) <-> plane(x))) # label(non_clause).  [assumption].
+47 (all x all y (mol(x,y) <-> in(x,y))) # label(non_clause).  [assumption].
+48 (all b all g (bond(b) & group(g) & -mol(b,g) -> (exists a (atom(a) & mol(a,b) & -mol(a,g))))) # label(non_clause) # label(goal).  [goal].
+154 atom(x) | -point(x).  [clausify(43)].
+156 -atom(x) | -mol(x,c1) | mol(x,c2).  [deny(48)].
+158 -bond(x) | line(x).  [clausify(44)].
+159 bond(c1).  [deny(48)].
+161 -group(x) | plane(x).  [clausify(45)].
+162 group(c2).  [deny(48)].
+183 -line(x) | -plane(y) | in(x,y) | point(f5(x,y)).  [clausify(12)].
+184 -line(x) | -plane(y) | in(x,y) | in(f5(x,y),x).  [clausify(12)].
+185 -line(x) | -plane(y) | in(x,y) | -in(f5(x,y),y).  [clausify(12)].
+233 -mol(x,y) | in(x,y).  [clausify(47)].
+234 mol(x,y) | -in(x,y).  [clausify(47)].
+235 -mol(c1,c2).  [deny(48)].
+336 -mol(x,c1) | mol(x,c2) | -point(x).  [resolve(156,a,154,a)].
+337 line(c1).  [resolve(159,a,158,a)].
+338 plane(c2).  [resolve(162,a,161,a)].
+413 -line(x) | in(x,c2) | in(f5(x,c2),x).  [resolve(338,a,184,b)].
+414 -line(x) | in(x,c2) | point(f5(x,c2)).  [resolve(338,a,183,b)].
+2118 in(c1,c2) | in(f5(c1,c2),c1).  [resolve(413,a,337,a)].
+2198 in(c1,c2) | point(f5(c1,c2)).  [resolve(414,a,337,a)].
+11273 point(f5(c1,c2)).  [resolve(2198,a,234,b),unit_del(b,235)].
+20807 in(c1,c2) | mol(f5(c1,c2),c1).  [resolve(2118,b,234,b)].
+33131 in(c1,c2) | mol(f5(c1,c2),c2).  [resolve(20807,b,336,a),unit_del(c,11273)].
+33606 in(c1,c2) | in(f5(c1,c2),c2).  [resolve(33131,b,233,a)].
+33676 in(c1,c2).  [resolve(33606,b,185,d),merge(d),unit_del(b,337),unit_del(c,338)].
+33721 $F.  [resolve(33676,a,234,b),unit_del(a,235)].
+
+============================== end of proof ==========================

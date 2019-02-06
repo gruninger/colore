@@ -1,0 +1,207 @@
+
+formulas(assumptions).
+
+%matter
+
+(all x 
+	(chunkOf(x,x))).
+
+(all x all y
+	((chunkOf(x,y)
+	& chunkOf(y,x))
+	->
+	(x=y))).
+
+(all x all y all z
+	((chunkOf(x,y)
+	& chunkOf(y,z))
+	->
+	chunkOf(x,z))).
+
+(all x all y 
+	(proper_chunk(x,y)
+	<->
+	(chunkOf(x,y)
+	& (x != y)))).
+
+(all x all y 
+	(chunk_overlaps(x,y)
+	<->
+	(exists z
+		(chunkOf(z,x)
+		& chunkOf(z,y))))).
+
+(all x all y all z
+	(chunk_diff(x,y,z)
+	<->
+	(all w
+		(chunkOf(w,z)
+		<->
+		(chunkOf(w,x)
+		& -chunk_overlaps(w,y)))))).
+
+(all x all y
+	(chunk_disjoint(x,y)
+	<->
+	-chunk_overlaps(x,y))).
+
+(all x all y
+	(chunk_underlaps(x,y)
+	<->
+	(exists z
+		(chunkOf(x,z)
+		& chunkOf(y,z))))).
+
+(all x all y
+	(-chunkOf(x,y)
+	->
+	(exists z
+		(chunkOf(z,x)
+		& chunk_disjoint(z,y))))).
+
+(all x all y
+	(chunk_underlaps(x,y)
+	->
+	(exists z
+		(all v
+			(chunk_overlaps(v,z)
+			<->
+			(chunk_overlaps(v,x) | chunk_overlaps(v,y))))))).
+
+(all x all y
+	(chunk_overlaps(x,y)
+	->
+	(exists z
+		(all v
+			(proper_chunk(v,z)
+			<->
+			(proper_chunk(v,x) | proper_chunk(v,y))))))).
+
+(all x all w
+	(-chunkOf(w,x)
+	->
+	(exists z
+		(all y
+			(chunkOf(y,z)
+			<->
+			-chunk_overlaps(y,x)))))).
+
+%amount
+
+amount(Zero_mass).
+
+all d1 all d2
+	((amount(d1) 
+	& amount(d2))
+	->
+	amount(add_amount(d1,d2))).
+
+all d1 all d2 all d3
+	((amount(d1) 
+	& amount(d2) 
+	& amount(d3))
+	->
+	(add_amount(add_amount(d1,d2), d3) = add_amount(d1, add_amount(d2,d3)))).
+
+all d
+	(amount(d) 
+	->
+	(add_amount(d,Zero_mass) = d)).
+
+all d1
+	(amount(d1) 
+	->
+	(exists d2
+		(amount(d2) 
+		& (add_amount(d1,d2) = Zero_mass)))).
+
+all d1 all d2
+	((amount(d1) 
+	& amount(d2))
+	->
+	(add_amount(d1,d2) = add_amount(d2,d1))).
+
+all d all r
+	((amount(d) 
+	& field(r))
+	->
+	amount(mult_amount(r,d))).
+
+all d1 all d2 all r
+	((amount(d1) 
+	& amount(d2)
+	& field(r))
+	->
+	(mult_amount(r, add_amount(d1,d2)) = add_amount(mult_amount(r,d1), mult_amount(r,d2)))).
+
+all d all r all s
+	((amount(d) 
+	& field(r)
+	& field(s))
+	->
+	(mult_amount(add_amount(r,s), d) = add_amount(mult_amount(r,d), mult_amount(s,d)))).
+
+all d all r all s
+	((amount(d) 
+	& field(r) 
+	& field(s))
+	->
+	(mult_amount(mult_amount(r,s), d) = mult_amount(r, mult_amount(s,d)))).
+
+all d
+	(amount(d) 
+	->
+	(d = mult_amount(One,d))).
+
+all d1 all d2 all d3
+	((amount(d1) 
+	& amount(d2) 
+	& amount(d3))
+	->
+	(lesser_amount(d1,d2) 
+	<-> lesser_amount(add_amount(d1,d3), add_amount(d2,d3)))).
+
+all d1 all d2 all d3
+	((amount(d1) 
+	& amount(d2) 
+	& amount(d3))
+	->
+	((d1 = d2) 
+	<-> (add_amount(d1,d3) = add_amount(d2,d3)))).
+
+%mass
+
+(all x
+	(mat(x)
+	<->
+	(amount (mass(x))))).
+
+(all x
+	(mat(x)
+	->
+	(lesser_amount(Zero_mass, mass(x))))).
+
+(all x all y
+	(proper_chunk(x,y)
+	->
+	(lesser_amount(mass(x),mass(y))))).
+
+(all x all y all z all w
+	((chunk_diff(x,y,z)
+	& chunk_sum(x,y,w))
+	->
+	(mass(w) = add_mass(mass(y),mass(z))))).
+
+(all x all y
+	(lesser_amount(mass(x),mass(y))
+	->
+	(exists z
+		(proper_chunk(z,y)
+		& (mass(y)=mass(z)))))).
+
+-(all x all y
+	(proper_chunk(x,y)
+	->
+	lesser_amount(mass(x),mass(y)))).
+
+end_of_list.

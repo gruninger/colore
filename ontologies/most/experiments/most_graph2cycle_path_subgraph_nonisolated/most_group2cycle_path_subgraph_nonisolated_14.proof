@@ -1,7 +1,7 @@
 ============================== prooftrans ============================
 Prover9 (32) version Dec-2007, Dec 2007.
-Process 22556 was started by cchui on MacBook-Pro.local,
-Tue Oct 30 21:35:55 2018
+Process 3401 was started by cchui on MacBook-Pro.local,
+Thu Nov  8 18:38:04 2018
 The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
 ============================== end of head ===========================
 
@@ -10,22 +10,29 @@ The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac
 ============================== PROOF =================================
 
 % -------- Comments from original proof --------
-% Proof 1 at 1.51 (+ 0.02) seconds.
-% Length of proof is 11.
-% Level of proof is 4.
+% Proof 1 at 1.44 (+ 0.02) seconds.
+% Length of proof is 18.
+% Level of proof is 5.
 % Maximum clause weight is 6.
-% Given clauses 331.
+% Given clauses 415.
 
+5 (all x (atom(x) -> (exists y (group(y) & mol(x,y))))) # label(non_clause).  [assumption].
+22 (all x (point(x) <-> atom(x))) # label(non_clause).  [assumption].
+24 (all x (group(x) <-> plane(x))) # label(non_clause).  [assumption].
 26 (all x all y (in(x,y) <-> mol(x,y))) # label(non_clause).  [assumption].
-28 (all x all y (mol(x,y) -> mol(y,x))) # label(non_clause).  [assumption].
-36 (all x all y (in(x,y) -> in(y,x))) # label(non_clause) # label(goal).  [goal].
-152 -in(x,y) | mol(x,y).  [clausify(26)].
-153 in(x,y) | -mol(x,y).  [clausify(26)].
-155 -mol(x,y) | mol(y,x).  [clausify(28)].
-174 in(c1,c2).  [deny(36)].
-175 -in(c2,c1).  [deny(36)].
-453 mol(c1,c2).  [resolve(174,a,152,a)].
-759 mol(c2,c1).  [resolve(453,a,155,a)].
-1074 $F.  [resolve(759,a,153,b),unit_del(a,175)].
+36 (all p (point(p) -> (exists q (plane(q) & in(p,q))))) # label(non_clause) # label(goal).  [goal].
+104 -point(x) | atom(x).  [clausify(22)].
+105 point(c1).  [deny(36)].
+109 -group(x) | plane(x).  [clausify(24)].
+110 -plane(x) | -in(c1,x).  [deny(36)].
+119 -atom(x) | group(f2(x)).  [clausify(5)].
+120 -atom(x) | mol(x,f2(x)).  [clausify(5)].
+155 in(x,y) | -mol(x,y).  [clausify(26)].
+237 atom(c1).  [resolve(105,a,104,a)].
+238 -in(c1,x) | -group(x).  [resolve(110,a,109,b)].
+478 mol(c1,f2(c1)).  [resolve(237,a,120,a)].
+479 group(f2(c1)).  [resolve(237,a,119,a)].
+1315 in(c1,f2(c1)).  [resolve(478,a,155,b)].
+1746 $F.  [resolve(1315,a,238,a),unit_del(a,479)].
 
 ============================== end of proof ==========================

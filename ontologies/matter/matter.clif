@@ -1,42 +1,14 @@
 (cl-text http://colore.oor.net/matter/matter.clif
 
-(cl-imports http://colore.oor.net/constitution/constitution.clif)
-
 (forall (x y)
-	(iff	(portionOf x y)
-		(exists (w z)
-			(and	(constitutes w x)
-				(constitutes z y)
-				(chunkOf w z)))))			
-
-(cl-comment 'Proper Parthood')
-(forall (x y)
-        (iff    (properChunkOf x y)
-                (and    (chunkOf x y)
-                        (not (= x y)))))
-
-(cl-comment 'Overlaps')
-(forall (x y)
-	(if	(exists (z)
-			(and
-				(chunkOf z x)
-				(chunkOf z y)))
-        (chunkOverlaps x y)))
-
-(cl-comment 'Disjointness')
-(forall (x y)
-        (iff    (chunkDisjoints x y)
-                (not (chunkOverlaps x y))))
+	(if	(chunkOf x y)
+		(and	(mat x)
+			(mat y))))
 		
-(cl-comment 'Transitivity')
-(forall (x y z)
-        (if     (and    (chunkOf x y)
-                        (chunkOf y z))
-                (chunkOf x z)))
-				
 (cl-comment 'Reflexivity')
 (forall (x)
-        (chunkOf x x))
+	(if	(mat x)
+        	(chunkOf x x)))
 	
 (cl-comment 'Antisymmetry')
 (forall (x y)
@@ -44,4 +16,43 @@
                         (chunkOf y x))
                 (= x y)))
 
+(cl-comment 'Transitivity')
+(forall (x y z)
+        (if     (and    (chunkOf x y)
+                        (chunkOf y z))
+                (chunkOf x z)))
+
+(forall (x y)
+	(if	(and	(mat x)
+			(mat y)
+			(not (chunkOf x y)))
+		(exists (z)
+			(and	(chunkOf z x)
+				(chunk_disjoint z y)))))
+
+(forall (x y)
+	(if	(chunk_underlaps x y)
+		(exists (z)
+			(forall (v)
+				(iff	(chunk_overlaps v z)
+					(or	(chunk_overlaps v x)
+						(chunk_overlaps v y)))))))
+	
+(forall (x y)
+	(if	(chunk_overlaps x y)
+		(exists (z)
+			(forall (v)
+				(iff	(proper_chunk v z)
+					(or	(proper_chunk v x)
+						(proper_chunk v y)))))))
+
+(forall (x w)
+	(if	(and	(mat x)
+			(mat w)
+			(not (chunkOf w x)))
+		(exists (z)
+			(forall (y)
+				(iff	(chunkOf y z)
+					(not (chunk_overlaps y x)))))))
+				
 )

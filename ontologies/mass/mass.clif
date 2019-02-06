@@ -5,26 +5,30 @@
 (cl-imports http://colore.oor.net/matter/matter.clif)
 
 (forall (x)
+	(if	(mat x)
+		(not (amount x))))
+
+(forall (x)
 	(iff  	(mat x)
 		(amount (mass x))))
 
 (forall (x)
 	(if  	(mat x)
-		(lesser zero_mass (mass x))))
+		(lesser_amount zero_mass (mass x))))
 
 (forall (x y)
 	(if	(proper_chunk x y)
-		(lesser (mass x) (mass y))))
+		(lesser_amount (mass x) (mass y))))
 
-(forall (x y z)
-	(if	(chunk_diff x y z)
-		(= (mass x) (add_mass (mass y) (mass z)))))
+(forall (x y z w)
+	(if	(and	(chunk_diff x y z)
+			(chunk_sum x y w))
+		(= (mass w) (add_mass (mass y) (mass z)))))
 		
 (forall (x y)
-	(if	(proper_chunk y x)
+	(if	(lesser_amount (mass x) (mass y))
 		(exists (z)
-			(and	(proper_chunk z x)
-				(not (= y z))
+			(and	(proper_chunk z y)
 				(= (mass y) (mass z))))))
 
 )

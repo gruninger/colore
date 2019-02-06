@@ -1,0 +1,39 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 600).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(start_size, 5).
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+(all u all v all w (S(u,v,w) -> S(v,u,u))). %1
+(all u all v all w (S(u,v,w) -> ((u != w) & (u != v)))). %2
+(all u all v all w all x (S(u,v,v) & S(v,w,x) & (u != w) & -S(u,w,w) -> S(u,v,x))). %3
+(all u all v all w (S(u,v,w) & (v != w) -> (exists y (S(v,y,w) & (y != u) & -S(u,y,y))))). %4
+(all u all v ((u != v) -> (exists z S(u,z,v)))). %5
+
+% reflexivity
+(all x all y (S(x,y,y) <-> S(y,x,x))).
+
+% edge definition
+(all x all y (E(x,y) <-> S(x,y,y))).
+
+% nontrivial
+exists a exists b exists c exists d (E(a,b) & E(b,c) & E(a,c) ).%& E(b,d)).
+%exists a exists b (E(b,c) & b!=c).
+%exists a exists b (E(c,d) & c!=d).
+%exists a exists b (E(a,c) & a!=c).
+
+end_of_list.
+
+formulas(goals).
+
+end_of_list.
+
