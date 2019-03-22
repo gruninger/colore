@@ -5,23 +5,21 @@
  * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
  *
  * Contributors:
- *    Michael Gruninger - initial implementation
+ *    Torsten Hahmann - initial implementation
  *******************************************************************************/
 
-(cl-text http://colore.oor.net/orderings/tarski_boolean.clif
+(cl-text http://colore.oor.net/orderings/complemented_lattice_ordering.clif
 
 (cl-imports http://colore.oor.net/orderings/lattice_ordering.clif)
 
 (cl-imports http://colore.oor.net/orderings/definitions/noverlaps.clif)
 
+(cl-imports http://colore.oor.net/orderings/definitions/nunderlaps.clif)
+
 (forall (x)
-	(exists (y)
-		(and	(noverlaps x y)
-			(forall (z)
-				(if	(noverlaps x z)
-					(leq z y)))
-			(forall (z)
-				(if	(noverlaps z y)
-					(leq z x))))))
+	(if	(not (top x))
+		(exists (y)
+			(and	(noverlaps x y)
+				(nunderlaps x y)))))
 
 )
