@@ -1,0 +1,70 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved.
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+ 
+
+(cl-text  http://colore.oor.net/mereology/mereology_def.clif
+
+(cl-imports http://colore.oor.net/mereology/m_mereology.clif)
+
+(forall (x y)
+(iff	(ppart x y)
+	(and	(part x y)
+		(not (part y x)))))
+
+(forall (x y)
+(iff    (overlaps x y)
+        (exists (z)
+                (and    (part z x)
+                        (part z y)))))
+
+(forall (x y)
+(iff    (disjoint x y)
+        (not (overlaps x y))))
+
+(forall (x y)
+(iff    (underlaps x y)
+        (exists (z)
+                (and    (part x z)
+                        (part y z)))))
+
+(forall (x)
+(iff	(atomic_part x)
+	(forall (y)
+		(if	(part y x)
+			(= y x)))))
+
+(forall (x y z)
+	(iff	(sum x y z)
+		(forall (w)
+			(iff	(overlaps w z)
+				(or	(overlaps w x)
+					(overlaps w y))))))
+
+(forall (x y z)
+	(iff	(prod x y z)
+		(forall (w)
+			(iff	(part w z)
+				(or	(part w x)
+					(part w y))))))
+
+(forall (x z)
+	(iff	(comp x z)
+		(forall (y)
+			(iff	(part y z)
+				(not (overlaps y x))))))
+
+(forall (x)
+        (iff    (gunky x)
+                (forall (y)
+                        (if     (part y x)
+                                (exists (z)
+                                        (ppart z y))))))
+
+)
