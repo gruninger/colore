@@ -1,0 +1,110 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved.
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Carmen Chui, Janette Wong, Michael Gruninger - initial implementation
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/relatedparties/extended_family_relationships.clif
+
+(cl-comment 'Axiom: EF-1')
+(cl-comment 'A grandparent is a person who is the parent of a parent.')
+(forall (x)
+	(iff (grandparent x)
+		(exists (y z)
+			(and (person x)(hasParent z y)(hasParent y x)))))
+
+(cl-comment 'Axiom: EF-2')
+(cl-comment 'Grandparent relation')
+(forall (x y z)
+	(if (and (person x)(person y)(person z)
+			(not (= x y))(not (= x z))(not (= y z))
+			(hasParent x y)(hasParent y z))
+		(hasGrandparent x z)))
+
+(cl-comment 'Axiom: EF-3')
+(cl-comment 'A great-grandparent is a parent of a parent of a parent.')
+(forall (g)
+    (iff (greatgrandparent g)
+		(exists (x y z)
+			(and (hasParent x y)(hasParent y z)(hasParent z g)
+				(not (= x y))(not (= x z))(not (= x g))
+				(not (= y z))(not (= y g))
+				(not (= z g))))))
+
+(cl-comment 'Axiom: EF-4')
+(cl-comment 'A person has a great-grandparent if they have a parent who has a parent who has a parent.')
+(forall (x y z g)
+	(if (and (hasParent x y)(hasParent y z)(hasParent z g))
+		(hasGreatGrandparent x g)))
+
+(cl-comment 'Axiom: EF-5')
+(cl-comment 'The child of a child is a grandchild.')
+(forall (x y z)
+	(if (and (hasParent x y)(hasParent y z))
+		(hasGrandchild z x)))
+
+(cl-comment 'Axiom: EF-6')
+(cl-comment 'The child of a child is a grandchild.')
+(forall (x)
+	(iff (grandchild x)
+		(exists (y z)
+			(and (hasParent x y)(hasParent y z)))))
+
+
+(cl-comment 'Axiom: EF-7')
+(cl-comment 'The child of the sibling of one's parent is their cousin.')
+(forall (x y z)
+	(if (and (hasPibling x y)(hasChild y z))
+		(hasCousin x z)))
+
+(cl-comment 'Axiom: EF-8')
+(cl-comment 'A sibling of a parent is a person's pibling, who is an aunt or uncle.')
+(forall (x y z)
+	(if (and (hasParent x y)(hasSibling y z))
+		(or (hasAunt x z)(hasUncle x z))))
+
+(cl-comment 'Axiom: EF-9')
+(cl-comment 'A sibling of a parent is a person's pibling, who is an aunt or uncle.')
+(forall (x)
+	(iff (pibling x)
+		(exists (y z)
+			(and (hasParent x y)(hasParent z y)))))
+
+(cl-comment 'Axiom: EF-10')
+(cl-comment 'The child of one person's sibling is their nibling.')
+(forall (x y z)
+	(if (and (hasSibling x y)(hasChild y z))
+		(hasNibling x z)))
+
+(cl-comment 'Axiom: EF-11')
+(cl-comment 'A nibling is the child of someone's sibling.')
+(forall (x)
+	(iff (nibling x)
+		(exists (y z)
+			(and (hasSibling z y)(hasChild y x)))))
+
+(cl-comment 'Axiom: EF-12')
+(cl-comment 'A sibling of someone's grandparent is their great aunt or great uncle.')
+(forall (x y z)
+	(if (and (hasGrandparent x y)(hasSibling y z))
+		(or (hasGreatAunt x z)(hasGreatUncle x z))))
+
+(cl-comment 'Axiom: EF-13')
+(cl-comment 'The parent of a person's spouse is their parent in law.')
+(forall (x)
+	(iff (parentinlaw x)
+		(exists (y z)
+			(and (hasSpouse y z)(hasParent z x)))))
+
+(cl-comment 'Axiom: EF-14')
+(cl-comment 'The sibling of a person's spouse is their sibling in law.')
+(forall (x)
+	(iff (siblinginlaw x)
+		(exists (y z)
+			(and (hasSpouse y z)(hasSibling z x)))))
+
+)
