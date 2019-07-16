@@ -23,7 +23,7 @@
 
 (cl-comment 'PI-2')
 (cl-comment 'A person has a birth date.')
-(forall (d)
+(forall (x d)
 	(if (hasBirthDate x d)
 		(and (person x)(date d))))
 
@@ -41,7 +41,7 @@
 
 (cl-comment 'PI-5')
 (cl-comment 'A person dies on a certain date.')
-(forall (d)
+(forall (x d)
 	(if (hasDeathDate x d)
 		(and (person x)(date d))))
 
@@ -61,11 +61,9 @@
 (cl-comment 'PI-8')
 (cl-comment 'If a person is a Canadian citizen, permanent resident, or a temporary resident, and is older than 12 years of age or is under the age of majority in their province or territory, a person has a social insurance number')
 (forall (x a)
-	(if (and
-			(or (canadiancitizen x)
-				(permanentresident x)
-				(temporaryresident x))
-		(geq (hasAge x a) 12))
+	(if (or (and (geq (hasAge x a) 12)(canadiancitizen x))
+			(permanentresident x)
+			(temporaryresident x))
 	(exists (s)
 		(hasSIN x s))))
 
