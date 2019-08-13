@@ -1,0 +1,50 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 24531 was started by zhuojun on Zhuojun-Li.local,
+Fri Jul 26 02:12:13 2019
+The command was "/Users/zhuojun/Desktop/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.22 (+ 0.02) seconds.
+% Length of proof is 30.
+% Level of proof is 9.
+% Maximum clause weight is 14.
+% Given clauses 437.
+
+5 (all x all y (g_in(x,y) <-> in(x,y) | in(y,x) | part(x,y) & scene_object(x) & scene_object(y) | part(y,x) & scene_object(x) & scene_object(y) | depicts(x,y) & image_object(x) & scene_object(y) | def_pixel_edge(x,y) & pixel(x) & edge(y) | x = y)) # label(non_clause).  [assumption].
+7 (all x (image_object(x) <-> region(x) | line(x) | pixel(x))) # label(non_clause).  [assumption].
+8 (all x (scene_object(x) <-> surface(x) | edge(x) | point(x))) # label(non_clause).  [assumption].
+15 (all x (scene_object(x) <-> -image_object(x))) # label(non_clause).  [assumption].
+16 (all x all y (in(x,y) -> image_object(x) & image_object(y))) # label(non_clause).  [assumption].
+25 (all x all y (g_in(x,y) <-> g_in(y,x))) # label(non_clause).  [assumption].
+33 (all l all q (line(l) & depicts(l,q) & edge(q) -> (exists p (pixel(p) & def_pixel_edge(p,q) & in(p,l))))) # label(non_clause) # label(goal).  [goal].
+66 -g_in(x,y) | in(x,y) | in(y,x) | scene_object(y) | edge(y) | y = x.  [clausify(5)].
+68 scene_object(x) | -edge(x).  [clausify(8)].
+73 edge(c2).  [deny(33)].
+151 g_in(x,y) | -depicts(x,y) | -image_object(x) | -scene_object(y).  [clausify(5)].
+157 image_object(x) | -line(x).  [clausify(7)].
+162 -scene_object(x) | -image_object(x).  [clausify(15)].
+164 -in(x,y) | image_object(x).  [clausify(16)].
+165 -in(x,y) | image_object(y).  [clausify(16)].
+172 -g_in(x,y) | g_in(y,x).  [clausify(25)].
+182 line(c1).  [deny(33)].
+183 depicts(c1,c2).  [deny(33)].
+241 scene_object(x) | -g_in(y,x) | in(y,x) | in(x,y) | scene_object(x) | x = y.  [resolve(68,b,66,e)].
+242 scene_object(x) | -g_in(y,x) | in(y,x) | in(x,y) | x = y.  [copy(241),merge(e)].
+260 scene_object(c2).  [resolve(73,a,68,b)].
+670 image_object(c1).  [resolve(182,a,157,b)].
+672 g_in(c1,c2).  [resolve(183,a,151,b),unit_del(b,670),unit_del(c,260)].
+680 -scene_object(c1).  [resolve(670,a,162,b)].
+683 g_in(c2,c1).  [resolve(672,a,172,a)].
+701 in(c2,c1) | in(c1,c2) | c2 = c1.  [resolve(683,a,242,b),flip(d),unit_del(a,680)].
+764 in(c1,c2) | c2 = c1 | image_object(c2).  [resolve(701,a,164,a)].
+765 c2 = c1 | image_object(c2).  [resolve(764,a,165,a),merge(c)].
+767 c2 = c1.  [resolve(765,b,162,b),unit_del(b,260)].
+831 $F.  [back_rewrite(260),rewrite([767(1)]),unit_del(a,680)].
+
+============================== end of proof ==========================

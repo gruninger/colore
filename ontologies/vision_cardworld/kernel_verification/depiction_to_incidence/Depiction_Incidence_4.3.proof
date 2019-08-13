@@ -1,0 +1,78 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 24095 was started by zhuojun on Zhuojun-Li.local,
+Fri Jul 26 01:24:30 2019
+The command was "/Users/zhuojun/Desktop/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.12 (+ 0.02) seconds.
+% Length of proof is 58.
+% Level of proof is 15.
+% Maximum clause weight is 21.
+% Given clauses 573.
+
+1 (all x (image_object(x) <-> region(x) | line(x) | pixel(x))) # label(non_clause).  [assumption].
+2 (all x (scene_object(x) <-> surface(x) | edge(x) | point(x))) # label(non_clause).  [assumption].
+5 (all x -(line(x) & region(x))) # label(non_clause).  [assumption].
+9 (all x (scene_object(x) <-> -image_object(x))) # label(non_clause).  [assumption].
+10 (all l all r all x (line(l) & region(r) & in(l,r) & in(x,l) -> in(x,r))) # label(non_clause).  [assumption].
+11 (all x all y (in(x,y) -> in(y,x))) # label(non_clause).  [assumption].
+14 (all x all y (in(x,y) & region(x) & region(y) -> x = y)) # label(non_clause).  [assumption].
+19 (all x all y (part(x,y) -> scene_object(x) & scene_object(y))) # label(non_clause).  [assumption].
+29 (all x (g_line(x) <-> region(x))) # label(non_clause).  [assumption].
+31 (all x (g_point(x) <-> line(x))) # label(non_clause).  [assumption].
+32 (all x all y (g_in(x,y) <-> in(x,y) | in(y,x) | part(x,y) | part(y,x) | depicts(x,y) & image_object(x) & scene_object(y) | def_in(x,y) & line(x) & surface(y) | x = y)) # label(non_clause).  [assumption].
+33 (all x all y all z all u (g_point(x) & g_line(y) & g_line(z) & g_line(u) & g_in(x,y) & g_in(x,z) & g_in(x,u) -> u = z | y = z | u = y)) # label(non_clause) # label(goal).  [goal].
+34 image_object(x) | -region(x).  [clausify(1)].
+36 image_object(x) | -line(x).  [clausify(1)].
+38 -scene_object(x) | -image_object(x).  [clausify(9)].
+47 scene_object(x) | -surface(x).  [clausify(2)].
+62 -g_in(x,y) | in(x,y) | in(y,x) | part(x,y) | part(y,x) | scene_object(y) | surface(y) | y = x.  [clausify(32)].
+107 -g_line(x) | region(x).  [clausify(29)].
+108 g_line(c2).  [deny(33)].
+110 g_line(c4).  [deny(33)].
+112 -g_point(x) | line(x).  [clausify(31)].
+113 g_point(c1).  [deny(33)].
+133 -line(x) | -region(x).  [clausify(5)].
+134 -line(x) | -region(y) | -in(x,y) | -in(z,x) | in(z,y).  [clausify(10)].
+135 -in(x,y) | in(y,x).  [clausify(11)].
+138 -in(x,y) | -region(x) | -region(y) | y = x.  [clausify(14)].
+155 -part(x,y) | scene_object(y).  [clausify(19)].
+169 g_in(c1,c2).  [deny(33)].
+171 g_in(c1,c4).  [deny(33)].
+174 c4 != c2.  [deny(33)].
+175 -scene_object(x) | -region(x).  [resolve(38,b,34,a)].
+176 -scene_object(x) | -line(x).  [resolve(38,b,36,a)].
+205 -g_in(x,y) | in(x,y) | in(y,x) | part(x,y) | part(y,x) | scene_object(y) | y = x | scene_object(y).  [resolve(62,g,47,b)].
+206 -g_in(x,y) | in(x,y) | in(y,x) | part(x,y) | part(y,x) | scene_object(y) | y = x.  [copy(205),merge(h)].
+226 region(c2).  [resolve(108,a,107,a)].
+228 region(c4).  [resolve(110,a,107,a)].
+229 line(c1).  [resolve(113,a,112,a)].
+260 in(c1,c4) | in(c4,c1) | part(c1,c4) | part(c4,c1) | scene_object(c4) | c4 = c1.  [resolve(206,a,171,a)].
+262 in(c1,c2) | in(c2,c1) | part(c1,c2) | part(c2,c1) | scene_object(c2) | c2 = c1.  [resolve(206,a,169,a)].
+275 -scene_object(c2).  [resolve(226,a,175,b)].
+285 -line(c2).  [resolve(226,a,133,b)].
+286 in(c1,c2) | in(c2,c1) | part(c1,c2) | part(c2,c1) | c2 = c1.  [back_unit_del(262),unit_del(e,275)].
+299 -scene_object(c4).  [resolve(228,a,175,b)].
+309 -line(c4).  [resolve(228,a,133,b)].
+310 in(c1,c4) | in(c4,c1) | part(c1,c4) | part(c4,c1) | c4 = c1.  [back_unit_del(260),unit_del(e,299)].
+311 -scene_object(c1).  [resolve(229,a,176,b)].
+415 in(c1,c2) | part(c1,c2) | part(c2,c1) | c2 = c1.  [resolve(286,b,135,a),merge(e)].
+515 in(c1,c4) | part(c1,c4) | part(c4,c1) | c4 = c1.  [resolve(310,b,135,a),merge(e)].
+672 part(c1,c2) | part(c2,c1) | c2 = c1 | -in(x,c1) | in(x,c2).  [resolve(415,a,134,c),unit_del(d,229),unit_del(e,226)].
+730 part(c1,c4) | part(c4,c1) | c4 = c1 | in(c4,c1).  [resolve(515,a,135,a)].
+745 part(c1,c2) | part(c2,c1) | c2 = c1 | in(c4,c2) | part(c1,c4) | part(c4,c1) | c4 = c1.  [resolve(672,d,730,d)].
+771 part(c1,c2) | part(c2,c1) | c2 = c1 | part(c1,c4) | part(c4,c1) | c4 = c1.  [resolve(745,d,138,a),flip(i),unit_del(g,228),unit_del(h,226),unit_del(i,174)].
+773 part(c1,c2) | part(c2,c1) | c2 = c1 | part(c1,c4) | c4 = c1.  [resolve(771,e,155,a),unit_del(f,311)].
+775 part(c1,c2) | c2 = c1 | part(c1,c4) | c4 = c1.  [resolve(773,b,155,a),unit_del(e,311)].
+777 part(c1,c2) | c2 = c1 | c4 = c1.  [resolve(775,c,155,a),unit_del(d,299)].
+779 c2 = c1 | c4 = c1.  [resolve(777,a,155,a),unit_del(c,275)].
+786 c2 = c1.  [para(779(b,1),309(a,1)),unit_del(b,229)].
+908 $F.  [back_rewrite(285),rewrite([786(1)]),unit_del(a,229)].
+
+============================== end of proof ==========================

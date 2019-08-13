@@ -1,0 +1,90 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 23859 was started by zhuojun on Zhuojun-Li.local,
+Fri Jul 26 01:01:54 2019
+The command was "/Users/zhuojun/Desktop/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.02 (+ 0.01) seconds.
+% Length of proof is 70.
+% Level of proof is 11.
+% Maximum clause weight is 23.
+% Given clauses 88.
+
+1 (all x (image_object(x) <-> region(x) | line(x) | pixel(x))) # label(non_clause).  [assumption].
+2 (all x (scene_object(x) <-> surface(x) | edge(x) | point(x))) # label(non_clause).  [assumption].
+6 (all x -(point(x) & edge(x))) # label(non_clause).  [assumption].
+9 (all x (scene_object(x) <-> -image_object(x))) # label(non_clause).  [assumption].
+10 (all x all y (part(x,y) -> scene_object(x) & scene_object(y))) # label(non_clause).  [assumption].
+12 (all x all y (part(x,y) -> part(y,x))) # label(non_clause).  [assumption].
+16 (all x all y (in(x,y) -> image_object(x) & image_object(y))) # label(non_clause).  [assumption].
+22 (all i all s (pixel(i) & depicts(i,s) -> -edge(s) & -surface(s))) # label(non_clause).  [assumption].
+26 (all x all y (def_in(x,y) <-> pixel(x) & edge(y) & (exists z (point(z) & depicts(x,z) & part(z,y))))) # label(non_clause).  [assumption].
+27 (all x (g_line(x) <-> point(x))) # label(non_clause).  [assumption].
+28 (all x (plane(x) <-> edge(x))) # label(non_clause).  [assumption].
+29 (all x (g_point(x) <-> pixel(x))) # label(non_clause).  [assumption].
+30 (all x all y (g_in(x,y) <-> in(x,y) | in(y,x) | part(x,y) | part(y,x) | depicts(x,y) & image_object(x) & scene_object(y) | def_in(x,y) & pixel(x) & edge(y) | x = y)) # label(non_clause).  [assumption].
+31 (all x all y all z (plane(x) & g_line(y) & g_point(z) & g_in(z,y) & g_in(y,x) -> g_in(z,x))) # label(non_clause) # label(goal).  [goal].
+35 image_object(x) | -pixel(x).  [clausify(1)].
+36 -scene_object(x) | -image_object(x).  [clausify(9)].
+38 -in(x,y) | image_object(x).  [clausify(16)].
+39 -in(x,y) | image_object(y).  [clausify(16)].
+42 -g_in(x,y) | in(x,y) | in(y,x) | part(x,y) | part(y,x) | image_object(x) | pixel(x) | y = x.  [clausify(30)].
+77 def_in(x,y) | -pixel(x) | -edge(y) | -point(z) | -depicts(x,z) | -part(z,y).  [clausify(26)].
+85 g_in(x,y) | -def_in(x,y) | -pixel(x) | -edge(y).  [clausify(30)].
+88 -g_line(x) | point(x).  [clausify(27)].
+89 g_line(c2).  [deny(31)].
+91 -plane(x) | edge(x).  [clausify(28)].
+92 plane(c1).  [deny(31)].
+94 -g_point(x) | pixel(x).  [clausify(29)].
+95 g_point(c3).  [deny(31)].
+99 scene_object(x) | -point(x).  [clausify(2)].
+100 -point(x) | -edge(x).  [clausify(6)].
+103 -part(x,y) | scene_object(x).  [clausify(10)].
+104 -part(x,y) | scene_object(y).  [clausify(10)].
+106 -part(x,y) | part(y,x).  [clausify(12)].
+112 -pixel(x) | -depicts(x,y) | -edge(y).  [clausify(22)].
+115 -g_in(x,y) | in(x,y) | in(y,x) | part(x,y) | part(y,x) | depicts(x,y) | edge(y) | y = x.  [clausify(30)].
+122 g_in(x,y) | y != x.  [clausify(30)].
+123 g_in(c3,c2).  [deny(31)].
+124 g_in(c2,c1).  [deny(31)].
+125 -g_in(c3,c1).  [deny(31)].
+126 -scene_object(x) | -pixel(x).  [resolve(36,b,35,a)].
+127 -in(x,y) | -scene_object(x).  [resolve(38,b,36,b)].
+128 -in(x,y) | -scene_object(y).  [resolve(39,b,36,b)].
+130 -g_in(x,y) | in(x,y) | in(y,x) | part(x,y) | part(y,x) | pixel(x) | y = x | -scene_object(x).  [resolve(42,f,36,b)].
+158 g_in(x,y) | -pixel(x) | -edge(y) | -pixel(x) | -edge(y) | -point(z) | -depicts(x,z) | -part(z,y).  [resolve(85,b,77,a)].
+159 g_in(x,y) | -pixel(x) | -edge(y) | -point(z) | -depicts(x,z) | -part(z,y).  [copy(158),merge(d),merge(e)].
+163 point(c2).  [resolve(89,a,88,a)].
+164 edge(c1).  [resolve(92,a,91,a)].
+165 pixel(c3).  [resolve(95,a,94,a)].
+182 in(c3,c2) | in(c2,c3) | part(c3,c2) | part(c2,c3) | depicts(c3,c2) | edge(c2) | c3 = c2.  [resolve(123,a,115,a),flip(g)].
+185 c3 != c1.  [ur(122,a,125,a),flip(a)].
+190 in(c2,c1) | in(c1,c2) | part(c2,c1) | part(c1,c2) | pixel(c2) | c2 = c1 | -scene_object(c2).  [resolve(130,a,124,a),flip(f)].
+210 -edge(c2).  [resolve(163,a,100,a)].
+211 scene_object(c2).  [resolve(163,a,99,b)].
+214 in(c3,c2) | in(c2,c3) | part(c3,c2) | part(c2,c3) | depicts(c3,c2) | c3 = c2.  [back_unit_del(182),unit_del(f,210)].
+218 in(c2,c1) | in(c1,c2) | part(c2,c1) | part(c1,c2) | pixel(c2) | c2 = c1.  [back_unit_del(190),unit_del(g,211)].
+222 -scene_object(c3).  [ur(126,b,165,a)].
+223 -depicts(c3,c1).  [ur(112,a,165,a,c,164,a)].
+224 -pixel(c2).  [resolve(211,a,126,a)].
+226 -in(x,c2).  [ur(128,b,211,a)].
+227 -in(c2,x).  [ur(127,b,211,a)].
+228 part(c2,c1) | part(c1,c2) | c2 = c1.  [back_unit_del(218),unit_del(a,227),unit_del(b,226),unit_del(e,224)].
+229 part(c3,c2) | part(c2,c3) | depicts(c3,c2) | c3 = c2.  [back_unit_del(214),unit_del(a,226),unit_del(b,227)].
+239 part(c1,c2) | c2 = c1.  [resolve(228,a,106,a),merge(c)].
+241 c2 = c1 | part(c2,c1).  [resolve(239,a,106,a)].
+243 -part(x,c3).  [ur(104,b,222,a)].
+244 -part(c3,x).  [ur(103,b,222,a)].
+248 depicts(c3,c2) | c3 = c2.  [back_unit_del(229),unit_del(a,244),unit_del(b,243)].
+249 c2 = c1 | g_in(x,c1) | -pixel(x) | -depicts(x,c2).  [resolve(241,b,159,f),unit_del(d,164),unit_del(e,163)].
+254 c2 = c1 | c3 = c2.  [resolve(249,d,248,a),unit_del(b,125),unit_del(c,165)].
+256 c2 = c1.  [para(254(b,1),125(a,1)),unit_del(b,124)].
+257 $F.  [back_rewrite(248),rewrite([256(2),256(5)]),unit_del(a,223),unit_del(b,185)].
+
+============================== end of proof ==========================
