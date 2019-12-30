@@ -1,0 +1,384 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved.
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Carmen Chui, Michael Gruninger - initial implementation
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/financial/time.clif
+
+(forall (a) (if (IdentityDocument a) (and (exists (b) (and (Date b)
+(hasDateOfIssuance a b)))
+(exists (b c) (if (and (hasDateOfIssuance a b)
+(hasDateOfIssuance a c)
+(Date b)) (= b c))))))
+(cl-comment 'Ax1_1')
+
+(forall (a) (if (IdentityDocument a) (and (exists (b) (and (Date b)
+(hasExpirationDate a b)))
+(exists (b c) (if (and (hasExpirationDate a b)
+(hasExpirationDate a c)
+(Date b)) (= b c))))))
+(cl-comment 'Ax2_2')
+
+(forall (a) (if (Person a) (and (exists (b) (and (Date b)
+(hasDateOfBirth a b)))
+(exists (b c) (if (and (hasDateOfBirth a b)
+(hasDateOfBirth a c)
+(Date b)) (= b c))))))
+(cl-comment 'Ax3_3')
+
+(forall (a) (if (Contract a) (forall (b) (if (hasExecutionDate a b) (Date b)))))
+(cl-comment 'Ax4_4')
+
+(forall (a) (if (Contract a) (and (exists (b) (and (Date b)
+(hasEffectiveDate a b)))
+(exists (b c) (if (and (hasEffectiveDate a b)
+(hasEffectiveDate a c)
+(Date b)) (= b c))))))
+(cl-comment 'Ax5_5')
+
+(forall (a) (if (Rating a) (and (exists (b) (and (Date b)
+(hasDateOfIssuance a b)))
+(exists (b c) (if (and (hasDateOfIssuance a b)
+(hasDateOfIssuance a c)
+(Date b)) (= b c))))))
+(cl-comment 'Ax6_6')
+
+(forall (a) (if (Rating a) (exists (b c) (if (and (hasEffectiveDate a b)
+(hasEffectiveDate a c)
+(Date b)) (= b c)))))
+(cl-comment 'Ax7_7')
+
+(forall (a) (if (Report a) (exists (b) (and (hasDateOfIssuance a b)
+(Date b)))))
+(cl-comment 'Ax8_8')
+
+(cl-comment '(forall (a) (if (Report a) (exists () (and))))')
+(cl-comment 'Ax9_9')
+
+(forall (a) (if (BusinessRecurrenceInterval a) (RecurrenceInterval a)))
+(cl-comment 'Ax10_10')
+
+(forall (a) (if (BusinessRecurrenceInterval a) (and (exists (b) (and (BusinessRecurrenceIntervalConvention b)
+(hasBusinessRecurrenceIntervalConvention a b)))
+(exists (b c) (if (and (hasBusinessRecurrenceIntervalConvention a b)
+(hasBusinessRecurrenceIntervalConvention a c)
+(BusinessRecurrenceIntervalConvention b)) (= b c))))))
+(cl-comment 'Ax11_11')
+
+(forall (a) (if (DayOfMonth a) (BusinessRecurrenceInterval a)))
+(cl-comment 'Ax12_12')
+
+(forall (a) (if (DayOfWeek a) (BusinessRecurrenceInterval a)))
+(cl-comment 'Ax13_13')
+
+(forall (a) (if (EndOfMonth a) (BusinessRecurrenceInterval a)))
+(cl-comment 'Ax14_14')
+
+(cl-comment '(forall (a) (if (AdHocScheduleEntry a) (exists () (and))))')
+(cl-comment 'Ax15_15')
+
+(forall (a) (if (CalculatedDate a) (Date a)))
+(cl-comment 'Ax16_16')
+
+(forall (a) (if (CalculatedDate a) (exists (b c) (if (and (hasBusinessDayAdjustment a b)
+(hasBusinessDayAdjustment a c)
+(BusinessDayAdjustment b)) (= b c)))))
+(cl-comment 'Ax17_17')
+
+(forall (a) (if (CalendarPeriod a) (TimeInterval a)))
+(cl-comment 'Ax18_18')
+
+(forall (a) (if (CalendarSpecifiedInterval a) (RecurrenceInterval a)))
+(cl-comment 'Ax19_19')
+
+(forall (a) (if (CalendarSpecifiedInterval a) (and (exists (b) (and (CalendarPeriod b)
+(hasCalendarPeriod a b)))
+(exists (b c) (if (and (hasCalendarPeriod a b)
+(hasCalendarPeriod a c)
+(CalendarPeriod b)) (= b c))))))
+(cl-comment 'Ax20_20')
+
+(forall (a) (if (CalendarSpecifiedInterval a) (and (exists (b) (and (TimeDirection b)
+(hasTimeDirection a b)))
+(exists (b c) (if (and (hasTimeDirection a b)
+(hasTimeDirection a c)
+(TimeDirection b)) (= b c))))))
+(cl-comment 'Ax21_21')
+
+(forall (a) (if (Date a) (TimeInstant a)))
+(cl-comment 'Ax22_22')
+
+(forall (a) (if (DatePeriod a) (TimeInterval a)))
+(cl-comment 'Ax23_23')
+
+(forall (a) (if (DatePeriod a) (exists (b c) (if (and (hasDuration a b)
+(hasDuration a c)
+(Duration b)) (= b c)))))
+(cl-comment 'Ax24_24')
+
+(forall (a) (if (DatePeriod a) (exists (b c) (if (and (hasEndDate a b)
+(hasEndDate a c)
+(Date b)) (= b c)))))
+(cl-comment 'Ax25_25')
+
+(forall (a) (if (DatePeriod a) (exists (b c) (if (and (hasStartDate a b)
+(hasStartDate a c)
+(Date b)) (= b c)))))
+(cl-comment 'Ax26_26')
+
+(forall (a) (if (DateTime a) (TimeInstant a)))
+(cl-comment 'Ax27_27')
+
+(forall (a) (if (DateTimeStamp a) (TimeInstant a)))
+(cl-comment 'Ax28_28')
+
+(forall (a) (if (Duration a) (TimeInterval a)))
+(cl-comment 'Ax29_29')
+
+(forall (a) (if (ExplicitDate a) (Date a)))
+(cl-comment 'Ax30_30')
+
+(forall (a) (if (ExplicitDatePeriod a) (DatePeriod a)))
+(cl-comment 'Ax31_31')
+
+(forall (a) (if (ExplicitDatePeriod a) (exists (b c) (if (and (hasDuration a b)
+(hasDuration a c)
+(ExplicitDuration b)) (= b c)))))
+(cl-comment 'Ax32_32')
+
+(forall (a) (if (ExplicitDatePeriod a) (exists (b c) (if (and (hasEndDate a b)
+(hasEndDate a c)
+(ExplicitDate b)) (= b c)))))
+(cl-comment 'Ax33_33')
+
+(forall (a) (if (ExplicitDatePeriod a) (exists (b c) (if (and (hasStartDate a b)
+(hasStartDate a c)
+(ExplicitDate b)) (= b c)))))
+(cl-comment 'Ax34_34')
+
+(forall (a) (if (ExplicitDuration a) (Duration a)))
+(cl-comment 'Ax35_35')
+
+(forall (a) (if (ExplicitRecurrenceInterval a) (RecurrenceInterval a)))
+(cl-comment 'Ax36_36')
+
+(forall (a) (if (RecurrenceInterval a) (TimeInterval a)))
+(cl-comment 'Ax37_37')
+
+(forall (a) (if (RegularSchedule a) (exists (b) (and (hasRecurrenceInterval a b)
+(RecurrenceInterval b)))))
+(cl-comment 'Ax38_38')
+
+(forall (a) (if (RegularSchedule a) (exists (b) (and (hasRecurrenceStartDate a b)
+(Date b)))))
+(cl-comment 'Ax39_39')
+
+(forall (a) (if (RelativeDate a) (CalculatedDate a)))
+(cl-comment 'Ax40_40')
+
+(forall (a) (if (RelativeDate a) (and (exists (b) (and (Date b)
+(isRelativeTo a b)))
+(exists (b c) (if (and (isRelativeTo a b)
+(isRelativeTo a c)
+(Date b)) (= b c))))))
+(cl-comment 'Ax41_41')
+
+(forall (a) (if (Schedule a) (and (exists (b) (and (DatePeriod b)
+(hasOverallPeriod a b)))
+(exists (b c) (if (and (hasOverallPeriod a b)
+(hasOverallPeriod a c)
+(DatePeriod b)) (= b c))))))
+(cl-comment 'Ax42_42')
+
+(forall (a) (if (ScheduleStub a) (and (exists (b) (and (DatePeriod b)
+(hasDatePeriod a b)))
+(exists (b c) (if (and (hasDatePeriod a b)
+(hasDatePeriod a c)
+(DatePeriod b)) (= b c))))))
+(cl-comment 'Ax43_43')
+
+(forall (a) (if (SpecifiedDate a) (CalculatedDate a)))
+(cl-comment 'Ax44_44')
+
+(forall (a) (if (OccurrenceBasedDate a) (CalculatedDate a)))
+(cl-comment 'Ax45_45')
+
+(forall (a) (if (OccurrenceBasedDate a) (and (exists (b) (and (OccurrenceKind b)
+(isTriggeredBy a b)))
+(exists (b c) (if (and (isTriggeredBy a b)
+(isTriggeredBy a c)
+(OccurrenceKind b)) (= b c))))))
+(cl-comment 'Ax46_46')
+
+(forall (a) (if (Objective a) (exists (b) (and (hasDatePeriod a b)
+(DatePeriod b)))))
+(cl-comment 'Ax47_47')
+
+(forall (a) (if (License a) (and (exists (b) (and (DatePeriod b)
+(holdsDuring a b)))
+(exists (b c) (if (and (holdsDuring a b)
+(holdsDuring a c)
+(DatePeriod b)) (= b c))))))
+(cl-comment 'Ax48_48')
+
+(forall (a) (if (Control a) (forall (b) (if (holdsDuring a b) (DatePeriod b)))))
+(cl-comment 'Ax49_49')
+
+(forall (a) (if (Ownership a) (forall (b) (if (holdsDuring a b) (DatePeriod b)))))
+(cl-comment 'Ax50_50')
+
+(forall (a) (if (PartyInRole a) (and (exists (b) (and (Date b)
+(hasCommencementDate a b)))
+(exists (b c) (if (and (hasCommencementDate a b)
+(hasCommencementDate a c)
+(Date b)) (= b c))))))
+(cl-comment 'Ax51_51')
+
+(forall (a) (if (AnnualizedStandardDeviation a) (and (exists (b) (and (ExplicitRecurrenceInterval b)
+(hasReferencePeriod a b)))
+(exists (b c) (if (and (hasReferencePeriod a b)
+(hasReferencePeriod a c)
+(ExplicitRecurrenceInterval b)) (= b c))))))
+(cl-comment 'Ax52_52')
+
+(forall (a) (if (NumericIndex a) (and (exists (b) (and (ExplicitDatePeriod b)
+(hasReportingPeriod a b)))
+(exists (b c) (if (and (hasReportingPeriod a b)
+(hasReportingPeriod a c)
+(ExplicitDatePeriod b)) (= b c))))))
+(cl-comment 'Ax53_53')
+
+(forall (a) (if (NumericIndex a) (and (exists (b) (and (ExplicitDatePeriod b)
+(hasBasePeriod a b)))
+(exists (b c) (if (and (hasBasePeriod a b)
+(hasBasePeriod a c)
+(ExplicitDatePeriod b)) (= b c))))))
+(cl-comment 'Ax54_54')
+
+(forall (a) (if (ScopedMeasure a) (forall (b) (if (hasPeriodicity a b) (RecurrenceInterval b)))))
+(cl-comment 'Ax55_55')
+
+(forall (a) (if (StatisticalPopulation a) (exists (b) (and (isCharacterizedBy a b)
+(ExplicitDatePeriod b)))))
+(cl-comment 'Ax56_56')
+
+(forall (a) (if (StatisticalProgram a) (forall (b) (if (hasReportingPeriod a b) (ExplicitDatePeriod b)))))
+(cl-comment 'Ax57_57')
+
+(forall (a) (if (StatisticalProgram a) (forall (b) (if (hasReferencePeriod a b) (BusinessRecurrenceInterval b)))))
+(cl-comment 'Ax58_58')
+
+(cl-comment '(forall (a) (if (StatisticalProgram a) (exists () (and))))')
+(cl-comment 'Ax59_59')
+
+(forall (a) (not (and (CalculatedDate a)
+(ExplicitDate a))))
+(cl-comment 'Ax60_60')
+
+(forall (a) (not (and (CalendarSpecifiedInterval a)
+(ExplicitRecurrenceInterval a))))
+(cl-comment 'Ax61_61')
+
+(forall (a) (not (and (RelativeDate a)
+(SpecifiedDate a))))
+(cl-comment 'Ax62_62')
+
+(forall (a) (not (and (RelativeDate a)
+(OccurrenceBasedDate a))))
+(cl-comment 'Ax63_63')
+
+(forall (a) (not (and (SpecifiedDate a)
+(OccurrenceBasedDate a))))
+(cl-comment 'Ax64_64')
+
+(forall (a) (exists (b) (if (hasBusinessRecurrenceIntervalConvention a b) (BusinessRecurrenceInterval a))))
+(cl-comment 'Ax65_65')
+
+(forall (a) (exists (b) (if (isTriggeredBy a b) (OccurrenceBasedDate a))))
+(cl-comment 'Ax66_66')
+
+(forall (b) (exists (a) (if (hasDateOfBirth a b) (Date b))))
+(cl-comment 'Ax67_67')
+
+(forall (b) (exists (a) (if (hasEffectiveDate a b) (Date b))))
+(cl-comment 'Ax68_68')
+
+(forall (b) (exists (a) (if (hasExecutionDate a b) (Date b))))
+(cl-comment 'Ax69_69')
+
+(forall (b) (exists (a) (if (hasExecutionDateTimeStamp a b) (DateTimeStamp b))))
+(cl-comment 'Ax70_70')
+
+(forall (b) (exists (a) (if (hasDateOfIssuance a b) (Date b))))
+(cl-comment 'Ax71_71')
+
+(forall (b) (exists (a) (if (hasExpirationDate a b) (Date b))))
+(cl-comment 'Ax72_72')
+
+(forall (b) (exists (a) (if (hasReportingPeriod a b) (ExplicitDatePeriod b))))
+(cl-comment 'Ax73_73')
+
+(forall (b) (exists (a) (if (hasTerminationDate a b) (Date b))))
+(cl-comment 'Ax74_74')
+
+(forall (b) (exists (a) (if (hasCalendarPeriod a b) (CalendarPeriod b))))
+(cl-comment 'Ax75_75')
+
+(forall (b) (exists (a) (if (hasDate a b) (Date b))))
+(cl-comment 'Ax76_76')
+
+(forall (b) (exists (a) (if (hasDatePeriod a b) (DatePeriod b))))
+(cl-comment 'Ax77_77')
+
+(forall (b) (exists (a) (if (hasDateTime a b) (DateTime b))))
+(cl-comment 'Ax78_78')
+
+(forall (b) (exists (a) (if (hasDateTimeStamp a b) (DateTimeStamp b))))
+(cl-comment 'Ax79_79')
+
+(forall (b) (exists (a) (if (hasDuration a b) (Duration b))))
+(cl-comment 'Ax80_80')
+
+(forall (b) (exists (a) (if (hasExplicitDate a b) (ExplicitDate b))))
+(cl-comment 'Ax81_81')
+
+(forall (b) (exists (a) (if (hasRecurrenceInterval a b) (RecurrenceInterval b))))
+(cl-comment 'Ax82_82')
+
+(forall (b) (exists (a) (if (hasTimeDirection a b) (TimeDirection b))))
+(cl-comment 'Ax83_83')
+
+(forall (b) (exists (a) (if (isRelativeTo a b) (Date b))))
+(cl-comment 'Ax84_84')
+
+(forall (b) (exists (a) (if (hasEventDate a b) (Date b))))
+(cl-comment 'Ax85_85')
+
+(forall (b) (exists (a) (if (hasCommencementDate a b) (Date b))))
+(cl-comment 'Ax86_86')
+
+(forall (b) (exists (a) (if (forYear a b) (ExplicitDatePeriod b))))
+(cl-comment 'Ax87_87')
+
+(forall (b) (exists (a) (if (hasApplicableDatePeriod a b) (DatePeriod b))))
+(cl-comment 'Ax88_88')
+
+(forall (b) (exists (a) (if (hasBasePeriod a b) (ExplicitDatePeriod b))))
+(cl-comment 'Ax89_89')
+
+(forall (b) (exists (a) (if (hasPeriodicity a b) (RecurrenceInterval b))))
+(cl-comment 'Ax90_90')
+
+(forall (b) (exists (a) (if (hasReferencePeriod a b) (RecurrenceInterval b))))
+(cl-comment 'Ax91_91')
+
+(forall (b) (exists (a) (if (hasReleaseDate a b) (Date b))))
+(cl-comment 'Ax92_92')
+
+
+)

@@ -1,0 +1,54 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 13875 was started by zhuojun on Zhuojun-Li.local,
+Sun Aug  4 20:33:25 2019
+The command was "/Users/zhuojun/Desktop/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.02 (+ 0.01) seconds.
+% Length of proof is 34.
+% Level of proof is 10.
+% Maximum clause weight is 16.
+% Given clauses 61.
+
+1 (all x (image_object(x) <-> region(x) | line(x) | pixel(x))) # label(non_clause).  [assumption].
+2 (all x (scene_object(x) <-> surface(x) | edge(x) | point(x))) # label(non_clause).  [assumption].
+9 (all x (scene_object(x) <-> -image_object(x))) # label(non_clause).  [assumption].
+14 (all x all y (part(x,y) & edge(x) & edge(y) -> x = y)) # label(non_clause).  [assumption].
+19 (all x all y (in(x,y) -> image_object(x) & image_object(y))) # label(non_clause).  [assumption].
+37 (all x (plane(x) <-> edge(x))) # label(non_clause).  [assumption].
+39 (all x all y (g_in(x,y) <-> in(x,y) | in(y,x) | part(x,y) | part(y,x) | depicts(x,y) & image_object(x) & scene_object(y) | def_in(x,y) & pixel(x) & edge(y) | x = y)) # label(non_clause).  [assumption].
+40 (all x all y (g_in(x,y) & plane(x) & plane(y) -> x = y)) # label(non_clause) # label(goal).  [goal].
+44 image_object(x) | -pixel(x).  [clausify(1)].
+45 -scene_object(x) | -image_object(x).  [clausify(9)].
+48 -in(x,y) | image_object(y).  [clausify(19)].
+53 -g_in(x,y) | in(x,y) | in(y,x) | part(x,y) | part(y,x) | image_object(x) | pixel(x) | y = x.  [clausify(39)].
+70 -plane(x) | edge(x).  [clausify(37)].
+71 plane(c1).  [deny(40)].
+72 plane(c2).  [deny(40)].
+84 g_in(c1,c2).  [deny(40)].
+86 -g_in(x,y) | in(x,y) | in(y,x) | part(x,y) | part(y,x) | pixel(x) | y = x | -scene_object(x).  [resolve(53,f,45,b)].
+107 scene_object(x) | -edge(x).  [clausify(2)].
+120 -part(x,y) | -edge(x) | -edge(y) | y = x.  [clausify(14)].
+142 c2 != c1.  [deny(40)].
+145 -scene_object(x) | -pixel(x).  [resolve(45,b,44,a)].
+150 -in(x,y) | -scene_object(y).  [resolve(48,b,45,b)].
+156 edge(c1).  [resolve(71,a,70,a)].
+157 edge(c2).  [resolve(72,a,70,a)].
+164 in(c1,c2) | in(c2,c1) | part(c1,c2) | part(c2,c1) | pixel(c1) | c2 = c1 | -scene_object(c1).  [resolve(86,a,84,a)].
+165 in(c1,c2) | in(c2,c1) | part(c1,c2) | part(c2,c1) | pixel(c1) | -scene_object(c1).  [copy(164),unit_del(f,142)].
+197 scene_object(c1).  [resolve(156,a,107,b)].
+201 in(c1,c2) | in(c2,c1) | part(c1,c2) | part(c2,c1) | pixel(c1).  [back_unit_del(165),unit_del(f,197)].
+202 scene_object(c2).  [resolve(157,a,107,b)].
+203 in(c1,c2) | part(c1,c2) | part(c2,c1) | pixel(c1).  [resolve(201,b,150,a),unit_del(e,197)].
+204 part(c1,c2) | part(c2,c1) | pixel(c1).  [resolve(203,a,150,a),unit_del(d,202)].
+206 part(c1,c2) | pixel(c1).  [resolve(204,b,120,a),flip(e),unit_del(c,157),unit_del(d,156),unit_del(e,142)].
+209 pixel(c1).  [resolve(206,a,120,a),unit_del(b,156),unit_del(c,157),unit_del(d,142)].
+210 $F.  [resolve(209,a,145,b),unit_del(a,197)].
+
+============================== end of proof ==========================

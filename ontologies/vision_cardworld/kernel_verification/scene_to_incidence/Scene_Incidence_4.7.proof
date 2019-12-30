@@ -1,0 +1,52 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 21293 was started by zhuojun on Zhuojun-Li.local,
+Thu Jul 25 15:33:56 2019
+The command was "/Users/zhuojun/Desktop/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.47 (+ 0.01) seconds.
+% Length of proof is 32.
+% Level of proof is 7.
+% Maximum clause weight is 13.
+% Given clauses 149.
+
+1 (all x (plane(x) <-> surface(x))) # label(non_clause).  [assumption].
+2 (all x (g_line(x) <-> edge(x))) # label(non_clause).  [assumption].
+3 (all x (g_point(x) <-> point(x))) # label(non_clause).  [assumption].
+4 (all x all y (g_in(x,y) <-> part(x,y))) # label(non_clause).  [assumption].
+10 (all e all s all x (edge(e) & surface(s) & part(e,s) & part(x,e) -> part(x,s))) # label(non_clause).  [assumption].
+20 (all s (surface(s) -> (exists e1 exists e2 exists e3 (edge(e1) & edge(e2) & edge(e3) & part(e1,s) & part(e2,s) & part(e3,s) & e1 != e2 & e1 != e3 & e2 != e3)))) # label(non_clause).  [assumption].
+21 (all e (edge(e) -> (exists p1 exists p2 (point(p1) & point(p2) & part(p1,e) & part(p2,e) & p1 != p2)))) # label(non_clause).  [assumption].
+23 (all q (plane(q) -> (exists p exists l (g_point(p) & g_line(l) & g_in(p,q) & g_in(p,l) & g_in(l,q))))) # label(non_clause) # label(goal).  [goal].
+25 -plane(x) | surface(x).  [clausify(1)].
+26 plane(c1).  [deny(23)].
+27 g_line(x) | -edge(x).  [clausify(2)].
+29 -g_point(x) | -g_line(y) | -g_in(x,c1) | -g_in(x,y) | -g_in(y,c1).  [deny(23)].
+30 g_point(x) | -point(x).  [clausify(3)].
+32 -g_point(x) | -g_in(x,c1) | -g_in(x,y) | -g_in(y,c1) | -edge(y).  [resolve(29,b,27,a)].
+40 g_in(x,y) | -part(x,y).  [clausify(4)].
+44 -edge(x) | -surface(y) | -part(x,y) | -part(z,x) | part(z,y).  [clausify(10)].
+58 -surface(x) | edge(f5(x)).  [clausify(20)].
+61 -surface(x) | part(f5(x),x).  [clausify(20)].
+65 -edge(x) | point(f6(x)).  [clausify(21)].
+67 -edge(x) | part(f6(x),x).  [clausify(21)].
+71 surface(c1).  [resolve(26,a,25,a)].
+72 -g_in(x,c1) | -g_in(x,y) | -g_in(y,c1) | -edge(y) | -point(x).  [resolve(32,a,30,a)].
+81 part(f5(c1),c1).  [resolve(71,a,61,a)].
+84 edge(f5(c1)).  [resolve(71,a,58,a)].
+92 part(f6(f5(c1)),f5(c1)).  [resolve(84,a,67,a)].
+94 point(f6(f5(c1))).  [resolve(84,a,65,a)].
+123 -part(x,f5(c1)) | part(x,c1).  [resolve(81,a,44,c),unit_del(a,84),unit_del(b,71)].
+124 g_in(f5(c1),c1).  [resolve(81,a,40,b)].
+211 g_in(f6(f5(c1)),f5(c1)).  [resolve(92,a,40,b)].
+390 -g_in(f6(f5(c1)),c1).  [resolve(211,a,72,b),unit_del(b,124),unit_del(c,84),unit_del(d,94)].
+391 part(f6(f5(c1)),c1).  [resolve(123,a,92,a)].
+395 $F.  [resolve(391,a,40,b),unit_del(a,390)].
+
+============================== end of proof ==========================

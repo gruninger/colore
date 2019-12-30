@@ -1,0 +1,54 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 14453 was started by zhuojun on Zhuojun-Li.local,
+Sun Aug  4 21:36:30 2019
+The command was "/Users/zhuojun/Desktop/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.02 (+ 0.01) seconds.
+% Length of proof is 34.
+% Level of proof is 6.
+% Maximum clause weight is 16.
+% Given clauses 56.
+
+1 (all x (image_object(x) <-> region(x) | line(x) | pixel(x))) # label(non_clause).  [assumption].
+2 (all x (scene_object(x) <-> surface(x) | edge(x) | point(x))) # label(non_clause).  [assumption].
+9 (all x (scene_object(x) <-> -image_object(x))) # label(non_clause).  [assumption].
+10 (all x all y (part(x,y) -> scene_object(x) & scene_object(y))) # label(non_clause).  [assumption].
+19 (all x all y (in(x,y) & line(x) & line(y) -> x = y)) # label(non_clause).  [assumption].
+34 (all x (g_point(x) <-> line(x))) # label(non_clause).  [assumption].
+35 (all x all y (g_in(x,y) <-> in(x,y) | in(y,x) | part(x,y) | part(y,x) | depicts(x,y) & image_object(x) & scene_object(y) | depicts(y,x) & image_object(x) & scene_object(y) | def_in(x,y) & line(x) & surface(y) | def_in(y,x) & line(x) & surface(y) | x = y)) # label(non_clause).  [assumption].
+36 (all x all y (g_in(x,y) & g_point(x) & g_point(y) -> x = y)) # label(non_clause) # label(goal).  [goal].
+39 image_object(x) | -line(x).  [clausify(1)].
+41 -scene_object(x) | -image_object(x).  [clausify(9)].
+56 -g_point(x) | line(x).  [clausify(34)].
+57 g_point(c1).  [deny(36)].
+58 g_point(c2).  [deny(36)].
+65 -g_in(x,y) | in(x,y) | in(y,x) | part(x,y) | part(y,x) | scene_object(y) | surface(y) | y = x.  [clausify(35)].
+72 g_in(c1,c2).  [deny(36)].
+86 scene_object(x) | -surface(x).  [clausify(2)].
+95 -part(x,y) | scene_object(x).  [clausify(10)].
+96 -part(x,y) | scene_object(y).  [clausify(10)].
+105 -in(x,y) | -line(x) | -line(y) | y = x.  [clausify(19)].
+124 c2 != c1.  [deny(36)].
+126 -scene_object(x) | -line(x).  [resolve(41,b,39,a)].
+135 line(c1).  [resolve(57,a,56,a)].
+136 line(c2).  [resolve(58,a,56,a)].
+143 in(c1,c2) | in(c2,c1) | part(c1,c2) | part(c2,c1) | scene_object(c2) | surface(c2) | c2 = c1.  [resolve(72,a,65,a)].
+144 in(c1,c2) | in(c2,c1) | part(c1,c2) | part(c2,c1) | scene_object(c2) | surface(c2).  [copy(143),unit_del(g,124)].
+153 -scene_object(c1).  [resolve(135,a,126,b)].
+156 -scene_object(c2).  [resolve(136,a,126,b)].
+157 -in(c1,c2).  [ur(105,b,135,a,c,136,a,d,124,a)].
+158 -in(c2,c1).  [ur(105,b,136,a,c,135,a,d,124,a(flip))].
+161 part(c1,c2) | part(c2,c1) | surface(c2).  [back_unit_del(144),unit_del(a,157),unit_del(b,158),unit_del(e,156)].
+164 -part(x,c1).  [ur(96,b,153,a)].
+165 -part(c1,x).  [ur(95,b,153,a)].
+170 surface(c2).  [back_unit_del(161),unit_del(a,165),unit_del(b,164)].
+176 $F.  [ur(86,a,156,a),unit_del(a,170)].
+
+============================== end of proof ==========================

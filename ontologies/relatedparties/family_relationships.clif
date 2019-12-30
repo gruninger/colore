@@ -1,0 +1,145 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved.
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Carmen Chui, Janette Wong, Michael Gruninger - initial implementation
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/relatedparties/family_relationships.clif
+
+(cl-comment 'Axiom: F-1')
+(cl-comment 'A person cannot be a parent of themselves.')
+(forall (x) (not (hasParent x x)))
+
+(cl-comment 'Axiom: F-2')
+(cl-comment 'A parent is a person who has a child.')
+(forall (x)
+	(iff (parent x)
+		(exists (c)
+			(and (person x)(hasChild x c)))))
+
+(cl-comment 'Axiom: F-3')
+(cl-comment 'A biological parent is a person who has contributed genetic material to the birth of a child.')
+(forall (x y)
+	(if (hasBiologicalParent x y)
+		(and (person x)(biologicalParent y))))
+
+(cl-comment 'Axiom: F-4')
+(cl-comment 'A father is a male parent.')
+(forall (x)
+	(iff (father x)
+		(and (parent x)(hasBiologicalSex x Male))))
+
+(cl-comment 'Axiom: F-5')
+(cl-comment 'A mother is a female parent.')
+(forall (x)
+	(iff (mother x)
+		(and (parent x)(hasBiologicalSex x Female))))
+
+(cl-comment 'Axiom: F-6')
+(cl-comment 'A single parent is a person who is a parent of a child and not in a relationship.')
+(forall (x)
+	(iff (singleParent x)
+		(exists (y)
+			(and (hasChild x y)
+				(not (isMarried x))))))
+
+(cl-comment 'Axiom: F-7')
+(cl-comment 'A person has a parent who is a person. For every person, there is another person who is their parent.')
+(forall (x)
+	(if (person x)
+		(exists (y)
+			(and (person y)
+				(hasParent x y)
+				(not (= x y))))))
+
+(cl-comment 'Axiom: F-8')
+(cl-comment 'A person is a spouse if they are legally married to another person.')
+(forall (x)
+	(iff (spouse x)
+		(exists (y)
+			(and (person x)(isMarriedTo x y)))))
+
+(cl-comment 'Axiom: F-9')
+(cl-comment 'Equivalent to F 8')
+(forall (x s t)
+	(iff (holds (hasSpouse x s) t)
+		(holds (marriedTo x s) t)))
+
+(cl-comment 'Axiom: F-10')
+(cl-comment 'Every child has at least one parent.')
+(forall (x)
+	(iff (child x)
+		(exists (p)
+			(and (parent p)(hasParent x p)))))
+
+(cl-comment 'Axiom: F-11')
+(cl-comment 'A child has a parent.')
+(forall (x y)
+        (if (hasChild x y)
+            (and (child y)(parent x))))
+
+(cl-comment 'Axiom: F-12')
+(cl-comment 'An adult is a person older than the age of 18 in Ontario.')
+(forall (x)
+	(iff (adult x)
+		(something x)))
+
+(cl-comment 'Axiom: F-13')
+(cl-comment 'A minor is a person younger than the age of 18 in Ontario.')
+(forall (x)
+	(iff (minor x)
+		(something x)))
+
+(cl-comment 'Axiom: F-14')
+(cl-comment 'Axiom: For children who have the same parent, they are siblings.')
+(forall (x y)
+	(exists (p)
+		(if (and (person x)(person y)(parent p)
+				(hasParent x p)(hasParent y p)
+				(not (= x y))(not (= x p))(not (= y p)))
+			(hasSibling x y))))
+
+(cl-comment 'Axiom: F-15')
+(cl-comment 'If a person has a sibling, they are also a sibling of that person.')
+(forall (x y)
+	(if (hasSibling x y)
+		(hasSibling y x)))
+
+(cl-comment 'Axiom: F-16')
+(cl-comment 'A person has a half-sibling if they have a sibling born to one parent, but not both.')
+(forall (x)
+	(iff (halfsibling x)
+		(exists (w y z)
+			(and (hasBiologicalParent x y)(hasParent x z)
+				(hasChild y x)(hasChild z x)
+				(hasChild y w)(hasChild z w)
+				(not (= x w))
+				(not (= y z))))))
+
+(cl-comment 'Axiom: F-17')
+(cl-comment 'A person has a half-sibling if they have a sibling born to one parent, but not both.')
+(forall (x y)
+	(if (hasHalfSibling x y)
+		(exists (w z)
+			(and (or (and (hasBiologicalParent x w)(hasParent y z))
+					(and (hasBiologicalParent x z)(hasParent y w)))
+				(hasSibling x y)))))
+
+(cl-comment 'Axiom: F-18')
+(cl-comment 'A blood relative is a person who is related to another person by birth, rather than by marriage.  A blood relative is someone who has the same parents or ancestors as another person.')
+(forall (x y)
+	(iff (bloodRelative x y)
+		(exists (p1 p2 a1)
+			(or (hasParent x p1)(hasParent y p1)))))
+
+(cl-comment 'Axiom: F-19')
+(cl-comment 'Transitivity of blood relation.')
+(forall (x y)
+	(if (bloodRelative x y)
+		(bloodRelative y x)))
+
+)

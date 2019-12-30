@@ -1,0 +1,76 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 24074 was started by zhuojun on Zhuojun-Li.local,
+Fri Jul 26 01:21:43 2019
+The command was "/Users/zhuojun/Desktop/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.08 (+ 0.01) seconds.
+% Length of proof is 56.
+% Level of proof is 12.
+% Maximum clause weight is 23.
+% Given clauses 331.
+
+1 (all x (image_object(x) <-> region(x) | line(x) | pixel(x))) # label(non_clause).  [assumption].
+2 (all x (scene_object(x) <-> surface(x) | edge(x) | point(x))) # label(non_clause).  [assumption].
+5 (all x -(line(x) & region(x))) # label(non_clause).  [assumption].
+9 (all x (scene_object(x) <-> -image_object(x))) # label(non_clause).  [assumption].
+10 (all l all r all x (line(l) & region(r) & in(l,r) & in(x,l) -> in(x,r))) # label(non_clause).  [assumption].
+11 (all x all y (in(x,y) -> in(y,x))) # label(non_clause).  [assumption].
+15 (all r (region(r) -> (exists l1 exists l2 exists l3 (line(l1) & line(l2) & line(l3) & in(l1,r) & in(l2,r) & in(l3,r) & l1 != l2 & l1 != l3 & l2 != l3)))) # label(non_clause).  [assumption].
+18 (all x all y (in(x,y) -> image_object(x) & image_object(y))) # label(non_clause).  [assumption].
+19 (all x all y (part(x,y) -> scene_object(x) & scene_object(y))) # label(non_clause).  [assumption].
+28 (all s all l (surface(s) & line(l) & def_in(l,s) <-> (exists r (region(r) & in(l,r) & depicts(r,s))))) # label(non_clause).  [assumption].
+29 (all x (g_line(x) <-> region(x))) # label(non_clause).  [assumption].
+30 (all x (plane(x) <-> surface(x))) # label(non_clause).  [assumption].
+32 (all x all y (g_in(x,y) <-> in(x,y) | in(y,x) | part(x,y) | part(y,x) | depicts(x,y) & image_object(x) & scene_object(y) | def_in(x,y) & line(x) & surface(y) | x = y)) # label(non_clause).  [assumption].
+33 (all p all l all q (g_point(p) & g_line(l) & plane(q) & g_in(p,l) & g_in(l,q) -> (exists r (plane(r) & g_in(p,r) & g_in(l,r))))) # label(non_clause) # label(goal).  [goal].
+34 image_object(x) | -region(x).  [clausify(1)].
+38 -scene_object(x) | -image_object(x).  [clausify(9)].
+40 -in(x,y) | image_object(x).  [clausify(18)].
+41 -in(x,y) | image_object(y).  [clausify(18)].
+47 scene_object(x) | -surface(x).  [clausify(2)].
+59 -plane(x) | surface(x).  [clausify(30)].
+107 -g_line(x) | region(x).  [clausify(29)].
+108 g_line(c2).  [deny(33)].
+113 plane(c3).  [deny(33)].
+114 -plane(x) | scene_object(x).  [resolve(59,b,47,b)].
+133 -line(x) | -region(x).  [clausify(5)].
+134 -line(x) | -region(y) | -in(x,y) | -in(z,x) | in(z,y).  [clausify(10)].
+135 -in(x,y) | in(y,x).  [clausify(11)].
+141 -region(x) | line(f3(x)).  [clausify(15)].
+144 -region(x) | in(f3(x),x).  [clausify(15)].
+154 -part(x,y) | scene_object(x).  [clausify(19)].
+155 -part(x,y) | scene_object(y).  [clausify(19)].
+162 line(x) | -region(y) | -in(x,y) | -depicts(y,z).  [clausify(28)].
+163 -g_in(x,y) | in(x,y) | in(y,x) | part(x,y) | part(y,x) | depicts(x,y) | line(x) | y = x.  [clausify(32)].
+171 g_in(c2,c3).  [deny(33)].
+172 -scene_object(x) | -region(x).  [resolve(38,b,34,a)].
+177 -in(x,y) | -scene_object(x).  [resolve(40,b,38,b)].
+179 -in(x,y) | -scene_object(y).  [resolve(41,b,38,b)].
+223 region(c2).  [resolve(108,a,107,a)].
+227 scene_object(c3).  [resolve(114,a,113,a)].
+259 in(c2,c3) | in(c3,c2) | part(c2,c3) | part(c3,c2) | depicts(c2,c3) | line(c2) | c3 = c2.  [resolve(171,a,163,a)].
+277 in(f3(c2),c2).  [resolve(223,a,144,a)].
+280 line(f3(c2)).  [resolve(223,a,141,a)].
+290 -region(c3).  [resolve(227,a,172,a)].
+327 in(c2,c3) | in(c3,c2) | part(c2,c3) | part(c3,c2) | line(c2) | c3 = c2 | line(x) | -in(x,c2).  [resolve(259,e,162,d),unit_del(h,223)].
+329 in(c2,c3) | in(c3,c2) | part(c2,c3) | part(c3,c2) | line(c2) | c3 = c2 | -in(c2,c2).  [factor(327,e,g)].
+333 -scene_object(c2).  [resolve(277,a,179,a)].
+340 in(c2,f3(c2)).  [resolve(277,a,135,a)].
+342 -in(x,f3(c2)) | in(x,c2).  [resolve(277,a,134,c),unit_del(a,280),unit_del(b,223)].
+448 in(c2,c2).  [resolve(342,a,340,a)].
+451 in(c2,c3) | in(c3,c2) | part(c2,c3) | part(c3,c2) | line(c2) | c3 = c2.  [back_unit_del(329),unit_del(g,448)].
+546 in(c2,c3) | in(c3,c2) | part(c2,c3) | line(c2) | c3 = c2.  [resolve(451,d,155,a),unit_del(f,333)].
+548 in(c2,c3) | in(c3,c2) | line(c2) | c3 = c2.  [resolve(546,c,154,a),unit_del(e,333)].
+549 in(c2,c3) | line(c2) | c3 = c2.  [resolve(548,b,177,a),unit_del(d,227)].
+550 line(c2) | c3 = c2.  [resolve(549,a,179,a),unit_del(c,227)].
+563 c3 = c2.  [resolve(550,a,133,a),unit_del(b,223)].
+564 $F.  [back_rewrite(290),rewrite([563(1)]),unit_del(a,223)].
+
+============================== end of proof ==========================

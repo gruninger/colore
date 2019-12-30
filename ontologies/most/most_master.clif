@@ -346,9 +346,9 @@
             	(not (= a1 a2))))))
 
 (cl-comment 'Axiom: MBR-4')
-(cl-comment 'A fused atom is in at most two groups. Uniqueness of fusion connection.')
+(cl-comment 'There are at most two bridgeheads in a group.')
 (forall (a1 a2 a3 g1 g2)
-    (if (and (fusedAtom a1 g1 g2)(fusedAtom a2 g1 g2)(fusedAtom a3 g1 g2))
+    (if (and (bridgehead a1 g1 g2)(bridgehead a2 g1 g2)(bridgehead a3 g1 g2))
         (or (= a1 a2)(= a1 a3)(= a2 a3))))
 
 (cl-comment 'Axiom: MBR-5')
@@ -666,6 +666,24 @@
 				(mol a2 b)))))
 
 (cl-comment 'Axiom: MS-5')
+(cl-comment 'For any two distinct groups, there exist a skeleton that contains them.')
+(forall (x y)
+	(if (and (group x)(group y)(not (= x y))(attached x y))
+		(exists (s)
+			(and (skeleton s)(mol x s)(mol y s)))))
+
+(cl-comment 'Axiom: MS-6')
+(cl-comment 'For two distinct skeletons, there exists something that is incident with one, but not the other. For now we are only interested in mereology for decomposition feature; whether we want to extend most skeleton with a richer set of mereology of skeletons is future work.')
+(forall (x y)
+	(if (and (skeleton x)(skeleton y)(not (= x y)))
+		(exists (z)
+			(and (mol z x)(not (mol z y))))))
+
+(cl-comment '========================================================================')
+(cl-comment '======= SEMANTIC CONDITION: SKELETON DEFINITIONS =======')
+(cl-comment '========================================================================')
+
+(cl-comment 'Axiom: MSD-1')
 (cl-comment 'Fused skeletons only contain fused rings.')
 (forall (s)
 	(iff (fusedSkeleton s)
@@ -676,7 +694,7 @@
 						(not (= g1 g2)))
 					(and (ring g1)(ring g2)(fused g1 g2)))))))
 
-(cl-comment 'Axiom: MS-6')
+(cl-comment 'Axiom: MSD-2')
 (cl-comment 'A linear skeleton is a skeleton that only contains chains.')
 (forall (x)
 	(iff (linearskeleton x)
@@ -685,22 +703,7 @@
 				(if (and (group g)(mol g x))
 					(chain g))))))
 
-
-(cl-comment 'Axiom: MS-7')
-(cl-comment 'For any two distinct groups, there exist a skeleton that contains them.')
-(forall (x y)
-	(if (and (group x)(group y)(not (= x y))(attached x y))
-		(exists (s)
-			(and (skeleton s)(mol x s)(mol y s)))))
-
-(cl-comment 'Axiom: MS-8')
-(cl-comment 'For two distinct skeletons, there exists something that is incident with one, but not the other. For now we are only interested in mereology for decomposition feature; whether we want to extend most skeleton with a richer set of mereology of skeletons is future work.')
-(forall (x y)
-	(if (and (skeleton x)(skeleton y)(not (= x y)))
-		(exists (z)
-			(and (mol z x)(not (mol z y))))))
-
-(cl-comment 'Axiom: MS-9')
+(cl-comment 'Axiom: MSD-3')
 (cl-comment 'Two skeletons are part of each other if they are connected in some way.  Using extensional mereology; do we need to do a sort on z? what is z?? or do we leave it open')
 (forall (x y)
 	(iff (part x y)
@@ -709,7 +712,6 @@
 			(forall (z)
 				(if (mol z x)
 					(mol z y))))))
-					
 
 (cl-comment '========================================================================')
 (cl-comment '======= SEMANTIC CONDITION: scaffolds =======')
@@ -780,5 +782,11 @@
 	(if (and (atom u)(atom x)(atom y)(atom z)
 		(mol x y)(mol x z)(mol x u)(mol u y)(mol u z)(mol y z))
 	(or (= y z)(= y u)(= u z))))
+
+
+(cl-comment 'Extension: most_polycyclic')
+(forall (x)
+	(if (group x)
+		(ring x)))
 
 )
