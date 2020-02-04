@@ -107,7 +107,7 @@
 
 
 
-(cl-comment '8: Sum-T7a')
+(cl-comment '8: Sum-T8a')
 
 (forall (x y)
 	(if	
@@ -120,7 +120,7 @@
 )
 
 
-(cl-comment '9: Sum-T7b')
+(cl-comment '9: Sum-T8b')
 
 (forall (x y)
 	(if
@@ -134,7 +134,7 @@
 
 
 
-(cl-comment '10: Contributions to Sum-T8')
+(cl-comment '10: Contributions to Sum-T9')
 
 (forall (x y w)
 	(if
@@ -151,7 +151,7 @@
 )
 
 
-(cl-comment '11: Contributions to Sum-T8')
+(cl-comment '11: Contributions to Sum-T9')
 
 (forall (x y w)
 	(if
@@ -168,7 +168,7 @@
 )
 
 
-(cl-comment '12: Contributions to Sum-T8')
+(cl-comment '12: Contributions to Sum-T9')
 
 (forall (x y w)
 	(if
@@ -185,7 +185,7 @@
 )
 
 
-(cl-comment '13: Contributions to Sum-T8')
+(cl-comment '13: Contributions to Sum-T9')
 
 (forall (x y w)
 	(if
@@ -203,7 +203,7 @@
 
 
 
-(cl-comment '14: Contributions to Sum-T8')
+(cl-comment '14: Contributions to Sum-T9')
 
 (forall (x y w)
 	(if
@@ -220,41 +220,40 @@
 
 (cl-comment '15: Sum-T6a')
 
-(forall (x y)
+(forall (x y z)
 	(if
-		(EqDim x y)
-		(forall (z)
-			(if
-				(or
-					(PO z x)
-					(PO z y)
-				)
-				(PO z (sum x y))
-			)
+		(and
+			(EqDim x y)
+			(not (ZEX x))
+			(not (ZEX y))
+			(not (ZEX z))
+			(PO z x)
 		)
+		(PO z (sum x y))
 	)
 )
 
 
 (cl-comment '16: Sum-T6b')
 
-(forall (x y)
+(forall (x y z)
 	(if
-		(EqDim x y)
-		(forall (z)
-			(if
-				(PO z (sum x y))
-				(or
-					(PO z x)
-					(PO z y)
-				)
-			)
+		(and
+			(EqDim x y)
+			(not (ZEX x))
+			(not (ZEX y))
+			(not (ZEX z))
+			(PO z (sum x y))
+		)
+		(or
+			(PO z x)
+			(PO z y)
 		)
 	)
 )
 
 
-(cl-comment '17: Sum-T9a')
+(cl-comment '17: Sum-T10a')
 
 (forall (x y)
 	(if
@@ -276,7 +275,7 @@
 )
 
 
-(cl-comment '18: Sum-T9b')
+(cl-comment '18: Sum-T10b')
 
 (forall (x y)
 	(if
@@ -295,13 +294,15 @@
 )
 
 
-(cl-comment '19: Sum-T10a')
+(cl-comment '19: Sum-T7a')
 
 (forall (x y z w)
 	(if
 		(and
 			(not (ZEX (sum (sum x y) z)))
 			(not (ZEX (sum x y)))
+			(not (ZEX (sum y z)))
+			(not (ZEX (sum x (sum y z))))
 			(not (ZEX x))
 			(not (ZEX y))
 			(not (ZEX z))
@@ -312,13 +313,15 @@
 	)
 )
 
-(cl-comment '20: Sum-T10b')
+(cl-comment '20: Sum-T7b')
 
 (forall (x y z w)
 	(if
 		(and
 			(not (ZEX (sum x (sum y z))))
 			(not (ZEX (sum x y)))
+			(not (ZEX (sum y z)))
+			(not (ZEX (sum (sum x y) z)))
 			(not (ZEX x))
 			(not (ZEX y))
 			(not (ZEX z))
@@ -326,6 +329,28 @@
 			(P w (sum x (sum y z)))
 		)
 		(P w (sum (sum x y) z))
+	)
+)
+
+
+(cl-comment '21: Sum-T10a with Partial Overlap instead of Containment')
+
+(forall (x y)
+	(if
+		(and
+			(EqDim x y)
+			(not (ZEX x))
+			(not (ZEX y))
+		)
+		(forall (z)
+			(if
+				(and
+					(PO x z)
+					(PO y z)
+				)
+				(PO (sum x y) z)
+			)
+		)
 	)
 )
 
