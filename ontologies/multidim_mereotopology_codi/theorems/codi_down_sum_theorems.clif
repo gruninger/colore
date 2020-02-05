@@ -113,6 +113,8 @@
 	(if	
 		(and
 			(not (ZEX x))
+			(not (ZEX y))
+			(not (ZEX (difference x y)))
 			(P y x)
 		)
 		(P x (sum y (difference x y)))
@@ -126,6 +128,8 @@
 	(if
 		(and
 			(not (ZEX x))
+			(not (ZEX y))
+			(not (ZEX (difference x y)))
 			(P y x)
 		)
 		(P (sum y (difference x y)) x)
@@ -255,41 +259,34 @@
 
 (cl-comment '17: Sum-T10a')
 
-(forall (x y)
+(forall (x y z)
 	(if
 		(and
 			(EqDim x y)
 			(not (ZEX x))
 			(not (ZEX y))
+			(not (ZEX z))
+			(not (ZEX (sum x y)))
+			(Cont x z)
+			(Cont y z)
 		)
-		(forall (z)
-			(if
-				(and
-					(Cont x z)
-					(Cont y z)
-				)
-				(Cont (sum x y) z)
-			)
-		)
+		(Cont (sum x y) z)
 	)
 )
 
 
 (cl-comment '18: Sum-T10b')
 
-(forall (x y)
+(forall (x y z)
 	(if
 		(and
 			(EqDim x y)
 			(not (ZEX x))
 			(not (ZEX y))
+			(Cont (sum x y) z)
+			(not (ZEX (sum x y)))
 		)
-		(forall (z)
-			(if
-				(Cont (sum x y) z)
-				(Cont x z)
-			)
-		)
+		(Cont x z)
 	)
 )
 
