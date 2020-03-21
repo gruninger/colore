@@ -1,0 +1,44 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 87712 was started by stacy on Xiyuans-MacBook-Pro.local,
+Tue Mar 10 00:50:54 2020
+The command was "/Users/stacy/Desktop/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.12 (+ 0.01) seconds.
+% Length of proof is 24.
+% Level of proof is 7.
+% Maximum clause weight is 18.
+% Given clauses 102.
+
+9 (all x all y (inclusion(x,y) <-> during(x,y) | starts(x,y) | finishes(x,y) | x = y)) # label(non_clause).  [assumption].
+10 (all x all y all z (finishes(x,y) & starts(y,z) -> during(x,z))) # label(non_clause).  [assumption].
+11 (all x all y all z (finishes(x,y) & finishes(y,z) -> finishes(x,z))) # label(non_clause).  [assumption].
+12 (all x all y all z (finishes(x,y) & during(y,z) -> during(x,z))) # label(non_clause).  [assumption].
+13 (all x all y all z (finishes(x,y) & inclusion(y,z) -> inclusion(x,z))) # label(non_clause) # label(goal).  [goal].
+20 -inclusion(x,y) | during(x,y) | starts(x,y) | finishes(x,y) | y = x.  [clausify(9)].
+22 -finishes(x,y) | -starts(y,z) | during(x,z).  [clausify(10)].
+44 inclusion(x,y) | -during(x,y).  [clausify(9)].
+45 inclusion(x,y) | -finishes(x,y).  [clausify(9)].
+47 -finishes(x,y) | -finishes(y,z) | finishes(x,z).  [clausify(11)].
+48 -finishes(x,y) | -during(y,z) | during(x,z).  [clausify(12)].
+49 finishes(c1,c2).  [deny(13)].
+50 inclusion(c2,c3).  [deny(13)].
+51 -inclusion(c1,c3).  [deny(13)].
+64 -finishes(x,y) | during(x,z) | -inclusion(y,z) | during(y,z) | finishes(y,z) | z = y.  [resolve(22,b,20,c)].
+95 -finishes(c1,c3).  [ur(45,a,51,a)].
+96 -during(c1,c3).  [ur(44,a,51,a)].
+105 -finishes(x,c2) | during(x,c3) | during(c2,c3) | finishes(c2,c3) | c3 = c2.  [resolve(64,c,50,a)].
+107 -finishes(c2,c3).  [ur(47,a,49,a,c,95,a)].
+109 -finishes(x,c2) | during(x,c3) | during(c2,c3) | c3 = c2.  [back_unit_del(105),unit_del(d,107)].
+115 -during(c2,c3).  [ur(48,a,49,a,c,96,a)].
+121 -finishes(x,c2) | during(x,c3) | c3 = c2.  [back_unit_del(109),unit_del(c,115)].
+1341 c3 = c2.  [resolve(121,a,49,a),unit_del(a,96)].
+1345 $F.  [back_rewrite(95),rewrite([1341(2)]),unit_del(a,49)].
+
+============================== end of proof ==========================

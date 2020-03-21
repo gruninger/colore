@@ -1,0 +1,40 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 87718 was started by stacy on Xiyuans-MacBook-Pro.local,
+Tue Mar 10 00:52:40 2020
+The command was "/Users/stacy/Desktop/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.08 (+ 0.01) seconds.
+% Length of proof is 20.
+% Level of proof is 9.
+% Maximum clause weight is 24.
+% Given clauses 234.
+
+9 (all x all y (inclusion(x,y) <-> during(x,y) | starts(x,y) | finishes(x,y) | x = y)) # label(non_clause).  [assumption].
+10 (all x all y all z (during(x,y) & inclusion(y,z) -> inclusion(x,z))) # label(non_clause).  [assumption].
+11 (all x all y all z (starts(x,y) & inclusion(y,z) -> inclusion(x,z))) # label(non_clause).  [assumption].
+12 (all x all y all z (finishes(x,y) & inclusion(y,z) -> inclusion(x,z))) # label(non_clause).  [assumption].
+13 (all x all y all z (inclusion(x,y) & inclusion(y,z) -> inclusion(x,z))) # label(non_clause) # label(goal).  [goal].
+20 -inclusion(x,y) | during(x,y) | starts(x,y) | finishes(x,y) | y = x.  [clausify(9)].
+22 -starts(x,y) | -inclusion(y,z) | inclusion(x,z).  [clausify(11)].
+31 -during(x,y) | -inclusion(y,z) | inclusion(x,z).  [clausify(10)].
+37 -inclusion(x,y) | inclusion(z,y) | -inclusion(z,x) | during(z,x) | finishes(z,x) | x = z.  [resolve(22,a,20,c)].
+45 -finishes(x,y) | -inclusion(y,z) | inclusion(x,z).  [clausify(12)].
+87 -inclusion(x,y) | inclusion(z,y) | -inclusion(z,x) | finishes(z,x) | x = z | -inclusion(x,u) | inclusion(z,u).  [resolve(37,d,31,a)].
+97 inclusion(c1,c2).  [deny(13)].
+98 inclusion(c2,c3).  [deny(13)].
+99 -inclusion(c1,c3).  [deny(13)].
+373 -inclusion(x,y) | inclusion(z,y) | -inclusion(z,x) | x = z | -inclusion(x,u) | inclusion(z,u) | -inclusion(x,w) | inclusion(z,w).  [resolve(87,d,45,a)].
+439 -inclusion(x,y) | inclusion(z,y) | -inclusion(z,x) | x = z | -inclusion(x,u) | inclusion(z,u).  [factor(373,a,e),merge(e)].
+440 -inclusion(x,y) | inclusion(z,y) | -inclusion(z,x) | x = z.  [factor(439,a,e),merge(e)].
+758 inclusion(x,c3) | -inclusion(x,c2) | c2 = x.  [resolve(440,a,98,a)].
+762 c2 = c1.  [resolve(758,b,97,a),unit_del(a,99)].
+923 $F.  [back_rewrite(98),rewrite([762(1)]),unit_del(a,99)].
+
+============================== end of proof ==========================
