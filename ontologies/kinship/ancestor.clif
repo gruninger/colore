@@ -1,0 +1,66 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved.
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Carmen Chui, Michael Gruninger, Janette Wong - initial implementation
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/kinship/ancestor.clif
+
+(cl-comment '=============================')
+(cl-comment 'Ancestor - partial ordering')
+(cl-comment 'ancestorOf(x,y): "x is ancestor of y"')
+(cl-comment '=============================')
+
+(cl-comment 'ANC-1')
+(cl-comment 'The ancestorOf(x,y) relation is a relation over persons.')
+(forall (x y)
+	(if (ancestorOf x y)
+		(and (person x)(person y))))
+
+(cl-comment 'ANC-2')
+(cl-comment 'The ancestorOf(x,y) relation is irreflexive.')
+(forall (x)
+	(not (ancestorOf x x)))
+	
+(cl-comment 'ANC-3')
+(cl-comment 'The ancestorOf(x,y) relation is transitive.')
+(forall (x y z)
+	(if (and (ancestorOf x y)(ancestor y z))
+		(ancestorOf x z)))
+(cl-comment 'ANC-4')
+(cl-comment 'The ancestorOf(x,y) relation is asymmetric.')
+(forall (x y)
+	(if (ancestorOf x y)
+		(not (ancesorOf y x))))
+		
+(cl-comment 'ANC-5')
+(cl-comment 'ancestorOf(x,y) is the inverse of hasAncestor(y,x)')
+(forall (x y)
+	(iff (ancestorOf x y)
+		(hasAncestor y x)))
+
+(cl-comment 'ANC-6')
+(cl-comment 'The ancestorOf(x,y) relation is a discrete ordering, so every ancestor has an ancestor in the ordering.')
+(forall (x y)
+	(if (ancestorOf x y)
+		(and (exists (z)
+			(and (ancestorOf x z)
+				(or (ancestorOf z y)(= y z))))
+			(not (exists (w)
+				(and (ancestorOf x w)(ancestorOf w z)))))))
+
+(cl-comment 'ANC-7')
+(cl-comment 'The ancestorOf(x,y) relation is a discrete ordering, so every ancestor has a descendant in the ordering.')
+(forall (x y)
+	(if (ancestorOf x y)
+		(and (exists (z)
+			(and (ancestorOf x z)
+				(or (ancestorOf z y)(= y z))))
+			(not (exists (w)
+				(and (ancestorOf z w)(ancestorOf w y)))))))
+
+)

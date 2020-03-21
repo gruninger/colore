@@ -1,0 +1,34 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved.
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Carmen Chui, Michael Gruninger, Janette Wong - initial implementation
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/kinship/definitions/child.clif
+
+(cl-imports http://colore.oor.net/kinship/kinship.clif)
+
+(cl-comment 'Conservative Definitional Extension')
+
+(cl-comment 'C-1')
+(cl-comment 'A child is a person who has at least one parent.')
+(forall (x)
+	(iff (child x)
+		(exists (y)
+			(and (hasChild y x)
+				(not (= x y)))))))
+
+(cl-comment 'C-2')
+(cl-comment 'Covering Axiom: If someone has a child, the parent is the ancestor of the child and there does not exist a person in-between them.')
+(forall (x y)
+	(iff (hasChild x y)
+		(and (ancestorOf x y)
+			(not (exists (z)
+				(and (ancestorOf x z)
+					(ancestorOf z y)))))))
+
+)
