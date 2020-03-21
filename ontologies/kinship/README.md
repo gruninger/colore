@@ -1,6 +1,6 @@
 
 # Kinship Ontology
-![Hierarchy Structure](https://github.com/gruninger/colore/edit/master/ontologies/kinship/colore_kinship_hierarchy.jpg)
+![Hierarchy Structure](https://raw.githubusercontent.com/gruninger/colore/master/ontologies/kinship/colore_kinship_hierarchy.jpg)
 
 ## Core Theories
 related.clif
