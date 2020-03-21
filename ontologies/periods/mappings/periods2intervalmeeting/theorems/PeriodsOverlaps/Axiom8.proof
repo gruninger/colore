@@ -1,0 +1,59 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 5135 was started by stacy on Xiyuans-MacBook-Pro.local,
+Wed Mar 11 14:42:58 2020
+The command was "/Users/stacy/Desktop/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.26 (+ 0.02) seconds.
+% Length of proof is 39.
+% Level of proof is 13.
+% Maximum clause weight is 27.
+% Given clauses 178.
+
+10 (all x all y (inclusion(x,y) <-> during(x,y) | starts(x,y) | finishes(x,y) | x = y)) # label(non_clause).  [assumption].
+11 (all x all y (periodsoverlaps(x,y) <-> overlaps(x,y) | overlaps(y,x) | starts(x,y) | starts(y,x) | finishes(x,y) | finishes(y,x) | during(x,y) | during(y,x) | x = y)) # label(non_clause).  [assumption].
+13 (all x all y (overlaps(y,x) -> (exists z (inclusion(z,x) & inclusion(z,y))))) # label(non_clause).  [assumption].
+20 (all x all y (periodsoverlaps(x,y) -> (exists z (inclusion(z,x) & inclusion(z,y))))) # label(non_clause) # label(goal).  [goal].
+22 -periodsoverlaps(x,y) | overlaps(x,y) | overlaps(y,x) | starts(x,y) | starts(y,x) | finishes(x,y) | finishes(y,x) | during(x,y) | during(y,x) | y = x.  [clausify(11)].
+31 periodsoverlaps(c1,c2).  [deny(20)].
+69 inclusion(x,y) | -during(x,y).  [clausify(10)].
+70 inclusion(x,y) | -starts(x,y).  [clausify(10)].
+71 inclusion(x,y) | -finishes(x,y).  [clausify(10)].
+72 inclusion(x,y) | y != x.  [clausify(10)].
+75 -overlaps(x,y) | inclusion(f19(y,x),y).  [clausify(13)].
+76 -overlaps(x,y) | inclusion(f19(y,x),x).  [clausify(13)].
+89 -inclusion(x,c1) | -inclusion(x,c2).  [deny(20)].
+90 overlaps(c1,c2) | overlaps(c2,c1) | starts(c1,c2) | starts(c2,c1) | finishes(c1,c2) | finishes(c2,c1) | during(c1,c2) | during(c2,c1) | c2 = c1.  [resolve(31,a,22,a)].
+107 inclusion(x,x).  [xx_res(72,b)].
+110 overlaps(c1,c2) | overlaps(c2,c1) | starts(c1,c2) | starts(c2,c1) | finishes(c1,c2) | finishes(c2,c1) | during(c1,c2) | c2 = c1 | inclusion(c2,c1).  [resolve(90,h,69,b)].
+117 -inclusion(c2,c1).  [resolve(107,a,89,b)].
+118 -inclusion(c1,c2).  [ur(89,a,107,a)].
+119 overlaps(c1,c2) | overlaps(c2,c1) | starts(c1,c2) | starts(c2,c1) | finishes(c1,c2) | finishes(c2,c1) | during(c1,c2) | c2 = c1.  [back_unit_del(110),unit_del(i,117)].
+120 c2 != c1.  [ur(72,a,117,a),flip(a)].
+121 -finishes(c2,c1).  [ur(71,a,117,a)].
+122 -starts(c2,c1).  [ur(70,a,117,a)].
+124 overlaps(c1,c2) | overlaps(c2,c1) | starts(c1,c2) | finishes(c1,c2) | during(c1,c2).  [back_unit_del(119),unit_del(d,122),unit_del(f,121),unit_del(h,120)].
+125 -finishes(c1,c2).  [ur(71,a,118,a)].
+126 -starts(c1,c2).  [ur(70,a,118,a)].
+127 -during(c1,c2).  [ur(69,a,118,a)].
+128 overlaps(c1,c2) | overlaps(c2,c1).  [back_unit_del(124),unit_del(c,126),unit_del(d,125),unit_del(e,127)].
+129 overlaps(c1,c2) | inclusion(f19(c1,c2),c2).  [resolve(128,b,76,a)].
+130 overlaps(c1,c2) | inclusion(f19(c1,c2),c1).  [resolve(128,b,75,a)].
+141 inclusion(f19(c1,c2),c2) | inclusion(f19(c2,c1),c1).  [resolve(129,a,76,a)].
+142 inclusion(f19(c1,c2),c2) | inclusion(f19(c2,c1),c2).  [resolve(129,a,75,a)].
+153 inclusion(f19(c1,c2),c1) | inclusion(f19(c2,c1),c1).  [resolve(130,a,76,a)].
+154 inclusion(f19(c1,c2),c1) | inclusion(f19(c2,c1),c2).  [resolve(130,a,75,a)].
+286 inclusion(f19(c1,c2),c2) | -inclusion(f19(c2,c1),c1).  [resolve(142,b,89,b)].
+301 inclusion(f19(c1,c2),c1) | -inclusion(f19(c2,c1),c1).  [resolve(154,b,89,b)].
+2396 inclusion(f19(c1,c2),c2).  [resolve(286,b,141,b),merge(b)].
+2397 -inclusion(f19(c1,c2),c1).  [resolve(2396,a,89,b)].
+2400 -inclusion(f19(c2,c1),c1).  [back_unit_del(301),unit_del(a,2397)].
+2413 $F.  [back_unit_del(153),unit_del(a,2397),unit_del(b,2400)].
+
+============================== end of proof ==========================
