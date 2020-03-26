@@ -8,17 +8,18 @@
  *    Carmen Chui, Michael Gruninger, Janette Wong - initial implementation
 *******************************************************************************/
 
-(cl-text http://colore.oor.net/kinship/definitions/siblinginlaw.clif
+(cl-text http://colore.oor.net/kinship/definitions/hasHalfSibling.clif
 
 (cl-imports http://colore.oor.net/kinship/kinship.clif)
 
 (cl-comment 'Conservative Definitional Extension')
 
-(cl-comment 'SIBIL-1')
-(cl-comment 'The sibling of a persons spouse is their sibling-in-law.')
-(forall (x)
-	(iff (siblinginlaw x)
-		(exists (y z)
-			(and (hasSpouse y z)(hasSibling z x)))))
+(cl-comment 'HHSIB-1')
+(cl-comment 'A person has a half-sibling if they have a sibling born to one parent, but not both.')
+(forall (x z)
+	(iff (hasHalfSibling x z)
+		(exists (y w)
+			(and (hasParent x y)(hasParent w z)(hasSpouse y z)
+				(not (hasParent x z))(not (hasParent w y))))))
 
 )

@@ -8,17 +8,19 @@
  *    Carmen Chui, Michael Gruninger, Janette Wong - initial implementation
 *******************************************************************************/
 
-(cl-text http://colore.oor.net/kinship/definitions/siblinginlaw.clif
+(cl-text http://colore.oor.net/kinship/definitions/hasStepParent.clif
 
 (cl-imports http://colore.oor.net/kinship/kinship.clif)
 
 (cl-comment 'Conservative Definitional Extension')
 
-(cl-comment 'SIBIL-1')
-(cl-comment 'The sibling of a persons spouse is their sibling-in-law.')
-(forall (x)
-	(iff (siblinginlaw x)
-		(exists (y z)
-			(and (hasSpouse y z)(hasSibling z x)))))
+(cl-comment 'HSP-1')
+(cl-comment 'A person has a step-parent if one of their paernts remarries another person (who is not a blood relation).')
+(forall (x z)
+	(iff (hasStepParent z x)
+		(exists (w y)
+			(and (hasParent x y)
+				(not (hasParent x z))
+				(hasSpouse y z)))))
 
 )
