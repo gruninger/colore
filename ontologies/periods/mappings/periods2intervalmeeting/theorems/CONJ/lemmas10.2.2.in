@@ -3,7 +3,7 @@
 set(ignore_option_dependencies). % GUI handles dependencies
 
 if(Prover9). % Options for Prover9
-  assign(max_seconds, 180).
+  assign(max_seconds, 90).
 end_if.
 
 if(Mace4).   % Options for Mace4
@@ -70,10 +70,18 @@ formulas(assumptions).
 
 %Trans def2
 all x all y (inclusion(x,y) <-> (during(x,y)|starts(x,y) | finishes(x,y) | (x=y))).
-
-%Trans def3
-all x all y (periodsoverlaps(x,y) <-> (overlaps(x,y)|overlaps(y,x)|starts(x,y)|starts(y,x) 
-                                 |finishes(x,y)|finishes(y,x)|during(x,y)|during(y,x)|(x=y))).
+%lemmas 3.1
+all x all y all z ((during(x,y) & during(y,z))-> during(x,z)).
+all x all y all z ((during(x,y) & starts(y,z))-> during(x,z)).
+all x all y all z ((during(x,y) & finishes(y,z))-> during(x,z)).
+%lemmas 3.2
+all x all y all z ((starts(x,y) & starts(y,z))-> starts(x,z)).
+all x all y all z ((starts(x,y) & finishes(y,z))-> during(x,z)).
+all x all y all z ((starts(x,y) & during(y,z))-> during(x,z)).
+%lemmas 3.3
+all x all y all z ((finishes(x,y) & starts(y,z))-> during(x,z)).
+all x all y all z ((finishes(x,y) & finishes(y,z))-> finishes(x,z)).
+all x all y all z ((finishes(x,y) & during(y,z))-> during(x,z)).
 
 %glb def
 all x all y all z 
@@ -87,17 +95,15 @@ all x all y all z
 		-> 
 		inclusion(u,z))))).
 
-%lemmas 10.1.1
-(all x all y (overlaps(x,y) -> (exists z (starts(z,y) & finishes(z,x))))).
-%lemmas 10.1.2
-(all x all y all w ((overlaps(x,y) & starts(w,y) & finishes(w,x)) -> exists z glb(x,y,z))).
+%lemmas 10.2.1
+(all x all y (overlaps(y,x) -> (exists z (starts(z,x) & finishes(z,y))))).
 
 end_of_list.
 
 formulas(goals).
 
-%lemmas 10.1
-(all x all y (overlaps(x,y)  -> exists z (glb(x,y,z)))).
+%lemmas 10.2.2
+(all x all y exists w (( overlaps(y,x) & starts(w,x) & finishes(w,y)) -> glb(x,y,w))).
 
 end_of_list.
 
