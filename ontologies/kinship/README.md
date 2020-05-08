@@ -2,6 +2,9 @@
 # Kinship Ontology
 ![Hierarchy Structure](https://raw.githubusercontent.com/gruninger/colore/master/ontologies/kinship/colore_kinship_hierarchy.jpg)
 
+## Master Copy
+See [kinship_axioms_partitioned.pdf](kinship_axioms_partitioned.pdf)
+
 ## Core Theories
 
 * related.clif
