@@ -3,7 +3,7 @@
 ![Hierarchy Structure](https://raw.githubusercontent.com/gruninger/colore/master/ontologies/kinship/colore_kinship_hierarchy.jpg)
 
 ## Master Copy
-See [kinship_axioms_partitioned.pdf](kinship_axioms_partitioned.pdf)
+See [kinship_axioms_partitioned.pdf](kinship_axioms_partitioned.pdf) for latex and [conversions/kinship_consolidated.in](/conversions/kinship_consolidated.in) for Prover9 syntax.
 
 ## Core Theories
 
