@@ -1,0 +1,35 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 44110 was started by cchui on cchuis-MacBook-Air.local,
+Thu May 14 11:44:32 2020
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 1.52 (+ 0.11) seconds.
+% Length of proof is 15.
+% Level of proof is 5.
+% Maximum clause weight is 12.
+% Given clauses 603.
+
+40 (all x all y (hasSibling(x,y) <-> (exists z (hasChild(z,x) & hasChild(z,y) & x != y)))) # label(non_clause).  [assumption].
+41 (all x all y (hasSiblingInLaw(x,y) <-> (exists z (hasSpouse(x,z) & hasSibling(z,y))))) # label(non_clause).  [assumption].
+52 (exists x hasSiblingInLaw(x,Jack)) # label(non_clause) # label(goal).  [goal].
+281 hasSibling(x,y) | -hasChild(z,x) | -hasChild(z,y) | y = x.  [clausify(40)].
+284 hasSiblingInLaw(x,y) | -hasSpouse(x,z) | -hasSibling(z,y).  [clausify(41)].
+299 hasSpouse(Martha,Alice).  [assumption].
+307 hasChild(Lucy,Alice).  [assumption].
+308 hasChild(Lucy,Jack).  [assumption].
+316 Alice != Jack.  [assumption].
+317 Jack != Alice.  [copy(316),flip(a)].
+318 -hasSiblingInLaw(x,Jack).  [deny(52)].
+656 hasSibling(Alice,x) | -hasChild(Lucy,x) | Alice = x.  [resolve(307,a,281,b),flip(c)].
+6674 hasSibling(Alice,Jack).  [resolve(656,b,308,a),flip(b),unit_del(b,317)].
+6698 -hasSpouse(x,Alice).  [resolve(6674,a,284,c),unit_del(a,318)].
+6699 $F.  [resolve(6698,a,299,a)].
+
+============================== end of proof ==========================

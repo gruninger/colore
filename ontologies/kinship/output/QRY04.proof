@@ -1,0 +1,62 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 44930 was started by cchui on cchuis-MacBook-Air.local,
+Thu May 14 12:18:51 2020
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 387.33 (+ 8.36) seconds.
+% Length of proof is 42.
+% Level of proof is 9.
+% Maximum clause weight is 15.
+% Given clauses 38768.
+
+1 (all x all y all z (hasSpouse(x,y) & ancestorOf(z,x) -> -ancestorOf(z,y))) # label(non_clause).  [assumption].
+8 (all x all y all z (ancestorOf(x,y) & ancestorOf(y,z) -> ancestorOf(x,z))) # label(non_clause).  [assumption].
+17 (all x all y (hasSpouse(x,y) -> hasSpouse(y,x))) # label(non_clause).  [assumption].
+19 (all x all y (hasChild(x,y) <-> ancestorOf(x,y) & -(exists z (ancestorOf(x,z) & ancestorOf(z,y))))) # label(non_clause).  [assumption].
+29 (all x all y (hasCousin(x,y) <-> (exists k exists z exists u (hasChild(k,u) & hasChild(k,z) & hasChild(u,x) & hasChild(z,y) & k != u & k != z & k != x & k != y & u != z & u != x & u != y & z != x & z != y & x != y)))) # label(non_clause).  [assumption].
+40 (all x all y (hasSibling(x,y) <-> (exists z (hasChild(z,x) & hasChild(z,y) & x != y)))) # label(non_clause).  [assumption].
+52 (all x all y (hasCousin(x,y) -> -hasSpouse(x,y))) # label(non_clause) # label(goal).  [goal].
+139 -hasCousin(x,y) | hasChild(f29(x,y),f31(x,y)).  [clausify(29)].
+140 -hasCousin(x,y) | hasChild(f29(x,y),f30(x,y)).  [clausify(29)].
+141 -hasCousin(x,y) | hasChild(f31(x,y),x).  [clausify(29)].
+142 -hasCousin(x,y) | hasChild(f30(x,y),y).  [clausify(29)].
+147 -hasCousin(x,y) | f30(x,y) != f31(x,y).  [clausify(29)].
+153 hasCousin(c1,c2).  [deny(52)].
+236 -hasSpouse(x,y) | -ancestorOf(z,x) | -ancestorOf(z,y).  [clausify(1)].
+243 -ancestorOf(x,y) | -ancestorOf(y,z) | ancestorOf(x,z).  [clausify(8)].
+254 -hasSpouse(x,y) | hasSpouse(y,x).  [clausify(17)].
+256 -hasChild(x,y) | ancestorOf(x,y).  [clausify(19)].
+282 -hasSibling(x,y) | hasChild(f43(x,y),x).  [clausify(40)].
+283 -hasSibling(x,y) | hasChild(f43(x,y),y).  [clausify(40)].
+285 hasSibling(x,y) | -hasChild(z,x) | -hasChild(z,y) | y = x.  [clausify(40)].
+319 hasSpouse(c1,c2).  [deny(52)].
+416 hasChild(f29(c1,c2),f31(c1,c2)).  [resolve(153,a,139,a)].
+417 hasChild(f29(c1,c2),f30(c1,c2)).  [resolve(153,a,140,a)].
+418 hasChild(f31(c1,c2),c1).  [resolve(153,a,141,a)].
+419 hasChild(f30(c1,c2),c2).  [resolve(153,a,142,a)].
+426 f30(c1,c2) != f31(c1,c2).  [resolve(153,a,147,a)].
+427 f31(c1,c2) != f30(c1,c2).  [copy(426),flip(a)].
+706 hasSpouse(c2,c1).  [resolve(319,a,254,a)].
+2802 hasSibling(x,f31(c1,c2)) | -hasChild(f29(c1,c2),x) | f31(c1,c2) = x.  [resolve(416,a,285,c)].
+3136 ancestorOf(f31(c1,c2),c1).  [resolve(418,a,256,a)].
+3300 ancestorOf(f30(c1,c2),c2).  [resolve(419,a,256,a)].
+5993 -ancestorOf(x,f31(c1,c2)) | ancestorOf(x,c1).  [resolve(3136,a,243,b)].
+6020 -ancestorOf(x,f30(c1,c2)) | ancestorOf(x,c2).  [resolve(3300,a,243,b)].
+60100 hasSibling(f30(c1,c2),f31(c1,c2)).  [resolve(2802,b,417,a),unit_del(b,427)].
+60103 hasChild(f43(f30(c1,c2),f31(c1,c2)),f31(c1,c2)).  [resolve(60100,a,283,a)].
+60104 hasChild(f43(f30(c1,c2),f31(c1,c2)),f30(c1,c2)).  [resolve(60100,a,282,a)].
+75145 ancestorOf(f43(f30(c1,c2),f31(c1,c2)),f31(c1,c2)).  [resolve(60103,a,256,a)].
+75147 ancestorOf(f43(f30(c1,c2),f31(c1,c2)),f30(c1,c2)).  [resolve(60104,a,256,a)].
+79107 ancestorOf(f43(f30(c1,c2),f31(c1,c2)),c1).  [resolve(75145,a,5993,a)].
+79129 -hasSpouse(x,c1) | -ancestorOf(f43(f30(c1,c2),f31(c1,c2)),x).  [resolve(79107,a,236,c)].
+79133 ancestorOf(f43(f30(c1,c2),f31(c1,c2)),c2).  [resolve(75147,a,6020,a)].
+79189 $F.  [resolve(79129,b,79133,a),unit_del(a,706)].
+
+============================== end of proof ==========================

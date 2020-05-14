@@ -1,0 +1,38 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 44696 was started by cchui on cchuis-MacBook-Air.local,
+Thu May 14 12:10:25 2020
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 37.43 (+ 1.23) seconds.
+% Length of proof is 18.
+% Level of proof is 5.
+% Maximum clause weight is 11.
+% Given clauses 8969.
+
+6 (all x all y (ancestorOf(x,y) -> person(x) & person(y))) # label(non_clause).  [assumption].
+19 (all x all y (hasChild(x,y) <-> ancestorOf(x,y) & -(exists z (ancestorOf(x,z) & ancestorOf(z,y))))) # label(non_clause).  [assumption].
+24 (all x (grandparent(x) <-> (exists y exists z (hasChild(x,y) & hasChild(y,z) & x != y & y != z & x != z)))) # label(non_clause).  [assumption].
+45 (all x (parent(x) <-> (exists c (person(c) & hasChild(x,c) & x != c)))) # label(non_clause).  [assumption].
+52 (all x (grandparent(x) -> parent(x))) # label(non_clause) # label(goal).  [goal].
+53 parent(x) | -person(y) | -hasChild(x,y) | y = x.  [clausify(45)].
+55 -ancestorOf(x,y) | person(y).  [clausify(6)].
+101 -grandparent(x) | hasChild(x,f15(x)).  [clausify(24)].
+103 -grandparent(x) | f15(x) != x.  [clausify(24)].
+106 grandparent(c1).  [deny(52)].
+256 -hasChild(x,y) | ancestorOf(x,y).  [clausify(19)].
+319 -parent(c1).  [deny(52)].
+321 parent(x) | -hasChild(x,y) | y = x | -ancestorOf(z,y).  [resolve(53,b,55,b)].
+368 hasChild(c1,f15(c1)).  [resolve(106,a,101,a)].
+370 f15(c1) != c1.  [resolve(106,a,103,a)].
+1676 ancestorOf(c1,f15(c1)).  [resolve(368,a,256,a)].
+4638 parent(x) | -hasChild(x,f15(c1)) | f15(c1) = x.  [resolve(1676,a,321,d)].
+43514 $F.  [resolve(4638,b,368,a),unit_del(a,319),unit_del(b,370)].
+
+============================== end of proof ==========================

@@ -1,0 +1,43 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 44077 was started by cchui on cchuis-MacBook-Air.local,
+Thu May 14 11:42:02 2020
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 2.04 (+ 0.14) seconds.
+% Length of proof is 23.
+% Level of proof is 5.
+% Maximum clause weight is 9.
+% Given clauses 691.
+
+8 (all x all y all z (ancestorOf(x,y) & ancestorOf(y,z) -> ancestorOf(x,z))) # label(non_clause).  [assumption].
+9 (all x all y (ancestorOf(x,y) -> -ancestorOf(y,x))) # label(non_clause).  [assumption].
+19 (all x all y (hasChild(x,y) <-> ancestorOf(x,y) & -(exists z (ancestorOf(x,z) & ancestorOf(z,y))))) # label(non_clause).  [assumption].
+31 (all x all y (hasGrandparent(y,x) <-> (exists z (hasChild(x,z) & hasChild(z,y) & x != z & z != y & x != y)))) # label(non_clause).  [assumption].
+37 (all x all y (hasParent(x,y) <-> hasChild(y,x))) # label(non_clause).  [assumption].
+52 (all x all y (hasGrandparent(x,y) -> -hasParent(y,x))) # label(non_clause) # label(goal).  [goal].
+160 -hasGrandparent(x,y) | hasChild(y,f33(y,x)).  [clausify(31)].
+161 -hasGrandparent(x,y) | hasChild(f33(y,x),x).  [clausify(31)].
+169 hasGrandparent(c1,c2).  [deny(52)].
+243 -ancestorOf(x,y) | -ancestorOf(y,z) | ancestorOf(x,z).  [clausify(8)].
+244 -ancestorOf(x,y) | -ancestorOf(y,x).  [clausify(9)].
+256 -hasChild(x,y) | ancestorOf(x,y).  [clausify(19)].
+280 -hasParent(x,y) | hasChild(y,x).  [clausify(37)].
+319 hasParent(c2,c1).  [deny(52)].
+447 hasChild(c2,f33(c2,c1)).  [resolve(169,a,160,a)].
+448 hasChild(f33(c2,c1),c1).  [resolve(169,a,161,a)].
+699 hasChild(c1,c2).  [resolve(319,a,280,a)].
+2958 ancestorOf(c2,f33(c2,c1)).  [resolve(447,a,256,a)].
+3138 ancestorOf(f33(c2,c1),c1).  [resolve(448,a,256,a)].
+4430 ancestorOf(c1,c2).  [resolve(699,a,256,a)].
+4456 -ancestorOf(x,c1) | ancestorOf(x,c2).  [resolve(4430,a,243,b)].
+5672 -ancestorOf(f33(c2,c1),c2).  [resolve(2958,a,244,b)].
+8654 $F.  [resolve(4456,a,3138,a),unit_del(a,5672)].
+
+============================== end of proof ==========================
