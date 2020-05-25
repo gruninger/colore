@@ -1,0 +1,43 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 77729 was started by stacy on Xiyuans-MacBook-Pro.local,
+Sun May 24 20:25:21 2020
+The command was "/Users/stacy/Desktop/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.27 (+ 0.02) seconds.
+% Length of proof is 23.
+% Level of proof is 7.
+% Maximum clause weight is 21.
+% Given clauses 348.
+
+2 (all x -precedence(x,x)) # label(non_clause).  [assumption].
+4 (all x all y (inclusion(x,y) & inclusion(y,x) -> x = y)) # label(non_clause).  [assumption].
+20 (all x all y (precedence(x,y) <-> precedes(x,y) | meets(x,y))) # label(non_clause).  [assumption].
+21 (all x all y (inclusion(x,y) <-> during(x,y) | starts(x,y) | finishes(x,y) | x = y)) # label(non_clause).  [assumption].
+25 (all i all j (during(i,j) <-> (exists k exists m exists n exists o (meets(k,m) & meets(m,i) & meets(i,n) & meets(n,o) & meets(k,j) & meets(j,o))))) # label(non_clause).  [assumption].
+27 (all i all j (meets(i,j) -> -meets(j,i))) # label(non_clause) # label(goal).  [goal].
+55 inclusion(x,y) | -during(x,y).  [clausify(21)].
+63 during(x,y) | -meets(z,u) | -meets(u,x) | -meets(x,w) | -meets(w,v5) | -meets(z,y) | -meets(y,v5).  [clausify(25)].
+115 -precedence(x,x).  [clausify(2)].
+117 -inclusion(x,y) | -inclusion(y,x) | y = x.  [clausify(4)].
+132 precedence(x,y) | -meets(x,y).  [clausify(20)].
+143 meets(c1,c2).  [deny(27)].
+144 meets(c2,c1).  [deny(27)].
+170 -meets(x,y) | -meets(y,z) | -meets(z,u) | -meets(u,w) | -meets(x,v5) | -meets(v5,w) | inclusion(z,v5).  [resolve(63,a,55,b)].
+673 precedence(c2,c1).  [resolve(144,a,132,b)].
+921 -meets(c2,x) | -meets(x,y) | -meets(y,z) | -meets(z,u) | -meets(c1,u) | inclusion(y,c1).  [resolve(170,e,144,a)].
+922 -meets(c1,x) | -meets(x,y) | -meets(y,z) | -meets(z,u) | -meets(c2,u) | inclusion(y,c2).  [resolve(170,e,143,a)].
+949 -meets(c2,x) | -meets(x,c2) | -meets(x,y) | -meets(c1,y) | inclusion(c2,c1).  [factor(921,a,c)].
+952 -meets(c1,x) | -meets(x,c1) | -meets(x,y) | -meets(c2,y) | inclusion(c1,c2).  [factor(922,a,c)].
+966 inclusion(c2,c1).  [factor(949,b,d),merge(c),unit_del(a,144),unit_del(b,143)].
+968 inclusion(c1,c2).  [factor(952,b,d),merge(c),unit_del(a,143),unit_del(b,144)].
+2275 c2 = c1.  [resolve(966,a,117,b),unit_del(a,968)].
+2552 $F.  [back_rewrite(673),rewrite([2275(1)]),unit_del(a,115)].
+
+============================== end of proof ==========================
