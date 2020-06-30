@@ -1,0 +1,59 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 79988 was started by mudcat on Romuald.local,
+Sun Mar  1 14:44:47 2020
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 15.71 (+ 0.27) seconds.
+% Length of proof is 39.
+% Level of proof is 17.
+% Maximum clause weight is 22.
+% Given clauses 1885.
+
+1 (all x part(x,x)) # label(non_clause).  [assumption].
+3 (all x all y all z (part(x,y) & part(y,z) -> part(x,z))) # label(non_clause).  [assumption].
+5 (all x all y (overlaps(x,y) <-> (exists z (part(z,x) & part(z,y))))) # label(non_clause).  [assumption].
+6 (all x all y all z (sum(x,y,z) <-> (all u (overlaps(u,z) <-> overlaps(u,x) | overlaps(u,y))))) # label(non_clause).  [assumption].
+8 (all x all y all z all u (sum(x,y,z) & sum(x,y,u) -> x = u)) # label(non_clause).  [assumption].
+10 -(all x all y (part(x,y) <-> (all z (overlaps(z,x) -> overlaps(z,y))))) # label(non_clause).  [assumption].
+11 part(x,x).  [clausify(1)].
+13 -part(x,y) | -part(y,z) | part(x,z).  [clausify(3)].
+17 -overlaps(x,y) | part(f1(x,y),x).  [clausify(5)].
+18 -overlaps(x,y) | part(f1(x,y),y).  [clausify(5)].
+19 overlaps(x,y) | -part(z,x) | -part(z,y).  [clausify(5)].
+23 sum(x,y,z) | overlaps(f2(x,y,z),z) | overlaps(f2(x,y,z),x) | overlaps(f2(x,y,z),y).  [clausify(6)].
+25 sum(x,y,z) | -overlaps(f2(x,y,z),z) | -overlaps(f2(x,y,z),y).  [clausify(6)].
+27 -sum(x,y,z) | -sum(x,y,u) | u = x.  [clausify(8)].
+30 part(c1,c2) | -overlaps(x,c1) | overlaps(x,c2).  [clausify(10)].
+31 -part(c1,c2) | overlaps(c3,c1).  [clausify(10)].
+32 -part(c1,c2) | -overlaps(c3,c2).  [clausify(10)].
+36 sum(x,y,y) | overlaps(f2(x,y,y),y) | overlaps(f2(x,y,y),x).  [factor(23,b,d)].
+39 sum(x,y,y) | -overlaps(f2(x,y,y),y).  [factor(25,b,c)].
+40 -sum(x,y,z) | z = x.  [factor(27,a,b)].
+60 x = y | overlaps(f2(y,x,x),x) | overlaps(f2(y,x,x),y).  [resolve(40,a,36,a)].
+591 c1 = x | overlaps(f2(c1,x,x),x) | part(c1,c2) | overlaps(f2(c1,x,x),c2).  [resolve(60,c,30,b),flip(a)].
+606 c2 = c1 | overlaps(f2(c1,c2,c2),c2) | part(c1,c2).  [factor(591,b,d),flip(a)].
+13668 c2 = c1 | overlaps(f2(c1,c2,c2),c2) | -overlaps(c3,c2).  [resolve(606,c,32,a)].
+13669 c2 = c1 | overlaps(f2(c1,c2,c2),c2) | overlaps(c3,c1).  [resolve(606,c,31,a)].
+19106 c2 = c1 | overlaps(c3,c1) | sum(c1,c2,c2).  [resolve(13669,b,39,b)].
+19110 c2 = c1 | overlaps(c3,c1).  [resolve(19106,c,40,a),merge(c)].
+19135 c2 = c1 | part(c1,c2) | overlaps(c3,c2).  [resolve(19110,b,30,b)].
+19136 c2 = c1 | part(f1(c3,c1),c1).  [resolve(19110,b,18,a)].
+19137 c2 = c1 | part(f1(c3,c1),c3).  [resolve(19110,b,17,a)].
+19152 c2 = c1 | -part(c1,x) | part(f1(c3,c1),x).  [resolve(19136,b,13,a)].
+19165 c2 = c1 | overlaps(c3,x) | -part(f1(c3,c1),x).  [resolve(19137,b,19,b)].
+19757 c2 = c1 | part(f1(c3,c1),c2) | overlaps(c3,c2).  [resolve(19152,b,19135,b),merge(c)].
+20089 c2 = c1 | overlaps(c3,c2).  [resolve(19757,b,19165,c),merge(c),merge(d)].
+20090 c2 = c1 | overlaps(f2(c1,c2,c2),c2).  [resolve(20089,b,13668,c),merge(b)].
+20222 c2 = c1 | sum(c1,c2,c2).  [resolve(20090,b,39,b)].
+20226 c2 = c1.  [resolve(20222,b,40,a),merge(b)].
+20229 -overlaps(c3,c1).  [back_rewrite(32),rewrite([20226(2),20226(5)]),unit_del(a,11)].
+20230 $F.  [back_rewrite(31),rewrite([20226(2)]),unit_del(a,11),unit_del(b,20229)].
+
+============================== end of proof ==========================
