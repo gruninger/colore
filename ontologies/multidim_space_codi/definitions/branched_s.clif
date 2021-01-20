@@ -1,0 +1,51 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/multidim_space_codi/definitions/branched_s.clif
+
+(cl-imports http://colore.oor.net/multidim_space_codi/definitions/connected_s.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codi/definitions/po.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_dim/definitions/covers.clif)
+
+
+(cl-comment 'Defining when an entity is a branched spatial entity')
+
+(cl-comment 'BranchedS-D: A branched spatial region is a connected region that has three distinct non-overlapping parts p, q and r that all share a common lower-dimensional entity s. For example, a branched curve has three non-overlapping segments that all share a point.')
+
+(forall (x)
+	(iff
+		(Branched_S x)
+        (and
+			(Connected_S x)
+            (exists (p q r s)
+				(and
+					(PP p x)
+					(PP q x)
+					(PP r x)
+					(not (PO p q))
+					(not (PO p r))
+					(not (PO q r))
+					(Covers p s)
+					(Covers q s)
+					(Covers r s)
+					(Cont s p)
+					(Cont s q)
+					(Cont s r)
+				)
+            )
+        )
+	)
+)
+
+
+
+)
