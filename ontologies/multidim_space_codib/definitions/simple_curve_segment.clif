@@ -10,37 +10,26 @@
 
 (cl-text http://colore.oor.net/multidim_space_codib/definitions/simple_curve_segment.clif
 
+(cl-imports http://colore.oor.net/multidim_space_codi/definitions/simple_s.clif)
+
 (cl-imports http://colore.oor.net/multidim_space_codib/codib_atomic_curves.clif)
 
-(cl-imports http://colore.oor.net/multidim_space_codib/definitions/branchpoint.clif)
 
-
-(cl-comment 'A simple curve segment is a curve that contains exactly two distinct endpoints and no branch points.')
+(cl-comment 'A simple curve segment is a curve that contains exactly two distinct endpoints and is simple, i.e., is not branched.')
 
 (forall (x)
 	(iff
 		(SimpleCurveSegment x)
 		(and
 			(Curve x)
+			(SimpleS x)
 			(exists (p1 p2)
 				(and
 					(not (= p1 p2))
-					(Endpoint p1 x)
-					(Endpoint p2 x)
-					(forall (p3)
-						(if
-							(Endpoint p3 x)
-							(or
-								(= p1 p3)
-								(= p2 p3)
-							)
-						)
-					)
+					(BCont p1 x)
+					(BCont p2 x)
 				)
 			)
-			(not (exists (p3)
-				(Branchpoint p3 x)
-			))
 		)
 	)
 )

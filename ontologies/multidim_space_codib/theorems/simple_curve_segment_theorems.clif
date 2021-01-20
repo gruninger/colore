@@ -1,0 +1,50 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/multidim_space_codib/theorems/simple_curve_segment_theorems.clif
+
+(cl-imports
+http://colore.oor.net/multidim_space_codib/definitions/simple_curve_segment.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/branchpoint.clif)
+
+
+(cl-comment 'Because a simple curve segment is simple, i.e., not branched, it cannot contain branch points.')
+
+(forall (x)
+	(if
+		(SimpleCurveSegment x)
+		(not 
+			(exists (p3)
+				(Branchpoint p3 x)
+			)
+		)
+	)
+)
+
+(cl-comment 'A simple curve segment cannot contain more than two distinct endpoints, i.e., points that are boundary contained. Need to verify that this is entailed, otherwise it needs to be added as an axiom.')
+
+(forall (x)
+	(if
+		(and
+			(SimpleCurveSegment x)
+			(BCont p1 x)
+			(BCont p2 y)
+			(BCont p3 z)
+			(not (= x y))
+		)
+		(or
+			(= p1 p3)
+			(= p2 p3)
+		)
+	)
+)
+
+)
