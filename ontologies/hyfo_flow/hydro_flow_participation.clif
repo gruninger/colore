@@ -1,0 +1,170 @@
+(cl-text http://colore.oor.net/hydrologicFlow/hydro_flow_participation.clif
+
+(cl-imports http://colore.oor.net/hydrologicFlow/hydro_flow.clif)
+(cl-imports http://colore.oor.net/gwml2-v2/geo_matter.clif)
+
+
+
+(cl-comment 'HPC-A1: Theme participation')
+(forall (x y t)
+	(if
+		(TPC x y t)
+		(and
+			(PC x y t)
+			(HF y)
+			(PED x)
+		)
+	)
+)
+
+(cl-comment 'HPC-A2: Source participation')
+(forall (x y t)
+	(if
+		(SPC x y t)
+		(and
+			(PC x y t)
+			(HF y)
+			(PED x)
+		)
+	)
+)
+
+(cl-comment 'HPC-A3: Goal participation')
+(forall (x y t)
+	(if
+		(GPC x y t)
+		(and
+			(PC x y t)
+			(HF y)
+			(PED x)
+		)
+	)
+)
+
+(cl-comment 'HPC-A4: Locative participation generalizes source and goal participation')
+(forall (x y t)
+	(if
+		(LPC x y t)
+		(or
+			(GPC x y t)
+			(SPC x y t)
+		)
+	)
+)
+
+(cl-comment 'HPC-A5: Locative and theme participation are disjoint')
+(forall (x y t)
+	(if
+		(LPC x y t)
+		(not (TPC x y t))
+	)
+)
+
+(cl-comment 'HPC-A6: At any time when something locative participates in a hydrological flow process, then there must also be some theme participant')
+(forall (x y t)
+	(if
+		(LPC x y t)
+		(exists (z) 
+			(TPC z y t)
+		)
+	)
+)
+
+(cl-comment 'HPC-A7: Any HF process has some source participant')
+(forall (x)
+	(if
+		(HF x)
+		(exists (y t) 
+			(SPC y x t)
+		)
+	)
+)
+
+(cl-comment 'HPC-A8: Any HF process has some goal participant')
+(forall (x)
+	(if
+		(HF x)
+		(exists (y t) 
+			(GPC y x t)
+		)
+	)
+)
+
+(cl-comment 'HPC-A9: Any source participant has a goal participant at the same or a later time')
+(forall (x y t1)
+	(if
+		(and
+			(HF x)
+			(SPC y x t1)
+		)
+		(exists (z t2) 
+			(and
+				(GPC z x t2)
+				(beforeEq t1 t2)
+			)
+		)
+	)
+)
+
+(cl-comment 'HPC-A10: Any goal participant has a goal participant at the same or a later time')
+(forall (x z t2)
+	(if
+		(and
+			(HF x)
+			(GPC z x t1)
+		)
+		(exists (y t1) 
+			(and
+				(SPC y x t2)
+				(beforeEq t1 t2)
+			)
+		)
+	)
+)
+
+(cl-comment 'HPC-A11: Water matter is always the theme participant in hydrological flow')
+(forall (x y t)
+	(if
+		(and
+			(HF x)
+			(TPC y x t)
+		)
+		(WM y)
+	)
+)
+
+(cl-comment 'HPC-A12: Source and goal participants in hydrological flow are a HRB, GS, or ZOU')
+(forall (x y t)
+	(if
+		(and
+			(HF x)
+			(or
+				(SPC y x t)
+				(GPC y x t)
+			)
+		)
+		(or
+			(HRB y)
+			(GS y)
+			(ZOU y)
+		)
+	)
+)
+
+(cl-comment 'HPC-A13: Any water matter that is a theme participant is submaterial of the source participant at the same or an earlier time point')
+(forall (x y t2)
+	(if
+		(and
+			(HF x)
+			(TPC y x t2)
+		)
+		(exists (s t1) 
+			(and
+				(SPC s x t1)
+				(submaterialt y s t1)
+				(beforeEq t1 t2)
+			)
+		)
+	)
+)
+)

@@ -1,0 +1,107 @@
+(cl-text http://colore.oor.net/hydrologicFlow/hydro_interflow.clif
+
+(cl-imports http://colore.oor.net/hydrologicFlow/hydro_flow.clif)
+(cl-imports http://colore.oor.net/hydrologicFlow/hydro_flow_participation.clif)
+(cl-imports http://colore.oor.net/hydrologicFlow/subsurface_zones.clif)
+
+
+(cl-comment 'HF-A21: Any source and goal participants in interflow are distinct')
+(forall (x)
+	(if
+		(interflow x)
+		(and
+			(HF x)
+			(exists (s g t1 t2)
+				(SPC s x t1)
+				(GPC g x t2)
+				(not (= s g))
+			)
+		)
+	)
+)
+
+(cl-comment 'HF-A22: Source and goal participants in an interflow process are spatially connected')
+(forall (x s g t)
+	(if
+		(and
+			(interflow x)
+			(SPC s x t)
+			(GPC g x t)
+		)
+		(C (r s) (r g))
+	)
+)
+
+(cl-comment 'HF-A23: Any water matter that is a theme participant is submaterial of the goal participant at the same or a later time point')
+(forall (x y t1)
+	(if
+		(and
+			(HF x)
+			(TPC y x t1)
+		)
+		(exists (g t2)
+			(GPC g x t2)
+			(submaterialt y g t2)
+			(beforeEq t1 t2)
+		)
+	)
+)
+
+(cl-comment 'HF-A24: Surface-interflow is the flow of water between HU’s or GS')
+(forall (x)
+	(if
+		(surfaceinterflow x)
+		(and
+			(interflow x)
+			(exists (l t)
+				(if
+					(LPC l x t)
+					(and
+						(HU l)
+						(GS l)
+					)
+				)
+			)
+		)
+	)
+)
+
+(cl-comment 'HF-A25: Subsurface-interflow is the flow of water between HGU’s or ZOU')
+(forall (x y t1)
+	(if
+		(subsurfaceinterflow x)
+		(and
+			(interflow x)
+			(exists (l t)
+				(if
+					(LPC l x t)
+					(and
+						(HGU l)
+						(ZOU l)
+					)
+				)
+			)
+		)
+	)
+)
+
+(cl-comment 'HF-A25: Surface-subsurface-interflow is the flow of water between HRB’s, ZOU or GS')
+(forall (x y t1)
+	(if
+		(surfacesubsurfaceinterflow x)
+		(and
+			(interflow x)
+			(exists (l t)
+				(if
+					(LPC l x t)
+					(and
+						(HRB l)
+						(ZOU l)
+						(GS l)
+					)
+				)
+			)
+		)
+	)
+)
+)

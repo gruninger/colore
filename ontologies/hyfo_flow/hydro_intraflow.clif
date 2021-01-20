@@ -1,0 +1,214 @@
+(cl-text http://colore.oor.net/hydrologicFlow/hydro_intraflow.clif
+
+(cl-imports http://colore.oor.net/hydrologicFlow/hydro_flow.clif)
+(cl-imports http://colore.oor.net/hydrologicFlow/hydro_flow_participation.clif)
+(cl-imports http://colore.oor.net/hydrologicFlow/subsurface_zones.clif)
+
+
+(cl-comment 'HF-A2: The source and goal participants are identical in intraflow')
+(forall (x)
+	(if
+		(intraflow x)
+		(and
+			(HF x)
+			(exists (y t)
+				(and
+					(SPC y x t)
+					(GPC y x t)
+				)
+			)
+		)
+	)
+)
+
+(cl-comment 'HF-A3: The water that is the theme participant in an intraflow process is submaterial of the locative participant at any time t during the process')
+(forall (x y z t)
+	(if
+		(and
+			(intraflow x)
+			(TPC y x t)
+			(LPC z x t)
+		)
+		(submaterial y z t)
+	)
+)
+
+(cl-comment 'HF-A4: Specializing intraflow')
+(forall (x)
+	(if
+		(surfaceintraflow x)
+		(intraflow x)
+	)
+)
+
+(cl-comment 'HF-A5: The locative participant in surface-intraflow is either a surface HRB (a HU) or the GS')
+(forall (x y t)
+	(if
+		(and
+			(surfaceintraflow x)
+			(LPC y x t)
+		)
+		(or
+			(HU y)
+			(GS y)
+		)
+	)
+)
+
+(cl-comment 'HF-A6: Specializes intraflow')
+(forall (x)
+	(if
+		(subsurfaceintraflow x)
+		(intraflow x)
+	)
+)
+
+(cl-comment 'HF-A7: The locative participant in subsurface-intraflow is either a subsurface HRB, a ZOS, or a ZOU')
+(forall (x y t)
+	(if
+		(and
+			(subsurfaceintraflow x)
+			(LPC y x t)
+		)
+		(or
+			(HGU y)
+			(ZOS y)
+			(ZOU y)
+		)
+	)
+)
+
+(cl-comment 'HF-A8: Disjoint and exhaustive subclasses of intraflow')
+(forall (x)
+	(iff
+		(intraflow x)
+		(or
+			(not (subsurfaceintraflow x))
+			(not (subsurfaceintraflow x))
+		)
+	)
+)
+
+(cl-comment 'HF-A9: Specializing surface-intraflow')
+(forall (x)
+	(if
+		(overflow x)
+		(surfaceintraflow x)
+	)
+)
+
+(cl-comment 'HF-A10: The locative participant in an overflow process is the ground surface')
+(forall (x y t)
+	(if
+		(and
+			(overflow x)
+			(LPC y x t)
+		)
+		(GS y)
+	)
+)
+
+(cl-comment 'HF-A11: Specializing surface-intraflow')
+(forall (x)
+	(if
+		(surfacewithinflow x)
+		(surfaceintraflow x)
+	)
+)
+
+(cl-comment 'HF-A12: Locative participant in surface within flow is surface HRB, i.e., a HU')
+(forall (x y t)
+	(if
+		(and
+			(surfacewithinflow x)
+			(LPC y x t)
+		)
+		(HU y)
+	)
+)
+
+(cl-comment 'HF-A13: Specializing subsurface-intraflow')
+(forall (x)
+	(if
+		(subsurfacewithinflow x)
+		(subsurfaceintraflow x)
+	)
+)
+
+(cl-comment 'HF-A14: Locative participant in a subsurface-withinflow is a subsurface HRB, i.e., a HGU')
+(forall (x y t)
+	(if
+		(and
+			(subsurfacewithinflow x)
+			(LPC y x t)
+		)
+		(HGU y)
+	)
+)
+
+(cl-comment 'HF-A15: Overflow and surface within flow are exhaustive classes of surface-intraflow')
+(forall (x)
+	(iff
+		(surfaceintraflow x)
+		(or
+			(overflow x)
+			(surfacewithinflow x)
+		)
+	)
+)
+
+(cl-comment 'HF-A16: Overflow and surface-withinflow are disjoint classes')
+(forall (x)
+	(or
+		(not (overflow x))
+		(not (surfacewithinflow x))
+	)
+)
+
+(cl-comment 'HF-A17: Specializing subsurface-intraflow')
+(forall (x)
+	(if
+		(throughflow x)
+		(subsurfaceintraflow x)
+	)
+)
+
+(cl-comment 'HF-A18: Locative participant in through flow is zone of unsaturation that lies in some porous geological unit')
+(forall (x y t)
+	(if
+		(and
+			(throughflow x)
+			(LPC y x t)
+		)
+		(and
+			(ZOU y)
+			(exists (z)
+				(and
+					(GU z)
+					(not (ZEX (intersection (r y) (convoidspace z))))
+				)
+			)
+		)
+	)
+)
+
+(cl-comment 'HF-A19: Exhaustive subclasses of subsurface-intraflow')
+(forall (x)
+	(iff
+		(subsurfaceintraflow x)
+		(or
+			(throughflow x)
+			(subsurfacewithinflow x)
+		)
+	)
+)
+
+(cl-comment 'HF-A20: Throughflow and subsurface-withinflow are disjoint classes')
+(forall (x)
+	(or
+		(not (throughflow x))
+		(not (subsurfacewithinflow x))
+	)
+)
+
+)

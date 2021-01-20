@@ -1,0 +1,82 @@
+(cl-text http://colore.oor.net/hydrologicFlow/subsurface_zones.clif
+
+(cl-imports http://colore.oor.net/hydrologicFlow/ground_surface.clif)
+
+
+
+(cl-comment 'Z-A1: Zone of saturation is a hydrogeologic unit that includes some connected, non-empty voidspace in the units container—denoted as the intersection between the zone z and the container’s connected voidspace—and the voidspace is completely filled with water matter')
+(forall (z)
+	(if
+		(ZOS z)
+		(and
+			(HGU z)
+			(exists (c w)
+				(and
+					(P (r z) (r h))
+					(CSB c)
+					(submaterial c z)
+					(not (ZEX (intersection (r z) (convoidspace c))))
+					(WM w)
+					(P (intersection (r z) (convoidspace c)) (r w))
+				)
+			)
+		)
+	)
+)
+
+(cl-comment 'Z-A2: Every subsurface water body is located in a ZOS')
+(forall (x)
+	(if
+		(SSWB x)
+		(exists (z)
+			(and
+				(ZOS z)
+				(P (r x) (r z))
+			)
+		)
+	)
+)
+
+(cl-comment 'Z-A3: A ZOS does not overlap with any confining bed')
+(forall (x z)
+	(if
+		(and
+			(CB x)
+			(ZOX z)
+		)
+		(not (PO (r x) (r z)))
+	)
+)
+
+(cl-comment 'Z-A4: Zone of unsaturation is a geologic unit that does not overlap a ZOS')
+(forall (z)
+	(if
+		(ZOU z)
+		(and
+			(GU z)
+			(P (r z) (r h))
+			(exists (y)
+				(if
+					(ZOS y)
+					(not (PO (r z) (r y)))
+				)
+			)
+		)
+	)
+)
+
+(cl-comment 'Z-A5: Zones of saturation or unsaturation do not overlap the ground surface')
+(forall (x z)
+	(if
+		(and
+			(GS x)
+			(or
+				(ZOS z)
+				(ZOU z)
+			)
+		)
+		(not (PO (r x) (r z)))
+	)
+)
+)
+
