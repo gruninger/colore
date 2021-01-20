@@ -1,0 +1,85 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 180).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+(all x
+	(part(x,x))).
+
+(all x all y
+	((part(x,y)
+	& part(y,x))
+	->
+	(x=y))).
+
+(all x all y all z
+	((part(x,y)
+	& part(y,z))
+	->
+	part(x,z))).
+
+(all x all y
+	(ppart(x,y)
+	<->
+	(part(x,y)
+	& -part(y,x)))).
+
+(all x all y
+	(overlaps(x,y)
+	<->
+	(exists z
+		(part(z,x)
+		& part(z,y))))).
+
+(all x all y all z
+        (sum(x,y,z)
+        <->
+                (all v
+                        (overlaps(v,z)
+                        <->
+                        (overlaps(v,x)
+                        | overlaps(v,y)))))).
+
+(all x all y all z all u
+	((sum(x,y,z)
+	& sum(x,y,u))
+	->
+	(all w (overlaps(w,z) <-> overlaps(w,u))))).
+
+(all x all y all z all u
+	((sum(x,y,z)
+	& sum(x,y,u))
+	->	
+	(x=u))).
+
+(all x all y all w
+        ((ppart(w,x)
+        & -part(x,y))
+        ->
+        (exists z
+                (ppart(z,x)
+                & -ppart(z,y))))).
+
+-(all x all y
+        (part(x,y)
+        <->
+        (all z
+                (overlaps(z,x)
+                ->
+                overlaps(z,y))))).
+
+end_of_list.
+
+formulas(goals).
+
+end_of_list.
+

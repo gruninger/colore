@@ -1,0 +1,55 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 44479 was started by cchui on cchuis-MacBook-Air.local,
+Thu May 14 11:55:58 2020
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 157.79 (+ 3.68) seconds.
+% Length of proof is 35.
+% Level of proof is 6.
+% Maximum clause weight is 15.
+% Given clauses 23331.
+
+15 (all x all y all z (hasSpouse(x,y) -> person(x) & person(y) & x != y)) # label(non_clause).  [assumption].
+17 (all x all y (hasSpouse(x,y) -> hasSpouse(y,x))) # label(non_clause).  [assumption].
+35 (all x all y (hasHalfSibling(x,y) <-> (exists z exists u (hasParent(x,z) & hasParent(x,u) & hasParent(y,z) & -hasParent(y,u) & hasSpouse(z,u))))) # label(non_clause).  [assumption].
+37 (all x all y (hasParent(x,y) <-> hasChild(y,x))) # label(non_clause).  [assumption].
+46 (all x (parentinlaw(x) <-> (exists y exists z (hasSpouse(y,z) & hasParent(z,x) & y != z)))) # label(non_clause).  [assumption].
+52 (exists x exists y hasHalfSibling(x,y)) # label(non_clause) # label(goal).  [goal].
+169 hasHalfSibling(x,y) | -hasParent(x,z) | -hasParent(x,u) | -hasParent(y,z) | hasParent(y,u) | -hasSpouse(z,u).  [clausify(35)].
+175 -hasHalfSibling(x,y).  [deny(52)].
+201 parentinlaw(x) | -hasSpouse(y,z) | -hasParent(z,x) | z = y.  [clausify(46)].
+203 -parentinlaw(x) | hasParent(f52(x),x).  [clausify(46)].
+252 -hasSpouse(x,y) | y != x.  [clausify(15)].
+254 -hasSpouse(x,y) | hasSpouse(y,x).  [clausify(17)].
+281 hasParent(x,y) | -hasChild(y,x).  [clausify(37)].
+302 hasSpouse(Clark,Lois).  [assumption].
+303 hasChild(Clark,Marie).  [assumption].
+304 hasChild(Lois,Marie).  [assumption].
+305 hasChild(Lois,Yumi).  [assumption].
+307 hasSpouse(Marie,Bob).  [assumption].
+315 -hasParent(Yumi,Clark).  [assumption].
+451 -hasParent(x,y) | -hasParent(x,z) | -hasParent(u,y) | hasParent(u,z) | -hasSpouse(y,z).  [resolve(175,a,169,a)].
+467 -hasSpouse(x,y) | -hasParent(y,z) | y = x | hasParent(f52(z),z).  [resolve(201,a,203,a)].
+622 hasSpouse(Lois,Clark).  [resolve(302,a,254,a)].
+627 hasParent(Marie,Clark).  [resolve(303,a,281,b)].
+634 hasParent(Marie,Lois).  [resolve(304,a,281,b)].
+641 hasParent(Yumi,Lois).  [resolve(305,a,281,b)].
+653 hasSpouse(Bob,Marie).  [resolve(307,a,254,a)].
+655 Bob != Marie.  [resolve(307,a,252,a)].
+2767 -hasParent(x,Clark) | -hasParent(x,Lois) | -hasParent(y,Clark) | hasParent(y,Lois).  [resolve(451,e,302,a)].
+3444 -hasParent(x,Lois) | -hasParent(x,Clark) | -hasParent(y,Lois) | hasParent(y,Clark).  [resolve(622,a,451,e)].
+3595 -hasParent(Marie,x) | hasParent(f52(x),x).  [resolve(653,a,467,a),flip(b),unit_del(b,655)].
+14538 hasParent(f52(Clark),Clark).  [resolve(3595,a,627,a)].
+58548 -hasParent(x,Clark) | hasParent(x,Lois).  [resolve(2767,b,634,a),unit_del(a,627)].
+58552 hasParent(f52(Clark),Lois).  [resolve(58548,a,14538,a)].
+62696 -hasParent(x,Lois) | -hasParent(x,Clark).  [resolve(3444,c,641,a),unit_del(c,315)].
+62698 $F.  [resolve(62696,a,58552,a),unit_del(a,14538)].
+
+============================== end of proof ==========================

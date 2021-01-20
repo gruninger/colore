@@ -1,0 +1,60 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 89991 was started by stacy on Xiyuans-MacBook-Pro.local,
+Tue Mar 10 18:05:36 2020
+The command was "/Users/stacy/Desktop/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.04 (+ 0.01) seconds.
+% Length of proof is 40.
+% Level of proof is 12.
+% Maximum clause weight is 15.
+% Given clauses 129.
+
+10 (all x all y (precedence(x,y) <-> precedes(x,y) | meets(x,y))) # label(non_clause).  [assumption].
+11 (all x all y (inclusion(x,y) <-> during(x,y) | starts(x,y) | finishes(x,y) | x = y)) # label(non_clause).  [assumption].
+21 (all x all y all z (precedes(x,y) & during(z,y) -> precedes(x,z))) # label(non_clause).  [assumption].
+22 (all x all y all z (precedes(x,y) & starts(z,y) -> precedes(x,z))) # label(non_clause).  [assumption].
+23 (all x all y all z (precedes(x,y) & finishes(z,y) -> precedes(x,z))) # label(non_clause).  [assumption].
+24 (all x all y all z (meets(x,y) & during(z,y) -> precedes(x,z))) # label(non_clause).  [assumption].
+25 (all x all y all z (meets(x,y) & starts(z,y) -> meets(x,z))) # label(non_clause).  [assumption].
+26 (all x all y all z (meets(x,y) & finishes(z,y) -> precedes(x,z))) # label(non_clause).  [assumption].
+27 (all x all y all z (precedence(x,y) & inclusion(z,y) -> precedence(x,z))) # label(non_clause) # label(goal).  [goal].
+29 -inclusion(x,y) | during(x,y) | starts(x,y) | finishes(x,y) | y = x.  [clausify(11)].
+33 inclusion(c3,c2).  [deny(27)].
+64 -precedence(x,y) | precedes(x,y) | meets(x,y).  [clausify(10)].
+65 precedence(x,y) | -precedes(x,y).  [clausify(10)].
+66 precedence(x,y) | -meets(x,y).  [clausify(10)].
+76 -precedes(x,y) | -during(z,y) | precedes(x,z).  [clausify(21)].
+77 -precedes(x,y) | -starts(z,y) | precedes(x,z).  [clausify(22)].
+78 -precedes(x,y) | -finishes(z,y) | precedes(x,z).  [clausify(23)].
+79 -meets(x,y) | -during(z,y) | precedes(x,z).  [clausify(24)].
+80 -meets(x,y) | -starts(z,y) | meets(x,z).  [clausify(25)].
+81 -meets(x,y) | -finishes(z,y) | precedes(x,z).  [clausify(26)].
+82 precedence(c1,c2).  [deny(27)].
+83 -precedence(c1,c3).  [deny(27)].
+84 during(c3,c2) | starts(c3,c2) | finishes(c3,c2) | c2 = c3.  [resolve(33,a,29,a)].
+85 during(c3,c2) | starts(c3,c2) | finishes(c3,c2) | c3 = c2.  [copy(84),flip(d)].
+95 precedes(c1,c2) | meets(c1,c2).  [resolve(82,a,64,a)].
+96 -meets(c1,c3).  [ur(66,a,83,a)].
+97 -precedes(c1,c3).  [ur(65,a,83,a)].
+98 during(c3,c2) | finishes(c3,c2) | c3 = c2 | -meets(x,c2) | meets(x,c3).  [resolve(85,b,80,b)].
+114 meets(c1,c2) | -finishes(x,c2) | precedes(c1,x).  [resolve(95,a,78,a)].
+115 meets(c1,c2) | -starts(x,c2) | precedes(c1,x).  [resolve(95,a,77,a)].
+116 meets(c1,c2) | -during(x,c2) | precedes(c1,x).  [resolve(95,a,76,a)].
+261 meets(c1,c2) | during(c3,c2) | finishes(c3,c2) | c3 = c2.  [resolve(115,b,85,b),unit_del(b,97)].
+262 meets(c1,c2) | during(c3,c2) | c3 = c2.  [resolve(261,c,114,b),merge(d),unit_del(d,97)].
+263 meets(c1,c2) | c3 = c2.  [resolve(262,b,116,b),merge(c),unit_del(c,97)].
+264 c3 = c2 | during(c3,c2) | finishes(c3,c2).  [resolve(263,a,98,d),merge(d),unit_del(d,96)].
+332 c3 = c2 | during(c3,c2) | -meets(x,c2) | precedes(x,c3).  [resolve(264,c,81,b)].
+382 c3 = c2 | during(c3,c2).  [resolve(332,c,263,a),merge(d),unit_del(c,97)].
+384 c3 = c2 | -meets(x,c2) | precedes(x,c3).  [resolve(382,b,79,b)].
+679 c3 = c2.  [resolve(384,b,263,a),merge(c),unit_del(b,97)].
+682 $F.  [back_rewrite(83),rewrite([679(2)]),unit_del(a,82)].
+
+============================== end of proof ==========================

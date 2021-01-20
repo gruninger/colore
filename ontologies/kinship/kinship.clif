@@ -1,0 +1,32 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved.
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Carmen Chui, Michael Gruninger, Janette Wong - initial implementation
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/kinship/kinship.clif
+
+(cl-imports http://colore.oor.net/kinship/ancestor.clif)
+(cl-imports http://colore.oor.net/kinship/spouse.clif)
+
+(cl-imports http://colore.oor.net/kinship/definitions/hasChild.clif)
+
+(cl-comment 'These are residue axioms.')
+
+(cl-comment 'Axiom: RES-1')
+(cl-comment 'Prevent ancestor from being related (up to third cousins). Eliminates the British Royal Family.')
+(forall (x y z)
+	(if (and (hasSpouse x y)(ancestorOf z x))
+		(not (ancestorOf z y))))
+		
+(cl-comment 'Axiom: RES-2')
+(cl-comment 'Prevent ancestors from being spouses.')
+(forall (x y z)
+	(if (and (hasSpouse x y)(ancestorOf z x))
+		(not (= z y))))
+
+)

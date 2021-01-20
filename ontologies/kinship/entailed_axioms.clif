@@ -1,0 +1,348 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved.
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Carmen Chui, Michael Gruninger, Janette Wong - initial implementation
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/kinship/entailed_axioms.clif
+
+(cl-imports http://colore.oor.net/kinship/kinship.clif)
+   
+(cl-comment 'These are entailed axioms.')
+
+(cl-comment 'Axiom: S-ENT-1')
+(cl-comment 'The hasSpouse(x,y) relation is disjoint with hasChild(x,y).')
+(forall (x y)
+	(if (hasSpouse x y)
+		(not (hasChild x y))))
+		
+(cl-comment 'Axiom: C-ENT-1')
+(cl-comment 'A child is a person.  NOTE: this causes everyone to be a child in the models.')
+(forall (x)
+	(if (child x)
+		(person x)))
+		
+(cl-comment 'Axiom: C-ENT-2')
+(cl-comment 'A child is not the parent of themselves.')
+(forall (x)
+	(not (hasChild x x)))
+		
+(cl-comment 'Axiom: C-ENT-3')
+(cl-comment 'A parent is not a child of themselves.')
+(forall (x)
+	(if (parent x)
+		(not (hasChild x x))))
+		
+(cl-comment 'Axiom: C-ENT-4')
+(cl-comment 'The hasChild(x,y) relation between two different people.')
+(forall (x y)
+	(if (hasChild x y)
+		(and (person x)(person y)(not (= x y)))))
+
+(cl-comment 'Axiom: C-ENT-5')
+(cl-comment 'The hasChild(x,y) relation is not symmetric.')
+(forall (x y)
+	(if (hasChild x y)
+		(not (hasChild y x))))
+
+(cl-comment 'Axiom: C-ENT-6')
+(cl-comment 'A child cannot be a child of themselves.')
+(forall (x)
+	(not (hasChild x x)))
+
+(cl-comment 'Axiom: C-ENT-7')
+(cl-comment 'The hasChild(x,y) relation is not transitive.')
+(forall (x y z)
+	(if (and (hasChild x y)(hasChild y z)
+			(not (= x y))(not (= x z))(not (= y z)))
+		(not (hasChild x z))))
+
+(cl-comment 'Axiom: P-ENT-1')
+(cl-comment 'A parent is a person.')
+(forall (x)
+	(if (parent x)
+		(person x)))
+
+(cl-comment 'Axiom: P-ENT-2')
+(cl-comment 'A person cannot be a parent of themselves.')
+(forall (x)
+	(not (hasParent x x)))
+
+(cl-comment 'Axiom: P-ENT-3')
+(cl-comment 'The hasParent(x,y) relation is not symmetric.')
+(forall (x y)
+	(if (hasParent x y)
+		(not (hasParent y x))))
+
+(cl-comment 'Axiom: DNI-1')
+(cl-comment 'A person has a parent who is a person.  For every person, there is another person who is their parent.  Not included because it causes infinite models.')
+(cl-comment '(forall (x) (if (person x) (exists (y) (and (person y)(hasParent x y)(not (= x y)))))) ')
+
+(cl-comment 'Axiom: SIB-ENT-1')
+(cl-comment 'If a person has a sibling, they are also a sibling of that person.')
+(forall (x y)
+	(if (hasSibling x y)
+		(hasSibling y x)))
+
+(cl-comment 'Axiom: SIB-ENT-2')
+(cl-comment 'A person is not a sibling of themselves.')
+(forall (x)
+	(not (hasSibling x x)))
+
+(cl-comment 'Axiom: SIB-ENT-3')
+(cl-comment 'Two siblings cannot be spouses.')
+(forall (x y)
+	(if (hasSibling x y)
+		(not (hasSpouse x y))))
+
+(cl-comment 'Axiom: GP-ENT-1')
+(cl-comment 'The spouse of the grandparent of someone is also the grandparent of that person.')
+(forall (x y z)
+	(if (and (hasSpouse x y)(hasGrandchild x z))
+		(hasGrandChild y z)))
+
+(cl-comment 'Axiom: GP-ENT-2')
+(cl-comment 'A person cannot be a grandparent of themselves.')
+(forall (x)
+	(not (hasGrandparent x x)))
+	
+(cl-comment 'Axiom: GP-ENT-3')
+(cl-comment 'The hasGrandparent(x,y) relation is not transitive.')
+(forall (x y z)
+	(if (and (hasGrandparent x y)(hasGrandparent y z))
+		(not (hasGrandparent x z))))
+
+(cl-comment 'Axiom: GP-ENT-4')
+(cl-comment 'The hasGrandparent(x,y) relation is not symmetric.')
+(forall (x y)
+	(if (hasGrandparent x y)
+		(not (hasGrandparent y x))))
+
+(cl-comment 'Axiom: GC-ENT-1')
+(cl-comment 'A person cannot be a grandchild of themselves.')
+(forall (x)
+	(not (hasGrandchild x x)))
+
+(cl-comment 'Axiom: GC-ENT-2')
+(cl-comment 'The hasGrandchild(x,y) relation is not transitive.')
+(forall (x y z)
+	(if (and (hasGrandchild x y)(hasGrandchild y z))
+		(not (hasGrandchild x z))))
+
+(cl-comment 'Axiom: GC-ENT-3')
+(cl-comment 'The hasGrandchild(x,y) relation is not symmetric.')
+(forall (x y)
+	(if (hasGrandchild x y)
+		(not (hasGrandchild y x))))
+
+(cl-comment 'Axiom: GGP-ENT-1')
+(cl-comment 'A person cannot be a grandparent of themselves.')
+(forall (x)
+	(not (hasGreatGrandparent x x)))
+
+(cl-comment 'Axiom: GGP-ENT-2')
+(cl-comment 'The hasGreatGrandparent(x,y) relation is not transitive.')
+(forall (x y z)
+	(if (and (hasGreatGrandparent x y)(hasGreatGrandparent y z))
+		(not (hasGreatGrandparent x z))))
+
+(cl-comment 'Axiom: GGP-ENT-3')
+(cl-comment 'The hasGreatGrandparent(x,y) relation is not symmetric.')
+(forall (x y)
+	(if (hasGreatGrandparent x y)
+		(not (hasGreatGrandparent y x))))
+
+(cl-comment 'Axiom: CS-ENT-1')
+(cl-comment 'A person cannot be a cousin of themselves.')
+(forall (x)
+	(not (hasCousin x x)))
+	
+(cl-comment 'Axiom: CS-ENT-2')
+(cl-comment 'The hasCousin(x,y) relation is symmetric.')
+(forall (x y)
+	(if (hasCousin x y)
+		(hasCousin y x)))
+
+(cl-comment 'Axiom: CS-ENT-3')
+(cl-comment 'A person has a cousin if the sibling of their parent has a child.')
+(forall (x y z)
+	(if (and (hasPibling x y)(hasChild y z))
+		(hasCousin x z)))
+
+(cl-comment 'Axiom: PIB-ENT-1')
+(cl-comment 'A person cannot be a pibling of themselves.')
+(forall (x)
+	(not (hasPibling x x)))
+
+(cl-comment 'Axiom: PIB-ENT-2')
+(cl-comment 'The hasPibling(x,y) relation is not transitive.')
+(forall (x y z)
+	(if (and (hasPibling x y)(hasPibling y z))
+		(not (hasPibling x z))))
+
+(cl-comment 'Axiom: PIB-ENT-3')
+(cl-comment 'The hasPibling(x,y) relation is not symmetric.')
+(forall (x y)
+	(if (hasPibling x y)
+		(not (hasPibling y x))))
+
+(cl-comment 'Axiom: GPIB-ENT-1')
+(cl-comment 'A person cannot be a great pibling of themselves.')
+(forall (x)
+	(not (hasGreatPibling x x)))
+
+(cl-comment 'Axiom: GPIB-ENT-2')
+(cl-comment 'The hasGreatPibling(x,y) relation is not transitive.')
+(forall (x y z)
+	(if (and (hasGreatPibling x y)(hasGreatPibling y z))
+		(not (hasGreatPibling x z))))
+
+(cl-comment 'Axiom: GPIB-ENT-3')
+(cl-comment 'The hasPibling(x,y) relation is not symmetric.')
+(forall (x y)
+	(if (hasGreatPibling x y)
+		(not (hasGreatPibling y x))))
+		
+(cl-comment 'Axiom: NIB-ENT-1')
+(cl-comment 'A person cannot be a nibling of themselves.')
+(forall (x)
+	(not (hasNibling x x)))
+
+(cl-comment 'Axiom: NIB-ENT-2')
+(cl-comment 'The hasNibling(x,y) relation is not transitive.')
+(forall (x y z)
+	(if (and (hasNibling x y)(hasNibling y z))
+		(not (hasNibling x z))))
+
+(cl-comment 'Axiom: NIB-ENT-3')
+(cl-comment 'The hasNibling(x,y) relation is not symmetric.')
+(forall (x y)
+	(if (hasNibling x y)
+		(not (hasNibling y x))))
+
+(cl-comment 'Axiom: NIB-ENT-4')
+(cl-comment 'The hasNibling(x,y) relation is the inverse of hasPibling(y,x).')
+(forall (x y)
+	(iff (hasNibling x y)
+		(hasPibling y x)))
+
+(cl-comment 'Axiom: PIL-ENT-1')
+(cl-comment 'A person cannot be a parent-in-law of themselves.')
+(forall (x)
+	(not (hasParentInLaw x x)))
+
+(cl-comment 'Axiom: PIL-ENT-2')
+(cl-comment 'The hasParentInLaw(x,y) relation is not transitive.')
+(forall (x y z)
+	(if (and (hasParentInLaw x y)(hasParentInLaw y z))
+		(not (hasParentInLaw x z))))
+
+(cl-comment 'Axiom: PIL-ENT-3')
+(cl-comment 'The hasParentInLaw(x,y) relation is not symmetric.')
+(forall (x y)
+	(if (hasParentInLaw x y)
+		(not (hasParentInLaw y x))))
+
+(cl-comment 'Axiom: PIL-ENT-4')
+(cl-comment 'The hasParentInLaw(x,y) relation is the inverse of hasChildInLaw(y,x).')
+(forall (x y)
+	(iff (hasParentInLaw x y)
+		(hasChildInLaw y x)))
+
+(cl-comment 'Axiom: SIBIL-ENT-1')
+(cl-comment 'A person cannot be a sibling-in-law of themselves.')
+(forall (x)
+	(not (hasSiblingInLaw x x)))
+
+(cl-comment 'Axiom: SIBIL-ENT-2')
+(cl-comment 'The hasSiblingInLaw(x,y) relation is not transitive.')
+(cl-comment 'check if this is true? i think it might be transitive')
+(forall (x y z)
+	(if (and (hasSiblingInLaw x y)(hasSiblingInLaw y z))
+		(not (hasSiblingInLaw x z))))
+
+(cl-comment 'Axiom: SIBIL-ENT-3')
+(cl-comment 'The hasSiblingInLaw(x,y) relation is symmetric.')
+(forall (x y)
+	(if (hasSiblingInLaw x y)
+		(not (hasSiblingInLaw y x))))
+
+(cl-comment 'Axiom: HSIB-ENT-1')
+(cl-comment 'A person cannot be a half-sibling of themselves.')
+(forall (x)
+	(not (hasHalfSibling x x)))
+
+(cl-comment 'Axiom: HSIB-ENT-2')
+(cl-comment 'The hasHalfSibling(x,y) relation is not transitive.')
+(forall (x y z)
+	(if (and (hasHalfSibling x y)(hasHalfSibling y z))
+		(not (hasHalfSibling x z))))
+
+(cl-comment 'Axiom: HSIB-ENT-3')
+(cl-comment 'The hasHalfSibling(x,y) relation is symmetric.')
+(forall (x y)
+	(if (hasHalfSibling x y)
+		(hasHalfSibling y x)))
+
+(cl-comment 'Axiom: SC-ENT-1')
+(cl-comment 'A person cannot be a step-child of themselves.')
+(forall (x)
+	(not (hasStepChild x x)))
+	
+(cl-comment 'Axiom: SC-ENT-2')
+(cl-comment 'The hasStepChild(x,y) relation is not transitive.')
+(forall (x y z)
+	(if (and (hasStepChild x y)(hasStepChild y z))
+		(not (hasStepChild x z))))
+
+(cl-comment 'Axiom: SC-ENT-3')
+(cl-comment 'The hasStepChild(x,y) relation is not symmetric.')
+(forall (x y)
+	(if (hasStepChild x y)
+		(not (hasStepChild y x))))
+
+(cl-comment 'Axiom: SC-ENT-4')
+(cl-comment 'The hasStepParent(x,y) relation is the inverse of hasStepChild(y,x).')
+(forall (x y)
+	(iff (hasStepParent x y)
+		(hasStepChild y x)))
+
+(cl-comment 'Axiom: SP-ENT-1')
+(cl-comment 'A person cannot be a step-parent of themselves.')
+(forall (x)
+	(not (hasStepParent x x)))
+	
+(cl-comment 'Axiom: SP-ENT-2')
+(cl-comment 'The hasStepParent(x,y) relation is not transitive.')
+(forall (x y z)
+	(if (and (hasStepParent x y)(hasStepParent y z))
+		(not (hasStepParent x z))))
+
+(cl-comment 'Axiom: SP-ENT-3')
+(cl-comment 'The hasStepParent(x,y) relation is not symmetric.')
+(forall (x y)
+	(if (hasStepParent x y)
+		(not (hasStepParent y x))))
+
+(cl-comment 'Axiom: SSIB-ENT-1')
+(cl-comment 'A person cannot be a step-sibling of themselves.')
+(forall (x)
+	(not (hasStepSibling x x)))
+	
+(cl-comment 'Axiom: SSIB-ENT-2')
+(cl-comment 'The hasStepSibling(x,y) relation is not transitive.')
+(forall (x y z)
+	(if (and (hasStepSibling x y)(hasStepSibling y z))
+		(not (hasStepSibling x z))))
+
+(cl-comment 'Axiom: SP-ENT-3')
+(cl-comment 'The hasStepSibling(x,y) relation is symmetric.')
+(forall (x y)
+	(if (hasStepSibling x y)
+		(hasStepSibling y x)))
+
+)

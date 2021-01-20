@@ -1,0 +1,27 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved.
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Carmen Chui, Michael Gruninger, Janette Wong - initial implementation
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/kinship/definitions/hasCousin.clif
+
+(cl-imports http://colore.oor.net/kinship/kinship.clif)
+
+(cl-comment 'Conservative Definitional Extension')
+
+(cl-comment 'Axiom: HCS-1')
+(cl-comment 'A person has a cousin if their parents sibling has a child.')
+(forall (x y)
+	(iff (hasCousin x y)
+		(exists (k w z)
+			(and (hasChild k z)(hasChild k w)(hasChild z x)(hasChild w y)
+				(not (= k z))(not (= k w))(not (= k x))(not (= k y))
+				(not (= z w))(not (= z x))(not (= z y))
+				(not (= w x))(not (= w y))(not (= x y))))))
+
+)

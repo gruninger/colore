@@ -1,0 +1,63 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 30926 was started by stacy on Xiyuans-MacBook-Pro.local,
+Thu Apr  2 00:00:12 2020
+The command was "/Users/stacy/Desktop/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.02 (+ 0.01) seconds.
+% Length of proof is 43.
+% Level of proof is 18.
+% Maximum clause weight is 27.
+% Given clauses 96.
+
+10 (all x all y (inclusion(x,y) <-> during(x,y) | starts(x,y) | finishes(x,y) | x = y)) # label(non_clause).  [assumption].
+11 (all x all y (periodsoverlaps(x,y) <-> overlaps(x,y) | overlaps(y,x) | starts(x,y) | starts(y,x) | finishes(x,y) | finishes(y,x) | during(x,y) | during(y,x) | x = y)) # label(non_clause).  [assumption].
+12 (all x all y all z (glb(x,y,z) <-> inclusion(z,x) & inclusion(z,y) & (all u (inclusion(u,x) & inclusion(u,y) -> inclusion(u,z))))) # label(non_clause).  [assumption].
+13 (all x all y (overlaps(x,y) -> (exists z glb(x,y,z)))) # label(non_clause).  [assumption].
+14 (all x all y (overlaps(y,x) -> (exists z glb(x,y,z)))) # label(non_clause).  [assumption].
+15 (all x all y (periodsoverlaps(x,y) -> (exists z glb(x,y,z)))) # label(non_clause) # label(goal).  [goal].
+17 -periodsoverlaps(x,y) | overlaps(x,y) | overlaps(y,x) | starts(x,y) | starts(y,x) | finishes(x,y) | finishes(y,x) | during(x,y) | during(y,x) | y = x.  [clausify(11)].
+26 periodsoverlaps(c1,c2).  [deny(15)].
+64 inclusion(x,y) | -during(x,y).  [clausify(10)].
+65 inclusion(x,y) | -starts(x,y).  [clausify(10)].
+66 inclusion(x,y) | -finishes(x,y).  [clausify(10)].
+67 inclusion(x,y) | y != x.  [clausify(10)].
+71 glb(x,y,z) | -inclusion(z,x) | -inclusion(z,y) | inclusion(f18(x,y,z),x).  [clausify(12)].
+72 glb(x,y,z) | -inclusion(z,x) | -inclusion(z,y) | inclusion(f18(x,y,z),y).  [clausify(12)].
+73 glb(x,y,z) | -inclusion(z,x) | -inclusion(z,y) | -inclusion(f18(x,y,z),z).  [clausify(12)].
+74 -overlaps(x,y) | glb(x,y,f19(x,y)).  [clausify(13)].
+75 -overlaps(x,y) | glb(y,x,f20(y,x)).  [clausify(14)].
+76 -glb(c1,c2,x).  [deny(15)].
+77 overlaps(c1,c2) | overlaps(c2,c1) | starts(c1,c2) | starts(c2,c1) | finishes(c1,c2) | finishes(c2,c1) | during(c1,c2) | during(c2,c1) | c2 = c1.  [resolve(26,a,17,a)].
+92 glb(x,x,y) | -inclusion(y,x) | inclusion(f18(x,x,y),x).  [factor(71,b,c)].
+93 glb(x,x,y) | -inclusion(y,x) | -inclusion(f18(x,x,y),y).  [factor(73,b,c)].
+97 inclusion(x,x).  [xx_res(67,b)].
+98 -overlaps(c2,c1).  [ur(75,b,76,a)].
+99 -overlaps(c1,c2).  [ur(74,b,76,a)].
+100 starts(c1,c2) | starts(c2,c1) | finishes(c1,c2) | finishes(c2,c1) | during(c1,c2) | during(c2,c1) | c2 = c1.  [back_unit_del(77),unit_del(a,99),unit_del(b,98)].
+101 glb(x,x,x) | inclusion(f18(x,x,x),x).  [resolve(97,a,92,b)].
+102 glb(x,y,y) | -inclusion(y,x) | inclusion(f18(x,y,y),y).  [resolve(97,a,72,c)].
+105 glb(x,y,x) | -inclusion(x,y) | inclusion(f18(x,y,x),x).  [resolve(97,a,71,b)].
+106 starts(c1,c2) | finishes(c1,c2) | finishes(c2,c1) | during(c1,c2) | during(c2,c1) | c2 = c1 | inclusion(c2,c1).  [resolve(100,b,65,b)].
+112 finishes(c1,c2) | finishes(c2,c1) | during(c1,c2) | during(c2,c1) | c2 = c1 | inclusion(c2,c1) | inclusion(c1,c2).  [resolve(106,a,65,b)].
+118 finishes(c1,c2) | during(c1,c2) | during(c2,c1) | c2 = c1 | inclusion(c2,c1) | inclusion(c1,c2).  [resolve(112,b,66,b),merge(g)].
+119 during(c1,c2) | during(c2,c1) | c2 = c1 | inclusion(c2,c1) | inclusion(c1,c2).  [resolve(118,a,66,b),merge(f)].
+126 during(c1,c2) | c2 = c1 | inclusion(c2,c1) | inclusion(c1,c2).  [resolve(119,b,64,b),merge(e)].
+127 c2 = c1 | inclusion(c2,c1) | inclusion(c1,c2).  [resolve(126,a,64,b),merge(d)].
+131 c2 = c1 | inclusion(c1,c2) | inclusion(f18(c1,c2,c2),c2).  [resolve(127,b,102,b),unit_del(c,76)].
+159 c2 = c1 | inclusion(c1,c2) | -inclusion(c2,c1).  [resolve(131,c,73,d),unit_del(c,76),unit_del(e,97)].
+165 c2 = c1 | inclusion(c1,c2).  [resolve(159,c,127,b),merge(c),merge(d)].
+166 c2 = c1 | inclusion(f18(c1,c2,c1),c1).  [resolve(165,b,105,b),unit_del(b,76)].
+181 c2 = c1 | -inclusion(c1,c2).  [resolve(166,b,73,d),unit_del(b,76),unit_del(c,97)].
+188 c2 = c1.  [resolve(181,b,165,b),merge(b)].
+190 -glb(c1,c1,x).  [back_rewrite(76),rewrite([188(2)])].
+191 inclusion(f18(c1,c1,c1),c1).  [resolve(190,a,101,a)].
+192 $F.  [ur(93,a,190,a,b,97,a),unit_del(a,191)].
+
+============================== end of proof ==========================

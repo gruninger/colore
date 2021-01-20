@@ -1,0 +1,289 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 900).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 300).
+end_if.
+
+formulas(assumptions).
+
+% /kinship/p9/kinship.p9
+
+(all x all y all z (hasSpouse(x,y) & ancestorOf(z,x) -> -ancestorOf(z,y))).
+(all x all y all z (hasSpouse(x,y) & ancestorOf(z,x) -> z != y)).
+
+% /kinship/p9/related.p9
+
+(all x -related(x,x)).
+(all x all y all z (related(x,y) & related(y,z) -> related(x,z))).
+(all x all y (related(x,y) & -(exists z (related(x,z) & related(z,y))) -> hasChild(x,y) | hasChild(y,x) | hasSpouse(x,y))).
+
+% /kinship/p9/ancestor.p9
+
+(all x all y (ancestorOf(x,y) -> person(x) & person(y))).
+(all x -ancestorOf(x,x)).
+(all x all y all z (ancestorOf(x,y) & ancestorOf(y,z) -> ancestorOf(x,z))).
+(all x all y (ancestorOf(x,y) -> -ancestorOf(y,x))).
+(all x all y (ancestorOf(x,y) <-> hasAncestor(y,x))).
+
+(all x all y 
+	(ancestorOf(x,y) 
+	-> 
+	(exists z 
+		(ancestorOf(x,z) 
+		& (ancestorOf(z,y) | y = z)
+		& -(exists w 
+			(ancestorOf(x,w) & ancestorOf(w,z))))))).
+
+(all x all y 
+	(ancestorOf(x,y) 
+	-> 
+	(exists z 
+		(ancestorOf(x,z) 
+		& (ancestorOf(z,y) | y = z) 
+		& -(exists w 
+			(ancestorOf(z,w) & ancestorOf(w,y))))))).
+
+(all x all y all z all u 
+	((ancestorOf(u,y) 
+	& ancestorOf(z,y) 
+	& ancestorOf(x,u) 
+	& ancestorOf(x,z)) 
+	-> 
+	(ancestorOf(u,z) | ancestorOf(z,u) | z = u))).
+
+% /kinship/p9/spouse.p9
+
+(all x (spouse(x) -> person(x))).
+(all x all y all z (hasSpouse(x,y) -> person(x) & person(y) & x != y)).
+(all x all y all z (hasSpouse(x,y) & hasSpouse(x,z) -> y = z)).
+(all x all y (hasSpouse(x,y) -> hasSpouse(y,x))).
+(all x -hasSpouse(x,x)).
+
+% kinship/definitions/p9/haschild.p9
+
+(all x all y (hasChild(x,y) <-> ancestorOf(x,y) & -(exists z (ancestorOf(x,z) & ancestorOf(z,y))))).
+
+% kinship/definitions/p9/child.p9
+
+(all x (child(x) <-> (exists y (hasChild(y,x) & x != y)))).
+
+% kinship/definitions/p9/cousin.p9
+
+(all x (cousin(x) <-> (exists k exists w exists z exists y (hasChild(k,z) & hasChild(k,w) & hasChild(z,x) & hasChild(w,y) & k != z & k != w & k != x & k != y & z != w & z != x & z != y & w != x & w != y & x != y)))).
+
+% kinship/definitions/p9/fullbloodedsibling.p9
+
+(all x (fullBloodedSibling(x) <-> (exists w exists y exists z (hasParent(x,y) & hasParent(x,z) & hasParent(w,y) & hasParent(w,z) & hasSpouse(y,z) & x != w & y != z)))).
+
+% kinship/definitions/p9/grandchild.p9
+
+(all x (grandchild(x) <-> (exists y exists z (hasChild(z,y) & hasChild(y,x) & x != y & y != z & x != z)))).
+
+% kinship/definitions/p9/grandparent.p9
+
+(all x (grandparent(x) <-> (exists y exists z (hasChild(x,y) & hasChild(y,z) & x != y & y != z & x != z)))).
+
+% kinship/definitions/p9/greatgrandparent.p9
+
+(all x (greatgrandparent(x) <-> (exists w exists y exists z (hasChild(x,w) & hasChild(w,y) & hasChild(y,z) & w != x & w != y & w != z & x != y & y != z & x != z)))).
+
+% kinship/definitions/p9/greatpibling.p9
+
+(all x (greatpibling(x) <-> (exists w exists y exists z (hasChild(w,y) & hasChild(y,z) & hasSibling(w,x))))).
+
+% kinship/definitions/p9/halfbloodedsibling.p9
+
+(all x (halfSibling(x) <-> (exists w exists y exists z (hasParent(x,y) & hasParent(x,z) & hasParent(w,y) & hasSpouse(y,z) & x != w & y != z)))).
+
+% kinship/definitions/p9/halfsibling.p9
+
+(all x (halfsibling(x) <-> (exists w exists y exists z (hasChild(w,x) & hasChild(y,z) & -hasChild(w,z) & -hasChild(y,x) & hasSpouse(w,y) & x != z & w != z & w != y & w != x & x != y)))).
+
+% kinship/definitions/p9/hascousin.p9
+
+(all x all y (hasCousin(x,y) <-> (exists k exists w exists z (hasChild(k,z) & hasChild(k,w) & hasChild(z,x) & hasChild(w,y) & k != z & k != w & k != x & k != y & z != w & z != x & z != y & w != x & w != y & x != y)))).
+
+% kinship/definitions/p9/hasgrandchild.p9
+
+(all x all z (hasGrandchild(x,z) <-> (exists y (hasChild(x,y) & hasChild(y,z) & x != y & y != z & x != z)))).
+
+% kinship/definitions/p9/hasgrandparent.p9
+
+(all x all z (hasGrandparent(z,x) <-> (exists y (hasChild(x,y) & hasChild(y,z) & x != y & y != z & x != z)))).
+
+% kinship/definitions/p9/hasgreatgrandparent.p9
+
+(all z all w (hasGreatGrandparent(z,w) <-> (exists x exists y (hasChild(w,x) & hasChild(x,y) & hasChild(y,z) & w != x & w != y & w != z & x != y & y != z & x != z)))).
+(all z all w (hasGreatGrandparent(z,w) <-> (exists x (hasGrandparent(z,x) & hasParent(x,w) & z != x & z != w & x != w)))).
+
+% kinship/definitions/p9/hasgreatpibling.p9
+
+(all x all w (hasGreatPibling(x,w) <-> (exists z (hasGrandparent(x,z) & hasSibling(z,w))))).
+
+% kinship/definitions/p9/hashalfsibling.p9
+
+(all x all w 
+	(hasHalfSibling(x,w) 
+	<-> 
+	(exists y exists z 
+		(hasParent(x,y) 
+		& hasParent(x,z) 
+		& hasParent(w,y)
+		& -hasParent(w,z)
+		& hasSpouse(y,z))))). 
+
+% kinship/definitions/p9/hasnibling.p9
+
+(all x all z (hasNibling(x,z) <-> (exists y (hasSibling(x,y) & hasChild(y,z))))).
+
+% kinship/definitions/p9/hasparent.p9
+
+(all x all y (hasParent(x,y) <-> hasChild(y,x))).
+
+% kinship/definitions/p9/hasparentinlaw.p9
+
+(all x all z (hasParentInLaw(x,z) <-> (exists y (hasSpouse(x,y) & hasParent(y,z) & x != z & -hasParent(x,z))))).
+
+% kinship/definitions/p9/haspibling.p9
+
+(all x all z (hasPibling(x,z) <-> (exists y (hasParent(x,y) & hasSibling(y,z))))).
+
+% kinship/definitions/p9/hassibling.p9
+
+(all x all y (hasSibling(x,y) <-> (exists z (hasChild(z,x) & hasChild(z,y) & x != y)))).
+
+% kinship/definitions/p9/hassiblinginlaw.p9
+
+(all x all z (hasSiblingInLaw(x,z) <-> (exists y (hasSpouse(x,y) & hasSibling(y,z))))).
+
+% kinship/definitions/p9/hasstepchild.p9
+
+(all x all z 
+	(hasStepChild(x,z) 
+	<-> 
+	(exists y 
+		(hasParent(z,y) 
+		& -hasParent(z,x) 
+		& hasSpouse(y,x))))).
+
+% kinship/definitions/p9/hasstepparent.p9
+
+(all x all z (hasStepParent(z,x) <-> (exists w exists y (hasParent(x,y) & -hasParent(x,z) & hasSpouse(y,z))))).
+
+% kinship/definitions/p9/nibling.p9
+
+(all x (nibling(x) <-> (exists y exists z (hasChild(y,x) & hasSibling(y,z))))).
+
+% kinship/definitions/p9/parent.p9
+
+(all x (parent(x) <-> (exists c (person(c) & hasChild(x,c) & x != c)))).
+
+% kinship/definitions/p9/parentinlaw.p9
+
+(all x (parentinlaw(x) <-> (exists y exists z (hasSpouse(y,z) & hasParent(z,x) & y != z)))).
+
+% kinship/definitions/p9/pibling.p9
+
+(all x (pibling(x) <-> (exists y exists z exists w (hasSibling(x,y) & hasChild(y,z))))).
+
+% kinship/definitions/p9/sibling.p9
+
+(all x (sibling(x) <-> (exists y exists z (person(x) & hasChild(z,y) & hasChild(z,x) & x != y & x != z & y != z)))).
+
+% kinship/definitions/p9/siblinginlaw.p9
+
+(all x (siblinginlaw(x) <-> (exists y exists z (hasSpouse(y,z) & hasSibling(z,x))))).
+
+% kinship/definitions/p9/stepchild.p9
+
+(all x (stepchild(x) <-> (exists y exists z (hasParent(x,y) & hasSpouse(y,z) & -hasParent(x,z))))).
+
+% kinship/definitions/p9/stepparent.p9
+
+(all x (stepparent(x) <-> (exists w exists y exists z (hasChild(y,z) & -hasSpouse(x,w) & hasSpouse(x,y) & w != y)))).
+
+%%%%%%%%%%
+% Example
+%%%%%%%%%%
+
+person(Alice).
+person(Ivy).
+person(Martha).
+person(Barbara).
+
+hasSpouse(Ivy,Harleen).
+hasChild(Barbara,Harleen).
+hasChild(Martha,Barbara).
+hasSpouse(Martha,Alice).
+
+hasChild(Jack,Clark).
+hasSpouse(Clark,Lois).
+hasChild(Clark,Marie).
+hasChild(Lois,Marie).
+hasChild(Lois,Yumi).
+
+hasChild(Bruce,Bob).
+hasSpouse(Marie,Bob).
+
+hasChild(Lucy,Alice).
+hasChild(Lucy,Jack).
+hasSpouse(Lucy,Peter).
+hasChild(Peter,Jack).
+hasChild(Peter,Alice).
+
+-hasParent(Barbara,Alice).
+-hasChild(Alice,Barbara).
+-hasParent(Yumi,Clark).
+
+Alice != Barbara.
+Alice != Jack.
+
+Martha != Barbara.
+Martha != Harleen.
+Martha != Alice.
+Barbara != Alice.
+Barbara != Harleen.
+Alice != Harleen.
+
+end_of_list.
+
+formulas(goals).
+
+% QRY 01
+% (all x (grandparent(x) -> parent(x))). 
+
+% QRY 02
+% (all x (sibling(x) -> (exists y (hasParent(x,y))))).
+
+% QRY 03
+%(all x all y (hasGrandparent(x,y) -> -hasParent(y,x))).
+
+% QRY 04
+% (all x all y (hasCousin(x,y) -> -hasSpouse(x,y))). % ??? times out at 300; set it greater than 300 for proof
+
+% QRY 05
+% hasGrandparent(Harleen,Martha).
+
+% QRY 06
+% hasStepChild(Alice,Barbara).
+
+% QRY 07
+% (exists x (hasSiblingInLaw(x,Jack))).
+
+% QRY 08
+% hasHalfSibling(Marie,Yumi).
+
+% QRY 09
+% (exists x exists z (hasHalfSibling(x,z))).
+
+% QRY 10
+% (exists x exists z (hasNibling(x,z))).
+
+end_of_list.
+

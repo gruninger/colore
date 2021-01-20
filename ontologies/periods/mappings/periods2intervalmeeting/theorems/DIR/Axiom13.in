@@ -1,0 +1,102 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 100).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+(all i all j (precedes(i,j) <-> exists k (meets(i,k) & meets(k,j)))).
+
+(all i all j (overlaps(i,j) <-> 
+        exists k exists m exists n exists o exists p (meets(k,m) & meets(m,n) & meets(n,o)
+		&meets(o,p) & meets(m,j) & meets(j,p) & meets(k,i) & meets(i,o)))).
+
+(all i all j (starts(i,j) <-> exists k exists m exists n (meets(k,i) & meets(i,m)
+			& meets(m,n)
+			& meets(k,j)
+			& meets(j,n)))).
+
+(all i all j	(during(i,j) <-> exists k exists m exists n exists o (meets(k,m)
+			& meets(m,i)
+			& meets(i,n)
+			& meets(n,o)
+			& meets(k,j)
+			& meets(j,o)))).
+
+(all i all j (finishes(i,j) <-> exists k exists m exists n (meets(k,m)
+			& meets(m,i)
+			& meets(i,n)
+			& meets(k,j)
+			& meets(j,n)))).
+
+%Finite interval meeting 
+(all i all j
+	(meets(i,j)
+	->
+	(timeinterval(i)
+	& timeinterval(j)))).
+
+(all i all j all k all m
+	((meets(i,k)
+	& meets(j,k)
+	& meets(i,m))
+	-> meets(j,m))).
+
+(all i all j all k all l
+	((meets(i,j)
+	& meets(k,l))
+	->
+	(meets(i,l) | (exists n
+		((meets(i,n) & meets(n,l))
+		| (meets(k,n) & meets(n,j))))))).
+
+(all i all j
+	(meets(i,j)
+	-> -meets(j,i))).
+
+(all i all j all k all m
+	((meets(i,j)
+	& meets(j,k)
+	& meets(k,m))
+	->(exists n
+		(meets(i,n)
+		& meets(n,m))))).
+
+all x all y (precedes(x,y)| precedes(y,x) | overlaps(x,y)|overlaps(y,x)
+|starts(x,y)|starts(y,x)|finishes(x,y)|finishes(y,x)|during(x,y)
+|during(y,x) | meets(x,y) |meets(y,x)).
+
+all x all y (inclusion(x,y) <-> (during(x,y)|starts(x,y) | finishes(x,y) | (x=y))).
+
+%lemmas13.1
+all x all y (meets(x,y) -> (exists z (inclusion(x,z) & inclusion(y,z)))).
+%lemmas13.2
+all x all y (meets(y,x) -> (exists z (inclusion(y,z) & inclusion(x,z)))).
+%lemmas13.3
+all x all y (precedes(x,y) -> (exists z (inclusion(x,z) & inclusion(y,z)))).
+%lemmas13.4
+all x all y (precedes(y,x) -> (exists z (inclusion(y,z) & inclusion(x,z)))).
+%lemmas13.5
+all x all y (overlaps(x,y) -> (exists z (inclusion(x,z) & inclusion(y,z)))).
+%lemmas13.6
+all x all y (overlaps(y,x) -> (exists z (inclusion(y,z) & inclusion(x,z)))).
+
+end_of_list.
+
+formulas(goals).
+
+all x all y exists u 
+
+	(inclusion(x,u) 
+
+	& inclusion(y,u)).
+
+end_of_list.
+

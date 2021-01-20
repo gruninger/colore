@@ -1,0 +1,383 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 300).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 300).
+  assign(max_megs, 2048).
+end_if.
+
+formulas(assumptions).
+
+% =============================
+% Kinship Ontology (Atemporal Version)
+% Carmen Chui
+% 
+% Prover9 Options: 300s
+% Mace4 Options: 300s, memory: 1024
+% =============================
+
+% Primitives:
+% - person(x): x is a person
+% - hasSpouse(x,y): x has spouse y
+% - hasChild(x,y): x has child y
+% - ancestorOf(x,y): x is the ancestor of y
+
+% =============================
+% Parent (Father, Mother)
+% =============================
+
+% A parent is a person.
+(all x (parent(x) -> person(x))).
+
+% A parent is a person who has a child.
+(all x (parent(x) <-> (exists c (person(c) & hasChild(x,c) & (x!=c))))).
+
+% hasParent(x,y) is the inverse of hasChild(y,x).
+(all x all y (hasParent(x,y) <-> hasChild(y,x))).
+
+% A person cannot be a parent of themselves.
+(all x (-hasParent(x,x))).
+
+% The hasParent(x,y) relation is not symmetric.
+(all x all y (hasParent(x,y) -> -hasParent(y,x))).
+
+% A person has a parent who is a person.
+% (For every person, there is another person who is their parent.)
+(all x (person(x) ->  (exists y  (person(y) & hasParent(x,y) & (x != y))))).
+
+% A single parent is a person who is a parent of a child and not in a relationship (does not have a spouse).
+% note: might need to revise since models generated can still have singleparent(x) if x is not a spouse with y but has children with y -- should we make the definition stronger?
+% commented out for now.
+% (all x (singleParent(x) <-> (exists y exists z (hasChild(x,y) & -hasSpouse(x,z))))).
+
+% =============================
+% Spouse (Husband, Wife)
+% =============================
+
+% A spouse is a person.
+% (all x (spouse(x) -> person(x))).
+
+% The hasSpouse(x,y) relation is disjoint with hasChild(x,y).
+(all x all y (hasSpouse(x,y) -> -hasChild(x,y))).
+
+% The hasSpouse(x,y) relation is between two different people.
+(all x all y (hasSpouse(x,y) -> (person(x) & person(y) & (x != y)))).
+
+% A person has exactly one spouse.
+(all x all y all z ((hasSpouse(x,y) & hasSpouse(x,z)) -> (y=z))).
+
+% The hasSpouse(x,y) relation is symmetric.
+(all x all y (hasSpouse(x,y) -> hasSpouse(y,x))).
+
+% A person cannot be a spouse of themselves.
+(all x (-hasSpouse(x,x))).
+
+% =============================
+% Child (Son, Daughter)
+% =============================
+
+% A child is a person.
+% NOTE: this causes everyone to be a child in the models
+(all x (child(x) -> person(x))).
+
+% A child is a person who has at least one parent.
+(all x (child(x) <-> (exists y (hasChild(y,x) & (x!=y))))).
+
+% A child is not the parent of themselves.
+(all x (-hasChild(x,x))).
+
+% A parent is not a child of themselves.
+(all x (parent(x) -> -hasChild(x,x))).
+
+% The hasChild(x,y) relation between two different people.
+(all x all y (hasChild(x,y) -> (person(x) & person(y) & (x != y)))).
+
+% The hasChild(x,y) relation is not symmetric.
+(all x all y (hasChild(x,y) -> -hasChild(y,x))).
+
+% A child cannot be a child of themselves.
+(all x (-hasChild(x,x))).
+
+% The hasChild relation is not transitive.
+(all x all y all z ((hasChild(x,y) & hasChild(y,z) & (x!=y) & (x!=z) & (y!=z)) -> -hasChild(x,z))).
+
+% =============================
+% Sibling (Brother, Sister)
+% =============================
+
+% A sibling is a person who has the same parents of another person.
+(all x (sibling(x) <-> (exists y exists z (person(x) & hasChild(z,y) & hasChild(z,x) & (x!=y) & (x!=z) & (y != z))))).
+
+% For children who have the same parent, they are siblings.
+(all x all y (hasSibling(x,y) <-> (exists z (hasChild(z,x) & hasChild(z,y) & (x != y))))).
+
+% If a person has a sibling, they are also a sibling of that person.
+(all x all y (hasSibling(x,y) -> hasSibling(y,x))).
+
+% A person is not a sibling of themselves.
+(all x (-hasSibling(x,x))).
+
+% Two siblings cannot be spouses.
+(all x all y (hasSibling(x,y) -> -hasSpouse(x,y))).
+
+% =============================
+% Grandparent
+% =============================
+
+% A grandparent is a person who is the parent of a parent.
+(all x (grandparent(x) <-> (exists y exists z (hasChild(x,y) & hasChild(y,z) & (x != y) & (y != z) & (x != z))))).
+
+% A person has a grandparent if their parent has a parent.
+(all x all z (hasGrandparent(z,x) <-> (exists y (hasChild(x,y) & hasChild(y,z) & (x!=y) & (x!=z) & (y!=z))))).
+
+% The spouse of a someone's grandparent is also that person's grandparent.
+(all x all y all z ((hasSpouse(x,y) & hasGrandchild(x,z)) -> hasGrandchild(x,y))).
+
+% A person cannot be a grandparent of themselves.
+(all x (-hasGrandparent(x,x))).
+
+% The hasGrandparent(x,y) relation is not transitive.
+(all x all y all z ((hasGrandparent(x,y) & hasGrandparent(y,z)) -> -hasGrandparent(x,z))).
+
+% The hasGrandparent(x,y) relation is not symmetric.
+(all x all y (hasGrandparent(x,y) -> -hasGrandparent(y,x))).
+
+% =============================
+% Grandchild (Grandson, Granddaughter)
+% =============================
+
+% The child of a child is a grandchild.
+(all x (grandchild(x) <-> (exists y exists z (hasChild(z,y) & hasChild(y,x) & (x != y) & (y != z) & (x != z))))).
+
+% A person has a grandchild if their child has a child.
+(all x all z (hasGrandchild(x,z) <-> (exists y (hasChild(x,y) & hasChild(y,z) & (x!=y) & (x!=z) & (y!=z))))).
+
+% A person cannot be a grandchild of themselves.
+(all x (-hasGrandchild(x,x))).
+
+% The hasGrandchild(x,y) relation is not transitive.
+(all x all y all z ((hasGrandchild(x,y) & hasGrandchild(y,z)) -> -hasGrandchild(x,z))).
+
+% The hasGrandchild(x,y) relation is not symmetric.
+(all x all y (hasGrandchild(x,y) -> -hasGrandchild(y,x))).
+
+% =============================
+% Great-Grandparent (Great-grandfather, Great-Grandmother)
+% =============================
+
+% A great-grandparent is a parent of a parent of a parent.
+(all x (greatgrandparent(x) <-> (exists w exists y exists z (hasChild(x,w) & hasChild(w,y) & hasChild(y,z) &
+ (w != x) & (w != y) & (w != z) &
+ (x != y) & (y != z) & (x != z))))).
+
+% A person has a great-grandparent if they have a parent who has a parent who has a parent.
+%(all z all w (hasGreatGrandparent(z,w) <-> (exists x exists y (hasChild(w,x) & hasChild(x,y) & hasChild(y,z) & (w != x) & (w != y) & (w != z) & (x!=y) & (x!=z) & (y!=z))))).
+(all z all w (hasGreatGrandparent(z,w) <-> (exists x (hasGrandparent(z,x) & hasParent(x,w) & (z!=x) & (z!=w) & (x!=w))))).
+
+% A person cannot be a great-grandparent of themselves.
+(all x (-hasGreatGrandparent(x,x))).
+
+% The hasGreatGrandparent(x,y) relation is not transitive.
+(all x all y all z ((hasGreatGrandparent(x,y) & hasGreatGrandparent(y,z)) -> -hasGreatGrandparent(x,z))).
+
+% The hasGreatGrandparent(x,y) relation is not symmetric.
+(all x all y (hasGreatGrandparent(x,y) -> -hasGreatGrandparent(y,x))).
+
+% =============================
+% Cousin
+% =============================
+
+% The child of the sibling of a person's parent is their cousin.
+(all x (cousin(x) <-> (exists k exists w exists z exists y (hasChild(k,z) & hasChild(k,w) & hasChild(z,x) & hasChild(w,y) & (k!=z) & (k!=w) & (k!=x) & (k!=y) & (z!=w) & (z!=x) & (z!=y) & (w!=x) & (w!=y) & (x!=y))))).
+
+% A person has a cousin if their parent's sibling has a child.
+(all x all y (hasCousin(x,y) <-> (exists k exists w exists z (hasChild(k,z) & hasChild(k,w) & hasChild(z,x) & hasChild(w,y) & (k!=z) & (k!=w) & (k!=x) & (k!=y) & (z!=w) & (z!=x) & (z!=y) & (w!=x) & (w!=y) & (x!=y))))).
+
+% A person cannot be a cousin of themselves.
+(all x (-hasCousin(x,x))).
+
+% The hasCousin(x,y) relation is symmetric.
+(all x all y (hasCousin(x,y) -> hasCousin(y,x))).
+
+% A person has a cousin if the sibling of their parent has a child.
+(all x all y all z ((hasPibling(x,y) & hasChild(y,z)) -> hasCousin(x,z))).
+
+% =============================
+% Pibling (Aunt/Uncle)
+% =============================
+
+% A sibling of a parent is a person's pibling (aunt or uncle).
+(all x (pibling(x) <-> (exists y exists z exists w (hasSibling(x,y) & hasChild(y,z))))).
+
+% A person has a pibling (aunt/uncle) if their parent has a sibling.
+(all x all z (hasPibling(x,z) <-> (exists y (hasParent(x,y) & hasSibling(y,z))))).
+
+% A person cannot be a pibling of themselves.
+(all x (-hasPibling(x,x))).
+
+% The hasPibling(x,y) relation is not transitive.
+(all x all y all z ((hasPibling(x,y) & hasPibling(y,z)) -> -hasPibling(x,z))).
+
+% The hasPibling(x,y) relation is not symmetric.
+(all x all y (hasPibling(x,y) -> -hasPibling(y,x))).
+
+% =============================
+% Great-Pibling (Great-Aunt/Great-Uncle)
+% =============================
+
+% A sibling of someone's grandparent is their great-pibling (great-aunt or great-uncle).
+(all x (greatpibling(x) <-> (exists w exists y exists z (hasChild(w,y) & hasChild(y,z) & hasSibling(w,x))))).
+
+% A person has a great-pibling (great-aunt or great-uncle) if their grandparent has a sibling.
+(all x all w (hasGreatPibling(x,w) <-> (exists z (hasGrandparent(x,z) & hasSibling(z,w))))).
+
+% A person cannot be a great pibling of themselves.
+(all x (-hasGreatPibling(x,x))).
+
+% The hasGreatPibling(x,y) relation is not transitive.
+(all x all y all z ((hasGreatPibling(x,y) & hasGreatPibling(y,z)) -> -hasGreatPibling(x,z))).
+
+% The hasPibling(x,y) relation is not symmetric.
+(all x all y (hasGreatPibling(x,y) -> -hasGreatPibling(y,x))).
+
+% =============================
+% Nibling (Nephew, Niece)
+% =============================
+
+% A nibling is the child of someone's sibling. Nibling is the gender-neutral term in place of niece or nephew.
+(all x (nibling(x) <-> (exists y exists z (hasChild(y,x) & hasSibling(y,z))))).
+
+% The child of one person's sibling is their nibling.
+(all x all z (hasNibling(x,z) <-> (exists y (hasSibling(x,y) & hasChild(y,z))))).
+
+% A person cannot be a nibling of themselves.
+(all x (-hasNibling(x,x))).
+
+% The hasNibling(x,y) relation is not transitive.
+(all x all y all z ((hasNibling(x,y) & hasNibling(y,z)) -> -hasNibling(x,z))).
+
+% The hasNibling(x,y) relation is not symmetric.
+(all x all y (hasNibling(x,y) -> -hasNibling(y,x))).
+
+% The hasNibling(x,y) relation is the inverse of hasPibling(y,x).
+(all x all y (hasNibling(x,y) <-> hasPibling(y,x))).
+
+% =============================
+% Parent-in-Law (Father-in-law, Mother-in-law)
+% =============================
+
+% The parent of a person's spouse is their parent-in-law.
+(all x (parentinlaw(x) <-> (exists y exists z (hasSpouse(y,z) & hasParent(z,x) & (y != z))))).
+
+% A person has a parent-in-law if their spouse has a parent.
+(all x all z (hasParentInLaw(x,z) <-> (exists y (hasSpouse(x,y) & hasParent(y,z) & (x!=z) & -hasParent(x,z))))).
+
+% A person cannot be a parent-in-law of themselves.
+(all x (-hasParentInLaw(x,x))).
+
+% The hasParentInLaw(x,y) relation is not transitive.
+(all x all y all z ((hasParentInLaw(x,y) & hasParentInLaw(y,z)) -> -hasParentInLaw(x,z))).
+
+% The hasParentInLaw(x,y) relation is not symmetric.
+(all x all y (hasParentInLaw(x,y) -> -hasParentInLaw(y,x))).
+
+% The hasParentInLaw(x,y) relation is the inverse of hasChildInLaw(y,x).
+(all x all y (hasParentInLaw(x,y) <-> hasChildInLaw(y,x))).
+
+% =============================
+% Sibling-in-Law (Brother-in-law, Sister-in-law)
+% =============================
+
+% The sibling of a person's spouse is their sibling-in-law.
+(all x (siblinginlaw(x) <-> (exists y exists z (hasSpouse(y,z) & hasSibling(z,x))))).
+
+% A person has a sibling-in-law if their spouse has a sibling.
+(all x all z (hasSiblingInLaw(x,z) <-> (exists y (hasSpouse(x,y) & hasSibling(y,z))))).
+
+% A person cannot be a sibling-in-law of themselves.
+(all x (-hasSiblingInLaw(x,x))).
+
+% The hasSiblingInLaw(x,y) relation is not transitive.
+% check if this is true? i think it might be transitive
+(all x all y all z ((hasSiblingInLaw(x,y) & hasSiblingInLaw(y,z)) -> -hasSiblingInLaw(x,z))).
+
+% The hasSiblingInLaw(x,y) relation is symmetric.
+(all x all y (hasSiblingInLaw(x,y) -> hasSiblingInLaw(y,x))).
+
+% =============================
+% Half-Sibling (Half-brother, half-sister)
+% =============================
+
+% A half-sibling is someone who has a parent who is not the biological parent of their sibling.
+(all x (halfsibling(x) <-> (exists w exists y exists z (hasChild(w,x) & hasChild(y,z) & -hasChild(w,z) & -hasChild(y,x) & (x!=z) & hasSpouse(w,y) & (w!=z) & (w!=y) & (w!=x) & (x!=y))))).
+
+% possibly too strong - commented out for now - we don't necessarily need to know both parents of the children
+% (all x (halfsibling(x) <-> (exists z exists y exists k exists l (hasChild(z,x) & hasChild(y,x) & -hasSpouse(y,z) & hasChild(k,w) & hasChild(l,w) & -hasSpouse(k,l) & hasSpouse(y,k) & (z!=k) & (z!=l) & (y!=k) & (y!=l) & (x!=w))))).
+
+% A person has a half-sibling if they have a sibling born to one parent, but not both.
+(all x all w (hasHalfSibling(x,w) <-> (exists y exists z (hasParent(x,y) & hasParent(w,z) & hasSpouse(y,z) & -hasParent(x,z) & -hasParent(w,y))))).
+
+% A person cannot be a half-sibling of themselves.
+(all x (-hasHalfSibling(x,x))).
+
+% The hasHalfSibling(x,y) relation is not transitive.
+(all x all y all z ((hasHalfSibling(x,y) & hasHalfSibling(y,z)) -> -hasHalfSibling(x,z))).
+
+% The hasHalfSibling(x,y) relation is symmetric.
+(all x all y (hasHalfSibling(x,y) -> hasHalfSibling(y,x))).
+
+% =============================
+% Step-child (gender-neutral)
+% =============================
+
+% A step-child is a child born to a person z's spouse, but is not the child of z.
+(all x (stepchild(x) <-> (exists y exists z (hasParent(x,y) & hasSpouse(y,z) & -hasParent(x,z))))).
+
+% A person has a step-child if the child is born to their spouse, but not their own.
+(all x all z (hasStepChild(x,z) <-> (exists y exists w (hasParent(x,y) & -hasParent(x,z) & hasSpouse(y,z) & (x!=z))))).
+
+% A person cannot be a step-child of themselves.
+(all x (-hasStepChild(x,x))).
+
+% The hasHalfSibling(x,y) relation is not transitive.
+(all x all y all z ((hasStepChild(x,y) & hasStepChild(y,z)) -> -hasStepChild(x,z))).
+
+% The hasStepChild(x,y) relation is not symmetric.
+(all x all y (hasStepChild(x,y) -> -hasStepChild(y,x))).
+
+% The hasStepParent(x,y) relation is the inverse of hasStepChild(y,x).
+(all x all y (hasStepParent(x,y) <-> hasStepChild(y,x))).
+
+% =============================
+% Step-parent (Step-father, Step-mother)
+% =============================
+
+% A step-parent is someone who marries someone else who has a child.
+(all x (stepparent(x) <-> (exists w exists y exists z (hasChild(y,z) & -hasSpouse(x,w) & hasSpouse(x,y) & (w!=y))))).
+
+% A person has a step-parent if one of their parents remarries another person (who is not a blood relation).
+(all x all z (hasStepParent(z,x) <-> (exists y exists w (hasParent(x,y) & -hasParent(x,z) & hasSpouse(y,z))))).
+
+% A person cannot be a step-parent of themselves.
+(all x (-hasStepParent(x,x))).
+
+% The hasStepParent(x,y) relation is not transitive.
+(all x all y all z ((hasStepParent(x,y) & hasStepParent(y,z)) -> -hasStepParent(x,z))).
+
+% The hasStepParent(x,y) relation is not symmetric.
+(all x all y (hasStepParent(x,y) -> -hasStepParent(y,x))).
+
+end_of_list.
+
+formulas(goals).
+
+% test for taxonomy
+% (all x (grandparent(x) -> person(x))).
+
+end_of_list.
+

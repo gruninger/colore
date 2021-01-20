@@ -1,0 +1,196 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 120).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%Periods:
+%Precendence
+%TRANS
+(all x all y all z 
+	((precedence(x,y) 
+	& precedence(y,z)) 
+	-> 
+	precedence(x,z))).
+
+%IRREF
+(all x 
+	-precedence(x,x)).
+
+%Inclusion
+%TRANS
+(all x all y all z 
+	((inclusion(x,y) 
+	& inclusion(y,z)) 
+	-> 
+	inclusion(x,z))).
+
+%ANTIS
+(all x all y 
+	((inclusion(x,y) 
+	& inclusion(y,x)) 
+	-> 
+	(x = y))).
+
+%REF
+(all x 
+	inclusion(x,x)).
+
+%MIXED
+%MON
+(all x all y all z 
+	((precedence(x,y) 
+	& inclusion(z,x)) 
+	-> 
+	precedence(z,y))).
+
+(all x all y all z 
+	((precedence(x,y) 
+	& inclusion(z,y)) 
+	-> 
+	precedence(x,z))).
+
+%CONJ
+(all x all y 
+	(overlaps(x,y) <-> 
+	(exists z 
+		(inclusion(z,x) & inclusion(z,y))))).
+
+(all x all y 
+	(overlaps(x,y) 
+	-> 
+	(exists z 
+		(glb(x,y,z))))).
+
+all x all y all z 
+	(glb(x,y,z) 
+	<-> 
+	(inclusion(z,x) 
+	& inclusion(z,y) 
+	& (all u 
+		((inclusion(u,x) 
+		& inclusion(u,y)) 
+		-> 
+		inclusion(u,z))))).
+
+%DISJ
+all x all y all z 
+	(lub(x,y,z) 
+	<-> 
+	(inclusion(x,z) 
+	& inclusion(y,z) 
+	& (all u 
+		((inclusion(x,u) 
+		& inclusion(y,u)) 
+		-> 
+		inclusion(z,u))))).
+
+all x all y 
+	(underlaps(x,y) 
+	<-> 
+	(exists z 
+		(inclusion(x,z) 
+		& inclusion(y,z)))).
+
+all x all y 
+	(underlaps(x,y) 
+	-> 
+	(exists z 
+		(lub(x,y,z)))).
+
+%FREE
+all x all y 
+	(-inclusion(x,y) 
+	-> 
+	(exists z 
+		(inclusion(z,x) 
+		& -overlaps(z,y)))).
+
+%DIR
+all x all y exists u 
+	(inclusion(x,u) 
+	& inclusion(y,u)).
+
+%MOND
+all x all y all z 
+	((precedence(x,y) 
+	& precedence(z,y)) 
+	-> 
+	(exists w 
+		(lub(x,z,w) 
+		& precedence(w,y)))).
+
+all x all y all z 
+	((precedence(y,x) 
+	& precedence(y,z))
+	-> 
+	(exists w 
+		(lub(x,z,w) 
+		& precedence(y,w)))).
+
+%CONV
+all x all y all z 
+	((precedence(x,y) 
+	& precedence(y,z)) 
+	-> 
+	(all u 
+		((inclusion(x,u) 
+		& inclusion(z,u)) 
+		-> 
+		inclusion(y,u)))).
+
+%LIN*
+all x all y (precedence(x,y) | precedence(y,x) | overlaps(x,y)).
+
+%Trans def1
+all x all y (precedence(x,y) <-> (precedes(x,y) | meets(x,y))).
+
+%Trans def2
+all x all y (inclusion(x,y) <-> (during(x,y)|starts(x,y) | finishes(x,y) | (x=y))).
+
+(all i all j (precedes(i,j) <-> exists k (meets(i,k) & meets(k,j)))).
+
+(all i all j (overlaps(i,j) <-> 
+        exists k exists m exists n exists o exists p (meets(k,m) & meets(m,n) & meets(n,o)
+		&meets(o,p) & meets(m,j) & meets(j,p) & meets(k,i) & meets(i,o)))).
+
+(all i all j (starts(i,j) <-> exists k exists m exists n (meets(k,i) & meets(i,m)
+			& meets(m,n)
+			& meets(k,j)
+			& meets(j,n)))).
+
+(all i all j	(during(i,j) <-> exists k exists m exists n exists o (meets(k,m)
+			& meets(m,i)
+			& meets(i,n)
+			& meets(n,o)
+			& meets(k,j)
+			& meets(j,o)))).
+
+(all i all j (finishes(i,j) <-> exists k exists m exists n (meets(k,m)
+			& meets(m,i)
+			& meets(i,n)
+			& meets(k,j)
+			& meets(j,n)))).
+
+(all x (timeinterval(x))).
+
+end_of_list.
+
+formulas(goals).
+
+(all i all j
+	(meets(i,j)
+	->
+	(timeinterval(i)
+	& timeinterval(j)))).
+
+end_of_list.
+

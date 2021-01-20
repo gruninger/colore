@@ -1,0 +1,36 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Riley Moher - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/ciro/ciro-xm.clif
+
+(cl-imports http://colore.oor.net/psl_core/psl_core.clif)
+
+(cl-comment 'Compliance issues and Action plans are the monitoring objects')
+(forall (x)
+	(iff	(monitoring_object x)
+			(or		(compliance_issue x)
+					(action_plan x))))
+					
+(cl-comment 'Compliance issues and action plans are assigned a unique monitor activity')
+(forall (x)
+	(if 	(monitoring_object x)
+			(exists (a)
+				(and 	(monitor_activity a x)
+						(forall (a1)
+							(if		(monitor_activity a1 x)
+									(a1 = a)))))))
+
+(cl-comment 'Monitor activities are activities which apply only to monitoring objects')
+(forall (x y)
+	(if		(monitor_activity x y)
+			(and	(activity x)
+					(monitoring_object x))))
+					
+)

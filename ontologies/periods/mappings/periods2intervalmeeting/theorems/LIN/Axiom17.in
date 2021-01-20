@@ -1,0 +1,57 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 100).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%interval meeting definition 
+(all i all j (precedes(i,j) <-> exists k (meets(i,k) & meets(k,j)))).
+
+(all i all j (overlaps(i,j) -> 
+        exists k exists m exists n exists o exists p (meets(k,m) & meets(m,n) & meets(n,o)
+		&meets(o,p) & meets(m,j) & meets(j,p) & meets(k,i) & meets(i,o)))).
+(all i all j (starts(i,j) <-> exists k exists m exists n (meets(k,i) & meets(i,m)
+			& meets(m,n)
+			& meets(k,j)
+			& meets(j,n)))).
+
+(all i all j	(during(i,j) <-> exists k exists m exists n exists o (meets(k,m)
+			& meets(m,i)
+			& meets(i,n)
+			& meets(n,o)
+			& meets(k,j)
+			& meets(j,o)))).
+
+(all i all j (finishes(i,j) <-> exists k exists m exists n (meets(k,m)
+			& meets(m,i)
+			& meets(i,n)
+			& meets(k,j)
+			& meets(j,n)))).
+
+%Trans def1
+all x all y (precedence(x,y) <-> (precedes(x,y) | meets(x,y))).
+
+%Trans def3
+all x all y (periodsoverlaps(x,y) <-> (overlaps(x,y)|overlaps(y,x)|starts(x,y)|starts(y,x) 
+                                 |finishes(x,y)|finishes(y,x)|during(x,y)|during(y,x)|(x=y))).
+%table axiom, proved
+all x all y (precedes(x,y)| precedes(y,x) | overlaps(x,y)|overlaps(y,x)|starts(x,y)|starts(y,x) 
+                  |finishes(x,y)|finishes(y,x)|during(x,y)|during(y,x) | meets(x,y) |meets(y,x)).
+
+end_of_list.
+
+formulas(goals).
+
+%Axiom17
+all x all y (precedence(x,y) | precedence(y,x) | periodsoverlaps(x,y)).
+
+end_of_list.
+

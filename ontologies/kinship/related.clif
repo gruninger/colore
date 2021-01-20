@@ -1,0 +1,34 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved.
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Carmen Chui, Michael Gruninger, Janette Wong - initial implementation
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/kinship/related.clif
+
+(cl-imports http://colore.oor.net/kinship/kinship.clif)
+
+(cl-comment 'Axiom: REL-1')
+(cl-comment 'The related relation is irreflexive.')
+(forall (x)
+	(not (related x x)))
+
+(cl-comment 'Axiom: REL-2')
+(cl-comment 'The related relation is transitive.')
+(forall (x y z)
+	(if (and (related x y)(related y z))
+		(related x z)))
+
+(cl-comment 'Axiom: REL-3')
+(cl-comment 'If two people are related and there is no one in-between them, then they are the parent of one another, or the spouse of one another.')
+(forall (x y)
+	(if (and (related x y)
+			(not (exists (z)
+				(and (related x z)(related z y)))))
+					(or (hasChild x y)(hasChild y x)(hasSpouse x y))))
+
+)
