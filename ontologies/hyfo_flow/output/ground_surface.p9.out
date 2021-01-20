@@ -1,0 +1,291 @@
+============================== Prover9 ===============================
+Prover9 (32) version Oct-2007, Oct 2007.
+Process 19716 was started by shirly on DESKTOP-OG7RO9F,
+Wed May 31 10:51:47 2017
+The command was "/cygdrive/c/Reasoning/prover9-bin/prover9 -t1000 -f D:\colore-testbed\ontologies\gwml2-v2\conversions\geo_matter.p9 D:\colore-testbed\ontologies\hydrologicflow\conversions\ground_surface.p9 D:\colore-testbed\ontologies\gwml2-v2\conversions\geo_geologicunit.p9 D:\colore-testbed\ontologies\multidim_space_ped\conversions\ped.p9".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file D:\colore-testbed\ontologies\gwml2-v2\conversions\geo_matter.p9
+
+
+formulas(sos).
+(all x2 (em(x2) -> m(x2))).
+(all x3 (fm(x3) -> em(x3))).
+(all x4 (wm(x4) -> fm(x4))).
+end_of_list.
+
+% Reading from file D:\colore-testbed\ontologies\hydrologicflow\conversions\ground_surface.p9
+
+
+formulas(sos).
+(all x12 (gs(x12) -> rpf(x12) & (exists x11 (gu(x11) & hosts(x11,x12))))).
+end_of_list.
+
+% Reading from file D:\colore-testbed\ontologies\gwml2-v2\conversions\geo_geologicunit.p9
+
+
+formulas(sos).
+(all x11 (gu(x11) -> napo(x11))).
+(all x22 all x21 (gu(x22) & intragranularconstituent(x21,x22) -> em(x21))).
+(all x32 (gu(x32) -> (exists x31 (em(x31) & -fm(x31) & intragranularconstituent(x31,x32))))).
+end_of_list.
+
+% Reading from file D:\colore-testbed\ontologies\multidim_space_ped\conversions\ped.p9
+
+
+formulas(sos).
+(all x11 (ped(x11) -> pob(x11) | m(x11) | f(x11))).
+(all x21 (pob(x21) -> ped(x21))).
+(all x31 (m(x31) -> ped(x31))).
+(all x41 (f(x41) -> ped(x41))).
+(all x51 (pob(x51) -> -m(x51))).
+(all x61 (pob(x61) -> -f(x61))).
+(all x71 (m(x71) -> -f(x71))).
+(all x81 (napo(x81) -> pob(x81))).
+(all x92 all x91 (hosts(x92,x91) -> ped(x92) & f(x91))).
+(all x102 (f(x102) <-> (exists x101 hosts(x101,x102)))).
+(all x112 all x111 (hosts(x112,x111) -> -hosts(x111,x112))).
+(all x121 (f(x121) <-> rpf(x121) | dpf(x121))).
+(all x131 (-rpf(x131) | -dpf(x131))).
+end_of_list.
+
+============================== end of input ==========================
+
+% From the command line: assign(max_seconds, 1000).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x2 (em(x2) -> m(x2))) # label(non_clause).  [assumption].
+2 (all x3 (fm(x3) -> em(x3))) # label(non_clause).  [assumption].
+3 (all x4 (wm(x4) -> fm(x4))) # label(non_clause).  [assumption].
+4 (all x12 (gs(x12) -> rpf(x12) & (exists x11 (gu(x11) & hosts(x11,x12))))) # label(non_clause).  [assumption].
+5 (all x11 (gu(x11) -> napo(x11))) # label(non_clause).  [assumption].
+6 (all x22 all x21 (gu(x22) & intragranularconstituent(x21,x22) -> em(x21))) # label(non_clause).  [assumption].
+7 (all x32 (gu(x32) -> (exists x31 (em(x31) & -fm(x31) & intragranularconstituent(x31,x32))))) # label(non_clause).  [assumption].
+8 (all x11 (ped(x11) -> pob(x11) | m(x11) | f(x11))) # label(non_clause).  [assumption].
+9 (all x21 (pob(x21) -> ped(x21))) # label(non_clause).  [assumption].
+10 (all x31 (m(x31) -> ped(x31))) # label(non_clause).  [assumption].
+11 (all x41 (f(x41) -> ped(x41))) # label(non_clause).  [assumption].
+12 (all x51 (pob(x51) -> -m(x51))) # label(non_clause).  [assumption].
+13 (all x61 (pob(x61) -> -f(x61))) # label(non_clause).  [assumption].
+14 (all x71 (m(x71) -> -f(x71))) # label(non_clause).  [assumption].
+15 (all x81 (napo(x81) -> pob(x81))) # label(non_clause).  [assumption].
+16 (all x92 all x91 (hosts(x92,x91) -> ped(x92) & f(x91))) # label(non_clause).  [assumption].
+17 (all x102 (f(x102) <-> (exists x101 hosts(x101,x102)))) # label(non_clause).  [assumption].
+18 (all x112 all x111 (hosts(x112,x111) -> -hosts(x111,x112))) # label(non_clause).  [assumption].
+19 (all x121 (f(x121) <-> rpf(x121) | dpf(x121))) # label(non_clause).  [assumption].
+20 (all x131 (-rpf(x131) | -dpf(x131))) # label(non_clause).  [assumption].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-em(x) | m(x).  [clausify(1)].
+-fm(x) | em(x).  [clausify(2)].
+-wm(x) | fm(x).  [clausify(3)].
+-gs(x) | rpf(x).  [clausify(4)].
+-gs(x) | gu(f1(x)).  [clausify(4)].
+-gs(x) | hosts(f1(x),x).  [clausify(4)].
+-gu(x) | napo(x).  [clausify(5)].
+-gu(x) | -intragranularconstituent(y,x) | em(y).  [clausify(6)].
+-gu(x) | em(f2(x)).  [clausify(7)].
+-gu(x) | -fm(f2(x)).  [clausify(7)].
+-gu(x) | intragranularconstituent(f2(x),x).  [clausify(7)].
+-ped(x) | pob(x) | m(x) | f(x).  [clausify(8)].
+-pob(x) | ped(x).  [clausify(9)].
+-m(x) | ped(x).  [clausify(10)].
+-f(x) | ped(x).  [clausify(11)].
+-pob(x) | -m(x).  [clausify(12)].
+-pob(x) | -f(x).  [clausify(13)].
+-m(x) | -f(x).  [clausify(14)].
+-napo(x) | pob(x).  [clausify(15)].
+-hosts(x,y) | ped(x).  [clausify(16)].
+-hosts(x,y) | f(y).  [clausify(16)].
+-f(x) | hosts(f3(x),x).  [clausify(17)].
+f(x) | -hosts(y,x).  [clausify(17)].
+-hosts(x,y) | -hosts(y,x).  [clausify(18)].
+-f(x) | rpf(x) | dpf(x).  [clausify(19)].
+f(x) | -rpf(x).  [clausify(19)].
+f(x) | -dpf(x).  [clausify(19)].
+-rpf(x) | -dpf(x).  [clausify(20)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating em/1
+21 -fm(x) | em(x).  [clausify(2)].
+22 -em(x) | m(x).  [clausify(1)].
+Derived: -fm(x) | m(x).  [resolve(21,b,22,a)].
+23 -gu(x) | -intragranularconstituent(y,x) | em(y).  [clausify(6)].
+Derived: -gu(x) | -intragranularconstituent(y,x) | m(y).  [resolve(23,c,22,a)].
+24 -gu(x) | em(f2(x)).  [clausify(7)].
+Derived: -gu(x) | m(f2(x)).  [resolve(24,b,22,a)].
+
+Eliminating wm/1
+
+Eliminating gs/1
+
+Eliminating gu/1
+
+Eliminating ped/1
+25 -pob(x) | ped(x).  [clausify(9)].
+26 -ped(x) | pob(x) | m(x) | f(x).  [clausify(8)].
+27 -m(x) | ped(x).  [clausify(10)].
+28 -f(x) | ped(x).  [clausify(11)].
+29 -hosts(x,y) | ped(x).  [clausify(16)].
+Derived: -hosts(x,y) | pob(x) | m(x) | f(x).  [resolve(29,b,26,a)].
+
+Eliminating pob/1
+30 -napo(x) | pob(x).  [clausify(15)].
+31 -pob(x) | -m(x).  [clausify(12)].
+32 -pob(x) | -f(x).  [clausify(13)].
+Derived: -napo(x) | -m(x).  [resolve(30,b,31,a)].
+Derived: -napo(x) | -f(x).  [resolve(30,b,32,a)].
+33 -hosts(x,y) | pob(x) | m(x) | f(x).  [resolve(29,b,26,a)].
+
+Eliminating m/1
+34 -fm(x) | m(x).  [resolve(21,b,22,a)].
+35 -m(x) | -f(x).  [clausify(14)].
+Derived: -fm(x) | -f(x).  [resolve(34,b,35,a)].
+36 -napo(x) | -m(x).  [resolve(30,b,31,a)].
+Derived: -napo(x) | -fm(x).  [resolve(36,b,34,b)].
+
+Eliminating f/1
+37 -f(x) | hosts(f3(x),x).  [clausify(17)].
+38 -hosts(x,y) | f(y).  [clausify(16)].
+Derived: hosts(f3(x),x) | -hosts(y,x).  [resolve(37,a,38,b)].
+39 f(x) | -hosts(y,x).  [clausify(17)].
+40 -f(x) | rpf(x) | dpf(x).  [clausify(19)].
+Derived: rpf(x) | dpf(x) | -hosts(y,x).  [resolve(40,a,38,b)].
+41 f(x) | -rpf(x).  [clausify(19)].
+Derived: -rpf(x) | hosts(f3(x),x).  [resolve(41,a,37,a)].
+42 f(x) | -dpf(x).  [clausify(19)].
+Derived: -dpf(x) | hosts(f3(x),x).  [resolve(42,a,37,a)].
+43 -napo(x) | -f(x).  [resolve(30,b,32,a)].
+Derived: -napo(x) | -hosts(y,x).  [resolve(43,b,38,b)].
+Derived: -napo(x) | -rpf(x).  [resolve(43,b,41,a)].
+Derived: -napo(x) | -dpf(x).  [resolve(43,b,42,a)].
+44 -fm(x) | -f(x).  [resolve(34,b,35,a)].
+Derived: -fm(x) | -hosts(y,x).  [resolve(44,b,38,b)].
+Derived: -fm(x) | -rpf(x).  [resolve(44,b,41,a)].
+Derived: -fm(x) | -dpf(x).  [resolve(44,b,42,a)].
+
+Eliminating rpf/1
+45 rpf(x) | dpf(x) | -hosts(y,x).  [resolve(40,a,38,b)].
+46 -rpf(x) | -dpf(x).  [clausify(20)].
+47 -rpf(x) | hosts(f3(x),x).  [resolve(41,a,37,a)].
+Derived: hosts(f3(x),x) | dpf(x) | -hosts(y,x).  [resolve(47,a,45,a)].
+48 -napo(x) | -rpf(x).  [resolve(43,b,41,a)].
+Derived: -napo(x) | dpf(x) | -hosts(y,x).  [resolve(48,b,45,a)].
+49 -fm(x) | -rpf(x).  [resolve(44,b,41,a)].
+Derived: -fm(x) | dpf(x) | -hosts(y,x).  [resolve(49,b,45,a)].
+
+Eliminating napo/1
+
+Eliminating dpf/1
+50 hosts(f3(x),x) | dpf(x) | -hosts(y,x).  [resolve(47,a,45,a)].
+51 -dpf(x) | hosts(f3(x),x).  [resolve(42,a,37,a)].
+52 -fm(x) | -dpf(x).  [resolve(44,b,42,a)].
+Derived: hosts(f3(x),x) | -hosts(y,x) | hosts(f3(x),x).  [resolve(50,b,51,a)].
+53 -fm(x) | dpf(x) | -hosts(y,x).  [resolve(49,b,45,a)].
+Derived: -fm(x) | -hosts(y,x) | -fm(x).  [resolve(53,b,52,b)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (non-Horn, no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ fm, hosts ]).
+Function symbol precedence:  function_order([ f3 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(binary_resolution).  % (non-Horn)
+  % set(positive_inference). % (non-Horn)
+    % set(positive_inference) -> assign(literal_selection, max_negative).
+  % set(neg_ur_resolution).  % (non-Horn, less than 100 clauses)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(back_unit_deletion).  % (non-Horn)
+    % set(back_unit_deletion) -> set(unit_deletion).
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+% Clauses after input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+54 -hosts(x,y) | -hosts(y,x).  [clausify(18)].
+55 hosts(f3(x),x) | -hosts(y,x).  [resolve(37,a,38,b)].
+56 -fm(x) | -hosts(y,x).  [resolve(44,b,38,b)].
+59 -hosts(x,x).  [factor(54,a,b)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.00 seconds.
+
+given #1 (I,wt=6): 54 -hosts(x,y) | -hosts(y,x).  [clausify(18)].
+
+given #2 (I,wt=7): 55 hosts(f3(x),x) | -hosts(y,x).  [resolve(37,a,38,b)].
+
+given #3 (I,wt=5): 56 -fm(x) | -hosts(y,x).  [resolve(44,b,38,b)].
+
+given #4 (I,wt=3): 59 -hosts(x,x).  [factor(54,a,b)].
+
+============================== STATISTICS ============================
+
+Given=4. Generated=6. Kept=4. proofs=0.
+Usable=4. Sos=0. Demods=0. Limbo=0, Disabled=51. Hints=0.
+Weight_deleted=0. Literals_deleted=0.
+Forward_subsumed=2. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=2. Nonunit_bsub_feature_tests=6.
+Megabytes=0.04.
+User_CPU=0.00, System_CPU=0.03, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+SEARCH FAILED
+
+SEARCH FAILED
+
+Exiting with failure.
+
+------ process 19716 exit (sos_empty) ------
+
+Process 19716 exit (sos_empty) Wed May 31 10:51:47 2017
+============================= C:\Reasoning\prover9-bin\prover9 ================================
+execution finished: Wed May 31 10:51:49 2017
+total CPU time used: 0
+The command was "C:\Reasoning\prover9-bin\prover9 -t1000 -f D:\colore-testbed\ontologies\gwml2-v2\conversions\geo_matter.p9 D:\colore-testbed\ontologies\hydrologicflow\conversions\ground_surface.p9 D:\colore-testbed\ontologies\gwml2-v2\conversions\geo_geologicunit.p9 D:\colore-testbed\ontologies\multidim_space_ped\conversions\ped.p9"
+Input read from 
+============================ end of footer ===========================
