@@ -1,0 +1,46 @@
+(cl-text http://colore.oor.net/simple_features/sf_secondary/sf_triangle.clif
+
+(cl-imports http://colore.oor.net/simple_features/sf_secondary/sf_polygon.clif)
+(cl-imports http://colore.oor.net/multidim_space_codib/codib_boundary.clif)
+(cl-imports http://colore.oor.net/simple_features/sf_primitives.clif)
+
+
+(cl-comment 'Simple Feature Triangle is a Polygon with three edges')
+(forall (x)
+	(iff	
+		(sf_triangle x)
+		(and
+			(sf_polygon x)
+			(exists (p q r)
+				(and
+					(not (= p q))
+					(not (= p r))
+					(not (= q r))
+					(sf_line p)
+					(sf_line q)
+					(sf_line r)
+					(PP p (boundary x))
+					(PP q (boundary x))
+					(PP r (boundary x))
+					(forall (s)
+						(if
+							(and
+								(sf_line s)
+								(PP s (boundary x))
+							)
+							(or
+								(= s p)
+								(= s q)
+								(= s r)
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+)
+
+
+(sf_triangle 'test_triangle')
+)

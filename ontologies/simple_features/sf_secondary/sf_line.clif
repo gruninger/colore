@@ -1,0 +1,37 @@
+(cl-text http://colore.oor.net/simple_features/sf_secondary/sf_line.clif
+
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/simple_curve_segment.clif)
+(cl-imports http://colore.oor.net/simple_features/sf_secondary/sf_line_string.clif)
+(cl-imports http://colore.oor.net/simple_features/sf_secondary/sf_start_point.clif)
+(cl-imports http://colore.oor.net/simple_features/sf_secondary/sf_end_point.clif)
+
+(cl-comment 'Simple Feature Line is a subclass of CODI Atomic Curve Segment')
+(forall (x)
+	(iff	
+		(sf_line x)
+		(SimpleCurveSegment x)
+	)
+)
+
+
+(cl-comment 'Simple Feature Line is a subclass of Simple Feature Line String')
+(forall (x)
+	(if	
+		(sf_line x)
+		(sf_line_string x)
+	)
+)
+(cl-comment 'Every Simple Feature line has a start point and an end point')
+(forall (x)
+	(if	
+		(sf_line x)
+		(exists (p1 p2)
+			(and
+				(sf_start_point p1 x)
+				(sf_end_point p2 x)
+			)
+		)
+	)
+)
+(sf_line 'test_line')
+)
