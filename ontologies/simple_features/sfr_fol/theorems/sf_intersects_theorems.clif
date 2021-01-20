@@ -1,0 +1,108 @@
+/*******************************************************************************
+ * Copyright (c) University of Maine and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Shirly Stephen - initial implementation
+ *    Torsten Hahmann - initial implementation *******************************************************************************/
+
+(cl-text http://colore.oor.net/simple_features/sfr_fol/theorems/sf_intersects_theorems.clif
+
+(cl-imports http://colore.oor.net/simple_features/sfr_fol/sf_intersects.clif)
+
+(cl-imports http://colore.oor.net/simple_features/sfr_fol/sf_touches.clif)
+(cl-imports http://colore.oor.net/simple_features/sfr_fol/sf_crosses.clif)
+(cl-imports http://colore.oor.net/simple_features/sfr_fol/sf_within.clif)
+(cl-imports http://colore.oor.net/simple_features/sfr_fol/sf_overlaps.clif)
+(cl-imports http://colore.oor.net/simple_features/sfr_fol/sf_contains.clif)
+
+(cl-comment 'SFR-T6 split up into individual lemmas')
+
+(forall (x y)
+	(if	
+		(sf_intersects x y)
+		(or
+			(sf_touches x y)
+			(sf_crosses x y)
+			(sf_overlaps x y)
+			(sf_contains x y)
+			(sf_within x y)
+		)
+	)
+)
+
+
+(forall (x y)
+	(if	
+		(sf_touches x y)
+		(sf_intersects x y)
+	)
+)
+
+(forall (x y)
+	(if	
+		(sf_crosses x y)
+		(sf_intersects x y)
+	)
+)
+
+(forall (x y)
+	(if	
+		(sf_overlaps x y)
+		(sf_intersects x y)
+	)
+)
+
+(forall (x y)
+	(if	
+		(sf_contains x y)
+		(sf_intersects x y)
+	)
+)
+
+(forall (x y)
+	(if	
+		(sf_within x y)
+		(sf_intersects x y)
+	)
+)
+
+(cl-comment 'SFR-T7a')
+
+(forall (x y)
+	(if	
+		(sf_intersects x y)
+		(sf_geometry x)
+	)
+)
+
+(forall (x y)
+	(if	
+		(sf_intersects x y)
+		(sf_geometry y)
+	)
+)
+
+(forall (x y)
+	(if	
+		(sf_intersects x y)
+		(C x y)
+	)
+)
+
+(cl-comment 'SFR-T7b')
+
+(forall (x y)
+	(if	
+		(and
+			(sf_geometry x)
+			(sf_geometry y)
+			(C x y)
+		)
+		(sf_intersects x y)
+	)
+)
+
+)
