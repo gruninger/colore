@@ -1,0 +1,60 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/multidim_space_codib/theorems/atomic_curve_segment_theorems.clif
+
+(cl-imports
+http://colore.oor.net/multidim_space_codib/definitions/atomic_curve_segment.clif)
+ 
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/endpoint.clif)
+
+
+(cl-comment 'An atomic curve segment is a curve without proper parts that has exactly two distinct endpoints and no other points.')
+
+(forall (x)
+	(if
+		(AtomicCurveSegment x)
+			(exists (p1 p2)
+				(and
+					(Endpoint p1 x)
+					(Endpoint p2 x)
+					(not (= p1 p2))
+				)
+			)
+		)
+	)
+)
+
+
+(forall (x)
+	(if
+		(AtomicCurveSegment x)
+					(forall (p1 p2 p3)
+						(if
+							(and
+								(BCont p1 x)
+								(BCont p2 x)
+								(BCont p3 x)
+								(not (= p1 p2))
+							)
+							(or
+								(= p1 p3)
+								(= p2 p3)
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+)
+
+
+)

@@ -10,47 +10,19 @@
 
 (cl-text http://colore.oor.net/multidim_space_codib/definitions/atomic_curve_segment.clif
 
-(cl-imports http://colore.oor.net/multidim_space_codi/definitions/point.clif)
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/simple_curve_segment.clif)
 
-(cl-imports http://colore.oor.net/multidim_space_codi/definitions/curve.clif)
-
-(cl-imports http://colore.oor.net/multidim_space_codib/definitions/endpoint.clif)
+(cl-imports http://colore.oor.net/multidim_space_codi/definitions/atomic_s.clif)
 
 
-(cl-imports http://colore.oor.net/multidim_space_codi/codi_atomic_point_regions.clif)
-
-(cl-imports http://colore.oor.net/multidim_space_codib/codib.clif)
-
-
-(cl-comment 'An atomic curve segment is a curve without proper parts that has exactly two distinct endpoints and no other points.')
+(cl-comment 'A simple curve segment is a curve that contains exactly two distinct endpoints and is simple, i.e., is not branched.')
 
 (forall (x)
 	(iff
 		(AtomicCurveSegment x)
 		(and
-			(Curve x)
-			(forall (y)
-				(not (PP y x))
-			)
-			(exists (p1 p2)
-				(and
-					(Endpoint p1 x)
-					(Endpoint p2 x)
-					(not (= p1 p2))
-					(forall (z)
-						(if
-							(and
-								(Point z)
-								(Cont z x)
-							)
-							(or
-								(= p1 z)
-								(= p2 z)
-							)
-						)
-					)
-				)
-			)
+			(SimpleCurveSegment x)
+			(Atomic_S x)
 		)
 	)
 )
