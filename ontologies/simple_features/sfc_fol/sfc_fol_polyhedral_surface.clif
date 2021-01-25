@@ -1,33 +1,38 @@
-(cl-text http://colore.oor.net/simple_features/sf_secondary/sf_polyhedral_surface.clif
+/*******************************************************************************
+ * Copyright (c) University of Maine and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Shirly Stephen - initial implementation
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
 
-(cl-imports http://colore.oor.net/multidim_space_codib/definitions/non_atomic_areal_region.clif)
-(cl-imports http://colore.oor.net/multidim_space_codi/definitions/areal_region.clif)
-(cl-imports http://colore.oor.net/simple_features/sf_secondary/sf_polygon.clif)
-(cl-imports http://colore.oor.net/multidim_space_codib/definitions/closed_s.clif)
+(cl-text http://colore.oor.net/simple_features/sfc_fol/sfc_fol_polyhedral_surface.clif
+
+(cl-imports http://colore.oor.net/simple_features/sfc_fol/sfc_polygon.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codi/definitions/simple_areal_region.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codi/definitions/icon.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codi/definitions/min_max_in_dim.clif)
 
 
-
-(cl-comment 'Simple Feature Polygon is a Non Atomic Areal Region')
+(cl-comment 'SFC-M10: Simple Feature Polyhedral Surface is a Simple Areal Region (which is connected but not necessarily internally connected) that is internally connected and is an aggregation of Simple Feature Polygons')
 (forall (x)
-	(if	
+	(iff	
 		(sf_polyhedral_surface x)
 		(and
-			(NonAtomicArealRegion x)
-			(Closed_S x)
-		)
-	)
-)
-
-
-(cl-comment 'Simple Feature Polyhedral Surface is a subclass of Simple Feature Surface')
-(forall (x)
-	(if	
-		(sf_polyhedral_surface x)
-		(and
-			(sf_surface x)
+			(SimpleArealRegion x)
+			(ICon x)
 			(forall (y)
 				(if
-					(PP y x)
+					(and
+						(P y x)
+						(Min y)
+					)
 					(sf_polygon y)
 				)
 			)
