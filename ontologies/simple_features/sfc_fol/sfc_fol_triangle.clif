@@ -1,0 +1,53 @@
+/*******************************************************************************
+ * Copyright (c) University of Maine and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Shirly Stephen - initial implementation
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/simple_features/sfc_fol/sfc_fol_triangle.clif
+
+(cl-imports http://colore.oor.net/simple_features/sfc_fol/sfc_fol_polygon.clif)
+
+
+(cl-comment 'SFC-M11: Simple Feature Triangle is a Polygon with exactly three non-overlapping sf lines bounding it.')
+(forall (x)
+	(iff	
+		(sf_triangle x)
+		(and
+			(sf_polygon x)
+			(exists (p q r)
+				(and
+					(not (PO p q))
+					(not (PO p r))
+					(not (PO q r))
+					(sf_line p)
+					(sf_line q)
+					(sf_line r)
+					(BCont p x)
+					(BCont q x)
+					(BCont r x)
+					(forall (s)
+						(if
+							(and
+								(sf_line s)
+								(BCont s x)
+							)
+							(or
+								(= s p)
+								(= s q)
+								(= s r)
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+)
+
+)
