@@ -1,0 +1,70 @@
+/*******************************************************************************
+ * Copyright (c) University of Maine and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Shirly Stephen - initial implementation
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/simple_features/sfc_fol/sfc_fol_polygon.clif
+
+(cl-imports http://colore.oor.net/simple_features/sfc_core/sf_polygon.clif)
+
+
+(cl-imports http://colore.oor.net/simple_features/sfc_core/sf_linear_ring.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/atomic_areal_region.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codib/codib_boundary.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/closed_s.clif)
+
+(cl-comment 'SFC-M9a: Simple Feature Polygon is a Simple Areal Region.')
+
+(forall (x)
+	(if
+		(sf_polygon x)
+		(SimpleArealRegion x)
+	)
+)
+
+(cl-comment 'SFC-M9b: ... such that its boundary bounds a region z of which x is part. This accommodates polygons with and without holes. For polygons with holes, some linear ring describes the polygons outer boundary whereas for polygons without holes z=x can be chosen such that z is the entire boundary of x.')
+
+(forall (x)
+	(if
+		(sf_polygon x)
+		(exists (y z)
+			(and
+				(sf_linear_ring y)
+				(BCont y x)
+				(= (boundary z) y)
+				(P x z)
+			)
+		)
+	)
+)
+
+(cl-comment 'SFC-M9c: The last condition expresses that every entity v in the boundary of x must be a part of some linear ring that describes a continuous piece of internal or external boundary of the entire boundary of x.')
+
+(forall (x)
+	(if
+		(sf_polygon x)
+		(forall (v)
+			(if	
+				(BCont v x)
+				(exists (w)
+					(and
+						(P v w)
+						(BCont w x)
+						(sf_linear_ring w)
+					)
+				)
+			)
+		)
+	)
+)
+
+)

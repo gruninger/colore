@@ -1,0 +1,33 @@
+(cl-text http://colore.oor.net/simple_features/sfc_fol/sfc_curve_start_and_end_point_fol_theorems.clif
+
+(cl-imports http://colore.oor.net/simple_features/sfc_fol/sfc_fol_curve.clif)
+
+(cl-imports http://colore.oor.net/simple_features/sfc_core/sf_curve_start_and_end_point.clif)
+
+(cl-comment 'if the start and end point are different for a Simple Features curve, then it is a SimpleCurveSegment')
+(forall (x y z)
+	(if	
+		(and
+			(sf_curve)
+			(sf_start_point x z)
+			(sf_end_point y z)
+			(not (= x y))
+		)
+		(SimpleCurveSegment z)
+	)
+)
+
+(cl-comment 'if the start and end point are identical for a Simple Features curve, then it is a SimpleLoopCurve')
+(forall (x y z)
+	(if	
+		(and
+			(sf_curve)
+			(sf_start_point x z)
+			(sf_end_point y z)
+			(= x y)
+		)
+		(SimpleLoopSegment z)
+	)
+)
+
+)

@@ -1,0 +1,37 @@
+(cl-text http://colore.oor.net/simple_features/sf_secondary/sf_polyhedral_surface.clif
+
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/non_atomic_areal_region.clif)
+(cl-imports http://colore.oor.net/multidim_space_codi/definitions/areal_region.clif)
+(cl-imports http://colore.oor.net/simple_features/sf_secondary/sf_polygon.clif)
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/closed_s.clif)
+
+
+
+(cl-comment 'Simple Feature Polygon is a Non Atomic Areal Region')
+(forall (x)
+	(if	
+		(sf_polyhedral_surface x)
+		(and
+			(NonAtomicArealRegion x)
+			(Closed_S x)
+		)
+	)
+)
+
+
+(cl-comment 'Simple Feature Polyhedral Surface is a subclass of Simple Feature Surface')
+(forall (x)
+	(if	
+		(sf_polyhedral_surface x)
+		(and
+			(sf_surface x)
+			(forall (y)
+				(if
+					(PP y x)
+					(sf_polygon y)
+				)
+			)
+		)
+	)
+)
+)

@@ -1,0 +1,77 @@
+/*******************************************************************************
+ * Copyright (c) University of Maine and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 3.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/3.0/legalcode.
+ *
+ * Contributors:
+ *    Shirly Stephen - initial implementation
+ *    Torsten Hahmann - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/simple_features/sfc_fol/sfc_fol_curve.clif
+
+
+(cl-imports http://colore.oor.net/simple_features/sfc_core/definitions/sf_geometry.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codi/definitions/curve.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/simple_curve_segment.clif)
+
+(cl-imports http://colore.oor.net/multidim_space_codib/definitions/simple_loop_curve.clif)
+
+(cl-comment 'SFC-M3: sf_curve is either CODIB SimpleCurveSegment or SimpleLoopCurve')
+(forall (x)
+	(iff
+		(sf_curve x)
+		(or
+			(SimpleCurveSegment x)
+			(SimpleLoopCurve x)
+		)
+	)
+	
+)
+(cl-comment 'SFC-M4: sf_curve that is a curve segment has distinct start and end points that are boundary contained')
+(forall (x)
+	(if
+		(and
+			(sf_curve x)
+			(SimpleCurveSegment x)
+		)
+		(exists (p1 p2)
+			(and
+				(sf_point p1)
+				(sf_point p2)
+				(sf_start_point p1 x)
+				(sf_end_point p2 x)
+				(BCont p1 x)
+				(BCont p2 x)
+				(not (= p1 p2))
+			)
+		)
+	)
+	
+)
+
+(cl-comment 'SFC-M5: A sf_curve that is a loop curve has the same start and end point')
+(forall (x)
+	(if
+		(and
+			(sf_curve x)
+			(SimpleLoopCurve x)
+		)
+		(if
+			(exists (p1 p2)
+			(and
+				(sf_point p1)
+				(sf_point p2)
+				(sf_start_point p1 x)
+				(sf_end_point p2 x)
+			)
+			)
+		(= y z)
+		)
+	)
+	
+)
+)
