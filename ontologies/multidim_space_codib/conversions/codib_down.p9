@@ -1,13 +1,9 @@
 formulas(sos).
-% cl-imports multidim_space_codi/codi_down.clif
-% cl-imports multidim_space_codib/codib.clif
-% cl-imports multidim_space_codib/definitions/icont.clif
-% cl-imports multidim_space_codib/definitions/tcont.clif
-( all x11 ( ((s(x11) & - (zex(x11)))) -> (( exists x12 (p(x12, x11) & min(x12))) ) )) .
-( all x21 all x22 ( ((s(x21) & s(x22) & bcont(x21, x22))) -> ((cont(x21, x22) & inc(x21, x22))) )) .
-( all x32 all x34 all x33 all x31 ( ((s(x32) & s(x34) & s(x33) & s(x31) & sc(x32, x34) & min(x32) & p(x32, x33) & cont(x34, x33) & cont(x31, x32) & cont(x31, x34))) -> (bcont(x31, x32)) )) .
-( all x42 all x44 all x41 all x43 ( ((s(x42) & s(x44) & s(x43) & s(x41) & sc(x42, x44) & p(x42, x43) & p(x44, x43) & cont(x41, x42) & cont(x41, x44) & covers(x43, x41))) -> (- (bcont(x41, x43))) )) .
-( all x52 all x55 all x51 ( ((s(x52) & s(x55) & s(x51) & bcont(x52, x55) & p(x55, x51) & ( all x54 all x53 ( ((s(x54) & s(x53) & p(x54, x51) & - (po(x54, x55)) & p(x53, x52))) -> (- (cont(x53, x54))) )) )) -> (bcont(x52, x51)) )) .
-( all x62 all x63 all x61 ( ((s(x62) & s(x63) & s(x61) & bcont(x62, x63) & cont(x61, x62))) -> (bcont(x61, x63)) )) .
-( all x72 all x73 ( ((s(x72) & s(x73) & bcont(x72, x73))) <-> ((s(x72) & s(x73) & - (zex(x72)) & ( all x71 ( ((p(x71, x72) & min(x71))) -> (bcont(x71, x73)) )) )) )) .
+(all x  ((S(x) & ~ZEX(x)) -> \exists y\;[(P(y,x) & Min(y))])).
+(all x all y  ((S(x) & S(y) & BCont(x,y)) -> (Cont(x,y) & Inc(x,y)))).
+(all x all y all v all z  ((S(x) & S(y) & S(v) & S(z) & SC(x,y) & Min(x) & P(x,v) & Cont(y,v) & Cont(z,x) & Cont(z,y)) -> BCont(z,x))).
+(all x all y all z all v  ((S(x) & S(y) & S(v) & S(z) & SC(x,y) & P(x,v) & P(y,v) & Cont(z,x) & Cont(z,y) & Covers(v,z)) -> ~BCont(z,v))).
+(all x all y all z  ((S(x) & S(y) & S(z) & BCont(x,y) & P(y,z) & \forall v,w\;[((S(v) & S(w) & P(v,z) & ~PO(v,y) & P(w,x)) -> ~Cont(w,v))]) -> BCont(x,z))).
+(all x all y all z  ((S(x) & S(y) & S(z) & BCont(x,y) & Cont(z,x)) -> BCont(z,y))).
+(all x all y  ((S(x) & S(y) & BCont(x,y)) <-> (S(x) & S(y) & ~ZEX(x) & \forall z\;[((P(z,x) & Min(z)) -> BCont(z,y))]))).
 end_of_list.

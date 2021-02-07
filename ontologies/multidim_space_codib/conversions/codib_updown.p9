@@ -1,11 +1,10 @@
 formulas(sos).
-% cl-imports multidim_space_codib/codib_down.clif
-( all x12 all x14 all x11 all x13 ( ((tsum(x12, x14, x11) & tsum(x12, x14, x13))) -> ((s(x12) & s(x14) & s(x11) & (x13=x11))) )) .
-( all x22 all x23 all x21 ( (tsum(x22, x23, x21)) -> (tsum(x23, x22, x21)) )) .
-( all x31 all x32 ( (lt(x31, x32)) -> (tsum(x31, x32, x32)) )) .
-( all x42 all x44 all x41 all x43 ( ((tsum(x42, x44, x41) & leq(x42, x44) & cont(x43, x44))) -> (cont(x43, x41)) )) .
-( all x52 all x54 all x51 all x53 ( ((tsum(x52, x54, x51) & cont(x53, x51) & - (cont(x53, x52)))) -> (cont(difference(x53, x52), x54)) )) .
-( all x62 all x64 all x61 ( ((s(x61) & eqdim(x62, x64) & ( all x63 ( (po(x63, x61)) <-> ((po(x63, x62) | po(x63, x64))) )) )) -> (tsum(x62, x64, x61)) )) .
-( all x72 all x75 ( ((eqdim(x72, x75) & ( all x71 ( ((cont(x71, x72) & cont(x71, x75) & min(x71))) -> (( exists x74 exists x73 (p(x74, x72) & p(x73, x75) & bcont(x71, x74) & bcont(x71, x73))) ) )) )) -> (( exists x71 tsum(x72, x75, x71)) ) )) .
-( all x81 ( ((s(x81) & - (zex(x81)))) -> (cont(x81, cuni)) )) .
+(all x all y all z all v  ((TSum(x,y,z) & TSum(x,y,v)) -> (S(x) & S(y) & S(z) & =(v,z)))).
+(all x all y all z  (TSum(x,y,z) -> TSum(y,x,z))).
+(all x all y  (lt(x,y) -> TSum(x,y,y))).
+(all x all y all z all v  ((TSum(x,y,z) & leq(x,y) & Cont(v,y)) -> Cont(v,z))).
+(all x all y all z all v  ((TSum(x,y,z) & Cont(v,z) & ~Cont(v,x)) -> Cont(difference(v,x),y))).
+(all x all y all z  ((S(z) & EqDim(x,y) & \forall v\;[(PO(v,z) <-> (PO(v,x) | PO(v,y)))]) -> TSum(x,y,z))).
+(all x all y  ((EqDim(x,y) & \forall z\;[((Cont(z,x) & Cont(z,y) & Min(z)) -> \exists u,v\;[(P(u,x) & P(v,y) & BCont(z,u) & BCont(z,v))])]) -> \exists z\;[TSum(x,y,z)])).
+(all x  ((S(x) & ~ZEX(x)) -> Cont(x,CUni))).
 end_of_list.

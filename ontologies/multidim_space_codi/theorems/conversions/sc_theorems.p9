@@ -1,13 +1,9 @@
 formulas(sos).
-% cl-imports multidim_space_codi/codi_basic.clif
-% cl-imports multidim_space_cont/definitions/c.clif
-% cl-imports multidim_space_codi/definitions/ep.clif
-% cl-imports multidim_space_codi/definitions/sc.clif
-( all x11 all x12 ( (sc(x11, x12)) -> (c(x11, x12)) )) .
-( all x22 all x23 ( (sc(x22, x23)) -> (- (( exists x21 (cont(x21, x22) & p(x21, x23))) )) )) .
-( all x32 all x33 ( (sc(x32, x33)) -> (- (( exists x31 (p(x31, x32) & cont(x31, x33))) )) )) .
-( all x42 all x43 ( ((c(x42, x43) & ( all x41 (- (cont(x41, x42)) | - (cont(x41, x43)) | (- (p(x41, x42)) & - (p(x41, x43))))) )) -> (sc(x42, x43)) )) .
-( all x51 - (sc(x51, x51))) .
-( all x61 all x62 ( (sc(x61, x62)) -> (sc(x62, x61)) )) .
-( all x72 all x73 ( (sc(x72, x73)) -> (( exists x71 (lt(x71, x72) & lt(x71, x73) & cont(x71, x72) & cont(x71, x73))) ) )) .
+(all x all y  (SC(x,y) -> C(x,y))).
+(all x all y  (SC(x,y) -> ~\exists z\;[(Cont(z,x) & P(z,y))])).
+(all x all y  (SC(x,y) -> ~\exists z\;[(P(z,x) & Cont(z,y))])).
+(all x all y  ((C(x,y) & \forall z\;[(~Cont(z,x) | ~Cont(z,y) | (~P(z,x) & ~P(z,y)))]) -> SC(x,y))).
+(all x  -(SC(x,x))).
+(all x all y  (SC(x,y) -> SC(y,x))).
+(all x all y  (SC(x,y) -> \exists z\;[(lt(z,x) & lt(z,y) & Cont(z,x) & Cont(z,y))])).
 end_of_list.

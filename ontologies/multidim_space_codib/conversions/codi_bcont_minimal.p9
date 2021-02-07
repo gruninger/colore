@@ -1,12 +1,7 @@
 formulas(sos).
-% cl-imports multidim_space_codi/codi.clif
-% cl-imports multidim_space_dim/definitions/covers.clif
-% cl-imports multidim_space_codi/definitions/po.clif
-% cl-imports multidim_space_codi/definitions/sc.clif
-% cl-imports multidim_space_codi/definitions/min_max_in_dim.clif
-( all x11 all x12 ( (bcont(x11, x12)) -> ((cont(x11, x12) & - (eqdim(x11, x12)))) )) .
-( all x22 all x24 all x23 all x21 ( ((sc(x22, x24) & min(x22) & p(x22, x23) & cont(x24, x23) & cont(x21, x22) & cont(x21, x24))) -> (bcont(x21, x22)) )) .
-( all x32 all x34 all x31 all x33 ( ((sc(x32, x34) & p(x32, x33) & p(x34, x33) & cont(x31, x32) & cont(x31, x34) & covers(x33, x31))) -> (- (bcont(x31, x33))) )) .
-( all x42 all x45 all x41 ( ((bcont(x42, x45) & p(x45, x41) & ( all x44 all x43 ( ((p(x44, x41) & - (po(x44, x45)) & p(x43, x42))) -> (- (cont(x43, x44))) )) )) -> (bcont(x42, x41)) )) .
-( all x52 all x53 all x51 ( ((bcont(x52, x53) & cont(x51, x52))) -> (bcont(x51, x53)) )) .
+(all x all y  (BCont(x,y) -> (Cont(x,y) & ~EqDim(x,y)))).
+(all x all y all v all z  ((SC(x,y) & Min(x) & P(x,v) & Cont(y,v) & Cont(z,x) & Cont(z,y)) -> BCont(z,x))).
+(all x all y all z all v  ((SC(x,y) & P(x,v) & P(y,v) & Cont(z,x) & Cont(z,y) & Covers(v,z)) -> ~BCont(z,v))).
+(all x all y all z  ((BCont(x,y) & P(y,z) & \forall v,w\;[((P(v,z) & ~PO(v,y) & P(w,x)) -> ~Cont(w,v))]) -> BCont(x,z))).
+(all x all y all z  ((BCont(x,y) & Cont(z,x)) -> BCont(z,y))).
 end_of_list.

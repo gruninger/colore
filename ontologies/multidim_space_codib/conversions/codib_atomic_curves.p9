@@ -1,14 +1,7 @@
 formulas(sos).
-% cl-imports multidim_space_codi/definitions/point.clif
-% cl-imports multidim_space_codib/definitions/atomic_curve.clif
-% cl-imports multidim_space_codib/definitions/atomic_loop_curve.clif
-% cl-imports multidim_space_codib/definitions/atomic_curve_segment.clif
-% cl-imports multidim_space_codib/definitions/closed.clif
-% cl-imports multidim_space_codi/codi_atomic_point_regions.clif
-% cl-imports multidim_space_codib/codib.clif
-( all x12 all x11 ( ((atomiccurve(x12) & (- atomicloopcurve(x12)) & cont(x11, x12) & (- (x12=x11)))) -> ((point(x11) & bcont(x11, x12))) )) .
-( all x22 all x23 all x21 all x24 ( ((atomiccurve(x22) & point(x23) & point(x21) & point(x24) & cont(x23, x22) & cont(x21, x22) & cont(x24, x22))) -> (((x23=x21) | (x23=x24) | (x21=x24))) )) .
-( all x32 all x33 all x31 ( ((atomiccurve(x32) & point(x33) & point(x31) & (- (x33=x31)) & cont(x33, x32) & cont(x31, x32))) -> ((- closed(x32))) )) .
-( all x42 ( (curve(x42)) -> (( exists x41 (p(x41, x42) & atomiccurve(x41))) ) )) .
-( all x52 all x51 ( ((point(x52) & curve(x51) & (- atomiccurvesegment(x51)))) -> (( (bcont(x52, x51)) <-> (( exists x53 (atomiccurve(x53) & p(x53, x51) & bcont(x52, x53) & ( all x54 ( ((p(x54, x51) & atomiccurve(x54) & bcont(x52, x54))) -> ((x53=x54)) )) )) ) )) )) .
+(all x all y  ((AtomicCurve(x) & ~AtomicLoopCurve(x) & Cont(y,x) & ~=(x,y)) -> (Point(y) & BCont(y,x)))).
+(all x all p1 all p2 all p3  ((AtomicCurve(x) & Point(p1) & Point(p2) & Point(p3) & Cont(p1,x) & Cont(p2,x) & Cont(p3,x)) -> (=(p1,p2) | =(p1,p3) | =(p2,p3)))).
+(all x all p1 all p2  ((AtomicCurve(x) & Point(p1) & Point(p2) & ~=(p1,p2) & Cont(p1,x) & Cont(p2,x)) -> ~Closed(x))).
+(all x  (Curve(x) -> \exists y\;[(P(y,x) & AtomicCurve(y))])).
+(all x all y  ((Point(x) & Curve(y) & ~AtomicCurveSegment(y)) -> (BCont(x,y) <-> \exists s1\;[(AtomicCurve(s1) & P(s1,y) & BCont(x,s1) & \forall s2\;[((P(s2,y) & AtomicCurve(s2) & BCont(x,s2)) -> =(s1,s2))])]))).
 end_of_list.
