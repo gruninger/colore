@@ -1,0 +1,78 @@
+formulas(sos).
+(all x  (sf_polygon(x) -> Simple_ArealRegion(x))).
+(all x  (sf_polygon(x) -> \exists y,z\;[(sf_linear_ring(y) & BCont(y,x) & =(boundary(z),y) & P(x,z))])).
+(all x  (sf_polygon(x) -> \forall v\;[(BCont(v,x) -> \exists w\;[(P(v,w) & BCont(w,x) & sf_linear_ring(w))])])).
+(all x all y  (Cont(x,boundary(y)) <-> BCont(x,y))).
+(all x all y  (SC(x,y) -> C(x,y))).
+(all x all y  (SC(x,y) -> ~\exists z\;[(Cont(z,x) & P(z,y))])).
+(all x all y  (SC(x,y) -> ~\exists z\;[(P(z,x) & Cont(z,y))])).
+(all x all y  ((C(x,y) & \forall z\;[(~Cont(z,x) | ~Cont(z,y) | (~P(z,x) & ~P(z,y)))]) -> SC(x,y))).
+(all x  -(SC(x,x))).
+(all x all y  (SC(x,y) -> SC(y,x))).
+(all x all y  (SC(x,y) -> \exists z\;[(lt(z,x) & lt(z,y) & Cont(z,x) & Cont(z,y))])).
+(all x all y  (SC(x,y) <-> (\exists z\;[(Cont(z,x) & Cont(z,y))] & \forall z\;[((Cont(z,x) & Cont(z,y)) -> (leq(z,x) & ~EqDim(z,x) & leq(z,y) & ~EqDim(z,y)))]))).
+(all x all y  (EqDim(x,y) <-> (leq(x,y) & leq(y,x)))).
+(all x all y  (leq(x,y) -> S(x))).
+(all x all y  (leq(x,y) -> S(y))).
+(all x  (ZEX(x) -> S(x))).
+(all x  (S(x) -> leq(x,x))).
+(all x all y all z  ((leq(x,y) & leq(y,z)) -> leq(x,z))).
+(all x all y  ((ZEX(x) & ZEX(y)) -> =(x,y))).
+(all x all y  ((ZEX(x) & S(y)) -> leq(x,y))).
+(all x all y  (Cont(x,y) -> leq(x,y))).
+(exists x  MinDim(x)).
+(all x  (MaxDim(x) <-> (S(x) & ~ZEX(x) & \forall y\;[(S(y) -> leq(y,x))]))).
+(all x  (MinDim(x) <-> (S(x) & ~ZEX(x) & \forall y\;[((S(y) & ~ZEX(y)) -> leq(x,y))]))).
+(all x  ((S(x) & ~ZEX(x)) <-> Cont(x,x))).
+(all x all y  ((Cont(x,y) & Cont(y,x)) -> =(x,y))).
+(all x all y all z  ((Cont(x,y) & Cont(y,z)) -> Cont(x,z))).
+(all x all y  (ZEX(x) -> (S(x) & ~Cont(y,x) & ~Cont(x,y)))).
+(all x all y  ((ZEX(x) & ZEX(y)) -> =(x,y))).
+(all x all y  (P(x,y) <-> (Cont(x,y) & EqDim(x,y)))).
+(all x all y  (C(x,y) <-> \exists z\;[(Cont(z,x) & Cont(z,y))])).
+(all x  -(Inc(x,x))).
+(all x all y  (Inc(x,y) -> Inc(y,x))).
+(all x all y  (EqDim(x,y) -> ~Inc(x,y))).
+(all x all y  (Inc(x,y) -> (lt(x,y) | lt(y,x)))).
+(all x all y  ((Cont(x,y) & lt(x,y)) -> Inc(x,y))).
+(all x all y all z  ((Inc(x,y) & P(y,z)) -> Inc(x,z))).
+(all x all y  (Inc(x,y) <-> (\exists z\;[(leq(z,x) & ~EqDim(z,x) & Cont(z,x) & P(z,y))] | \exists z\;[(leq(z,y) & ~EqDim(z,y) & Cont(z,y) & P(z,x))]))).
+(all x  ((S(x) & ~ZEX(x)) -> PO(x,x))).
+(all x all y  (PO(x,y) -> PO(y,x))).
+(all x all y  (PO(x,y) -> EqDim(x,y))).
+(all x all y  (PO(x,y) <-> \exists z\;[(P(z,x) & P(z,y))])).
+(all x  (Max(x) <-> (S(x) & ~ZEX(x) & \forall y\;[~PP(x,y)]))).
+(all x  (Min(x) <-> (S(x) & ~ZEX(x) & \forall y\;[~PP(y,x)]))).
+(all x all y  (PP(x,y) <-> (P(x,y) & ~=(x,y)))).
+(all x all y  (BCont(x,y) -> (Cont(x,y) & ~EqDim(x,y)))).
+(all x all y all v all z  ((SC(x,y) & Min(x) & P(x,v) & Cont(y,v) & Cont(z,x) & Cont(z,y)) -> BCont(z,x))).
+(all x all y all z all v  ((SC(x,y) & P(x,v) & P(y,v) & Cont(z,x) & Cont(z,y) & Covers(v,z)) -> ~BCont(z,v))).
+(all x all y all z  ((BCont(x,y) & P(y,z) & \forall v,w\;[((P(v,z) & ~PO(v,y) & P(w,x)) -> ~Cont(w,v))]) -> BCont(x,z))).
+(all x all y all z  ((BCont(x,y) & Cont(z,x)) -> BCont(z,y))).
+(all x all y  (Covers(x,y) <-> (lt(y,x) & \forall z\;[(S(z) -> ~(lt(y,z) & lt(z,x)))]))).
+(all x all y  (gt(x,y) <-> lt(y,x))).
+(all x all y  (geq(x,y) <-> leq(y,x))).
+(all x all y  (lt(x,y) <-> (leq(x,y) & ~EqDim(x,y)))).
+(all x  (Closed(x) <-> \forall y\;[~BCont(y,x)])).
+(all x  (Simple_ArealRegion(x) <-> (ArealRegion(x) & Simple_S(x)))).
+(all x  (Simple_S(x) <-> (Connected_S(x) & ~Branched_S(x)))).
+(all x  (Branched_S(x) <-> (Connected_S(x) & \exists p,q,r,s\;[(PP(p,x) & PP(q,x) & PP(r,x) & ~PO(p,q) & ~PO(p,r) & ~PO(q,r) & Covers(p,s) & Covers(q,s) & Covers(r,s) & Cont(s,p) & Cont(s,q) & Cont(s,r))]))).
+(all x  (Connected_S(x) <-> (S(x) & \forall y\;[(PP(y,x) -> SC(y,difference(x,y)))]))).
+(all x all y  ((S(x) & S(y) & ~C(x,y)) <-> ZEX(intersection(x,y)))).
+(all x all y  ((S(x) & S(y) & ~ZEX(intersection(x,y))) -> Cont(intersection(x,y),x))).
+(all x all y all z  ((Cont(z,x) & Cont(z,y)) -> leq(z,intersection(x,y)))).
+(all x all y all z  ((Cont(z,x) & Cont(z,y) & EqDim(z,intersection(x,y))) <-> P(z,intersection(x,y)))).
+(all x all y  ((S(x) & S(y) & ~ZEX(difference(x,y))) -> EqDim(x,difference(x,y)))).
+(all x all y  (lt(y,x) -> =(x,difference(x,y)))).
+(all x all y all z  ((leq(x,y) & Cont(z,x) & lt(intersection(z,y),z)) -> Cont(z,difference(x,y)))).
+(all x all y all z  ((leq(x,y) & Cont(z,difference(x,y))) -> Cont(z,x))).
+(all x all y all z  ((leq(x,y) & P(z,difference(x,y))) -> lt(intersection(z,y),z))).
+(all x all y  (ZEX(difference(x,y)) <-> (ZEX(x) | Cont(x,y)))).
+(all x  (ArealRegion(x) <-> \forall y\;[(Curve(y) -> Covers(x,y))])).
+(all x  (Curve(x) <-> (~ZEX(x) & ~MinDim(x) & \forall y\;[(MinDim(y) <-> Covers(x,y))]))).
+(all x  (sf_linear_ring(x) -> sf_line_string(x))).
+(all x  (sf_line_string(x) -> sf_curve(x))).
+(all x  (sf_geometry(x) <-> (sf_point(x) | sf_curve(x) | sf_surface(x) | sf_geometry_collection(x)))).
+(all x  (sf_polygon(x) -> sf_polyhedral_surface(x))).
+(all x  (sf_polyhedral_surface(x) -> sf_surface(x))).
+end_of_list.
