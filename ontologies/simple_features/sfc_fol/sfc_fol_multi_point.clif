@@ -15,32 +15,24 @@
 
 (cl-imports http://colore.oor.net/multidim_space_codi/definitions/point_region.clif)
 
+(cl-imports http://colore.oor.net/multidim_space_codi/definitions/point.clif)
 
+(cl-comment 'SFC-M14: Simple Feature Multipoint is a PointRegion that is not a point')
 
-(cl-comment 'SFC-M14: Simple Feature Multipoint is a PointRegion')
 
 (forall (x)
 	(iff	
 		(sf_multi_point x)
-		(PointRegion x)
-	)
-)
-
-(cl-comment 'Is this a theorem or does it need to be postulated')
-
-(forall (x)
-	(if	
-		(sf_multi_point x)
 		(and
-			(sf_geometry_collection x)
-			(forall (y)
-				(if 
-					(PP y x)
-					(sf_point y)
-				)
-			)
+			(PointRegion x)
+			(not (Point x))
 		)
 	)
 )
+
+
+
+(cl-comment 'SFC-M14 (old): Simple Feature Multipoint and PointRegion are equivalent classes - this is inconsistent with the approach that a geometry collection, which includes multipoints, is necessarily a multipart or branched areal region') 
+
 
 )
