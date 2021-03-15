@@ -1,0 +1,552 @@
+============================== Prover9 ===============================
+Prover9 (32) version Oct-2007, Oct 2007.
+Process 14240 was started by torsten on LAPTOP-UF9R3IH7,
+Mon Mar 15 05:08:30 2021
+The command was "/cygdrive/c/Users/torsten/macleod/prover9 -t600 -f C:\Users\torsten\GitHub\colore\ontologies\owltime\conversions\owltime_modular.all.p9 c:\Users\torsten\GitHub\colore\ontologies".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file C:\Users\torsten\GitHub\colore\ontologies\owltime\conversions\owltime_modular.all.p9
+
+
+formulas(sos).
+(all t all e (timeSpan(t,e) & Interval(t) -> during(e,t))).
+(all t all e (timeSpan(t,e) & Instant(t) -> atTime(e,t))).
+(all t1 all t2 all e (timeSpan(t1,e) & Interval(t1) & atTime(e,t2) -> inside(t2,t1) | begins(t2,t1) | ends(t2,t1))).
+(all t all t1 all e (timeSpan(t,e) & Instant(t) & atTime(e,t1) -> t = t1)).
+(all e all t (atTime(e,t) -> Instant(t))).
+(all e all t (during(e,t) -> Interval(t))).
+(all e all t1 all t2 (during(e,t1) & inside(t2,t1) -> atTime(e,t2))).
+(all e all t all t1 (during(e,t) & intDuring(t1,t) -> during(e,t1))).
+(all t all x (inside(t,x) -> Instant(t) & Interval(x))).
+(all t all x (beginsOrIn(t,x) <-> begins(t,x) | inside(t,x))).
+(all t all t1 all t2 all x (inside(t,x) & begins(t1,x) & ends(t2,x) & ProperInterval(x) -> before(t1,t) & before(t,t2))).
+(all t (Instant(t) -> TemporalEntity(t))).
+(all t (Interval(t) -> TemporalEntity(t))).
+(all t (TemporalEntity(t) -> Interval(t) | Instant(t))).
+(all t all x (begins(t,x) -> Instant(t) & TemporalEntity(x))).
+(all t all x (ends(t,x) -> Instant(t) & TemporalEntity(x))).
+(all t (Instant(t) <-> begins(t,t))).
+(all t (Instant(t) <-> ends(t,t))).
+(all x all t1 all t2 (TemporalEntity(x) & begins(t1,x) & begins(t2,x) -> t1 = t2)).
+(all x all t1 all t2 (TemporalEntity(x) & ends(t1,x) & ends(t2,x) -> t1 = t2)).
+(all x all t1 all t2 (timeBetween(x,t1,t2) -> TemporalEntity(x) & Instant(t1) & Instant(t2))).
+(all t1 all t2 (t1 != t2 -> (all x (timeBetween(x,t1,t2) <-> begins(t1,x) & ends(t2,x))))).
+(all x all t1 all t2 (Interval(x) & begins(t1,x) & ends(t2,x) -> -before(t2,t1))).
+(all x all t1 all t2 (ProperInterval(x) & begins(t1,x) & ends(t2,x) -> before(t1,t2))).
+(all t1 all t2 (Instant(t1) & Instant(t2) & before(t1,t2) -> (exists x timeBetween(x,t1,t2)))).
+(all x (ProperInterval(x) <-> Interval(x) & (all t1 all t2 (begins(t1,x) & ends(t2,x) -> t1 != t2)))).
+(all t1 all t2 (before(t1,t2) -> t1 != t2)).
+(all t1 all t2 (before(t1,t2) -> -before(t2,t1))).
+(all t1 all t2 all t3 (before(t1,t2) & before(t2,t3) -> before(t1,t3))).
+(all e (Eventuality(e) -> -TemporalEntity(e))).
+(all e all t (atTime(e,t) -> Eventuality(e))).
+(all e all t (during(e,t) -> Eventuality(e))).
+(all t all e (timeSpan(t,e) -> Eventuality(e) & TemporalEntity(t))).
+(all e all t (atTime(e,t) -> Instant(t))).
+(all e all t (during(e,t) -> Interval(t))).
+(all e all t1 all t2 (during(e,t1) & inside(t2,t1) -> atTime(e,t2))).
+(all e all t all t1 (during(e,t) & intDuring(t1,t) -> during(e,t1))).
+(all t all x (inside(t,x) -> Instant(t) & Interval(x))).
+(all t all x (beginsOrIn(t,x) <-> begins(t,x) | inside(t,x))).
+(all t all t1 all t2 all x (inside(t,x) & begins(t1,x) & ends(t2,x) & ProperInterval(x) -> before(t1,t) & before(t,t2))).
+(all t1 all t2 all i (inside(t1,i) & inside(t2,i) -> before(t1,t2) | before(t2,t1) | t1 = t2)).
+(all i all t1 all t2 (inside(t1,i) & begins(t2,i) -> before(t2,t1))).
+(all i all t1 all t2 (inside(t1,i) & ends(t2,i) -> before(t1,t2))).
+end_of_list.
+
+% Reading from file c:\Users\torsten\GitHub\colore\ontologies
+
+
+============================== end of input ==========================
+
+% From the command line: assign(max_seconds, 600).
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all t all e (timeSpan(t,e) & Interval(t) -> during(e,t))) # label(non_clause).  [assumption].
+2 (all t all e (timeSpan(t,e) & Instant(t) -> atTime(e,t))) # label(non_clause).  [assumption].
+3 (all t1 all t2 all e (timeSpan(t1,e) & Interval(t1) & atTime(e,t2) -> inside(t2,t1) | begins(t2,t1) | ends(t2,t1))) # label(non_clause).  [assumption].
+4 (all t all t1 all e (timeSpan(t,e) & Instant(t) & atTime(e,t1) -> t = t1)) # label(non_clause).  [assumption].
+5 (all e all t (atTime(e,t) -> Instant(t))) # label(non_clause).  [assumption].
+6 (all e all t (during(e,t) -> Interval(t))) # label(non_clause).  [assumption].
+7 (all e all t1 all t2 (during(e,t1) & inside(t2,t1) -> atTime(e,t2))) # label(non_clause).  [assumption].
+8 (all e all t all t1 (during(e,t) & intDuring(t1,t) -> during(e,t1))) # label(non_clause).  [assumption].
+9 (all t all x (inside(t,x) -> Instant(t) & Interval(x))) # label(non_clause).  [assumption].
+10 (all t all x (beginsOrIn(t,x) <-> begins(t,x) | inside(t,x))) # label(non_clause).  [assumption].
+11 (all t all t1 all t2 all x (inside(t,x) & begins(t1,x) & ends(t2,x) & ProperInterval(x) -> before(t1,t) & before(t,t2))) # label(non_clause).  [assumption].
+12 (all t (Instant(t) -> TemporalEntity(t))) # label(non_clause).  [assumption].
+13 (all t (Interval(t) -> TemporalEntity(t))) # label(non_clause).  [assumption].
+14 (all t (TemporalEntity(t) -> Interval(t) | Instant(t))) # label(non_clause).  [assumption].
+15 (all t all x (begins(t,x) -> Instant(t) & TemporalEntity(x))) # label(non_clause).  [assumption].
+16 (all t all x (ends(t,x) -> Instant(t) & TemporalEntity(x))) # label(non_clause).  [assumption].
+17 (all t (Instant(t) <-> begins(t,t))) # label(non_clause).  [assumption].
+18 (all t (Instant(t) <-> ends(t,t))) # label(non_clause).  [assumption].
+19 (all x all t1 all t2 (TemporalEntity(x) & begins(t1,x) & begins(t2,x) -> t1 = t2)) # label(non_clause).  [assumption].
+20 (all x all t1 all t2 (TemporalEntity(x) & ends(t1,x) & ends(t2,x) -> t1 = t2)) # label(non_clause).  [assumption].
+21 (all x all t1 all t2 (timeBetween(x,t1,t2) -> TemporalEntity(x) & Instant(t1) & Instant(t2))) # label(non_clause).  [assumption].
+22 (all t1 all t2 (t1 != t2 -> (all x (timeBetween(x,t1,t2) <-> begins(t1,x) & ends(t2,x))))) # label(non_clause).  [assumption].
+23 (all x all t1 all t2 (Interval(x) & begins(t1,x) & ends(t2,x) -> -before(t2,t1))) # label(non_clause).  [assumption].
+24 (all x all t1 all t2 (ProperInterval(x) & begins(t1,x) & ends(t2,x) -> before(t1,t2))) # label(non_clause).  [assumption].
+25 (all t1 all t2 (Instant(t1) & Instant(t2) & before(t1,t2) -> (exists x timeBetween(x,t1,t2)))) # label(non_clause).  [assumption].
+26 (all x (ProperInterval(x) <-> Interval(x) & (all t1 all t2 (begins(t1,x) & ends(t2,x) -> t1 != t2)))) # label(non_clause).  [assumption].
+27 (all t1 all t2 (before(t1,t2) -> t1 != t2)) # label(non_clause).  [assumption].
+28 (all t1 all t2 (before(t1,t2) -> -before(t2,t1))) # label(non_clause).  [assumption].
+29 (all t1 all t2 all t3 (before(t1,t2) & before(t2,t3) -> before(t1,t3))) # label(non_clause).  [assumption].
+30 (all e (Eventuality(e) -> -TemporalEntity(e))) # label(non_clause).  [assumption].
+31 (all e all t (atTime(e,t) -> Eventuality(e))) # label(non_clause).  [assumption].
+32 (all e all t (during(e,t) -> Eventuality(e))) # label(non_clause).  [assumption].
+33 (all t all e (timeSpan(t,e) -> Eventuality(e) & TemporalEntity(t))) # label(non_clause).  [assumption].
+34 (all e all t (atTime(e,t) -> Instant(t))) # label(non_clause).  [assumption].
+35 (all e all t (during(e,t) -> Interval(t))) # label(non_clause).  [assumption].
+36 (all e all t1 all t2 (during(e,t1) & inside(t2,t1) -> atTime(e,t2))) # label(non_clause).  [assumption].
+37 (all e all t all t1 (during(e,t) & intDuring(t1,t) -> during(e,t1))) # label(non_clause).  [assumption].
+38 (all t all x (inside(t,x) -> Instant(t) & Interval(x))) # label(non_clause).  [assumption].
+39 (all t all x (beginsOrIn(t,x) <-> begins(t,x) | inside(t,x))) # label(non_clause).  [assumption].
+40 (all t all t1 all t2 all x (inside(t,x) & begins(t1,x) & ends(t2,x) & ProperInterval(x) -> before(t1,t) & before(t,t2))) # label(non_clause).  [assumption].
+41 (all t1 all t2 all i (inside(t1,i) & inside(t2,i) -> before(t1,t2) | before(t2,t1) | t1 = t2)) # label(non_clause).  [assumption].
+42 (all i all t1 all t2 (inside(t1,i) & begins(t2,i) -> before(t2,t1))) # label(non_clause).  [assumption].
+43 (all i all t1 all t2 (inside(t1,i) & ends(t2,i) -> before(t1,t2))) # label(non_clause).  [assumption].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-timeSpan(x,y) | -Interval(x) | during(y,x).  [clausify(1)].
+-timeSpan(x,y) | -Instant(x) | atTime(y,x).  [clausify(2)].
+-timeSpan(x,y) | -Interval(x) | -atTime(y,z) | inside(z,x) | begins(z,x) | ends(z,x).  [clausify(3)].
+-timeSpan(x,y) | -Instant(x) | -atTime(y,z) | z = x.  [clausify(4)].
+-atTime(x,y) | Instant(y).  [clausify(5)].
+-during(x,y) | Interval(y).  [clausify(6)].
+-during(x,y) | -inside(z,y) | atTime(x,z).  [clausify(7)].
+-during(x,y) | -intDuring(z,y) | during(x,z).  [clausify(8)].
+-inside(x,y) | Instant(x).  [clausify(9)].
+-inside(x,y) | Interval(y).  [clausify(9)].
+-beginsOrIn(x,y) | begins(x,y) | inside(x,y).  [clausify(10)].
+beginsOrIn(x,y) | -begins(x,y).  [clausify(10)].
+beginsOrIn(x,y) | -inside(x,y).  [clausify(10)].
+-inside(x,y) | -begins(z,y) | -ends(u,y) | -ProperInterval(y) | before(z,x).  [clausify(11)].
+-inside(x,y) | -begins(z,y) | -ends(u,y) | -ProperInterval(y) | before(x,u).  [clausify(11)].
+-Instant(x) | TemporalEntity(x).  [clausify(12)].
+-Interval(x) | TemporalEntity(x).  [clausify(13)].
+-TemporalEntity(x) | Interval(x) | Instant(x).  [clausify(14)].
+-begins(x,y) | Instant(x).  [clausify(15)].
+-begins(x,y) | TemporalEntity(y).  [clausify(15)].
+-ends(x,y) | Instant(x).  [clausify(16)].
+-ends(x,y) | TemporalEntity(y).  [clausify(16)].
+-Instant(x) | begins(x,x).  [clausify(17)].
+Instant(x) | -begins(x,x).  [clausify(17)].
+-Instant(x) | ends(x,x).  [clausify(18)].
+Instant(x) | -ends(x,x).  [clausify(18)].
+-TemporalEntity(x) | -begins(y,x) | -begins(z,x) | z = y.  [clausify(19)].
+-TemporalEntity(x) | -ends(y,x) | -ends(z,x) | z = y.  [clausify(20)].
+-timeBetween(x,y,z) | TemporalEntity(x).  [clausify(21)].
+-timeBetween(x,y,z) | Instant(y).  [clausify(21)].
+-timeBetween(x,y,z) | Instant(z).  [clausify(21)].
+x = y | -timeBetween(z,y,x) | begins(y,z).  [clausify(22)].
+x = y | -timeBetween(z,y,x) | ends(x,z).  [clausify(22)].
+x = y | timeBetween(z,y,x) | -begins(y,z) | -ends(x,z).  [clausify(22)].
+-Interval(x) | -begins(y,x) | -ends(z,x) | -before(z,y).  [clausify(23)].
+-ProperInterval(x) | -begins(y,x) | -ends(z,x) | before(y,z).  [clausify(24)].
+-Instant(x) | -Instant(y) | -before(x,y) | timeBetween(f1(x,y),x,y).  [clausify(25)].
+-ProperInterval(x) | Interval(x).  [clausify(26)].
+-ProperInterval(x) | -begins(y,x) | -ends(z,x) | z != y.  [clausify(26)].
+ProperInterval(x) | -Interval(x) | begins(f2(x),x).  [clausify(26)].
+ProperInterval(x) | -Interval(x) | ends(f3(x),x).  [clausify(26)].
+ProperInterval(x) | -Interval(x) | f3(x) = f2(x).  [clausify(26)].
+-before(x,y) | y != x.  [clausify(27)].
+-before(x,y) | -before(y,x).  [clausify(28)].
+-before(x,y) | -before(y,z) | before(x,z).  [clausify(29)].
+-Eventuality(x) | -TemporalEntity(x).  [clausify(30)].
+-atTime(x,y) | Eventuality(x).  [clausify(31)].
+-during(x,y) | Eventuality(x).  [clausify(32)].
+-timeSpan(x,y) | Eventuality(y).  [clausify(33)].
+-timeSpan(x,y) | TemporalEntity(x).  [clausify(33)].
+-atTime(x,y) | Instant(y).  [clausify(34)].
+-during(x,y) | Interval(y).  [clausify(35)].
+-during(x,y) | -inside(z,y) | atTime(x,z).  [clausify(36)].
+-during(x,y) | -intDuring(z,y) | during(x,z).  [clausify(37)].
+-inside(x,y) | Instant(x).  [clausify(38)].
+-inside(x,y) | Interval(y).  [clausify(38)].
+-beginsOrIn(x,y) | begins(x,y) | inside(x,y).  [clausify(39)].
+beginsOrIn(x,y) | -begins(x,y).  [clausify(39)].
+beginsOrIn(x,y) | -inside(x,y).  [clausify(39)].
+-inside(x,y) | -begins(z,y) | -ends(u,y) | -ProperInterval(y) | before(z,x).  [clausify(40)].
+-inside(x,y) | -begins(z,y) | -ends(u,y) | -ProperInterval(y) | before(x,u).  [clausify(40)].
+-inside(x,y) | -inside(z,y) | before(x,z) | before(z,x) | z = x.  [clausify(41)].
+-inside(x,y) | -begins(z,y) | before(z,x).  [clausify(42)].
+-inside(x,y) | -ends(z,y) | before(x,z).  [clausify(43)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating timeSpan/2
+
+Eliminating atTime/2
+44 -during(x,y) | -inside(z,y) | atTime(x,z).  [clausify(7)].
+45 -atTime(x,y) | Instant(y).  [clausify(5)].
+46 -atTime(x,y) | Eventuality(x).  [clausify(31)].
+47 -atTime(x,y) | Instant(y).  [clausify(34)].
+48 -during(x,y) | -inside(z,y) | atTime(x,z).  [clausify(36)].
+Derived: -during(x,y) | -inside(z,y) | Eventuality(x).  [resolve(48,c,46,a)].
+
+Eliminating Interval/1
+49 -Interval(x) | TemporalEntity(x).  [clausify(13)].
+50 -during(x,y) | Interval(y).  [clausify(6)].
+51 -inside(x,y) | Interval(y).  [clausify(9)].
+Derived: TemporalEntity(x) | -during(y,x).  [resolve(49,a,50,b)].
+Derived: TemporalEntity(x) | -inside(y,x).  [resolve(49,a,51,b)].
+52 -TemporalEntity(x) | Interval(x) | Instant(x).  [clausify(14)].
+53 -Interval(x) | -begins(y,x) | -ends(z,x) | -before(z,y).  [clausify(23)].
+Derived: -begins(x,y) | -ends(z,y) | -before(z,x) | -during(u,y).  [resolve(53,a,50,b)].
+Derived: -begins(x,y) | -ends(z,y) | -before(z,x) | -inside(u,y).  [resolve(53,a,51,b)].
+Derived: -begins(x,y) | -ends(z,y) | -before(z,x) | -TemporalEntity(y) | Instant(y).  [resolve(53,a,52,b)].
+54 -ProperInterval(x) | Interval(x).  [clausify(26)].
+Derived: -ProperInterval(x) | TemporalEntity(x).  [resolve(54,b,49,a)].
+Derived: -ProperInterval(x) | -begins(y,x) | -ends(z,x) | -before(z,y).  [resolve(54,b,53,a)].
+55 ProperInterval(x) | -Interval(x) | begins(f2(x),x).  [clausify(26)].
+Derived: ProperInterval(x) | begins(f2(x),x) | -during(y,x).  [resolve(55,b,50,b)].
+Derived: ProperInterval(x) | begins(f2(x),x) | -inside(y,x).  [resolve(55,b,51,b)].
+Derived: ProperInterval(x) | begins(f2(x),x) | -TemporalEntity(x) | Instant(x).  [resolve(55,b,52,b)].
+56 ProperInterval(x) | -Interval(x) | ends(f3(x),x).  [clausify(26)].
+Derived: ProperInterval(x) | ends(f3(x),x) | -during(y,x).  [resolve(56,b,50,b)].
+Derived: ProperInterval(x) | ends(f3(x),x) | -inside(y,x).  [resolve(56,b,51,b)].
+Derived: ProperInterval(x) | ends(f3(x),x) | -TemporalEntity(x) | Instant(x).  [resolve(56,b,52,b)].
+57 ProperInterval(x) | -Interval(x) | f3(x) = f2(x).  [clausify(26)].
+Derived: ProperInterval(x) | f3(x) = f2(x) | -during(y,x).  [resolve(57,b,50,b)].
+Derived: ProperInterval(x) | f3(x) = f2(x) | -inside(y,x).  [resolve(57,b,51,b)].
+Derived: ProperInterval(x) | f3(x) = f2(x) | -TemporalEntity(x) | Instant(x).  [resolve(57,b,52,b)].
+58 -during(x,y) | Interval(y).  [clausify(35)].
+59 -inside(x,y) | Interval(y).  [clausify(38)].
+
+Eliminating intDuring/2
+
+Eliminating beginsOrIn/2
+60 beginsOrIn(x,y) | -begins(x,y).  [clausify(10)].
+61 -beginsOrIn(x,y) | begins(x,y) | inside(x,y).  [clausify(10)].
+62 beginsOrIn(x,y) | -inside(x,y).  [clausify(10)].
+63 -beginsOrIn(x,y) | begins(x,y) | inside(x,y).  [clausify(39)].
+64 beginsOrIn(x,y) | -begins(x,y).  [clausify(39)].
+65 beginsOrIn(x,y) | -inside(x,y).  [clausify(39)].
+
+Eliminating ProperInterval/1
+66 ProperInterval(x) | begins(f2(x),x) | -during(y,x).  [resolve(55,b,50,b)].
+67 -inside(x,y) | -begins(z,y) | -ends(u,y) | -ProperInterval(y) | before(z,x).  [clausify(11)].
+68 -inside(x,y) | -begins(z,y) | -ends(u,y) | -ProperInterval(y) | before(x,u).  [clausify(11)].
+69 -ProperInterval(x) | -begins(y,x) | -ends(z,x) | before(y,z).  [clausify(24)].
+70 -ProperInterval(x) | -begins(y,x) | -ends(z,x) | z != y.  [clausify(26)].
+71 -inside(x,y) | -begins(z,y) | -ends(u,y) | -ProperInterval(y) | before(z,x).  [clausify(40)].
+72 -inside(x,y) | -begins(z,y) | -ends(u,y) | -ProperInterval(y) | before(x,u).  [clausify(40)].
+73 -ProperInterval(x) | TemporalEntity(x).  [resolve(54,b,49,a)].
+74 -ProperInterval(x) | -begins(y,x) | -ends(z,x) | -before(z,y).  [resolve(54,b,53,a)].
+Derived: begins(f2(x),x) | -during(y,x) | -inside(z,x) | -begins(u,x) | -ends(w,x) | before(u,z).  [resolve(66,a,67,d)].
+Derived: begins(f2(x),x) | -during(y,x) | -inside(z,x) | -begins(u,x) | -ends(w,x) | before(z,w).  [resolve(66,a,68,d)].
+Derived: begins(f2(x),x) | -during(y,x) | -begins(z,x) | -ends(u,x) | before(z,u).  [resolve(66,a,69,a)].
+Derived: begins(f2(x),x) | -during(y,x) | -begins(z,x) | -ends(u,x) | u != z.  [resolve(66,a,70,a)].
+Derived: begins(f2(x),x) | -during(y,x) | TemporalEntity(x).  [resolve(66,a,73,a)].
+Derived: begins(f2(x),x) | -during(y,x) | -begins(z,x) | -ends(u,x) | -before(u,z).  [resolve(66,a,74,a)].
+75 ProperInterval(x) | begins(f2(x),x) | -inside(y,x).  [resolve(55,b,51,b)].
+Derived: begins(f2(x),x) | -inside(y,x) | -inside(z,x) | -begins(u,x) | -ends(w,x) | before(u,z).  [resolve(75,a,67,d)].
+Derived: begins(f2(x),x) | -inside(y,x) | -inside(z,x) | -begins(u,x) | -ends(w,x) | before(z,w).  [resolve(75,a,68,d)].
+Derived: begins(f2(x),x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | before(z,u).  [resolve(75,a,69,a)].
+Derived: begins(f2(x),x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | u != z.  [resolve(75,a,70,a)].
+Derived: begins(f2(x),x) | -inside(y,x) | TemporalEntity(x).  [resolve(75,a,73,a)].
+Derived: begins(f2(x),x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | -before(u,z).  [resolve(75,a,74,a)].
+76 ProperInterval(x) | begins(f2(x),x) | -TemporalEntity(x) | Instant(x).  [resolve(55,b,52,b)].
+Derived: begins(f2(x),x) | -TemporalEntity(x) | Instant(x) | -begins(y,x) | -ends(z,x) | before(y,z).  [resolve(76,a,69,a)].
+Derived: begins(f2(x),x) | -TemporalEntity(x) | Instant(x) | -begins(y,x) | -ends(z,x) | z != y.  [resolve(76,a,70,a)].
+Derived: begins(f2(x),x) | -TemporalEntity(x) | Instant(x) | -begins(y,x) | -ends(z,x) | -before(z,y).  [resolve(76,a,74,a)].
+77 ProperInterval(x) | ends(f3(x),x) | -during(y,x).  [resolve(56,b,50,b)].
+Derived: ends(f3(x),x) | -during(y,x) | -inside(z,x) | -begins(u,x) | -ends(w,x) | before(u,z).  [resolve(77,a,67,d)].
+Derived: ends(f3(x),x) | -during(y,x) | -inside(z,x) | -begins(u,x) | -ends(w,x) | before(z,w).  [resolve(77,a,68,d)].
+Derived: ends(f3(x),x) | -during(y,x) | -begins(z,x) | -ends(u,x) | before(z,u).  [resolve(77,a,69,a)].
+Derived: ends(f3(x),x) | -during(y,x) | -begins(z,x) | -ends(u,x) | u != z.  [resolve(77,a,70,a)].
+Derived: ends(f3(x),x) | -during(y,x) | TemporalEntity(x).  [resolve(77,a,73,a)].
+Derived: ends(f3(x),x) | -during(y,x) | -begins(z,x) | -ends(u,x) | -before(u,z).  [resolve(77,a,74,a)].
+78 ProperInterval(x) | ends(f3(x),x) | -inside(y,x).  [resolve(56,b,51,b)].
+Derived: ends(f3(x),x) | -inside(y,x) | -inside(z,x) | -begins(u,x) | -ends(w,x) | before(u,z).  [resolve(78,a,67,d)].
+Derived: ends(f3(x),x) | -inside(y,x) | -inside(z,x) | -begins(u,x) | -ends(w,x) | before(z,w).  [resolve(78,a,68,d)].
+Derived: ends(f3(x),x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | before(z,u).  [resolve(78,a,69,a)].
+Derived: ends(f3(x),x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | u != z.  [resolve(78,a,70,a)].
+Derived: ends(f3(x),x) | -inside(y,x) | TemporalEntity(x).  [resolve(78,a,73,a)].
+Derived: ends(f3(x),x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | -before(u,z).  [resolve(78,a,74,a)].
+79 ProperInterval(x) | ends(f3(x),x) | -TemporalEntity(x) | Instant(x).  [resolve(56,b,52,b)].
+Derived: ends(f3(x),x) | -TemporalEntity(x) | Instant(x) | -begins(y,x) | -ends(z,x) | before(y,z).  [resolve(79,a,69,a)].
+Derived: ends(f3(x),x) | -TemporalEntity(x) | Instant(x) | -begins(y,x) | -ends(z,x) | z != y.  [resolve(79,a,70,a)].
+Derived: ends(f3(x),x) | -TemporalEntity(x) | Instant(x) | -begins(y,x) | -ends(z,x) | -before(z,y).  [resolve(79,a,74,a)].
+80 ProperInterval(x) | f3(x) = f2(x) | -during(y,x).  [resolve(57,b,50,b)].
+Derived: f3(x) = f2(x) | -during(y,x) | -inside(z,x) | -begins(u,x) | -ends(w,x) | before(u,z).  [resolve(80,a,67,d)].
+Derived: f3(x) = f2(x) | -during(y,x) | -inside(z,x) | -begins(u,x) | -ends(w,x) | before(z,w).  [resolve(80,a,68,d)].
+Derived: f3(x) = f2(x) | -during(y,x) | -begins(z,x) | -ends(u,x) | before(z,u).  [resolve(80,a,69,a)].
+Derived: f3(x) = f2(x) | -during(y,x) | -begins(z,x) | -ends(u,x) | u != z.  [resolve(80,a,70,a)].
+Derived: f3(x) = f2(x) | -during(y,x) | TemporalEntity(x).  [resolve(80,a,73,a)].
+Derived: f3(x) = f2(x) | -during(y,x) | -begins(z,x) | -ends(u,x) | -before(u,z).  [resolve(80,a,74,a)].
+81 ProperInterval(x) | f3(x) = f2(x) | -inside(y,x).  [resolve(57,b,51,b)].
+Derived: f3(x) = f2(x) | -inside(y,x) | -inside(z,x) | -begins(u,x) | -ends(w,x) | before(u,z).  [resolve(81,a,67,d)].
+Derived: f3(x) = f2(x) | -inside(y,x) | -inside(z,x) | -begins(u,x) | -ends(w,x) | before(z,w).  [resolve(81,a,68,d)].
+Derived: f3(x) = f2(x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | before(z,u).  [resolve(81,a,69,a)].
+Derived: f3(x) = f2(x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | u != z.  [resolve(81,a,70,a)].
+Derived: f3(x) = f2(x) | -inside(y,x) | TemporalEntity(x).  [resolve(81,a,73,a)].
+Derived: f3(x) = f2(x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | -before(u,z).  [resolve(81,a,74,a)].
+82 ProperInterval(x) | f3(x) = f2(x) | -TemporalEntity(x) | Instant(x).  [resolve(57,b,52,b)].
+Derived: f3(x) = f2(x) | -TemporalEntity(x) | Instant(x) | -begins(y,x) | -ends(z,x) | before(y,z).  [resolve(82,a,69,a)].
+Derived: f3(x) = f2(x) | -TemporalEntity(x) | Instant(x) | -begins(y,x) | -ends(z,x) | z != y.  [resolve(82,a,70,a)].
+Derived: f3(x) = f2(x) | -TemporalEntity(x) | Instant(x) | -begins(y,x) | -ends(z,x) | -before(z,y).  [resolve(82,a,74,a)].
+
+Eliminating TemporalEntity/1
+83 -TemporalEntity(x) | -begins(y,x) | -begins(z,x) | z = y.  [clausify(19)].
+84 -Instant(x) | TemporalEntity(x).  [clausify(12)].
+85 -begins(x,y) | TemporalEntity(y).  [clausify(15)].
+86 -ends(x,y) | TemporalEntity(y).  [clausify(16)].
+Derived: -begins(x,y) | -begins(z,y) | z = x | -Instant(y).  [resolve(83,a,84,b)].
+Derived: -begins(x,y) | -begins(z,y) | z = x | -begins(u,y).  [resolve(83,a,85,b)].
+87 -TemporalEntity(x) | -ends(y,x) | -ends(z,x) | z = y.  [clausify(20)].
+Derived: -ends(x,y) | -ends(z,y) | z = x | -Instant(y).  [resolve(87,a,84,b)].
+Derived: -ends(x,y) | -ends(z,y) | z = x | -begins(u,y).  [resolve(87,a,85,b)].
+Derived: -ends(x,y) | -ends(z,y) | z = x | -ends(u,y).  [resolve(87,a,86,b)].
+88 -timeBetween(x,y,z) | TemporalEntity(x).  [clausify(21)].
+89 -Eventuality(x) | -TemporalEntity(x).  [clausify(30)].
+Derived: -Eventuality(x) | -Instant(x).  [resolve(89,b,84,b)].
+Derived: -Eventuality(x) | -begins(y,x).  [resolve(89,b,85,b)].
+Derived: -Eventuality(x) | -ends(y,x).  [resolve(89,b,86,b)].
+Derived: -Eventuality(x) | -timeBetween(x,y,z).  [resolve(89,b,88,b)].
+90 TemporalEntity(x) | -during(y,x).  [resolve(49,a,50,b)].
+Derived: -during(x,y) | -Eventuality(y).  [resolve(90,a,89,b)].
+91 TemporalEntity(x) | -inside(y,x).  [resolve(49,a,51,b)].
+Derived: -inside(x,y) | -Eventuality(y).  [resolve(91,a,89,b)].
+92 -begins(x,y) | -ends(z,y) | -before(z,x) | -TemporalEntity(y) | Instant(y).  [resolve(53,a,52,b)].
+Derived: -begins(x,y) | -ends(z,y) | -before(z,x) | Instant(y) | -begins(u,y).  [resolve(92,d,85,b)].
+93 begins(f2(x),x) | -during(y,x) | TemporalEntity(x).  [resolve(66,a,73,a)].
+94 begins(f2(x),x) | -inside(y,x) | TemporalEntity(x).  [resolve(75,a,73,a)].
+95 begins(f2(x),x) | -TemporalEntity(x) | Instant(x) | -begins(y,x) | -ends(z,x) | before(y,z).  [resolve(76,a,69,a)].
+Derived: begins(f2(x),x) | Instant(x) | -begins(y,x) | -ends(z,x) | before(y,z) | -begins(u,x).  [resolve(95,b,85,b)].
+96 begins(f2(x),x) | -TemporalEntity(x) | Instant(x) | -begins(y,x) | -ends(z,x) | z != y.  [resolve(76,a,70,a)].
+Derived: begins(f2(x),x) | Instant(x) | -begins(y,x) | -ends(z,x) | z != y | -begins(u,x).  [resolve(96,b,85,b)].
+97 begins(f2(x),x) | -TemporalEntity(x) | Instant(x) | -begins(y,x) | -ends(z,x) | -before(z,y).  [resolve(76,a,74,a)].
+98 ends(f3(x),x) | -during(y,x) | TemporalEntity(x).  [resolve(77,a,73,a)].
+99 ends(f3(x),x) | -inside(y,x) | TemporalEntity(x).  [resolve(78,a,73,a)].
+100 ends(f3(x),x) | -TemporalEntity(x) | Instant(x) | -begins(y,x) | -ends(z,x) | before(y,z).  [resolve(79,a,69,a)].
+Derived: ends(f3(x),x) | Instant(x) | -begins(y,x) | -ends(z,x) | before(y,z) | -begins(u,x).  [resolve(100,b,85,b)].
+101 ends(f3(x),x) | -TemporalEntity(x) | Instant(x) | -begins(y,x) | -ends(z,x) | z != y.  [resolve(79,a,70,a)].
+Derived: ends(f3(x),x) | Instant(x) | -begins(y,x) | -ends(z,x) | z != y | -begins(u,x).  [resolve(101,b,85,b)].
+102 ends(f3(x),x) | -TemporalEntity(x) | Instant(x) | -begins(y,x) | -ends(z,x) | -before(z,y).  [resolve(79,a,74,a)].
+103 f3(x) = f2(x) | -during(y,x) | TemporalEntity(x).  [resolve(80,a,73,a)].
+104 f3(x) = f2(x) | -inside(y,x) | TemporalEntity(x).  [resolve(81,a,73,a)].
+105 f3(x) = f2(x) | -TemporalEntity(x) | Instant(x) | -begins(y,x) | -ends(z,x) | before(y,z).  [resolve(82,a,69,a)].
+Derived: f3(x) = f2(x) | Instant(x) | -begins(y,x) | -ends(z,x) | before(y,z) | -begins(u,x).  [resolve(105,b,85,b)].
+106 f3(x) = f2(x) | -TemporalEntity(x) | Instant(x) | -begins(y,x) | -ends(z,x) | z != y.  [resolve(82,a,70,a)].
+Derived: f3(x) = f2(x) | Instant(x) | -begins(y,x) | -ends(z,x) | z != y | -begins(u,x).  [resolve(106,b,85,b)].
+107 f3(x) = f2(x) | -TemporalEntity(x) | Instant(x) | -begins(y,x) | -ends(z,x) | -before(z,y).  [resolve(82,a,74,a)].
+
+Eliminating timeBetween/3
+108 x = y | timeBetween(z,y,x) | -begins(y,z) | -ends(x,z).  [clausify(22)].
+109 -timeBetween(x,y,z) | Instant(y).  [clausify(21)].
+110 -timeBetween(x,y,z) | Instant(z).  [clausify(21)].
+111 x = y | -timeBetween(z,y,x) | begins(y,z).  [clausify(22)].
+112 x = y | -timeBetween(z,y,x) | ends(x,z).  [clausify(22)].
+Derived: x = y | -begins(y,z) | -ends(x,z) | Instant(y).  [resolve(108,b,109,a)].
+Derived: x = y | -begins(y,z) | -ends(x,z) | Instant(x).  [resolve(108,b,110,a)].
+113 -Instant(x) | -Instant(y) | -before(x,y) | timeBetween(f1(x,y),x,y).  [clausify(25)].
+Derived: -Instant(x) | -Instant(y) | -before(x,y) | y = x | begins(x,f1(x,y)).  [resolve(113,d,111,b)].
+Derived: -Instant(x) | -Instant(y) | -before(x,y) | y = x | ends(y,f1(x,y)).  [resolve(113,d,112,b)].
+114 -Eventuality(x) | -timeBetween(x,y,z).  [resolve(89,b,88,b)].
+Derived: -Eventuality(x) | y = z | -begins(z,x) | -ends(y,x).  [resolve(114,b,108,b)].
+Derived: -Eventuality(f1(x,y)) | -Instant(x) | -Instant(y) | -before(x,y).  [resolve(114,b,113,d)].
+
+Eliminating during/2
+
+============================== end predicate elimination =============
+
+Auto_denials:  (non-Horn, no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ =, Instant, Eventuality, begins, ends, inside, before ]).
+Function symbol precedence:  function_order([ f1, f2, f3 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(paramodulation).  % (positive equality literals)
+    % set(paramodulation) -> set(back_demod).
+  % set(binary_resolution).  % (non-Horn)
+  % set(positive_inference). % (non-Horn)
+    % set(positive_inference) -> assign(literal_selection, max_negative).
+  % set(neg_ur_resolution).  % (non-Horn, less than 100 clauses)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(back_unit_deletion).  % (non-Horn)
+    % set(back_unit_deletion) -> set(unit_deletion).
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+% Clauses after input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+115 -inside(x,y) | Instant(x).  [clausify(9)].
+116 -begins(x,y) | Instant(x).  [clausify(15)].
+117 -ends(x,y) | Instant(x).  [clausify(16)].
+118 -Instant(x) | begins(x,x).  [clausify(17)].
+119 -Instant(x) | ends(x,x).  [clausify(18)].
+120 -before(x,y) | y != x.  [clausify(27)].
+121 -before(x,y) | -before(y,x).  [clausify(28)].
+122 -before(x,y) | -before(y,z) | before(x,z).  [clausify(29)].
+123 -inside(x,y) | -inside(z,y) | before(x,z) | before(z,x) | z = x.  [clausify(41)].
+124 -inside(x,y) | -begins(z,y) | before(z,x).  [clausify(42)].
+125 -inside(x,y) | -ends(z,y) | before(x,z).  [clausify(43)].
+126 -begins(x,y) | -ends(z,y) | -before(z,x) | -inside(u,y).  [resolve(53,a,51,b)].
+127 begins(f2(x),x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | before(z,u).  [resolve(75,a,69,a)].
+128 begins(f2(x),x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | u != z.  [resolve(75,a,70,a)].
+129 ends(f3(x),x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | before(z,u).  [resolve(78,a,69,a)].
+130 ends(f3(x),x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | u != z.  [resolve(78,a,70,a)].
+131 f3(x) = f2(x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | before(z,u).  [resolve(81,a,69,a)].
+132 f3(x) = f2(x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | u != z.  [resolve(81,a,70,a)].
+138 -Eventuality(x) | -Instant(x).  [resolve(89,b,84,b)].
+139 -Eventuality(x) | -begins(y,x).  [resolve(89,b,85,b)].
+140 -Eventuality(x) | -ends(y,x).  [resolve(89,b,86,b)].
+141 -inside(x,y) | -Eventuality(y).  [resolve(91,a,89,b)].
+149 -Instant(x) | -Instant(y) | -before(x,y) | y = x | begins(x,f1(x,y)).  [resolve(113,d,111,b)].
+150 -Instant(x) | -Instant(y) | -before(x,y) | y = x | ends(y,f1(x,y)).  [resolve(113,d,112,b)].
+151 -Eventuality(f1(x,y)) | -Instant(x) | -Instant(y) | -before(x,y).  [resolve(114,b,113,d)].
+152 -before(x,x).  [factor(121,a,b)].
+153 -begins(x,y) | -begins(z,y) | z = x.  [factor(134,a,d)].
+154 -ends(x,y) | -ends(z,y) | z = x.  [factor(137,a,d)].
+155 -begins(x,y) | -ends(z,y) | -before(z,x) | Instant(y).  [factor(142,a,e)].
+156 begins(f2(x),x) | Instant(x) | -begins(y,x) | -ends(z,x) | before(y,z).  [factor(143,c,f)].
+157 begins(f2(x),x) | Instant(x) | -begins(y,x) | -ends(z,x) | z != y.  [factor(144,c,f)].
+158 ends(f3(x),x) | Instant(x) | -begins(y,x) | -ends(z,x) | before(y,z).  [factor(145,c,f)].
+159 ends(f3(x),x) | Instant(x) | -begins(y,x) | -ends(z,x) | z != y.  [factor(146,c,f)].
+160 f3(x) = f2(x) | Instant(x) | -begins(y,x) | -ends(z,x) | before(y,z).  [factor(147,c,f)].
+161 f3(x) = f2(x) | Instant(x) | -begins(y,x) | -ends(z,x) | z != y.  [factor(148,c,f)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.00 seconds.
+
+given #1 (I,wt=5): 115 -inside(x,y) | Instant(x).  [clausify(9)].
+
+given #2 (I,wt=5): 116 -begins(x,y) | Instant(x).  [clausify(15)].
+
+given #3 (I,wt=5): 117 -ends(x,y) | Instant(x).  [clausify(16)].
+
+given #4 (I,wt=5): 118 -Instant(x) | begins(x,x).  [clausify(17)].
+
+given #5 (I,wt=5): 119 -Instant(x) | ends(x,x).  [clausify(18)].
+
+given #6 (I,wt=6): 120 -before(x,y) | y != x.  [clausify(27)].
+
+given #7 (I,wt=6): 121 -before(x,y) | -before(y,x).  [clausify(28)].
+
+given #8 (I,wt=9): 122 -before(x,y) | -before(y,z) | before(x,z).  [clausify(29)].
+
+given #9 (I,wt=15): 123 -inside(x,y) | -inside(z,y) | before(x,z) | before(z,x) | z = x.  [clausify(41)].
+
+given #10 (I,wt=9): 124 -inside(x,y) | -begins(z,y) | before(z,x).  [clausify(42)].
+
+given #11 (I,wt=9): 125 -inside(x,y) | -ends(z,y) | before(x,z).  [clausify(43)].
+
+given #12 (I,wt=12): 126 -begins(x,y) | -ends(z,y) | -before(z,x) | -inside(u,y).  [resolve(53,a,51,b)].
+
+given #13 (I,wt=16): 127 begins(f2(x),x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | before(z,u).  [resolve(75,a,69,a)].
+
+given #14 (I,wt=16): 128 begins(f2(x),x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | u != z.  [resolve(75,a,70,a)].
+
+given #15 (I,wt=16): 129 ends(f3(x),x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | before(z,u).  [resolve(78,a,69,a)].
+
+given #16 (I,wt=16): 130 ends(f3(x),x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | u != z.  [resolve(78,a,70,a)].
+
+given #17 (I,wt=17): 131 f3(x) = f2(x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | before(z,u).  [resolve(81,a,69,a)].
+
+given #18 (I,wt=17): 132 f3(x) = f2(x) | -inside(y,x) | -begins(z,x) | -ends(u,x) | u != z.  [resolve(81,a,70,a)].
+
+given #19 (I,wt=4): 138 -Eventuality(x) | -Instant(x).  [resolve(89,b,84,b)].
+
+given #20 (I,wt=5): 139 -Eventuality(x) | -begins(y,x).  [resolve(89,b,85,b)].
+
+given #21 (I,wt=5): 140 -Eventuality(x) | -ends(y,x).  [resolve(89,b,86,b)].
+
+given #22 (I,wt=5): 141 -inside(x,y) | -Eventuality(y).  [resolve(91,a,89,b)].
+
+given #23 (I,wt=15): 149 -Instant(x) | -Instant(y) | -before(x,y) | y = x | begins(x,f1(x,y)).  [resolve(113,d,111,b)].
+
+given #24 (I,wt=15): 150 -Instant(x) | -Instant(y) | -before(x,y) | y = x | ends(y,f1(x,y)).  [resolve(113,d,112,b)].
+
+given #25 (I,wt=11): 151 -Eventuality(f1(x,y)) | -Instant(x) | -Instant(y) | -before(x,y).  [resolve(114,b,113,d)].
+
+given #26 (I,wt=3): 152 -before(x,x).  [factor(121,a,b)].
+
+given #27 (I,wt=9): 153 -begins(x,y) | -begins(z,y) | z = x.  [factor(134,a,d)].
+
+given #28 (I,wt=9): 154 -ends(x,y) | -ends(z,y) | z = x.  [factor(137,a,d)].
+
+given #29 (I,wt=11): 155 -begins(x,y) | -ends(z,y) | -before(z,x) | Instant(y).  [factor(142,a,e)].
+
+given #30 (I,wt=15): 156 begins(f2(x),x) | Instant(x) | -begins(y,x) | -ends(z,x) | before(y,z).  [factor(143,c,f)].
+
+given #31 (I,wt=15): 157 begins(f2(x),x) | Instant(x) | -begins(y,x) | -ends(z,x) | z != y.  [factor(144,c,f)].
+
+given #32 (I,wt=15): 158 ends(f3(x),x) | Instant(x) | -begins(y,x) | -ends(z,x) | before(y,z).  [factor(145,c,f)].
+
+given #33 (I,wt=15): 159 ends(f3(x),x) | Instant(x) | -begins(y,x) | -ends(z,x) | z != y.  [factor(146,c,f)].
+
+given #34 (I,wt=16): 160 f3(x) = f2(x) | Instant(x) | -begins(y,x) | -ends(z,x) | before(y,z).  [factor(147,c,f)].
+
+given #35 (I,wt=16): 161 f3(x) = f2(x) | Instant(x) | -begins(y,x) | -ends(z,x) | z != y.  [factor(148,c,f)].
+
+============================== STATISTICS ============================
+
+Given=35. Generated=78. Kept=47. proofs=0.
+Usable=35. Sos=0. Demods=0. Limbo=0, Disabled=162. Hints=0.
+Weight_deleted=0. Literals_deleted=0.
+Forward_subsumed=31. Back_subsumed=12.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=59. Nonunit_bsub_feature_tests=93.
+Megabytes=0.19.
+User_CPU=0.00, System_CPU=0.01, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+SEARCH FAILED
+
+SEARCH FAILED
+
+Exiting with failure.
+
+------ process 14240 exit (sos_empty) ------
+
+Process 14240 exit (sos_empty) Mon Mar 15 05:08:30 2021
+
+========================== MACLEOD SUMMARY ===========================
+reasoner: C:/Users/torsten/macleod/prover9
+status: 
+execution finished: Mon Mar 15 05:08:34 2021
+total CPU time used: 0
+The command was "C:/Users/torsten/macleod/prover9 -t600 -f C:\Users\torsten\GitHub\colore\ontologies\owltime\conversions\owltime_modular.all.p9 c:\Users\torsten\GitHub\colore\ontologies"
+============================ end of footer ===========================
