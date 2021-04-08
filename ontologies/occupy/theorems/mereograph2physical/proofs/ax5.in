@@ -1,0 +1,42 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%mereograph
+all x all y (adj(x, y) -> adj(y, x)).
+
+all x (adj(x, x)).
+
+all x (leq(x, x)).
+
+all x all y all z ((leq(x, y) & leq(y, z)) -> leq(x, z)).
+
+all x all y ((leq(x, y) & leq(y, x)) -> (x = y)).
+
+all x all y  (leq(x, y) -> (all z (adj(x, z) -> adj(z, y)))).
+
+%Pi6
+all x (physical_object(x) <-> (x = x)).
+
+all x all y (physical_part(x, y) <-> leq(x, y)).
+
+all x all y (physical_C(x, y) <-> adj(x, y)).
+
+end_of_list.
+
+formulas(goals).
+
+all x all y	all z ((physical_part(x, y) & physical_part(y, z)) -> physical_part(x, z)).
+
+end_of_list.
+
