@@ -1,0 +1,31 @@
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.03) seconds.
+% Length of proof is 19.
+% Level of proof is 5.
+% Maximum clause weight is 6.
+% Given clauses 17.
+
+2 (all x all y (occupies(x,y) -> physical_object(x) & region(y))) # label(non_clause).  [assumption].
+4 (all x (physical_object(x) -> (exists y occupies(x,y)))) # label(non_clause).  [assumption].
+6 (all x (point(x) <-> physical_object(x))) # label(non_clause).  [assumption].
+7 (all x (line(x) <-> region(x))) # label(non_clause).  [assumption].
+10 (all x all y (in(x,y) <-> occupies(x,y) | occupies(y,x) | x = y)) # label(non_clause).  [assumption].
+11 (all p (point(p) -> (exists l (line(l) & in(p,l))))) # label(non_clause) # label(goal).  [goal].
+12 -occupies(x,y) | region(y).  [clausify(2)].
+15 line(x) | -region(x).  [clausify(7)].
+16 -physical_object(x) | occupies(x,f1(x)).  [clausify(4)].
+18 -point(x) | physical_object(x).  [clausify(6)].
+27 -point(x) | occupies(x,f1(x)).  [resolve(18,b,16,a)].
+28 point(c1).  [deny(11)].
+34 in(x,y) | -occupies(x,y).  [clausify(10)].
+37 -line(x) | -in(c1,x).  [deny(11)].
+38 line(x) | -occupies(y,x).  [resolve(15,b,12,b)].
+42 occupies(c1,f1(c1)).  [resolve(27,a,28,a)].
+48 line(f1(c1)).  [resolve(42,a,38,b)].
+50 in(c1,f1(c1)).  [resolve(42,a,34,b)].
+52 $F.  [ur(37,a,48,a),unit_del(a,50)].
+
+============================== end of proof ==========================

@@ -1,0 +1,54 @@
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.05 (+ 0.00) seconds.
+% Length of proof is 42.
+% Level of proof is 10.
+% Maximum clause weight is 9.
+% Given clauses 23.
+
+1 (all x (region(x) -> -physical_object(x))) # label(non_clause).  [assumption].
+2 (all x all y (occupies(x,y) -> physical_object(x) & region(y))) # label(non_clause).  [assumption].
+3 (all x all y all z (occupies(x,y) & occupies(x,z) -> y = z)) # label(non_clause).  [assumption].
+4 (all x (physical_object(x) -> (exists y occupies(x,y)))) # label(non_clause).  [assumption].
+6 (all x (point(x) <-> physical_object(x))) # label(non_clause).  [assumption].
+7 (all x (line(x) <-> region(x))) # label(non_clause).  [assumption].
+10 (all x all y (in(x,y) <-> occupies(x,y) | occupies(y,x) | x = y)) # label(non_clause).  [assumption].
+11 (all l1 all l2 all p (line(l1) & line(l2) & point(p) & in(p,l1) & in(p,l2) -> l1 = l2)) # label(non_clause) # label(goal).  [goal].
+13 -region(x) | -physical_object(x).  [clausify(1)].
+14 -line(x) | region(x).  [clausify(7)].
+16 -physical_object(x) | occupies(x,f1(x)).  [clausify(4)].
+17 -occupies(x,y) | physical_object(x).  [clausify(2)].
+18 -point(x) | physical_object(x).  [clausify(6)].
+21 -line(x) | -physical_object(x).  [resolve(14,b,13,a)].
+28 -in(x,y) | occupies(x,y) | occupies(y,x) | y = x.  [clausify(10)].
+31 in(c3,c1).  [deny(11)].
+32 in(c3,c2).  [deny(11)].
+33 -line(x) | -occupies(x,y).  [resolve(21,b,17,b)].
+34 line(c1).  [deny(11)].
+35 line(c2).  [deny(11)].
+37 -line(x) | -point(x).  [resolve(21,b,18,b)].
+38 -occupies(x,y) | -occupies(x,z) | z = y.  [clausify(3)].
+39 point(c3).  [deny(11)].
+40 c2 != c1.  [deny(11)].
+42 -point(x) | occupies(x,f1(x)).  [resolve(18,b,16,a)].
+46 occupies(c3,c1) | occupies(c1,c3) | c1 = c3.  [resolve(31,a,28,a)].
+47 occupies(c3,c1) | occupies(c1,c3) | c3 = c1.  [copy(46),flip(c)].
+48 occupies(c3,c2) | occupies(c2,c3) | c2 = c3.  [resolve(32,a,28,a)].
+49 occupies(c3,c2) | occupies(c2,c3) | c3 = c2.  [copy(48),flip(c)].
+50 -occupies(c1,x).  [resolve(33,a,34,a)].
+51 -occupies(c2,x).  [resolve(33,a,35,a)].
+53 -point(c2).  [resolve(37,a,35,a)].
+55 occupies(c3,c1) | c3 = c1.  [back_unit_del(47),unit_del(b,50)].
+56 occupies(c3,c2) | c3 = c2.  [back_unit_del(49),unit_del(b,51)].
+57 occupies(c3,f1(c3)).  [resolve(42,a,39,a)].
+63 -occupies(c3,x) | f1(c3) = x.  [resolve(57,a,38,b)].
+64 f1(c3) = c2 | c3 = c2.  [resolve(63,a,56,a)].
+65 f1(c3) = c1 | c3 = c1.  [resolve(63,a,55,a)].
+66 c3 = c1 | c3 = c2.  [para(65(a,1),64(a,1)),flip(b),unit_del(b,40)].
+67 c3 = c1.  [para(66(b,1),39(a,1)),unit_del(b,53)].
+68 f1(c1) = c2.  [back_rewrite(64),rewrite([67(1),67(5)]),flip(b),unit_del(b,40)].
+70 $F.  [back_rewrite(57),rewrite([67(1),67(2),68(3)]),unit_del(a,50)].
+
+============================== end of proof ==========================
