@@ -1,0 +1,63 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 8504 was started by Bahar on Bahar-THINK,
+Tue Apr 13 15:36:06 2021
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.03) seconds.
+% Length of proof is 43.
+% Level of proof is 10.
+% Maximum clause weight is 12.
+% Given clauses 73.
+
+5 (all x all y (physical_part(x,y) -> physical_object(x) & physical_object(y))) # label(non_clause).  [assumption].
+6 (all x (physical_object(x) -> physical_part(x,x))) # label(non_clause).  [assumption].
+9 (all x (region(x) -> -physical_object(x))) # label(non_clause).  [assumption].
+10 (all x all y (occupies(x,y) -> physical_object(x) & region(y))) # label(non_clause).  [assumption].
+14 (all x (point(x) <-> physical_object(x))) # label(non_clause).  [assumption].
+15 (all x (line(x) <-> region(x))) # label(non_clause).  [assumption].
+18 (all x all y (in(x,y) <-> occupies(x,y) | occupies(y,x) | x = y)) # label(non_clause).  [assumption].
+19 (all x all y (occupies(x,y) <-> in(x,y) & point(x) & line(y))) # label(non_clause) # label(goal).  [goal].
+23 -region(x) | -physical_object(x).  [clausify(9)].
+24 -occupies(x,y) | region(y).  [clausify(10)].
+25 -line(x) | region(x).  [clausify(15)].
+26 line(x) | -region(x).  [clausify(15)].
+27 -physical_object(x) | physical_part(x,x).  [clausify(6)].
+28 -physical_part(x,y) | physical_object(x).  [clausify(5)].
+30 -occupies(x,y) | physical_object(x).  [clausify(10)].
+32 -point(x) | physical_object(x).  [clausify(14)].
+33 point(x) | -physical_object(x).  [clausify(14)].
+37 -line(x) | -physical_object(x).  [resolve(25,b,23,a)].
+48 -in(x,y) | occupies(x,y) | occupies(y,x) | y = x.  [clausify(18)].
+49 in(x,y) | -occupies(x,y).  [clausify(18)].
+52 occupies(c1,c2) | in(c1,c2).  [deny(19)].
+53 occupies(c1,c2) | point(c1).  [deny(19)].
+54 occupies(c1,c2) | line(c2).  [deny(19)].
+55 -occupies(c1,c2) | -in(c1,c2) | -point(c1) | -line(c2).  [deny(19)].
+62 line(x) | -occupies(y,x).  [resolve(26,b,24,b)].
+69 -point(x) | physical_part(x,x).  [resolve(32,b,27,a)].
+73 point(x) | -occupies(x,y).  [resolve(33,b,30,b)].
+86 -line(x) | -physical_part(x,y).  [resolve(37,b,28,b)].
+88 -line(x) | -occupies(x,y).  [resolve(37,b,30,b)].
+92 occupies(c1,c2) | occupies(c2,c1) | c2 = c1.  [resolve(52,b,48,a),merge(b)].
+100 line(c2).  [resolve(62,b,54,a),merge(b)].
+101 -occupies(c1,c2) | -in(c1,c2) | -point(c1).  [back_unit_del(55),unit_del(d,100)].
+104 point(c1).  [resolve(73,b,53,a),merge(b)].
+105 -occupies(c1,c2) | -in(c1,c2).  [back_unit_del(101),unit_del(c,104)].
+108 -occupies(c2,x).  [ur(88,a,100,a)].
+110 -physical_part(c2,x).  [ur(86,a,100,a)].
+111 occupies(c1,c2) | c2 = c1.  [back_unit_del(92),unit_del(b,108)].
+113 physical_part(c1,c1).  [resolve(104,a,69,a)].
+129 c2 = c1 | in(c1,c2).  [resolve(111,a,49,b)].
+131 c2 = c1 | -occupies(c1,c2).  [resolve(129,b,105,b)].
+132 c2 = c1.  [resolve(131,b,111,a),merge(b)].
+133 -physical_part(c1,x).  [back_rewrite(110),rewrite([132(1)])].
+134 $F.  [resolve(133,a,113,a)].
+
+============================== end of proof ==========================
