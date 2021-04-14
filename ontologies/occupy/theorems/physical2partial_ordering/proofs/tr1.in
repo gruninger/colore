@@ -1,0 +1,32 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%physical_mereology
+all x all y (physical_part(x, y) ->	(physical_object(x) & physical_object(y))).
+all x (physical_object(x) -> physical_part(x, x)).
+all x all y ((physical_part(x, y) & physical_part(y, x)) -> (x = y)).
+all x all y all z ((physical_part(x, y) & physical_part(y, z)) -> physical_part(x, z)). 
+
+%Delta4
+all x ((x = x) <-> physical_object(x)).
+all x (leq(x, y) <-> physical_part(x, y)).
+
+end_of_list.
+
+formulas(goals).
+
+all x (physical_object(x) <-> (x = x)).
+
+end_of_list.
+
