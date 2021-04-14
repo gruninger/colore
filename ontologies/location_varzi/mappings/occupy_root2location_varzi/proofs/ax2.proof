@@ -1,0 +1,32 @@
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.01) seconds.
+% Length of proof is 20.
+% Level of proof is 5.
+% Maximum clause weight is 9.
+% Given clauses 31.
+
+1 (all x all y (spatial_part(x,y) -> region(x) & region(y))) # label(non_clause).  [assumption].
+2 (all x (region(x) -> spatial_part(x,x))) # label(non_clause).  [assumption].
+17 (all x all y (occupies(x,y) -> physical_object(x) & region(y))) # label(non_clause).  [assumption].
+22 (all x all y (L(x,y) <-> occupies(x,y) | x = y & region(y))) # label(non_clause).  [assumption].
+23 (all x all y (L(x,y) -> L(y,y))) # label(non_clause) # label(goal).  [goal].
+24 -region(x) | spatial_part(x,x).  [clausify(2)].
+25 -spatial_part(x,y) | region(x).  [clausify(1)].
+31 -occupies(x,y) | region(y).  [clausify(17)].
+32 -L(x,y) | occupies(x,y) | region(y).  [clausify(22)].
+33 L(x,y) | y != x | -region(y).  [clausify(22)].
+60 L(c1,c2).  [deny(23)].
+61 -L(c2,c2).  [deny(23)].
+72 -L(x,y) | occupies(x,y) | spatial_part(y,y).  [resolve(32,c,24,a)].
+74 L(x,y) | y != x | -spatial_part(y,z).  [resolve(33,c,25,b)].
+78 L(x,y) | y != x | -occupies(z,y).  [resolve(33,c,31,b)].
+127 occupies(c1,c2) | spatial_part(c2,c2).  [resolve(72,a,60,a)].
+129 -spatial_part(c2,x).  [ur(74,a,61,a,b,xx)].
+130 occupies(c1,c2).  [back_unit_del(127),unit_del(b,129)].
+134 -occupies(x,c2).  [ur(78,a,61,a,b,xx)].
+135 $F.  [resolve(134,a,130,a)].
+
+============================== end of proof ==========================
