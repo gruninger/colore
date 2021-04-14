@@ -1,0 +1,41 @@
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.01) seconds.
+% Length of proof is 29.
+% Level of proof is 7.
+% Maximum clause weight is 9.
+% Given clauses 9.
+
+2 (all x r(r(x)) = r(x)) # label(non_clause).  [assumption].
+3 (all x all y (LocIn(x,y) <-> P(r(x),r(y)))) # label(non_clause).  [assumption].
+4 (all x all y (r(x) = y <-> L(x,y))) # label(non_clause).  [assumption].
+5 (all x all y (L(x,y) <-> LocIn(x,y))) # label(non_clause).  [assumption].
+6 (all x all y all z all u (C(x,y) & L(x,z) & L(y,u) -> C(z,u))) # label(non_clause) # label(goal).  [goal].
+7 LocIn(x,y) | -P(r(x),r(y)).  [clausify(3)].
+8 -LocIn(x,y) | P(r(x),r(y)).  [clausify(3)].
+9 -L(x,y) | LocIn(x,y).  [clausify(5)].
+10 L(x,y) | -LocIn(x,y).  [clausify(5)].
+11 r(x) = y | -L(x,y).  [clausify(4)].
+12 r(x) != y | L(x,y).  [clausify(4)].
+13 L(c1,c3).  [deny(6)].
+14 L(c2,c4).  [deny(6)].
+15 -L(x,y) | P(r(x),r(y)).  [resolve(9,b,8,a)].
+16 L(x,y) | -P(r(x),r(y)).  [resolve(10,b,7,a)].
+18 r(r(x)) = r(x).  [clausify(2)].
+19 C(c1,c2).  [deny(6)].
+20 -C(c3,c4).  [deny(6)].
+21 r(c1) = c3.  [resolve(13,a,11,b)].
+22 c3 = r(c1).  [copy(21),flip(a)].
+23 r(c2) = c4.  [resolve(14,a,11,b)].
+24 c4 = r(c2).  [copy(23),flip(a)].
+25 P(r(x),r(y)) | r(x) != y.  [resolve(15,a,12,b)].
+30 -P(r(x),r(y)) | r(x) = y.  [resolve(16,a,11,b)].
+31 -C(r(c1),r(c2)).  [back_rewrite(20),rewrite([22(1),24(3)])].
+32 P(r(x),r(x)).  [hyper(25,b,18,a),rewrite([18(2),18(3)])].
+34 r(x) = x.  [hyper(30,a,32,a)].
+37 -C(c1,c2).  [back_rewrite(31),rewrite([34(2),34(3)])].
+38 $F.  [resolve(37,a,19,a)].
+
+============================== end of proof ==========================
