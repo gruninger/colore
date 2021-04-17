@@ -1,32 +1,28 @@
-============================== prooftrans ============================
-Prover9 (32) version Dec-2007, Dec 2007.
-Process 13024 was started by Bahar on Bahar-THINK,
-Tue Apr 13 15:17:07 2021
-The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
-============================== end of head ===========================
-
-============================== end of input ==========================
 
 ============================== PROOF =================================
 
 % -------- Comments from original proof --------
-% Proof 1 at 0.03 (+ 0.03) seconds.
-% Length of proof is 12.
+% Proof 1 at 0.01 (+ 0.03) seconds.
+% Length of proof is 16.
 % Level of proof is 4.
-% Maximum clause weight is 6.
-% Given clauses 9.
+% Maximum clause weight is 5.
+% Given clauses 34.
 
-2 (all x (region(x) -> spatial_part(x,x))) # label(non_clause).  [assumption].
-15 (all x (line(x) <-> region(x))) # label(non_clause).  [assumption].
-16 (all x all y (part(x,y) <-> spatial_part(x,y))) # label(non_clause).  [assumption].
-19 (all x (line(x) -> part(x,x))) # label(non_clause) # label(goal).  [goal].
-20 -region(x) | spatial_part(x,x).  [clausify(2)].
-25 -line(x) | region(x).  [clausify(15)].
-44 -line(x) | spatial_part(x,x).  [resolve(25,b,20,a)].
-45 line(c1).  [deny(19)].
-60 part(x,y) | -spatial_part(x,y).  [clausify(16)].
-61 -part(c1,c1).  [deny(19)].
-88 spatial_part(c1,c1).  [resolve(44,a,45,a)].
-93 $F.  [ur(60,a,61,a),unit_del(a,88)].
+5 (all x all y (physical_part(x,y) -> physical_object(x) & physical_object(y))) # label(non_clause).  [assumption].
+14 (all x (point(x) <-> physical_object(x))) # label(non_clause).  [assumption].
+17 (all x all y (part(x,y) <-> physical_part(x,y))) # label(non_clause).  [assumption].
+19 (all x all y (part(x,y) -> point(x) & point(y))) # label(non_clause) # label(goal).  [goal].
+28 -physical_part(x,y) | physical_object(x).  [clausify(5)].
+29 -physical_part(x,y) | physical_object(y).  [clausify(5)].
+33 point(x) | -physical_object(x).  [clausify(14)].
+41 -part(x,y) | physical_part(x,y).  [clausify(17)].
+42 part(c1,c2).  [deny(19)].
+63 -point(c1) | -point(c2).  [deny(19)].
+75 point(x) | -physical_part(x,y).  [resolve(33,b,28,b)].
+76 point(x) | -physical_part(y,x).  [resolve(33,b,29,b)].
+90 physical_part(c1,c2).  [resolve(42,a,41,a)].
+91 point(c2).  [hyper(76,b,90,a)].
+92 point(c1).  [hyper(75,b,90,a)].
+103 $F.  [back_unit_del(63),unit_del(a,92),unit_del(b,91)].
 
 ============================== end of proof ==========================
