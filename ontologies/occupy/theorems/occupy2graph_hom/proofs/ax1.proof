@@ -1,0 +1,25 @@
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.03) seconds.
+% Length of proof is 13.
+% Level of proof is 5.
+% Maximum clause weight is 12.
+% Given clauses 9.
+
+15 (all x all y (in(x,y) <-> occupies(x,y) | occupies(y,x) | (point(x) | line(x)) & x = y)) # label(non_clause).  [assumption].
+16 (all x all y (in(x,y) -> in(y,x))) # label(non_clause) # label(goal).  [goal].
+70 -in(x,y) | occupies(x,y) | occupies(y,x) | y = x.  [clausify(15)].
+71 in(x,y) | -occupies(x,y).  [clausify(15)].
+72 in(x,y) | -occupies(y,x).  [clausify(15)].
+73 in(c1,c2).  [deny(16)].
+74 -in(c2,c1).  [deny(16)].
+109 occupies(c1,c2) | occupies(c2,c1) | c2 = c1.  [resolve(73,a,70,a)].
+110 -occupies(c1,c2).  [ur(72,a,74,a)].
+111 -occupies(c2,c1).  [ur(71,a,74,a)].
+112 c2 = c1.  [back_unit_del(109),unit_del(a,110),unit_del(b,111)].
+113 -in(c1,c1).  [back_rewrite(74),rewrite([112(1)])].
+114 $F.  [back_rewrite(73),rewrite([112(2)]),unit_del(a,113)].
+
+============================== end of proof ==========================

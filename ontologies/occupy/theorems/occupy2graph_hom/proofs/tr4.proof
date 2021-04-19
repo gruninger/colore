@@ -1,0 +1,42 @@
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.05 (+ 0.01) seconds.
+% Length of proof is 30.
+% Level of proof is 7.
+% Maximum clause weight is 10.
+% Given clauses 40.
+
+1 (all x all y (physical_C(x,y) -> physical_object(x) & physical_object(y))) # label(non_clause).  [assumption].
+4 (all x all y (spatial_C(x,y) -> region(x) & region(y))) # label(non_clause).  [assumption].
+7 (all x (region(x) -> -physical_object(x))) # label(non_clause).  [assumption].
+12 (all x (point(x) <-> physical_object(x))) # label(non_clause).  [assumption].
+14 (all x all y (adj(x,y) <-> physical_C(x,y) | spatial_C(x,y))) # label(non_clause).  [assumption].
+16 (all x all y (physical_C(x,y) <-> adj(x,y) & point(x) & point(y))) # label(non_clause) # label(goal).  [goal].
+18 -physical_C(x,y) | physical_object(x).  [clausify(1)].
+19 -physical_C(x,y) | physical_object(y).  [clausify(1)].
+20 -region(x) | -physical_object(x).  [clausify(7)].
+23 -point(x) | physical_object(x).  [clausify(12)].
+24 point(x) | -physical_object(x).  [clausify(12)].
+27 -spatial_C(x,y) | region(y).  [clausify(4)].
+34 -point(x) | -region(x).  [resolve(23,b,20,b)].
+53 -adj(x,y) | physical_C(x,y) | spatial_C(x,y).  [clausify(14)].
+54 adj(x,y) | -physical_C(x,y).  [clausify(14)].
+56 physical_C(c1,c2) | adj(c1,c2).  [deny(16)].
+57 physical_C(c1,c2) | point(c1).  [deny(16)].
+58 physical_C(c1,c2) | point(c2).  [deny(16)].
+59 -physical_C(c1,c2) | -adj(c1,c2) | -point(c1) | -point(c2).  [deny(16)].
+68 point(x) | -physical_C(x,y).  [resolve(24,b,18,b)].
+69 point(x) | -physical_C(y,x).  [resolve(24,b,19,b)].
+84 -point(x) | -spatial_C(y,x).  [resolve(34,b,27,b)].
+87 physical_C(c1,c2) | spatial_C(c1,c2).  [resolve(56,b,53,a),merge(b)].
+101 point(c1).  [resolve(68,b,57,a),merge(b)].
+102 -physical_C(c1,c2) | -adj(c1,c2) | -point(c2).  [back_unit_del(59),unit_del(c,101)].
+103 point(c2).  [resolve(69,b,58,a),merge(b)].
+104 -physical_C(c1,c2) | -adj(c1,c2).  [back_unit_del(102),unit_del(c,103)].
+105 physical_C(c1,c2).  [resolve(87,b,84,b),unit_del(b,103)].
+106 -adj(c1,c2).  [back_unit_del(104),unit_del(a,105)].
+108 $F.  [ur(54,a,106,a),unit_del(a,105)].
+
+============================== end of proof ==========================

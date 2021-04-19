@@ -1,0 +1,35 @@
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.03 (+ 0.00) seconds.
+% Length of proof is 23.
+% Level of proof is 5.
+% Maximum clause weight is 6.
+% Given clauses 30.
+
+1 (all x all y (physical_C(x,y) -> physical_object(x) & physical_object(y))) # label(non_clause).  [assumption].
+4 (all x all y (spatial_C(x,y) -> region(x) & region(y))) # label(non_clause).  [assumption].
+7 (all x (region(x) -> -physical_object(x))) # label(non_clause).  [assumption].
+12 (all x (point(x) <-> physical_object(x))) # label(non_clause).  [assumption].
+14 (all x all y (adj(x,y) <-> physical_C(x,y) | spatial_C(x,y))) # label(non_clause).  [assumption].
+16 (all x all y (point(x) & adj(x,y) -> point(y))) # label(non_clause) # label(goal).  [goal].
+19 -physical_C(x,y) | physical_object(y).  [clausify(1)].
+20 -region(x) | -physical_object(x).  [clausify(7)].
+23 -point(x) | physical_object(x).  [clausify(12)].
+24 point(x) | -physical_object(x).  [clausify(12)].
+26 -spatial_C(x,y) | region(x).  [clausify(4)].
+34 -point(x) | -region(x).  [resolve(23,b,20,b)].
+36 -adj(x,y) | physical_C(x,y) | spatial_C(x,y).  [clausify(14)].
+38 adj(c1,c2).  [deny(16)].
+57 point(c1).  [deny(16)].
+58 -point(c2).  [deny(16)].
+68 point(x) | -physical_C(y,x).  [resolve(24,b,19,b)].
+82 -point(x) | -spatial_C(x,y).  [resolve(34,b,26,b)].
+85 physical_C(c1,c2) | spatial_C(c1,c2).  [resolve(38,a,36,a)].
+90 -physical_C(x,c2).  [ur(68,a,58,a)].
+91 spatial_C(c1,c2).  [back_unit_del(85),unit_del(a,90)].
+93 -spatial_C(c1,x).  [ur(82,a,57,a)].
+94 $F.  [resolve(93,a,91,a)].
+
+============================== end of proof ==========================

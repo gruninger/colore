@@ -1,0 +1,55 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%occupy_connection
+
+all x all y	( physical_C(x, y) -> (physical_object(x) & physical_object(y))).
+
+all x (physical_object(x) -> physical_C(x, x)).
+
+all x all y	(physical_C(x, y) -> physical_C(y, x)).
+
+all x all y	(spatial_C(x, y) -> (region(x) & region(y))).
+
+all x (region(x) -> spatial_C(x, x)).
+
+all x all y	 (spatial_C(x, y) -> spatial_C(y, x)).
+
+all x (region(x) -> -physical_object(x)).
+
+all x all y	(occupies(x, y) -> (physical_object(x) & region(y))).
+
+all x all y	all z	((occupies(x, y) & occupies(x, z)) -> (y = z)).
+
+all x (physical_object(x) -> (exists y (occupies(x, y)))).
+
+all x all y all r1 all r2((physical_C(x, y) & occupies(x, r1) & occupies(y, r2)) -> spatial_C(r1, r2)).
+
+%Delta8
+all x (point(x) <-> physical_object(x)).
+
+all x (line(x) <-> region(x)).
+
+all x all y		(adj(x, y) <-> (physical_C(x, y) | spatial_C(x, y))).
+
+all x all y		(in(x, y) <-> (occupies(x, y) | occupies(y, x) | ((point(x) | line(x)) & x = y))).
+
+end_of_list.
+
+formulas(goals).
+
+all x all y	((in(x, y) & line(x) & line(y)) -> (x = y)).
+
+end_of_list.
+

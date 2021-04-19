@@ -1,0 +1,55 @@
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.01) seconds.
+% Length of proof is 43.
+% Level of proof is 9.
+% Maximum clause weight is 12.
+% Given clauses 82.
+
+1 (all x all y (physical_C(x,y) -> physical_object(x) & physical_object(y))) # label(non_clause).  [assumption].
+2 (all x (physical_object(x) -> physical_C(x,x))) # label(non_clause).  [assumption].
+7 (all x (region(x) -> -physical_object(x))) # label(non_clause).  [assumption].
+8 (all x all y (occupies(x,y) -> physical_object(x) & region(y))) # label(non_clause).  [assumption].
+12 (all x (point(x) <-> physical_object(x))) # label(non_clause).  [assumption].
+13 (all x (line(x) <-> region(x))) # label(non_clause).  [assumption].
+15 (all x all y (in(x,y) <-> occupies(x,y) | occupies(y,x) | (point(x) | line(x)) & x = y)) # label(non_clause).  [assumption].
+16 (all x all y (occupies(x,y) <-> in(x,y) & point(x) & line(y))) # label(non_clause) # label(goal).  [goal].
+17 -physical_object(x) | physical_C(x,x).  [clausify(2)].
+18 -physical_C(x,y) | physical_object(x).  [clausify(1)].
+20 -region(x) | -physical_object(x).  [clausify(7)].
+21 -occupies(x,y) | physical_object(x).  [clausify(8)].
+23 -point(x) | physical_object(x).  [clausify(12)].
+24 point(x) | -physical_object(x).  [clausify(12)].
+28 -occupies(x,y) | region(y).  [clausify(8)].
+29 -line(x) | region(x).  [clausify(13)].
+30 line(x) | -region(x).  [clausify(13)].
+31 -region(x) | -physical_C(x,y).  [resolve(20,b,18,b)].
+34 -point(x) | -region(x).  [resolve(23,b,20,b)].
+43 -in(x,y) | occupies(x,y) | occupies(y,x) | y = x.  [clausify(15)].
+44 in(x,y) | -occupies(x,y).  [clausify(15)].
+48 occupies(c1,c2) | in(c1,c2).  [deny(16)].
+49 occupies(c1,c2) | point(c1).  [deny(16)].
+50 occupies(c1,c2) | line(c2).  [deny(16)].
+51 -occupies(c1,c2) | -in(c1,c2) | -point(c1) | -line(c2).  [deny(16)].
+58 -point(x) | physical_C(x,x).  [resolve(23,b,17,a)].
+62 point(x) | -occupies(x,y).  [resolve(24,b,21,b)].
+69 line(x) | -occupies(y,x).  [resolve(30,b,28,b)].
+73 -physical_C(x,y) | -line(x).  [resolve(31,a,29,b)].
+84 -point(x) | -occupies(y,x).  [resolve(34,b,28,b)].
+89 occupies(c1,c2) | occupies(c2,c1) | c2 = c1.  [resolve(48,b,43,a),merge(b)].
+100 point(c1).  [resolve(62,b,49,a),merge(b)].
+101 -occupies(c1,c2) | -in(c1,c2) | -line(c2).  [back_unit_del(51),unit_del(c,100)].
+103 line(c2).  [resolve(69,b,50,a),merge(b)].
+104 -occupies(c1,c2) | -in(c1,c2).  [back_unit_del(101),unit_del(c,103)].
+105 occupies(c1,c2) | c2 = c1.  [resolve(89,b,84,b),unit_del(c,100)].
+107 physical_C(c1,c1).  [resolve(100,a,58,a)].
+118 -physical_C(c2,x).  [ur(73,b,103,a)].
+121 c2 = c1 | in(c1,c2).  [resolve(105,a,44,b)].
+139 c2 = c1 | -occupies(c1,c2).  [resolve(121,b,104,b)].
+140 c2 = c1.  [resolve(139,b,105,a),merge(b)].
+141 -physical_C(c1,x).  [back_rewrite(118),rewrite([140(1)])].
+142 $F.  [resolve(141,a,107,a)].
+
+============================== end of proof ==========================
