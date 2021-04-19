@@ -1,0 +1,64 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%graph_hom
+all x (point(x) | line(x) -> adj(x, x)).
+
+all x all y	(in(x, y) -> in(y, x)).
+
+all x ((point(x) | line(x)) -> in(x, x)).
+
+all p (point(p) -> (-line(p))). 
+
+all x all y (in(x, y) -> (point(x) | line(x)) & (point(y) | line(y))).
+
+all x all y (adj(x, y) -> (point(x) | line(x)) & (point(y) | line(y))).
+
+all x all y	((in(x, y) & point(x) & point(y)) -> (x = y)).
+
+all x all y	((in(x, y) & line(x) & line(y)) -> (x = y)).
+
+all x all y	((point(x) & adj(x, y)) -> point(y)).
+
+all x all y	((line(x) & adj(x, y)) -> line(y)).
+
+all x all y	((in(x, y) & adj(x, y)) -> (x = y)).
+
+all x all y	(adj(x, y) -> adj(y, x)).
+
+all l1 all l2 all p	((line(l1) & line(l2) & point(p) & in(p, l1) & in(p, l2)) -> (l1 = l2)).
+
+all p (point(p) -> (exists l	(line(l) & in(p, l)))).
+
+all x all y all l1 all l2 ((adj(x, y) & point(x) & point(y) & line(l1) & line(l2) & in(x, l1) & in(y, l2)) -> adj(l1, l2)).
+
+%Pi8
+all x (physical_object(x) <-> point(x)).
+
+all x (region(x) <-> line(x)).
+
+all x all y	(spatial_C(x, y) <-> (adj(x, y) & line(x) & line(y))).
+
+all x all y	(physical_C(x, y) <-> adj(x, y) & point(x) & point(y)).
+
+all x all y	(occupies(x, y) <->	(in(x, y) & point(x) & line(y))).
+
+end_of_list.
+
+formulas(goals).
+
+all x (physical_object(x) -> physical_C(x, x)).
+
+end_of_list.
+

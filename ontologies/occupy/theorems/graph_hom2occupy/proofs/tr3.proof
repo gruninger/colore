@@ -1,0 +1,45 @@
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.03 (+ 0.03) seconds.
+% Length of proof is 33.
+% Level of proof is 9.
+% Maximum clause weight is 10.
+% Given clauses 50.
+
+6 (all x all y (adj(x,y) -> (point(x) | line(x)) & (point(y) | line(y)))) # label(non_clause).  [assumption].
+9 (all x all y (point(x) & adj(x,y) -> point(y))) # label(non_clause).  [assumption].
+10 (all x all y (line(x) & adj(x,y) -> line(y))) # label(non_clause).  [assumption].
+12 (all x all y (adj(x,y) -> adj(y,x))) # label(non_clause).  [assumption].
+18 (all x all y (spatial_C(x,y) <-> adj(x,y) & line(x) & line(y))) # label(non_clause).  [assumption].
+19 (all x all y (physical_C(x,y) <-> adj(x,y) & point(x) & point(y))) # label(non_clause).  [assumption].
+21 (all x all y (adj(x,y) <-> physical_C(x,y) | spatial_C(x,y))) # label(non_clause) # label(goal).  [goal].
+39 -adj(x,y) | point(y) | line(y).  [clausify(6)].
+42 -point(x) | -adj(x,y) | point(y).  [clausify(9)].
+43 -line(x) | -adj(x,y) | line(y).  [clausify(10)].
+45 -adj(x,y) | adj(y,x).  [clausify(12)].
+50 -spatial_C(x,y) | adj(x,y).  [clausify(18)].
+53 spatial_C(x,y) | -adj(x,y) | -line(x) | -line(y).  [clausify(18)].
+54 -physical_C(x,y) | adj(x,y).  [clausify(19)].
+57 physical_C(x,y) | -adj(x,y) | -point(x) | -point(y).  [clausify(19)].
+58 adj(c1,c2) | physical_C(c1,c2) | spatial_C(c1,c2).  [deny(21)].
+59 -adj(c1,c2) | -physical_C(c1,c2).  [deny(21)].
+60 -adj(c1,c2) | -spatial_C(c1,c2).  [deny(21)].
+66 adj(c1,c2) | physical_C(c1,c2).  [resolve(58,c,50,a),merge(c)].
+69 adj(c1,c2).  [resolve(66,b,54,a),merge(b)].
+70 -spatial_C(c1,c2).  [back_unit_del(60),unit_del(a,69)].
+71 -physical_C(c1,c2).  [back_unit_del(59),unit_del(a,69)].
+72 -point(c1) | -point(c2).  [resolve(69,a,57,b),unit_del(a,71)].
+73 -line(c1) | -line(c2).  [resolve(69,a,53,b),unit_del(a,70)].
+74 adj(c2,c1).  [resolve(69,a,45,a)].
+77 point(c2) | line(c2).  [resolve(69,a,39,a)].
+79 -line(c2) | line(c1).  [resolve(74,a,43,b)].
+80 -point(c2) | point(c1).  [resolve(74,a,42,b)].
+81 line(c2) | -point(c1).  [resolve(77,a,72,b)].
+91 point(c1) | line(c2).  [resolve(80,a,77,a)].
+98 line(c2).  [resolve(91,a,81,b),merge(b)].
+99 line(c1).  [back_unit_del(79),unit_del(a,98)].
+100 $F.  [back_unit_del(73),unit_del(a,99),unit_del(b,98)].
+
+============================== end of proof ==========================

@@ -1,0 +1,69 @@
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.03 (+ 0.01) seconds.
+% Length of proof is 57.
+% Level of proof is 20.
+% Maximum clause weight is 13.
+% Given clauses 96.
+
+2 (all x all y (in(x,y) -> in(y,x))) # label(non_clause).  [assumption].
+3 (all x (point(x) | line(x) -> in(x,x))) # label(non_clause).  [assumption].
+5 (all x all y (in(x,y) -> (point(x) | line(x)) & (point(y) | line(y)))) # label(non_clause).  [assumption].
+7 (all x all y (in(x,y) & point(x) & point(y) -> x = y)) # label(non_clause).  [assumption].
+8 (all x all y (in(x,y) & line(x) & line(y) -> x = y)) # label(non_clause).  [assumption].
+20 (all x all y (occupies(x,y) <-> in(x,y) & point(x) & line(y))) # label(non_clause).  [assumption].
+21 (all x all y (in(x,y) <-> occupies(x,y) | occupies(y,x) | (point(x) | line(x)) & x = y)) # label(non_clause) # label(goal).  [goal].
+36 -in(x,y) | in(y,x).  [clausify(2)].
+37 -point(x) | in(x,x).  [clausify(3)].
+38 -line(x) | in(x,x).  [clausify(3)].
+40 -in(x,y) | point(x) | line(x).  [clausify(5)].
+41 -in(x,y) | point(y) | line(y).  [clausify(5)].
+44 -in(x,y) | -point(x) | -point(y) | y = x.  [clausify(7)].
+45 -in(x,y) | -line(x) | -line(y) | y = x.  [clausify(8)].
+54 -occupies(x,y) | in(x,y).  [clausify(20)].
+55 -occupies(x,y) | point(x).  [clausify(20)].
+56 -occupies(x,y) | line(y).  [clausify(20)].
+57 occupies(x,y) | -in(x,y) | -point(x) | -line(y).  [clausify(20)].
+58 in(c1,c2) | occupies(c1,c2) | occupies(c2,c1) | point(c1) | line(c1).  [deny(21)].
+59 in(c1,c2) | occupies(c1,c2) | occupies(c2,c1) | c2 = c1.  [deny(21)].
+60 -in(c1,c2) | -occupies(c1,c2).  [deny(21)].
+61 -in(c1,c2) | -occupies(c2,c1).  [deny(21)].
+62 -in(c1,c2) | -point(c1) | c2 != c1.  [deny(21)].
+63 -in(c1,c2) | -line(c1) | c2 != c1.  [deny(21)].
+65 in(c1,c2) | occupies(c1,c2) | point(c1) | line(c1).  [resolve(58,c,56,a),merge(e)].
+67 in(c1,c2) | occupies(c1,c2) | c2 = c1 | point(c2).  [resolve(59,c,55,a)].
+68 in(c1,c2) | occupies(c1,c2) | c2 = c1 | in(c2,c1).  [resolve(59,c,54,a)].
+70 in(c1,c2) | point(c1) | line(c1).  [resolve(65,b,55,a),merge(d)].
+72 point(c1) | line(c1).  [resolve(70,a,40,a),merge(c),merge(d)].
+75 line(c1) | in(c1,c1).  [resolve(72,a,37,a)].
+88 in(c1,c2) | c2 = c1 | point(c2).  [resolve(67,b,54,a),merge(d)].
+98 c2 = c1 | point(c2) | line(c2).  [resolve(88,a,41,a),merge(c)].
+106 in(c1,c2) | c2 = c1 | in(c2,c1).  [resolve(68,b,54,a),merge(d)].
+126 in(c1,c2) | c2 = c1.  [resolve(106,c,36,a),merge(c)].
+127 c2 = c1 | occupies(c1,c2) | -point(c1) | -line(c2).  [resolve(126,a,57,b)].
+129 c2 = c1 | -line(c1) | -line(c2).  [resolve(126,a,45,a),merge(d)].
+130 c2 = c1 | -point(c1) | -point(c2).  [resolve(126,a,44,a),merge(d)].
+131 c2 = c1 | in(c2,c1).  [resolve(126,a,36,a)].
+132 c2 = c1 | occupies(c2,c1) | -point(c2) | -line(c1).  [resolve(131,b,57,b)].
+135 c2 = c1 | -point(c1) | line(c2).  [resolve(130,c,98,b),merge(c)].
+136 c2 = c1 | line(c2) | line(c1).  [resolve(135,b,72,a)].
+142 c2 = c1 | occupies(c1,c2) | -line(c2) | line(c1).  [resolve(127,c,72,a)].
+143 c2 = c1 | occupies(c2,c1) | -line(c1) | line(c2).  [resolve(132,c,98,b),merge(d)].
+145 c2 = c1 | occupies(c1,c2) | line(c1).  [resolve(142,c,136,b),merge(d),merge(e)].
+146 c2 = c1 | line(c1) | -in(c1,c2).  [resolve(145,b,60,b)].
+147 c2 = c1 | line(c1).  [resolve(146,c,126,a),merge(c)].
+151 c2 = c1 | occupies(c2,c1) | line(c2).  [resolve(143,c,147,b),merge(d)].
+152 c2 = c1 | line(c2) | -in(c1,c2).  [resolve(151,b,61,b)].
+153 c2 = c1 | line(c2).  [resolve(152,c,126,a),merge(c)].
+154 c2 = c1 | -line(c1).  [resolve(153,b,129,c),merge(b)].
+157 c2 = c1.  [resolve(154,b,147,b),merge(b)].
+158 -in(c1,c1) | -line(c1).  [back_rewrite(63),rewrite([157(2),157(6)]),xx(c)].
+159 -in(c1,c1) | -point(c1).  [back_rewrite(62),rewrite([157(2),157(6)]),xx(c)].
+161 -point(c1) | line(c1).  [resolve(159,a,75,b)].
+162 line(c1).  [resolve(161,a,72,a),merge(b)].
+163 -in(c1,c1).  [back_unit_del(158),unit_del(b,162)].
+164 $F.  [resolve(162,a,38,a),unit_del(a,163)].
+
+============================== end of proof ==========================
