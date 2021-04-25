@@ -1,0 +1,27 @@
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.03 (+ 0.01) seconds.
+% Length of proof is 15.
+% Level of proof is 5.
+% Maximum clause weight is 4.
+% Given clauses 30.
+
+18 (all x (physical_object(x) <-> point(x))) # label(non_clause).  [assumption].
+19 (all x (region(x) <-> line(x))) # label(non_clause).  [assumption].
+22 (all x all y (occupies(x,y) <-> in(x,y) & point(x) & line(y))) # label(non_clause).  [assumption].
+23 (all x all y (occupies(x,y) -> physical_object(x) & region(y))) # label(non_clause) # label(goal).  [goal].
+30 -occupies(x,y) | point(x).  [clausify(22)].
+31 -occupies(x,y) | line(y).  [clausify(22)].
+32 occupies(c1,c2).  [deny(23)].
+56 physical_object(x) | -point(x).  [clausify(18)].
+58 region(x) | -line(x).  [clausify(19)].
+59 -physical_object(c1) | -region(c2).  [deny(23)].
+61 point(c1).  [resolve(32,a,30,a)].
+62 line(c2).  [resolve(32,a,31,a)].
+67 physical_object(c1).  [resolve(61,a,56,b)].
+73 -region(c2).  [back_unit_del(59),unit_del(a,67)].
+74 $F.  [resolve(62,a,58,b),unit_del(a,73)].
+
+============================== end of proof ==========================

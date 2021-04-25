@@ -1,0 +1,30 @@
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.05) seconds.
+% Length of proof is 18.
+% Level of proof is 4.
+% Maximum clause weight is 8.
+% Given clauses 9.
+
+2 (all x r(r(x)) = r(x)) # label(non_clause).  [assumption].
+3 (all x all y (LocIn(x,y) <-> P(r(x),r(y)))) # label(non_clause).  [assumption].
+4 (all x all y (r(x) = y <-> L(x,y))) # label(non_clause).  [assumption].
+5 (all x all y (L(x,y) <-> LocIn(x,y))) # label(non_clause).  [assumption].
+6 (all x all y (L(x,y) -> L(y,y))) # label(non_clause) # label(goal).  [goal].
+7 LocIn(x,y) | -P(r(x),r(y)).  [clausify(3)].
+8 -LocIn(x,y) | P(r(x),r(y)).  [clausify(3)].
+9 -L(x,y) | LocIn(x,y).  [clausify(5)].
+10 L(x,y) | -LocIn(x,y).  [clausify(5)].
+12 r(r(x)) = r(x).  [clausify(2)].
+13 r(x) != y | L(x,y).  [clausify(4)].
+16 -L(c2,c2).  [deny(6)].
+17 -L(x,y) | P(r(x),r(y)).  [resolve(9,b,8,a)].
+18 L(x,y) | -P(r(x),r(y)).  [resolve(10,b,7,a)].
+19 L(r(x),r(x)).  [hyper(13,a,12,a)].
+25 -P(r(c2),r(c2)).  [ur(18,a,16,a)].
+28 P(r(x),r(x)).  [hyper(17,a,19,a),rewrite([12(2),12(3)])].
+29 $F.  [resolve(28,a,25,a)].
+
+============================== end of proof ==========================

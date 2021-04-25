@@ -1,0 +1,33 @@
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.03 (+ 0.01) seconds.
+% Length of proof is 21.
+% Level of proof is 3.
+% Maximum clause weight is 16.
+% Given clauses 33.
+
+17 (all x all y all l1 all l2 (part(x,y) & in(x,l1) & in(y,l2) & line(l1) & line(l2) -> leq(l1,l2))) # label(non_clause).  [assumption].
+20 (all x all y (physical_part(x,y) <-> part(x,y))) # label(non_clause).  [assumption].
+21 (all x all y (spatial_part(x,y) <-> leq(x,y))) # label(non_clause).  [assumption].
+22 (all x all y (occupies(x,y) <-> in(x,y) & point(x) & line(y))) # label(non_clause).  [assumption].
+23 (all x all y all r1 all r2 (physical_part(x,y) & occupies(x,r1) & occupies(y,r2) -> spatial_part(r1,r2))) # label(non_clause) # label(goal).  [goal].
+29 -physical_part(x,y) | part(x,y).  [clausify(20)].
+30 physical_part(c1,c2).  [deny(23)].
+32 -occupies(x,y) | in(x,y).  [clausify(22)].
+34 -occupies(x,y) | line(y).  [clausify(22)].
+35 occupies(c1,c3).  [deny(23)].
+36 occupies(c2,c4).  [deny(23)].
+58 -part(x,y) | -in(x,z) | -in(y,u) | -line(z) | -line(u) | leq(z,u).  [clausify(17)].
+60 spatial_part(x,y) | -leq(x,y).  [clausify(21)].
+61 -spatial_part(c3,c4).  [deny(23)].
+62 part(c1,c2).  [resolve(30,a,29,a)].
+63 in(c1,c3).  [resolve(35,a,32,a)].
+65 line(c3).  [resolve(35,a,34,a)].
+66 in(c2,c4).  [resolve(36,a,32,a)].
+68 line(c4).  [resolve(36,a,34,a)].
+69 -leq(c3,c4).  [ur(60,a,61,a)].
+98 $F.  [ur(58,b,63,a,c,66,a,d,65,a,e,68,a,f,69,a),unit_del(a,62)].
+
+============================== end of proof ==========================

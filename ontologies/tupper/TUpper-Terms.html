@@ -1,0 +1,394 @@
+<html>
+<head>
+<title>TUpper-Terms</title>
+
+<table  width="95%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+                <td>
+                        <font size="+3"><div align="center"><b>Tupper-Terms</b></div></font>
+                </td>
+        </tr>
+</table>
+
+
+<body>
+
+<h2> PSL Modules </h2>
+<h3>(activity a) </h3>
+The informal semantics for activity is :
+<br>
+(activity a) is TRUE in an interpretation of TUpper if and only if a is a member of the class of activities in the universe of discourse of the interpretation.
+
+<h3>(activity_occurrence occ) </h3>
+The informal semantics for activity_occurrence is :
+<br>
+(activity_occurrence occ) is TRUE in an interpretation of TUpper if and only if occ is a member of the class of activity occurrences in the universe of discourse of the interpretation. An activity occurrence is associated with a unique activity and begins and ends at specific points in time. 
+NOTE  An activity occurrence is not an instance of an activity. Although there may exist activities that have no activity occurrence, all activity occurrences must be associated with an activity
+
+<h3>(object x) </h3>
+The informal semantics for object is :
+<br>
+(object x) is TRUE in an interpretation of TUpper if and only if x is a member of the class of objects in the universe of discourse of the interpretation. An object is anything that is not a timepoint, nor an activity nor an activity-occurrence
+<br>
+Intuitively, an object is a concrete or abstract thing that can participate in an activity. Objects can come into existence (be created) and go out of existence (be "used up" as a resource) at certain points in time. In such cases, an object has a begin and an end point. In some contexts it may be useful to consider some ordinary objects as having no such points either.
+
+<h3>(timepoint t) </h3>
+The informal semantics for timepoint is :
+<br>
+(timepoint t) is TRUE in an interpretation of TUpper if and only if t is a member of the class of timepoints in the universe of discourse of the interpretation.Timepoints form a linear ordering.
+
+<h3>inf-</h3>
+The informal semantics for inf- is :
+<br>
+(= t  inf-) is TRUE in an interpretation of TUpper if and only if t is the unique timepoint that is before all other timepoints in the linear ordering over timepoints in the universe of discourse of the interpretation.
+
+<h3>inf+</h3>
+The informal semantics for inf+ is :
+<br>
+(= t  inf+) is TRUE in an interpretation of TUpper if and only if t is the unique timepoint that is after all other timepoints in the linear ordering over timepoints in the universe of discourse of the interpretation.
+
+<h3>(before t1 t2) </h3>
+The informal semantics for before is :
+<br>
+(before t1 t2) is TRUE in an interpretation of TUpper if and only if the timepoint t1 is earlier than t2 in the linear ordering over timepoints in the interpretation. 
+
+<h3>(occurrence_of occ a) </h3>
+<br>
+The informal semantics for occurrence_of is :
+(occurrence_of occ a) is TRUE in an interpretation of TUpper if and only if occ is a particular occurrence of the activity a. occurrence_of is the basic relation between activities and activity occurrences. Every activity occurrence is associated with a unique activity. An activity may have no occurrences or multiple occurrences.
+
+<h3>(participates_in x a t) </h3>
+The informal semantics for participates_in is :
+<br>
+(participates_in x a t) is TRUE in an interpretation of TUpper if and only if x plays some role that is not pre-specified in an occurrence of the activity a at the timepoint t in the interpretation. An object can participate in an activity only at those timepoints at which both the object exists and the activity is occurring
+
+<h3>(beginof x) </h3>
+The informal semantics for beginof is :
+<br>
+The domain of the beginof function is the set of activity occurrences and objects.
+If x is an activity occurence in the universe of discourse of an interpretation of TUpper, then (beginof x) has the value t if and only if t is the timepoint at which the activity occurrence x begins.
+<br>
+EXAMPLE  (= 10 (beginof  milling_occurrence)) where milling_occurrence begins at timepoint 10.
+<br>
+If x is an object in the universe of discourse of an interpretation of TUpper, then (beginof x) has the value x if and only if t is the timepoint at which the object x becomes possible to participate in an activity.
+<br>
+EXAMPLE  (= 15 (beginof  screw)) where the object screw can participate in an activity at timepoint 15.
+
+<h3>(endof x) </h3>
+The informal semantics for endof is :
+<br>
+The domain of the endof function is the set of activity occurrences and objects.
+If x is an activity occurrence in the universe of discourse of an interpretation of TUpper, then (endofx) has the value x if and only if t is the timepoint at which the activity occurrence x ends.
+<br>
+EXAMPLE  (= 25 (endof  milling_occurrence)) where milling_occurrence ends at timepoint 25.
+<br>
+If x is an object in the universe of discourse of an interpretation of TUpper, then (endofx) has the value x if and only if t is the timepoint at which the object x becomes no longer possible to participate in an activity.
+<br>
+EXAMPLE  (= 30 (endof  screw)) where screw can no longer participate in an activity at timepoint 30.
+
+<h3>(subactivity a1 a2)</h3>
+Informal semantics for subactivity:
+<br>
+(subactivity a1 a2) is TRUE in an interpretation of TUpper if and only if activity a1 is a subactivity of activity a2. 
+
+The subactivity relation forms a discrete partial ordering over the set of activities.
+
+<h3>(earlier occ1 occ2)</h3>
+Informal semantics for earlier :
+<br>
+(earlier occ1 occ2) is TRUE in an interpretation of TUpper if and only if the two activity occurrences occ1 and occ2 are on the same branch of the tree and occ1 is closer to the root of the tree than occ2. 
+
+In interpretations of Occurrence Trees, the set of all sequences of activity occurrences forms a tree; the earlier relation specifies the partial ordering over the activity occurrences in this tree.
+
+<h3>(initial occ)</h3>
+Informal semantics for initial :
+<br>
+(initial occ) is TRUE in an interpretation of TUpper if and only if the activity occurrence occ is a root of  the occurrence tree.
+
+<h3> (poss a occ)</h3>
+
+Informal semantics for poss:
+<br>
+(poss a occ) is TRUE in an interpretation of TUpper if and only if  the activity a can possibly occur after the activity occurrence occ. 
+
+<h3>(precedes occ1 occ2)</h3>
+
+Informal semantics for precedes:
+<br>
+(precedes occ1 occ2) is TRUE in an interpretation of TUpper if and only if the activity occurrence occ1 is earlier than the activity occurrence occ2 in the occurrence tree and such that all activity occurrences between them correspond to activities that are possible. This relation specifies the sub-tree of the occurrence tree in which every activity occurrence is the occurrence of an activity that is possible.
+
+<h3>(successor a occ)</h3>
+
+Informal semantics for  succ essor:
+<br>
+(=  (successor a occ) occ2) is TRUE in an interpretation of TUpper if and only if occ2 denotes the occurrence of a that follows consecutively after the activity occurrence occ in the occurrence tree.
+
+<h3>(holds f occ)</h3>
+
+Informal semantics for holds :
+<br>
+(holds f occ) is TRUE in an interpretation of  TUpper if and only if the state f  is true after the activity occurrence occ.
+
+<h3>(prior f occ)</h3>
+
+Informal semantics for prior :
+<br>
+(prior f occ) is TRUE in an interpretation of TUpper if and only if the state f  is true prior to the activity occurrence occ.
+
+<h3> (atomic a) </h3>
+
+Informal semantics for atomic :
+<br>
+(atomic a) is TRUE in an interpretation of TUpper if and only if  either a is primitive or it is the concurrent superposition of a set of primitive activities.
+
+<h3>(conc a1 a2)</h3>
+
+Informal semantics for conc :
+<br>
+(= a3 (conc a1 a2)) is TRUE in an interpretation of TUpper if and only if
+a3 is the atomic activity that is the concurrent superposition of the two atomic activities a1 and a2.
+
+
+<h3>(min_precedes occ1 occ2 a)</h3>
+Informal semantics for min_precedes :
+<br>
+(min_precedes occ1 occ2 a) is TRUE in an interpretation of TUpper if and only if occ1 and occ2 are subactivity occurrences in the activity tree for a, and that occ1 precedes occ2 in the subtree.  Any occurrence of an activity a corresponds to an activity tree(which is a subtree of the occurrence tree). The activity occurrences within this subtree are the subactivity occurrences of the occurrence of  a. 
+
+<h3>(root occ a)</h3>
+
+Informal semantics for root :
+<br>
+(root occ a) is TRUE in an interpretation of TUpper if and only if the activity occurrence occ is the root of an activity tree for a.
+
+<h3>(subtree occ a1 a2)</h3>
+Informal semantics for subtree:
+<br>
+(subtree occ a1 a2) is TRUE in an interpretation of TUpper if and only if
+every atomic subactivity occurrence in the activity tree for a1 is an element of the activity tree for a2.
+
+<h3>(leaf occ a)</h3>
+
+Informal semantics for leaf:
+<br>
+(leaf occ a) is TRUE in an interpretation of TUpper if and only if the activity occurrence occ is the leaf of an activity tree for a.
+
+<h3>(next_subocc occ1 occ2 a)</h3>
+Informal semantics for next_subocc:
+<br>
+(next_subocc occ1 occ2 a) is TRUE in an interpretation of TUpper if and only ifocc1 precedes occ2 in the tree and there does not exist a subactivity occurrence that is between them in the tree.
+
+<h3>(subactivity_occurrence occ1 occ2)</h3>
+
+Informal semantics for subactivity_occurrence :
+<br>
+There is a one-to-one correspondence between activity occurrences and branches in the activity trees for the activity.  The informal semantics for subactivity_occurrence is:
+(subactivity_occurrence occ1 occ2) is TRUE in an interpretation of TUpper if and only if  the branch corresponding to the activity occurrence occ1 is a subset of the branch corresponding to activity occurrence occ2
+
+<h3>(root_occ occ1 occ2 a)</h3>
+
+Informal semantics for root_occ :
+<br>
+(root_occ occ1 occ2 a) is TRUE in an interpretation of TUpper if and only if activity occurrence occ1 is the root occurrence in the branch of the activity tree for a corresponding to the activity occurrence occ2.
+
+<h3>(leaf_occ occ1 occ2 a)</h3>
+
+Informal semantics for leaf_occ :
+<br>
+(leaf_occ occ1 occ2 a) is TRUE in an interpretation of TUpper if and only if activity occurrence occ1 is the leaf occurrence in the branch of the activity tree for a corresponding to the activity occurrence occ2
+
+<h3>(iso_occ occ1 occ2)</h3>
+
+Informal semantics for iso_occ :
+<br>
+(iso_occ occ1 occ2) is TRUE in an interpretation of TUpper if and only if both occ1 and occ2 are occurrences of an atomic activity that contain a common subactivity..
+
+<h3>(same_tree occ1 occ2 a)</h3>
+
+Informal semantics for same_tree :
+<br>
+(same_tree occ1 occ2 a) is TRUE in an interpretation of TUpper if and only if activity occurrences occ1 and occ2 of a correspond to branches in the same activity tree for a.
+
+<h2> Spatial Modules>
+
+<h3> (spatial_region r) </h3>
+The informal semantics for spatial_region is :
+<br>
+(spatial_region r) is TRUE in an interpretation of TUpper if and only if
+r is a member of the class of spatial regions in the universe of discourse of the interpretation.
+The set of spatial regions forms a mereotopology.
+
+<h3> (spatial_part r1 r2) </h3>
+The informal semantics for spatial_part is :
+<br>
+(spatial_part r1 r2) is TRUE in an interpretation of TUpper if and only if
+the spatial region r1 is part of spatial region r2 in the mereotopology of
+spatial regions.
+
+<h3> (spatial_C r1 r2) </h3>
+The informal semantics for spatial_C is :
+<br>
+(spatial_C r1 r2) is TRUE in an interpretation of TUpper if and only if
+the spatial region r1 is connected to the spatial region r2 in the mereotopology of
+spatial regions.
+
+<h3> (physical_body x) </h3>
+The informal semantics for physical_body is :
+<br>
+(physical_body x) is TRUE in an interpretation of TUpper if and only if
+x is a member of the class of physical bodies in the universe of discourse of the interpretation.
+The set of physical bodies forms a mereotopology.
+
+<h3> (physical_part x1 x2) </h3>
+The informal semantics for physical_part is :
+<br>
+(physical_part x1 x2) is TRUE in an interpretation of TUpper if and only if
+the physical body x1 is part of physical body x2 in the mereotopology of
+physical bodies.
+
+<h3> (physical_C x1 x2) </h3>
+The informal semantics for physical_C is :
+<br>
+(physical_C x1 x2) is TRUE in an interpretation of TUpper if and only if
+the physical body x1 is connected to the physical body x2 in the mereotopology of
+physical bodies.
+
+<h3> (occupies x r)</h3>
+The informal semantics for occupies is :
+<br>
+(occupies x r) is TRUE in an interpretation of TUpper if and only if
+the physical body x is located in the spatial region r.
+The mereotopology of physical bodies is preserved by this relation.
+
+<h2> FOUnt Modules </h2>
+
+<h3>(timeduration d)</h3>
+The informal semantics for timeduration is :
+<br>
+(timeduration d) is TRUE in an interpretation of TUpper if and only if
+d is a member of the class of quantities used to measure the duration of a time interval in the universe of discourse of the interpretation.
+The set of timedurations forms a vector space.
+
+<h3>(dur x)</h3>
+The informal semantics for dur is :
+<br>
+(= d (dur x) is TRUE in an interpretation of TUpper if and only if
+d is the timeduration whose value is equal to the duration of the interval
+over which either x exists (as an object) or x occurs (as an activity 
+occurrence).
+
+<h3>(mat m)</h3>
+The informal semantics for mat is :
+<br>
+(mat x) is TRUE in an interpretation of TUpper if and only if
+x is an instance of the class of matter.
+
+<h3>(constitutes m x)</h3>
+The informal semantics for constitutes is :
+<br>
+(constitutes m x) is TRUE in an interpretation of TUpper if and only if
+m is the matter that constitutes the material object x.
+
+<h3>(amount d)</h3>
+The informal semantics for amount is :
+<br>
+(amount d) is TRUE in an interpretation of TUpper if and only if
+d is a member of the class of quantities used to measure the amount of some chunk of matter in the universe of discourse of the interpretation.
+The set of amounts forms a vector space.
+
+<h3>(mass m d)</h3>
+The informal semantics for mass is :
+<br>
+(mass m d) is TRUE in an interpretation of TUpper if and only if
+d is the amount of the chunk of matter m.
+
+<h3>(physical_mass x d)</h3>
+The informal semantics for physical_mass is :
+<br>
+(physical_mass m d) is TRUE in an interpretation of TUpper if and only if
+d is the amount of the chunk of matter that constitutes x.
+
+<h3>(Curve x)</h3>
+The informal semantics for Curve is :
+<br>
+(Curve x) is TRUE in an interpretation of TUpper if and only if
+x is a member of the class of one-dimensional spatial entities
+in the universe of discourse of the interpretation.
+
+<h3>(spatial_length d)</h3>
+The informal semantics for spatial_length is :
+<br>
+(spatial_length d) is TRUE in an interpretation of TUpper if and only if
+d is a member of the class of quantities used to measure the length of 
+curves in the universe of discourse of the interpretation.
+The set of spatial lengths forms a vector space.
+
+<h3>(length x d)</h3>
+The informal semantics for length is :
+<br>
+(length x d) is TRUE in an interpretation of TUpper if and only if
+d is the spatial length of the curve x.
+
+<h3>(physical_length x d)</h3>
+The informal semantics for physical_length is :
+<br>
+(physical_length x d) is TRUE in an interpretation of TUpper if and only if
+d is the length of the curve occupied by the physical object x.
+
+<h3>(ArealRegion x)</h3>
+The informal semantics for ArealRegion is :
+<br>
+(ArealRegion x) is TRUE in an interpretation of TUpper if and only if
+x is a member of the class of two-dimensional spatial entities
+in the universe of discourse of the interpretation.
+
+<h3>(spatial_area d)</h3>
+The informal semantics for spatial_area is :
+<br>
+(spatial_area d) is TRUE in an interpretation of TUpper if and only if
+d is a member of the class of quantities used to measure the area of 
+areal regions in the universe of discourse of the interpretation.
+The set of spatial lengths forms a vector space.
+
+<h3>(area x d)</h3>
+The informal semantics for area is :
+<br>
+(area x d) is TRUE in an interpretation of TUpper if and only if
+d is the spatial area of the areal region x.
+
+<h3>(physical_area x d)</h3>
+The informal semantics for physical_area is :
+<br>
+(physical_area x d) is TRUE in an interpretation of TUpper if and only if
+d is the area of the areal region occupied by the physical object x.
+
+<h3>(VoluminalRegion x)</h3>
+The informal semantics for VoluminalRegion is :
+<br>
+(VoluminalRegion x) is TRUE in an interpretation of TUpper if and only if
+x is a member of the class of three-dimensional spatial entities
+in the universe of discourse of the interpretation.
+
+<h3>(spatial_volume d)</h3>
+The informal semantics for spatial_volume is :
+<br>
+(spatial_volume d) is TRUE in an interpretation of TUpper if and only if
+d is a member of the class of quantities used to measure the volume of 
+voluminal regions in the universe of discourse of the interpretation.
+The set of spatial lengths forms a vector space.
+
+<h3>(volume x d)</h3>
+The informal semantics for volume is :
+<br>
+(volume x d) is TRUE in an interpretation of TUpper if and only if
+d is the spatial volume of the voluminal region x.
+
+<h3>(physical_volume x d)</h3>
+The informal semantics for physical_volume is :
+<br>
+(physical_volume x d) is TRUE in an interpretation of TUpper if and only if
+d is the voume of the voluminal region occupied by the physical object x.
+
+<br>
+</body>
+</html>
+

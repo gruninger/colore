@@ -1,0 +1,28 @@
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.03) seconds.
+% Length of proof is 16.
+% Level of proof is 4.
+% Maximum clause weight is 9.
+% Given clauses 31.
+
+3 (all x all y (physical_C(x,y) -> physical_C(y,x))) # label(non_clause).  [assumption].
+6 (all x all y (spatial_C(x,y) -> spatial_C(y,x))) # label(non_clause).  [assumption].
+14 (all x all y (adj(x,y) <-> physical_C(x,y) | spatial_C(x,y))) # label(non_clause).  [assumption].
+16 (all x all y (adj(x,y) -> adj(y,x))) # label(non_clause) # label(goal).  [goal].
+60 -physical_C(x,y) | physical_C(y,x).  [clausify(3)].
+61 -spatial_C(x,y) | spatial_C(y,x).  [clausify(6)].
+64 -adj(x,y) | physical_C(x,y) | spatial_C(x,y).  [clausify(14)].
+65 adj(x,y) | -physical_C(x,y).  [clausify(14)].
+66 adj(x,y) | -spatial_C(x,y).  [clausify(14)].
+67 adj(c1,c2).  [deny(16)].
+68 -adj(c2,c1).  [deny(16)].
+88 physical_C(c1,c2) | spatial_C(c1,c2).  [resolve(67,a,64,a)].
+89 -spatial_C(c2,c1).  [ur(66,a,68,a)].
+90 -physical_C(c2,c1).  [ur(65,a,68,a)].
+99 physical_C(c1,c2).  [resolve(88,b,61,a),unit_del(b,89)].
+101 $F.  [ur(60,b,90,a),unit_del(a,99)].
+
+============================== end of proof ==========================

@@ -1,0 +1,44 @@
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.00 (+ 0.03) seconds.
+% Length of proof is 32.
+% Level of proof is 6.
+% Maximum clause weight is 9.
+% Given clauses 30.
+
+1 (all x all y (physical_C(x,y) -> physical_object(x) & physical_object(y))) # label(non_clause).  [assumption].
+2 (all x (physical_object(x) -> physical_C(x,x))) # label(non_clause).  [assumption].
+4 (all x all y (spatial_C(x,y) -> region(x) & region(y))) # label(non_clause).  [assumption].
+5 (all x (region(x) -> spatial_C(x,x))) # label(non_clause).  [assumption].
+12 (all x (point(x) <-> physical_object(x))) # label(non_clause).  [assumption].
+13 (all x (line(x) <-> region(x))) # label(non_clause).  [assumption].
+15 (all x all y (in(x,y) <-> occupies(x,y) | occupies(y,x) | (point(x) | line(x)) & x = y)) # label(non_clause).  [assumption].
+16 (all x (point(x) | line(x) -> in(x,x))) # label(non_clause) # label(goal).  [goal].
+17 -physical_object(x) | physical_C(x,x).  [clausify(2)].
+18 -physical_C(x,y) | physical_object(x).  [clausify(1)].
+23 -point(x) | physical_object(x).  [clausify(12)].
+24 point(x) | -physical_object(x).  [clausify(12)].
+25 -region(x) | spatial_C(x,x).  [clausify(5)].
+26 -spatial_C(x,y) | region(x).  [clausify(4)].
+29 -line(x) | region(x).  [clausify(13)].
+30 line(x) | -region(x).  [clausify(13)].
+38 in(x,y) | -point(x) | y != x.  [clausify(15)].
+40 point(c1) | line(c1).  [deny(16)].
+41 -point(x) | physical_C(x,x).  [resolve(23,b,17,a)].
+43 point(x) | -physical_C(x,y).  [resolve(24,b,18,b)].
+50 line(x) | -spatial_C(x,y).  [resolve(30,b,26,b)].
+51 in(x,y) | -line(x) | y != x.  [clausify(15)].
+52 -line(x) | spatial_C(x,x).  [resolve(29,b,25,a)].
+61 physical_C(c1,c1) | line(c1).  [resolve(41,a,40,a)].
+80 -in(c1,c1).  [deny(16)].
+99 -physical_C(x,y) | in(x,z) | z != x.  [resolve(43,a,38,b)].
+102 -spatial_C(x,y) | in(x,z) | z != x.  [resolve(50,a,51,b)].
+109 physical_C(c1,c1) | spatial_C(c1,c1).  [resolve(61,b,52,a)].
+120 -physical_C(c1,x).  [ur(99,b,80,a,c,xx)].
+121 spatial_C(c1,c1).  [back_unit_del(109),unit_del(a,120)].
+124 -spatial_C(c1,x).  [ur(102,b,80,a,c,xx)].
+125 $F.  [resolve(124,a,121,a)].
+
+============================== end of proof ==========================

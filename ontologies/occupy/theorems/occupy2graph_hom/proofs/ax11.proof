@@ -1,0 +1,57 @@
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.03 (+ 0.03) seconds.
+% Length of proof is 45.
+% Level of proof is 10.
+% Maximum clause weight is 9.
+% Given clauses 59.
+
+4 (all x all y (spatial_C(x,y) -> region(x) & region(y))) # label(non_clause).  [assumption].
+5 (all x (region(x) -> spatial_C(x,x))) # label(non_clause).  [assumption].
+7 (all x (region(x) -> -physical_object(x))) # label(non_clause).  [assumption].
+8 (all x all y (occupies(x,y) -> physical_object(x) & region(y))) # label(non_clause).  [assumption].
+9 (all x all y all z (occupies(x,y) & occupies(x,z) -> y = z)) # label(non_clause).  [assumption].
+12 (all x (point(x) <-> physical_object(x))) # label(non_clause).  [assumption].
+13 (all x (line(x) <-> region(x))) # label(non_clause).  [assumption].
+15 (all x all y (in(x,y) <-> occupies(x,y) | occupies(y,x) | (point(x) | line(x)) & x = y)) # label(non_clause).  [assumption].
+16 (all l1 all l2 all p (line(l1) & line(l2) & point(p) & in(p,l1) & in(p,l2) -> l1 = l2)) # label(non_clause) # label(goal).  [goal].
+20 -region(x) | -physical_object(x).  [clausify(7)].
+21 -occupies(x,y) | physical_object(x).  [clausify(8)].
+23 -point(x) | physical_object(x).  [clausify(12)].
+25 -region(x) | spatial_C(x,x).  [clausify(5)].
+27 -spatial_C(x,y) | region(y).  [clausify(4)].
+29 -line(x) | region(x).  [clausify(13)].
+33 -occupies(x,y) | -region(x).  [resolve(21,b,20,b)].
+34 -point(x) | -region(x).  [resolve(23,b,20,b)].
+40 -in(x,y) | occupies(x,y) | occupies(y,x) | y = x.  [clausify(15)].
+44 in(c3,c1).  [deny(16)].
+45 in(c3,c2).  [deny(16)].
+46 -line(x) | spatial_C(x,x).  [resolve(29,b,25,a)].
+47 line(c1).  [deny(16)].
+48 line(c2).  [deny(16)].
+54 -occupies(x,y) | -line(x).  [resolve(33,b,29,b)].
+55 -point(x) | -line(x).  [resolve(34,b,29,b)].
+60 -occupies(x,y) | -occupies(x,z) | z = y.  [clausify(9)].
+62 point(c3).  [deny(16)].
+63 c2 != c1.  [deny(16)].
+88 -point(x) | -spatial_C(y,x).  [resolve(34,b,27,b)].
+90 occupies(c3,c1) | occupies(c1,c3) | c1 = c3.  [resolve(44,a,40,a)].
+91 occupies(c3,c1) | occupies(c1,c3) | c3 = c1.  [copy(90),flip(c)].
+92 occupies(c3,c2) | occupies(c2,c3) | c2 = c3.  [resolve(45,a,40,a)].
+93 occupies(c3,c2) | occupies(c2,c3) | c3 = c2.  [copy(92),flip(c)].
+94 spatial_C(c1,c1).  [resolve(46,a,47,a)].
+100 -occupies(c1,x).  [resolve(54,b,47,a)].
+101 -occupies(c2,x).  [resolve(54,b,48,a)].
+103 -point(c2).  [resolve(55,b,48,a)].
+113 occupies(c3,c1) | c3 = c1.  [back_unit_del(91),unit_del(b,100)].
+114 occupies(c3,c2) | c3 = c2.  [back_unit_del(93),unit_del(b,101)].
+118 -spatial_C(x,c3).  [ur(88,a,62,a)].
+120 c3 = c1 | -occupies(c3,x) | c1 = x.  [resolve(113,a,60,b)].
+133 c3 = c1 | c3 = c2.  [resolve(120,b,114,a),flip(b),unit_del(b,63)].
+134 c3 = c1.  [para(133(b,1),62(a,1)),unit_del(b,103)].
+139 -spatial_C(x,c1).  [back_rewrite(118),rewrite([134(1)])].
+140 $F.  [resolve(139,a,94,a)].
+
+============================== end of proof ==========================

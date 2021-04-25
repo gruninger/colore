@@ -1,0 +1,31 @@
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.03 (+ 0.00) seconds.
+% Length of proof is 19.
+% Level of proof is 4.
+% Maximum clause weight is 9.
+% Given clauses 13.
+
+7 (all x all y (spatial_C(x,y) -> spatial_C(y,x))) # label(non_clause).  [assumption].
+8 (all x all y all z (spatial_C(x,y) & spatial_part(y,z) -> spatial_C(x,z))) # label(non_clause).  [assumption].
+10 (all x (part(x,y) <-> spatial_part(x,y))) # label(non_clause).  [assumption].
+11 (all x all y (C(x,y) <-> spatial_C(x,y))) # label(non_clause).  [assumption].
+12 (all x all y (part(x,y) -> (all z (C(x,z) -> C(z,y))))) # label(non_clause) # label(goal).  [goal].
+22 -part(x,y) | spatial_part(x,y).  [clausify(10)].
+23 part(c1,c2).  [deny(12)].
+26 -spatial_C(x,y) | spatial_C(y,x).  [clausify(7)].
+27 -spatial_C(x,y) | -spatial_part(y,z) | spatial_C(x,z).  [clausify(8)].
+28 -C(x,y) | spatial_C(x,y).  [clausify(11)].
+29 C(x,y) | -spatial_C(x,y).  [clausify(11)].
+30 C(c1,c3).  [deny(12)].
+31 -C(c3,c2).  [deny(12)].
+44 spatial_part(c1,c2).  [resolve(23,a,22,a)].
+45 spatial_C(c1,c3).  [hyper(28,a,30,a)].
+46 -spatial_C(c3,c2).  [ur(29,a,31,a)].
+49 spatial_C(c3,c1).  [hyper(26,a,45,a)].
+50 -spatial_C(c3,c1).  [ur(27,b,44,a,c,46,a)].
+51 $F.  [resolve(50,a,49,a)].
+
+============================== end of proof ==========================

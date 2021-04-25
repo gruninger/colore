@@ -1,0 +1,38 @@
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.03) seconds.
+% Length of proof is 26.
+% Level of proof is 4.
+% Maximum clause weight is 20.
+% Given clauses 45.
+
+15 (all x all y all l1 all l2 (adj(x,y) & point(x) & point(y) & line(l1) & line(l2) & in(x,l1) & in(y,l2) -> adj(l1,l2))) # label(non_clause).  [assumption].
+18 (all x all y (spatial_C(x,y) <-> adj(x,y) & line(x) & line(y))) # label(non_clause).  [assumption].
+19 (all x all y (physical_C(x,y) <-> adj(x,y) & point(x) & point(y))) # label(non_clause).  [assumption].
+20 (all x all y (occupies(x,y) <-> in(x,y) & point(x) & line(y))) # label(non_clause).  [assumption].
+21 (all x all y all r1 all r2 (physical_C(x,y) & occupies(x,r1) & occupies(y,r2) -> spatial_C(r1,r2))) # label(non_clause) # label(goal).  [goal].
+27 -physical_C(x,y) | adj(x,y).  [clausify(19)].
+28 -physical_C(x,y) | point(x).  [clausify(19)].
+29 -physical_C(x,y) | point(y).  [clausify(19)].
+30 physical_C(c1,c2).  [deny(21)].
+32 -occupies(x,y) | in(x,y).  [clausify(20)].
+34 -occupies(x,y) | line(y).  [clausify(20)].
+35 occupies(c1,c3).  [deny(21)].
+36 occupies(c2,c4).  [deny(21)].
+56 -adj(x,y) | -point(x) | -point(y) | -line(z) | -line(u) | -in(x,z) | -in(y,u) | adj(z,u).  [clausify(15)].
+60 spatial_C(x,y) | -adj(x,y) | -line(x) | -line(y).  [clausify(18)].
+61 -spatial_C(c3,c4).  [deny(21)].
+62 adj(c1,c2).  [resolve(30,a,27,a)].
+63 point(c1).  [resolve(30,a,28,a)].
+64 point(c2).  [resolve(30,a,29,a)].
+65 in(c1,c3).  [resolve(35,a,32,a)].
+66 line(c3).  [resolve(35,a,34,a)].
+67 in(c2,c4).  [resolve(36,a,32,a)].
+68 line(c4).  [resolve(36,a,34,a)].
+72 -line(x) | -line(y) | -in(c1,x) | -in(c2,y) | adj(x,y).  [resolve(62,a,56,a),unit_del(a,63),unit_del(b,64)].
+97 -adj(c3,c4).  [ur(60,a,61,a,c,66,a,d,68,a)].
+121 $F.  [ur(72,b,68,a,c,65,a,d,67,a,e,97,a),unit_del(a,66)].
+
+============================== end of proof ==========================

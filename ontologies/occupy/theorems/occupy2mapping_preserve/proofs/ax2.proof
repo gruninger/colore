@@ -1,0 +1,44 @@
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.03 (+ 0.01) seconds.
+% Length of proof is 32.
+% Level of proof is 6.
+% Maximum clause weight is 9.
+% Given clauses 32.
+
+1 (all x all y (spatial_part(x,y) -> region(x) & region(y))) # label(non_clause).  [assumption].
+2 (all x (region(x) -> spatial_part(x,x))) # label(non_clause).  [assumption].
+5 (all x all y (physical_part(x,y) -> physical_object(x) & physical_object(y))) # label(non_clause).  [assumption].
+6 (all x (physical_object(x) -> physical_part(x,x))) # label(non_clause).  [assumption].
+14 (all x (point(x) <-> physical_object(x))) # label(non_clause).  [assumption].
+15 (all x (line(x) <-> region(x))) # label(non_clause).  [assumption].
+18 (all x all y (in(x,y) <-> occupies(x,y) | occupies(y,x) | (point(x) | line(x)) & x = y)) # label(non_clause).  [assumption].
+19 (all x (point(x) | line(x) -> in(x,x))) # label(non_clause) # label(goal).  [goal].
+20 -region(x) | spatial_part(x,x).  [clausify(2)].
+21 -spatial_part(x,y) | region(x).  [clausify(1)].
+25 -line(x) | region(x).  [clausify(15)].
+26 line(x) | -region(x).  [clausify(15)].
+27 -physical_object(x) | physical_part(x,x).  [clausify(6)].
+28 -physical_part(x,y) | physical_object(x).  [clausify(5)].
+32 -point(x) | physical_object(x).  [clausify(14)].
+33 point(x) | -physical_object(x).  [clausify(14)].
+42 in(x,y) | -point(x) | y != x.  [clausify(18)].
+44 point(c1) | line(c1).  [deny(19)].
+45 -point(x) | physical_part(x,x).  [resolve(32,b,27,a)].
+47 point(x) | -physical_part(x,y).  [resolve(33,b,28,b)].
+54 line(x) | -spatial_part(x,y).  [resolve(26,b,21,b)].
+55 in(x,y) | -line(x) | y != x.  [clausify(18)].
+56 -line(x) | spatial_part(x,x).  [resolve(25,b,20,a)].
+65 physical_part(c1,c1) | line(c1).  [resolve(45,a,44,a)].
+86 -in(c1,c1).  [deny(19)].
+105 -physical_part(x,y) | in(x,z) | z != x.  [resolve(47,a,42,b)].
+108 -spatial_part(x,y) | in(x,z) | z != x.  [resolve(54,a,55,b)].
+115 physical_part(c1,c1) | spatial_part(c1,c1).  [resolve(65,b,56,a)].
+126 -physical_part(c1,x).  [ur(105,b,86,a,c,xx)].
+127 spatial_part(c1,c1).  [back_unit_del(115),unit_del(a,126)].
+130 -spatial_part(c1,x).  [ur(108,b,86,a,c,xx)].
+131 $F.  [resolve(130,a,127,a)].
+
+============================== end of proof ==========================

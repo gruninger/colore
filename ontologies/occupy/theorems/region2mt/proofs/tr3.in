@@ -1,0 +1,39 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%region_mt
+all x all y (spatial_part(x, y) -> region(x) & region(y)).
+all x (region(x)->  spatial_part(x, x)).
+all x all y (spatial_part(x, y) & spatial_part(y, x) -> (x = y)).
+all x all y all z (spatial_part(x, y) & spatial_part(y, z) -> spatial_part(x, z)).
+
+all x all y (spatial_C(x, y) -> region(x) & region(y)).
+all x (region(x) -> spatial_C(x, x)).
+all x all y (spatial_C(x, y) -> spatial_C(y, x)).
+
+all x all y all z ( spatial_C(x, y) & spatial_part(y, z) -> spatial_C(x, z)).
+
+%Delta3
+all x (region(x) <-> (x = x)).
+all x (part(x,y) <-> spatial_part(x, y)).
+all x all y ( C(x, y) <-> spatial_C(x, y)).
+
+end_of_list.
+
+formulas(goals).
+
+all x all y (spatial_C(x,y) <-> C(x, y)).
+
+end_of_list.
+
