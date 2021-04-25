@@ -17,16 +17,40 @@
 
 (cl-comment 'Definition of a curve as something that is of exactly one dimension greater than a point (which is of lowest dimension)')
 
+
 (forall (x)
-	(iff
+	(if
 		(Curve x)
-		(forall (y)
-			(iff
-				(PointRegion y)
-				(Covers x y)
+		(and
+			(not (ZEX x))
+			(not (MinDim x))
+			(forall (y)
+				(iff
+					(MinDim y)
+					(Covers x y)
+				)
 			)
 		)
 	)
 )
 
+
+(forall (x)
+	(if
+		(and
+			(not (ZEX x))
+			(not (MinDim x))
+			(forall (y)
+				(iff
+					(MinDim y)
+					(Covers x y)
+				)
+			)
+			(exists (z)
+				(MinDim z)
+			)
+		)
+		(Curve x)
+	)
+)
 )
