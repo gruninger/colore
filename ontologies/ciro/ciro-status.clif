@@ -12,28 +12,27 @@
 
 (cl-imports http://colore.oor.net/ciro/ciro-core.clif)
 
-(cl-comment 'A Compliance issue or action plan has status 'Draft' at a point in time if and only if there has been:
-no effective challenge occurrences 
-applying to that issue/plan')
+(cl-comment 'A Compliance issue or action plan has status Draft at a point in time if and only if there has been:
+no effective challenge occurrences applying to that issue/plan')
 
 (forall (x t)
 	(iff	(= (status_of x t) 'Draft')
-			(exists o a
+			(exists (o a)
 				(and	(monitor_activity a x)
 						(occurrence_of o a)
 						(forall (o1)
 						(and	(occurrence_of o1 (effective_challenge x))
-								(subactivity_occurrence o1 o))
+								(subactivity_occurrence o1 o)
 								(earlier t (beginof o1)))))))	
 						
-(cl-comment 'A Compliance issue or action plan has status 'Revise - Under Review' at a point in time if and only if there has been:
+(cl-comment 'A Compliance issue or action plan has status Revise - Under Review at a point in time if and only if there has been:
 one effective challenge occurrence
 an ongoing occurrence of effective challenge
 applying to that issue/plan')			
 										
 (forall (x t)
 	(iff	(= (status_of x t) 'Revise - Under Review')
-			(exists o a o1 o2
+			(exists (o a o1 o2)
 				(and	(monitor_activity a x)
 						(occurrence_of o a)
 						(occurrence_of o1 (material_change x))

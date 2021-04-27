@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  * Copyright (c) University of Toronto and others. All rights reserved. 
  * The content of this file is licensed under the Creative Commons Attribution-
@@ -7,6 +8,7 @@
  * Contributors:
  *    Riley Moher - initial implementation
  *******************************************************************************/
+
 
 (cl-text http://colore.oor.net/ciro/ciro-core.clif
 
@@ -21,8 +23,9 @@
 	(iff	(action_plan x)
 			(and 	(activity x)
 					(exists (y)
-					(compliance_issue y)
-					(assigned_to x y)))))
+					(and
+						(compliance_issue y)
+						(assigned_to x y))))))
 					
 (cl-comment 'Compliance issues are objects')
 (forall (x)
@@ -37,14 +40,14 @@
 					(compliance_issue y)
 					(forall (z)
 						(if		(assigned_to z y)
-								(= z x)))))
+								(= z x))))))
 					
 (cl-comment 'All action plans are assigned to at least one compliance issue')					
 
 (forall (x)
 	(if		(action_plan x)
 			(exists (y)
-				(and	(compliance_issue(y))
+				(and	(compliance_issue y)
 						(assigned_to x y)))))
 						
 (cl-comment 'A step for remediation is the primitive subactivity of an action plan')	
@@ -64,13 +67,15 @@
 			(and	(step_for_remediation y)
 					(subactivity y x)))))
 					
-(cl-comment 'Material change is an activity within a monitor activity)
+(cl-comment 'Material change is an activity within a monitor activity')
 (forall (x)
 	(if		(material_change x)
-			(and	(activity (material_change x))
+			(and	(activity x)
+					(material_change x)
 					(exists (a)
 						(and	(monitor_activity a x)
-								(subactivity (effective_challenge x) a))))))
+								(subactivity x a)
+								(effective_challenge x))))))
 							
 (cl-comment 'Completion is a class of material change activity')
 (forall (x)
@@ -82,29 +87,35 @@
 	(if	(validation x)
 		(material_change x)))
 														
-(cl-comment 'Effective challenge is an activity within a monitor activity)
+(cl-comment 'Effective challenge is an activity within a monitor activity')
 (forall (x)
 	(if		(effective_challenge x)
-			(and	(activity (effective_challenge x))
+			(and	(activity x)
+					(effective_challenge x)
 					(exists (a)
 						(and	(monitor_activity a x)
-								(subactivity (effective_challenge x) a))))))
+								(subactivity x a)
+								(effective_challenge x))))))
 			
-(cl-comment 'Approval is an activity within a monitor activity)
+(cl-comment 'Approval is an activity within a monitor activity')
 (forall (x)
 	(if		(approval x)
-			(and	(activity (effective_challenge x))
+			(and	(activity x)
+					(effective_challenge x)
 					(exists (a)
 						(and	(monitor_activity a x)
-								(subactivity (effective_challenge x) a))))))						
+								(subactivity x a)
+								(effective_challenge x))))))						
 
-(cl-comment 'Rejection is an activity within a monitor activity)
+(cl-comment 'Rejection is an activity within a monitor')
 (forall (x)
 	(if		(rejection x)
-			(and	(activity (effective_challenge x))
+			(and	(activity x)
+					(effective_challenge x)
 					(exists (a)
 						(and	(monitor_activity a x)
-								(subactivity (effective_challenge x) a))))))
+								(subactivity x a)
+								(effective_challenge x))))))
 
 
 (cl-comment '---------Ordering Constraint Axioms--------')							
@@ -112,36 +123,46 @@
 (cl-comment 'Material change occurrences must be followed by an effective challenge occurrence')
 
 (forall (o1 x a)
-	(if	(and	(occurrence_of o1 (material_change x))
+	(if	(and	(occurrence_of o1 x)
+				(material_change x)
 				(legal o1)
 				(monitor_activity a x)
+				)
 		(exists (y o2)
-			(and	(occurrence_of o2 (effective_challenge y))
+			(and	(occurrence_of o2 y)
+					(effective_challenge y)
 					(legal o2)
-					(next_subocc o1 o2 a))))))
+					(next_subocc o1 o2 a)))))
 
 (cl-comment 'Effective_challenge occurrences result in either an approval or a rejection')
 
 (forall (o1 x a)
-	(if	(and	(occurrence_of o1 (effective_challenge x))
+	(if	(and	(occurrence_of o1 x)
+				(effective_challenge x)
 				(legal o1)
 				(monitor_activity a x)
+				)
 		(exists (y o2)
-			(and	(or		(occurrence_of o2 (approval y))
-							(occurrence_of o2 (rejection y)))
+			(and	(or		(and
+								(occurrence_of o2 y)
+								(approval y))
+							(and 
+								(occurrence_of o2 y)
+								(rejection y)))
 					(legal o2)
-					(next_subocc o1 o2 a))))))
+					(next_subocc o1 o2 a)))))
 				
 (cl-comment 'A Compliance issue will be validated after all of its assigned action plans are completed')
 (forall (o x t)
-	(if 	(and	(occurrence_of o (validation x))
-					(legal o)
+	(if 	(and	(occurrence_of o x)
+					(validation x)
+					(legal o))
 			(forall (y o1)
 				(if		(and	(action_plan y)
 								(assigned_to y x)
 								(occurrence_of o1 y)
 								(legal o1))
-						(earlier endof(o1) o)))))
+						(earlier (endof o1) o)))))
 						
 (cl-comment 'The status_of function relates monitoring objects to points in time')
 
