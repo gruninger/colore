@@ -1,0 +1,576 @@
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%DOLCE SIMPLE version for MACE4 / PROVER9 by D. Porello, S. Borgo, L. Vieu.
+%
+%Axioms the OWL version of DOLCE SIMPLE translated into first-order logic.
+%
+%Proofs that DOLCE SIMPLE entails the OWL version of DOLCE SIMPLE (by PROVER9).
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+set(prolog_style_variables).
+
+assign(max_megs, 900).
+
+formulas(assumptions).
+
+
+%Taxonomy%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Taxonomy: inclusions
+(all X ((ab(X) | ed(X) | pd(X) | q(X)) <-> pt(X))).
+(all X ((as(X) | nped(X) | ped(X)) <-> ed(X))).
+(all X ((pro(X) | st(X)) <-> stv(X))).
+(all X ((ev(X) | stv(X)) <-> pd(X))).
+(all X ((aq(X) | pq(X) | tq(X)) <-> q(X))).
+(all X ((acc(X) | ach(X)) <-> ev(X))).
+(all X ((apo(X) | napo(X)) <-> pob(X))).
+(all X ((sag(X) | sc(X)) <-> aso(X))).
+(all X ((aso(X) | naso(X)) <-> sob(X))).
+(all X ((sob(X) | mob(X)) <-> npob(X))).
+(all X ((ar(X) | pr(X) | tr(X)) <-> r(X))).
+(all X (r(X) -> ab(X))).
+(all X ((f(X) | m(X) | pob(X)) <-> ped(X))).
+(all X (npob(X) -> nped(X))).
+(all X (s(X) -> pr(X))).
+(all X (sl(X) -> pq(X))).
+(all X (t(X) -> tr(X))).
+(all X (tl(X) -> tq(X))).
+
+%Taxonomy: disjoitness
+
+(-(exists X (ab(X) & ed(X)))).
+(-(exists X (ab(X) & pd(X)))).
+(-(exists X (ab(X) & q(X)))).
+(-(exists X (ed(X) & pd(X)))).
+(-(exists X (pd(X) & q(X)))).
+(-(exists X (ed(X) & q(X)))).
+(-(exists X (ped(X) & nped(X)))).
+(-(exists X (ped(X) & as(X)))).
+(-(exists X (nped(X) & as(X)))).
+(-(exists X (m(X) & f(X)))).
+(-(exists X (f(X) & pob(X)))).
+(-(exists X (m(X) & pob(X)))).
+(-(exists X (mob(X) & sob(X)))).
+(-(exists X (aso(X) & naso(X)))).
+(-(exists X (sag(X) & sc(X)))).
+(-(exists X (apo(X) & napo(X)))).
+(-(exists X (ev(X) & stv(X)))).
+(-(exists X (ach(X) & acc(X)))).
+(-(exists X (st(X) & pro(X)))).
+(-(exists X (tq(X) & pq(X)))).
+(-(exists X (pq(X) & aq(X)))).
+(-(exists X (tq(X) & aq(X)))).
+(-(exists X (tr(X) & pr(X)))).
+(-(exists X (pr(X) & ar(X)))).
+(-(exists X (tr(X) & ar(X)))).
+
+
+
+
+%Mereology%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+(all X all Y (p(X,Y) -> ((ab(X) | pd(X)) & (ab(Y) | pd(Y))))) # label(parthood_Argument_restrictions_Ad1).
+(all X all Y (p(X,Y) -> (pd(X) <-> pd(Y)))) # label(parthood_argument_restrictions_Ad2).
+(all X all Y (p(X,Y) -> (ab(X) <-> ab(Y)))) # label(parthood_argument_restrictions_Ad3).
+(all X all Y (p(X,Y) -> (t(X) <-> t(Y)))) # label(parthood_argument_restrictions_instance_of_Ad4_1).
+(all X all Y (p(X,Y) -> (s(X) <-> s(Y)))) # label(parthood_argument_restrictions_instance_of_Ad4_2).
+(all X all Y (p(X,Y) -> (ar(X) <-> ar(Y)))) # label(parthood_argument_restrictions_instance_of_Ad4_3).
+(all X ((ab(X) | pd(X)) -> p(X,X))) # label(parthood_reflexivity_Ad5).
+(all X all Y ((p(X,Y) & p(Y,X)) -> ((X)=(Y)))) # label(parthood_antysymmetry_Ad6).
+(all X all Y all Z((p(X,Y) & p(Y,Z)) -> p(X,Z))) # label(parthood_transitivity_Ad7).
+(all X all Y (pp(X,Y) <-> (p(X,Y) & -(p(Y,X))))) # label(proper_part_definition_Dd14).
+(all X all Y (ov(X,Y) <-> (exists Z (p(Z,X) & p(Z,Y))))) # label(overlap_definition_Dd15).
+(all X (at(X) <-> ((pd(X) | ab(X)) & -(exists Y (pp(Y,X)))))) # label(atom_definition_Dd16_corrected).
+(all X all Y (atp(X,Y) <-> (p(X,Y)& at(X)))) # label(atomic_part_definition_Dd17).
+
+(all X all Y all Z (sum(Z,X,Y) <-> (((ab(Z) & ab(X) & ab(Y)) | (pd(Z) & pd(X) & pd(Y))) & (all W (ov(W,Z) <-> (ov(W,X) | ov(W,Y))))))) # label(binary_sum_definition_Dd18).
+
+
+%Check without this for larger models:
+%(all X all Y ((ab(X) & ab(Y)) -> (exists Z (ab(Z) & sum(Z,X,Y))))) # label(binary_sum_existence_restriction_of_Ad9).
+%(all X all Y ((pd(X) & pd(Y)) -> (exists Z (pd(Z) & sum(Z,X,Y))))) # label(binary_sum_existence_restriction_of_Ad9).
+
+(all X all Y all Z (dif(Z,X,Y) <-> (((ab(Z) & ab(X) & ab(Y)) | (pd(Z) & pd(X) & pd(Y))) & (all W (p(W,Z) <-> (p(W,X) & -(ov(W,Y)))))))) # label(binary_difference_definition).
+
+(all X all Y ((ab(X) & ab(Y) & -(p(X,Y))) -> (exists Z (dif(Z,X,Y))))) # label(binary_difference_existence_from_Ad8_1).
+(all X all Y ((pd(X) & pd(Y) & -(p(X,Y))) -> (exists Z (dif(Z,X,Y))))) # label(binary_difference_existence_from_Ad8_2).
+
+
+%Present_at%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+(all X all T (pre(X,T) -> ((ed(X) | pd(X) | q(X)) & t(T)))).
+
+
+(all X all T all S ((pre(X,T) & p(S,T)) -> (pre(X,S)))) # label(present_at_dissectivity_Td17).
+
+
+%Temporary_parthood%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+(all X all Y all T (tp(X,Y,T) -> (ed(X) & ed(Y) & t(T)))) # label(temporary_parthood_argument_restrictions_Ad10).
+(all X all Y all T (tp(X,Y,T) -> (ped(X) <-> ped(Y)))) # label(temporary_parthood_argument_restrictions_Ad11).
+(all X all Y all T (tp(X,Y,T) -> (nped(X) <-> nped(Y)))) # label(temporary_parthood_argument_restrictions_Ad12).
+(all X all Y all Z all T ((tp(X,Y,T) & tp(Y,Z,T)) -> tp(X,Z,T))) # label(temporary_parthood_ground_axiom_Ad13).
+(all X all Y all T (tov(X,Y,T) <-> (exists Z (tp(Z,X,T) & tp(Z,Y,T))))) # label(temporary_overlap_definition_Dd21).
+(all X all Y all T (tpp(X,Y,T) <-> (tp(X,Y,T) & -(tp(Y,X,T))))) # label(temporary_proper_part_definition_Dd20).
+(all X all T (tat(X,T) <-> (ed(X) & t(T) & -(exists Y (tpp(Y,X,T)))))) # label(temporary_proper_part_definition_Dd22_corrected).
+(all X all Y all T (tatp(X,Y,T) <-> (tp(X,Y,T) & tat(X,T)))) # label(temporary_atomic_part_definition_Dd23).
+
+(all X all Y all Z (tsum(Z,X,Y) <-> (((ped(Z) & ped(X) & ped(Y)) | (nped(Z) & nped(X) & nped(Y))) & (all W all T (tov(W,Z,T) <-> (tov(W,X,T) | tov(W,Y,T))))))) # label(temporary_sum_definition_from_Dd26).
+
+
+%Check without this for larger models:
+(all X all Y ((ped(X) & ped(Y)) -> (exists Z (tsum(Z,X,Y))))) # label(temporary_sum_existence_from_Dd26).
+(all X all Y ((nped(X) & nped(Y)) -> (exists Z (tsum(Z,X,Y))))) # label(temporary_sum_existence_from_Dd26).
+
+
+
+(all X all T ((ed(X) & pre(X,T)) -> tp(X,X,T))) # label(temporary_parthood_Ad16).
+(all X all Y all T (tp(X,Y,T) -> (pre(X,T) & pre(Y,T)))) # label(temporary_parthood_Ad17).
+(all X all Y all T (tp(X,Y,T) -> (all S (p(S,T) -> tp(X,Y,S))))) # label(temporary_parthood_Ad18).
+
+
+%Temporal_parthood_on_PD%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+(all X all Y (temporalPart(X,Y) <-> (pd(X) & pd(Y) & p(X,Y) &
+                    (all Z ((pd(Z) & p(Z,Y) & (all T (pre(Z,T) -> pre(X,T)))) -> p(Z,X)))))).
+
+
+
+%Constitution%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+(all X all Y all T (k(X,Y,T) -> ((ed(X) | pd(X)) & (ed(Y) | pd(Y)) & t(T)))) # label(constitution_argument_restrictions_Ad20).
+
+(all X all Y all T (k(X,Y,T) -> (ped(X) <-> ped(Y)))) # label(constitution__argument_restrictions_Ad21).
+
+(all X all Y all T (k(X,Y,T) -> (nped(X) <-> nped(Y)))) # label(constitution__argument_restrictions_Ad22).
+
+(all X all Y all T (k(X,Y,T) -> (pd(X) <-> pd(Y)))) # label(constitution_argument_restrictions_Ad23).
+
+(all X all Y all T (k(X,Y,T) -> -(k(Y,X,T)))) # label(constitution__ground_axiom_Ad24).
+
+(all X all Y all Z all T ((k(X,Y,T) & k(Y,Z,T)) -> k(X,Z,T))) # label(constitution__ground_axiom_Ad25).
+
+(all X all Y all T (k(X,Y,T) -> (pre(X,T) & pre(Y,T)))) # label(constitution_Ad26).
+
+(all X all Y all T (k(X,Y,T) -> (all S (p(S,T) -> k(X,Y,S))))) # label(constitution_Ad27_weakened).
+
+(all X all Y all V all T ((k(X,Y,T) & tp(V,Y,T)) -> (exists U (tp(U,X,T) & k(U,V,T))))) # label(constitution_Ad29).
+
+
+%Participation%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+(all X all Y all T (pc(X,Y,T) -> (ed(X) & pd(Y) & t(T)))) # label(participation_argument_restrictions_Ad33).
+
+(all X all T ((pd(X) & pre(X,T)) -> (exists Y (pc(Y,X,T))))) # label(participation_existential_Ad34).
+
+(all X (ed(X) -> (exists Y exists T (pc(X,Y,T))))) # label(participation_existential_Ad35_corrected).
+
+(all X all Y all T (pc(X,Y,T) -> (pre(X,T) & pre(Y,T)))) # label(participation_present_Ad36).
+
+(all X all Y all T (pc(X,Y,T) -> (all S (p(S,T) -> pc(X,Y,S))))) # label(participation_present_Ad37).
+
+
+%Direct_quality%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+(all X all Y (dqt(X,Y) -> (q(X) & (ed(Y) | pd(Y))))) # label(direct_quality_argument_restrictions_Ad38_simplified).
+(all X all Y (dqt(X,Y) -> (tq(X) <-> pd(Y)))) # label(direct_quality_argument_restrictions_Ad39_for_dqt).
+(all X all Y (dqt(X,Y) -> (pq(X) <-> ped(Y)))) # label(direct_quality_argument_restrictions_Ad40_for_dqt).
+(all X all Y (dqt(X,Y) -> (aq(X) <-> nped(Y)))) # label(direct_quality_argument_restrictions_Ad41_for_dqt).
+(all X all Y all V ((dqt(X,Y) & dqt(X,V)) -> ((Y)=(V)))) # label(direct_quality_Ad43).
+(all X all U all Y ((dqt(X,Y) & dqt(U,Y) & tl(X) & tl(U)) -> ((X)=(U)))) # label(direct_quality_unicity_Ad44_1).
+(all X all U all Y ((dqt(X,Y) & dqt(U,Y) & sl(X) & sl(U)) -> ((X)=(U)))) # label(direct_quality_unicity_Ad44_2).
+
+
+(all X (tq(X) -> (exists Y (dqt(X,Y) & pd(Y))))) # label(direct_quality_existential_Ad46).
+(all X (pq(X) -> (exists Y (dqt(X,Y) & ped(Y))))) # label(direct_quality_existential_Ad47).
+(all X (aq(X) -> (exists Y (dqt(X,Y) & nped(Y))))) # label(direct_quality_existential_Ad48).
+(all X (pd(X) -> (exists Y (dqt(Y,X) & tl(Y))))) # label(direct_quality_existential_Ad49).
+(all X (ped(X) -> (exists Y (dqt(Y,X) & sl(Y))))) # label(direct_quality_existential_Ad50).
+
+(all X (nped(X) -> (exists Y (dqt(Y,X) & aq(Y))))) # label(direct_quality_existential_Ad51).
+
+
+
+%Immediate_quale%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+(all X all Y (ql(X,Y) -> (tr(X) & tq(Y)))) # label(immediate_quale_argument_restrictions_Ad52).
+(all X all Y ((ql(X,Y) & tl(Y)) -> t(X))) # label(immediate_quale_argument_restrictions_Ad53).
+(all X all Y all U ((ql(X,Y) & ql(U,Y)) -> ((X)=(U)))) # label(immediate_quale_ground_Ad54).
+(all X (tq(X) -> (exists Y (ql(Y,X))))) # label(immediate_quale_existential_Ad55).
+
+%Temporary_quale%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+(all X all Y all T (tql(X,Y,T) -> ((pr(X) | ar(X)) & (pq(Y) | aq(Y)) & t(T)))) # label(temporary_quale_argument_restrictions_Ad58).
+
+(all X all Y all T (tql(X,Y,T) -> (pr(X) <-> pq(Y)))) # label(temporary_quale_argument_restrictions_Ad59).
+(all X all Y all T (tql(X,Y,T) -> (ar(X) <-> aq(Y)))) # label(temporary_quale_argument_restrictions_Ad60).
+(all X all Y all T ((tql(X,Y,T) & sl(Y)) -> s(X))) # label(temporary_quale_argument_restrictions_Ad61).
+(all X all T (((pq(X) | aq(X)) & pre(X,T)) -> (exists Y (tql(Y,X,T))))) # label(temporary_quale_existential_Ad62).
+(all X all Y all T (tql(X,Y,T) -> pre(Y,T))) # label(temporary_quale_present_Ad65).
+(all X all Y all T (tql(X,Y,T) -> (all S (p(S,T) -> tql(X,Y,S))))) # label(temporary_quale_present_Ad66).
+
+
+%Specific_constant_dependence%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+(all X all Y (sd(X,Y) <-> ((exists T (pre(X,T))) & (all T (pre(X,T) -> pre(Y,T)))))) # label(specific_dependence_Dd69).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%Definitions required for OWL:
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+(all X (cat(X) <-> (all T (tat(X,T)))))  # label(constant_atom).
+(all X all Y (catp(X,Y) <-> (all T (tatp(X,Y,T)))))  # label(constant_atomic_part).
+(all X all Y(cp(X,Y) <-> (all T (tp(X,Y,T))))) # label(constant_part).
+(all X all Y (cpp(X,Y) <-> (all T (tpp(X,Y,T))))) # label(constant_proper_part).
+(all X all Y (cov(X,Y) <-> (all T (tov(X,Y,T))))) # label(constant_proper_part).
+
+(all X all Y all Z all T (sumt(Z,X,Y,T) <-> (((ped(Z) & ped(X) & ped(Y)) | (nped(Z) & nped(X) & nped(Y))) & (all W (tov(W,Z,T) <-> (tov(W,X,T) | tov(W,Y,T))))))) # label(temporary_sum_definition_from_Dd26).
+
+
+end_of_list.
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                                     AXIOMS FROM DOLCE  OWL
+%
+%
+% Proofs that DOLCE SIMPLE Plus Axioms and DEFINITIONS entails the OWL axioms (PROVER9).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%PROVER9
+
+formulas(goals).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Axioms for classes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%AB
+%(all X (ab(X) -> pt(X))). %proved
+%(all X (ab(X) -> (all Y (ov(X,Y) -> ab(Y))))). %proved
+%(all X (ab(X) -> (all Y (p(X,Y) -> ab(Y))))). %proved
+%(all X (ab(X) -> -(pd(X)))). %proved
+%(all X (ab(X) -> -(q(X)))). %proved
+%(all X (ab(X) -> -(ed(X)))).%proved
+
+%ACC
+%(all X (acc(X) -> ev(X))). %proved
+%(all X (acc(X) -> -(ach(X)))). %proved
+
+%ACH
+%(all X (ach(X) -> ev(X))). %Proved
+%(all X (ach(X) -> -(acc(X)))). %Proved
+
+%APO
+%(all X (apo(X) -> pob(X))). %Proved
+
+%AQ
+%(all X (aq(X) -> (exists Y (dqt(X,Y) & nped(Y))))). %Proved
+%(all X (aq(X) -> q(X))). %Proved
+%(all X (aq(X) -> -(pq(X)))). %Proved
+%(all X (aq(X) -> -(tq(X)))). %Proved
+
+%AR
+%(all X (ar(X) -> r(X))). %Proved
+%(all X (ar(X) -> -(pr(X)))). %Proved
+%(all X (ar(X) -> -(tr(X)))). %Proved
+
+%AS
+%(all X (as(X) -> ed(X))). %Proved
+%(all X (as(X) -> -(nped(X)))). %Proved
+%(all X (as(X) -> -(ped(X)))). %Proved
+
+%ASO
+%(all X (aso(X) -> sob(X))).  %Proved
+%(all X (as(X) -> -(naso(X)))). %Proved
+%(-(exists X(naso(X) & sc(X)))). %Proved
+
+%AT
+%(all X (at(X) -> (ab(X) | pd(X)))). %Proved
+%(all X (at(X) -> pt(X))). %Proved
+%(all X (at(X) -> -(exists Y (pp(Y,X))))). %Proved
+
+%ED
+%(all X (ed(X) -> pt(X))). %Proved
+%(all X (ed(X) -> -(pd(X)))). %Proved
+%(all X (ed(X) -> -(q(X)))). %Proved
+%(all X (ed(X) -> -(ab(X)))). %Proved
+%(-(exists X (as(X) & ped(X)))). %Proved
+%(-(exists X (as(X) & nped(X)))). %Proved
+%(-(exists X (ped(X) & nped(X)))). %Proved
+
+
+%EV
+%(all X (ev(X) -> pd(X))). %Proved
+%(all X (ev(X) -> -(stv(X)))). %Proved
+%(-(exists X (acc(X) & ach(X)))). %Proved
+
+%F
+%(all X (f(X) -> ped(X))).  %Proved
+%(all X (f(X) -> -(pob(X)))).  %Proved
+%(all X (f(X) -> -(m(X)))).  %Proved
+
+%M
+%(all X (m(X) -> ped(X))). %Proved
+%(all X (f(X) -> -(m(X)))). %Proved
+%(all X (f(X) -> -(pob(X)))). %Proved
+
+%MOB
+%(all X (mob(X) -> npob(X))). %Proved
+
+%NAPO
+%(all X (napo(X) -> pob(X))).  %Proved
+
+%NASO
+%(all X (naso(X) -> sob(X))). %Proved
+%(all X (naso(X) -> -(aso(X)))). %Proved
+
+%NPED
+%(all X (nped(X) -> ed(X))). %Proved
+%(all X (nped(X) -> (exists Y (dqt(Y,X) & aq(Y))))). %Proved
+%(all X (nped(X) -> -(ped(X)))). %Proved
+%(all X (nped(X) -> -(as(X)))). %Proved
+
+%NPOB
+%(all X (npob(X) -> nped(X))). %Proved
+%(-(exists X (mob(X) & sob(X)))). %Proved
+
+%PD
+%(all X (pd(X) -> pt(X))). %Proved
+%(all X (pd(X) -> (all Y (ov(X,Y) -> pd(Y))))). %Proved
+%(all X (pd(X) -> (all Y (p(X,Y) -> pd(Y))))). %Proved
+%(all X (pd(X) -> (exists Y (dqt(Y,X) & tl(Y))))). %Proved
+%(all X (pd(X) -> (all Y (p(Y,X) -> pd(Y))))). %Proved
+%(all X (pd(X) -> (all Y (ov(Y,X) -> pd(Y))))). %Proved
+%(all X (pd(X) -> -(ed(X)))). %Proved
+%(all X (pd(X) -> -(q(X)))). %Proved
+%(all X (pd(X) -> -(ab(X)))). %Proved
+%(-(exists X (ev(X) & stv(X)))). %Proved
+
+%PED
+%(all X (ped(X) -> ed(X))). %Proved
+%(all X (ped(X) -> (exists Y (dqt(Y,X) & sl(Y))))). %Proved
+%(all X (ped(X) -> - (nped(X)))). %Proved
+%(all X (ped(X) -> - (as(X)))). %Proved
+%(-(exists X (f(X) & m(X)))). %Proved
+%(-(exists X (m(X) & pob(X)))). %Proved
+%(-(exists X (f(X) & pob(X)))). %Proved
+
+%POB
+%(all X (pob(X) -> ped(X))). %Proved
+%(all X (pob(X) -> -(f(X)))). %Proved
+%(all X (pob(X) -> -(m(X)))). %Proved
+%(-(exists X (apo(X) & napo(X)))). %Proved
+
+%PQ
+%(all X (pq(X) -> q(X))). %Proved
+%(all X (pq(X) -> (exists Y (dqt(X,Y) & ped(Y))))). %Proved
+%(all X (pq(X) -> -(aq(X)))). %Proved
+%(all X (pq(X) -> -(tq(X)))). %Proved
+
+%PR
+%(all X (pr(X) -> r(X))). %Proved
+%(all X (pr(X) -> -(tr(X)))). %Proved
+%(all X (pr(X) -> -(ar(X)))). %Proved
+
+%PRO
+%(all X (pro(X) -> stv(X))).  %Proved
+%(all X (pro(X) -> -(st(X)))). %Proved
+
+%PT
+
+%(all X (pt(X) -> -(reln(X)))). %PROVED
+
+%(-(exists X (ab(X) & ed(X)))). %Proved
+%(-(exists X (ed(X) & pd(X)))). %Proved
+%(-(exists X (pd(X) & q(X)))). %Proved
+%(-(exists X (ab(X) & pd(X)))). %Proved
+%(-(exists X (ed(X) & q(X)))). %Proved
+%(-(exists X (ab(X) & q(X)))). %Proved
+
+%Q
+%(all X (q(X) -> pt(X))). %Proved
+%(all X (q(X) -> -(pd(X)))). %Proved
+%(all X (q(X) -> -(ab(X)))). %Proved
+%(all X (q(X) -> -(ed(X)))). %Proved
+%(-(exists X (aq(X) & pq(X)))). %Proved
+%(-(exists X (pq(X) & tq(X)))). %Proved
+%(-(exists X (aq(X) & tq(X)))). %Proved
+
+%R
+%(all X (r(X) -> ab(X))). %Proved
+%(-(exists X (ar(X) & pr(X)))). %Proved
+%(-(exists X (pr(X) & tr(X)))). %Proved
+%(-(exists X (ar(X) & tr(X)))). %Proved
+
+%S
+%(all X (s(X) -> pr(X))). %Proved
+
+%SAG
+%(all X (sag(X) -> aso(X))). %Proved
+%(all X (sag(X) -> -(sc(X)))). %Proved
+
+%SC
+%(all X (sc(X) -> aso(X))). %Proved
+%(all X (sc(X) -> -(sag(X)))). %Proved
+
+%SL
+%(all X (sl(X) -> pq(X))). %Proved
+
+%SOB
+%(all X (sob(X) -> npob(X))). %Proved
+%(-(exists  X (aso(X) & naso(X)))). %Proved
+
+%ST
+%(all X (st(X) -> stv(X))). %Proved
+%(all X (st(X) -> -(pro(X)))). %Proved
+
+%STV
+%(all X (stv(X) -> pd(X))). %Proved
+%(all X (stv(X) -> -(ev(X)))). %Proved
+%(-(exists X (pro(X) & st(X)))). %Proved
+
+%T
+%(all X (t(X) -> tr(X))). %Proved
+%(all X (t(X) <-> (t(X) | (exists Y (ql(X,Y) & tl(Y)))))). %Proved
+
+%TQ
+%(all X (tq(X) -> q(X))). %Proved
+%(all X (tq(X) -> (exists Y (ql(Y,X) & tr(Y))))). %Proved
+%(all X (tq(X) -> (exists Y (dqt(X,Y) & pd(Y))))). %Proved
+%(all X (tq(X) -> -(pq(X)))). %Proved
+%(all X (tq(X) -> -(aq(X)))). %Proved
+%(all X (tr(X) -> r(X))). %Proved
+%(all X (tr(X) -> -(pr(X)))). %Proved
+%(all X (tr(X) -> -(ar(X)))). %Proved
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Axioms for object properties
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%(all X all Y (atp(X,Y) -> p(X,Y))). %Proved
+%(all X all Y (atp(X,Y) -> at(X))). %Proved
+
+%dqt
+%(all X exists Y (dqt(X,Y) -> q(X))). %Proved
+%(all X all Y (dqt(X,Y) -> (ed(Y) | pd(Y)))). %Proved
+
+%ov
+%(all X all Y (ov(X,Y) <-> ov(Y,X))). %Proved
+%(all X exists Y (ov(X,Y) -> (ab(X) | pd(X)))). %Proved
+%(all X all Y (ov(X,Y) -> (ab(Y) | pd(Y)))). %Proved
+
+%p
+%(all X all Y (p(X,Y) -> ov(X,Y))). %Proved
+%(all X all Y ((p(X,Y) & p(Y,Z)) -> p(X,Z))). %Proved
+%(all X exists Y (p(X,Y) -> (ab(X) | pd(X)))). %Proved
+%(all X all Y (p(X,Y) -> (ab(Y) | pd(Y)))). %Proved
+
+%pp
+%(all X all Y (pp(X,Y) -> p(X,Y))). %Proved
+%(all X all Y ((pp(X,Y) & pp(Y,Z)) -> pp(X,Z))). %Proved
+
+%pre
+
+%(all X exists Y (pre(X,Y) -> (ed(X) | pd(X) | q(X)))). %Proved
+%(all X all Y (pre(X,Y) -> t(Y))). %Proved
+
+%ql
+
+%(all X exists Y (ql(X,Y) -> tr(X))). %Proved
+%(all X all Y (ql(X,Y) -> tq(Y))). %Proved
+
+%sd
+
+%(all X exists Y (sd(X,Y) -> (exists T (pre(X,T))))). %Proved
+%(all X exists Y (sd(X,Y) -> (ed(X) | pd(X) | q(X)))). %Proved
+%(all X all Y (sd(X,Y) -> (ed(X) | pd(X) | q(X)))). %Proved
+%(all X all Y (sd(X,Y) -> (exists T (pre(Y,T))))). %Proved
+
+%tat
+%(all X exists Y (tat(X,Y) -> (ed(X)))). %Proved
+%(all X all Y (tat(X,Y) -> (t(Y)))). %Proved
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Axioms from owl that require the definitions of cat, catp, cov, cp, cpp, tp / temporalPart.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%cat
+%(all X (cat(X) -> -(exists Y (cpp(Y,X) & pt(X))))). %Proved
+%(all X (cat(X) -> ed(X))).  %Proved
+
+%catp
+%(all X all Y (catp(X,Y) -> cp(X,Y))). %Proved
+%(all Y  exists X (catp(X,Y) -> cat(X))). %Proved
+%(all Y exists X (catp(X,Y) -> (exists T (pre(X,T))))). %Proved
+%(all X all Y (catp(X,Y) -> (exists T (pre(Y,T))))). %Proved
+%(all X all Y (catp(X,Y) -> ed(X))). %Proved
+
+%cov
+%(all X all Y (cov(X,Y) <-> cov(Y,X))). %Proved
+%(all Y exists X (cov(X,Y) -> ed(Y))). %Proved
+%(all Y exists X (cov(X,Y) -> (exists T (pre(X,T))))). %Proved
+%(all X all Y (cov(X,Y) -> ed(Y))). %Proved
+%(all X all Y (cov(X,Y) -> (exists T (pre(Y,T))))). %Proved
+
+%cp
+%(all X all Y (cp(X,Y) -> cov(X,Y))). %Proved
+%(all X all Y ((cp(X,Y) & cp(Y,Z)) -> cp(X,Z))). %Proved
+%(all X exists Y (cp(X,Y) -> (exists T (pre(X,T))))). %Proved
+%(all X all Y (cp(X,Y) -> (ed(Y)))). %Proved
+%(all X all Y (cp(X,Y) -> (exists T (pre(Y,T))))). %Proved
+
+%cpp
+%(all X all Y (cpp(X,Y) -> cp(X,Y))). %Proved
+%(all X all Y ((cpp(X,Y) & cpp(Y,Z)) -> cpp(X,Z))). %Proved
+%(all X exists Y (cpp(X,Y) -> (exists T (pre(X,T))))). %Proved
+%(all X exists Y (cpp(X,Y) -> (ed(X)))). %Proved
+%(all X all Y (cpp(X,Y) -> (exists T (pre(Y,T))))). %Proved
+%(all X all Y (cpp(X,Y) -> (ed(Y)))). %Proved
+
+%tp in owl, temporalPart in first-order Dolce Simple .in and clif.
+
+%(all X all Y (temporalPart(X,Y) -> p(X,Y))). %Proved
+%(all X exists Y (temporalPart(X,Y) -> pd(X))). %Proved
+%(all X all Y (temporalPart(X,Y) -> pd(Y))). %Proved
+
+
+
+
+end_of_list.
