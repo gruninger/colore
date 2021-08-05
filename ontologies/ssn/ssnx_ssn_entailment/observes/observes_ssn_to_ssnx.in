@@ -1,0 +1,41 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% Module observes
+
+% mapping axioms
+(all x all y ((ssnx_observes(x,y)) <-> (ssn_observes(x,y)))).
+
+% axioms in SSN
+(all x all y ((ssn_observes(x,y)) <-> (isObservedBy(y,x)))).
+(all x all y ((ssn_observes(x,y)) -> (Sensor(x)))).
+(all x all y ((ssn_observes(x,y)) -> (ObservableProperty(y)))).
+(all x all y ((isObservedBy(x,y)) -> (ObservableProperty(x)))).
+(all x all y ((isObservedBy(x,y)) -> (Sensor(y)))).
+(all x all y ((Sensor(x) & ssn_observes(x,y)) -> (ObservableProperty(y)))).
+(all x all y ((ObservableProperty(x) & isObservedBy(x,y)) -> (Sensor(y)))).
+% taxonomy 
+(all x (ObservableProperty(x) -> Property(x))).
+(all x all y (ssn_observes(x,y) -> forProperty(x,y))).
+
+end_of_list.
+
+formulas(goals).
+
+% axioms in SSNX
+
+(all x all y ((Sensor(x) & ssnx_observes(x,y)) -> (Property(y)))).
+
+end_of_list.
+
