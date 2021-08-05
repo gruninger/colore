@@ -1,0 +1,44 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 95696 was started by yiningzhou on YiningdeMacBook-Pro.local,
+Thu Aug  5 14:49:19 2021
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 24.
+% Level of proof is 6.
+% Maximum clause weight is 5.
+% Given clauses 7.
+
+2 (all x all y (actsOnProperty(x,y) -> Actuation(x))) # label(non_clause).  [assumption].
+5 (all x all y (isActedOnBy(x,y) -> Actuation(y))) # label(non_clause).  [assumption].
+10 (all x (point(x) <-> ActuatableProperty(x))) # label(non_clause).  [assumption].
+11 (all x all y (in(x,y) <-> actsOnProperty(x,y) | isActedOnBy(x,y) | x = y)) # label(non_clause).  [assumption].
+12 (all x (Actuation(x) -> -ActuatableProperty(x))) # label(non_clause).  [assumption].
+13 (all x all y (in(x,y) & point(x) & point(y) -> x = y)) # label(non_clause) # label(goal).  [goal].
+16 -actsOnProperty(x,y) | Actuation(x).  [clausify(2)].
+20 -in(x,y) | actsOnProperty(x,y) | isActedOnBy(x,y) | y = x.  [clausify(11)].
+24 -point(x) | ActuatableProperty(x).  [clausify(10)].
+26 -Actuation(x) | -ActuatableProperty(x).  [clausify(12)].
+35 in(c1,c2).  [deny(13)].
+36 -in(x,y) | isActedOnBy(x,y) | y = x | Actuation(x).  [resolve(20,b,16,a)].
+41 -Actuation(x) | -point(x).  [resolve(26,b,24,b)].
+42 point(c1).  [deny(13)].
+43 point(c2).  [deny(13)].
+49 -isActedOnBy(x,y) | Actuation(y).  [clausify(5)].
+50 c2 != c1.  [deny(13)].
+56 isActedOnBy(c1,c2) | c2 = c1 | Actuation(c1).  [resolve(36,a,35,a)].
+57 isActedOnBy(c1,c2) | Actuation(c1).  [copy(56),unit_del(b,50)].
+60 -Actuation(c1).  [resolve(41,b,42,a)].
+61 -Actuation(c2).  [resolve(41,b,43,a)].
+62 isActedOnBy(c1,c2).  [back_unit_del(57),unit_del(b,60)].
+64 -isActedOnBy(x,c2).  [ur(49,b,61,a)].
+65 $F.  [resolve(64,a,62,a)].
+
+============================== end of proof ==========================
