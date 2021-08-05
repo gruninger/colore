@@ -1,0 +1,66 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 70207 was started by yiningzhou on YiningdeMacBook-Pro.local,
+Tue Aug  3 13:27:33 2021
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.01) seconds.
+% Length of proof is 46.
+% Level of proof is 9.
+% Maximum clause weight is 12.
+% Given clauses 33.
+
+1 (all x all y (madeActuation(x,y) <-> madeByActuator(y,x))) # label(non_clause).  [assumption].
+3 (all x all y (madeActuation(x,y) -> Actuation(y))) # label(non_clause).  [assumption].
+4 (all x all y (madeByActuator(x,y) -> Actuation(x))) # label(non_clause).  [assumption].
+5 (all x all y (madeByActuator(x,y) -> Actuator(y))) # label(non_clause).  [assumption].
+7 (all x all y all z (Actuation(x) & madeByActuator(x,y) & madeByActuator(x,z) -> y = z)) # label(non_clause).  [assumption].
+9 (all x (point(x) <-> Actuator(x))) # label(non_clause).  [assumption].
+10 (all x (line(x) <-> Actuation(x))) # label(non_clause).  [assumption].
+11 (all x all y (in(x,y) <-> madeActuation(x,y) | madeByActuator(x,y) | x = y)) # label(non_clause).  [assumption].
+12 (all x (Actuator(x) -> -Actuation(x))) # label(non_clause).  [assumption].
+13 (all x all y all z (line(x) & in(x,y) & point(y) & in(x,z) & point(z) -> y = z)) # label(non_clause) # label(goal).  [goal].
+15 -madeActuation(x,y) | madeByActuator(y,x).  [clausify(1)].
+17 -madeActuation(x,y) | Actuation(y).  [clausify(3)].
+19 -in(x,y) | madeActuation(x,y) | madeByActuator(x,y) | y = x.  [clausify(11)].
+21 -Actuation(x) | -madeByActuator(x,y) | -madeByActuator(x,z) | z = y.  [clausify(7)].
+22 -madeByActuator(x,y) | Actuation(x).  [clausify(4)].
+24 -line(x) | Actuation(x).  [clausify(10)].
+26 -Actuator(x) | -Actuation(x).  [clausify(12)].
+28 -in(x,y) | madeByActuator(x,y) | y = x | Actuation(y).  [resolve(19,b,17,a)].
+30 -madeByActuator(x,y) | Actuator(y).  [clausify(5)].
+31 -point(x) | Actuator(x).  [clausify(9)].
+34 -Actuator(x) | -madeByActuator(x,y).  [resolve(26,b,22,b)].
+35 -Actuator(x) | -line(x).  [resolve(26,b,24,b)].
+36 -in(x,y) | madeByActuator(x,y) | y = x | -Actuator(y).  [resolve(28,d,26,b)].
+37 -line(x) | -madeByActuator(y,x).  [resolve(35,a,30,b)].
+38 line(c1).  [deny(13)].
+41 -line(x) | -point(x).  [resolve(35,a,31,b)].
+45 in(c1,c2).  [deny(13)].
+46 point(c2).  [deny(13)].
+47 in(c1,c3).  [deny(13)].
+48 point(c3).  [deny(13)].
+49 c3 != c2.  [deny(13)].
+50 -in(x,y) | madeByActuator(x,y) | y = x | madeByActuator(y,x).  [resolve(19,b,15,a)].
+52 -madeByActuator(x,y) | -madeByActuator(x,z) | z = y | -madeByActuator(x,u).  [resolve(21,a,22,b)].
+56 -madeByActuator(x,y) | -point(x).  [resolve(34,a,31,b)].
+59 -in(x,y) | madeByActuator(x,y) | y = x | -point(y).  [resolve(36,d,31,b)].
+61 -madeByActuator(x,c1).  [resolve(37,a,38,a)].
+62 -point(c1).  [resolve(41,a,38,a)].
+65 -madeByActuator(x,y) | -madeByActuator(x,z) | z = y.  [factor(52,a,d)].
+68 madeByActuator(c1,c3) | c3 = c1.  [resolve(50,a,47,a),unit_del(c,61)].
+69 madeByActuator(c1,c2) | c2 = c1.  [resolve(50,a,45,a),unit_del(c,61)].
+71 -madeByActuator(c2,x).  [ur(56,b,46,a)].
+73 -in(c2,c3).  [ur(59,b,71,a,c,49,a,d,48,a)].
+74 c3 = c1 | -madeByActuator(c1,x) | c3 = x.  [resolve(68,a,65,b)].
+80 c3 = c1 | c2 = c1.  [resolve(74,b,69,a),unit_del(b,49)].
+82 c2 = c1.  [para(80(a,1),48(a,1)),unit_del(b,62)].
+83 $F.  [back_rewrite(73),rewrite([82(1)]),unit_del(a,47)].
+
+============================== end of proof ==========================
