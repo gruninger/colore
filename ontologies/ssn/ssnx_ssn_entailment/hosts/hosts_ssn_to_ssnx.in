@@ -1,0 +1,41 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% Module hosts
+
+% mapping axioms 
+(all x all y (ssnx_attachedSystem(x,y) <-> ssn_hosts(x,y))).
+(all x all y (ssnx_onPlatform(x,y) <-> ssn_isHostedBy(x,y))).
+
+% axioms in SSN
+(all x all y (ssn_hosts(x,y) <-> ssn_isHostedBy(y,x))).
+(all x all y (ssn_hosts(x,y) -> Platform(x))).
+(all x all y (ssn_hosts(x,y) -> (Actuator(y) | Sensor(y) | Sampler(y) | Platform(y)))).
+(all x all y (ssn_isHostedBy(x,y) -> (Actuator(x) | Sensor(x) | Sampler(x) | Platform(x)))).
+(all x all y (ssn_isHostedBy(x,y) -> Platform(y))).
+(all x all y ((Platform(x) & ssn_hosts(x,y)) -> System(y))).
+(all x all y ((System(x) & ssn_isHostedBy(x,y)) -> Platform(y))).
+(all x all y all z (inDeployment(x,y) & deployedSystem(y,z) -> ssn_hosts(x,z))).
+
+end_of_list.
+
+formulas(goals).
+
+% axioms in SSNX
+% (all x all y (ssnx_attachedSystem(x,y) <-> ssnx_onPlatform(y,x))).
+% (all x all y ((Platform(x) & ssnx_attachedSystem(x,y)) -> System(y))).
+% (all x all y ((System(x) & ssnx_onPlatform(x,y)) -> Platform(y))).
+
+end_of_list.
+
