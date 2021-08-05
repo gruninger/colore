@@ -1,0 +1,66 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 66711 was started by yiningzhou on YiningdeMacBook-Pro.local,
+Tue Aug  3 01:11:22 2021
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 46.
+% Level of proof is 9.
+% Maximum clause weight is 12.
+% Given clauses 33.
+
+1 (all x all y (madeObservation(x,y) <-> madeBySensor(y,x))) # label(non_clause).  [assumption].
+3 (all x all y (madeObservation(x,y) -> Observation(y))) # label(non_clause).  [assumption].
+4 (all x all y (madeBySensor(x,y) -> Observation(x))) # label(non_clause).  [assumption].
+5 (all x all y (madeBySensor(x,y) -> Sensor(y))) # label(non_clause).  [assumption].
+6 (all x all y all z (Observation(x) & madeBySensor(x,y) & madeBySensor(x,z) -> y = z)) # label(non_clause).  [assumption].
+9 (all x (point(x) <-> Sensor(x))) # label(non_clause).  [assumption].
+10 (all x (line(x) <-> Observation(x))) # label(non_clause).  [assumption].
+11 (all x all y (in(x,y) <-> madeObservation(x,y) | madeBySensor(x,y) | x = y)) # label(non_clause).  [assumption].
+12 (all x (Observation(x) -> -Sensor(x))) # label(non_clause).  [assumption].
+13 (all x all y all z (line(x) & in(x,y) & point(y) & in(x,z) & point(z) -> y = z)) # label(non_clause) # label(goal).  [goal].
+15 -madeObservation(x,y) | madeBySensor(y,x).  [clausify(1)].
+17 -madeObservation(x,y) | Observation(y).  [clausify(3)].
+19 -in(x,y) | madeObservation(x,y) | madeBySensor(x,y) | y = x.  [clausify(11)].
+21 -Observation(x) | -madeBySensor(x,y) | -madeBySensor(x,z) | z = y.  [clausify(6)].
+22 -madeBySensor(x,y) | Observation(x).  [clausify(4)].
+24 -line(x) | Observation(x).  [clausify(10)].
+26 -Observation(x) | -Sensor(x).  [clausify(12)].
+28 -in(x,y) | madeBySensor(x,y) | y = x | Observation(y).  [resolve(19,b,17,a)].
+30 -madeBySensor(x,y) | Sensor(y).  [clausify(5)].
+31 -point(x) | Sensor(x).  [clausify(9)].
+34 -Sensor(x) | -madeBySensor(x,y).  [resolve(26,a,22,b)].
+35 -Sensor(x) | -line(x).  [resolve(26,a,24,b)].
+36 -in(x,y) | madeBySensor(x,y) | y = x | -Sensor(y).  [resolve(28,d,26,a)].
+37 -line(x) | -madeBySensor(y,x).  [resolve(35,a,30,b)].
+38 line(c1).  [deny(13)].
+41 -line(x) | -point(x).  [resolve(35,a,31,b)].
+45 in(c1,c2).  [deny(13)].
+46 point(c2).  [deny(13)].
+47 in(c1,c3).  [deny(13)].
+48 point(c3).  [deny(13)].
+49 c3 != c2.  [deny(13)].
+50 -in(x,y) | madeBySensor(x,y) | y = x | madeBySensor(y,x).  [resolve(19,b,15,a)].
+52 -madeBySensor(x,y) | -madeBySensor(x,z) | z = y | -madeBySensor(x,u).  [resolve(21,a,22,b)].
+56 -madeBySensor(x,y) | -point(x).  [resolve(34,a,31,b)].
+59 -in(x,y) | madeBySensor(x,y) | y = x | -point(y).  [resolve(36,d,31,b)].
+61 -madeBySensor(x,c1).  [resolve(37,a,38,a)].
+62 -point(c1).  [resolve(41,a,38,a)].
+65 -madeBySensor(x,y) | -madeBySensor(x,z) | z = y.  [factor(52,a,d)].
+68 madeBySensor(c1,c3) | c3 = c1.  [resolve(50,a,47,a),unit_del(c,61)].
+69 madeBySensor(c1,c2) | c2 = c1.  [resolve(50,a,45,a),unit_del(c,61)].
+71 -madeBySensor(c2,x).  [ur(56,b,46,a)].
+73 -in(c2,c3).  [ur(59,b,71,a,c,49,a,d,48,a)].
+74 c3 = c1 | -madeBySensor(c1,x) | c3 = x.  [resolve(68,a,65,b)].
+80 c3 = c1 | c2 = c1.  [resolve(74,b,69,a),unit_del(b,49)].
+82 c2 = c1.  [para(80(a,1),48(a,1)),unit_del(b,62)].
+83 $F.  [back_rewrite(73),rewrite([82(1)]),unit_del(a,47)].
+
+============================== end of proof ==========================
