@@ -1,0 +1,47 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(domain_size, 3).
+  assign(start_size, 3).
+  assign(end_size, 3).
+  assign(max_models, 20).
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% Weak Bipartite Incidence
+(all x all y (in(x,y) -> in(y,x))).
+(all x ((point(x) | line(x)) -> in(x,x))).
+(all p (point(p) -> (-line(p)))).
+(all x all y ((in(x,y) & point(x) & point(y)) -> (x=y))).
+(all x all y ((in(x,y) & line(x) & line(y)) -> (x=y))).
+
+% Partial Bipartite
+(all x (line(x) -> (exists y (in(x,y) & point(y))))).
+
+% translation definitions:
+(all x ( Output(x) <-> line(x))).
+(all x ( Procedure(x) <-> point(x) )).
+(all x all y ( hasOutput(x,y) <-> ( in(x,y) & point(x) & line(y)) )).
+
+% disjointness axiom
+(all x (Output(x) -> (-Procedure(x)) )).
+
+end_of_list.
+
+formulas(goals).
+
+% hasOutput.in
+% (all x all y (Procedure(x) & hasOutput(x,y) -> Output(y))).
+% (all x (Output(x) -> (exists y hasOutput(y,x)))).
+% (all x all y (Output(x) & hasOutput(y,x) -> Procedure(y))).
+
+end_of_list.
+
