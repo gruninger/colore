@@ -1,0 +1,39 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% Module hasOutput
+
+% mapping axioms 
+(all x all y ((ssn_hasOutput(x,y)) <-> (ssnx_hasOutput(x,y)))).
+(all x (Procedure(x) <-> Process(x))).
+
+% axioms in SSN
+
+(all x all y ((Procedure(x) & ssn_hasOutput(x,y)) -> Output(y))).
+
+(all x ((Output(x)) -> (exists y (ssn_hasOutput(y,x))))).
+
+(all x all y ((Output(x) & ssn_hasOutput(y,x)) -> (Procedure(y)))).
+
+end_of_list.
+
+formulas(goals).
+
+% axioms in SSNX
+% 
+(all x all y ((Process(x) & ssnx_hasOutput(x,y)) -> (Output(y)))).
+%(all x ((Process(x)) -> (exists y (ssnx_hasOutput(x,y) & Outout(y))))).
+
+end_of_list.
+
