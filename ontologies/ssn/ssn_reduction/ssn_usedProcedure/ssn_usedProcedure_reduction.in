@@ -1,0 +1,36 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% Module usedProcedure
+
+% axioms in New SSN
+
+(all x all y (usedProcedure(x,y) -> (Actuation(x) | Observation(x) | Sampling(x)))).
+(all x all y (usedProcedure(x,y) -> Procedure(y))).
+(all x all y (madeBySensor(x,y) & implements(y,z) -> usedProcedure(x,z))).
+(all x all y (madeByActuator(x,y) & implements(y,z) -> usedProcedure(x,z))).
+(all x all y (madeBySampler(x,y) & implements(y,z) -> usedProcedure(x,z))).
+
+end_of_list.
+
+formulas(goals).
+
+% (all x all y ((Observation(x) & usedProcedure(x,y)) -> Procedure(y))).
+
+% (all x all y ((Actuation(x) & usedProcedure(x,y)) -> Procedure(y))).
+
+% (all x all y ((Sampling(x) & usedProcedure(x,y)) -> Procedure(y))).
+
+end_of_list.
+
