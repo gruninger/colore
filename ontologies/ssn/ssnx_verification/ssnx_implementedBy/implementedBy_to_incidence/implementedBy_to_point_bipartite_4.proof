@@ -1,0 +1,45 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 23400 was started by yiningzhou on YiningdeMacBook-Pro.local,
+Sun May 30 18:13:08 2021
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 25.
+% Level of proof is 6.
+% Maximum clause weight is 5.
+% Given clauses 11.
+
+1 (all x all y (implementedBy(x,y) <-> implements(y,x))) # label(non_clause).  [assumption].
+3 (all x all y (implementedBy(x,y) -> Sensor(y) & Sensing(x))) # label(non_clause).  [assumption].
+4 (all x (point(x) <-> Sensor(x))) # label(non_clause).  [assumption].
+6 (all x all y (in(x,y) <-> implementedBy(x,y) | implements(x,y) | x = y)) # label(non_clause).  [assumption].
+7 (all x (Sensor(x) -> -Sensing(x))) # label(non_clause).  [assumption].
+8 (all x all y (in(x,y) & point(x) & point(y) -> x = y)) # label(non_clause) # label(goal).  [goal].
+9 implementedBy(x,y) | -implements(y,x).  [clausify(1)].
+12 -implementedBy(x,y) | Sensing(x).  [clausify(3)].
+13 -in(x,y) | implementedBy(x,y) | implements(x,y) | y = x.  [clausify(6)].
+15 -point(x) | Sensor(x).  [clausify(4)].
+19 -Sensor(x) | -Sensing(x).  [clausify(7)].
+27 in(c1,c2).  [deny(8)].
+28 -in(x,y) | implements(x,y) | y = x | Sensing(x).  [resolve(13,b,12,a)].
+35 point(c1).  [deny(8)].
+36 point(c2).  [deny(8)].
+38 -Sensing(x) | -point(x).  [resolve(19,a,15,b)].
+42 c2 != c1.  [deny(8)].
+43 Sensing(x) | -implements(y,x).  [resolve(12,a,9,a)].
+49 implements(c1,c2) | c2 = c1 | Sensing(c1).  [resolve(28,a,27,a)].
+50 implements(c1,c2) | Sensing(c1).  [copy(49),unit_del(b,42)].
+61 -Sensing(c1).  [resolve(38,b,35,a)].
+62 -Sensing(c2).  [resolve(38,b,36,a)].
+63 implements(c1,c2).  [back_unit_del(50),unit_del(b,61)].
+67 -implements(x,c2).  [ur(43,a,62,a)].
+68 $F.  [resolve(67,a,63,a)].
+
+============================== end of proof ==========================
