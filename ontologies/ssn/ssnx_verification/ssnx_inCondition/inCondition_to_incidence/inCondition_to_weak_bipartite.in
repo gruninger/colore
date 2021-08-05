@@ -1,0 +1,49 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(domain_size, 3).
+  assign(start_size, 3).
+  assign(end_size, 3).
+  assign(max_models, 20).
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% inCondition.in
+
+(all x all y (MeasurementCapability(x) & inCondition(x,y) -> Condition(y))).
+(all x all y (OperatingRange(x) & inCondition(x,y) -> Condition(y))).
+(all x all y (SurvivalRange(x) & inCondition(x,y) -> Condition(y))).
+
+% manually add domain and range axiom
+(all x all y (inCondition(x,y) -> (Condition(y) & (OperatingRange(x) | SurvivalRange(x) | MeasurementCapability(x))))).
+
+% translation definitions:
+(all x (point(x) <-> Condition(x))).
+(all x (line(x) <-> (OperatingRange(x) | SurvivalRange(x) | MeasurementCapability(x)))).
+(all x all y (in(x,y) <-> (inCondition(x,y) | inCondition(y,x) | (x=y)) )).
+
+% disjointness axiom:
+(all x ((OperatingRange(x) | SurvivalRange(x) | MeasurementCapability(x)) -> (-Condition(x)))).
+
+end_of_list.
+
+formulas(goals).
+
+% Weak Bipartite Incidence
+% (all x all y (in(x,y) -> in(y,x))).
+% (all x ((point(x) | line(x)) -> in(x,x))).
+% (all p (point(p) -> (-line(p)))).
+% 
+(all x all y ((in(x,y) & point(x) & point(y)) -> (x=y))).
+% (all x all y ((in(x,y) & line(x) & line(y)) -> (x=y))).
+
+end_of_list.
+

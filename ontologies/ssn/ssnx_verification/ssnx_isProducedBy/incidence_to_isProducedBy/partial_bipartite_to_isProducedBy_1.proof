@@ -1,0 +1,41 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 48276 was started by yiningzhou on YiningdeMacBook-Pro.local,
+Thu May 20 15:18:05 2021
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 21.
+% Level of proof is 5.
+% Maximum clause weight is 10.
+% Given clauses 20.
+
+1 (all x all y (in(x,y) -> in(y,x))) # label(non_clause).  [assumption].
+6 (all x (Sensor(x) <-> point(x))) # label(non_clause).  [assumption].
+7 (all x (SensorOutput(x) <-> line(x))) # label(non_clause).  [assumption].
+8 (all x all y (isProducedBy(x,y) <-> in(x,y) & point(y) & line(x))) # label(non_clause).  [assumption].
+10 (all l (line(l) -> (exists p (point(p) & in(p,l))))) # label(non_clause).  [assumption].
+11 (all x (SensorOutput(x) -> (exists y (isProducedBy(x,y) & Sensor(y))))) # label(non_clause) # label(goal).  [goal].
+12 Sensor(x) | -point(x).  [clausify(6)].
+15 -isProducedBy(c1,x) | -Sensor(x).  [deny(11)].
+17 -SensorOutput(x) | line(x).  [clausify(7)].
+18 SensorOutput(c1).  [deny(11)].
+20 -in(x,y) | in(y,x).  [clausify(1)].
+29 isProducedBy(x,y) | -in(x,y) | -point(y) | -line(x).  [clausify(8)].
+30 -line(x) | point(f1(x)).  [clausify(10)].
+31 -line(x) | in(f1(x),x).  [clausify(10)].
+32 -isProducedBy(c1,x) | -point(x).  [resolve(15,b,12,a)].
+33 line(c1).  [resolve(18,a,17,a)].
+35 in(f1(c1),c1).  [hyper(31,a,33,a)].
+36 point(f1(c1)).  [hyper(30,a,33,a)].
+39 in(c1,f1(c1)).  [hyper(20,a,35,a)].
+41 -isProducedBy(c1,f1(c1)).  [ur(32,b,36,a)].
+43 $F.  [hyper(29,b,39,a,c,36,a,d,33,a),unit_del(a,41)].
+
+============================== end of proof ==========================
