@@ -1,0 +1,51 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger, Carmen Chui
+ *******************************************************************************/
+ 
+(cl-text http://colore.oor.net/psl_core/psl_participates.clif
+
+(cl-comment 'The participates_in relation only holds between objects,
+activity occurrences, and timepoints, respectively.')
+
+(forall (x occ t)
+        (if     (participates_in x occ t)
+                (and    (object x)
+                        (activity_occurrence occ)
+                        (timepoint t))))
+
+(cl-comment 'An object can participate in an activity
+occurrence only at those timepoints at which both the object exists and
+the activity is occurring.')
+
+(forall (x occ t)
+        (if     (participates_in x occ t)
+                (and    (exists_at x t)
+                        (is_occurring_at occ t))))
+
+(forall (occ t)
+        (if     (is_occurring_at occ t)
+		(and 	(activity_occurrence occ)
+                        (timepoint t))))
+
+(forall (x t)
+        (if     (exists_at x t)
+		(and 	(object x)
+                        (timepoint t))))
+
+(forall (x)
+	(if	(object x)
+		(exists (t)
+			(exists_at x t))))
+
+(forall (occ)
+	(if	(activity_occurrence occ)
+		(exists (t)
+			(is_occurring_at occ t))))
+
+)
