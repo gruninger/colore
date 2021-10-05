@@ -1,0 +1,92 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/psl_occtree/legal.clif
+
+(forall (s)
+	(if	(legal s)
+		(activity_occurrence s)))
+
+(cl-comment 'The precedes relation is restricted to 
+arboreal activity occurrences (that is, activity occurrences that
+are elements of the occurrence tree).')
+
+(forall (s1 s2)
+	(if	(precedes s1 s2)
+		(and	(legal s1)
+			(legal s2))))
+
+(cl-comment 'The ordering relation over occurrences is irreflexive.')
+
+(forall (s1 s2)
+	(if	(precedes s1 s2)
+		(not (precedes s2 s1))))
+
+(cl-comment 'The ordering relation over occurrences is transitive.')
+
+(forall (s1 s2 s3)
+	(if	(and	(precedes s1 s2)
+			(precedes s2 s3))
+		(precedes s1 s3)))
+
+(cl-comment 'A branch in the occurrence tree is totally ordered.')
+
+(forall (s1 s2 s3)
+	(if	(and	(precedes s1 s2)
+			(precedes s3 s2))
+		(or	(precedes s1 s3)
+			(precedes s3 s1)
+			(= s3 s1))))
+
+(cl-comment 'Every branch of the legal occurrence tree has an initial occurrence.')
+
+(forall (s1)
+	(if	(legal s1)
+		(exists (s2)
+			(and	(or	(precedes s2 s1)
+					(= s1 s2))
+				(not (exists (sp)
+					(precedes sp s2)))))))
+
+(cl-comment 'The precedes relation is a discrete ordering, so every
+activity has an upwards successor in the ordering.')
+
+(forall (s1 s2)
+        (if     (and    (precedes s1 s2)
+                        (not (= s1 s2)))
+                (exists (s3)
+                        (and    (precedes s1 s3)
+                                (precedes s3 s2)
+                                (not (= s3 s1))
+                                (forall (s4)
+                                        (if     (and    (precedes s1 s4)
+                                                        (precedes s4 s3))
+                                                (or     (= s4 s1)
+                                                        (= s4 s3))))))))
+
+(cl-comment 'The precedes relation is a discrete ordering, so every
+activity has a downwards successor in the ordering.')
+
+(forall (s1 s2) 
+        (if     (and    (precedes s1 s2)
+                        (not (= s1 s2)))
+                (exists (s3)
+                        (and    (precedes s1 s3)
+                                (precedes s3 s2)
+                                (not (= s3 s2))
+                                (forall (s4)
+                                        (if     (and    (precedes s3 s4)
+                                                        (precedes s4 s2))
+                                                (or     (= s4 s2)
+                                                        (= s4 s3))))))))
+                                
+
+
+)
