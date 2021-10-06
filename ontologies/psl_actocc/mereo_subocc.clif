@@ -1,0 +1,74 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/psl_actocc/mereo_subocc.clif
+
+(forall (o1 o2)
+	(if	(subactivity_occurrence o1 o2)
+		(and	(activity_occurrence o1)
+			(activity_occurrence o2))))
+
+(forall (o)
+	(if	(activity_occurrence o)
+		(subactivity_occurrence o o)))
+
+(forall (o1 o2 o3)
+	(if	(and	(subactivity_occurrence o1 o2)
+			(subactivity_occurrence o2 o3))
+		(subactivity_occurrence o1 o3)))
+
+(cl-comment 'The subactivity_occurrence relation is a discrete ordering, so every
+activity has an upwards successor in the ordering.')
+
+(forall (a1 a2)
+	(if	(and	(subactivity_occurrence a1 a2)
+			(not (= a1 a2)))
+		(exists (a3)
+			(and	(subactivity_occurrence a1 a3)
+				(subactivity_occurrence a3 a2)
+				(not (= a3 a1))
+				(forall (a4)
+					(if	(and	(subactivity_occurrence a1 a4)
+							(subactivity_occurrence a4 a3))
+						(or	(= a4 a1)
+							(= a4 a3))))))))
+
+(cl-comment 'The subactivity_occurrence relation is a discrete ordering, so every
+activity has a downwards successor in the ordering.')
+
+(forall (a1 a2)
+	(if	(and	(subactivity_occurrence a1 a2)
+			(not (= a1 a2)))
+		(exists (a3)
+			(and	(subactivity_occurrence a1 a3)
+				(subactivity_occurrence a3 a2)
+				(not (= a3 a2))
+				(forall (a4)
+					(if	(and	(subactivity_occurrence a3 a4)
+							(subactivity_occurrence a4 a2))
+						(or	(= a4 a2)
+							(= a4 a3))))))))
+
+
+(forall (o1 o2)
+	(if	(and	(subactivity_occurrence o1 o2)
+			(not (= o1 o2)))
+		(exists (o3)
+			(and	(atom_subocc o3)
+				(subactivity_occurrence o3 o1)))))
+
+(forall (o1)
+	(iff	(atom_subocc o1)
+		(and	(activity_occurrence o1)
+			(forall (o2)
+				(if	(subactivity_occurrence o2 o1)
+					(= o1 o2))))))
+
+)
