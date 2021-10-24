@@ -1,0 +1,39 @@
+formulas(assumptions).
+%39
+all x
+    (atomic(x)
+    -> conc(x,x) = x).
+
+%40
+all x all y
+    (atomic(x) & atomic(y)
+    -> conc(x,y) = conc(y,x)).
+
+%41
+all x all y all z
+    (atomic(x) & atomic(y) & atomic(z)
+    -> conc(x,conc(y,z)) = conc(conc(x,y),z)).
+
+%42
+all x
+    (atomic(x)
+    -> exists y
+            (disjoint_atomic(x,y)
+            & (all z
+                disjoint_atomic(x,y) -> atomic_subactivity(z,y))
+             & (all z
+                disjoint_atomic(z,y) -> atomic_subactivity(z,x)))).
+           
+
+
+%43
+all x all y
+    (atomic_subactivity(x,y)
+    <-> atomic(x) & atomic(y) & conc(x,y)=y)
+
+%44
+all x all y
+    (disjoint_atomic(x,y)
+    <-> atomic(x) & atomic(y) 
+        & -(exists z)
+            subactivity(z,x) & subactivity(z,y))
