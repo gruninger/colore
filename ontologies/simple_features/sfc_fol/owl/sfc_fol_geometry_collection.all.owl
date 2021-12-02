@@ -44,6 +44,20 @@
 	<Declaration>
 		<ObjectProperty IRI="P"/>
 	</Declaration>
+	<SubClassOf>
+		<Class IRI="sf_multi_polygon"/>
+		<ObjectAllValuesFrom>
+			<ObjectInverseOf>
+				<ObjectProperty IRI="P"/>
+			</ObjectInverseOf>
+			<ObjectUnionOf>
+				<ObjectComplementOf>
+					<Class IRI="Min"/>
+				</ObjectComplementOf>
+				<Class IRI="sf_polygon"/>
+			</ObjectUnionOf>
+		</ObjectAllValuesFrom>
+	</SubClassOf>
 	<Declaration>
 		<Class IRI="Simple_ArealRegion"/>
 	</Declaration>
@@ -65,13 +79,6 @@
 	<Declaration>
 		<ObjectProperty IRI="Cont"/>
 	</Declaration>
-	<SubObjectPropertyOf>
-		<ObjectPropertyChain>
-			<ObjectProperty IRI="BCont"/>
-			<ObjectProperty IRI="boundary"/>
-		</ObjectPropertyChain>
-		<ObjectProperty IRI="Cont"/>
-	</SubObjectPropertyOf>
 	<Declaration>
 		<ObjectProperty IRI="SC"/>
 	</Declaration>
@@ -121,9 +128,6 @@
 	<Declaration>
 		<Class IRI="ZEX"/>
 	</Declaration>
-	<TransitiveObjectProperty>
-		<ObjectProperty IRI="leq"/>
-	</TransitiveObjectProperty>
 	<SubObjectPropertyOf>
 		<ObjectProperty IRI="Cont"/>
 		<ObjectProperty IRI="leq"/>
@@ -134,9 +138,16 @@
 	<Declaration>
 		<Class IRI="MaxDim"/>
 	</Declaration>
-	<TransitiveObjectProperty>
-		<ObjectProperty IRI="Cont"/>
-	</TransitiveObjectProperty>
+	<SubClassOf>
+		<ObjectSomeValuesFrom>
+			<ObjectProperty IRI="leq"/>
+			<Class IRI="S"/>
+		</ObjectSomeValuesFrom>
+		<ObjectUnionOf>
+			<Class IRI="MinDim"/>
+			<Class IRI="ZEX"/>
+		</ObjectUnionOf>
+	</SubClassOf>
 	<ObjectPropertyRange>
 		<ObjectProperty IRI="Cont"/>
 		<ObjectComplementOf>
@@ -283,6 +294,22 @@
 		<Class IRI="Curve"/>
 	</Declaration>
 	<SubClassOf>
+		<Class IRI="ArealRegion"/>
+		<ObjectAllValuesFrom>
+			<ObjectProperty IRI="Covers"/>
+			<Class IRI="Curve"/>
+		</ObjectAllValuesFrom>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Curve"/>
+		<ObjectAllValuesFrom>
+			<ObjectInverseOf>
+				<ObjectProperty IRI="Covers"/>
+			</ObjectInverseOf>
+			<Class IRI="ArealRegion"/>
+		</ObjectAllValuesFrom>
+	</SubClassOf>
+	<SubClassOf>
 		<Class IRI="Curve"/>
 		<ObjectAllValuesFrom>
 			<ObjectProperty IRI="Covers"/>
@@ -316,6 +343,20 @@
 	<Declaration>
 		<Class IRI="sf_multi_curve"/>
 	</Declaration>
+	<SubClassOf>
+		<Class IRI="sf_multi_line_string"/>
+		<ObjectAllValuesFrom>
+			<ObjectInverseOf>
+				<ObjectProperty IRI="P"/>
+			</ObjectInverseOf>
+			<ObjectUnionOf>
+				<ObjectComplementOf>
+					<Class IRI="Min"/>
+				</ObjectComplementOf>
+				<Class IRI="sf_line_string"/>
+			</ObjectUnionOf>
+		</ObjectAllValuesFrom>
+	</SubClassOf>
 	<Declaration>
 		<Class IRI="Multipart_Curve"/>
 	</Declaration>
@@ -329,39 +370,39 @@
 		<Class IRI="Point"/>
 	</Declaration>
 	<DisjointClasses>
+		<Class IRI="sf_geometry_collection"/>
+		<Class IRI="sf_point"/>
+		<Class IRI="sf_surface"/>
+		<Class IRI="sf_curve"/>
+	</DisjointClasses>
+	<DisjointClasses>
 		<Class IRI="Min"/>
 		<Class IRI="ZEX"/>
 	</DisjointClasses>
 	<DisjointClasses>
-		<Class IRI="sf_surface"/>
-		<Class IRI="sf_point"/>
-		<Class IRI="sf_curve"/>
-		<Class IRI="sf_geometry_collection"/>
+		<Class IRI="Multipart_S"/>
+		<Class IRI="Connected_S"/>
 	</DisjointClasses>
 	<DisjointClasses>
 		<Class IRI="Max"/>
 		<Class IRI="ZEX"/>
 	</DisjointClasses>
 	<DisjointClasses>
-		<Class IRI="Curve"/>
-		<Class IRI="ZEX"/>
-		<Class IRI="MinDim"/>
-	</DisjointClasses>
-	<DisjointClasses>
-		<Class IRI="sf_multi_point"/>
-		<Class IRI="Point"/>
-	</DisjointClasses>
-	<DisjointClasses>
-		<Class IRI="ZEX"/>
-		<Class IRI="MaxDim"/>
-	</DisjointClasses>
-	<DisjointClasses>
 		<Class IRI="Branched_S"/>
 		<Class IRI="Simple_S"/>
 	</DisjointClasses>
 	<DisjointClasses>
-		<Class IRI="Connected_S"/>
-		<Class IRI="Multipart_S"/>
+		<Class IRI="MinDim"/>
+		<Class IRI="Curve"/>
+		<Class IRI="ZEX"/>
+	</DisjointClasses>
+	<DisjointClasses>
+		<Class IRI="MaxDim"/>
+		<Class IRI="ZEX"/>
+	</DisjointClasses>
+	<DisjointClasses>
+		<Class IRI="Point"/>
+		<Class IRI="sf_multi_point"/>
 	</DisjointClasses>
 	<SubClassOf>
 		<Class IRI="sf_geometry_collection"/>
@@ -440,100 +481,48 @@
 		</ObjectUnionOf>
 	</SubClassOf>
 	<SubClassOf>
-		<Class IRI="Simple_S"/>
-		<Class IRI="Connected_S"/>
-	</SubClassOf>
-	<SubClassOf>
-		<Class IRI="MinDim"/>
-		<Class IRI="S"/>
-	</SubClassOf>
-	<SubClassOf>
-		<Class IRI="sf_point"/>
+		<Class IRI="sf_geometry_collection"/>
 		<Class IRI="sf_geometry"/>
 	</SubClassOf>
 	<SubClassOf>
-		<Class IRI="sf_multi_surface"/>
-		<Class IRI="Multipart_ArealRegion"/>
+		<Class IRI="MaxDim"/>
+		<Class IRI="S"/>
 	</SubClassOf>
 	<SubClassOf>
 		<Class IRI="sf_multi_curve"/>
 		<Class IRI="Multipart_Curve"/>
 	</SubClassOf>
 	<SubClassOf>
+		<Class IRI="sf_multi_surface"/>
 		<Class IRI="sf_geometry_collection"/>
-		<Class IRI="sf_geometry"/>
 	</SubClassOf>
-	<EquivalentClasses>
+	<SubClassOf>
 		<Class IRI="MinDim"/>
-		<Class IRI="PointRegion"/>
-	</EquivalentClasses>
-	<SubClassOf>
-		<Class IRI="sf_linear_ring"/>
-		<Class IRI="sf_line_string"/>
-	</SubClassOf>
-	<SubClassOf>
-		<Class IRI="sf_multi_point"/>
-		<Class IRI="sf_geometry_collection"/>
-	</SubClassOf>
-	<SubClassOf>
-		<Class IRI="sf_curve"/>
-		<Class IRI="sf_geometry"/>
-	</SubClassOf>
-	<SubClassOf>
-		<Class IRI="sf_multi_curve"/>
-		<Class IRI="sf_geometry_collection"/>
-	</SubClassOf>
-	<SubClassOf>
-		<Class IRI="sf_polyhedral_surface"/>
-		<Class IRI="sf_surface"/>
-	</SubClassOf>
-	<SubClassOf>
-		<Class IRI="Max"/>
 		<Class IRI="S"/>
 	</SubClassOf>
 	<SubClassOf>
-		<Class IRI="Simple_ArealRegion"/>
-		<Class IRI="ArealRegion"/>
-	</SubClassOf>
-	<SubClassOf>
-		<Class IRI="ZEX"/>
-		<Class IRI="S"/>
-	</SubClassOf>
-	<SubClassOf>
-		<Class IRI="Branched_S"/>
+		<Class IRI="Simple_S"/>
 		<Class IRI="Connected_S"/>
-	</SubClassOf>
-	<SubClassOf>
-		<Class IRI="Connected_S"/>
-		<Class IRI="S"/>
-	</SubClassOf>
-	<SubClassOf>
-		<Class IRI="sf_polygon"/>
-		<Class IRI="Simple_ArealRegion"/>
-	</SubClassOf>
-	<SubClassOf>
-		<Class IRI="Point"/>
-		<Class IRI="MinDim"/>
-	</SubClassOf>
-	<SubClassOf>
-		<Class IRI="sf_polygon"/>
-		<Class IRI="sf_polyhedral_surface"/>
-	</SubClassOf>
-	<SubClassOf>
-		<Class IRI="Multipart_ArealRegion"/>
-		<Class IRI="ArealRegion"/>
-	</SubClassOf>
-	<SubClassOf>
-		<Class IRI="Multipart_S"/>
-		<Class IRI="S"/>
 	</SubClassOf>
 	<SubClassOf>
 		<Class IRI="Multipart_Curve"/>
 		<Class IRI="Curve"/>
 	</SubClassOf>
 	<SubClassOf>
-		<Class IRI="sf_surface"/>
-		<Class IRI="sf_geometry"/>
+		<Class IRI="sf_multi_polygon"/>
+		<Class IRI="sf_multi_surface"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="sf_linear_ring"/>
+		<Class IRI="sf_line_string"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Max"/>
+		<Class IRI="S"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="sf_multi_point"/>
+		<Class IRI="PointRegion"/>
 	</SubClassOf>
 	<SubClassOf>
 		<Class IRI="sf_multi_line_string"/>
@@ -541,38 +530,103 @@
 	</SubClassOf>
 	<SubClassOf>
 		<Class IRI="Multipart_ArealRegion"/>
+		<Class IRI="ArealRegion"/>
+	</SubClassOf>
+	<EquivalentClasses>
+		<Class IRI="PointRegion"/>
+		<Class IRI="MinDim"/>
+	</EquivalentClasses>
+	<SubClassOf>
+		<Class IRI="sf_curve"/>
+		<Class IRI="sf_geometry"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Multipart_ArealRegion"/>
 		<Class IRI="Multipart_S"/>
 	</SubClassOf>
 	<SubClassOf>
-		<Class IRI="sf_line_string"/>
-		<Class IRI="sf_curve"/>
+		<Class IRI="sf_surface"/>
+		<Class IRI="sf_geometry"/>
 	</SubClassOf>
 	<SubClassOf>
-		<Class IRI="sf_multi_polygon"/>
-		<Class IRI="sf_multi_surface"/>
+		<Class IRI="Simple_ArealRegion"/>
+		<Class IRI="ArealRegion"/>
 	</SubClassOf>
 	<SubClassOf>
 		<Class IRI="Multipart_Curve"/>
 		<Class IRI="Multipart_S"/>
 	</SubClassOf>
 	<SubClassOf>
-		<Class IRI="MaxDim"/>
-		<Class IRI="S"/>
+		<Class IRI="Point"/>
+		<Class IRI="MinDim"/>
 	</SubClassOf>
 	<SubClassOf>
-		<Class IRI="sf_multi_point"/>
-		<Class IRI="PointRegion"/>
+		<Class IRI="sf_multi_curve"/>
+		<Class IRI="sf_geometry_collection"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="ZEX"/>
+		<Class IRI="S"/>
 	</SubClassOf>
 	<SubClassOf>
 		<Class IRI="Min"/>
 		<Class IRI="S"/>
 	</SubClassOf>
 	<SubClassOf>
+		<Class IRI="Branched_S"/>
+		<Class IRI="Connected_S"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="sf_line_string"/>
+		<Class IRI="sf_curve"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="sf_polyhedral_surface"/>
+		<Class IRI="sf_surface"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="sf_multi_surface"/>
+		<Class IRI="Multipart_ArealRegion"/>
+	</SubClassOf>
+	<SubClassOf>
 		<Class IRI="Simple_ArealRegion"/>
 		<Class IRI="Simple_S"/>
 	</SubClassOf>
 	<SubClassOf>
-		<Class IRI="sf_multi_surface"/>
+		<Class IRI="sf_polygon"/>
+		<Class IRI="Simple_ArealRegion"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="sf_multi_point"/>
 		<Class IRI="sf_geometry_collection"/>
 	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Connected_S"/>
+		<Class IRI="S"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="sf_point"/>
+		<Class IRI="sf_geometry"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="sf_polygon"/>
+		<Class IRI="sf_polyhedral_surface"/>
+	</SubClassOf>
+	<SubClassOf>
+		<Class IRI="Multipart_S"/>
+		<Class IRI="S"/>
+	</SubClassOf>
+	<TransitiveObjectProperty>
+		<ObjectProperty IRI="leq"/>
+	</TransitiveObjectProperty>
+	<TransitiveObjectProperty>
+		<ObjectProperty IRI="Cont"/>
+	</TransitiveObjectProperty>
+	<SubObjectPropertyOf>
+		<ObjectPropertyChain>
+			<ObjectProperty IRI="BCont"/>
+			<ObjectProperty IRI="boundary"/>
+		</ObjectPropertyChain>
+		<ObjectProperty IRI="Cont"/>
+	</SubObjectPropertyOf>
 </Ontology>
