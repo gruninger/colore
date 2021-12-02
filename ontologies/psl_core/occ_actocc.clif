@@ -1,0 +1,42 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/psl_core/occ_actocc.clif
+
+(cl-comment 'Activities and activity occurrences are distinct kinds of things.')
+
+(forall (x)
+     (if (activity_occurrence x)
+         (not (activity x))))
+
+(cl-comment 'The occurrence relation only holds between activities and 
+activity occurrences.')
+
+(forall (a occ)
+	(if	(occurrence_of occ a)
+		(and	(activity a)
+			(activity_occurrence occ))))
+
+(cl-comment 'Every activity occurrence is the occurrence of some activity.')
+
+(forall (occ)
+	(if	(activity_occurrence occ)
+		(exists (a)
+			(and	(activity a)
+				(occurrence_of occ a)))))
+
+(cl-comment 'An activity occurrence is associated with a unique activity.')
+
+(forall (occ a1 a2)
+        (if	(and	(occurrence_of occ a1)
+                        (occurrence_of occ a2))
+		(= a1 a2)))
+
+)

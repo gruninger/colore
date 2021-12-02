@@ -1,0 +1,37 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(domain_size, 3).
+  assign(start_size, 3).
+  assign(end_size, 3).
+  assign(max_models, 20).
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% Undirected graph
+
+(all x all y (adj(x,y) -> adj(y,x))).
+
+% translation definitions:
+(all x all y (hasSubSystem(x,y) <-> adj(x,y))).
+(all x (System(x) <-> (x=x) )).
+
+end_of_list.
+
+formulas(goals).
+
+% hasSubSystem.in  GRAPH
+% (all x all y (System(x) & hasSubSystem(x,y) -> System(y))).
+% 
+(all x all y (System(x) & hasSubSystem(y,x) -> System(y))).
+
+end_of_list.
+

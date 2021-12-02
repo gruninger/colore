@@ -1,0 +1,94 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/psl_core/psl_before.clif
+
+(cl-comment 'The before relation only holds between timepoints.')
+
+(forall (t1 t2)
+	(if	(before t1 t2)
+		(and 	(timepoint t1) 
+			(timepoint t2))))
+
+(cl-comment 'The before relation is a total ordering.')
+
+(forall (t1 t2)
+	(if	(and 	(timepoint t1) 
+			(timepoint t2))
+		(or 	(= t1 t2) 
+			(before t1 t2) 
+			(before t2 t1))))
+
+(cl-comment 'The before relation is irreflexive.')
+
+(forall (t1)
+	(not (before t1 t1)))
+
+(cl-comment 'The before relation is transitive.')
+
+(forall (t1 t2 t3)
+	(if	(and 	(before t1 t2) 
+			(before t2 t3))
+		(before t1 t3)))
+
+(cl-comment 'The timepoint inf- is before all other timepoints.')
+
+(forall (t)
+        (if	(and 	(timepoint t) 
+			(not (= t inf-)))
+		(before inf- t)))
+
+(cl-comment 'Every other timepoint is before inf+.')
+
+(forall (t)
+        (if	(and 	(timepoint t) 
+			(not (= t inf+)))
+		(before t inf+)))
+
+(cl-comment 'Given any timepoint t other than inf-, there is a timepoint between inf- and t.')
+
+(forall (t)
+	(if	(and 	(timepoint t) 
+			(not (= t inf-)))
+		(exists (u) 
+			(between inf- u t))))
+
+(cl-comment 'Given any timepoint t other than inf+, there is a timepoint between
+t and inf+.')
+
+(forall (t)
+	(if	(and 	(timepoint t) 
+			(not (= t inf+)))
+		(exists (u) 
+			(between t u inf+))))
+
+
+(cl-comment 'Timepoint t2 is between timepoints t1 and t3 if and only if t1 is before 
+t2 and t2 is before t3.')
+
+(forall (t1 t2 t3) (iff (between t1 t2 t3)
+  (and (before t1 t2) (before t2 t3))))
+
+(cl-comment 'Timepoint t1 is beforeEq timepoint t2 if and only if t1 is before or equal
+to t2.')
+
+(forall (t1 t2) (iff (beforeEq t1 t2)
+  (and (timepoint t1) (timepoint t2)
+       (or (before t1 t2) (= t1 t2)))))
+
+(cl-comment 'Timepoint t2 is betweenEq timepoints t1 and t3 if and only if 
+t1 is before or equal to t2, and t2 is before or equal to t3.')
+
+(forall (t1 t2 t3) (iff (betweenEq t1 t2 t3)
+  (and (beforeEq t1 t2)
+       (beforeEq t2 t3))))
+
+
+)

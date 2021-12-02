@@ -1,0 +1,46 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(domain_size, 3).
+  assign(start_size, 3).
+  assign(end_size, 3).
+  assign(max_models, 20).
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% hasSurvivalRange.in
+
+(all x all y (System(x) & hasSurvivalRange(x,y) -> SurvivalRange(y))).
+
+% manually add domain and range axiom 
+(all x all y (hasSurvivalRange(x,y) -> (System(x) & SurvivalRange(y)))).
+
+% translation definitions:
+(all x (point(x) <-> System(x))).
+(all x (line(x) <-> SurvivalRange(x))).
+(all x all y (in(x,y) <-> (hasSurvivalRange(x,y) | hasSurvivalRange(y,x) | (x=y)) )).
+
+% disjointness axiom:
+(all x (SurvivalRange(x) -> (-System(x)))).
+
+end_of_list.
+
+formulas(goals).
+
+% Weak Bipartite Incidence
+% (all x all y (in(x,y) -> in(y,x))).
+% (all x ((point(x) | line(x)) -> in(x,x))).
+% (all p (point(p) -> (-line(p)))).
+% (all x all y ((in(x,y) & point(x) & point(y)) -> (x=y))).
+% (all x all y ((in(x,y) & line(x) & line(y)) -> (x=y))).
+
+end_of_list.
+

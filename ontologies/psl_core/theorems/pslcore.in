@@ -1,0 +1,187 @@
+
+formulas(assumptions).
+
+%psl_core.th:ax1
+all t1 all t2   
+        (before(t1,t2)
+        ->
+        (timepoint(t1)
+        & timepoint(t2))).
+
+%psl_core.th:ax2
+all t1  all t2 
+        ((timepoint(t1)
+        & timepoint(t2))
+        ->
+        ((t1 = t2)
+        | before(t1, t2)
+        | before(t2, t1))).
+
+%psl_core.th:ax3
+all t1  
+        (-before(t1, t1)).
+
+%psl_core.th:ax4
+all t1 all t2 all t3 
+        ((before(t1,t2)
+        & before(t2,t3))
+        ->
+        before(t1,t3)).
+
+%psl_core.th:ax18
+(timepoint(INFneg)
+& timepoint(INFpos)
+& -(INFneg=INFpos)).
+
+%psl_core.th:ax5
+all t
+        ((timepoint(t)
+        & -(t = INFneg))
+        ->
+        before(INFneg,t)).
+
+%psl_core.th:ax6
+all t   
+        ((timepoint(t)
+        & -(t = INFpos))
+        ->
+        before(t,INFpos)).
+
+%psl_core.th:ax7
+all t
+        ((timepoint(t)
+        & -(t = INFneg))
+        ->
+        (exists u
+                (between(INFneg,u,t)))).
+
+%psl_core.th:ax8
+all t
+        ((timepoint(t)
+        & -(t = INFpos))
+        ->
+        (exists u
+                (between(t,u,INFpos)))).
+
+%psl_core.th:ax9
+all x   (       activity(x) 
+                | activity_occurrence(x) 
+                | timepoint(x) 
+                | object(x) 
+        ).
+
+
+%psl_core.th:ax10
+all x   
+        (activity(x) 
+        -> 
+        -(activity_occurrence(x) 
+        | object(x) 
+        | timepoint(x))).
+
+all x   
+        (activity_occurrence(x) 
+        -> 
+        -(object(x) 
+        | timepoint(x))).
+
+all x   
+        (object(x) 
+        -> 
+        -timepoint(x)).
+
+%psl_core.th:ax11
+all a all occ
+        (occurrence_of(occ,a)
+        ->
+        (activity(a)
+        & activity_occurrence(occ))).
+
+%psl_core.th:ax12
+all occ
+        (activity_occurrence(occ)
+        ->      
+        (exists a
+                (activity(a)
+                & occurrence_of(occ,a)))).
+
+%psl_core.th:ax13
+all o all a1 all a2
+	((occurrence_of(o,a1)
+	& occurrence_of(o,a2))
+	->
+	(a1=a2)).
+
+%psl_core.th:ax14
+all a all x
+	((occurrence_of(x,a) 
+	| object(x)) 
+	-> 
+	(timepoint(beginof(x)) 
+	& timepoint(endof(x)))).
+
+%psl_core.th:ax15
+all x
+	((activity_occurrence(x) 
+	| object(x))
+	-> 
+	beforeEq(beginof(x), endof(x))).
+
+%psl_core.th:ax16
+all x all o all t
+	(participates_in(x,o,t) 
+	-> 
+	(object(x) 
+	& activity_occurrence(a) 
+	& timepoint(t))).
+
+%psl_core.th:ax17
+all x all o all t
+	(participates_in(x,o,t) 
+	-> 
+	(exists_at(x,t) 
+	& is_occurring_at(o,t))).
+
+%psl_core.th:def1
+all t1 all t2 all t3     (       between(t1,t2,t3)
+                                <->
+                                (       before(t1, t2)
+                                        & before(t2, t3)
+                                )
+                        ).
+
+
+%psl_core.th:def2
+all t1 all t2   (       beforeEq(t1,t2)
+                        <->
+                        (       timepoint(t1)
+                                & timepoint(t2)
+                                &       (       before(t1,t2)
+                                                | (t1 = t2)
+                                        )
+                        )
+                ).
+
+%psl_core.th:def3
+all t1 all t2 all t3    (       betweenEq(t1,t2,t3)
+                                <->
+                                (       beforeEq(t1,t2)
+                                        & beforeEq(t2,t3)
+                                )
+                        ).
+
+%psl_core.th:def4
+all x all t     (       exists_at(x,t)
+                        <->
+                        (       object(x)
+                                & betweenEq(beginof(x),t,endof(x))
+                        )
+                ).
+
+%psl_core.th:def5
+all o all t
+        (is_occurring_at(o,t)
+        <->
+        betweenEq(beginof(occ),t,endof(occ))).
+
+end_of_list.

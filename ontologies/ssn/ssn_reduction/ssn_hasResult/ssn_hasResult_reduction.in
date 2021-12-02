@@ -1,0 +1,50 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% Module hasResult
+% 1
+(all x all y (hasResult(x,y) <-> isResultOf(y,x))).
+% 2 
+(all x all y (hasResult(x,y) -> (Actuation(x) | Observation(x) | Sampling(x)))).
+% 3 
+(all x all y (hasResult(x,y) -> (Result(y) | Sample(y)))).
+% 6 
+(all x (Observation(x) -> (exists y (hasResult(x,y))))).
+% 7 
+(all x all y (Observation(x) & hasResult(x,y) -> Result(y))).
+% 8 
+(all x (Actuation(x) -> (exists y (hasResult(x,y))))).
+% 9 
+(all x all y (Actuation(x) & hasResult(x,y) -> Result(y))).
+% 10 
+(all x (Sampling(x) -> (exists y (hasResult(x,y))))).
+% 11 
+(all x all y (Sampling(x) & hasResult(x,y) -> Sample(y))).
+% 12 
+(all x (Result(x) -> (exists y (isResultOf(x,y))))).
+% 13 
+(all x (Sample(x) -> Result(x))).
+% 14 
+(all x all y (Sample(x) & isResultOf(x,y) -> Sampling(y))).
+
+end_of_list.
+
+formulas(goals).
+
+% 4 (all x all y (isResultOf(x,y) -> (Result(x) | Sample(x)))).
+% 5 (all x all y (isResultOf(x,y) -> (Actuation(y) | Observation(y) | Sampling(y)))).
+% 15 (all x (Sample(x) -> (exists y (isResultOf(x,y))))).
+
+end_of_list.
+

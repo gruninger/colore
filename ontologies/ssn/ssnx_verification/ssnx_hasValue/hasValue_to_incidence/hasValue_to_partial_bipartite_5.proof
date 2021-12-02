@@ -1,0 +1,40 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 22335 was started by yiningzhou on YiningdeMacBook-Pro.local,
+Sun May 30 16:44:29 2021
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 20.
+% Level of proof is 5.
+% Maximum clause weight is 6.
+% Given clauses 10.
+
+2 (all x all y (hasValue(x,y) -> SensorOutput(x) & ObservationValue(y))) # label(non_clause).  [assumption].
+4 (all x (line(x) <-> SensorOutput(x))) # label(non_clause).  [assumption].
+5 (all x all y (in(x,y) <-> hasValue(x,y) | hasValue(y,x) | x = y)) # label(non_clause).  [assumption].
+6 (all x (ObservationValue(x) -> -SensorOutput(x))) # label(non_clause).  [assumption].
+7 (all x all y (in(x,y) & line(x) & line(y) -> x = y)) # label(non_clause) # label(goal).  [goal].
+11 -line(x) | SensorOutput(x).  [clausify(4)].
+13 -ObservationValue(x) | -SensorOutput(x).  [clausify(6)].
+15 -hasValue(x,y) | ObservationValue(y).  [clausify(2)].
+20 -ObservationValue(x) | -line(x).  [resolve(13,b,11,b)].
+22 -in(x,y) | hasValue(x,y) | hasValue(y,x) | y = x.  [clausify(5)].
+25 in(c1,c2).  [deny(7)].
+31 line(c1).  [deny(7)].
+32 line(c2).  [deny(7)].
+33 c2 != c1.  [deny(7)].
+40 -line(x) | -hasValue(y,x).  [resolve(20,a,15,b)].
+43 hasValue(c1,c2) | hasValue(c2,c1) | c2 = c1.  [resolve(25,a,22,a)].
+44 hasValue(c1,c2) | hasValue(c2,c1).  [copy(43),unit_del(c,33)].
+50 -hasValue(x,c2).  [ur(40,a,32,a)].
+51 -hasValue(x,c1).  [ur(40,a,31,a)].
+52 $F.  [back_unit_del(44),unit_del(a,50),unit_del(b,51)].
+
+============================== end of proof ==========================

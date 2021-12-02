@@ -1,0 +1,46 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 68502 was started by yiningzhou on YiningdeMacBook-Pro.local,
+Tue Aug  3 12:06:18 2021
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 26.
+% Level of proof is 5.
+% Maximum clause weight is 6.
+% Given clauses 0.
+
+1 (all x all y (deployedSystem(x,y) <-> hasDeployment(y,x))) # label(non_clause).  [assumption].
+3 (all x all y (System(x) & hasDeployment(x,y) -> Deployment(y))) # label(non_clause).  [assumption].
+5 (all x (point(x) <-> System(x))) # label(non_clause).  [assumption].
+6 (all x all y (in(x,y) <-> hasDeployment(x,y) | deployedSystem(x,y) | x = y)) # label(non_clause).  [assumption].
+7 (all x (System(x) -> -Deployment(y))) # label(non_clause).  [assumption].
+8 (all x all y (in(x,y) & point(x) & point(y) -> x = y)) # label(non_clause) # label(goal).  [goal].
+10 -deployedSystem(x,y) | hasDeployment(y,x).  [clausify(1)].
+12 -in(x,y) | hasDeployment(x,y) | deployedSystem(x,y) | y = x.  [clausify(6)].
+14 -point(x) | System(x).  [clausify(5)].
+15 -System(x) | -hasDeployment(x,y) | Deployment(y).  [clausify(3)].
+17 -System(x) | -Deployment(y).  [clausify(7)].
+22 -in(x,y) | hasDeployment(x,y) | y = x | hasDeployment(y,x).  [resolve(12,c,10,a)].
+25 in(c1,c2).  [deny(8)].
+30 -point(x) | -hasDeployment(x,y) | Deployment(y).  [resolve(14,b,15,a)].
+31 point(c1).  [deny(8)].
+32 point(c2).  [deny(8)].
+33 -Deployment(x) | -point(y).  [resolve(17,a,14,b)].
+37 c2 != c1.  [deny(8)].
+40 hasDeployment(c1,c2) | c2 = c1 | hasDeployment(c2,c1).  [resolve(22,a,25,a)].
+41 hasDeployment(c1,c2) | hasDeployment(c2,c1).  [copy(40),unit_del(b,37)].
+46 -hasDeployment(c1,x) | Deployment(x).  [resolve(30,a,31,a)].
+47 -hasDeployment(c2,x) | Deployment(x).  [resolve(30,a,32,a)].
+48 -Deployment(x).  [resolve(33,b,31,a)].
+49 -hasDeployment(c2,x).  [back_unit_del(47),unit_del(b,48)].
+50 -hasDeployment(c1,x).  [back_unit_del(46),unit_del(b,48)].
+51 $F.  [back_unit_del(41),unit_del(a,50),unit_del(b,49)].
+
+============================== end of proof ==========================

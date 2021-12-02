@@ -1,0 +1,41 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 70655 was started by yiningzhou on YiningdeMacBook-Pro.local,
+Tue Aug  3 13:46:22 2021
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 21.
+% Level of proof is 5.
+% Maximum clause weight is 12.
+% Given clauses 5.
+
+1 (all x all y (observes(x,y) <-> isObservedBy(y,x))) # label(non_clause).  [assumption].
+5 (all x all y (isObservedBy(x,y) -> Sensor(y))) # label(non_clause).  [assumption].
+9 (all x (line(x) <-> ObservableProperty(x))) # label(non_clause).  [assumption].
+10 (all x all y (in(x,y) <-> observes(x,y) | isObservedBy(x,y) | x = y)) # label(non_clause).  [assumption].
+11 (all x (Sensor(x) -> -ObservableProperty(x))) # label(non_clause).  [assumption].
+12 (all x all y (in(x,y) & line(x) & line(y) -> x = y)) # label(non_clause) # label(goal).  [goal].
+14 -observes(x,y) | isObservedBy(y,x).  [clausify(1)].
+18 -in(x,y) | observes(x,y) | isObservedBy(x,y) | y = x.  [clausify(10)].
+22 -line(x) | ObservableProperty(x).  [clausify(9)].
+24 -Sensor(x) | -ObservableProperty(x).  [clausify(11)].
+28 -isObservedBy(x,y) | Sensor(y).  [clausify(5)].
+33 -Sensor(x) | -line(x).  [resolve(24,b,22,b)].
+35 -line(x) | -isObservedBy(y,x).  [resolve(33,a,28,b)].
+36 line(c1).  [deny(12)].
+37 line(c2).  [deny(12)].
+44 in(c1,c2).  [deny(12)].
+45 c2 != c1.  [deny(12)].
+46 -in(x,y) | isObservedBy(x,y) | y = x | isObservedBy(y,x).  [resolve(18,b,14,a)].
+56 -isObservedBy(x,c1).  [resolve(35,a,36,a)].
+57 -isObservedBy(x,c2).  [resolve(35,a,37,a)].
+66 $F.  [resolve(46,a,44,a),unit_del(a,57),unit_del(b,45),unit_del(c,56)].
+
+============================== end of proof ==========================

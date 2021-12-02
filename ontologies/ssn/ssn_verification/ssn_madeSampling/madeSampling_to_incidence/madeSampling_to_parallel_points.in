@@ -1,0 +1,62 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(domain_size, 3).
+  assign(start_size, 3).
+  assign(end_size, 3).
+  assign(max_models, 20).
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% madeSampling.in
+% 1. inverse
+ (all x all y (madeSampling(x,y) <-> madeBySampler(y,x))).
+% 2. domain
+ (all x all y (madeSampling(x,y) -> Sampler(x))).
+% 3. range
+ (all x all y (madeSampling(x,y) -> Sampling(y))).
+% 4. domain 
+ (all x all y (madeBySampler(x,y) -> Sampling(x))).
+% 5. range
+ (all x all y (madeBySampler(x,y) -> Sampler(y))).
+% 6. allValuesFrom
+ (all x all y ((Sampler(x) & madeSampling(x,y)) -> Sampling(y))).
+% 7. uniqueness
+ (all x all y ((Sampling(x) & madeBySampler(x,y) & madeBySampler(x,z)) -> (y=z))).
+  %% cannot be entailed by Weak Bipartite %% can be entailed by Parallel points
+% 8. allValuesFrom
+ (all x all y ((Sampling(x) & madeBySampler(x,y)) -> Sampler(y))).
+
+% translation definitions:
+(all x (point(x) <-> Sampler(x))).
+(all x (line(x) <-> Sampling(x))).
+(all x all y (in(x,y) <-> (madeSampling(x,y) | madeBySampler(x,y) | (x=y)))).
+
+% disjointness axiom
+(all x (Sampler(x) -> (-Sampling(x)))).
+
+end_of_list.
+
+formulas(goals).
+
+% Weak Bipartite Incidence
+
+% (all x all y (in(x,y) -> in(y,x))).
+% (all x ((point(x) | line(x)) -> in(x,x))).
+% (all p (point(p) -> (-line(p)))).
+% (all x all y ((in(x,y) & point(x) & point(y)) -> (x=y))).
+% (all x all y ((in(x,y) & line(x) & line(y)) -> (x=y))).
+
+% transform axiom 8: uniqueness in madeSampling.in to incidence ---> parallel points
+% (all x all y all z ((line(x) & in(x,y) & point(y) & in(x,z) & point(z)) -> (y=z))).
+
+end_of_list.
+

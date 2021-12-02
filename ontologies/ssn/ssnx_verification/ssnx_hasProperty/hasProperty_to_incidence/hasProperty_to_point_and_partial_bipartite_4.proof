@@ -1,0 +1,48 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 19465 was started by yiningzhou on YiningdeMacBook-Pro.local,
+Mon May 17 18:39:58 2021
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 28.
+% Level of proof is 7.
+% Maximum clause weight is 12.
+% Given clauses 19.
+
+1 (all x all y (hasProperty(x,y) <-> isPropertyOf(y,x))) # label(non_clause).  [assumption].
+2 (all x all y (FeatureOfInterest(x) & hasProperty(x,y) -> Property(y))) # label(non_clause).  [assumption].
+5 (all x (point(x) <-> FeatureOfInterest(x))) # label(non_clause).  [assumption].
+7 (all x all y (in(x,y) <-> hasProperty(x,y) | isPropertyOf(x,y) | x = y)) # label(non_clause).  [assumption].
+8 (all x (FeatureOfInterest(x) -> -Property(x))) # label(non_clause).  [assumption].
+9 (all x all y (in(x,y) & point(x) & point(y) -> x = y)) # label(non_clause) # label(goal).  [goal].
+10 hasProperty(x,y) | -isPropertyOf(y,x).  [clausify(1)].
+11 -hasProperty(x,y) | isPropertyOf(y,x).  [clausify(1)].
+12 -FeatureOfInterest(x) | -hasProperty(x,y) | Property(y).  [clausify(2)].
+14 -in(x,y) | hasProperty(x,y) | isPropertyOf(x,y) | y = x.  [clausify(7)].
+18 -point(x) | FeatureOfInterest(x).  [clausify(5)].
+20 -FeatureOfInterest(x) | -Property(x).  [clausify(8)].
+21 -FeatureOfInterest(x) | Property(y) | -isPropertyOf(y,x).  [resolve(12,b,10,a)].
+28 point(c1).  [deny(9)].
+29 point(c2).  [deny(9)].
+31 -Property(x) | -point(x).  [resolve(20,a,18,b)].
+32 Property(x) | -isPropertyOf(x,y) | -point(y).  [resolve(21,a,18,b)].
+39 in(c1,c2).  [deny(9)].
+40 c2 != c1.  [deny(9)].
+41 -in(x,y) | isPropertyOf(x,y) | y = x | isPropertyOf(y,x).  [resolve(14,b,11,a)].
+52 -Property(c1).  [resolve(31,b,28,a)].
+53 -Property(c2).  [resolve(31,b,29,a)].
+54 Property(x) | -isPropertyOf(x,c1).  [resolve(32,c,28,a)].
+55 Property(x) | -isPropertyOf(x,c2).  [resolve(32,c,29,a)].
+66 isPropertyOf(c1,c2) | isPropertyOf(c2,c1).  [resolve(41,a,39,a),unit_del(b,40)].
+81 -isPropertyOf(c2,c1).  [ur(54,a,53,a)].
+83 isPropertyOf(c1,c2).  [back_unit_del(66),unit_del(b,81)].
+85 $F.  [ur(55,a,52,a),unit_del(a,83)].
+
+============================== end of proof ==========================

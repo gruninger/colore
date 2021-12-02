@@ -1,0 +1,43 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 28637 was started by yiningzhou on YiningdeMacBook-Pro.local,
+Tue May 18 15:26:01 2021
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 23.
+% Level of proof is 5.
+% Maximum clause weight is 6.
+% Given clauses 6.
+
+1 (all x all y (Observation(x) & observationResult(x,y) -> SensorOutput(y))) # label(non_clause).  [assumption].
+3 (all x (line(x) <-> Observation(x))) # label(non_clause).  [assumption].
+4 (all x all y (in(x,y) <-> observationResult(x,y) | observationResult(y,x) | x = y)) # label(non_clause).  [assumption].
+5 (all x (SensorOutput(x) -> -Observation(x))) # label(non_clause).  [assumption].
+6 (all x all y (in(x,y) & line(x) & line(y) -> x = y)) # label(non_clause) # label(goal).  [goal].
+7 -line(x) | Observation(x).  [clausify(3)].
+8 -Observation(x) | -observationResult(x,y) | SensorOutput(y).  [clausify(1)].
+10 -SensorOutput(x) | -Observation(x).  [clausify(5)].
+14 -in(x,y) | observationResult(x,y) | observationResult(y,x) | y = x.  [clausify(4)].
+17 in(c1,c2).  [deny(6)].
+18 -line(x) | -observationResult(x,y) | SensorOutput(y).  [resolve(7,b,8,a)].
+19 line(c1).  [deny(6)].
+20 line(c2).  [deny(6)].
+21 -SensorOutput(x) | -line(x).  [resolve(10,b,7,b)].
+22 c2 != c1.  [deny(6)].
+23 observationResult(c1,c2) | observationResult(c2,c1) | c2 = c1.  [resolve(17,a,14,a)].
+24 observationResult(c1,c2) | observationResult(c2,c1).  [copy(23),unit_del(c,22)].
+25 -observationResult(c1,x) | SensorOutput(x).  [resolve(18,a,19,a)].
+26 -observationResult(c2,x) | SensorOutput(x).  [resolve(18,a,20,a)].
+27 -SensorOutput(c1).  [resolve(21,b,19,a)].
+28 -SensorOutput(c2).  [resolve(21,b,20,a)].
+29 observationResult(c1,c2).  [resolve(26,a,24,b),unit_del(a,27)].
+33 $F.  [ur(25,b,28,a),unit_del(a,29)].
+
+============================== end of proof ==========================

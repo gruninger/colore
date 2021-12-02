@@ -1,0 +1,40 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/psl_core/occ_time.clif
+
+(cl-comment 'Activity occurrences and timepoints are distinct kinds of things.')
+
+(forall (x)
+     (if (activity_occurrence x)
+         (not (timepoint x))))
+
+(cl-comment 'The begin and end of every activity occurrence is a timepoint.')
+
+(forall (x)
+        (if     (activity_occurrence x)
+                (and    (timepoint (beginof x))
+                        (timepoint (endof x)))))
+
+(cl-comment 'The begin point of every activity occurrence or object is 
+before or equal to its end point.')
+
+(forall (x)
+	(if	(activity_occurrence x)
+		(beforeEq (beginof x) (endof x))))
+
+(cl-comment 'Timepoint t1 is beforeEq timepoint t2 if and only if t1 is before or equal
+to t2.')
+
+(forall (t1 t2) (iff (beforeEq t1 t2)
+  (and (timepoint t1) (timepoint t2)
+       (or (before t1 t2) (= t1 t2)))))
+
+)

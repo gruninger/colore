@@ -1,0 +1,39 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved. 
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+ *******************************************************************************/
+
+(cl-text http://colore.oor.net/psl_actocc/subocc_time.clif
+
+(cl-imports http://colore.oor.net/psl_actocc/subocc_subposet.clif)
+
+(cl-imports http://colore.oor.net/psl_core/psl_time.clif)
+
+(forall (s o)
+	(if	(root_occ s o)
+		(= (beginof o) (beginof s))))
+
+(forall (s o)
+	(if	(leaf_occ s o)
+		(= (endof o) (endof s))))
+
+(forall (s o)
+        (iff    (root_occ s o)
+                (and    (subactivity_occurrence s o)
+                        (not (exists (s1)
+                                (and    (subactivity_occurrence s1 o)
+                                        (earlier s1 s)))))))
+
+(forall (s o)
+        (iff    (leaf_occ s o)
+                (and    (subactivity_occurrence s o)
+                        (not (exists (s1)
+                                (and    (subactivity_occurrence s1 o)
+                                        (earlier s s1)))))))
+
+)

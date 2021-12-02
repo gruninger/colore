@@ -1,0 +1,56 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 22577 was started by yiningzhou on YiningdeMacBook-Pro.local,
+Sun May 30 17:03:17 2021
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 36.
+% Level of proof is 8.
+% Maximum clause weight is 16.
+% Given clauses 14.
+
+1 (all x all y all z (Observation(x) & observedProperty(x,y) & Property(y) & observedProperty(x,z) & Property(z) -> y = z)) # label(non_clause).  [assumption].
+3 (all x all y (observedProperty(x,y) -> Observation(x) & Property(y))) # label(non_clause).  [assumption].
+4 (all x (point(x) <-> Property(x))) # label(non_clause).  [assumption].
+5 (all x (line(x) <-> Observation(x))) # label(non_clause).  [assumption].
+6 (all x all y (in(x,y) <-> observedProperty(x,y) | observedProperty(y,x) | x = y)) # label(non_clause).  [assumption].
+7 (all x (Property(x) -> -Observation(x))) # label(non_clause).  [assumption].
+8 (all x all y all z (point(x) & point(y) & line(z) & in(x,z) & in(y,z) -> x = y)) # label(non_clause) # label(goal).  [goal].
+9 -observedProperty(x,y) | Observation(x).  [clausify(3)].
+10 -Observation(x) | -observedProperty(x,y) | -Property(y) | -observedProperty(x,z) | -Property(z) | z = y.  [clausify(1)].
+12 -line(x) | Observation(x).  [clausify(5)].
+14 -Property(x) | -Observation(x).  [clausify(7)].
+16 -point(x) | Property(x).  [clausify(4)].
+17 point(c1).  [deny(8)].
+18 point(c2).  [deny(8)].
+20 -in(x,y) | observedProperty(x,y) | observedProperty(y,x) | y = x.  [clausify(6)].
+23 in(c1,c3).  [deny(8)].
+24 in(c2,c3).  [deny(8)].
+26 line(c3).  [deny(8)].
+28 -Property(x) | -line(x).  [resolve(14,b,12,b)].
+30 c2 != c1.  [deny(8)].
+31 -observedProperty(x,y) | -observedProperty(x,z) | -Property(z) | -observedProperty(x,u) | -Property(u) | u = z.  [resolve(9,b,10,a)].
+32 -Property(x) | -observedProperty(x,y).  [resolve(14,b,9,b)].
+33 Property(c1).  [resolve(17,a,16,a)].
+34 Property(c2).  [resolve(18,a,16,a)].
+35 observedProperty(c1,c3) | observedProperty(c3,c1) | c3 = c1.  [resolve(23,a,20,a)].
+36 observedProperty(c2,c3) | observedProperty(c3,c2) | c3 = c2.  [resolve(24,a,20,a)].
+37 -Property(c3).  [resolve(28,b,26,a)].
+38 -observedProperty(x,y) | -Property(y) | -observedProperty(x,z) | -Property(z) | z = y.  [factor(31,a,b)].
+39 -observedProperty(c1,x).  [ur(32,a,33,a)].
+40 observedProperty(c3,c1) | c3 = c1.  [back_unit_del(35),unit_del(a,39)].
+41 -observedProperty(c2,x).  [ur(32,a,34,a)].
+42 observedProperty(c3,c2) | c3 = c2.  [back_unit_del(36),unit_del(a,41)].
+44 c3 = c1 | -observedProperty(c3,x) | -Property(x) | c1 = x.  [resolve(40,a,38,c),unit_del(d,33)].
+46 c3 = c1 | c3 = c2.  [resolve(44,b,42,a),flip(c),unit_del(b,34),unit_del(c,30)].
+47 c3 = c1.  [para(46(b,1),37(a,1)),unit_del(b,34)].
+49 $F.  [back_rewrite(42),rewrite([47(1),47(4)]),flip(b),unit_del(a,39),unit_del(b,30)].
+
+============================== end of proof ==========================

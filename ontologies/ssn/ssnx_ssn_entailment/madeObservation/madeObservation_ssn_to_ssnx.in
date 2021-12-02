@@ -1,0 +1,51 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% Module madeObservation
+
+% mapping axioms
+(all x all y (ssnx_madeObservation(x,y) <-> ssn_madeObservation(x,y))).
+(all x all y (ssnx_observedBy(x,y) <-> ssn_madeBySensor(x,y))).
+
+% axioms in SSN
+% 1 
+(all x all y (ssn_madeObservation(x,y) <-> ssn_madeBySensor(y,x))).
+% 2 
+(all x all y (ssn_madeObservation(x,y) -> Sensor(x))).
+% 3 
+(all x all y (ssn_madeObservation(x,y) -> Observation(y))).
+% 4
+(all x all y (ssn_madeBySensor(x,y) -> Observation(x))).
+% 5
+(all x all y (ssn_madeBySensor(x,y) -> Sensor(y))).
+% 6 
+(all x all y all z ((Observation(x) & ssn_madeBySensor(x,y) & ssn_madeBySensor(x,z)) -> (y=z))).
+% 7
+(all x all y ((Observation(x) & ssn_madeBySensor(x,y)) -> Sensor(y))).
+% 8 
+(all x all y ((Sensor(x) & ssn_madeObservation(x,y)) -> Observation(y))).
+
+end_of_list.
+
+formulas(goals).
+
+% axioms in SSNX
+% (all x all y (ssnx_madeObservation(x,y) <-> ssnx_observedBy(y,x))).
+
+% (all x all y all z ((Observation(x) & ssnx_observedBy(x,y) & Sensor(y) & ssnx_observedBy(x,z) & Sensor(z)) -> (y=z))).
+
+% (all x all y ((Observation(x) & ssnx_observedBy(x,y)) -> (Sensor(y)))).
+
+end_of_list.
+

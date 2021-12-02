@@ -1,0 +1,44 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(domain_size, 3).
+  assign(start_size, 3).
+  assign(end_size, 3).
+  assign(max_models, 20).
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+% module actsOnProperty 
+% 3. inverse
+ (all x all y (actsOnProperty(x,y) <-> isActedOnBy(y,x))).
+% 1. domain
+(all x all y (actsOnProperty(x,y) -> Actuation(x))).
+% 2. range
+(all x all y (actsOnProperty(x,y) -> ActuatableProperty(y))).
+
+% 7. minCardinality 1
+ (all x (Actuation(x) -> (exists y (actsOnProperty(x,y))))).
+
+end_of_list.
+
+formulas(goals).
+
+% 4. domain
+% (all x all y (isActedOnBy(x,y) -> ActuatableProperty(x))).
+% 5. range
+% (all x all y (isActedOnBy(x,y) -> Actuation(y))).
+% 8. allValuesFrom
+% (all x all y (Actuation(x) & actsOnProperty(x,y) -> ActuatableProperty(y))).
+% 9. allValuesFrom
+% (all x all y (ActuatableProperty(x) & isActedOnBy(x,y) -> Actuation(y))).
+
+end_of_list.
+

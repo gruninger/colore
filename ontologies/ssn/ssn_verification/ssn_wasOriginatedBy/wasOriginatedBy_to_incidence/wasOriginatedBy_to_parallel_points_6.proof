@@ -1,0 +1,56 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 71135 was started by yiningzhou on YiningdeMacBook-Pro.local,
+Tue Aug  3 14:10:40 2021
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.01) seconds.
+% Length of proof is 36.
+% Level of proof is 8.
+% Maximum clause weight is 12.
+% Given clauses 14.
+
+2 (all x (Observation(x) & wasOriginatedBy(x,y) & wasOriginatedBy(x,z) -> y = z)) # label(non_clause).  [assumption].
+4 (all x all y (wasOriginatedBy(x,y) -> Observation(x))) # label(non_clause).  [assumption].
+6 (all x (line(x) <-> Observation(x))) # label(non_clause).  [assumption].
+7 (all x (point(x) <-> Stimulus(x))) # label(non_clause).  [assumption].
+8 (all x all y (in(x,y) <-> wasOriginatedBy(x,y) | wasOriginatedBy(y,x) | x = y)) # label(non_clause).  [assumption].
+9 (all x (Stimulus(x) -> -Observation(x))) # label(non_clause).  [assumption].
+10 (all x all y all z (line(x) & in(x,y) & point(y) & in(x,z) & point(z) -> y = z)) # label(non_clause) # label(goal).  [goal].
+13 -Observation(x) | -wasOriginatedBy(x,y) | -wasOriginatedBy(x,z) | z = y.  [clausify(2)].
+14 -wasOriginatedBy(x,y) | Observation(x).  [clausify(4)].
+15 -line(x) | Observation(x).  [clausify(6)].
+17 -Stimulus(x) | -Observation(x).  [clausify(9)].
+19 -point(x) | Stimulus(x).  [clausify(7)].
+20 point(c2).  [deny(10)].
+21 point(c3).  [deny(10)].
+23 -in(x,y) | wasOriginatedBy(x,y) | wasOriginatedBy(y,x) | y = x.  [clausify(8)].
+26 in(c1,c2).  [deny(10)].
+27 in(c1,c3).  [deny(10)].
+29 line(c1).  [deny(10)].
+32 -Stimulus(x) | -line(x).  [resolve(17,b,15,b)].
+34 c3 != c2.  [deny(10)].
+36 -wasOriginatedBy(x,y) | -wasOriginatedBy(x,z) | -wasOriginatedBy(x,u) | u = z.  [resolve(14,b,13,a)].
+38 -Stimulus(x) | -wasOriginatedBy(x,y).  [resolve(17,b,14,b)].
+39 Stimulus(c2).  [resolve(20,a,19,a)].
+40 Stimulus(c3).  [resolve(21,a,19,a)].
+41 wasOriginatedBy(c1,c2) | wasOriginatedBy(c2,c1) | c2 = c1.  [resolve(26,a,23,a)].
+42 wasOriginatedBy(c1,c3) | wasOriginatedBy(c3,c1) | c3 = c1.  [resolve(27,a,23,a)].
+43 -Stimulus(c1).  [resolve(32,b,29,a)].
+46 -wasOriginatedBy(x,y) | -wasOriginatedBy(x,z) | z = y.  [factor(36,a,b)].
+47 -wasOriginatedBy(c2,x).  [ur(38,a,39,a)].
+48 wasOriginatedBy(c1,c2) | c2 = c1.  [back_unit_del(41),unit_del(b,47)].
+49 -wasOriginatedBy(c3,x).  [ur(38,a,40,a)].
+50 wasOriginatedBy(c1,c3) | c3 = c1.  [back_unit_del(42),unit_del(b,49)].
+52 c2 = c1 | -wasOriginatedBy(c1,x) | c2 = x.  [resolve(48,a,46,b)].
+54 c2 = c1 | c3 = c1.  [resolve(52,b,50,a),flip(b),unit_del(b,34)].
+55 c2 = c1.  [para(54(b,1),40(a,1)),unit_del(b,43)].
+57 $F.  [back_rewrite(39),rewrite([55(1)]),unit_del(a,43)].
+
+============================== end of proof ==========================
