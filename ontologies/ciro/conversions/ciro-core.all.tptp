@@ -1,0 +1,115 @@
+fof(axiom10, axiom, (! [X] :  (('action_plan'(X) <=> (activity(X) & (? [Y] :  (('compliance_issue'(Y) & 'assigned_to'(X,Y))))))))).
+fof(axiom20, axiom, (! [X] :  (('compliance_issue'(X) => object(X))))).
+fof(axiom30, axiom, (! [X] : ! [Y] :  (('assigned_to'(X,Y) => ('action_plan'(X) & 'compliance_issue'(Y) & (! [Z] :  (('assigned_to'(Z,Y) => Z=X)))))))).
+fof(axiom40, axiom, (! [X] :  (('action_plan'(X) => (? [Y] :  (('compliance_issue'(Y) & 'assigned_to'(X,Y)))))))).
+fof(axiom50, axiom, (! [X] :  (('step_for_remediation'(X) => (? [Y] :  (('action_plan'(Y) & subactivity(X,Y) & primitive(X)))))))).
+fof(axiom60, axiom, (! [X] :  (('action_plan'(X) => (? [Y] :  (('step_for_remediation'(Y) & subactivity(Y,X)))))))).
+fof(axiom70, axiom, (! [X] :  (('material_change'(X) => (activity(X) & 'material_change'(X) & (? [A] :  (('monitor_activity'(A,X) & subactivity(X,A) & 'effective_challenge'(X))))))))).
+fof(axiom80, axiom, (! [X] :  ((completion(X) => 'material_change'(X))))).
+fof(axiom90, axiom, (! [X] :  ((validation(X) => 'material_change'(X))))).
+fof(axiom100, axiom, (! [X] :  (('effective_challenge'(X) => (activity(X) & 'effective_challenge'(X) & (? [A] :  (('monitor_activity'(A,X) & subactivity(X,A) & 'effective_challenge'(X))))))))).
+fof(axiom110, axiom, (! [X] :  ((approval(X) => (activity(X) & 'effective_challenge'(X) & (? [A] :  (('monitor_activity'(A,X) & subactivity(X,A) & 'effective_challenge'(X))))))))).
+fof(axiom120, axiom, (! [X] :  ((rejection(X) => (activity(X) & 'effective_challenge'(X) & (? [A] :  (('monitor_activity'(A,X) & subactivity(X,A) & 'effective_challenge'(X))))))))).
+fof(axiom130, axiom, (! [O1] : ! [X] : ! [A] :  ((('occurrence_of'(O1,X) & 'material_change'(X) & legal(O1) & 'monitor_activity'(A,X)) => (? [Y] : ? [O2] :  (('occurrence_of'(O2,Y) & 'effective_challenge'(Y) & legal(O2) & 'next_subocc'(O1,O2,A)))))))).
+fof(axiom140, axiom, (! [O1] : ! [X] : ! [A] :  ((('occurrence_of'(O1,X) & 'effective_challenge'(X) & legal(O1) & 'monitor_activity'(A,X)) => (? [Y] : ? [O2] :  (((('occurrence_of'(O2,Y) & approval(Y)) | ('occurrence_of'(O2,Y) & rejection(Y))) & legal(O2) & 'next_subocc'(O1,O2,A)))))))).
+fof(axiom150, axiom, (! [O] : ! [X] : ! [T] :  ((('occurrence_of'(O,X) & validation(X) & legal(O)) => (! [Y] : ! [O1] :  ((('action_plan'(Y) & 'assigned_to'(Y,X) & 'occurrence_of'(O1,Y) & legal(O1)) => earlier(endof(O1),O)))))))).
+fof(axiom160, axiom, (! [X] : ! [T] :  (('status_of'(X,T) => (timepoint(T) & 'monitoring_object'(X)))))).
+fof(axiom1130, axiom, (! [X] :  (('monitoring_object'(X) <=> ('compliance_issue'(X) | 'action_plan'(X)))))).
+fof(axiom1140, axiom, (! [X] :  (('monitoring_object'(X) => (? [A] :  (('monitor_activity'(A,X) & (! [A1] :  (('monitor_activity'(A1,X) => A1=A)))))))))).
+fof(axiom1150, axiom, (! [X] : ! [Y] :  (('monitor_activity'(X,Y) => (activity(X) & 'monitoring_object'(X)))))).
+fof(axiom240, axiom, (! [T1] : ! [T2] :  ((before(T1,T2) => (timepoint(T1) & timepoint(T2)))))).
+fof(axiom250, axiom, (! [T1] : ! [T2] :  (((timepoint(T1) & timepoint(T2)) => (T1=T2 | before(T1,T2) | before(T2,T1)))))).
+fof(axiom260, axiom, (! [T1] :  (~(before(T1,T1))))).
+fof(axiom270, axiom, (! [T1] : ! [T2] : ! [T3] :  (((before(T1,T2) & before(T2,T3)) => before(T1,T3))))).
+fof(axiom280, axiom, (! [T] :  (((timepoint(T) & ~(T='INF-')) => before('INF-',T))))).
+fof(axiom290, axiom, (! [T] :  (((timepoint(T) & ~(T='INF+')) => before(T,'INF+'))))).
+fof(axiom300, axiom, (! [T] :  (((timepoint(T) & ~(T='INF-')) => (? [U] :  (between('INF-',U,T))))))).
+fof(axiom310, axiom, (! [T] :  (((timepoint(T) & ~(T='INF+')) => (? [U] :  (between(T,U,'INF+'))))))).
+fof(axiom320, axiom, (! [X] :  ((activity(X) | 'activity_occurrence'(X) | timepoint(X) | object(X))))).
+fof(axiom330, axiom, (! [X] :  (((activity(X) => ~('activity_occurrence'(X) | object(X) | timepoint(X))) & ('activity_occurrence'(X) => ~(object(X) | timepoint(X))) & (object(X) => ~(timepoint(X))))))).
+fof(axiom340, axiom, (! [A] : ! [OCC] :  (('occurrence_of'(OCC,A) => (activity(A) & 'activity_occurrence'(OCC)))))).
+fof(axiom350, axiom, (! [OCC] :  (('activity_occurrence'(OCC) => (? [A] :  ((activity(A) & 'occurrence_of'(OCC,A)))))))).
+fof(axiom360, axiom, (! [OCC] : ! [A1] : ! [A2] :  ((('occurrence_of'(OCC,A1) & 'occurrence_of'(OCC,A2)) => A1=A2)))).
+fof(axiom370, axiom, (! [X] :  ((('activity_occurrence'(X) | object(X)) => beforeeq(beginof(X),endof(X)))))).
+fof(axiom380, axiom, (! [X] : ! [OCC] : ! [T] :  (('participates_in'(X,OCC,T) => (object(X) & 'activity_occurrence'(OCC) & timepoint(T)))))).
+fof(axiom390, axiom, (! [X] : ! [OCC] : ! [T] :  (('participates_in'(X,OCC,T) => ('exists_at'(X,T) & 'is_occurring_at'(OCC,T)))))).
+fof(axiom400, axiom, (! [T1] : ! [T2] : ! [T3] :  ((between(T1,T2,T3) <=> (before(T1,T2) & before(T2,T3)))))).
+fof(axiom410, axiom, (! [T1] : ! [T2] :  ((beforeeq(T1,T2) <=> (timepoint(T1) & timepoint(T2) & (before(T1,T2) | T1=T2)))))).
+fof(axiom420, axiom, (! [T1] : ! [T2] : ! [T3] :  ((betweeneq(T1,T2,T3) <=> (beforeeq(T1,T2) & beforeeq(T2,T3)))))).
+fof(axiom430, axiom, (! [X] : ! [T] :  (('exists_at'(X,T) <=> (object(X) & betweeneq(beginof(X),T,endof(X))))))).
+fof(axiom440, axiom, (! [OCC] : ! [T] :  (('is_occurring_at'(OCC,T) <=> ('activity_occurrence'(OCC) & betweeneq(beginof(OCC),T,endof(OCC))))))).
+fof(axiom910, axiom, (! [O1] : ! [O2] :  (('subactivity_occurrence'(O1,O2) => ('activity_occurrence'(O1) & 'activity_occurrence'(O2)))))).
+fof(axiom920, axiom, (! [A] : ! [S1] : ! [S2] :  (('min_precedes'(S1,S2,A) => (? [OCC] :  (('occurrence_of'(OCC,A) & 'subactivity_occurrence'(S1,OCC) & 'subactivity_occurrence'(S2,OCC)))))))).
+fof(axiom930, axiom, (! [A] : ! [S] :  (((root(S,A) & ~(atomic(A))) => (? [OCC] :  (('occurrence_of'(OCC,A) & 'subactivity_occurrence'(S,OCC)))))))).
+fof(axiom940, axiom, (! [OCC] : ! [A] :  ((('occurrence_of'(OCC,A) & ~(atomic(A))) => (? [S] :  ((root(S,A) & 'subactivity_occurrence'(S,OCC)))))))).
+fof(axiom950, axiom, (! [A] : ! [S1] : ! [OCC1] : ! [OCC2] :  ((('occurrence_of'(OCC1,A) & 'occurrence_of'(OCC2,A) & ~(OCC1=OCC2)) => (? [S] :  ((arboreal(S) & 'subactivity_occurrence'(S,OCC1) & ~('subactivity_occurrence'(S,OCC2))))))))).
+fof(axiom960, axiom, (! [A] : ! [OCC] : ! [S1] : ! [S2] :  ((('occurrence_of'(OCC,A) & arboreal(S1) & arboreal(S2) & 'subactivity_occurrence'(S1,OCC) & 'subactivity_occurrence'(S2,OCC)) => ('min_precedes'(S1,S2,A) | 'min_precedes'(S2,S1,A) | S1=S2))))).
+fof(axiom970, axiom, (! [A] : ! [S1] : ! [S2] : ! [OCC] :  ((('min_precedes'(S1,S2,A) & 'occurrence_of'(OCC,A) & 'subactivity_occurrence'(S2,OCC)) => 'subactivity_occurrence'(S1,OCC))))).
+fof(axiom980, axiom, (! [A1] : ! [A2] : ! [OCC1] : ! [OCC2] :  ((('occurrence_of'(OCC1,A1) & 'occurrence_of'(OCC2,A2) & ~(atomic(A1)) & 'subactivity_occurrence'(OCC1,OCC2)) => subactivity(A1,A2))))).
+fof(axiom990, axiom, (! [OCC1] : ! [OCC2] : ! [OCC3] :  ((('subactivity_occurrence'(OCC1,OCC2) & 'subactivity_occurrence'(OCC2,OCC3)) => 'subactivity_occurrence'(OCC1,OCC3))))).
+fof(axiom1000, axiom, (! [A1] : ! [A2] : ! [OCC1] : ! [OCC2] :  ((('occurrence_of'(OCC1,A1) & 'occurrence_of'(OCC2,A2) & subactivity(A1,A2) & ~('subactivity_occurrence'(OCC1,OCC2))) => (? [S] :  (('subactivity_occurrence'(S,OCC1) & ~('subactivity_occurrence'(S,OCC2))))))))).
+fof(axiom1010, axiom, (! [S] : ! [OCC] :  (('root_occ'(S,OCC) => beginof(OCC)=beginof(S))))).
+fof(axiom1020, axiom, (! [S] : ! [OCC] :  (('leaf_occ'(S,OCC) => endof(OCC)=endof(S))))).
+fof(axiom1030, axiom, (! [S1] : ! [S2] : ! [A] :  ((mono(S1,S2,A) => hom(S1,S2,A))))).
+fof(axiom1040, axiom, (! [S1] : ! [S2] : ! [A] :  (((hom(S1,S2,A) & ~(mono(S1,S2,A))) => (? [S3] :  ((('min_precedes'(S3,S2,A) & mono(S1,S3,A)) | ('min_precedes'(S3,S1,A) & mono(S2,S3,A))))))))).
+fof(axiom1050, axiom, (! [S1] : ! [S2] : ! [S3] : ! [A] :  (((mono(S1,S2,A) & mono(S3,S2,A)) => ~('min_precedes'(S1,S3,A) | 'min_precedes'(S3,S1,A)))))).
+fof(axiom1060, axiom, (! [S1] : ! [S2] : ! [A] :  ((mono(S1,S2,A) => mono(S2,S1,A))))).
+fof(axiom1070, axiom, (! [S1] : ! [S2] : ! [S3] : ! [A] :  (((mono(S1,S2,A) & mono(S2,S3,A)) => mono(S1,S3,A))))).
+fof(axiom1080, axiom, (! [S1] : ! [S2] : ! [A] :  (('iso_occ'(S1,S2,A) <=> (? [A1] : ? [A2] : ? [A3] :  ((atomic(A1) & atomic(A2) & atomic(A3) & subactivity(A3,A) & 'occurrence_of'(S1,conc(A1,A3)) & 'occurrence_of'(S2,conc(A2,A3)) & (! [A4] :  (((subactivity(A4,conc(A3,A1)) & subactivity(A4,conc(A3,A2)) & subactivity(A4,A)) => (subactivity(A3,A4) | A3=A4))))))))))).
+fof(axiom1090, axiom, (! [S1] : ! [S2] : ! [A] :  ((hom(S1,S2,A) <=> (? [OCC1] : ? [OCC2] :  (('iso_occ'(S1,S2,A) & ~('min_precedes'(S1,S2,A)) & ~('min_precedes'(S2,S1,A)) & 'subactivity_occurrence'(S1,OCC1) & 'subactivity_occurrence'(S2,OCC2) & 'occurrence_of'(OCC1,A) & 'occurrence_of'(OCC2,A)))))))).
+fof(axiom1100, axiom, (! [S] : ! [OCC] :  (('root_occ'(S,OCC) <=> (? [A] :  (('occurrence_of'(OCC,A) & 'subactivity_occurrence'(S,OCC) & root(S,A)))))))).
+fof(axiom1110, axiom, (! [S] : ! [OCC] :  (('leaf_occ'(S,OCC) <=> (? [A] :  (('occurrence_of'(OCC,A) & 'subactivity_occurrence'(S,OCC) & leaf(S,A)))))))).
+fof(axiom1120, axiom, (! [OCC1] : ! [OCC2] :  (('same_grove'(OCC1,OCC2) <=> (? [A] : ? [S1] : ? [S2] :  (('occurrence_of'(OCC1,A) & 'occurrence_of'(OCC2,A) & 'root_occ'(S1,OCC1) & 'root_occ'(S2,OCC2) & ((initial(S1) & initial(S2)) | (? [S4] : ? [A1] : ? [A2] :  ((S1=successor(A1,S4) & S2=successor(A2,S4)))))))))))).
+fof(axiom450, axiom, (! [A] : ! [S1] : ! [S2] :  (('min_precedes'(S1,S2,A) => (? [A1] : ? [A2] :  ((subactivity(A1,A) & subactivity(A2,A) & atocc(S1,A1) & atocc(S2,A2)))))))).
+fof(axiom460, axiom, (! [A] : ! [S] :  ((root(S,A) => (? [A1] :  ((subactivity(A1,A) & atocc(S,A1)))))))).
+fof(axiom470, axiom, (! [S1] : ! [S2] : ! [A] :  (('min_precedes'(S1,S2,A) => (? [S3] :  ((root(S3,A) & 'min_precedes'(S3,S2,A)))))))).
+fof(axiom480, axiom, (! [S1] : ! [S2] : ! [A] :  (('min_precedes'(S1,S2,A) => ~(root(S2,A)))))).
+fof(axiom490, axiom, (! [S1] : ! [S2] : ! [A] :  (('min_precedes'(S1,S2,A) => precedes(S1,S2))))).
+fof(axiom500, axiom, (! [S] : ! [A] :  ((root(S,A) => legal(S))))).
+fof(axiom510, axiom, (! [S] : ! [A] :  (((atocc(S,A) & legal(S)) => root(S,A))))).
+fof(axiom520, axiom, (! [S1] : ! [S2] : ! [A] :  (('min_precedes'(S1,S2,A) => (? [S3] :  (('next_subocc'(S1,S3,A) & ('min_precedes'(S3,S2,A) | S3=S2)))))))).
+fof(axiom530, axiom, (! [A] : ! [S1] : ! [S2] : ! [S3] :  ((('min_precedes'(S1,S2,A) & 'min_precedes'(S1,S3,A) & precedes(S2,S3)) => 'min_precedes'(S2,S3,A))))).
+fof(axiom540, axiom, (! [A1] : ! [A2] : ! [S1] : ! [S2] : ! [S3] :  (((subactivity(A1,A2) & subtree(S1,A1,S2,A2) & 'min_precedes'(S1,S3,A1)) => 'min_precedes'(S1,S3,A2))))).
+fof(axiom550, axiom, (! [S1] : ! [S2] : ! [A] :  (('min_precedes'(S1,S2,A) => ~(atomic(A)))))).
+fof(axiom560, axiom, (! [A] : ! [S1] : ! [S2] : ! [S3] :  ((('min_precedes'(S2,S1,A) & 'min_precedes'(S3,S1,A) & precedes(S2,S3)) => 'min_precedes'(S2,S3,A))))).
+fof(axiom570, axiom, (! [S] : ! [A] :  ((leaf(S,A) <=> ((root(S,A) | (? [S1] :  ('min_precedes'(S1,S,A)))) & ~(? [S2] :  ('min_precedes'(S,S2,A)))))))).
+fof(axiom580, axiom, (! [A] : ! [S1] : ! [S2] :  ((do(A,S1,S2) <=> (root(S1,A) & leaf(S2,A) & ('min_precedes'(S1,S2,A) | S1=S2)))))).
+fof(axiom590, axiom, (! [S1] : ! [S2] : ! [A] :  (('next_subocc'(S1,S2,A) <=> ('min_precedes'(S1,S2,A) & ~(? [S3] :  (('activity_occurrence'(S3) & 'min_precedes'(S1,S3,A) & 'min_precedes'(S3,S2,A))))))))).
+fof(axiom600, axiom, (! [S1] : ! [S2] : ! [A1] : ! [A2] :  ((subtree(S1,A1,S2,A2) <=> (root(S1,A1) & root(S2,A2) & ('min_precedes'(S1,S2,A1) | S1=S2) & (! [S3] :  (('min_precedes'(S1,S3,A1) => 'min_precedes'(S2,S3,A2))))))))).
+fof(axiom610, axiom, (! [S1] : ! [S2] : ! [A] :  ((sibling(S1,S2,A) <=> ((? [S3] :  (('next_subocc'(S3,S1,A) & 'next_subocc'(S3,S2,A)))) | (root(S1,A) & root(S2,A) & ((initial(S1) & initial(S2)) | (? [S4] : ? [A1] : ? [A2] :  ((S1=successor(A1,S4) & S2=successor(A2,S4))))))))))).
+fof(axiom620, axiom, (! [A] :  ((primitive(A) => atomic(A))))).
+fof(axiom630, axiom, (! [A] :  (A=conc(A,A)))).
+fof(axiom640, axiom, (! [A1] : ! [A2] :  (conc(A1,A2)=conc(A2,A1)))).
+fof(axiom650, axiom, (! [A1] : ! [A2] : ! [A3] :  (conc(A1,conc(A2,A3))=conc(conc(A1,A2),A3)))).
+fof(axiom660, axiom, (! [A1] : ! [A2] :  ((atomic(conc(A1,A2)) <=> (atomic(A1) & atomic(A2)))))).
+fof(axiom670, axiom, (! [A1] : ! [A2] :  (((atomic(A1) & atomic(A2)) => (subactivity(A1,A2) <=> A2=conc(A1,A2)))))).
+fof(axiom680, axiom, (! [A1] : ! [A2] :  (((atomic(A2) & subactivity(A1,A2) & ~(A1=A2)) => (? [A3] :  ((atomic(A3) & A2=conc(A1,A3) & ~(? [A4] :  ((atomic(A4) & subactivity(A4,A1) & subactivity(A4,A3))))))))))).
+fof(axiom690, axiom, (! [A] : ! [B0] : ! [B1] :  (((atomic(A) & atomic(B0) & atomic(B1) & subactivity(A,conc(B0,B1)) & ~(primitive(A))) => (? [A0] : ? [A1] :  ((subactivity(A0,A) & subactivity(A1,A) & A=conc(A0,A1)))))))).
+fof(axiom700, axiom, (! [A] :  ((generator(A) => atomic(A))))).
+fof(axiom710, axiom, (! [A] :  ((atomic(A) => activity(A))))).
+fof(axiom170, axiom, (! [A1] : ! [A2] :  ((subactivity(A1,A2) => (activity(A1) & activity(A2)))))).
+fof(axiom180, axiom, (! [A] :  ((activity(A) => subactivity(A,A))))).
+fof(axiom190, axiom, (! [A1] : ! [A2] :  (((subactivity(A1,A2) & subactivity(A2,A1)) => A1=A2)))).
+fof(axiom200, axiom, (! [A1] : ! [A2] : ! [A3] :  (((subactivity(A1,A2) & subactivity(A2,A3)) => subactivity(A1,A3))))).
+fof(axiom210, axiom, (! [A1] : ! [A2] :  (((subactivity(A1,A2) & ~(A1=A2)) => (? [A3] :  ((subactivity(A1,A3) & subactivity(A3,A2) & ~(A3=A1) & (! [A4] :  (((subactivity(A1,A4) & subactivity(A4,A3)) => (A4=A1 | A4=A3))))))))))).
+fof(axiom220, axiom, (! [A1] : ! [A2] :  (((subactivity(A1,A2) & ~(A1=A2)) => (? [A3] :  ((subactivity(A1,A3) & subactivity(A3,A2) & ~(A3=A2) & (! [A4] :  (((subactivity(A3,A4) & subactivity(A4,A2)) => (A4=A2 | A4=A3))))))))))).
+fof(axiom230, axiom, (! [A] :  ((primitive(A) <=> (activity(A) & (! [A1] :  ((subactivity(A1,A) => A1=A)))))))).
+fof(axiom720, axiom, (! [S] :  ((arboreal(S) => 'activity_occurrence'(S))))).
+fof(axiom730, axiom, (! [S1] : ! [S2] :  ((earlier(S1,S2) => (arboreal(S1) & arboreal(S2)))))).
+fof(axiom740, axiom, (! [S1] : ! [S2] :  ((earlier(S1,S2) => ~(earlier(S2,S1)))))).
+fof(axiom750, axiom, (! [S1] : ! [S2] : ! [S3] :  (((earlier(S1,S2) & earlier(S2,S3)) => earlier(S1,S3))))).
+fof(axiom760, axiom, (! [S1] : ! [S2] : ! [S3] :  (((earlier(S1,S2) & earlier(S3,S2)) => (earlier(S1,S3) | earlier(S3,S1) | S3=S1))))).
+fof(axiom770, axiom, (! [S1] : ! [S2] :  ((earlier(S1,S2) => (? [SP] :  ((initial(SP) & earliereq(SP,S1)))))))).
+fof(axiom780, axiom, (! [S1] : ! [S2] : ! [A] :  (((initial(S1) & initial(S2) & 'occurrence_of'(S1,A) & 'occurrence_of'(S2,A)) => S1=S2)))).
+fof(axiom790, axiom, (! [A] :  ((generator(A) => (? [S] :  ((initial(S) & 'occurrence_of'(S,A)))))))).
+fof(axiom800, axiom, (! [S] : ! [A] :  (('occurrence_of'(S,A) => (arboreal(S) <=> generator(A)))))).
+fof(axiom810, axiom, (! [A] : ! [O] :  (('occurrence_of'(successor(A,O),A) <=> (generator(A) & arboreal(O)))))).
+fof(axiom820, axiom, (! [S1] : ! [S2] :  ((earlier(S1,S2) => (? [A] : ? [S3] :  ((generator(A) & S2=successor(A,S3)))))))).
+fof(axiom830, axiom, (! [A] : ! [S1] : ! [S2] :  ((generator(A) => (earlier(S1,successor(A,S2)) <=> earliereq(S1,S2)))))).
+fof(axiom840, axiom, (! [S] :  ((legal(S) => arboreal(S))))).
+fof(axiom850, axiom, (! [S1] : ! [S2] :  (((legal(S1) & earlier(S2,S1)) => legal(S2))))).
+fof(axiom860, axiom, (! [S1] : ! [S2] :  ((earlier(S1,S2) => before(endof(S1),beginof(S2)))))).
+fof(axiom870, axiom, (! [S1] : ! [S2] :  ((precedes(S1,S2) <=> (earlier(S1,S2) & legal(S2)))))).
+fof(axiom880, axiom, (! [S1] : ! [S2] :  ((earliereq(S1,S2) <=> (arboreal(S1) & arboreal(S2) & (earlier(S1,S2) | S1=S2)))))).
+fof(axiom890, axiom, (! [A] : ! [S] :  ((poss(A,S) <=> legal(successor(A,S)))))).
+fof(axiom900, axiom, (! [S] :  ((initial(S) <=> (arboreal(S) & ~(? [SP] :  (earlier(SP,S)))))))).

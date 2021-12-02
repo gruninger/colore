@@ -1,0 +1,117 @@
+formulas(sos).
+(all x  ('action_plan'(x) <-> (activity(x) & (exists y  ('compliance_issue'(y) & 'assigned_to'(x,y)))))).
+(all x  ('compliance_issue'(x) -> object(x))).
+(all x all y  ('assigned_to'(x,y) -> ('action_plan'(x) & 'compliance_issue'(y) & (all z  ('assigned_to'(z,y) -> =(z,x)))))).
+(all x  ('action_plan'(x) -> (exists y  ('compliance_issue'(y) & 'assigned_to'(x,y))))).
+(all x  ('step_for_remediation'(x) -> (exists y  ('action_plan'(y) & subactivity(x,y) & primitive(x))))).
+(all x  ('action_plan'(x) -> (exists y  ('step_for_remediation'(y) & subactivity(y,x))))).
+(all x  ('material_change'(x) -> (activity(x) & 'material_change'(x) & (exists a  ('monitor_activity'(a,x) & subactivity(x,a) & 'effective_challenge'(x)))))).
+(all x  (completion(x) -> 'material_change'(x))).
+(all x  (validation(x) -> 'material_change'(x))).
+(all x  ('effective_challenge'(x) -> (activity(x) & 'effective_challenge'(x) & (exists a  ('monitor_activity'(a,x) & subactivity(x,a) & 'effective_challenge'(x)))))).
+(all x  (approval(x) -> (activity(x) & 'effective_challenge'(x) & (exists a  ('monitor_activity'(a,x) & subactivity(x,a) & 'effective_challenge'(x)))))).
+(all x  (rejection(x) -> (activity(x) & 'effective_challenge'(x) & (exists a  ('monitor_activity'(a,x) & subactivity(x,a) & 'effective_challenge'(x)))))).
+(all o1 all x all a  (('occurrence_of'(o1,x) & 'material_change'(x) & legal(o1) & 'monitor_activity'(a,x)) -> (exists y exists o2  ('occurrence_of'(o2,y) & 'effective_challenge'(y) & legal(o2) & 'next_subocc'(o1,o2,a))))).
+(all o1 all x all a  (('occurrence_of'(o1,x) & 'effective_challenge'(x) & legal(o1) & 'monitor_activity'(a,x)) -> (exists y exists o2  ((('occurrence_of'(o2,y) & approval(y)) | ('occurrence_of'(o2,y) & rejection(y))) & legal(o2) & 'next_subocc'(o1,o2,a))))).
+(all o all x all t  (('occurrence_of'(o,x) & validation(x) & legal(o)) -> (all y all o1  (('action_plan'(y) & 'assigned_to'(y,x) & 'occurrence_of'(o1,y) & legal(o1)) -> earlier(endof(o1),o))))).
+(all x all t  ('status_of'(x,t) -> (timepoint(t) & 'monitoring_object'(x)))).
+(all x  ('monitoring_object'(x) <-> ('compliance_issue'(x) | 'action_plan'(x)))).
+(all x  ('monitoring_object'(x) -> (exists a  ('monitor_activity'(a,x) & (all a1  ('monitor_activity'(a1,x) -> =(a1,a))))))).
+(all x all y  ('monitor_activity'(x,y) -> (activity(x) & 'monitoring_object'(x)))).
+(all t1 all t2  (before(t1,t2) -> (timepoint(t1) & timepoint(t2)))).
+(all t1 all t2  ((timepoint(t1) & timepoint(t2)) -> (=(t1,t2) | before(t1,t2) | before(t2,t1)))).
+(all t1  -(before(t1,t1))).
+(all t1 all t2 all t3  ((before(t1,t2) & before(t2,t3)) -> before(t1,t3))).
+(all t  ((timepoint(t) & -(=(t,'inf-'))) -> before('inf-',t))).
+(all t  ((timepoint(t) & -(=(t,'inf+'))) -> before(t,'inf+'))).
+(all t  ((timepoint(t) & -(=(t,'inf-'))) -> (exists u  between('inf-',u,t)))).
+(all t  ((timepoint(t) & -(=(t,'inf+'))) -> (exists u  between(t,u,'inf+')))).
+(all x  (activity(x) | 'activity_occurrence'(x) | timepoint(x) | object(x))).
+(all x  ((activity(x) -> -('activity_occurrence'(x) | object(x) | timepoint(x))) & ('activity_occurrence'(x) -> -(object(x) | timepoint(x))) & (object(x) -> -(timepoint(x))))).
+(all a all occ  ('occurrence_of'(occ,a) -> (activity(a) & 'activity_occurrence'(occ)))).
+(all occ  ('activity_occurrence'(occ) -> (exists a  (activity(a) & 'occurrence_of'(occ,a))))).
+(all occ all a1 all a2  (('occurrence_of'(occ,a1) & 'occurrence_of'(occ,a2)) -> =(a1,a2))).
+(all x  (('activity_occurrence'(x) | object(x)) -> beforeEq(beginof(x),endof(x)))).
+(all x all occ all t  ('participates_in'(x,occ,t) -> (object(x) & 'activity_occurrence'(occ) & timepoint(t)))).
+(all x all occ all t  ('participates_in'(x,occ,t) -> ('exists_at'(x,t) & 'is_occurring_at'(occ,t)))).
+(all t1 all t2 all t3  (between(t1,t2,t3) <-> (before(t1,t2) & before(t2,t3)))).
+(all t1 all t2  (beforeEq(t1,t2) <-> (timepoint(t1) & timepoint(t2) & (before(t1,t2) | =(t1,t2))))).
+(all t1 all t2 all t3  (betweenEq(t1,t2,t3) <-> (beforeEq(t1,t2) & beforeEq(t2,t3)))).
+(all x all t  ('exists_at'(x,t) <-> (object(x) & betweenEq(beginof(x),t,endof(x))))).
+(all occ all t  ('is_occurring_at'(occ,t) <-> ('activity_occurrence'(occ) & betweenEq(beginof(occ),t,endof(occ))))).
+(all o1 all o2  ('subactivity_occurrence'(o1,o2) -> ('activity_occurrence'(o1) & 'activity_occurrence'(o2)))).
+(all a all s1 all s2  ('min_precedes'(s1,s2,a) -> (exists occ  ('occurrence_of'(occ,a) & 'subactivity_occurrence'(s1,occ) & 'subactivity_occurrence'(s2,occ))))).
+(all a all s  ((root(s,a) & -(atomic(a))) -> (exists occ  ('occurrence_of'(occ,a) & 'subactivity_occurrence'(s,occ))))).
+(all occ all a  (('occurrence_of'(occ,a) & -(atomic(a))) -> (exists s  (root(s,a) & 'subactivity_occurrence'(s,occ))))).
+(all a all s1 all occ1 all occ2  (('occurrence_of'(occ1,a) & 'occurrence_of'(occ2,a) & -(=(occ1,occ2))) -> (exists s  (arboreal(s) & 'subactivity_occurrence'(s,occ1) & -('subactivity_occurrence'(s,occ2)))))).
+(all a all occ all s1 all s2  (('occurrence_of'(occ,a) & arboreal(s1) & arboreal(s2) & 'subactivity_occurrence'(s1,occ) & 'subactivity_occurrence'(s2,occ)) -> ('min_precedes'(s1,s2,a) | 'min_precedes'(s2,s1,a) | =(s1,s2)))).
+(all a all s1 all s2 all occ  (('min_precedes'(s1,s2,a) & 'occurrence_of'(occ,a) & 'subactivity_occurrence'(s2,occ)) -> 'subactivity_occurrence'(s1,occ))).
+(all a1 all a2 all occ1 all occ2  (('occurrence_of'(occ1,a1) & 'occurrence_of'(occ2,a2) & -(atomic(a1)) & 'subactivity_occurrence'(occ1,occ2)) -> subactivity(a1,a2))).
+(all occ1 all occ2 all occ3  (('subactivity_occurrence'(occ1,occ2) & 'subactivity_occurrence'(occ2,occ3)) -> 'subactivity_occurrence'(occ1,occ3))).
+(all a1 all a2 all occ1 all occ2  (('occurrence_of'(occ1,a1) & 'occurrence_of'(occ2,a2) & subactivity(a1,a2) & -('subactivity_occurrence'(occ1,occ2))) -> (exists s  ('subactivity_occurrence'(s,occ1) & -('subactivity_occurrence'(s,occ2)))))).
+(all s all occ  ('root_occ'(s,occ) -> =(beginof(occ),beginof(s)))).
+(all s all occ  ('leaf_occ'(s,occ) -> =(endof(occ),endof(s)))).
+(all s1 all s2 all a  (mono(s1,s2,a) -> hom(s1,s2,a))).
+(all s1 all s2 all a  ((hom(s1,s2,a) & -(mono(s1,s2,a))) -> (exists s3  (('min_precedes'(s3,s2,a) & mono(s1,s3,a)) | ('min_precedes'(s3,s1,a) & mono(s2,s3,a)))))).
+(all s1 all s2 all s3 all a  ((mono(s1,s2,a) & mono(s3,s2,a)) -> -('min_precedes'(s1,s3,a) | 'min_precedes'(s3,s1,a)))).
+(all s1 all s2 all a  (mono(s1,s2,a) -> mono(s2,s1,a))).
+(all s1 all s2 all s3 all a  ((mono(s1,s2,a) & mono(s2,s3,a)) -> mono(s1,s3,a))).
+(all s1 all s2 all a  ('iso_occ'(s1,s2,a) <-> (exists a1 exists a2 exists a3  (atomic(a1) & atomic(a2) & atomic(a3) & subactivity(a3,a) & 'occurrence_of'(s1,conc(a1,a3)) & 'occurrence_of'(s2,conc(a2,a3)) & (all a4  ((subactivity(a4,conc(a3,a1)) & subactivity(a4,conc(a3,a2)) & subactivity(a4,a)) -> (subactivity(a3,a4) | =(a3,a4)))))))).
+(all s1 all s2 all a  (hom(s1,s2,a) <-> (exists occ1 exists occ2  ('iso_occ'(s1,s2,a) & -('min_precedes'(s1,s2,a)) & -('min_precedes'(s2,s1,a)) & 'subactivity_occurrence'(s1,occ1) & 'subactivity_occurrence'(s2,occ2) & 'occurrence_of'(occ1,a) & 'occurrence_of'(occ2,a))))).
+(all s all occ  ('root_occ'(s,occ) <-> (exists a  ('occurrence_of'(occ,a) & 'subactivity_occurrence'(s,occ) & root(s,a))))).
+(all s all occ  ('leaf_occ'(s,occ) <-> (exists a  ('occurrence_of'(occ,a) & 'subactivity_occurrence'(s,occ) & leaf(s,a))))).
+(all occ1 all occ2  ('same_grove'(occ1,occ2) <-> (exists a exists s1 exists s2  ('occurrence_of'(occ1,a) & 'occurrence_of'(occ2,a) & 'root_occ'(s1,occ1) & 'root_occ'(s2,occ2) & ((initial(s1) & initial(s2)) | (exists s4 exists a1 exists a2  (=(s1,successor(a1,s4)) & =(s2,successor(a2,s4))))))))).
+(all a all s1 all s2  ('min_precedes'(s1,s2,a) -> (exists a1 exists a2  (subactivity(a1,a) & subactivity(a2,a) & atocc(s1,a1) & atocc(s2,a2))))).
+(all a all s  (root(s,a) -> (exists a1  (subactivity(a1,a) & atocc(s,a1))))).
+(all s1 all s2 all a  ('min_precedes'(s1,s2,a) -> (exists s3  (root(s3,a) & 'min_precedes'(s3,s2,a))))).
+(all s1 all s2 all a  ('min_precedes'(s1,s2,a) -> -(root(s2,a)))).
+(all s1 all s2 all a  ('min_precedes'(s1,s2,a) -> precedes(s1,s2))).
+(all s all a  (root(s,a) -> legal(s))).
+(all s all a  ((atocc(s,a) & legal(s)) -> root(s,a))).
+(all s1 all s2 all a  ('min_precedes'(s1,s2,a) -> (exists s3  ('next_subocc'(s1,s3,a) & ('min_precedes'(s3,s2,a) | =(s3,s2)))))).
+(all a all s1 all s2 all s3  (('min_precedes'(s1,s2,a) & 'min_precedes'(s1,s3,a) & precedes(s2,s3)) -> 'min_precedes'(s2,s3,a))).
+(all a1 all a2 all s1 all s2 all s3  ((subactivity(a1,a2) & subtree(s1,a1,s2,a2) & 'min_precedes'(s1,s3,a1)) -> 'min_precedes'(s1,s3,a2))).
+(all s1 all s2 all a  ('min_precedes'(s1,s2,a) -> -(atomic(a)))).
+(all a all s1 all s2 all s3  (('min_precedes'(s2,s1,a) & 'min_precedes'(s3,s1,a) & precedes(s2,s3)) -> 'min_precedes'(s2,s3,a))).
+(all s all a  (leaf(s,a) <-> ((root(s,a) | (exists s1  'min_precedes'(s1,s,a))) & -(exists s2  'min_precedes'(s,s2,a))))).
+(all a all s1 all s2  (do(a,s1,s2) <-> (root(s1,a) & leaf(s2,a) & ('min_precedes'(s1,s2,a) | =(s1,s2))))).
+(all s1 all s2 all a  ('next_subocc'(s1,s2,a) <-> ('min_precedes'(s1,s2,a) & -(exists s3  ('activity_occurrence'(s3) & 'min_precedes'(s1,s3,a) & 'min_precedes'(s3,s2,a)))))).
+(all s1 all s2 all a1 all a2  (subtree(s1,a1,s2,a2) <-> (root(s1,a1) & root(s2,a2) & ('min_precedes'(s1,s2,a1) | =(s1,s2)) & (all s3  ('min_precedes'(s1,s3,a1) -> 'min_precedes'(s2,s3,a2)))))).
+(all s1 all s2 all a  (sibling(s1,s2,a) <-> ((exists s3  ('next_subocc'(s3,s1,a) & 'next_subocc'(s3,s2,a))) | (root(s1,a) & root(s2,a) & ((initial(s1) & initial(s2)) | (exists s4 exists a1 exists a2  (=(s1,successor(a1,s4)) & =(s2,successor(a2,s4))))))))).
+(all a  (primitive(a) -> atomic(a))).
+(all a  =(a,conc(a,a))).
+(all a1 all a2  =(conc(a1,a2),conc(a2,a1))).
+(all a1 all a2 all a3  =(conc(a1,conc(a2,a3)),conc(conc(a1,a2),a3))).
+(all a1 all a2  (atomic(conc(a1,a2)) <-> (atomic(a1) & atomic(a2)))).
+(all a1 all a2  ((atomic(a1) & atomic(a2)) -> (subactivity(a1,a2) <-> =(a2,conc(a1,a2))))).
+(all a1 all a2  ((atomic(a2) & subactivity(a1,a2) & -(=(a1,a2))) -> (exists a3  (atomic(a3) & =(a2,conc(a1,a3)) & -(exists a4  (atomic(a4) & subactivity(a4,a1) & subactivity(a4,a3))))))).
+(all a all b0 all b1  ((atomic(a) & atomic(b0) & atomic(b1) & subactivity(a,conc(b0,b1)) & -(primitive(a))) -> (exists a0 exists a1  (subactivity(a0,a) & subactivity(a1,a) & =(a,conc(a0,a1)))))).
+(all a  (generator(a) -> atomic(a))).
+(all a  (atomic(a) -> activity(a))).
+(all a1 all a2  (subactivity(a1,a2) -> (activity(a1) & activity(a2)))).
+(all a  (activity(a) -> subactivity(a,a))).
+(all a1 all a2  ((subactivity(a1,a2) & subactivity(a2,a1)) -> =(a1,a2))).
+(all a1 all a2 all a3  ((subactivity(a1,a2) & subactivity(a2,a3)) -> subactivity(a1,a3))).
+(all a1 all a2  ((subactivity(a1,a2) & -(=(a1,a2))) -> (exists a3  (subactivity(a1,a3) & subactivity(a3,a2) & -(=(a3,a1)) & (all a4  ((subactivity(a1,a4) & subactivity(a4,a3)) -> (=(a4,a1) | =(a4,a3)))))))).
+(all a1 all a2  ((subactivity(a1,a2) & -(=(a1,a2))) -> (exists a3  (subactivity(a1,a3) & subactivity(a3,a2) & -(=(a3,a2)) & (all a4  ((subactivity(a3,a4) & subactivity(a4,a2)) -> (=(a4,a2) | =(a4,a3)))))))).
+(all a  (primitive(a) <-> (activity(a) & (all a1  (subactivity(a1,a) -> =(a1,a)))))).
+(all s  (arboreal(s) -> 'activity_occurrence'(s))).
+(all s1 all s2  (earlier(s1,s2) -> (arboreal(s1) & arboreal(s2)))).
+(all s1 all s2  (earlier(s1,s2) -> -(earlier(s2,s1)))).
+(all s1 all s2 all s3  ((earlier(s1,s2) & earlier(s2,s3)) -> earlier(s1,s3))).
+(all s1 all s2 all s3  ((earlier(s1,s2) & earlier(s3,s2)) -> (earlier(s1,s3) | earlier(s3,s1) | =(s3,s1)))).
+(all s1 all s2  (earlier(s1,s2) -> (exists sp  (initial(sp) & earlierEq(sp,s1))))).
+(all s1 all s2 all a  ((initial(s1) & initial(s2) & 'occurrence_of'(s1,a) & 'occurrence_of'(s2,a)) -> =(s1,s2))).
+(all a  (generator(a) -> (exists s  (initial(s) & 'occurrence_of'(s,a))))).
+(all s all a  ('occurrence_of'(s,a) -> (arboreal(s) <-> generator(a)))).
+(all a all o  ('occurrence_of'(successor(a,o),a) <-> (generator(a) & arboreal(o)))).
+(all s1 all s2  (earlier(s1,s2) -> (exists a exists s3  (generator(a) & =(s2,successor(a,s3)))))).
+(all a all s1 all s2  (generator(a) -> (earlier(s1,successor(a,s2)) <-> earlierEq(s1,s2)))).
+(all s  (legal(s) -> arboreal(s))).
+(all s1 all s2  ((legal(s1) & earlier(s2,s1)) -> legal(s2))).
+(all s1 all s2  (earlier(s1,s2) -> before(endof(s1),beginof(s2)))).
+(all s1 all s2  (precedes(s1,s2) <-> (earlier(s1,s2) & legal(s2)))).
+(all s1 all s2  (earlierEq(s1,s2) <-> (arboreal(s1) & arboreal(s2) & (earlier(s1,s2) | =(s1,s2))))).
+(all a all s  (poss(a,s) <-> legal(successor(a,s)))).
+(all s  (initial(s) <-> (arboreal(s) & -(exists sp  earlier(sp,s))))).
+end_of_list.
