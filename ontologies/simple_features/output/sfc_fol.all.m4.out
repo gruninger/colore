@@ -1,7 +1,7 @@
 ============================== Mace4 =================================
 Mace4 (32) version Oct-2007, Oct 2007.
-Process 13764 was started by torsten on LAPTOP-UF9R3IH7,
-Sun Feb 21 13:21:20 2021
+Process 23852 was started by torsten on LAPTOP-UF9R3IH7,
+Sun Apr 25 16:27:01 2021
 The command was "/cygdrive/c/Users/torsten/macleod/mace4 -v0 -t600 -s60 -n2 -N40 -f C:\Users\torsten\GitHub\colore\ontologies\simple_features\conversions\sfc_fol.all.p9".
 ============================== end of head ===========================
 
@@ -84,7 +84,8 @@ formulas(sos).
 (all x all y (sf_within(y,x) <-> sf_contains(x,y))).
 (all x all y (sf_contains(x,y) <-> sf_geometry(x) & sf_geometry(y) & Cont(x,y))).
 (all x all y (sf_crosses(x,y) <-> sf_geometry(x) & sf_geometry(y) & (Inc(x,y) & -Cont(x,y) & -Cont(y,x) | (all z (Cont(z,x) & Cont(z,y) -> lt(z,x) & lt(z,y) & -BCont(z,x) & -BCont(z,y))) | SC(x,y) & Curve(x) & Curve(y)))).
-(all x (Curve(x) <-> -ZEX(x) & -MinDim(x) & (all y (MinDim(y) <-> Covers(x,y))))).
+(all x (Curve(x) -> -ZEX(x) & -MinDim(x) & (all y (MinDim(y) <-> Covers(x,y))))).
+(all x (-ZEX(x) & -MinDim(x) & (all y (MinDim(y) <-> Covers(x,y))) & (exists z MinDim(z)) -> Curve(x))).
 (all x all y (sf_touches(x,y) <-> sf_geometry(x) & sf_geometry(y) & (SC(x,y) | BCont(x,y) | BCont(y,x)))).
 (all x all y (sf_equals(x,y) <-> sf_contains(x,y) & sf_within(x,y))).
 (all x all y (sf_intersects(x,y) <-> sf_geometry(x) & sf_geometry(y) & -sf_disjoint(x,y))).
@@ -209,41 +210,42 @@ end_of_list.
 71 (all x all y (sf_within(y,x) <-> sf_contains(x,y))) # label(non_clause).  [assumption].
 72 (all x all y (sf_contains(x,y) <-> sf_geometry(x) & sf_geometry(y) & Cont(x,y))) # label(non_clause).  [assumption].
 73 (all x all y (sf_crosses(x,y) <-> sf_geometry(x) & sf_geometry(y) & (Inc(x,y) & -Cont(x,y) & -Cont(y,x) | (all z (Cont(z,x) & Cont(z,y) -> lt(z,x) & lt(z,y) & -BCont(z,x) & -BCont(z,y))) | SC(x,y) & Curve(x) & Curve(y)))) # label(non_clause).  [assumption].
-74 (all x (Curve(x) <-> -ZEX(x) & -MinDim(x) & (all y (MinDim(y) <-> Covers(x,y))))) # label(non_clause).  [assumption].
-75 (all x all y (sf_touches(x,y) <-> sf_geometry(x) & sf_geometry(y) & (SC(x,y) | BCont(x,y) | BCont(y,x)))) # label(non_clause).  [assumption].
-76 (all x all y (sf_equals(x,y) <-> sf_contains(x,y) & sf_within(x,y))) # label(non_clause).  [assumption].
-77 (all x all y (sf_intersects(x,y) <-> sf_geometry(x) & sf_geometry(y) & -sf_disjoint(x,y))) # label(non_clause).  [assumption].
-78 (all x all y (sf_disjoint(x,y) -> sf_geometry(x) & sf_geometry(y) & -C(x,y))) # label(non_clause).  [assumption].
-79 (all x (sf_geometry_collection(x) -> Multipart_S(x) | Branched_S(x))) # label(non_clause).  [assumption].
-80 (all x (sf_multi_polygon(x) <-> sf_multi_surface(x) & (all y (P(y,x) & Min(y) -> sf_polygon(y))))) # label(non_clause).  [assumption].
-81 (all x (sf_polygon(x) -> Simple_ArealRegion(x))) # label(non_clause).  [assumption].
-82 (all x (sf_polygon(x) -> (exists y exists z (sf_linear_ring(y) & BCont(y,x) & boundary(z) = y & P(x,z))))) # label(non_clause).  [assumption].
-83 (all x (sf_polygon(x) -> (all v (BCont(v,x) -> (exists w (P(v,w) & BCont(w,x) & sf_linear_ring(w))))))) # label(non_clause).  [assumption].
-84 (all x all y (Cont(x,boundary(y)) <-> BCont(x,y))) # label(non_clause).  [assumption].
-85 (all x (Simple_ArealRegion(x) <-> ArealRegion(x) & Simple_S(x))) # label(non_clause).  [assumption].
-86 (all x (Simple_S(x) <-> Connected_S(x) & -Branched_S(x))) # label(non_clause).  [assumption].
-87 (all x (Branched_S(x) <-> Connected_S(x) & (exists p exists q exists r exists s (PP(p,x) & PP(q,x) & PP(r,x) & -PO(p,q) & -PO(p,r) & -PO(q,r) & Covers(p,s) & Covers(q,s) & Covers(r,s) & Cont(s,p) & Cont(s,q) & Cont(s,r))))) # label(non_clause).  [assumption].
-88 (all x (Connected_S(x) <-> S(x) & (all y (PP(y,x) -> SC(y,difference(x,y)))))) # label(non_clause).  [assumption].
-89 (all x all y (S(x) & S(y) & -C(x,y) <-> ZEX(intersection(x,y)))) # label(non_clause).  [assumption].
-90 (all x all y (S(x) & S(y) & -ZEX(intersection(x,y)) -> Cont(intersection(x,y),x))) # label(non_clause).  [assumption].
-91 (all x all y all z (Cont(z,x) & Cont(z,y) -> leq(z,intersection(x,y)))) # label(non_clause).  [assumption].
-92 (all x all y all z (Cont(z,x) & Cont(z,y) & EqDim(z,intersection(x,y)) <-> P(z,intersection(x,y)))) # label(non_clause).  [assumption].
-93 (all x all y (S(x) & S(y) & -ZEX(difference(x,y)) -> EqDim(x,difference(x,y)))) # label(non_clause).  [assumption].
-94 (all x all y (lt(y,x) -> x = difference(x,y))) # label(non_clause).  [assumption].
-95 (all x all y all z (leq(x,y) & Cont(z,x) & lt(intersection(z,y),z) -> Cont(z,difference(x,y)))) # label(non_clause).  [assumption].
-96 (all x all y all z (leq(x,y) & Cont(z,difference(x,y)) -> Cont(z,x))) # label(non_clause).  [assumption].
-97 (all x all y all z (leq(x,y) & P(z,difference(x,y)) -> lt(intersection(z,y),z))) # label(non_clause).  [assumption].
-98 (all x all y (ZEX(difference(x,y)) <-> ZEX(x) | Cont(x,y))) # label(non_clause).  [assumption].
-99 (all x (ArealRegion(x) <-> (all y (Curve(y) -> Covers(x,y))))) # label(non_clause).  [assumption].
-100 (all x (sf_multi_surface(x) -> Multipart_ArealRegion(x))) # label(non_clause).  [assumption].
-101 (all x (Multipart_ArealRegion(x) <-> ArealRegion(x) & Multipart_S(x))) # label(non_clause).  [assumption].
-102 (all x (Multipart_S(x) <-> S(x) & -Connected_S(x))) # label(non_clause).  [assumption].
-103 (all x (sf_multi_line_string(x) <-> sf_multi_curve(x) & (all y (P(y,x) & Min(y) -> sf_line_string(y))))) # label(non_clause).  [assumption].
-104 (all x (sf_multi_curve(x) -> Multipart_Curve(x))) # label(non_clause).  [assumption].
-105 (all x (Multipart_Curve(x) <-> Curve(x) & Multipart_S(x))) # label(non_clause).  [assumption].
-106 (all x (sf_multi_point(x) <-> PointRegion(x) & -Point(x))) # label(non_clause).  [assumption].
-107 (all x (Point(x) <-> MinDim(x) & (all y (Cont(y,x) -> y = x)))) # label(non_clause).  [assumption].
-108 (all x (PointRegion(x) <-> MinDim(x))) # label(non_clause).  [assumption].
+74 (all x (Curve(x) -> -ZEX(x) & -MinDim(x) & (all y (MinDim(y) <-> Covers(x,y))))) # label(non_clause).  [assumption].
+75 (all x (-ZEX(x) & -MinDim(x) & (all y (MinDim(y) <-> Covers(x,y))) & (exists z MinDim(z)) -> Curve(x))) # label(non_clause).  [assumption].
+76 (all x all y (sf_touches(x,y) <-> sf_geometry(x) & sf_geometry(y) & (SC(x,y) | BCont(x,y) | BCont(y,x)))) # label(non_clause).  [assumption].
+77 (all x all y (sf_equals(x,y) <-> sf_contains(x,y) & sf_within(x,y))) # label(non_clause).  [assumption].
+78 (all x all y (sf_intersects(x,y) <-> sf_geometry(x) & sf_geometry(y) & -sf_disjoint(x,y))) # label(non_clause).  [assumption].
+79 (all x all y (sf_disjoint(x,y) -> sf_geometry(x) & sf_geometry(y) & -C(x,y))) # label(non_clause).  [assumption].
+80 (all x (sf_geometry_collection(x) -> Multipart_S(x) | Branched_S(x))) # label(non_clause).  [assumption].
+81 (all x (sf_multi_polygon(x) <-> sf_multi_surface(x) & (all y (P(y,x) & Min(y) -> sf_polygon(y))))) # label(non_clause).  [assumption].
+82 (all x (sf_polygon(x) -> Simple_ArealRegion(x))) # label(non_clause).  [assumption].
+83 (all x (sf_polygon(x) -> (exists y exists z (sf_linear_ring(y) & BCont(y,x) & boundary(z) = y & P(x,z))))) # label(non_clause).  [assumption].
+84 (all x (sf_polygon(x) -> (all v (BCont(v,x) -> (exists w (P(v,w) & BCont(w,x) & sf_linear_ring(w))))))) # label(non_clause).  [assumption].
+85 (all x all y (Cont(x,boundary(y)) <-> BCont(x,y))) # label(non_clause).  [assumption].
+86 (all x (Simple_ArealRegion(x) <-> ArealRegion(x) & Simple_S(x))) # label(non_clause).  [assumption].
+87 (all x (Simple_S(x) <-> Connected_S(x) & -Branched_S(x))) # label(non_clause).  [assumption].
+88 (all x (Branched_S(x) <-> Connected_S(x) & (exists p exists q exists r exists s (PP(p,x) & PP(q,x) & PP(r,x) & -PO(p,q) & -PO(p,r) & -PO(q,r) & Covers(p,s) & Covers(q,s) & Covers(r,s) & Cont(s,p) & Cont(s,q) & Cont(s,r))))) # label(non_clause).  [assumption].
+89 (all x (Connected_S(x) <-> S(x) & (all y (PP(y,x) -> SC(y,difference(x,y)))))) # label(non_clause).  [assumption].
+90 (all x all y (S(x) & S(y) & -C(x,y) <-> ZEX(intersection(x,y)))) # label(non_clause).  [assumption].
+91 (all x all y (S(x) & S(y) & -ZEX(intersection(x,y)) -> Cont(intersection(x,y),x))) # label(non_clause).  [assumption].
+92 (all x all y all z (Cont(z,x) & Cont(z,y) -> leq(z,intersection(x,y)))) # label(non_clause).  [assumption].
+93 (all x all y all z (Cont(z,x) & Cont(z,y) & EqDim(z,intersection(x,y)) <-> P(z,intersection(x,y)))) # label(non_clause).  [assumption].
+94 (all x all y (S(x) & S(y) & -ZEX(difference(x,y)) -> EqDim(x,difference(x,y)))) # label(non_clause).  [assumption].
+95 (all x all y (lt(y,x) -> x = difference(x,y))) # label(non_clause).  [assumption].
+96 (all x all y all z (leq(x,y) & Cont(z,x) & lt(intersection(z,y),z) -> Cont(z,difference(x,y)))) # label(non_clause).  [assumption].
+97 (all x all y all z (leq(x,y) & Cont(z,difference(x,y)) -> Cont(z,x))) # label(non_clause).  [assumption].
+98 (all x all y all z (leq(x,y) & P(z,difference(x,y)) -> lt(intersection(z,y),z))) # label(non_clause).  [assumption].
+99 (all x all y (ZEX(difference(x,y)) <-> ZEX(x) | Cont(x,y))) # label(non_clause).  [assumption].
+100 (all x (ArealRegion(x) <-> (all y (Curve(y) -> Covers(x,y))))) # label(non_clause).  [assumption].
+101 (all x (sf_multi_surface(x) -> Multipart_ArealRegion(x))) # label(non_clause).  [assumption].
+102 (all x (Multipart_ArealRegion(x) <-> ArealRegion(x) & Multipart_S(x))) # label(non_clause).  [assumption].
+103 (all x (Multipart_S(x) <-> S(x) & -Connected_S(x))) # label(non_clause).  [assumption].
+104 (all x (sf_multi_line_string(x) <-> sf_multi_curve(x) & (all y (P(y,x) & Min(y) -> sf_line_string(y))))) # label(non_clause).  [assumption].
+105 (all x (sf_multi_curve(x) -> Multipart_Curve(x))) # label(non_clause).  [assumption].
+106 (all x (Multipart_Curve(x) <-> Curve(x) & Multipart_S(x))) # label(non_clause).  [assumption].
+107 (all x (sf_multi_point(x) <-> PointRegion(x) & -Point(x))) # label(non_clause).  [assumption].
+108 (all x (Point(x) <-> MinDim(x) & (all y (Cont(y,x) -> y = x)))) # label(non_clause).  [assumption].
+109 (all x (PointRegion(x) <-> MinDim(x))) # label(non_clause).  [assumption].
 
 ============================== end of process non-clausal formulas ===
 
@@ -473,8 +475,8 @@ sf_crosses(x,y) | -sf_geometry(x) | -sf_geometry(y) | -SC(x,y) | -Curve(x) | -Cu
 -Curve(x) | -MinDim(x).
 -Curve(x) | -MinDim(y) | Covers(x,y).
 -Curve(x) | MinDim(y) | -Covers(x,y).
-Curve(x) | ZEX(x) | MinDim(x) | MinDim(f18(x)) | Covers(x,f18(x)).
-Curve(x) | ZEX(x) | MinDim(x) | -MinDim(f18(x)) | -Covers(x,f18(x)).
+ZEX(x) | MinDim(x) | MinDim(f18(x)) | Covers(x,f18(x)) | -MinDim(y) | Curve(x).
+ZEX(x) | MinDim(x) | -MinDim(f18(x)) | -Covers(x,f18(x)) | -MinDim(y) | Curve(x).
 -sf_touches(x,y) | sf_geometry(x).
 -sf_touches(x,y) | sf_geometry(y).
 -sf_touches(x,y) | SC(x,y) | BCont(x,y) | BCont(y,x).
@@ -863,26 +865,26 @@ interpretation( 2, [number=1, seconds=0], [
 For domain size 2.
 
 Current CPU time: 0.00 seconds (total CPU time: 0.05 seconds).
-Ground clauses: seen=1381, kept=1245.
+Ground clauses: seen=1385, kept=1249.
 Selections=100, assignments=101, propagations=171, current_models=1.
-Rewrite_terms=491, rewrite_bools=1877, indexes=129.
+Rewrite_terms=499, rewrite_bools=1885, indexes=131.
 Rules_from_neg_clauses=15, cross_offs=15.
 
 ============================== end of statistics =====================
 
------- process 13764 exit (max_models) ------
+------ process 23852 exit (max_models) ------
 
-User_CPU=0.05, System_CPU=0.01, Wall_clock=0.
+User_CPU=0.05, System_CPU=0.03, Wall_clock=0.
 
 Exiting with 1 model.
 
-Process 13764 exit (max_models) Sun Feb 21 13:21:20 2021
-The process finished Sun Feb 21 13:21:20 2021
+Process 23852 exit (max_models) Sun Apr 25 16:27:01 2021
+The process finished Sun Apr 25 16:27:01 2021
 
 ========================== MACLEOD SUMMARY ===========================
 reasoner: C:/Users/torsten/macleod/mace4
 status: MODEL
-execution finished: Sun Feb 21 13:21:25 2021
+execution finished: Sun Apr 25 16:27:13 2021
 total CPU time used: 0
 The command was "C:/Users/torsten/macleod/mace4 -v0 -t600 -s60 -n2 -N40 -f C:\Users\torsten\GitHub\colore\ontologies\simple_features\conversions\sfc_fol.all.p9"
 ============================ end of footer ===========================
