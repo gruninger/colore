@@ -1,0 +1,68 @@
+formulas(sos).
+(all t1 all t2  (before(t1,t2) -> -(=(t1,t2)))).
+(all t1 all t2  (before(t1,t2) -> -(before(t2,t1)))).
+(all t1 all t2 all t3  ((before(t1,t2) & before(t2,t3)) -> before(t1,t3))).
+(all t  (Instant(t) -> TemporalEntity(t))).
+(all t  (Interval(t) -> TemporalEntity(t))).
+(all t  (TemporalEntity(t) -> (Interval(t) | Instant(t)))).
+(all t all x  (begins(t,x) -> (Instant(t) & TemporalEntity(x)))).
+(all t all x  (ends(t,x) -> (Instant(t) & TemporalEntity(x)))).
+(all t  (Instant(t) <-> begins(t,t))).
+(all t  (Instant(t) <-> ends(t,t))).
+(all x all t1 all t2  ((TemporalEntity(x) & begins(t1,x) & begins(t2,x)) -> =(t1,t2))).
+(all x all t1 all t2  ((TemporalEntity(x) & ends(t1,x) & ends(t2,x)) -> =(t1,t2))).
+(all x all t1 all t2  (timeBetween(x,t1,t2) -> (TemporalEntity(x) & Instant(t1) & Instant(t2)))).
+(all t1 all t2  (-(=(t1,t2)) -> (all x  (timeBetween(x,t1,t2) <-> (begins(t1,x) & ends(t2,x)))))).
+(all x all t1 all t2  ((Interval(x) & begins(t1,x) & ends(t2,x)) -> -(before(t2,t1)))).
+(all x all t1 all t2  ((ProperInterval(x) & begins(t1,x) & ends(t2,x)) -> before(t1,t2))).
+(all t1 all t2  ((Instant(t1) & Instant(t2) & before(t1,t2)) -> (exists x  timeBetween(x,t1,t2)))).
+(all x  (ProperInterval(x) <-> (Interval(x) & (all t1 all t2  ((begins(t1,x) & ends(t2,x)) -> -(=(t1,t2))))))).
+(all t all x  (inside(t,x) -> (Instant(t) & Interval(x)))).
+(all t all x  (beginsOrIn(t,x) <-> (begins(t,x) | inside(t,x)))).
+(all t all t1 all t2 all x  ((inside(t,x) & begins(t1,x) & ends(t2,x) & ProperInterval(x)) -> (before(t1,t) & before(t,t2)))).
+(all t1 all t2 all i  ((inside(t1,i) & inside(t2,i)) -> (before(t1,t2) | before(t2,t1) | =(t1,t2)))).
+(all i all t1 all t2  ((inside(t1,i) & begins(t2,i)) -> before(t2,t1))).
+(all i all t1 all t2  ((inside(t1,i) & ends(t2,i)) -> before(t1,t2))).
+(all e  (Eventuality(e) -> -(TemporalEntity(e)))).
+(all e all t  (atTime(e,t) -> Eventuality(e))).
+(all e all t  (during(e,t) -> Eventuality(e))).
+(all t all e  (timeSpan(t,e) -> (Eventuality(e) & TemporalEntity(t)))).
+(all e all t  (atTime(e,t) -> Instant(t))).
+(all e all t  (during(e,t) -> Interval(t))).
+(all e all t1 all t2  ((during(e,t1) & inside(t2,t1)) -> atTime(e,t2))).
+(all e all t all t1  ((during(e,t) & intDuring(t1,t)) -> during(e,t1))).
+(all t all e  ((timeSpan(t,e) & Interval(t)) -> during(e,t))).
+(all t all e  ((timeSpan(t,e) & Instant(t)) -> atTime(e,t))).
+(all t1 all t2 all e  ((timeSpan(t1,e) & Interval(t2) & atTime(e,t2)) -> (inside(t2,t1) | begins(t2,t1) | ends(t2,t1)))).
+(all t all t1 all e  ((timeSpan(t,e) & Instant(t) & atTime(e,t1)) -> =(t,t1))).
+(exists var1  Eventuality(var1)).
+(exists var2  -(Eventuality(var2))).
+(exists var3 exists var4  (begins(var3,var4) & -(=(var3,var4)))).
+(exists var5 exists var6  (-(begins(var5,var6)) & -(=(var5,var6)))).
+(exists var7 exists var8  (atTime(var7,var8) & -(=(var7,var8)))).
+(exists var9 exists var10  (-(atTime(var9,var10)) & -(=(var9,var10)))).
+(exists var11 exists var12  (during(var11,var12) & -(=(var11,var12)))).
+(exists var13 exists var14  (-(during(var13,var14)) & -(=(var13,var14)))).
+(exists var15 exists var16  (inside(var15,var16) & -(=(var15,var16)))).
+(exists var17 exists var18  (-(inside(var17,var18)) & -(=(var17,var18)))).
+(exists var19 exists var20  (timeSpan(var19,var20) & -(=(var19,var20)))).
+(exists var21 exists var22  (-(timeSpan(var21,var22)) & -(=(var21,var22)))).
+(exists var23 exists var24  (before(var23,var24) & -(=(var23,var24)))).
+(exists var25 exists var26  (-(before(var25,var26)) & -(=(var25,var26)))).
+(exists var27 exists var28  (ends(var27,var28) & -(=(var27,var28)))).
+(exists var29 exists var30  (-(ends(var29,var30)) & -(=(var29,var30)))).
+(exists var31 exists var32  (intDuring(var31,var32) & -(=(var31,var32)))).
+(exists var33 exists var34  (-(intDuring(var33,var34)) & -(=(var33,var34)))).
+(exists var35 exists var36 exists var37  (timeBetween(var35,var36,var37) & -(=(var35,var36)) & -(=(var35,var37)) & -(=(var36,var37)))).
+(exists var38 exists var39 exists var40  (-(timeBetween(var38,var39,var40)) & -(=(var38,var39)) & -(=(var38,var40)) & -(=(var39,var40)))).
+(exists var41  Instant(var41)).
+(exists var42  -(Instant(var42))).
+(exists var43  TemporalEntity(var43)).
+(exists var44  -(TemporalEntity(var44))).
+(exists var45 exists var46  (beginsOrIn(var45,var46) & -(=(var45,var46)))).
+(exists var47 exists var48  (-(beginsOrIn(var47,var48)) & -(=(var47,var48)))).
+(exists var49  Interval(var49)).
+(exists var50  -(Interval(var50))).
+(exists var51  ProperInterval(var51)).
+(exists var52  -(ProperInterval(var52))).
+end_of_list.

@@ -1,0 +1,66 @@
+fof(axiom10, axiom, (! [T1] : ! [T2] :  ((before(T1,T2) => ~(T1=T2))))).
+fof(axiom20, axiom, (! [T1] : ! [T2] :  ((before(T1,T2) => ~(before(T2,T1)))))).
+fof(axiom30, axiom, (! [T1] : ! [T2] : ! [T3] :  (((before(T1,T2) & before(T2,T3)) => before(T1,T3))))).
+fof(axiom40, axiom, (! [T] :  ((instant(T) => temporalentity(T))))).
+fof(axiom50, axiom, (! [T] :  ((interval(T) => temporalentity(T))))).
+fof(axiom60, axiom, (! [T] :  ((temporalentity(T) => (interval(T) | instant(T)))))).
+fof(axiom70, axiom, (! [T] : ! [X] :  ((begins(T,X) => (instant(T) & temporalentity(X)))))).
+fof(axiom80, axiom, (! [T] : ! [X] :  ((ends(T,X) => (instant(T) & temporalentity(X)))))).
+fof(axiom90, axiom, (! [T] :  ((instant(T) <=> begins(T,T))))).
+fof(axiom100, axiom, (! [T] :  ((instant(T) <=> ends(T,T))))).
+fof(axiom110, axiom, (! [X] : ! [T1] : ! [T2] :  (((temporalentity(X) & begins(T1,X) & begins(T2,X)) => T1=T2)))).
+fof(axiom120, axiom, (! [X] : ! [T1] : ! [T2] :  (((temporalentity(X) & ends(T1,X) & ends(T2,X)) => T1=T2)))).
+fof(axiom130, axiom, (! [X] : ! [T1] : ! [T2] :  ((timebetween(X,T1,T2) => (temporalentity(X) & instant(T1) & instant(T2)))))).
+fof(axiom140, axiom, (! [T1] : ! [T2] :  ((~(T1=T2) => (! [X] :  ((timebetween(X,T1,T2) <=> (begins(T1,X) & ends(T2,X))))))))).
+fof(axiom150, axiom, (! [X] : ! [T1] : ! [T2] :  (((interval(X) & begins(T1,X) & ends(T2,X)) => ~(before(T2,T1)))))).
+fof(axiom160, axiom, (! [X] : ! [T1] : ! [T2] :  (((properinterval(X) & begins(T1,X) & ends(T2,X)) => before(T1,T2))))).
+fof(axiom170, axiom, (! [T1] : ! [T2] :  (((instant(T1) & instant(T2) & before(T1,T2)) => (? [X] :  (timebetween(X,T1,T2))))))).
+fof(axiom180, axiom, (! [X] :  ((properinterval(X) <=> (interval(X) & (! [T1] : ! [T2] :  (((begins(T1,X) & ends(T2,X)) => ~(T1=T2))))))))).
+fof(axiom190, axiom, (! [T] : ! [X] :  ((inside(T,X) => (instant(T) & interval(X)))))).
+fof(axiom200, axiom, (! [T] : ! [X] :  ((beginsorin(T,X) <=> (begins(T,X) | inside(T,X)))))).
+fof(axiom210, axiom, (! [T] : ! [T1] : ! [T2] : ! [X] :  (((inside(T,X) & begins(T1,X) & ends(T2,X) & properinterval(X)) => (before(T1,T) & before(T,T2)))))).
+fof(axiom220, axiom, (! [T1] : ! [T2] : ! [I] :  (((inside(T1,I) & inside(T2,I)) => (before(T1,T2) | before(T2,T1) | T1=T2))))).
+fof(axiom230, axiom, (! [I] : ! [T1] : ! [T2] :  (((inside(T1,I) & begins(T2,I)) => before(T2,T1))))).
+fof(axiom240, axiom, (! [I] : ! [T1] : ! [T2] :  (((inside(T1,I) & ends(T2,I)) => before(T1,T2))))).
+fof(axiom250, axiom, (! [E] :  ((eventuality(E) => ~(temporalentity(E)))))).
+fof(axiom260, axiom, (! [E] : ! [T] :  ((attime(E,T) => eventuality(E))))).
+fof(axiom270, axiom, (! [E] : ! [T] :  ((during(E,T) => eventuality(E))))).
+fof(axiom280, axiom, (! [T] : ! [E] :  ((timespan(T,E) => (eventuality(E) & temporalentity(T)))))).
+fof(axiom290, axiom, (! [E] : ! [T] :  ((attime(E,T) => instant(T))))).
+fof(axiom300, axiom, (! [E] : ! [T] :  ((during(E,T) => interval(T))))).
+fof(axiom310, axiom, (! [E] : ! [T1] : ! [T2] :  (((during(E,T1) & inside(T2,T1)) => attime(E,T2))))).
+fof(axiom320, axiom, (! [E] : ! [T] : ! [T1] :  (((during(E,T) & intduring(T1,T)) => during(E,T1))))).
+fof(axiom330, axiom, (! [T] : ! [E] :  (((timespan(T,E) & interval(T)) => during(E,T))))).
+fof(axiom340, axiom, (! [T] : ! [E] :  (((timespan(T,E) & instant(T)) => attime(E,T))))).
+fof(axiom350, axiom, (! [T1] : ! [T2] : ! [E] :  (((timespan(T1,E) & interval(T2) & attime(E,T2)) => (inside(T2,T1) | begins(T2,T1) | ends(T2,T1)))))).
+fof(axiom360, axiom, (! [T] : ! [T1] : ! [E] :  (((timespan(T,E) & instant(T) & attime(E,T1)) => T=T1)))).
+fof(axiom370, axiom, (? [VAR1] :  (eventuality(VAR1)))).
+fof(axiom380, axiom, (? [VAR2] :  (~(eventuality(VAR2))))).
+fof(axiom390, axiom, (? [VAR3] : ? [VAR4] :  ((begins(VAR3,VAR4) & ~(VAR3=VAR4))))).
+fof(axiom400, axiom, (? [VAR5] : ? [VAR6] :  ((~(begins(VAR5,VAR6)) & ~(VAR5=VAR6))))).
+fof(axiom410, axiom, (? [VAR7] : ? [VAR8] :  ((attime(VAR7,VAR8) & ~(VAR7=VAR8))))).
+fof(axiom420, axiom, (? [VAR9] : ? [VAR10] :  ((~(attime(VAR9,VAR10)) & ~(VAR9=VAR10))))).
+fof(axiom430, axiom, (? [VAR11] : ? [VAR12] :  ((during(VAR11,VAR12) & ~(VAR11=VAR12))))).
+fof(axiom440, axiom, (? [VAR13] : ? [VAR14] :  ((~(during(VAR13,VAR14)) & ~(VAR13=VAR14))))).
+fof(axiom450, axiom, (? [VAR15] : ? [VAR16] :  ((inside(VAR15,VAR16) & ~(VAR15=VAR16))))).
+fof(axiom460, axiom, (? [VAR17] : ? [VAR18] :  ((~(inside(VAR17,VAR18)) & ~(VAR17=VAR18))))).
+fof(axiom470, axiom, (? [VAR19] : ? [VAR20] :  ((timespan(VAR19,VAR20) & ~(VAR19=VAR20))))).
+fof(axiom480, axiom, (? [VAR21] : ? [VAR22] :  ((~(timespan(VAR21,VAR22)) & ~(VAR21=VAR22))))).
+fof(axiom490, axiom, (? [VAR23] : ? [VAR24] :  ((before(VAR23,VAR24) & ~(VAR23=VAR24))))).
+fof(axiom500, axiom, (? [VAR25] : ? [VAR26] :  ((~(before(VAR25,VAR26)) & ~(VAR25=VAR26))))).
+fof(axiom510, axiom, (? [VAR27] : ? [VAR28] :  ((ends(VAR27,VAR28) & ~(VAR27=VAR28))))).
+fof(axiom520, axiom, (? [VAR29] : ? [VAR30] :  ((~(ends(VAR29,VAR30)) & ~(VAR29=VAR30))))).
+fof(axiom530, axiom, (? [VAR31] : ? [VAR32] :  ((intduring(VAR31,VAR32) & ~(VAR31=VAR32))))).
+fof(axiom540, axiom, (? [VAR33] : ? [VAR34] :  ((~(intduring(VAR33,VAR34)) & ~(VAR33=VAR34))))).
+fof(axiom550, axiom, (? [VAR35] : ? [VAR36] : ? [VAR37] :  ((timebetween(VAR35,VAR36,VAR37) & ~(VAR35=VAR36) & ~(VAR35=VAR37) & ~(VAR36=VAR37))))).
+fof(axiom560, axiom, (? [VAR38] : ? [VAR39] : ? [VAR40] :  ((~(timebetween(VAR38,VAR39,VAR40)) & ~(VAR38=VAR39) & ~(VAR38=VAR40) & ~(VAR39=VAR40))))).
+fof(axiom570, axiom, (? [VAR41] :  (instant(VAR41)))).
+fof(axiom580, axiom, (? [VAR42] :  (~(instant(VAR42))))).
+fof(axiom590, axiom, (? [VAR43] :  (temporalentity(VAR43)))).
+fof(axiom600, axiom, (? [VAR44] :  (~(temporalentity(VAR44))))).
+fof(axiom610, axiom, (? [VAR45] : ? [VAR46] :  ((beginsorin(VAR45,VAR46) & ~(VAR45=VAR46))))).
+fof(axiom620, axiom, (? [VAR47] : ? [VAR48] :  ((~(beginsorin(VAR47,VAR48)) & ~(VAR47=VAR48))))).
+fof(axiom630, axiom, (? [VAR49] :  (interval(VAR49)))).
+fof(axiom640, axiom, (? [VAR50] :  (~(interval(VAR50))))).
+fof(axiom650, axiom, (? [VAR51] :  (properinterval(VAR51)))).
+fof(axiom660, axiom, (? [VAR52] :  (~(properinterval(VAR52))))).
