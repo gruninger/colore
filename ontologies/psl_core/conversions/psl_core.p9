@@ -1,0 +1,23 @@
+formulas(sos).
+(all t1 all t2  (before(t1,t2) -> (timepoint(t1) & timepoint(t2)))).
+(all t1 all t2  ((timepoint(t1) & timepoint(t2)) -> (=(t1,t2) | before(t1,t2) | before(t2,t1)))).
+(all t1  -(before(t1,t1))).
+(all t1 all t2 all t3  ((before(t1,t2) & before(t2,t3)) -> before(t1,t3))).
+(all t  ((timepoint(t) & -(=(t,'inf-'))) -> before('inf-',t))).
+(all t  ((timepoint(t) & -(=(t,'inf+'))) -> before(t,'inf+'))).
+(all t  ((timepoint(t) & -(=(t,'inf-'))) -> (exists u  between('inf-',u,t)))).
+(all t  ((timepoint(t) & -(=(t,'inf+'))) -> (exists u  between(t,u,'inf+')))).
+(all x  (activity(x) | 'activity_occurrence'(x) | timepoint(x) | object(x))).
+(all x  ((activity(x) -> -('activity_occurrence'(x) | object(x) | timepoint(x))) & ('activity_occurrence'(x) -> -(object(x) | timepoint(x))) & (object(x) -> -(timepoint(x))))).
+(all a all occ  ('occurrence_of'(occ,a) -> (activity(a) & 'activity_occurrence'(occ)))).
+(all occ  ('activity_occurrence'(occ) -> (exists a  (activity(a) & 'occurrence_of'(occ,a))))).
+(all occ all a1 all a2  (('occurrence_of'(occ,a1) & 'occurrence_of'(occ,a2)) -> =(a1,a2))).
+(all x  (('activity_occurrence'(x) | object(x)) -> beforeEq(beginof(x),endof(x)))).
+(all x all occ all t  ('participates_in'(x,occ,t) -> (object(x) & 'activity_occurrence'(occ) & timepoint(t)))).
+(all x all occ all t  ('participates_in'(x,occ,t) -> ('exists_at'(x,t) & 'is_occurring_at'(occ,t)))).
+(all t1 all t2 all t3  (between(t1,t2,t3) <-> (before(t1,t2) & before(t2,t3)))).
+(all t1 all t2  (beforeEq(t1,t2) <-> (timepoint(t1) & timepoint(t2) & (before(t1,t2) | =(t1,t2))))).
+(all t1 all t2 all t3  (betweenEq(t1,t2,t3) <-> (beforeEq(t1,t2) & beforeEq(t2,t3)))).
+(all x all t  ('exists_at'(x,t) <-> (object(x) & betweenEq(beginof(x),t,endof(x))))).
+(all occ all t  ('is_occurring_at'(occ,t) <-> ('activity_occurrence'(occ) & betweenEq(beginof(occ),t,endof(occ))))).
+end_of_list.
