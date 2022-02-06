@@ -1,0 +1,39 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 11204 was started by sunyiya2 on RD02,
+Mon Nov 15 13:48:24 2021
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.03) seconds.
+% Length of proof is 19.
+% Level of proof is 5.
+% Maximum clause weight is 14.
+% Given clauses 114.
+
+15 (all occ (activity_occurrence(occ) -> (exists a (activity(a) & occurrence_of(occ,a))))) # label(non_clause).  [assumption].
+26 (all s (arboreal(s) -> activity_occurrence(s))) # label(non_clause).  [assumption].
+34 (all s all a (occurrence_of(s,a) -> (arboreal(s) <-> generator(a)))) # label(non_clause).  [assumption].
+37 (all a all s1 all s2 (generator(a) -> (earlier(s1,successor(a,s2)) <-> earlierEq(s1,s2)))) # label(non_clause).  [assumption].
+42 (all s1 all s2 (earlierEq(s1,s2) <-> arboreal(s1) & arboreal(s2) & (earlier(s1,s2) | s1 = s2))) # label(non_clause).  [assumption].
+45 (all s1 (arboreal(s1) -> (exists o2 earlier(s1,o2)))) # label(non_clause) # label(goal).  [goal].
+73 -generator(x) | earlier(y,successor(x,z)) | -earlierEq(y,z).  [clausify(37)].
+80 earlierEq(x,y) | -arboreal(x) | -arboreal(y) | y != x.  [clausify(42)].
+102 -activity_occurrence(x) | occurrence_of(x,f3(x)).  [clausify(15)].
+108 -arboreal(x) | activity_occurrence(x).  [clausify(26)].
+118 -occurrence_of(x,y) | -arboreal(x) | generator(y).  [clausify(34)].
+132 arboreal(c1).  [deny(45)].
+133 -earlier(c1,x).  [deny(45)].
+160 -arboreal(x) | -arboreal(y) | y != x | -generator(z) | earlier(x,successor(z,y)).  [resolve(80,a,73,c)].
+169 activity_occurrence(c1).  [resolve(132,a,108,a)].
+176 -generator(x).  [ur(160,a,132,a,b,132,a,c,xx,e,133,a)].
+179 -occurrence_of(x,y) | -arboreal(x).  [back_unit_del(118),unit_del(c,176)].
+193 occurrence_of(c1,f3(c1)).  [resolve(169,a,102,a)].
+259 $F.  [resolve(179,a,193,a),unit_del(a,132)].
+
+============================== end of proof ==========================

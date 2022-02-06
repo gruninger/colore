@@ -1,0 +1,59 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 3436 was started by sunyiya2 on RD15,
+Mon Nov 29 14:22:53 2021
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.30 (+ 0.06) seconds.
+% Length of proof is 39.
+% Level of proof is 8.
+% Maximum clause weight is 14.
+% Given clauses 359.
+
+20 (all a all s1 all s2 (generator(a) -> (earlier(s1,successor(a,s2)) <-> earlierEq(s1,s2)))) # label(non_clause).  [assumption].
+21 (all s (legal(s) -> arboreal(s))) # label(non_clause).  [assumption].
+23 (all s1 all s2 (precedes(s1,s2) <-> earlier(s1,s2) & legal(s2))) # label(non_clause).  [assumption].
+24 (all s1 all s2 (earlierEq(s1,s2) <-> arboreal(s1) & arboreal(s2) & (earlier(s1,s2) | s1 = s2))) # label(non_clause).  [assumption].
+29 (all a all s (generator(a) & legal(s) -> -(exists s1 (precedes(s,s1) & precedes(s1,successor(a,s)))))) # label(non_clause).  [assumption].
+30 (all s1 all s2 (precedes(s1,s2) -> (exists a exists s3 (generator(a) & legal(s3) & s2 = successor(a,s3))))) # label(non_clause).  [assumption].
+31 (all a all s1 all s2 (generator(a) -> (precedes(s1,successor(a,s2)) <-> precedesEq(s1,s2)))) # label(non_clause).  [assumption].
+32 (all s1 all s2 (precedes(s1,s2) -> (exists s3 (precedesEq(s1,s3) & precedes(s3,s2) & -(exists s4 (precedes(s3,s4) & precedes(s4,s2))))))) # label(non_clause) # label(goal).  [goal].
+50 -generator(x) | earlier(y,successor(x,z)) | -earlierEq(y,z).  [clausify(20)].
+57 earlierEq(x,y) | -arboreal(x) | -arboreal(y) | y != x.  [clausify(24)].
+78 -legal(x) | arboreal(x).  [clausify(21)].
+81 -precedes(x,y) | legal(y).  [clausify(23)].
+82 precedes(x,y) | -earlier(x,y) | -legal(y).  [clausify(23)].
+92 -generator(x) | -legal(y) | -precedes(y,z) | -precedes(z,successor(x,y)).  [clausify(29)].
+93 -precedes(x,y) | generator(f7(x,y)).  [clausify(30)].
+94 -precedes(x,y) | legal(f8(x,y)).  [clausify(30)].
+95 -precedes(x,y) | successor(f7(x,y),f8(x,y)) = y.  [clausify(30)].
+96 -generator(x) | -precedes(y,successor(x,z)) | precedesEq(y,z).  [clausify(31)].
+98 precedes(c1,c2).  [deny(32)].
+99 -precedesEq(c1,x) | -precedes(x,c2) | precedes(x,f9(x)).  [deny(32)].
+100 -precedesEq(c1,x) | -precedes(x,c2) | precedes(f9(x),c2).  [deny(32)].
+111 -arboreal(x) | -arboreal(y) | y != x | -generator(z) | earlier(x,successor(z,y)).  [resolve(57,a,50,c)].
+115 -arboreal(x) | -generator(y) | earlier(x,successor(y,x)).  [factor(111,a,b),xx(b)].
+116 successor(f7(c1,c2),f8(c1,c2)) = c2.  [resolve(98,a,95,a)].
+117 legal(f8(c1,c2)).  [resolve(98,a,94,a)].
+118 generator(f7(c1,c2)).  [resolve(98,a,93,a)].
+121 legal(c2).  [resolve(98,a,81,a)].
+127 -precedes(f8(c1,c2),x) | -precedes(x,c2).  [para(116(a,1),92(d,2)),unit_del(a,118),unit_del(b,117)].
+128 -precedes(x,c2) | precedesEq(x,f8(c1,c2)).  [para(116(a,1),96(b,2)),unit_del(a,118)].
+167 arboreal(f8(c1,c2)).  [resolve(117,a,78,a)].
+177 -arboreal(x) | earlier(x,successor(f7(c1,c2),x)).  [resolve(118,a,115,b)].
+205 precedesEq(c1,f8(c1,c2)).  [resolve(128,a,98,a)].
+407 -precedes(f8(c1,c2),c2) | precedes(f9(f8(c1,c2)),c2).  [resolve(205,a,100,a)].
+408 -precedes(f8(c1,c2),c2) | precedes(f8(c1,c2),f9(f8(c1,c2))).  [resolve(205,a,99,a)].
+1146 earlier(f8(c1,c2),c2).  [resolve(177,a,167,a),rewrite([116(10)])].
+1158 precedes(f8(c1,c2),c2).  [resolve(1146,a,82,b),unit_del(b,121)].
+1165 precedes(f8(c1,c2),f9(f8(c1,c2))).  [back_unit_del(408),unit_del(a,1158)].
+1166 precedes(f9(f8(c1,c2)),c2).  [back_unit_del(407),unit_del(a,1158)].
+2016 $F.  [resolve(1166,a,127,b),unit_del(a,1165)].
+
+============================== end of proof ==========================

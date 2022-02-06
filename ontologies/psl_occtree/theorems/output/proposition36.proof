@@ -1,0 +1,52 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 7132 was started by sunyiya2 on RD15,
+Mon Nov 29 14:29:51 2021
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 16.78 (+ 0.03) seconds.
+% Length of proof is 32.
+% Level of proof is 8.
+% Maximum clause weight is 19.
+% Given clauses 1465.
+
+25 (all s1 all s2 (legal(s1) & earlier(s2,s1) -> legal(s2))) # label(non_clause).  [assumption].
+27 (all s1 all s2 (precedes(s1,s2) <-> earlier(s1,s2) & legal(s2))) # label(non_clause).  [assumption].
+29 (all s1 all s2 (precedesEq(s1,s2) <-> legal(s1) & legal(s2) & (precedes(s1,s2) | s1 = s2))) # label(non_clause).  [assumption].
+33 (all a all s (generator(a) & legal(s) -> -(exists s1 (precedes(s,s1) & precedes(s1,successor(a,s)))))) # label(non_clause).  [assumption].
+35 (all s1 all s2 (precedes(s1,s2) -> (exists a (generator(a) & precedesEq(successor(a,s1),s2))))) # label(non_clause).  [assumption].
+37 (all a all s1 all s2 (generator(a) -> (precedes(s1,successor(a,s2)) <-> precedesEq(s1,s2)))) # label(non_clause).  [assumption].
+38 (all s1 all s2 (precedes(s1,s2) -> (exists s3 (precedes(s1,s3) & precedesEq(s3,s2) & -(exists s4 (precedes(s1,s4) & precedes(s4,s3))))))) # label(non_clause) # label(goal).  [goal].
+94 -legal(x) | -earlier(y,x) | legal(y).  [clausify(25)].
+95 -precedes(x,y) | earlier(x,y).  [clausify(27)].
+96 -precedes(x,y) | legal(y).  [clausify(27)].
+102 precedesEq(x,y) | -legal(x) | -legal(y) | y != x.  [clausify(29)].
+107 -generator(x) | -legal(y) | -precedes(y,z) | -precedes(z,successor(x,y)).  [clausify(33)].
+109 -precedes(x,y) | generator(f8(x,y)).  [clausify(35)].
+110 -precedes(x,y) | precedesEq(successor(f8(x,y),x),y).  [clausify(35)].
+115 -generator(x) | precedes(y,successor(x,z)) | -precedesEq(y,z).  [clausify(37)].
+116 precedes(c1,c2).  [deny(38)].
+117 -precedes(c1,x) | -precedesEq(x,c2) | precedes(c1,f11(x)).  [deny(38)].
+118 -precedes(c1,x) | -precedesEq(x,c2) | precedes(f11(x),x).  [deny(38)].
+148 precedesEq(x,x) | -legal(x).  [factor(102,b,c),xx(c)].
+153 precedesEq(successor(f8(c1,c2),c1),c2).  [resolve(116,a,110,a)].
+154 generator(f8(c1,c2)).  [resolve(116,a,109,a)].
+157 legal(c2).  [resolve(116,a,96,a)].
+158 earlier(c1,c2).  [resolve(116,a,95,a)].
+187 legal(c1).  [resolve(158,a,94,b),unit_del(a,157)].
+202 precedesEq(c1,c1).  [resolve(187,a,148,b)].
+219 -generator(x) | precedes(c1,successor(x,c1)).  [resolve(202,a,115,c)].
+261 -precedes(c1,successor(f8(c1,c2),c1)) | precedes(f11(successor(f8(c1,c2),c1)),successor(f8(c1,c2),c1)).  [resolve(153,a,118,b)].
+262 -precedes(c1,successor(f8(c1,c2),c1)) | precedes(c1,f11(successor(f8(c1,c2),c1))).  [resolve(153,a,117,b)].
+1764 precedes(c1,successor(f8(c1,c2),c1)).  [resolve(219,a,154,a)].
+1766 precedes(c1,f11(successor(f8(c1,c2),c1))).  [back_unit_del(262),unit_del(a,1764)].
+1767 precedes(f11(successor(f8(c1,c2),c1)),successor(f8(c1,c2),c1)).  [back_unit_del(261),unit_del(a,1764)].
+18064 $F.  [ur(107,a,154,a,b,187,a,c,1766,a),unit_del(a,1767)].
+
+============================== end of proof ==========================

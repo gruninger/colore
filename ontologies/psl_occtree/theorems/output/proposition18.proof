@@ -1,0 +1,49 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 8696 was started by sunyiya2 on RD15,
+Mon Nov 29 13:40:58 2021
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.53 (+ 0.03) seconds.
+% Length of proof is 29.
+% Level of proof is 7.
+% Maximum clause weight is 19.
+% Given clauses 836.
+
+13 (all s1 all s2 (earlier(s1,s2) -> arboreal(s1) & arboreal(s2))) # label(non_clause).  [assumption].
+23 (all a all s1 all s2 (generator(a) -> (earlier(s1,successor(a,s2)) <-> earlierEq(s1,s2)))) # label(non_clause).  [assumption].
+28 (all s1 all s2 (earlierEq(s1,s2) <-> arboreal(s1) & arboreal(s2) & (earlier(s1,s2) | s1 = s2))) # label(non_clause).  [assumption].
+32 (all a all s (generator(a) & arboreal(s) -> -(exists s1 (earlier(s,s1) & earlier(s1,successor(a,s)))))) # label(non_clause).  [assumption].
+33 (all s1 all s2 (earlier(s1,s2) -> (exists a (generator(a) & earlierEq(successor(a,s1),s2))))) # label(non_clause).  [assumption].
+34 (all s1 all s2 (earlier(s1,s2) -> (exists s3 (earlier(s1,s3) & earlierEq(s3,s2) & -(exists s4 (earlier(s1,s4) & earlier(s4,s3))))))) # label(non_clause) # label(goal).  [goal].
+60 -generator(x) | earlier(y,successor(x,z)) | -earlierEq(y,z).  [clausify(23)].
+61 -generator(x) | -arboreal(y) | -earlier(y,z) | -earlier(z,successor(x,y)).  [clausify(32)].
+62 -earlier(x,y) | generator(f7(x,y)).  [clausify(33)].
+85 -earlier(x,y) | arboreal(x).  [clausify(13)].
+102 earlierEq(x,y) | -arboreal(x) | -arboreal(y) | y != x.  [clausify(28)].
+106 -earlier(x,y) | earlierEq(successor(f7(x,y),x),y).  [clausify(33)].
+107 earlier(c1,c2).  [deny(34)].
+108 -earlier(c1,x) | -earlierEq(x,c2) | earlier(c1,f8(x)).  [deny(34)].
+109 -earlier(c1,x) | -earlierEq(x,c2) | earlier(f8(x),x).  [deny(34)].
+148 -earlier(x,y) | earlier(z,successor(f7(x,y),u)) | -earlierEq(z,u).  [resolve(62,b,60,a)].
+149 -earlier(x,y) | -arboreal(z) | -earlier(z,u) | -earlier(u,successor(f7(x,y),z)).  [resolve(62,b,61,a)].
+153 earlierEq(x,x) | -arboreal(x).  [factor(102,b,c),xx(c)].
+159 earlierEq(successor(f7(c1,c2),c1),c2).  [resolve(107,a,106,a)].
+172 arboreal(c1).  [resolve(107,a,85,a)].
+185 -arboreal(x) | -earlier(x,y) | -earlier(y,successor(f7(c1,c2),x)).  [resolve(149,a,107,a)].
+195 -earlier(c1,successor(f7(c1,c2),c1)) | earlier(f8(successor(f7(c1,c2),c1)),successor(f7(c1,c2),c1)).  [resolve(159,a,109,b)].
+196 -earlier(c1,successor(f7(c1,c2),c1)) | earlier(c1,f8(successor(f7(c1,c2),c1))).  [resolve(159,a,108,b)].
+207 earlierEq(c1,c1).  [resolve(172,a,153,b)].
+225 -earlier(x,y) | earlier(c1,successor(f7(x,y),c1)).  [resolve(207,a,148,c)].
+2177 earlier(c1,successor(f7(c1,c2),c1)).  [resolve(225,a,107,a)].
+2178 earlier(c1,f8(successor(f7(c1,c2),c1))).  [back_unit_del(196),unit_del(a,2177)].
+2179 earlier(f8(successor(f7(c1,c2),c1)),successor(f7(c1,c2),c1)).  [back_unit_del(195),unit_del(a,2177)].
+10557 $F.  [resolve(2178,a,185,b),unit_del(a,172),unit_del(b,2179)].
+
+============================== end of proof ==========================
