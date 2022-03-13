@@ -1,0 +1,76 @@
+
+formulas(assumptions).
+
+(all x all y
+	(leq(x,y)
+	->
+	(D(x) & D(y)))).
+
+% Reflexive
+all x
+	(D(x)
+	->
+	(leq(x,x))).
+
+% Antisymmetry
+all x all y
+	((leq(x,y)
+	& leq(y,x))
+	->
+	(x=y)).
+
+% Transitive
+all x all y all z
+	((leq(x,y)
+	& leq(y,z))
+	->
+	leq(x,z)).
+
+all x all y all z
+	((leq(x,y)
+	& leq(z,y))
+	->
+	(leq(x,z)
+	| leq(z,x))).
+
+all x all y
+	(exists z
+		(leq(z,x)
+		& leq(z,y))).
+
+(exists x
+	(all y
+		(-lt(y,x)))).
+
+(all x all y
+        (lt(x,y)
+        ->
+        (exists z
+                (D(z)
+		& covers(y,z)
+                & leq(x,z))))).
+
+(all x all y
+        (lt(x,y)
+        ->
+        (exists z
+                (D(z)
+		& covers(z,x)
+                & leq(z,y))))).
+
+(all x all y
+        (covers(y,x)
+        <->
+        (lt(x,y)
+        & -(exists z
+                (D(z)
+		& lt(x,z)
+                & lt(z,y)))))).
+
+(all x all y
+	(lt(x,y)
+	<->
+	(leq(x,y)
+	& (x != y)))).
+
+end_of_list.

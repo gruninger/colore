@@ -1,0 +1,97 @@
+
+formulas(assumptions).
+
+(all x all y
+	(part(x,y)
+	->
+	(D(x)
+	& D(y)))).
+
+(all x
+	(D(x)
+	->
+	(part(x,x)))).
+
+(all x all y
+	((part(x,y)
+	& part(y,x))
+	->
+	(x=y))).
+
+(all x all y all z
+	((part(x,y)
+	& part(y,z))
+	->
+	part(x,z))).
+
+(all x all y
+	(ppart(x,y)
+	<->
+	(part(x,y)
+	& -part(y,x)))).
+
+(all x all y
+	(overlaps(x,y)
+	<->
+	(exists z
+		(D(z)
+		& part(z,x)
+		& part(z,y))))).
+
+(all x all y
+	(underlaps(x,y)
+	<->
+	(exists z
+		(D(z)
+		& part(x,z)
+		& part(y,z))))).
+
+(all x all y
+	((-part(x,y)
+	& D(x)
+	& D(y))
+	->
+	(exists z
+		(D(z)
+		& part(z,x)
+		& -overlaps(z,y))))).
+
+(all x all y
+	(underlaps(x,y)
+	->
+	(exists z
+		(D(z)
+		& (all v
+			(D(v)
+			->
+			(overlaps(v,z)
+			<->
+			(overlaps(v,x) | overlaps(v,y))))))))).
+
+(all x all y
+	(overlaps(x,y)
+	->
+	(exists z
+		(D(z)
+		& (all v
+			(D(v)
+			->
+			(ppart(v,z)
+			<->
+			(ppart(v,x) | ppart(v,y))))))))).
+
+(all x all w
+	((-part(w,x)
+	& D(x)
+	& D(w))
+	->
+	(exists z
+		(D(z)
+		& (all y
+			(D(y)
+			->
+			(part(y,z)
+			<->
+			-overlaps(y,x)))))))).
+
+end_of_list.
