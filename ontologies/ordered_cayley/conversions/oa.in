@@ -1,6 +1,3 @@
-
-formulas(assumptions).
-
 (all x all y
 	(leq(x,y)
 	->
@@ -34,20 +31,13 @@ all x all y all z
 	| leq(z,x))).
 
 all x all y
-	((D(x) & D(y))
-	->
 	(exists z
-		(D(z)
-		& leq(z,x)
-		& leq(z,y)))).
+		(leq(z,x)
+		& leq(z,y))).
 
 (exists x
-	(D(x)
-	& 
 	(all y
-		(D(y)
-		->
-		(-lt(y,x)))))).
+		(-lt(y,x)))).
 
 (all x all y
         (lt(x,y)
@@ -80,10 +70,65 @@ all x all y
 	(leq(x,y)
 	& (x != y)))).
 
-end_of_list.
+    (all x all y all z
+	(apply(x,y,z)
+	->
+	generator(x))).
 
-%def
+(all x all y all z all w
+	((apply(x,y,z)
+	& apply(x,y,w))
+	->
+	(w=z))).
 
-all x(arboreal(x) <-> D(x)).
+(all x all y all z all w
+	((apply(x,y,z)
+	& apply(w,y,z))
+	->
+	(w=x))).
 
-all x all y(earlier(x,y) <-> leq(x,y)).
+(all x all y all z all w
+	((apply(y,x,z)
+	& apply(y,w,z))
+	->
+	(w=x))).
+
+(all x 
+	(generator(x)
+	->
+	(all y
+		(exists z
+			(apply(x,y,z)))))).
+
+(all x all y
+	(-apply(x,y,y))).
+
+(all x all y all z all w
+	((apply(x,y,z)
+	& generator(z)
+	& generator(w))	
+	->
+	apply(w,y,w))).
+
+(all x all a all b all y all z
+	((apply(a,x,z) 
+	& apply(b,y,z)) 
+	-> (a=b))).
+
+(all x
+	(generator(x)
+	<->
+	-(exists y exists z
+		(apply(y,z,x))))).
+
+
+
+
+
+all x all y all z all w(
+    apply(y,z,w) -> (lt(x,w) <-> leq(x,z))
+).
+
+all x all y (
+    lt(x,y) -> exists z exists w(apply(z,w,y))
+).

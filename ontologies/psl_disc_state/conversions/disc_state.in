@@ -1,0 +1,54 @@
+all f(
+    state(f) -> object(f)
+).
+
+all f all occ(
+    holds(f,occ) -> state(f) & arboreal(occ)
+).
+
+all f all occ(
+    prior(f,occ) -> state(f) & arboreal(occ)
+).
+
+all occ1 all occ2 all f(
+    initial(occ1) & initial(occ2) -> 
+    (prior(f,occ1) <-> prior(f,occ2))
+).
+
+all f all a all occ(
+    prior(f, successor(a,occ)) 
+    <-> holds(f,occ) & generator(a)
+).
+
+all occ1 all f(
+    holds(f, occ1) -> exists occ2(
+        earlierEq(occ2,occ1) & holds(f,occ1) 
+        & (
+            initial(occ2) | - prior(f,occ2)
+        )
+        & all occ3(
+            earlierEq(occ2,occ3) & earlierEq(occ3,occ1) -> holds(f,occ3)
+        )
+    )
+).
+
+all occ1 all f(
+    state(f) & arboreal(occ1) & -holds(f,occ1)
+    -> exists occ2(
+        earlierEq(occ2,occ1) & - holds(f,occ2) 
+        & (
+            initial(occ2) | prior(f,occ2)
+        )
+        & - exists occ3(
+            earlierEq(occ2,occ3) & earlierEq(occ3,occ1) & holds(f,occ3)
+        )
+    )
+).
+
+all f all s1(
+    holds(f,s1) -> exists s2(
+        holds(f,s2) & earlierEq(s2,s1) & all s3(
+            holds(f,s3) -> - earlier(s3,s2)
+        )
+    )
+).

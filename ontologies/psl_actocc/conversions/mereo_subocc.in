@@ -1,0 +1,51 @@
+formulas(assumptions).
+
+(all o1 all o 
+	(subactivity_occurrence(o1,o2) 
+	->
+	(activity_occurrence(o1) 
+	& activity_occurrence(o2)))).
+
+(all o 
+	(activity_occurrence(o) 
+	->
+	subactivity_occurrence(o,o))).
+
+(all o1 all o2 
+	((subactivity_occurrence(o1,o2) 
+	& subactivity_occurrence(o2,o1)) 
+	->
+	(o1=o2))).
+
+
+(all o1 all o2 all o3
+	((subactivity_occurrence(o1,o2) 
+	& subactivity_occurrence(o2,o3)) 
+	->
+	subactivity_occurrence(o1,o3))).
+
+(all o1 all o2
+	((legal(o1) 
+	& subactivity_occurrence(o2,o1))
+	->
+	 (o1=o2))).
+
+(all o1
+	(legal(o1) 
+	<->
+	(activity_occurrence(o1) 
+	& (all o2 
+		(subactivity_occurrence(o2,o1)
+		->
+		 (o1=o2)))))).
+
+(all o1 all o2 
+	((subactivity_occurrence(o1,o2) 
+	& (o1 != o2))
+	->
+	(exists o3
+		(legal(o3) 
+		& subactivity_occurrence(o3,o1))))).
+
+
+end_of_list.
