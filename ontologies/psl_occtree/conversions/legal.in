@@ -1,4 +1,8 @@
 
+all s(
+        legal(s) -> activity_occurrence(s)
+).
+
 %30
 all o1 all o2
         (precedes(o1,o2)
@@ -37,6 +41,39 @@ all a all s
                         (precedes(s3,s4)
                         & precedes(s4,s2))))))).
 
+all s1(
+        legal(s1) -> exists s2(
+                (precedes(s2,s1) | (s1=s2))
+                 & - exists sp(
+                         precedes(sp,s2)
+                 )
+        )
+).
+
+all s1 all s2(
+        precedes(s1,s2) & -(s1=s2) -> 
+        exists s3(
+                precedes(s1,s3) & precedes(s3,s2)
+                & -(s3=s1)
+                & all s4(
+                        precedes(s1,s4) & precedes(s4,s3)
+                        -> (s4=s1) | (s4=s3)
+                )
+        )
+).
+
+all s1 all s2(
+        precedes(s1,s2) & -(s1=s2) -> 
+        exists s3(
+                precedes(s1,s3) & precedes(s3,s2)
+                & -(s3=s2)
+                & all s4(
+                        precedes(s3,s4) & precedes(s4,s2)
+                        -> (s4=s2) | (s4=s3)
+                )
+        )
+).
+
 %36
 (all s1 all s2
         (precedes(s1,s2)
@@ -54,3 +91,7 @@ all o1 all o2
         (precedes(o1,o2)
         -> exists o3
                 (initial(o3) & (legal(o3)|(o3=o1)))).
+
+all x(
+        legal(x) <-> D(x)
+).
