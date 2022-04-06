@@ -1,0 +1,166 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+(all x all y
+	(leq(x,y)
+	->
+	(D(x) & D(y)))).
+
+% Reflexive
+all x
+	(D(x)
+	->
+	(leq(x,x))).
+
+% Antisymmetry
+all x all y
+	((leq(x,y)
+	& leq(y,x))
+	->
+	(x=y)).
+
+% Transitive
+all x all y all z
+	((leq(x,y)
+	& leq(y,z))
+	->
+	leq(x,z)).
+
+all x all y all z
+	((leq(x,y)
+	& leq(z,y))
+	->
+	(leq(x,z)
+	| leq(z,x))).
+
+all x all y
+	(exists z
+		(leq(z,x)
+		& leq(z,y))).
+
+(exists x
+	(all y
+		(-lt(y,x)))).
+
+(all x all y
+        (lt(x,y)
+        ->
+        (exists z
+                (D(z)
+		& covers(y,z)
+                & leq(x,z))))).
+
+(all x all y
+        (lt(x,y)
+        ->
+        (exists z
+                (D(z)
+		& covers(z,x)
+                & leq(z,y))))).
+
+(all x all y
+        (covers(y,x)
+        <->
+        (lt(x,y)
+        & -(exists z
+                (D(z)
+		& lt(x,z)
+                & lt(z,y)))))).
+
+(all x all y
+	(lt(x,y)
+	<->
+	(leq(x,y)
+	& (x != y)))).
+
+    (all x all y all z
+	(apply(x,y,z)
+	->
+	generator(x))).
+
+(all x all y all z all w
+	((apply(x,y,z)
+	& apply(x,y,w))
+	->
+	(w=z))).
+
+(all x all y all z all w
+	((apply(x,y,z)
+	& apply(w,y,z))
+	->
+	(w=x))).
+
+(all x all y all z all w
+	((apply(y,x,z)
+	& apply(y,w,z))
+	->
+	(w=x))).
+
+(all x 
+	(generator(x)
+	->
+	(all y
+		(exists z
+			(apply(x,y,z)))))).
+
+(all x all y
+	(-apply(x,y,y))).
+
+(all x all y all z all w
+	((apply(x,y,z)
+	& generator(z)
+	& generator(w))	
+	->
+	apply(w,y,w))).
+
+(all x all a all b all y all z
+	((apply(a,x,z) 
+	& apply(b,y,z)) 
+	-> (a=b))).
+
+(all x
+	(generator(x)
+	<->
+	-(exists y exists z
+		(apply(y,z,x))))).
+
+all x all y all z all w(
+    apply(y,z,w) -> (lt(x,w) <-> leq(x,z))
+).
+
+all x all y (
+    lt(x,y) -> exists z exists w(apply(z,w,y))
+).
+
+%def 
+all x all y all z(
+    succ(x,y,z) <-> apply(x,y,z)
+).
+
+all x all y(
+    earlier(x,y) <-> leq(x,y)
+).
+
+end_of_list.
+
+formulas(goals).
+
+(all o1
+	(arboreal(o1)
+	->
+	(exists o2
+		(earlier(o1,o2))))).
+
+end_of_list.
+
