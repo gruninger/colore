@@ -1,0 +1,192 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+all x all y(
+    apply(x,y,z) -> generator(x)
+).
+
+all x(
+    generator(x) -> all y(
+        exists z(apply(x,y,z))
+    )
+).
+
+all x all y all z all w(
+    apply(x,y,z) & apply(w,y,z) -> (x=w)
+).
+
+all x all y all z all w(
+    apply(y,x,z) & apply(y,w,z) -> (x=w)
+).
+
+all x all y(- apply(x,y,y)).
+
+all x all y all z all w(
+    apply(x,y,z) & generator(z) & generator(w)
+    -> apply(w,y,w)
+).
+
+(all x all y
+    (in(x,y)
+    -> in(y,x))).
+
+(all x
+    (point(x) | line(x)
+    -> in(x,x))).
+
+(all p
+    (point(p)
+    -> - line(p))).
+
+(all x all y
+    (in(x,y) & point(x) & point(y)
+    -> (x=y))).
+
+(all x all y
+    (in(x,y) & line(x) & line(y)
+    -> (x=y))).
+
+all l(
+    line(l) -> exists x(
+        point(x) & in(x,l)
+    )
+).
+
+%point bipartite
+
+all p(
+    point(p) -> exists l(
+        line(l) & in(p,l)
+    )
+).
+
+%bipartite definitions
+
+all p1 all p2(
+    collinear(p1,p2) <-> point(p1) & point(p2) & -(p1=p2) & exists l(
+        line(l) & in(p1,l) & in(p2,l)
+    )
+).
+
+all l1 all l2(
+    intersect(l1,l2) <-> line(l1) & line(l2) & -(l1=l2) & exists p(
+        point(p) & in(p,l1) & in(p,l2)
+    )
+).
+
+all l1 all l2(
+    parallel(l1,l2) <-> line(l1) & line(l2) & - (exists p(
+        point(p) & in(p,l1) & in(p,l2)
+    ))
+).
+
+all l1 all l2(
+    nontrivial_segment(l1,l2) <-> 
+    exists p1(
+        point(p1) & in(p1,l2)
+    ) & all p2(
+        point(p2) & in(p2,l2) -> in(p2,l2)
+    )
+).
+
+all l1 all l2(
+    adj(l1,l2) <-> line(l1) & line(l2) & exists p(
+        point(p) & in(p,l1) & in(p,l2)
+    )
+).
+
+all y(
+    interior_point(y) <-> exists l(
+        point(y) & line(l) & in(y,l) & all z(
+            line(z) & in(y,z) -> (z=l)
+        )
+    )
+).
+
+all p(
+    interior_point(p) <-> point(p) & exists l1 exists l2(
+        line(l1) & line(l2) & -(l1=l2) & in(p,l1) & in(p,l2)
+    )
+).
+
+all l1 all l2(
+    overlap(l1,l2) <-> intersect(l1,l2) & exists p(
+        point(p) & in(p,l1) & - in(p,l2)
+    )
+).
+
+all x(
+    pendant_point(x) <-> point(x) & all y all z(
+        collinear(x,y) & collinear(x,z) -> (y=z)
+    )
+).
+
+all l1 all l2 all p(
+    line(l1) & line(l2) & point(p) & in(p,l1) & in(p,l2) -> (l1=l2)
+).
+
+all x(
+    generator(x) -> point(x)
+).
+
+all x all y all z(
+    apply(x,y,z) -> point(x) & point(y) & point(z)
+).
+
+all l(
+    line(l) -> exists x(
+        generator(x) & in(x,l)
+    )
+).
+
+all x all y all l(
+    generator(x) & generator(y) & line(l) & in(x,l) & in(y,l) -> (x=y)
+).
+
+all x all y all z all l(
+    apply(x,y,z) & in(x,l) -> in(z,l)
+).
+
+%definitions
+
+all x(
+    arboreal(x) <-> point(x)
+).
+
+all x all y all z(
+    succ(x,y,z) <-> apply(x,y,z)
+).
+
+all x(
+    initial(x) <-> generator(x)
+).
+
+all x all y(
+    occurrence_of(x,y) <-> point(x) & line(y) & in(x,y)
+).
+
+all x (
+    atomic(x) <-> line(x)
+).
+
+end_of_list.
+
+formulas(goals).
+
+all a all o(
+    occurrence_of(o,a) -> (generator(a)<-> arboreal(o))
+).
+
+end_of_list.
+

@@ -1,0 +1,52 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 12668 was started by sunyiya2 on VRD49,
+Mon Mar 28 21:52:39 2022
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.03) seconds.
+% Length of proof is 32.
+% Level of proof is 7.
+% Maximum clause weight is 13.
+% Given clauses 59.
+
+1 (all x all y (leq(x,y) -> D(x) & D(y))) # label(non_clause).  [assumption].
+2 (all x (D(x) -> leq(x,x))) # label(non_clause).  [assumption].
+3 (all x all y (leq(x,y) & leq(y,x) -> x = y)) # label(non_clause).  [assumption].
+6 (all x all y exists z (leq(z,x) & leq(z,y))) # label(non_clause).  [assumption].
+24 (all x all y (earlier(x,y) <-> leq(x,y))) # label(non_clause).  [assumption].
+25 (all s1 all s2 (earlier(s1,s2) & s1 != s2 -> (exists s3 (earlier(s1,s3) & earlier(s3,s2) & s3 != s1 & (all s4 (earlier(s3,s4) & earlier(s4,s2) -> s4 = s2 | s4 = s3)))))) # label(non_clause) # label(goal).  [goal].
+26 -D(x) | leq(x,x).  [clausify(2)].
+28 -leq(x,y) | D(y).  [clausify(1)].
+35 -leq(x,y) | -leq(y,x) | y = x.  [clausify(3)].
+39 leq(f1(x,y),y).  [clausify(6)].
+64 -earlier(x,y) | leq(x,y).  [clausify(24)].
+65 earlier(x,y) | -leq(x,y).  [clausify(24)].
+66 earlier(c2,c3).  [deny(25)].
+67 c3 != c2.  [deny(25)].
+68 -earlier(c2,x) | -earlier(x,c3) | x = c2 | earlier(x,f10(x)).  [deny(25)].
+69 -earlier(c2,x) | -earlier(x,c3) | c2 = x | earlier(x,f10(x)).  [copy(68),flip(c)].
+70 -earlier(c2,x) | -earlier(x,c3) | x = c2 | earlier(f10(x),c3).  [deny(25)].
+71 -earlier(c2,x) | -earlier(x,c3) | c2 = x | earlier(f10(x),c3).  [copy(70),flip(c)].
+72 -earlier(c2,x) | -earlier(x,c3) | x = c2 | f10(x) != c3.  [deny(25)].
+73 -earlier(c2,x) | -earlier(x,c3) | c2 = x | f10(x) != c3.  [copy(72),flip(c)].
+76 leq(x,x) | -leq(y,x).  [resolve(26,a,28,b)].
+115 -earlier(c3,c3) | earlier(c3,f10(c3)).  [resolve(69,a,66,a),flip(b),unit_del(b,67)].
+116 -earlier(c3,c3) | earlier(f10(c3),c3).  [resolve(71,a,66,a),flip(b),unit_del(b,67)].
+117 -earlier(c3,c3) | f10(c3) != c3.  [resolve(73,a,66,a),flip(b),unit_del(b,67)].
+118 leq(x,x).  [resolve(76,b,39,a)].
+133 earlier(x,x).  [resolve(118,a,65,b)].
+134 f10(c3) != c3.  [back_unit_del(117),unit_del(a,133)].
+135 earlier(f10(c3),c3).  [back_unit_del(116),unit_del(a,133)].
+136 earlier(c3,f10(c3)).  [back_unit_del(115),unit_del(a,133)].
+155 leq(f10(c3),c3).  [resolve(135,a,64,a)].
+156 leq(c3,f10(c3)).  [resolve(136,a,64,a)].
+162 $F.  [resolve(155,a,35,b),unit_del(a,156),unit_del(b,134)].
+
+============================== end of proof ==========================

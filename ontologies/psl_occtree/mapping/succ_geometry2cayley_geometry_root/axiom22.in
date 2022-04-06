@@ -1,0 +1,132 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+all x(
+    atomic(x) -> - arboreal(x)
+).
+
+all a all o(
+    occurrence_of(o,a) -> (generator(a)<-> arboreal(o))
+).
+
+all a(
+    generator(a) <-> (
+    atomic(a) & exists o(
+        arboreal(o) & occurrence_of(o,a)
+    )
+)).
+
+all a(
+    atomic(a) -> activity(a)
+).
+
+all o(
+    arboreal(o) -> activity_occurrence(o)
+).
+
+%20
+all s1 all s2 all s3
+        (succ(s1,s2,s3)
+        -> initial(s1)).
+
+%21
+all s1 
+        (initial(s1)
+        -> all s2
+        (arboreal(s2) -> exists s3 (succ(s1,s2,s3)))).
+
+%22
+all s1 all s2 all s3 all s4
+        (succ(s1,s2,s3)
+        & succ(s1,s2,s4)
+        -> s3 = s4).
+
+%23
+all s1 all s2 all s3 all s4
+        (succ(s1,s2,s3)
+        & succ(s4,s2,s3)
+        -> s1 = s4).
+
+%24
+all s1 all s2 all s3 all s4
+        (succ(s2,s1,s3)
+        & succ(s2,s4,s3)
+        -> s1 = s4).
+
+%25
+all s1 all s2
+        (- succ(s1,s2,s3)).
+
+%26
+all s1 all s2 all s3 all s4 all s5
+        (succ(s1,s2,s3)
+        &succ(s4,s5,s3)
+        -> s1=s4).
+
+%27
+all s1
+        (initial(s1)
+        <-> -(exists s2 exists s3
+                (succ(s2,s3,s1)))).
+
+all o1 all o2 all o3(
+    succ(o1,o2,o3) -> arboreal(o1) & arboreal(o2) & arboreal(o3)
+).
+
+all o1 all o2 all o3(
+    succ(o1,o2,o3) -> all a(occurrence_of(o1,a) <-> occurrence_of(o2,a))
+).
+
+all a(
+    generator(a) -> exists s(
+        initial(s) & occurrence_of(s,a)
+    )
+).
+
+all s1 all s2 all a(
+    initial(s1) & initial(s2) & occurrence_of(s1,a) & occurrence_of(s2,a) -> (s1=s2)
+).
+
+%definitions
+
+all x(
+    arboreal(x) <-> point(x)
+).
+
+all x all y all z(
+    succ(x,y,z) <-> apply(x,y,z)
+).
+
+all x(
+    initial(x) <-> generator(x)
+).
+
+all x all y(
+    occurrence_of(x,y) <-> point(x) & line(y) & in(x,y)
+).
+
+all x (
+    atomic(x) <-> line(x)
+).
+
+end_of_list.
+
+formulas(goals).
+
+all l1 all l2 all p(
+    line(l1) & line(l2) & point(p) & in(p,l1) & in(p,l2) -> (l1=l2)
+).
+
+end_of_list.
+

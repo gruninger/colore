@@ -1,0 +1,52 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+all a1 all a2
+    (generator_subactivity(a1, a2)
+    -> generator(a1) & generator(a2)).
+
+all a 
+    (generator(a)
+    -> generator_subactivity(a, a)).
+
+all a1 all a2
+    (generator_subactivity(a1, a2)
+    &(generator_subactivity(a2, a1))
+    -> a1 = a2).
+
+all a1 all a2 all a3
+    (generator_subactivity(a1, a2)
+   & generator_subactivity(a2, a3)
+    -> generator_subactivity(a1, a3)).
+
+%def1
+
+all x 
+    (D(x) <-> generator(x)).
+
+all x all y
+    (leq(x,y) <-> generator_subactivity(x,y)).
+
+end_of_list.
+
+formulas(goals).
+
+all x all y all z
+	((leq(x,y)
+	& leq(y,z))
+	->
+	leq(x,z)).
+
+end_of_list.
+

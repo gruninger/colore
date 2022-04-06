@@ -1,0 +1,73 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 9308 was started by sunyiya2 on VRD49,
+Mon Mar 28 21:52:16 2022
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 1.14 (+ 0.12) seconds.
+% Length of proof is 53.
+% Level of proof is 12.
+% Maximum clause weight is 18.
+% Given clauses 1579.
+
+1 (all x all y (leq(x,y) -> D(x) & D(y))) # label(non_clause).  [assumption].
+9 (all x all y (lt(x,y) -> (exists z (D(z) & covers(z,x) & leq(z,y))))) # label(non_clause).  [assumption].
+10 (all x all y (covers(y,x) <-> lt(x,y) & -(exists z (D(z) & lt(x,z) & lt(z,y))))) # label(non_clause).  [assumption].
+11 (all x all y (lt(x,y) <-> leq(x,y) & x != y)) # label(non_clause).  [assumption].
+24 (all x all y (earlier(x,y) <-> leq(x,y))) # label(non_clause).  [assumption].
+25 (all s1 all s2 (earlier(s1,s2) & s1 != s2 -> (exists s3 (earlier(s1,s3) & earlier(s3,s2) & s3 != s1 & (all s4 (earlier(s1,s4) & earlier(s4,s3) -> s4 = s1 | s4 = s3)))))) # label(non_clause) # label(goal).  [goal].
+28 -leq(x,y) | D(y).  [clausify(1)].
+31 -covers(x,y) | -D(z) | -lt(y,z) | -lt(z,x).  [clausify(10)].
+43 -lt(x,y) | covers(f3(x,y),x).  [clausify(9)].
+44 -lt(x,y) | leq(f3(x,y),y).  [clausify(9)].
+45 -covers(x,y) | lt(y,x).  [clausify(10)].
+48 -lt(x,y) | leq(x,y).  [clausify(11)].
+49 -lt(x,y) | y != x.  [clausify(11)].
+50 lt(x,y) | -leq(x,y) | y = x.  [clausify(11)].
+64 -earlier(x,y) | leq(x,y).  [clausify(24)].
+65 earlier(x,y) | -leq(x,y).  [clausify(24)].
+66 earlier(c2,c3).  [deny(25)].
+67 c3 != c2.  [deny(25)].
+68 -earlier(c2,x) | -earlier(x,c3) | x = c2 | earlier(c2,f10(x)).  [deny(25)].
+69 -earlier(c2,x) | -earlier(x,c3) | c2 = x | earlier(c2,f10(x)).  [copy(68),flip(c)].
+70 -earlier(c2,x) | -earlier(x,c3) | x = c2 | earlier(f10(x),x).  [deny(25)].
+71 -earlier(c2,x) | -earlier(x,c3) | c2 = x | earlier(f10(x),x).  [copy(70),flip(c)].
+72 -earlier(c2,x) | -earlier(x,c3) | x = c2 | f10(x) != c2.  [deny(25)].
+73 -earlier(c2,x) | -earlier(x,c3) | c2 = x | f10(x) != c2.  [copy(72),flip(c)].
+74 -earlier(c2,x) | -earlier(x,c3) | x = c2 | f10(x) != x.  [deny(25)].
+75 -earlier(c2,x) | -earlier(x,c3) | c2 = x | f10(x) != x.  [copy(74),flip(c)].
+80 -covers(x,y) | -lt(y,z) | -lt(z,x) | -leq(u,z).  [resolve(31,b,28,b)].
+114 leq(c2,c3).  [resolve(66,a,64,a)].
+128 lt(c2,c3).  [resolve(114,a,50,b),unit_del(b,67)].
+142 leq(f3(c2,c3),c3).  [resolve(128,a,44,a)].
+143 covers(f3(c2,c3),c2).  [resolve(128,a,43,a)].
+215 earlier(f3(c2,c3),c3).  [resolve(142,a,65,b)].
+227 lt(c2,f3(c2,c3)).  [resolve(143,a,45,a)].
+297 -earlier(c2,f3(c2,c3)) | f3(c2,c3) = c2 | f10(f3(c2,c3)) != f3(c2,c3).  [resolve(215,a,75,b),flip(b)].
+298 -earlier(c2,f3(c2,c3)) | f3(c2,c3) = c2 | f10(f3(c2,c3)) != c2.  [resolve(215,a,73,b),flip(b)].
+299 -earlier(c2,f3(c2,c3)) | f3(c2,c3) = c2 | earlier(f10(f3(c2,c3)),f3(c2,c3)).  [resolve(215,a,71,b),flip(b)].
+300 -earlier(c2,f3(c2,c3)) | f3(c2,c3) = c2 | earlier(c2,f10(f3(c2,c3))).  [resolve(215,a,69,b),flip(b)].
+302 f3(c2,c3) != c2.  [resolve(227,a,49,a)].
+303 leq(c2,f3(c2,c3)).  [resolve(227,a,48,a)].
+308 -earlier(c2,f3(c2,c3)) | earlier(c2,f10(f3(c2,c3))).  [back_unit_del(300),unit_del(b,302)].
+309 -earlier(c2,f3(c2,c3)) | earlier(f10(f3(c2,c3)),f3(c2,c3)).  [back_unit_del(299),unit_del(b,302)].
+310 -earlier(c2,f3(c2,c3)) | f10(f3(c2,c3)) != c2.  [back_unit_del(298),unit_del(b,302)].
+311 -earlier(c2,f3(c2,c3)) | f10(f3(c2,c3)) != f3(c2,c3).  [back_unit_del(297),unit_del(b,302)].
+372 earlier(c2,f3(c2,c3)).  [resolve(303,a,65,b)].
+378 f10(f3(c2,c3)) != f3(c2,c3).  [back_unit_del(311),unit_del(a,372)].
+379 f10(f3(c2,c3)) != c2.  [back_unit_del(310),unit_del(a,372)].
+380 earlier(f10(f3(c2,c3)),f3(c2,c3)).  [back_unit_del(309),unit_del(a,372)].
+381 earlier(c2,f10(f3(c2,c3))).  [back_unit_del(308),unit_del(a,372)].
+629 leq(c2,f10(f3(c2,c3))).  [resolve(381,a,64,a)].
+769 lt(c2,f10(f3(c2,c3))).  [resolve(629,a,50,b),unit_del(b,379)].
+853 -lt(f10(f3(c2,c3)),f3(c2,c3)).  [ur(80,a,143,a,b,769,a,d,629,a)].
+4983 leq(f10(f3(c2,c3)),f3(c2,c3)).  [resolve(380,a,64,a)].
+11811 $F.  [resolve(4983,a,50,b),flip(b),unit_del(a,853),unit_del(b,378)].
+
+============================== end of proof ==========================

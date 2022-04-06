@@ -1,0 +1,94 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+(all o1 all o2
+	(earlier(o1,o2)
+	->
+	(arboreal(o1)
+	& arboreal(o2)))).
+
+(all o1 all o2
+	(earlier(o1,o2)
+	->
+	-earlier(o2,o1))).
+
+(all o1 all o2 all o3
+	((earlier(o1,o2)
+	& earlier(o2,o3))
+	->
+	earlier(o1,o3))).
+
+(all o1 all o2 all o3
+	((earlier(o1,o2)
+	& earlier(o3,o2))
+	->
+	(earlier(o1,o3) | earlier(o3,o1) | (o3=o1)))).
+
+(all o1
+	(arboreal(o1)
+	->
+	(exists o2
+		(earlier(o1,o2))))).
+
+all s1 all s2(
+    earlier(s1,s2) -> exists s3(
+        initial(s3) &(earlier(s3,s1) | (s3=s1))
+    )
+).
+
+all s1 all s2(
+    earlier(s1,s2) & -(s1=s2) -> (
+        exists s3(
+            earlier(s1,s3) & earlier(s3,s2) & -(s3=s1) 
+            & all s4 (
+                earlier(s1,s4) & earlier(s4,s3) -> ((s4=s1) | (s4=s3))
+            )
+        )
+    )
+).
+
+all s1 all s2(
+    earlier(s1,s2) & -(s1=s2) -> (
+        exists s3(
+            earlier(s1,s3) & earlier(s3,s2) & -(s3=s1) 
+            & all s4 (
+                earlier(s3,s4) & earlier(s4,s2) -> ((s4=s2) | (s4=s3))
+            )
+        )
+    )
+).
+
+(all o1
+	(initial(o1)
+	<->
+	(arboreal(o1)
+	& -(exists o2
+		(earlier(o2,o1)))))).
+
+all x(arboreal(x) <-> D(x)).
+
+all x all y(earlier(x,y) <-> leq(x,y)).
+
+end_of_list.
+
+formulas(goals).
+
+all x all y all z
+	((leq(x,y)
+	& leq(y,z))
+	->
+	leq(x,z)).
+
+end_of_list.
+

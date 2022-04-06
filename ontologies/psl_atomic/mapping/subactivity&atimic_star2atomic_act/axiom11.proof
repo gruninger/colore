@@ -1,0 +1,63 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 7584 was started by sunyiya2 on VRD87,
+Sun Mar 13 16:53:12 2022
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.01) seconds.
+% Length of proof is 43.
+% Level of proof is 10.
+% Maximum clause weight is 17.
+% Given clauses 55.
+
+2 (all a (activity(a) -> subactivity(a,a))) # label(non_clause).  [assumption].
+3 (all a1 all a2 (subactivity(a1,a2) & subactivity(a2,a1) -> a1 = a2)) # label(non_clause).  [assumption].
+7 (all a (primitive(a) <-> activity(a) & (all a1 (subactivity(a1,a) -> a1 = a)))) # label(non_clause).  [assumption].
+8 (all a (activity(a) -> (exists x (primitive(x) & subactivity(x,a))))) # label(non_clause).  [assumption].
+9 (all a a = conc(a,a)) # label(non_clause).  [assumption].
+13 (all a (primitive(a) -> atomic(a))) # label(non_clause).  [assumption].
+15 (all a1 all a2 (atomic(a2) -> (subactivity(a1,a2) <-> a2 = conc(a1,a2)))) # label(non_clause).  [assumption].
+16 (all x (atomic(x) -> (exists y (disjoint_atomic(x,y) & ((all z disjoint_atomic(x,z)) -> atomic_subactivity(z,y)) & ((all z disjoint_atomic(z,y)) -> atomic_subactivity(z,x)))))) # label(non_clause).  [assumption].
+18 (all x all y (disjoint_atomic(x,y) <-> atomic(x) & atomic(y) & -((exists z subactivity(z,x)) & subactivity(z,y)))) # label(non_clause).  [assumption].
+19 (all a (primitive(a) <-> activity(a) & (all a1 (subactivity(a1,a) -> a1 = a)))) # label(non_clause) # label(goal).  [goal].
+21 -atomic(x) | disjoint_atomic(x,f5(y,x)).  [clausify(16)].
+22 -disjoint_atomic(x,y) | atomic(y).  [clausify(18)].
+23 -disjoint_atomic(x,y) | -subactivity(z,x) | -subactivity(u,y).  [clausify(18)].
+25 disjoint_atomic(x,y) | -atomic(x) | -atomic(y) | subactivity(z,y).  [clausify(18)].
+28 -activity(x) | subactivity(x,x).  [clausify(2)].
+29 -subactivity(x,y) | -subactivity(y,x) | y = x.  [clausify(3)].
+41 -primitive(x) | activity(x).  [clausify(7)].
+46 -activity(x) | primitive(f4(x)).  [clausify(8)].
+47 -activity(x) | subactivity(f4(x),x).  [clausify(8)].
+48 conc(x,x) = x.  [clausify(9)].
+52 -primitive(x) | atomic(x).  [clausify(13)].
+57 -atomic(x) | subactivity(y,x) | conc(y,x) != x.  [clausify(15)].
+58 primitive(c1) | activity(c1).  [deny(19)].
+63 atomic(f5(x,y)) | -atomic(y).  [resolve(22,a,21,b)].
+64 -subactivity(x,y) | -subactivity(z,f5(u,y)) | -atomic(y).  [resolve(23,a,21,b)].
+66 -atomic(x) | -atomic(y) | subactivity(z,y) | -subactivity(u,x) | -subactivity(w,y).  [resolve(25,a,23,a)].
+72 -atomic(x) | subactivity(y,x) | -subactivity(z,x).  [factor(66,d,e),merge(b)].
+81 activity(c1).  [resolve(58,a,41,a),merge(b)].
+86 subactivity(f4(c1),c1).  [resolve(81,a,47,a)].
+87 primitive(f4(c1)).  [resolve(81,a,46,a)].
+91 atomic(f4(c1)).  [resolve(87,a,52,a)].
+92 activity(f4(c1)).  [resolve(87,a,41,a)].
+95 atomic(f5(x,f4(c1))).  [resolve(91,a,63,b)].
+103 subactivity(f4(c1),f4(c1)).  [resolve(92,a,28,a)].
+119 -subactivity(c1,f4(c1)) | f4(c1) = c1.  [resolve(86,a,29,b)].
+132 subactivity(x,f5(y,f4(c1))) | conc(x,f5(y,f4(c1))) != f5(y,f4(c1)).  [resolve(95,a,57,a)].
+141 subactivity(x,f4(c1)).  [resolve(103,a,72,c),unit_del(a,91)].
+142 -subactivity(x,f5(y,f4(c1))).  [resolve(103,a,64,a),unit_del(b,91)].
+143 f4(c1) = c1.  [back_unit_del(119),unit_del(a,141)].
+144 subactivity(x,f5(y,c1)) | conc(x,f5(y,c1)) != f5(y,c1).  [back_unit_del(132),rewrite([143(2),143(5),143(8)])].
+145 -subactivity(x,f5(y,c1)).  [back_rewrite(142),rewrite([143(2)])].
+156 conc(x,f5(y,c1)) != f5(y,c1).  [back_unit_del(144),unit_del(a,145)].
+157 $F.  [resolve(156,a,48,a)].
+
+============================== end of proof ==========================

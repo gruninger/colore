@@ -1,0 +1,66 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+all x all y(
+    apply(x,y,z) -> generator(x)
+).
+
+all x(
+    generator(x) -> all y(
+        exists z(apply(x,y,z))
+    )
+).
+
+all x all y all z all w(
+    apply(x,y,z) & apply(w,y,z) -> (x=w)
+).
+
+all x all y all z all w(
+    apply(y,x,z) & apply(y,w,z) -> (x=w)
+).
+
+all x all y(- apply(x,y,y)).
+
+all x all y all z all w(
+    apply(x,y,z) & generator(z) & generator(w)
+    -> apply(w,y,w)
+).
+
+all x all y(
+    word_edge(x,y) <-> exists z(apply(z,x,y))
+).
+
+all x all z(
+    word_edge(x,z) <-> exists y(apply(x,y,z))
+).
+
+all a all b all x all y all z(
+    apply(a,x,z) & apply(b,y,z) -> (a = b)
+).
+
+all x all y all z(
+        succ(x,y,z) <-> apply(x,y,z)
+).
+
+end_of_list.
+
+formulas(goals).
+
+all s1 all s2 all s3 all s4
+        (succ(s2,s1,s3)
+        & succ(s2,s4,s3)
+        -> s1 = s4).
+
+end_of_list.
+
