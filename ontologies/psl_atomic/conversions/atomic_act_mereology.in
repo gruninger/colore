@@ -29,11 +29,18 @@ all x
 %43
 all x all y
     (atomic_subactivity(x,y)
-    <-> atomic(x) & atomic(y) & conc(x,y)=y)
+    <-> atomic(x) & atomic(y) & conc(x,y)=y).
 
 %44
-all x all y
-    (disjoint_atomic(x,y)
-    <-> atomic(x) & atomic(y) 
-        & -(exists z)
-            subactivity(z,x) & subactivity(z,y))
+
+all x all y(disjoint_atomic(x,y) <-> (atomic(x) & atomic(y) & - (exists z(subactivity(z,x) & subactivity(z,y))))).
+
+
+
+%def
+
+all x (atomic(x) <-> D(x)).
+
+all x all y(atomic_subactivity(x,y) <-> part(x,y)).
+
+all x all y all z (conc(x,y) = z <-> all u (overlaps(z,u) <-> overlaps(z,x) | overlaps(z,y))).

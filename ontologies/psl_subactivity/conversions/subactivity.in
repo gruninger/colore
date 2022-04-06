@@ -1,0 +1,77 @@
+formulas(assumptions).
+
+%subactivity.th:ax1
+all a1 all a2
+	(subactivity(a1,a2)
+	->
+	(activity(a1)
+	& activity(a2))).
+
+%subactivity.th:ax2
+all a (activity(a) -> subactivity(a,a)).
+
+%subactivity.th:ax3
+all a1 all a2
+	(subactivity(a1,a2)
+	& subactivity(a2,a1)
+	->
+	(a1 = a2)).
+
+%subactivity.th:ax4
+all a1 all a2 all a3
+	(subactivity(a1,a2)
+	& subactivity(a2,a3)
+	->
+	subactivity(a1,a3)).
+
+%subactivity.th:ax5
+all a1 all a2   
+        ((subactivity(a1,a2)
+	& -(a1 = a2))
+        ->
+        (exists a3
+                (subactivity(a1,a3)
+                & subactivity(a3,a2)
+		& -(a3=a1)
+                & (all a4  
+                        ((subactivity(a1,a4)
+                        & subactivity(a4,a3))
+                        ->
+                        ((a4 = a1)
+                        | (a4 = a3))))))).
+
+%subactivity.th:ax6
+all a1 all a2   
+        ((subactivity(a1,a2)
+	& -(a1 = a2))
+        ->
+        (exists a3
+                (subactivity(a1,a3)
+                & subactivity(a3,a2)
+		& -(a3=a2)
+                & (all a4  
+                        ((subactivity(a3,a4)
+                        & subactivity(a4,a2))
+                        ->
+                        ((a4 = a2)
+                        | (a4 = a3))))))).
+
+%subactivity.th:def1
+all a
+	(primitive(a)
+	<->
+	(activity(a)
+	& (all a1
+		(subactivity(a1,a)
+		->
+		(a1 = a))))).
+
+all a 
+(activity(a)-> exists x (primitive(x)& subactivity(x,a))).
+
+
+
+
+
+
+end_of_list.

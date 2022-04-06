@@ -1,0 +1,54 @@
+all t1 all t2(
+    before(t1,t2) -> timepoint(t1) & timepoint(t2)
+).
+
+all t1 all t2(
+    timepoint(t1) & timepoint(t2) -> (
+        (t1=t2) | before(t1,t2) | before(t2,t1)
+    )
+).
+
+all t1(
+    - before(t1,t1)
+).
+
+all t1 all t2 all t3(
+    before(t1,t2) & before(t2,t3)-> before(t1,t3)
+).
+
+all t(
+    timepoint(t) & -(t=tnfneg) -> before(infneg,t)
+).
+
+all t(
+    timepoint(t) & -(t = infpos) -> before(t, infpos)
+).
+
+all t(
+    timepoint(t) & -(t = infneg) -> exists u(
+        between(infneg, u, t)
+    )
+).
+
+all t(
+    timepoint(t) & -(t = infpos) -> exists u(
+        between(t,u,infpos)
+    )
+).
+
+all t1 all t2 all t3(
+    between(t1,t2,t3) <-> 
+    before(t1,t2) & before(t2,t3)
+).
+
+all t1 all t2(
+    beforeEq(t1,t2) <-> 
+    timepoint(t1) & timepoint(t2) & (
+        before(t1,t2) | (t1=t2)
+    )
+).
+
+all t1 all t2 all t3(
+    betweenEq(t1,t2,t3) <-> 
+    beforeEq(t1,t2) & beforeEq(t2,t3)
+).

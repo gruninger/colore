@@ -1,0 +1,97 @@
+
+all s(
+        legal(s) -> activity_occurrence(s)
+).
+
+%30
+all o1 all o2
+        (precedes(o1,o2)
+        -> legal(o1) & legal(o2)).
+
+%31
+all o1 all o2 
+        (precedes(o1,o2)
+        -> - precedes(o2,o1)).
+
+%32
+all o1 all o2 all o3
+        (precedes(o1,o2)
+        &precedes(o2,o3)
+        -> precedes(o1,o3)).
+
+%33
+all o1 all o2 all o3
+        (precedes(o1,o2)&precedes(o3,o2)
+        -> precedes(o1,o3) | precedes(o3,o1) | (o1=o3)).
+
+%34 
+all a all s
+        (generator(a) & legal(s)
+        -> - (exists s1 
+                (precedes(s,s1)&precedes(s1, successor(a,s))))).
+
+%35
+(all s1 all s2
+        (precedes(s1,s2)
+        ->
+        (exists s3
+                (precedesEq(s1,s3)
+                & precedes(s3,s2)
+                & -(exists s4
+                        (precedes(s3,s4)
+                        & precedes(s4,s2))))))).
+
+all s1(
+        legal(s1) -> exists s2(
+                (precedes(s2,s1) | (s1=s2))
+                 & - exists sp(
+                         precedes(sp,s2)
+                 )
+        )
+).
+
+all s1 all s2(
+        precedes(s1,s2) & -(s1=s2) -> 
+        exists s3(
+                precedes(s1,s3) & precedes(s3,s2)
+                & -(s3=s1)
+                & all s4(
+                        precedes(s1,s4) & precedes(s4,s3)
+                        -> (s4=s1) | (s4=s3)
+                )
+        )
+).
+
+all s1 all s2(
+        precedes(s1,s2) & -(s1=s2) -> 
+        exists s3(
+                precedes(s1,s3) & precedes(s3,s2)
+                & -(s3=s2)
+                & all s4(
+                        precedes(s3,s4) & precedes(s4,s2)
+                        -> (s4=s2) | (s4=s3)
+                )
+        )
+).
+
+%36
+(all s1 all s2
+        (precedes(s1,s2)
+        ->
+        (exists s3
+                (precedes(s1,s3)
+                & precedesEq(s3,s2)
+                & -(exists s4
+                        (precedes(s1,s4)
+                        & precedes(s4,s3))))))).
+
+%37
+
+all o1 all o2
+        (precedes(o1,o2)
+        -> exists o3
+                (initial(o3) & (legal(o3)|(o3=o1)))).
+
+all x(
+        legal(x) <-> D(x)
+).

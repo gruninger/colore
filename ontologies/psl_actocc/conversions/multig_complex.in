@@ -1,0 +1,90 @@
+all s all o(
+    subactivity_occurrence(s,o) & arboreal(s)
+    -> exists a(atocc(s,a))
+).
+
+all a all s(
+    atocc(s,a) & arboreal(s)
+    -> root(s,a)
+).
+
+all o all s1 all s2 all a(
+    occurrence_of(o,a) & subactivity_occurrence(s1,o) & subactivity_occurrence(s2,o) & precedes(s1,s2)
+    -> - atomic(a)
+).
+
+all a1 all a2 all s1 all s2 all s3(
+    subactivity(a1,a2) & subtree(s1,a1,s2,a2) & min_precedes(s1,s3,a)
+    -> min_precedes(s1,s3,a2)
+).
+
+all s all a(
+    root(s,a) & - atomic(a)
+    -> exists o(
+        occurrence_of(o,a) & subactivity_occurrence(s,o)
+    )
+).
+
+all o all a(
+    occurrence_of(o,a) & - atomic(a)
+    -> exists s (
+        legal(s) & subactivity_occurrence(s,o)
+    )
+).
+
+all o1 all o2 all a1 all a2(
+    occurrence_of(o1,a1) & occurrence_of(o2,a2) & - atomic(a1) & subactivity_occurrence(o1,o2)
+    -> subactivity(a1,a2)
+).
+
+all o1 all o2 all a1 all a2(
+    occurrence_of(o1,a1) & occurrence_of(o2,a2) & subactivity(a1,a2)
+    -> subactivity_occurrence(o1,o2) | 
+    exists s (subactivity_occurrence(s,o1) 
+    & - subactivity_occurrence(s,o2))
+).
+
+all o1 all o2 all a (
+    occurrence_of(o1,a) & occurrence_of(o2,a) & - (o1 = o2) 
+    -> exists s (
+        legal(s) & subactivity_occurrence(s,o1) & subactivity_occurrence(s,o2) 
+    )
+).
+
+all s all a(
+    atocc(s,a) <->
+    exists a1(
+        occurrence_of(s,a1) & atomic(a1) & subactivity(a,a1)
+    )
+).
+
+all a1 all a2 all s1 all s2(
+    subtree(s1,a1,s2,a2) <-> 
+    (root(s1,a1) 
+    & root(s2,a2) 
+    & (min_precedes(s1,s2,a1) | (s1=s2))
+    & all s3 (min_precedes(s2,s3,a2) -> min_precedes(s2,s3,a1)))
+).
+
+all s1 all s2 all a(
+    min_precedes(s1,s2,a) <-> (
+        exists o (
+            occurrence_of(o,a) 
+            & subactivity_occurrence(s1,o)
+            & subactivity_occurrence(s2,o)
+            & precedes(s1,s2)
+        )
+    )
+).
+
+all s all a (
+    root(s,a) <-> 
+    (
+        exists o(
+            occurrence_of(o,a) 
+            & subactivity_occurrence(s,o)
+            & legal(o)
+            & - exists s1(subactivity_occurrence(s1,o) & precedes(s1,s))
+        )
+    )
+)

@@ -1,4 +1,38 @@
-formulas(assumptions).
+%39
+all x
+    (atomic(x)
+    -> conc(x,x) = x).
+
+%40
+all x all y
+    (atomic(x) & atomic(y)
+    -> conc(x,y) = conc(y,x)).
+
+%41
+all x all y all z
+    (atomic(x) & atomic(y) & atomic(z)
+    -> conc(x,conc(y,z)) = conc(conc(x,y),z)).
+
+%42
+all x
+    (atomic(x)
+    -> exists y
+            (disjoint_atomic(x,y)
+            & (all z
+                disjoint_atomic(x,y) -> atomic_subactivity(z,y))
+             & (all z
+                disjoint_atomic(z,y) -> atomic_subactivity(z,x)))).
+           
+
+
+%43
+all x all y
+    (atomic_subactivity(x,y)
+    <-> atomic(x) & atomic(y) & conc(x,y)=y).
+
+%44
+
+all x all y(disjoint_atomic(x,y) <-> (atomic(x) & atomic(y) & - (exists z(subactivity(z,x) & subactivity(z,y))))).
 
 %subactivity.th:ax1
 all a1 all a2
@@ -33,7 +67,7 @@ all a1 all a2
                 (subactivity(a1,a3)
                 & subactivity(a3,a2)
 		& -(a3=a1)
-                & (all a4  disjoint atomic
+                & (all a4 
                         ((subactivity(a1,a4)
                         & subactivity(a4,a3))
                         ->
@@ -70,8 +104,29 @@ all a
 (activity(a)-> exists x (primitive(x)& subactivity(x,a))).
 
 
+all a (
+    atomic(a) -> activity(a)
+).
+
+all x all y(
+    atomic(y) & subactivity(x,y) -> atomic(x)
+).
+
+all x (
+    -atomic(x) -> exists y(subactivity(y,x) & atomic(y))
+).
 
 
+%def
 
+all x(
+    generator(x) <-> mereo_element(x)
+).
 
-end_of_list.
+all x(
+    activity(x) <-> poset_element(x)
+).
+
+all x all y(generator_subactivity(x,y) <-> part(x,y)).
+
+all x all y(subactivity(x,y) <-> leq(x,y)).

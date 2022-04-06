@@ -1,0 +1,322 @@
+
+formulas(assumptions).
+
+%psl_core.th:ax1
+all t1 all t2   
+        (before(t1,t2)
+        ->
+        (timepoint(t1)
+        & timepoint(t2))).
+
+%psl_core.th:ax2
+all t1  all t2 
+        ((timepoint(t1)
+        & timepoint(t2))
+        ->
+        ((t1 = t2)
+        | before(t1, t2)
+        | before(t2, t1))).
+
+%psl_core.th:ax3
+all t1  
+        (-before(t1, t1)).
+
+%psl_core.th:ax4
+all t1 all t2 all t3 
+        ((before(t1,t2)
+        & before(t2,t3))
+        ->
+        before(t1,t3)).
+
+%psl_core.th:ax18
+(timepoint(INFneg)
+& timepoint(INFpos)
+& -(INFneg=INFpos)).
+
+%psl_core.th:ax5
+all t
+        ((timepoint(t)
+        & -(t = INFneg))
+        ->
+        before(INFneg,t)).
+
+%psl_core.th:ax6
+all t   
+        ((timepoint(t)
+        & -(t = INFpos))
+        ->
+        before(t,INFpos)).
+
+%psl_core.th:ax7
+all t
+        ((timepoint(t)
+        & -(t = INFneg))
+        ->
+        (exists u
+                (between(INFneg,u,t)))).
+
+%psl_core.th:ax8
+all t
+        ((timepoint(t)
+        & -(t = INFpos))
+        ->
+        (exists u
+                (between(t,u,INFpos)))).
+
+%psl_core.th:ax9
+all x   (       activity(x) 
+                | activity_occurrence(x) 
+                | timepoint(x) 
+                | object(x) 
+        ).
+
+
+%psl_core.th:ax10
+all x   
+        (activity(x) 
+        -> 
+        -(activity_occurrence(x) 
+        | object(x) 
+        | timepoint(x))).
+
+all x   
+        (activity_occurrence(x) 
+        -> 
+        -(object(x) 
+        | timepoint(x))).
+
+all x   
+        (object(x) 
+        -> 
+        -timepoint(x)).
+
+%psl_core.th:ax11
+all a all occ
+        (occurrence_of(occ,a)
+        ->
+        (activity(a)
+        & activity_occurrence(occ))).
+
+%psl_core.th:ax12
+all occ
+        (activity_occurrence(occ)
+        ->      
+        (exists a
+                (activity(a)
+                & occurrence_of(occ,a)))).
+
+%psl_core.th:ax13
+all o all a1 all a2
+	((occurrence_of(o,a1)
+	& occurrence_of(o,a2))
+	->
+	(a1=a2)).
+
+%psl_core.th:ax14
+all a all x
+	((occurrence_of(x,a) 
+	| object(x)) 
+	-> 
+	(timepoint(beginof(x)) 
+	& timepoint(endof(x)))).
+
+%psl_core.th:ax15
+all x
+	((activity_occurrence(x) 
+	| object(x))
+	-> 
+	beforeEq(beginof(x), endof(x))).
+
+%psl_core.th:ax16
+all x all o all t
+	(participates_in(x,o,t) 
+	-> 
+	(object(x) 
+	& activity_occurrence(a) 
+	& timepoint(t))).
+
+%psl_core.th:ax17
+all x all o all t
+	(participates_in(x,o,t) 
+	-> 
+	(exists_at(x,t) 
+	& is_occurring_at(o,t))).
+
+%psl_core.th:def1
+all t1 all t2 all t3     (       between(t1,t2,t3)
+                                <->
+                                (       before(t1, t2)
+                                        & before(t2, t3)
+                                )
+                        ).
+
+
+%psl_core.th:def2
+all t1 all t2   (       beforeEq(t1,t2)
+                        <->
+                        (       timepoint(t1)
+                                & timepoint(t2)
+                                &       (       before(t1,t2)
+                                                | (t1 = t2)
+                                        )
+                        )
+                ).
+
+%psl_core.th:def3
+all t1 all t2 all t3    (       betweenEq(t1,t2,t3)
+                                <->
+                                (       beforeEq(t1,t2)
+                                        & beforeEq(t2,t3)
+                                )
+                        ).
+
+%psl_core.th:def4
+all x all t     (       exists_at(x,t)
+                        <->
+                        (       object(x)
+                                & betweenEq(beginof(x),t,endof(x))
+                        )
+                ).
+
+%psl_core.th:def5
+all o all t
+        (is_occurring_at(o,t)
+        <->
+	(activity_occurrence(o)
+        & betweenEq(beginof(o),t,endof(o)))).
+
+
+%occtree.th:ax1
+all s 
+        (arboreal(s)
+        ->
+        activity_occurrence(s)).
+        
+%occtree.th:ax2
+all s1 all s2
+        (earlier(s1,s2)
+        ->      
+        (arboreal(s1)
+        & arboreal(s2))).
+        
+%occtree.th:ax3
+all s1 all s2   (earlier(s1,s2)
+                -> -earlier(s2,s1)).
+
+%occtree.th:ax4
+all s1 all s2 all s3
+        ((earlier(s1,s2)
+        & earlier(s2,s3))
+        -> earlier(s1,s3)).
+
+%occtree.th:ax5
+all s1 all s2 all s3
+        ((earlier(s1,s2)
+        & earlier(s3,s2))
+        ->
+        (earlier(s3,s1)
+        | earlier(s1,s3)
+        | (s1=s3))).
+
+%occtree.th:ax6
+all s1 all s2
+        (earlier(s1,s2)
+        ->
+        (exists sp
+                (initial(sp)
+                & earlierEq(sp,s1)))).
+
+%occtree.th:ax7
+all s1 all s2 all a
+        ((initial(s1)
+        & initial(s2)
+        & occurrence_of(s1,a)
+        & occurrence_of(s2,a))
+        ->
+        (s1 = s2)).
+
+%occtree.th:ax8
+all a
+        (generator(a)
+        ->
+        (exists s
+                (initial(s)
+                & occurrence_of(s,a)))).
+
+%occtree.th:ax9
+all s all a
+        (occurrence_of(s,a)
+        ->
+        (arboreal(s)
+        <->
+        generator(a))).
+
+%occtree.th:ax10
+all a all o
+        (occurrence_of(successor(a,o),a)
+        <->
+        (generator(a)
+        & arboreal(o))).
+
+%occtree.th:ax11
+all s1 all s2
+        (earlier(s1,s2)
+        ->
+        (exists a exists s3
+		(generator(a)
+		& arboreal(s3)
+                & (s2 = successor(a,s3))))).
+
+%occtree.th:ax12
+all a all s1 all s2
+        (generator(a)
+        ->
+        (earlier(s1, successor(a,s2))
+        <->
+        earlierEq(s1,s2))).
+
+%occtree.th:ax13
+all s   (legal(s) -> arboreal(s)).
+
+%occtree.th:ax14
+all s1 all s2
+        ((legal(s1)
+        & earlier(s2,s1))
+        ->
+        legal(s2)).
+
+%occtree.th:ax15
+all s1 all s2
+	(earlier(s1,s2)
+	->
+	before(endof(s1),beginof(s2))).
+
+%occtree.th:def1
+all s1 all s2   (precedes(s1,s2)
+                <->
+                (earlier(s1,s2)
+                & legal(s2))).
+
+%occtree.th:def2
+all s1 all s2
+        (earlierEq(s1,s2)
+        <->
+        (arboreal(s1)
+        & arboreal(s2)
+        & (earlier(s1,s2) | (s1=s2)))).
+
+%occtree.th:def3
+all a all s
+	(poss(a,s)
+	<->
+	(legal(successor(a,s)))).
+
+%occtree.th:def4
+all s
+        (initial(s)
+        <->
+        (arboreal(s)
+        & -( exists sp
+                ( earlier(sp,s))))).
+
+end_of_list.

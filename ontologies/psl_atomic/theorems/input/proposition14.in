@@ -1,0 +1,145 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%subactivity.th:ax1
+all a1 all a2
+	(subactivity(a1,a2)
+	->
+	(activity(a1)
+	& activity(a2))).
+
+%subactivity.th:ax2
+all a (activity(a) 
+-> 
+subactivity(a,a)).
+
+%subactivity.th:ax3
+all a1 all a2
+	(subactivity(a1,a2)
+	& subactivity(a2,a1)
+	->
+	(a1 = a2)).
+
+%subactivity.th:ax4
+all a1 all a2 all a3
+	(subactivity(a1,a2)
+	& subactivity(a2,a3)
+	->
+	subactivity(a1,a3)).
+
+%subactivity.th:ax5
+all a1 all a2   
+        ((subactivity(a1,a2)
+	& -(a1 = a2))
+        ->
+        (exists a3
+                (subactivity(a1,a3)
+                & subactivity(a3,a2)
+		& -(a3=a1)
+                & (all a4  
+                        ((subactivity(a1,a4)
+                        & subactivity(a4,a3))
+                        ->
+                        ((a4 = a1)
+                        | (a4 = a3))))))).
+
+%subactivity.th:ax6
+all a1 all a2   
+        ((subactivity(a1,a2)
+	& -(a1 = a2))
+        ->
+        (exists a3
+                (subactivity(a1,a3)
+                & subactivity(a3,a2)
+		& -(a3=a2)
+                & (all a4  
+                        ((subactivity(a3,a4)
+                        & subactivity(a4,a2))
+                        ->
+                        ((a4 = a2)
+                        | (a4 = a3))))))).
+
+all a 
+(activity(a)-> exists x (primitive(x)& subactivity(x,a))).
+
+%atomic.th:ax2
+all a   (a = conc(a,a)).
+
+%atomic.th:ax3
+all a1 all a2   (conc(a1,a2) = conc(a2,a1)).
+
+%atomic.th:ax4
+all a1 all a2 all a3 (conc(a1, conc(a2,a3)) = conc(conc(a1,a2), a3)).
+
+%atomic.th:ax10
+all a
+	(atomic(a)                               
+	->              
+	activity(a)).
+
+%atomic.th:ax1
+all a
+	(primitive(a)
+	->
+	atomic(a)).
+
+%atomic.th:ax5
+all a1 all a2
+	(atomic(conc(a1,a2))
+	<->
+	(atomic(a1)
+	& atomic(a2))).  
+
+%atomic.th:ax6
+all a1 all a2
+	(atomic(a2)
+	->      
+	(subactivity(a1,a2)
+	<->     
+	(a2 = conc(a1,a2)))).
+
+all x
+    (atomic(x)
+    -> exists y
+            (disjoint_atomic(x,y)
+            & (all z
+                disjoint_atomic(x,z) -> atomic_subactivity(z,y))
+             & (all z
+                disjoint_atomic(z,y) -> atomic_subactivity(z,x)))).
+
+%atomic.th:ax9
+all a
+	(generator(a)    
+	->              
+	atomic(a)). 
+
+(all x all y (disjoint_atomic(x,y) <-> atomic(x) & atomic(y) & -((exists z subactivity(z,x)) & subactivity(z,y)))).
+
+%atomic def 
+all a1 all a2 
+    (atomic_subactivity(a1, a2)
+    <->
+    atomic(a1)&atomic(a2)&subactivity(a1,a2)).
+
+end_of_list.
+
+formulas(goals).
+
+all x all y
+    (atomic(y)
+    &subactivity(x,y)
+    -> atomic(x)).
+
+end_of_list.
+

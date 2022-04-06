@@ -1,0 +1,46 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 1328 was started by sunyiya2 on VRD101,
+Sat Nov 20 13:18:09 2021
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.05 (+ 0.01) seconds.
+% Length of proof is 26.
+% Level of proof is 6.
+% Maximum clause weight is 13.
+% Given clauses 97.
+
+17 (all s1 all s2 (earlier(s1,s2) -> (exists sp (initial(sp) & earlierEq(sp,s1))))) # label(non_clause).  [assumption].
+25 (all s1 all s2 (legal(s1) & earlier(s2,s1) -> legal(s2))) # label(non_clause).  [assumption].
+27 (all s1 all s2 (precedes(s1,s2) <-> earlier(s1,s2) & legal(s2))) # label(non_clause).  [assumption].
+28 (all s1 all s2 (earlierEq(s1,s2) <-> arboreal(s1) & arboreal(s2) & (earlier(s1,s2) | s1 = s2))) # label(non_clause).  [assumption].
+34 (all o1 all o2 (precedes(o1,o2) -> (exists o3 (initial(o3) & (legal(o3) | o3 = o1))))) # label(non_clause) # label(goal).  [goal].
+53 -earlier(x,y) | earlierEq(f2(x,y),x).  [clausify(17)].
+57 -earlierEq(x,y) | earlier(x,y) | y = x.  [clausify(28)].
+81 -earlier(x,y) | initial(f2(x,y)).  [clausify(17)].
+94 -legal(x) | -earlier(y,x) | legal(y).  [clausify(25)].
+95 -precedes(x,y) | earlier(x,y).  [clausify(27)].
+96 -precedes(x,y) | legal(y).  [clausify(27)].
+103 precedes(c1,c2).  [deny(34)].
+104 -initial(x) | -legal(x).  [deny(34)].
+105 -initial(x) | x != c1.  [deny(34)].
+106 -initial(x) | c1 != x.  [copy(105),flip(b)].
+123 earlier(f2(x,y),x) | x = f2(x,y) | -earlier(x,y).  [resolve(57,a,53,b)].
+124 earlier(f2(x,y),x) | f2(x,y) = x | -earlier(x,y).  [copy(123),flip(b)].
+133 legal(c2).  [resolve(103,a,96,a)].
+134 earlier(c1,c2).  [resolve(103,a,95,a)].
+143 earlier(f2(c1,c2),c1) | f2(c1,c2) = c1.  [resolve(134,a,124,c)].
+148 legal(c1).  [resolve(134,a,94,b),unit_del(a,133)].
+152 initial(f2(c1,c2)).  [resolve(134,a,81,a)].
+218 f2(c1,c2) = c1 | legal(f2(c1,c2)).  [resolve(143,a,94,b),unit_del(b,148)].
+244 f2(c1,c2) != c1.  [resolve(152,a,106,a),flip(a)].
+245 -legal(f2(c1,c2)).  [ur(104,a,152,a)].
+253 $F.  [back_unit_del(218),unit_del(a,244),unit_del(b,245)].
+
+============================== end of proof ==========================
