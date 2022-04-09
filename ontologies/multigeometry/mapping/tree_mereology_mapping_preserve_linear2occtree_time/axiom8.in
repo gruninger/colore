@@ -1,0 +1,206 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+all x all y(
+    ppart(x,y) <-> part(x,y) & -part(y,x)
+).
+
+all x all y(
+    overlaps(x,y) <-> exists z(
+        part(z,x) & part(z,y)
+    )
+).
+
+all x all y(
+    disjoint(x,y) <-> - overlaps(x,y)
+).
+
+all x all y(
+    underlaps(x,y) <-> exists z(
+        part(x,y) & part(y,z)
+    )
+).
+
+all x(
+    atomic_part(x) <-> all y(
+        part(y,x) -> (y=x) 
+    )
+).
+
+all x all y all z(
+    sum(x,y,z) <-> all w(
+        overlaps(w,z) <-> 
+        (
+            overlaps(w,z) | overlaps(w,y)
+        )
+    )
+).
+
+all x all y all z(
+    prod(w,y,z) <-> all w(
+        part(w,z) <-> (part(w,z) | part(w,y))
+    )
+).
+
+all x all z(
+    comp(x,z) <-> all y(
+        part(y,z) <-> - overlaps(y,x)
+    )
+).
+
+all x(
+    gunky(x) <-> all y(
+        part(y,x) -> exists z(
+            ppart(z,y)
+        )
+    )
+).
+
+all x all y(
+    ppart(x,y) <-> part(x,y) & -part(y,x)
+).
+
+all x all y(
+    underlaps(x,y) <-> exists z(
+        part(x,y) & part(y,z)
+    )
+).
+
+all x all y(
+    ppart(x,y) -> 
+    (next_part(x,y) 
+    | exists z(
+        next_part(x,z) & ppart(z,y) 
+        )
+    | exists z(
+        ppart(x,z) & next_part(z,y)
+        )
+    )
+).
+
+all x all y(
+    overlaps(x,y) <-> exists z(
+        part(z,x) & part(z,y)
+    )
+).
+
+all x all y(
+    ppart(x,y) <-> part(x,y) & -part(y,x)
+).
+
+all x all y(
+    overlaps(x,y) -> part(x,y) | ppart(y,x)
+).
+
+all x(
+    part(x,x)
+).
+
+all x all y(
+    part(x,y) & part(y,x) -> (x=y)
+).
+
+all x all y all y(
+    part(x,y) & part(y,z) -> part(x,z)
+).
+
+all p(
+    point(p) -> exists l(
+        line(l) & in(p,l)
+    )
+).
+
+all l1 all l2 all p(
+    line(l1) & line(l2) & point(p) & in(p,l1) & in(p,l2) -> (l1=l2)
+).
+
+(all x all y
+    (in(x,y)
+    -> in(y,x))).
+
+(all x
+    (point(x) | line(x)
+    -> in(x,x))).
+
+(all p
+    (point(p)
+    -> - line(p))).
+
+(all x all y
+    (in(x,y) & point(x) & point(y)
+    -> (x=y))).
+
+(all x all y
+    (in(x,y) & line(x) & line(y)
+    -> (x=y))).
+
+all x all y(
+    in(x,y) -> (line(x) | point(x)) & (line(y) | point(y))
+).
+
+all x all y(
+    part(x,y) -> point(x) & point(y)
+).
+
+all x all y(
+    leq(x,y)-> line(x) & line(y)
+).
+
+all x all y all l1 all l2(
+    part(x,y) & in(x,l1) & in(y,l2) & line(l1) & line(l2)
+    -> leq(l1,l2)
+).
+
+all x(
+    leq(x,x)
+).
+
+all x all y all z(
+    leq(x,y) & leq(y,z) -> leq(x,z)
+).
+
+all x all y(
+    leq(x,y) & leq(y,x) -> (x=y)
+).
+
+all x all y(
+    leq(x,y) | leq(y,x) | (x=y)
+).
+
+%def 
+all x (arboreal(x) <-> point(x)).
+
+all x(timepoint(x) <-> line(x)).
+
+all x all y(
+    earlier(x,y) <-> part(x,y)
+).
+
+end_of_list.
+
+formulas(goals).
+
+all s1 all s2(
+    earlier(s1,s2) & -(s1=s2) -> (
+        exists s3(
+            earlier(s1,s3) & earlier(s3,s2) & -(s3=s1) 
+            & all s4 (
+                earlier(s3,s4) & earlier(s4,s2) -> ((s4=s2) | (s4=s3))
+            )
+        )
+    )
+).
+
+end_of_list.
+

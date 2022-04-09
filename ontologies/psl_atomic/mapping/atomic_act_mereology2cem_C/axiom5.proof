@@ -1,0 +1,62 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 8496 was started by sunyiya2 on VRD97,
+Thu Mar 10 17:21:52 2022
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.05 (+ 0.01) seconds.
+% Length of proof is 42.
+% Level of proof is 14.
+% Maximum clause weight is 14.
+% Given clauses 72.
+
+1 (all x (atomic(x) -> conc(x,x) = x)) # label(non_clause).  [assumption].
+4 (all x (atomic(x) -> (exists y (disjoint_atomic(x,y) & ((all z disjoint_atomic(x,y)) -> atomic_subactivity(z,y)) & ((all z disjoint_atomic(z,y)) -> atomic_subactivity(z,x)))))) # label(non_clause).  [assumption].
+5 (all x all y (atomic_subactivity(x,y) <-> atomic(x) & atomic(y) & conc(x,y) = y)) # label(non_clause).  [assumption].
+7 (all x (atomic(x) <-> D(x))) # label(non_clause).  [assumption].
+8 (all x all y (atomic_subactivity(x,y) <-> part(x,y))) # label(non_clause).  [assumption].
+9 (all x all y all z (conc(x,y) = z <-> (all u (overlaps(z,u) <-> overlaps(z,x) | overlaps(z,y))))) # label(non_clause).  [assumption].
+10 (all x all y (-part(x,y) & D(x) & D(y) -> (exists z (D(z) & part(z,x) & -overlaps(z,y))))) # label(non_clause) # label(goal).  [goal].
+11 -atomic_subactivity(x,y) | atomic(x).  [clausify(5)].
+12 -atomic(x) | -disjoint_atomic(x,f1(y,x)) | atomic_subactivity(y,f1(y,x)).  [clausify(4)].
+16 atomic_subactivity(x,y) | -atomic(x) | -atomic(y) | conc(x,y) != y.  [clausify(5)].
+17 -atomic_subactivity(x,y) | part(x,y).  [clausify(8)].
+19 atomic(x) | -D(x).  [clausify(7)].
+21 D(c1).  [deny(10)].
+23 -D(x) | -part(x,c1) | overlaps(x,c2).  [deny(10)].
+24 -atomic(x) | conc(x,x) = x.  [clausify(1)].
+27 -atomic(x) | disjoint_atomic(x,f1(y,x)).  [clausify(4)].
+33 conc(x,y) != z | -overlaps(z,u) | overlaps(z,x) | overlaps(z,y).  [clausify(9)].
+35 conc(x,y) != z | overlaps(z,u) | -overlaps(z,y).  [clausify(9)].
+38 conc(x,y) = z | -overlaps(z,f5(x,y,z)) | -overlaps(z,y).  [clausify(9)].
+39 -part(c1,c2).  [deny(10)].
+40 atomic(x) | -atomic(y) | -disjoint_atomic(y,f1(x,y)).  [resolve(11,a,12,c)].
+46 part(x,y) | -atomic(x) | -atomic(y) | conc(x,y) != y.  [resolve(17,a,16,a)].
+50 atomic(c1).  [resolve(21,a,19,b)].
+53 -part(c1,c1) | overlaps(c1,c2).  [resolve(23,a,21,a)].
+60 conc(x,x) != y | -overlaps(y,z) | overlaps(y,x).  [factor(33,c,d)].
+62 part(x,x) | -atomic(x) | conc(x,x) != x.  [factor(46,b,c)].
+91 disjoint_atomic(c1,f1(x,c1)).  [resolve(50,a,27,a)].
+96 conc(c1,c1) = c1.  [resolve(50,a,24,a)].
+126 part(c1,c1).  [resolve(62,b,50,a),rewrite([96(6)]),xx(b)].
+127 overlaps(c1,c2).  [back_unit_del(53),unit_del(a,126)].
+143 conc(x,x) != c1 | overlaps(c1,x).  [resolve(127,a,60,b)].
+149 atomic(x).  [resolve(91,a,40,c),unit_del(b,50)].
+189 part(x,y) | conc(x,y) != y.  [back_unit_del(46),unit_del(b,149),unit_del(c,149)].
+199 conc(x,x) = x.  [back_unit_del(24),unit_del(a,149)].
+206 c1 != x | overlaps(c1,x).  [back_rewrite(143),rewrite([199(1)]),flip(a)].
+228 overlaps(c1,c1).  [resolve(206,a,199,a(flip)),rewrite([199(4)])].
+229 conc(x,c1) != c1 | overlaps(c1,y).  [resolve(228,a,35,c)].
+242 overlaps(c1,x).  [resolve(229,a,199,a)].
+243 conc(x,y) = c1.  [resolve(242,a,38,b),unit_del(b,242)].
+253 c1 = x.  [back_rewrite(199),rewrite([243(1)])].
+254 part(x,y).  [back_rewrite(189),rewrite([243(2)]),unit_del(b,253)].
+255 $F.  [resolve(254,a,39,a)].
+
+============================== end of proof ==========================

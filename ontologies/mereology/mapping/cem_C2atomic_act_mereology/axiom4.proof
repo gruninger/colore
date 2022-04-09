@@ -1,0 +1,58 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 3460 was started by sunyiya2 on VRD97,
+Thu Mar 10 17:21:13 2022
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.05 (+ 0.00) seconds.
+% Length of proof is 38.
+% Level of proof is 8.
+% Maximum clause weight is 17.
+% Given clauses 87.
+
+2 (all x all y (atomic(x) & atomic(y) -> conc(x,y) = conc(y,x))) # label(non_clause).  [assumption].
+3 (all x all y all z (atomic(x) & atomic(y) & atomic(z) -> conc(x,conc(y,z)) = conc(conc(x,y),z))) # label(non_clause).  [assumption].
+4 (all x (atomic(x) -> (exists y (disjoint_atomic(x,y) & ((all z disjoint_atomic(x,y)) -> atomic_subactivity(z,y)) & ((all z disjoint_atomic(z,y)) -> atomic_subactivity(z,x)))))) # label(non_clause).  [assumption].
+5 (all x all y (atomic_subactivity(x,y) <-> atomic(x) & atomic(y) & conc(x,y) = y)) # label(non_clause).  [assumption].
+8 (all x all y (atomic_subactivity(x,y) <-> part(x,y))) # label(non_clause).  [assumption].
+10 (all x all y all z (part(x,y) & part(y,z) -> part(x,z))) # label(non_clause) # label(goal).  [goal].
+11 -atomic_subactivity(x,y) | atomic(x).  [clausify(5)].
+12 -atomic(x) | -disjoint_atomic(x,f1(y,x)) | atomic_subactivity(y,f1(y,x)).  [clausify(4)].
+14 -atomic_subactivity(x,y) | atomic(y).  [clausify(5)].
+15 -atomic_subactivity(x,y) | conc(x,y) = y.  [clausify(5)].
+16 atomic_subactivity(x,y) | -atomic(x) | -atomic(y) | conc(x,y) != y.  [clausify(5)].
+17 -atomic_subactivity(x,y) | part(x,y).  [clausify(8)].
+18 atomic_subactivity(x,y) | -part(x,y).  [clausify(8)].
+22 -atomic(x) | -atomic(y) | conc(y,x) = conc(x,y).  [clausify(2)].
+23 -atomic(x) | -atomic(y) | -atomic(z) | conc(conc(x,y),z) = conc(x,conc(y,z)).  [clausify(3)].
+24 -atomic(x) | disjoint_atomic(x,f1(y,x)).  [clausify(4)].
+36 part(c1,c2).  [deny(10)].
+37 part(c2,c3).  [deny(10)].
+38 -part(c1,c3).  [deny(10)].
+39 atomic(x) | -atomic(y) | -disjoint_atomic(y,f1(x,y)).  [resolve(11,a,12,c)].
+45 part(x,y) | -atomic(x) | -atomic(y) | conc(x,y) != y.  [resolve(17,a,16,a)].
+46 -part(x,y) | atomic(x).  [resolve(18,a,11,a)].
+47 -part(x,y) | atomic(y).  [resolve(18,a,14,a)].
+48 -part(x,y) | conc(x,y) = y.  [resolve(18,a,15,a)].
+79 atomic(c2).  [resolve(46,a,37,a)].
+80 atomic(c1).  [resolve(46,a,36,a)].
+81 atomic(c3).  [resolve(47,a,37,a)].
+82 conc(c2,c3) = c3.  [resolve(48,a,37,a)].
+83 conc(c1,c2) = c2.  [resolve(48,a,36,a)].
+114 disjoint_atomic(c2,f1(x,c2)).  [resolve(79,a,24,a)].
+163 -atomic(x) | -atomic(y) | conc(conc(x,y),c3) = conc(x,conc(y,c3)).  [resolve(81,a,23,c)].
+166 -atomic(x) | conc(c3,x) = conc(x,c3).  [resolve(81,a,22,b)].
+168 conc(c1,c3) != c3.  [ur(45,a,38,a,b,80,a,c,81,a)].
+207 atomic(x).  [resolve(114,a,39,c),unit_del(b,79)].
+210 conc(c3,x) = conc(x,c3).  [back_unit_del(166),unit_del(a,207)].
+213 conc(c3,conc(x,y)) = conc(x,conc(y,c3)).  [back_unit_del(163),rewrite([210(5,R)]),unit_del(a,207),unit_del(b,207)].
+262 conc(x,y) = conc(y,x).  [back_unit_del(22),unit_del(a,207),unit_del(b,207)].
+591 $F.  [para(83(a,1),213(a,1,2)),rewrite([262(3),82(3),82(5)]),flip(a),unit_del(a,168)].
+
+============================== end of proof ==========================
