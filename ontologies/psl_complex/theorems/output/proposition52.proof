@@ -1,0 +1,43 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 3512 was started by sunyiya2 on VRD90,
+Fri Feb 11 16:28:57 2022
+The command was "/cygdrive/c/Program Files (x86)/Prover9-Mace4/bin-win32/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.06 (+ 0.05) seconds.
+% Length of proof is 23.
+% Level of proof is 8.
+% Maximum clause weight is 24.
+% Given clauses 270.
+
+2 (all occ (activity_occurrence(occ) -> (exists a (activity(a) & occurrence_of(occ,a))))) # label(non_clause).  [assumption].
+18 (all s1 all s2 all a (min_precedes(s1,s2,a) -> earlier(s1,s2))) # label(non_clause).  [assumption].
+32 (all o1 all o2 (subactivity_occurrence(o1,o2) -> activity_occurrence(o2) & activity_occurrence(o1))) # label(non_clause).  [assumption].
+37 (all a all occ all s1 all s2 (occurrence_of(occ,a) & arboreal(s1) & arboreal(s2) & subactivity_occurrence(s1,occ) & subactivity_occurrence(s2,occ) -> min_precedes(s1,s2,a) | min_precedes(s2,s1,a) | s1 = s2)) # label(non_clause).  [assumption].
+51 (all s1 all s2 all o (subactivity_occurrence(s1,o) & subactivity_occurrence(s2,o) & arboreal(s1) & arboreal(s2) -> earlier(s1,s2) | earlier(s2,s1) | s1 = s2)) # label(non_clause) # label(goal).  [goal].
+123 -activity_occurrence(x) | occurrence_of(x,f1(x)).  [clausify(2)].
+136 -min_precedes(x,y,z) | earlier(x,y).  [clausify(18)].
+151 -subactivity_occurrence(x,y) | activity_occurrence(y).  [clausify(32)].
+159 -occurrence_of(x,y) | -arboreal(z) | -arboreal(u) | -subactivity_occurrence(z,x) | -subactivity_occurrence(u,x) | min_precedes(z,u,y) | min_precedes(u,z,y) | u = z.  [clausify(37)].
+169 subactivity_occurrence(c1,c3).  [deny(51)].
+170 subactivity_occurrence(c2,c3).  [deny(51)].
+171 arboreal(c1).  [deny(51)].
+172 arboreal(c2).  [deny(51)].
+173 -earlier(c1,c2).  [deny(51)].
+174 -earlier(c2,c1).  [deny(51)].
+175 c2 != c1.  [deny(51)].
+293 activity_occurrence(c3).  [resolve(169,a,151,a)].
+314 occurrence_of(c3,f1(c3)).  [resolve(293,a,123,a)].
+328 -arboreal(x) | -arboreal(y) | -subactivity_occurrence(x,c3) | -subactivity_occurrence(y,c3) | min_precedes(x,y,f1(c3)) | min_precedes(y,x,f1(c3)) | y = x.  [resolve(314,a,159,a)].
+418 -arboreal(x) | -subactivity_occurrence(x,c3) | min_precedes(c2,x,f1(c3)) | min_precedes(x,c2,f1(c3)) | c2 = x.  [resolve(328,c,170,a),flip(f),unit_del(a,172)].
+471 min_precedes(c2,c1,f1(c3)) | min_precedes(c1,c2,f1(c3)).  [resolve(418,b,169,a),unit_del(a,171),unit_del(d,175)].
+550 min_precedes(c1,c2,f1(c3)).  [resolve(471,a,136,a),unit_del(b,174)].
+626 $F.  [resolve(550,a,136,a),unit_del(a,173)].
+
+============================== end of proof ==========================

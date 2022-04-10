@@ -1,0 +1,361 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%psl_core.th:ax11
+all a all occ
+        (occurrence_of(occ,a)
+        ->
+        (activity(a)
+        & activity_occurrence(occ))).
+
+%psl_core.th:ax12
+all occ
+        (activity_occurrence(occ)
+        ->      
+        (exists a
+                (activity(a)
+                & occurrence_of(occ,a)))).
+
+%psl_core.th:ax13
+all o all a1 all a2
+	((occurrence_of(o,a1)
+	& occurrence_of(o,a2))
+	->
+	(a1=a2)).
+
+%occtree
+
+%psl_core.th:ax10
+all x   
+        (activity(x) 
+        -> 
+        -(activity_occurrence(x) 
+        | object(x) 
+        | timepoint(x))).
+
+all x   
+        (activity_occurrence(x) 
+        -> 
+        -(object(x) 
+        | timepoint(x))).
+
+all x   
+        (object(x) 
+        -> 
+        -timepoint(x)).
+
+%occtree.th:ax1
+all s 
+        (arboreal(s)
+        ->
+        activity_occurrence(s)).
+
+%occtree.th:ax2
+all s1 all s2
+        (earlier(s1,s2)
+        ->      
+        (arboreal(s1)
+        & arboreal(s2))).
+
+%occtree.th:ax3
+all s1 all s2   (earlier(s1,s2)
+                -> -earlier(s2,s1)).
+
+%occtree.th:ax4
+all s1 all s2 all s3
+        ((earlier(s1,s2)
+        & earlier(s2,s3))
+        -> earlier(s1,s3)).
+
+%occtree.th:ax5
+all s1 all s2 all s3
+        ((earlier(s1,s2)
+        & earlier(s3,s2))
+        ->
+        (earlier(s3,s1)
+        | earlier(s1,s3)
+        | (s1=s3))).
+
+%occtree.th:ax6
+all s1 all s2
+        (earlier(s1,s2)
+        ->
+        (exists sp
+                (initial(sp)
+                & earlierEq(sp,s1)))).
+
+%occtree.th:def2
+all s1 all s2
+        (earlierEq(s1,s2)
+        <->
+        (arboreal(s1)
+        & arboreal(s2)
+        & (earlier(s1,s2) | (s1=s2)))).
+
+%occtree.th:def4
+all s
+        (initial(s)
+        <->
+        (arboreal(s)
+        & -( exists sp
+                ( earlier(sp,s))))).
+
+%psl_complex
+
+all a all s1 all s2(
+    min_precedes(s1,s2,a)
+    -> exists a1 exists a2(
+        subactivity(a1,a)
+        &subactivity(a2,a)
+        & atocc(s1,a1)
+        & atocc(s2,a2)
+    )
+).
+
+all a all s
+    (root(s,a)
+    -> exists a1(
+        subactivity(a1,a)
+        & atocc(s,a1)
+    )).
+
+all s1 all s2 all a
+    (min_precedes(s1,s2,a)
+    -> exists s3(
+        root(s3,a)
+        & min_precedes(s3,s2,a)
+    )).
+
+all s1 all s2 all a
+    (min_precedes(s1,s2,a)
+    -> earlier(s1,s2)).
+
+all s all a
+    (root(s,a)
+    -> arboreal(s)).
+
+all s all a
+    (atocc(s,a)&arboreal(s)
+    -> root(s,a)).
+
+all s1 all s2 all a
+    (min_precedes(s1,s2,a)
+    -> exists s3(
+        next_subocc(s1,s3,a)
+        & (
+            min_precedes(s3,s2,a)
+            |(s3=s2)
+        )
+    )).
+
+all a all s1 all s2 all s3 
+    (
+        min_precedes(s1,s2,a) & min_precedes(s1,s3,a)&earlier(s2,s3)
+        -> min_precedes(s2,s3,a)
+    ).
+
+all a1 all a2 all s1 all s2 all s3 
+    (subactivity(a1,a2)
+    & subtree(s1,a1,s2,a2)
+    & min_precedes(s1,s3,a1)
+    -> min_precedes(s1,s3,a2)).
+
+all s1 all s2 all a 
+    (min_precedes(s1,s2,a)
+    -> - atomic(a)).
+
+all a all s1 all s2 all s3 
+    (min_precedes(s2,s1,a)
+    & min_precedes(s3,s1,a)
+    & earlier(s2,s3)
+    -> min_precedes(s2,s3,a)).
+
+all s all a 
+    (leaf(s,a)
+    <-> 
+        (root(s,a) | exists s1(min_precedes(s1,s,a)))
+        &- (exists s2(min_precedes(s,s2,a)))
+    ).
+
+all a all s1 all s2
+    (do(a,s1,s2)
+    <-> root(s1,a)
+    &leaf(s2,a)
+    &(min_precedes(s1,s2,a)|(s1=s2))).
+
+all s1 all s2 all a 
+    (next_subocc(s1,s2,a)
+    <-> min_precedes(s1,s2,a)
+        & -(exists(s3)(
+            activity_occurrence(s3)
+            & min_precedes(s1,s3,a)
+            & min_precedes(s3,s2,a)
+        ))
+       ).
+
+all s1 all s2 all a1 all a2
+    (subtree(s1,a1,s2,a2)
+    <-> root(s1,a1)
+        & root(s2,a2)
+        & (min_precedes(s1,s2,a1)|(s1=s2))
+        & all s3 (
+            min_precedes(s1,s3,a1)-> min_precedes(s2,s3,a2)
+        )).
+
+(all x all y (arboreal_subocc(x,y) <-> subactivity_occurrence(x,y) & arboreal(x)&arboreal(y))).
+
+(all s1 all s2 all o
+    (succ_subocc(s1,s2,o)
+    <->
+    (subactivity_occurrence(s1,o)
+    & subactivity_occurrence(s2,o)
+    & earlier(s1,s2)
+    & -(exists s3   
+        (earlier(s1,s3) & earlier(s3,s2) & subactivity_occurrence(s3,o)))))).
+
+%psl_actocc
+
+all o1 all o2
+    (subactivity_occurrence(o1,o2)
+    -> activity_occurrence(o2)
+    & activity_occurrence(o1)).
+
+all a all s1 all s2
+    (min_precedes(s1,s2,a)
+    -> exists occ(
+        occurrence_of(occ,a)
+        & subactivity_occurrence(s1,occ)
+        & subactivity_occurrence(s2,occ)
+    )).
+
+all a all s
+    (root(s,a)& -atomic(a)
+    -> exists occ(
+        occurrence_of(occ, a)
+        & subactivity_occurrence(s,occ)
+    )).
+
+all occ all a  
+    (occurrence_of(occ, a)& - atomic(a)
+    -> exists s (
+        root(s,a) & subactivity_occurrence(s,occ)
+    )).
+
+all a all s1 all occ1 all occ2 
+    (occurrence_of(occ, a) 
+    & occurrence_of(occ2, a)
+    & -(occ1 = occ2)
+    -> exists s
+    (arboreal(s)
+    &subactivity_occurrence(s, occ1)
+    & - subactivity_occurrence(s, occ2))).
+
+all a all occ all s1 all s2 
+    (occurrence_of(occ, a)
+    & arboreal(s1)
+    & arboreal(s2)
+    & subactivity_occurrence(s1, occ)
+    & subactivity_occurrence(s2, occ)
+    -> min_precedes(s1,s2,a)
+    | min_precedes(s2, s1, a)
+    | (s1 = s2)).
+
+all a all s1 all s2 all occ 
+    (min_precedes(s1, s2, a)
+    & occurrence_of(occ, a)
+    & subactivity_occurrence(s2,occ)
+    -> subactivity_occurrence(s1,occ)).
+
+all a1 all a2 all occ1 all occ2
+    (occurrence_of(occ1, a1)
+    & occurrence_of(occ2, a2)
+    & - atomic(a1)
+    & subactivity_occurrence(occ1, occ2)
+    -> subactivity(a1, a2)).
+
+all occ1 all occ2 all occ3 
+    (subactivity_occurrence(occ1, occ2)
+    & subactivity_occurrence(occ2, occ3)
+    -> subactivity_occurrence(occ1, occ3)).
+
+all a1 all a2 all occ1 all occ2
+    (occurrence_of(occ1, a1)
+    & occurrence_of(occ2, a2)
+    & subactivity(a1, a2)
+    & -subactivity_occurrence(occ1, occ2)
+    -> exists s 
+    (subactivity_occurrence(s, occ1)
+    & - subactivity_occurrence(s, occ2))).   
+
+all s all occ
+    (root_occ(s, occ)
+    -> (beginof(occ)=beginof(s))).
+
+all s all occ
+    (leaf_occ(s, occ)
+    -> (endof(occ) = endof(s))).
+
+all s all occ
+    (root_occ(s, occ)
+    <-> exists a (
+        occurrence_of(occ, a)
+        & subactivity_occurrence(s, occ)
+        & root(s, a)
+    )).
+
+all s all occ 
+    (leaf_occ(s, occ)
+    <-> exists a (
+        occurrence_of(occ, a)
+        & subactivity_occurrence(s, occ)
+        & leaf(s,a)
+    )).
+
+all o1 
+    (atom_subocc(o1)
+    <-> arboreal(o1)&
+    (all o2(
+        subactivity_occurrence(o2,o1)-> (o1=o2)
+    ))).
+
+all o 
+    (activity_occurrence(o) -> subactivity_occurrence(o,o)).
+
+all o1 all o2 
+    (subactivity_occurrence(o1,o2)
+    & subactivity_occurrence(o2,o1)
+    -> (o1=o2)).
+all o1 all o2
+    (arboreal(o1)
+    & subactivity_occurrence(o2,o1)
+    -> (o1 = o2)).
+
+%48 exhausted
+all o1 all o2 
+    (subactivity_occurrence(o1,o2)
+    &(o1!=o2)
+    -> exists o3 (
+        atom_subocc(o3)&subactivity_occurrence(o3,o1)
+    )).
+
+end_of_list.
+
+formulas(goals).
+
+all s1 all s2 all o
+    (subactivity_occurrence(s1,o) & subactivity_occurrence(s2,o) & arboreal(s1) & arboreal(s2)
+    -> earlier(s1,s2) | earlier(s2,s1) | (s1=s2)).
+
+end_of_list.
+
