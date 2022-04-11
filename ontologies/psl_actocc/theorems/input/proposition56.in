@@ -1,0 +1,142 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+all a all s1 all s2(
+    min_precedes(s1,s2,a)
+    -> exists a1 exists a2(
+        subactivity(a1,a)
+        &subactivity(a2,a)
+        & atocc(s1,a1)
+        & atocc(s2,a2)
+    )
+).
+
+all a all s
+    (root(s,a)
+    -> exists a1(
+        subactivity(a1,a)
+        & atocc(s,a1)
+    )).
+
+all s1 all s2 all a
+    (min_precedes(s1,s2,a)
+    -> exists s3(
+        root(s3,a)
+        & min_precedes(s3,s2,a)
+    )).
+
+all s1 all s2 all a
+    (min_precedes(s1,s2,a)
+    -> earlier(s1,s2)).
+
+all s all a
+    (root(s,a)
+    -> arboreal(s)).
+
+all s all a
+    (atocc(s,a)&arboreal(s)
+    -> root(s,a)).
+
+all s1 all s2 all a
+    (min_precedes(s1,s2,a)
+    -> exists s3(
+        next_subocc(s1,s3,a)
+        & (
+            min_precedes(s3,s2,a)
+            |(s3=s2)
+        )
+    )).
+
+all a all s1 all s2 all s3 
+    (
+        min_precedes(s1,s2,a) & min_precedes(s1,s3,a)&earlier(s2,s3)
+        -> min_precedes(s2,s3,a)
+    ).
+
+all a1 all a2 all s1 all s2 all s3 
+    (subactivity(a1,a2)
+    & subtree(s1,a1,s2,a2)
+    & min_precedes(s1,s3,a1)
+    -> min_precedes(s1,s3,a2)).
+
+all s1 all s2 all a 
+    (min_precedes(s1,s2,a)
+    -> - atomic(a)).
+
+all a all s1 all s2 all s3 
+    (min_precedes(s2,s1,a)
+    & min_precedes(s3,s1,a)
+    & earlier(s2,s3)
+    -> min_precedes(s2,s3,a)).
+
+all s all a 
+    (leaf(s,a)
+    <-> 
+        (root(s,a) | exists s1(min_precedes(s1,s,a)))
+        &- (exists s2(min_precedes(s,s2,a)))
+    ).
+
+all a all s1 all s2
+    (do(a,s1,s2)
+    <-> root(s1,a)
+    &leaf(s2,a)
+    &(min_precedes(s1,s2,a)|(s1=s2))).
+
+all s1 all s2 all a 
+    (next_subocc(s1,s2,a)
+    <-> min_precedes(s1,s2,a)
+        & -(exists(s3)(
+            activity_occurrence(s3)
+            & min_precedes(s1,s3,a)
+            & min_precedes(s3,s2,a)
+        ))
+       ).
+
+all s1 all s2 all a1 all a2
+    (subtree(s1,a1,s2,a2)
+    <-> root(s1,a1)
+        & root(s2,a2)
+        & (min_precedes(s1,s2,a1)|(s1=s2))
+        & all s3 (
+            min_precedes(s1,s3,a1)-> min_precedes(s2,s3,a2)
+        )).
+
+all s1 all s2 all a
+    (sibling(s1,s2,a)
+    <-> 
+        (exists s3(next_subocc(s3,s1,a)& next_subocc(s3,s2,a)))
+        |(
+            root(s1,a)
+            &root(s2,a)
+            &(
+                (initial(s1)&initial(s2))
+                | (exists s4 exists a1 exists a2(
+                    s1=successor(a1,a4)
+                    & s2 =successor(s2,s4)
+                ))
+            )
+        )
+    ).
+
+arboreal_subocc(x,y) <-> subactivity_occurrence(x,y) & arboreal(x)&arboreal(y).
+
+end_of_list.
+
+formulas(goals).
+
+all a all s
+    (root(s,a) -> exists a1 (atocc(s,a1)&subactivity(a1,a))).
+
+end_of_list.
+
