@@ -1,0 +1,65 @@
+/*******************************************************************************
+ * Copyright (c) University of Toronto and others. All rights reserved.
+ * The content of this file is licensed under the Creative Commons Attribution-
+ * ShareAlike 4.0 Unported license. The legal text of this license can be
+ * found at http://creativecommons.org/licenses/by-sa/4.0/legalcode.
+ *
+ * Contributors:
+ *    Michael Gruninger - initial implementation
+*******************************************************************************/
+
+(cl-text http://colore.oor.net/duration/point_duration.clif
+
+(cl-imports http://colore.oor.net/timepoints/lp_infinite_end.clif)
+
+(cl-imports http://colore.oor.net/duration/timeduration.clif)
+
+(forall (x)
+	(if	(timepoint x)
+		(not (timeduration x))))
+
+(forall (t1 t2)
+	(if  (and	(timepoint t1)
+			(timepoint t2))
+		  (timeduration (duration t1 t2))))
+
+(forall (d)
+	(if  (timeduration d)
+        	  (exists (t1 t2)
+			(and	(timepoint t1)
+				(timepoint t2)
+	                	(= d (duration t1 t2))))))
+
+(forall (t1 t2)
+(if	(and	(timepoint t1)
+		(timepoint t2))
+	(iff	(= zero (duration t1 t2))
+		(= t1 t2))))
+
+(forall (t1 t2)
+(if  (and	(timepoint t1)
+		(timepoint t2))
+	  (= zero (add (duration t1 t2) (duration t2 t1)))))
+
+(forall (t1 t2 t3)
+(if	(and	(timepoint t1)
+		(timepoint t2)
+		(timepoint t3))
+	(= (add (duration t1 t2) (duration t2 t3)) (duration t1 t3))))
+
+(forall (t1 t2)
+(if	(and	(timepoint t1)
+		(timepoint t2))
+	(iff	(lesser zero (duration t1 t2))
+		(before t1 t2))))
+
+(forall (t1 t2 t3)
+(if	(and	(timepoint t1)
+		(timepoint t2)
+		(timepoint t3))
+	(exists (t4)
+		(and	(timepoint t4)
+			(= (duration t1 t2) (duration t3 t4))))))
+
+)
+
