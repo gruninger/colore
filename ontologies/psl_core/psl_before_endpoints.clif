@@ -8,7 +8,7 @@
  *    Michael Gruninger - initial implementation
  *******************************************************************************/
 
-(cl-text http://colore.oor.net/psl_core/psl_before.clif
+(cl-text http://colore.oor.net/psl_core/psl_before_endpoints.clif
 
 (cl-comment 'The before relation only holds between timepoints.')
 
@@ -38,19 +38,36 @@
 			(before t2 t3))
 		(before t1 t3)))
 
-(cl-comment 'Given any timepoint t, there is a timepoint after t.')
+(cl-comment 'The timepoint inf- is before all other timepoints.')
 
 (forall (t)
-	(if	(timepoint t) 
-		(exists (u) 
-			(before u t))))
+        (if	(and 	(timepoint t) 
+			(not (= t inf-)))
+		(before inf- t)))
 
-(cl-comment 'Given any timepoint t, there is a timepoint before t')
+(cl-comment 'Every other timepoint is before inf+.')
 
 (forall (t)
-	(if	(timepoint t) 
+        (if	(and 	(timepoint t) 
+			(not (= t inf+)))
+		(before t inf+)))
+
+(cl-comment 'Given any timepoint t other than inf-, there is a timepoint between inf- and t.')
+
+(forall (t)
+	(if	(and 	(timepoint t) 
+			(not (= t inf-)))
 		(exists (u) 
-			(before t u))))
+			(between inf- u t))))
+
+(cl-comment 'Given any timepoint t other than inf+, there is a timepoint between
+t and inf+.')
+
+(forall (t)
+	(if	(and 	(timepoint t) 
+			(not (= t inf+)))
+		(exists (u) 
+			(between t u inf+))))
 
 
 (cl-comment 'Timepoint t2 is between timepoints t1 and t3 if and only if t1 is before 
