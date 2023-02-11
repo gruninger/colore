@@ -98,12 +98,21 @@ distinct kinds of things.')
                  
   (cl-comment 'A spatiotemporal region x is part of another spatiotemproal region y if only if at timeinterval t and region l1 that x is projectedTo there is also region l2 that y is projected to at t, and l1 is part of l2)
   (forall (x  y)  (iff  (st_part  x y)
-          (exists t  l1  l2)  (and  (projectsTo x l1 t)
-                                    (projectsTo y l2 t))
-                               (part  l1  l2)))
+                  (forall (t  l1)   (projectsTo x l1 t)
+                  (exists l2)       (and  (projectsTo y l2 t))
+                                          (part  l1  l2))))
  
- 
-          
+  (cl-comment 'A spatiotemprol region x connects spatiotemporal region y if only if their spatiotemproal parts are spatially and temporally connected')
+(forall (x  y)  (iff  (st_C  x y)
+                (exists (t1 t2 l1 l2)
+                        (and projectsTo(x  l1  t1)
+                             projectsTo(x  l2  t2))
+                        (and C(l1 l2)
+                            (or (meets t1 t2)
+                                (meets t2 t1))))))
+                         
+                
+                
                    
         
                  
