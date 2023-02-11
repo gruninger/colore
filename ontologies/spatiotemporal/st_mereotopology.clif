@@ -30,7 +30,7 @@ distinct kinds of things.')
                             (spatial_extent x  l)))))
                             
  (cl-comment 'Every spatiotemporal region has a unique spatial extent')
- (forall (x,l1,l2)
+ (forall (x  l1  l2)
          (if   (and   (spatiotemproal_regigion x)
                       (spatial_extent x  l1)
                       (spatial_extent x  l2))
@@ -43,10 +43,68 @@ distinct kinds of things.')
                       (and (timeinterval t)
                             (temporal_extent(x,t))))))
                             
+                            
 (cl-comment 'Every spatiotemporal region has a unique temproal extent')
- (forall (x,t1,t2)
+ (forall (x   t1  t2)
          (if   (and   (spatiotemproal_regigion x)
                       (temporal_extent x  t1)
                       (temporal_extent x  t2))
                 (= t1 t2)))
+
+
+(cl-comment 'Given a region l and a timeinterval t, there must be a spatiotemrporal region whose spaital extent is l, temporal extent is t')
+(forall (l  t)
+        (if   (and  (region l)
+                    (timeinterval t))
+               (exists (x)  (and  (spatiotemproal_region x)
+                                  (spatial_extent x  l1)
+                                  (temporal_extent x  t1)))))
+ 
+ 
+(cl-comment 'A projectsTo relation holds among spatiotemporal region, region and timeinterval')
+(forall (st l t) 
+        (if   (projectsTo  st   l   t)
+        (and  (spatiotemporal_region  st)
+              (timeinterval   t)
+              (region   l))))
+
+
+(cl-comment 'Every spatiotemporal region can be projected to a region at certain timeinterval')
+(forall (st)
+        (if (spatiotemporal_region st)
+            (exists (l  t)
+                     (projectsTo  st  l t))))
+                     
+ (cl-comment 'At given timeinterval t, a spatiotemporal region can be projected to a unique region')
+ (forall (st  l1  l2  t) 
+          (if   (and  (projectsTo st  l1  t)
+                      (projectsTo st  l2  t))
+                 (= l1 l2)))
+
+ (cl-comment 'A spatiotemporal region can be projected to region l and timeinterval t only when l is part of its spatial extent and t is part of its temporal extent'
+)
+ (forall (st  l   t   l_extent  t_extent) 
+         (if  (and  (projectsTo st l t)
+                    (spatial_extent st  l_extent)
+                    (temproal_extent st   t_extent))
+              (and  (part l l_extent)
+                          (temproal_part t t_extent))))
+
+ (cl-comment 'A spatiotemporal region can be projected to its spatial extent and temporal extent)
+  (forall (st  l   t)
+          (if   (and  (spatial_extent st  l)
+                      (temproal_extent st  t))
+                 projectsTo(st  l   t)))
+                 
+  (cl-comment 'A spatiotemporal region x is part of another spatiotemproal region y if only if at timeinterval t and region l1 that x is projectedTo there is also region l2 that y is projected to at t, and l1 is part of l2)
+  (forall (x  y)  (iff  (st_part  x y)
+          (exists t  l1  l2)  (and  (projectsTo x l1 t)
+                                    (projectsTo y l2 t))
+                               (part  l1  l2)))
+ 
+ 
+          
+                   
+        
+                 
                             
