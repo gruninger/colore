@@ -1,0 +1,175 @@
+if(Mace4).
+  assign(max_seconds, 30).
+end_if.
+
+if(Prover9).
+  assign(max_seconds, 120).
+end_if.
+
+formulas(assumptions).
+
+%weak_bipartite
+(all x all y (
+    in(x,y) -> in(y,x)
+)).
+
+(all x (
+    (point(x) | line(x))
+    ->
+    in(x,x)
+)).
+
+(all p (
+    point(p) -> -line(p)
+)).
+
+(all x all y (
+    (in(x,y) & point(x) & point(y)) -> x=y
+)).
+
+(all x all y (
+    (in(x,y) & line(x) & line(y)) -> x=y
+)).
+
+%partial_bipartite
+(all l (line(l) -> exists x (
+    point(x) & in(x,l)
+))).
+
+%double_points
+(all x all y all z all l(
+    (point(x) & point(y) & point(z) & line(l) &
+    in(x,l) & in(y,l) & in(z,l))
+    ->
+    (z=x | z=y | x=y)
+)).
+
+%nontrivial_lines
+(all l(
+    line(l) -> exists x exists y (
+        point(x) & point(y) & (x!=y) & in(x,l) & in(y,l)
+    )
+)).
+
+%unique_line
+(all p1 all p2 all l1 all l2(
+    (point(p1) & point(p2) & line(l1) & line(l2) & 
+    in(p1,l1) & in(p1,l2) & in(p2,l1) & in(p2,l2))
+    ->
+    (p1=p2 | l1=l2)
+)).
+
+%coplanar_colinear
+(all p all q(
+    (plane(q) & point(p) & in(p,q)) 
+    ->
+    exists p1 exists p2 exists l1 exists l2 (
+        line(l1) & in(l1,q) & in(p,l1) & in(p1,l1) & 
+        line(l2) & in(l2,q) & in(p,l2) & in(p2,l2) &
+        point(p1) & point(p2) & (p!=p1) & (p!=p2) &
+        (p1!=p2) & in(p1,q) & in(p2,q)
+    ) 
+)).
+
+%double_plane
+(all p all q all l1 all l2 all l3(
+    (plane(q) & point(p) & in(p,q) & line(l1) & line(l2) & line(l3) &
+    in(p,l1) & in(p,l2) & in(p,l3) & in(l1,q) & in(l2,q) & in(l3,q))
+    ->
+    (l1=l2 | l1=l3 | l2=l3)
+)).
+
+%transitive_tripartite
+(all x all y all z(
+    (plane(x) & line(y) & point(z) & in(z,y) & in(y,x))
+    ->
+    in(z,x)
+)).
+
+%point_plane_existence
+(all q(
+    plane(q) -> exists p(
+        point(p) & in(p,q)
+    )
+)).
+
+%planar_unique_line
+(all p1 all p2 all l1 all l2 all q (
+    (
+        point(p1) & point(p2) & line(l1) & line(l2) & plane(q) &
+        in(p1,l1) & in(p1,l2) & in(p2,l1) & in(p2,l2) & in(p1,q) & in(p2,q) & in(l1,q) & in(l2,q)
+    )
+    ->
+    (p1=p2 | l1=l2)
+)).
+
+%weak_tripartite
+(all x all y (in(x,y) -> in(y,x))).
+
+(all x ((point(x) | line(x) | plane(x)) -> in(x,x))).
+
+(all p (point(p) -> -line(p))).
+
+(all p (point(p) -> -plane(p))).
+
+(all p (plane(p) -> -line(p))).
+
+(all x all y ((in(x,y) & point(x) & point(y)) -> x=y)).
+
+(all x all y ((in(x,y) & line(x) & line(y)) -> x=y)).
+
+(all x all y ((in(x,y) & plane(x) & plane(y)) -> x=y)).
+
+%planar_shadow
+(all l all q 
+    (line(l) & plane(q) & -in(l,q))
+        -> 
+        exists p (point(p) & in(p,l) & -in(p,q))).
+
+%coplanar_line_existence
+(all p1 all p2 all q(
+    (point(p1) & point(p2) & plane(q) & 
+    in(p1,q) & in(p2,q) & -(p1=p2))
+    ->
+    exists l(
+        line(l) & in(p1,l) & in(p2,l) & in(l,q)
+    )
+)).
+
+%double_point_intersect
+(all q1 all q2 all p1 all p2 all p3(
+    (plane(q1) & plane(q2) & (q1!=q2) & 
+    point(p1) & point(p2) & point(p3) &
+    in(p1,q1) & in(p2,q1) & in(p3,q1) & 
+    in(p2,q2) & in(p3,q2))
+    ->
+    (p1=p2 | p1=p3 | p2=p3)
+)).
+
+(all x all y (part(x,y) 
+    <->
+    (in(x,y) & ((point(x) & line(y)) | (point(x) & plane(y)) | (line(x) & plane(y)) | x=y)
+))).
+
+(all x (point(x) | line(x) | plane(x))).
+
+(all x all y
+	(ppart(x,y)
+	<->
+	(part(x,y)
+	& -part(y,x)))).
+
+
+(all x all y
+	(underlaps(x,y)
+	<->
+	(exists z
+		(part(x,z)
+		& part(y,z))))).
+
+end_of_list.
+
+formulas(goals).
+
+
+end_of_list.

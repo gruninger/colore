@@ -1,0 +1,59 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 23045 was started by mudcat on mie-16-81.internal.mie.utoronto.ca,
+Thu Nov 17 14:43:26 2022
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.01) seconds.
+% Length of proof is 39.
+% Level of proof is 10.
+% Maximum clause weight is 9.
+% Given clauses 53.
+
+11 (all x all y (part(x,y) & line(y) -> plane(x) | space(x))) # label(non_clause).  [assumption].
+12 (all x all y (part(x,y) & point(y) -> space(x))) # label(non_clause).  [assumption].
+14 (all x all y (x < y <-> point(x) & (line(y) | plane(y) | space(y)) | line(x) & (plane(y) | space(y)) | plane(x) & space(y))) # label(non_clause).  [assumption].
+20 (all p (point(p) -> -line(p) & -plane(p) & -space(p))) # label(non_clause).  [assumption].
+21 (all x (line(x) -> -plane(x) & -space(x))) # label(non_clause).  [assumption].
+22 (all x (plane(x) -> -space(x))) # label(non_clause).  [assumption].
+27 (all x part(x,x)) # label(non_clause).  [assumption].
+30 (all x all y (x < y -> -(y < x))) # label(non_clause) # label(goal).  [goal].
+32 -(x < y) | point(x) | line(x) | plane(x).  [clausify(14)].
+33 -(x < y) | point(x) | line(x) | space(y).  [clausify(14)].
+35 -(x < y) | line(y) | plane(y) | space(y).  [clausify(14)].
+43 c1 < c2.  [deny(30)].
+44 c2 < c1.  [deny(30)].
+110 -part(x,y) | -line(y) | plane(x) | space(x).  [clausify(11)].
+111 -part(x,y) | -point(y) | space(x).  [clausify(12)].
+117 -point(x) | -space(x).  [clausify(20)].
+118 -line(x) | -plane(x).  [clausify(21)].
+119 -line(x) | -space(x).  [clausify(21)].
+120 -plane(x) | -space(x).  [clausify(22)].
+125 part(x,x).  [clausify(27)].
+128 point(c1) | line(c1) | plane(c1).  [resolve(43,a,32,a)].
+129 point(c1) | line(c1) | space(c2).  [resolve(43,a,33,a)].
+133 point(c2) | line(c2) | space(c1).  [resolve(44,a,33,a)].
+135 line(c1) | plane(c1) | space(c1).  [resolve(44,a,35,a)].
+155 -point(x) | space(x).  [resolve(125,a,111,a)].
+156 -line(x) | plane(x) | space(x).  [resolve(125,a,110,a)].
+157 point(c1) | plane(c1) | -space(c1).  [resolve(128,b,119,a)].
+159 point(c1) | space(c2) | -plane(c1).  [resolve(129,b,118,a)].
+163 point(c2) | space(c1) | -space(c2).  [resolve(133,b,119,a)].
+169 plane(c1) | space(c1).  [resolve(156,a,135,a),merge(c),merge(d)].
+173 point(c1) | space(c2) | space(c1).  [resolve(159,c,169,a)].
+176 space(c2) | space(c1).  [resolve(173,a,155,a),merge(c)].
+177 space(c1) | point(c2).  [resolve(176,a,163,c),merge(c)].
+178 space(c1) | -space(c2).  [resolve(177,b,117,a)].
+180 space(c1).  [resolve(178,b,176,a),merge(b)].
+182 point(c1) | plane(c1).  [back_unit_del(157),unit_del(c,180)].
+183 -plane(c1).  [ur(120,b,180,a)].
+185 -point(c1).  [ur(117,b,180,a)].
+186 $F.  [back_unit_del(182),unit_del(a,185),unit_del(b,183)].
+
+============================== end of proof ==========================

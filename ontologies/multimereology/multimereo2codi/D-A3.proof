@@ -1,0 +1,73 @@
+============================== prooftrans ============================
+Prover9 (32) version Dec-2007, Dec 2007.
+Process 23051 was started by mudcat on mie-16-81.internal.mie.utoronto.ca,
+Thu Nov 17 14:43:57 2022
+The command was "/Applications/Prover9-Mace4-v05B.app/Contents/Resources/bin-mac-intel/prover9".
+============================== end of head ===========================
+
+============================== end of input ==========================
+
+============================== PROOF =================================
+
+% -------- Comments from original proof --------
+% Proof 1 at 0.01 (+ 0.00) seconds.
+% Length of proof is 53.
+% Level of proof is 14.
+% Maximum clause weight is 11.
+% Given clauses 80.
+
+11 (all x all y (part(x,y) & line(y) -> plane(x) | space(x))) # label(non_clause).  [assumption].
+12 (all x all y (part(x,y) & point(y) -> space(x))) # label(non_clause).  [assumption].
+13 (all x (point(x) | line(x) | plane(x) | space(x))) # label(non_clause).  [assumption].
+14 (all x all y (x < y <-> point(x) & (line(y) | plane(y) | space(y)) | line(x) & (plane(y) | space(y)) | plane(x) & space(y))) # label(non_clause).  [assumption].
+15 (all x all y (EqDim(x,y) <-> point(x) & point(y) | line(x) & line(y) | plane(x) & plane(y) | space(x) & space(y))) # label(non_clause).  [assumption].
+17 (all x all y (x <= y <-> x < y | EqDim(x,y))) # label(non_clause).  [assumption].
+20 (all p (point(p) -> -line(p) & -plane(p) & -space(p))) # label(non_clause).  [assumption].
+21 (all x (line(x) -> -plane(x) & -space(x))) # label(non_clause).  [assumption].
+22 (all x (plane(x) -> -space(x))) # label(non_clause).  [assumption].
+27 (all x part(x,x)) # label(non_clause).  [assumption].
+30 (all x all y all z (x < y & y <= z -> x < z)) # label(non_clause) # label(goal).  [goal].
+33 -EqDim(x,y) | point(x) | line(x) | plane(x) | space(y).  [clausify(15)].
+51 -(x <= y) | x < y | EqDim(x,y).  [clausify(17)].
+57 c2 <= c3.  [deny(30)].
+58 -(x <= y) | x < y | point(x) | line(x) | plane(x) | space(y).  [resolve(51,c,33,a)].
+87 -part(x,y) | -line(y) | plane(x) | space(x).  [clausify(11)].
+88 -part(x,y) | -point(y) | space(x).  [clausify(12)].
+89 point(x) | line(x) | plane(x) | space(x).  [clausify(13)].
+90 -(x < y) | point(x) | line(x) | plane(x).  [clausify(14)].
+91 -(x < y) | point(x) | line(x) | space(y).  [clausify(14)].
+99 x < y | -plane(x) | -space(y).  [clausify(14)].
+104 -point(x) | -space(x).  [clausify(20)].
+105 -line(x) | -plane(x).  [clausify(21)].
+106 -line(x) | -space(x).  [clausify(21)].
+107 -plane(x) | -space(x).  [clausify(22)].
+112 part(x,x).  [clausify(27)].
+115 c1 < c2.  [deny(30)].
+116 -(c1 < c3).  [deny(30)].
+117 c2 < c3 | point(c2) | line(c2) | plane(c2) | space(c3).  [resolve(58,a,57,a)].
+137 -point(x) | space(x).  [resolve(112,a,88,a)].
+138 -line(x) | plane(x) | space(x).  [resolve(112,a,87,a)].
+141 point(c1) | line(c1) | space(c2).  [resolve(115,a,91,a)].
+142 point(c1) | line(c1) | plane(c1).  [resolve(115,a,90,a)].
+145 point(c2) | line(c2) | plane(c2) | space(c3).  [resolve(117,a,91,a),merge(e),merge(f),merge(g)].
+154 space(x) | line(x) | plane(x).  [resolve(137,a,89,a),merge(d)].
+162 line(c1) | space(c2) | space(c1).  [resolve(141,a,137,a)].
+168 line(c1) | plane(c1) | -space(c1).  [resolve(142,a,104,a)].
+172 space(x) | plane(x).  [resolve(154,b,138,a),merge(c),merge(d)].
+173 space(x) | x < y | -space(y).  [resolve(172,b,99,b)].
+174 space(c2) | space(c1) | -plane(c1).  [resolve(162,a,105,a)].
+176 line(c2) | plane(c2) | space(c3) | -space(c2).  [resolve(145,a,104,a)].
+180 space(c2) | space(c1).  [resolve(174,c,172,b),merge(c)].
+182 line(c2) | plane(c2) | space(c3) | space(c1).  [resolve(176,d,180,a)].
+183 plane(c2) | space(c3) | space(c1) | -space(c2).  [resolve(182,a,106,a)].
+187 plane(c2) | space(c3) | space(c1).  [resolve(183,d,180,a),merge(d)].
+188 space(c3) | space(c1) | -space(c2).  [resolve(187,a,107,a)].
+190 space(c3) | space(c1).  [resolve(188,c,180,a),merge(c)].
+191 space(c1) | space(x) | x < c3.  [resolve(190,a,173,c)].
+192 space(c1).  [factor(191,a,b),unit_del(b,116)].
+193 line(c1) | plane(c1).  [back_unit_del(168),unit_del(c,192)].
+197 -plane(c1).  [ur(107,b,192,a)].
+198 -line(c1).  [ur(106,b,192,a)].
+200 $F.  [back_unit_del(193),unit_del(a,198),unit_del(b,197)].
+
+============================== end of proof ==========================

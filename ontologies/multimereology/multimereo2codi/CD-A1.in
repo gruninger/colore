@@ -1,0 +1,163 @@
+% Saved by Prover9-Mace4 Version 0.5B, March 2008 (Dec 2007 LADR).
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+(all x all y all z
+		((point(x)
+		& point(y)
+		& part(x,z)
+		& part(z,y))
+		->
+		point(z)
+)).
+
+(all x all y all z
+		((line(x)
+		& line(y)
+		& part(x,z)
+		& part(z,y))
+		->
+		line(z)
+)).
+
+(all x all y all z
+		((plane(x)
+		& plane(y)
+		& part(x,z)
+		& part(z,y))
+		->
+		plane(z)
+)).
+
+(all x all y all z
+		((space(x)
+		& space(y)
+		& part(x,z)
+		& part(z,y))
+		->
+		space(z)
+)).
+
+(all x all y
+((part(x,y) & point(x)) -> (point(y) | line(y) | plane(y) | space(y)))).
+
+(all x all y
+((part(x,y) & line(x)) -> (line(y) | plane(y) | space(y)))).
+
+(all x all y
+((part(x,y) & plane(x)) -> (plane(y) | space(y)))).
+
+(all x all y
+((part(x,y) & space(x)) -> (space(y)))).
+
+(all x all y
+((part(x,y) & space(y)) -> (point(x) | line(x) | plane(x) | space(x)))).
+
+(all x all y
+((part(x,y) & plane(y)) -> (line(x) | plane(x) | space(x)))).
+
+(all x all y
+((part(x,y) & line(y)) -> (plane(x) | space(x)))).
+
+(all x all y
+((part(x,y) & point(y)) -> (space(x)))).
+
+(all x (point(x) | line(x) | plane(x) | space(x))).
+
+(all x (space(x) -> (exists y (plane(y) & in(y,x))))).
+(all x (plane(x) -> (exists y (line(y) & in(y,x))))).
+(all x (line(x) -> (exists y (point(y) & in(y,x))))).
+
+%translation definition of CODI
+(all x all y 
+	(<(x,y)
+	<->
+	((point(x) & (line(y) | plane(y) | space(y)))
+	| (line(x) & (plane(y) | space(y)))
+	| (plane(x) & space(y))
+	)
+	)
+).
+
+(all x all y
+	(EqDim(x,y)
+	<->
+	((point(x) & point(y))
+	| (line(x) & line(y))
+	| (plane(x) & plane(y))
+	| (space(x) & space(y))
+	)
+	)
+).
+
+(all x all y (Cont(x,y) <-> part(x,y))).
+
+(all x all y (<=(x,y) <-> (<(x,y) | EqDim(x,y)))).
+
+%weak quadripartite incidence
+(all x all y (in(x,y) -> in(y,x))).
+
+(all x (in(x,x))).
+
+(all p (point(p) -> (-line(p) & -plane(p) & -space(p)))).
+
+(all x (line(x) -> (-plane(x) & -space(x)))).
+
+(all x (plane(x) -> -space(x))).
+
+(all x all y 
+	((in(x,y) & point(x) & point(y))
+	->
+	(x = y))).
+
+(all x all y 
+	((in(x,y) & line(x) & line(y))
+	->
+	(x = y))).
+
+(all x all y 
+	((in(x,y) & plane(x) & plane(y))
+	->
+	(x = y))).
+
+(all x all y 
+	((in(x,y) & space(x) & space(y))
+	->
+	(x = y))).
+
+%m-mereology
+(all x (part(x,x))).
+
+(all x all y 
+	((part(x,y) & part(y,x))
+	->
+	(x = y)
+)). 
+
+(all x all y all z
+		((part(x,y) & part(y,z))
+		->
+		part(x,z))
+).
+
+end_of_list.
+
+formulas(goals).
+
+(all x all y
+	(Cont(x,y)
+	-> 
+	(<(x,y) | EqDim(x,y)))
+).
+
+end_of_list.

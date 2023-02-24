@@ -1,0 +1,136 @@
+if(Mace4).
+  assign(max_seconds, 30).
+end_if.
+
+if(Prover9).
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%cem
+(all x
+	(part(x,x))).
+
+(all x all y
+	((part(x,y)
+	& part(y,x))
+	->
+	(x=y))).
+
+(all x all y all z
+	((part(x,y)
+	& part(y,z))
+	->
+	part(x,z))).
+
+(all x all y
+	(ppart(x,y)
+	<->
+	(part(x,y)
+	& -part(y,x)))).
+
+(all x all y
+	(overlaps(x,y)
+	<->
+	(exists z
+		(part(z,x)
+		& part(z,y))))).
+
+(all x all y
+	(disjoint(x,y)
+	<->
+	-overlaps(x,y))).
+
+(all x all y
+	(underlaps(x,y)
+	<->
+	(exists z
+		(part(x,z)
+		& part(y,z))))).
+
+(all x all y
+	(-part(x,y)
+	->
+	(exists z
+		(part(z,x)
+		& disjoint(z,y))))).
+
+(all x all y
+	(underlaps(x,y)
+	->
+	(exists z
+		(all v
+			(overlaps(v,z)
+			<->
+			(overlaps(v,x) | overlaps(v,y))))))).
+
+(all x all y
+	(overlaps(x,y)
+	->
+	(exists z
+		(all v
+			(ppart(v,z)
+			<->
+			(ppart(v,x) | ppart(v,y))))))).
+
+(all x all y all z
+        (sum(x,y,z)
+        <->
+                (all v
+                        (overlaps(v,z)
+                        <->
+                        (overlaps(v,x)
+                        | overlaps(v,y)))))).
+
+%translation definition
+all x (atom(x) <->  (all y (part(y, x) -> (y = x)))).
+
+(all x point(x) <-> atom(x)).
+
+(all x line(x) <-> edge(x)).
+
+(all x plane(x) <-> triangle(x)).
+
+(all x all y (in(x,y) <-> (part(x,y) | part(y,x)))).
+
+(all x (atom(x) | edge(x) | triangle(x))).
+
+(all x (triangle(x) <-> (
+	exists y exists z exists u exists w (
+		(atom(y) & atom(z) & atom(u) & (y!=z) & (y!=u) & (z!=u) &
+		sum(y,z,w) & sum(w,u,x))
+	)
+))).
+
+(all x (edge(x) <-> (
+	exists y exists z(
+		atom(y) & atom(z) & (y!=z) & sum(y,z,x)
+	)
+))).
+
+(all x all y all z (
+	(atom(x) & atom(y) & part(x,z) & part(y,z) & edge(z))
+	->
+	sum(x,y,z)
+)).
+
+(all x all y all z all u (
+	(sum(x,y,z) & sum(x,y,u))
+	->
+	z = u
+)).
+end_of_list.
+
+
+formulas(goals).
+
+%coplanar_line_existence
+(all p1 all p2 all q(
+	(point(p1) & point(p2) & plane(q) & in(p1,q) & in(p2,q) & (p1!=p2)) 
+	-> exists l(
+		line(l) & in(p1,l) & in(p2,l) & in(l,q))
+	
+)).
+
+end_of_list.
