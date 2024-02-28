@@ -1,0 +1,167 @@
+(all x all y(
+    exists m( glb(x,y,m)))).
+
+(all x all y all m
+(glb(x,y,m)
+<->
+        (leq(m,x) & leq(m,y) & (all z(
+            leq(z,x) & leq(z,y) 
+         -> leq(z,m)))))).
+
+(all x all y(
+    exists j
+        (lub(x,y,j)))).
+        
+(all x all y all j
+    (lub(x,y,j)
+    <->
+        (leq(x,j) & leq(y,j) & (
+            all z(
+                leq(x,z) & leq(y,z)
+             -> leq(j,z))
+        )
+    )
+)).
+
+(all x all y (
+    leq(x,y) & leq(y,x)
+ -> (x=y))).
+
+(all x(
+    leq(x,x)
+)).
+
+(all x all y all z (
+    leq(x,y) & leq(y,z) -> leq(x,z)
+)).
+
+
+
+%def of lt
+ (all x all y(
+    lt(x,y) <-> leq(x,y) & (x!=y)
+ )).
+
+ (all x all y all z (
+    lub(x,y,z) -> lub(y,x,z)
+ )).
+
+ (all x(
+lub(x,x,x)
+ )).
+
+ (all x all y(
+    leq(x,y) <-> lub(x,y,y)
+ )).
+
+
+
+
+
+% change the definition 
+%1
+(all x(
+    join_irreducible(x) <->
+    exists u(lt(u,x) &(
+    all y all z (
+        lub(y,z,x) -> ((y=x) | (z=x))
+    )))
+)).
+
+%2
+(all x(
+    meet_irreducible(x) <-> 
+    exists  u (lt(x,u) & (
+    all y all z (
+        glb(y,z,x) -> ((y=x) | (z=x))
+    )))
+)).
+
+%3
+
+(all x (
+    irreducible(x) <-> meet_irreducible(x) & join_irreducible(x)
+)).
+
+%4
+(all x exists y exists z(
+    join_irreducible(y) & join_irreducible(z) & lub(y,z,x)
+)).
+
+%5
+(all x all y all z all u(
+    join_irreducible(x) & join_irreducible(y) & join_irreducible(u) & -leq(x,y) & -leq(y,x) & -leq(x,u) & -leq(u,x)
+    & lub(x,y,z) & lub(x,u,z)
+ -> (y=u))).
+
+ %6
+(all x all y all y all u(
+    join_irreducible(x) & join_irreducible(y) & join_irreducible(z) & lt(x,u) & leq(y,x) & leq(z,x)
+ -> (leq(y,z) | leq(z,y)))).
+
+%7
+(all x all y all y all u(
+    join_irreducible(x) & join_irreducible(y) & join_irreducible(z) & lt(u,x) & leq(x,y) & leq(x,z)
+ -> (leq(y,z) | leq(z,y)))).
+
+%8
+(all x all y all z(
+    join_irreducible(x) & join_irreducible(y) & join_irreducible(z) & -comparable(x,y) & -comparable(x,z) & -comparable(y,z)
+ -> ((x=y) | (x=z) | (y=z)))).
+
+%9
+(all u all v(
+    lt(u,v) -> exists x exists y(
+        join_irreducible(x) & join_irreducible(y) & -lt(x,y) & -lt(y,x)
+    ))).
+
+
+%10
+(all x exists y exists z
+    (meet_irreducible(y) & meet_irreducible(z) & glb(y,z,x))).
+
+(all x all y all z all u (
+    meet_irreducible(x) & meet_irreducible(y) & meet_irreducible(u) & - leq(x,y) & -leq(y,x) & - leq(x,u) & -leq(u,x) & glb(x,y,z) & glb(x,u,z)
+ -> (y = u))).
+
+ % 11
+(all x all y all z(
+    meet_irreducible(x) & meet_irreducible(y) & meet_irreducible(z)
+    & leq(y,x) & leq(z,x) 
+ -> (leq(y,z) | leq(z,y)))).
+
+
+%12
+(all x all y all z(
+    meet_irreducible(x) & meet_irreducible(y) & meet_irreducible(z)
+    & leq(x,y) & leq(x,z) 
+ -> (leq(y,z) | leq(z,y))
+ )).
+
+
+%13
+(all x all y all z(
+    meet_irreducible(x) & meet_irreducible(y) & meet_irreducible(z)
+    & - comparable(x,y) & - comparable(x,z) & - comparable(y,z)
+ -> ((x=y) | (x=z) | (y=z)))).
+
+
+
+
+
+% new added axioms
+(all x all y(
+    meet_irreducible(x) & join_irreducible(y) & leq(x,y) -> (x=y)
+)).
+
+(all x(
+    join_irreducible(x) -> (
+        all y(leq(y,x) -> (y=x))
+    )
+)).
+
+(all x(
+    meet_irreducible(x) -> (
+        all y(leq(x,y) -> (x=y))
+    )
+)).
