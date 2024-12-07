@@ -1,0 +1,54 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  assign(max_seconds, 60).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+formulas(assumptions).
+
+%occupy_mereology
+
+all x all y (portionOf(x, y) -> MaterialObject(x) & MaterialObject(y)).
+all x (MaterialObject(x)->  portionOf(x, x)).
+all x all y (portionOf(x, y) & portionOf(y, x) -> (x = y)).
+all x all y all z (portionOf(x, y) & portionOf(y, z) -> portionOf(x, z)).
+
+all x all y (chunkOf(x, y) ->	(mat(x) & mat(y))).
+all x (mat(x) -> chunkOf(x, x)).
+all x all y ((chunkOf(x, y) & chunkOf(y, x)) -> (x = y)).
+all x all y all z ((chunkOf(x, y) & chunkOf(y, z)) -> chunkOf(x, z)). 
+
+all x (MaterialObject(x) -> -mat(x)).
+
+all x all y	(constitutes(x, y) -> (mat(x) & MaterialObject(y))).
+
+all x all y	all z ( (constitutes(x, y) & constitutes(x, z)) -> (y = z)).
+
+all x (mat(x) -> (exists y constitutes(x, y))).
+
+all x all y all r1 all r2 ((chunkOf(x, y) & constitutes(x, r1) & constitutes(y, r2)) -> portionOf(r1, r2)).
+
+%Delta7
+all x (point(x) <-> mat(x)).
+
+all x (line(x) <-> MaterialObject(x)).
+
+all x all y (leq(x, y) <-> portionOf(x, y)).
+
+all x all y (part(x, y) <-> chunkOf(x, y)).
+
+all x all y (in(x, y) <-> (constitutes(x, y) | constitutes(y, x) | ((point(x) | line(x)) & x = y))).
+
+end_of_list.
+
+formulas(goals).
+
+all x all y	(in(x, y) -> in(y, x)).
+
+end_of_list.
